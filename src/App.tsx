@@ -29,7 +29,7 @@ function App() {
         <meta property='og:description' content={defaultMetaDescription} />
       </Helmet>
       <GlobalStyles />
-      <Router>
+      <Router basename={process.env.REACT_APP_PUBLIC_URL}>
         <Root>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
