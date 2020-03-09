@@ -16,8 +16,13 @@ const PageNotFound = React.lazy(() => import('./pages/pageNotFound'));
 
 function App() {
 
+
+
   const defaultMetaTitle = 'Country Tools - The Growth Lab at Harvard Kennedy School';
   const defaultMetaDescription = 'Explore the Country Tools from the Growth Lab at Harvard Kennedy School';
+
+  const basename = window.location.host === 'cid-harvard.github.io'
+    ? 'https://cid-harvard.github.io/country-tools-front-end/' : '/';
 
   return (
     <>
@@ -29,7 +34,7 @@ function App() {
         <meta property='og:description' content={defaultMetaDescription} />
       </Helmet>
       <GlobalStyles />
-      <Router basename={process.env.REACT_APP_PUBLIC_URL}>
+      <Router basename={basename}>
         <Root>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
