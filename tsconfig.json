@@ -6,8 +6,19 @@
       "dom.iterable",
       "esnext"
     ],
+    "strictFunctionTypes": false,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "allowJs": true,
     "skipLibCheck": true,
+    "noEmitHelpers": false,
+    "noUnusedLocals": true,
+    "removeComments": false,
+    "preserveConstEnums": false,
+    "sourceMap": true,
+    "importHelpers": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -17,9 +28,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "preserve"
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "build",
+    "node_modules",
+    "src/serviceWorker.ts"
   ]
 }
