@@ -2,7 +2,7 @@
   "name": "country-tools-front-end",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cid-harvard.github.io/country-tools-front-end/",
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
