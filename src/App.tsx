@@ -16,13 +16,13 @@ const PageNotFound = React.lazy(() => import('./pages/pageNotFound'));
 
 function App() {
 
-
-
   const defaultMetaTitle = 'Country Tools - The Growth Lab at Harvard Kennedy School';
   const defaultMetaDescription = 'Explore the Country Tools from the Growth Lab at Harvard Kennedy School';
 
   const basename = window.location.host === 'cid-harvard.github.io'
-    ? 'https://cid-harvard.github.io/country-tools-front-end/' : '/';
+    ? '/country-tools-front-end' : undefined;
+
+  console.log(window.location.host);
 
   return (
     <>
