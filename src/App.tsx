@@ -1,4 +1,10 @@
-import React, {Suspense} from 'react';
+import React, {
+  Suspense,
+  createContext,
+  lazy,
+  useState,
+  useEffect,
+} from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -8,13 +14,34 @@ import GlobalStyles from './styling/GlobalStyles';
 import Helmet from 'react-helmet';
 import { Root } from './styling/Grid';
 import { Routes } from './routing/routes';
+import debounce from 'lodash/debounce';
 
-const LandingPage = React.lazy(() => import('./pages/landingPage'));
-const AlbaniaTool = React.lazy(() => import('./pages/albaniaTool'));
-const PageNotFound = React.lazy(() => import('./pages/pageNotFound'));
+const LandingPage = lazy(() => import('./pages/landingPage'));
+const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
+const PageNotFound = lazy(() => import('./pages/pageNotFound'));
 
+export interface IAppContext {
+  windowWidth: number;
+}
+
+export const AppContext = createContext<IAppContext>({windowWidth: window.innerWidth});
 
 function App() {
+
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  const appContext = {windowWidth};
+
+
+  useEffect(() => {
+    const updateWindowWidth = debounce(() => {
+      setWindowWidth(window.innerWidth);
+    }, 500);
+    window.addEventListener('resize', updateWindowWidth);
+    return () => {
+      window.removeEventListener('resize', updateWindowWidth);
+    };
+  }, []);
 
   const defaultMetaTitle = 'Country Tools - The Growth Lab at Harvard Kennedy School';
   const defaultMetaDescription = 'Explore the Country Tools from the Growth Lab at Harvard Kennedy School';
@@ -25,30 +52,32 @@ function App() {
 
   return (
     <>
-      <Helmet>
-        {/* Set default meta data values */}
-        <title>{defaultMetaTitle}</title>
-        <meta name='description' content={defaultMetaDescription} />
-        <meta property='og:title' content={defaultMetaTitle} />
-        <meta property='og:description' content={defaultMetaDescription} />
-      </Helmet>
-      <GlobalStyles />
-      <Router basename={basename}>
-        <Root>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              <Route exact path={Routes.Landing}
-                render={(props: any) => <LandingPage {...props} />}
-              />
-              <Route exact path={Routes.AlbaniaTool}
-                render={(props: any) => <AlbaniaTool {...props} />}
-              />
-              {/* If none of the above routes are found show the 404 page */}
-              <Route component={PageNotFound} />
-            </Switch>
-          </Suspense>
-        </Root>
-      </Router>
+      <AppContext.Provider value={appContext}>
+        <Helmet>
+          {/* Set default meta data values */}
+          <title>{defaultMetaTitle}</title>
+          <meta name='description' content={defaultMetaDescription} />
+          <meta property='og:title' content={defaultMetaTitle} />
+          <meta property='og:description' content={defaultMetaDescription} />
+        </Helmet>
+        <Router basename={basename}>
+          <Root>
+            <GlobalStyles />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Switch>
+                <Route exact path={Routes.Landing}
+                  render={(props: any) => <LandingPage {...props} />}
+                />
+                <Route exact path={Routes.AlbaniaTool}
+                  render={(props: any) => <AlbaniaTool {...props} />}
+                />
+                {/* If none of the above routes are found show the 404 page */}
+                <Route component={PageNotFound} />
+              </Switch>
+            </Suspense>
+          </Root>
+        </Router>
+      </AppContext.Provider>
     </>
   );
 }
