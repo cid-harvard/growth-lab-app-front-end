@@ -20,12 +20,13 @@ interface Input {
   tooltip: d3.Selection<any, unknown, null, undefined>;
   data: Datum[];
   size: Dimensions;
+  axisLabels?: {left?: string, bottom?: string};
 }
 
 export default (input: Input) => {
-  const { svg, tooltip, data, size } = input;
+  const { svg, tooltip, data, size, axisLabels } = input;
 
-  const margin = {top: 30, right: 30, bottom: 30, left: 30};
+  const margin = {top: 30, right: 30, bottom: 60, left: 60};
   const width = size.width - margin.left - margin.right;
   const height = size.height - margin.bottom - margin.top;
 
@@ -124,5 +125,22 @@ export default (input: Input) => {
         tooltip
             .style('display', 'none');
       });
+
+  // append X axis label
+  svg
+    .append('text')
+    .attr("transform", `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
+      .style("text-anchor", "middle")
+      .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
+
+  // append Y axis label
+  svg
+    .append('text')
+    .attr("transform", "rotate(-90)")
+      .attr("y", margin.right / 2)
+      .attr("x", 0 - (height / 2 + margin.top))
+      .attr("dy", "0.75em")
+      .style("text-anchor", "middle")
+      .text(axisLabels && axisLabels.left ? axisLabels.left : '');
 
 };

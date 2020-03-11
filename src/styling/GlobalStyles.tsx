@@ -3,10 +3,10 @@ import {
   baseColor,
   lightBaseColor,
   semiBoldFontBoldWeight,
+  primaryFont,
 } from './styleUtils';
 
 const GlobalStyles = createGlobalStyle`
-
   @media(max-width: 600px) {
     html {
       font-size: 14px;
@@ -19,7 +19,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: RobotoWeb;
+    font-family: ${primaryFont};
     color: ${baseColor};
   }
 
@@ -35,7 +35,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   p {
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   button {

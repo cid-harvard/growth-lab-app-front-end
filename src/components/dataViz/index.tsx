@@ -42,6 +42,7 @@ type Props = BaseProps & (
   {
     vizType: VizType.ScatterPlot;
     data: ScatterPlotDatum[];
+    axisLabels?: {left?: string, bottom?: string};
   }
 );
 
@@ -63,10 +64,11 @@ const DataViz = (props: Props) => {
           svg, tooltip, data: props.data, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
+          axisLabels: props.axisLabels,
         });
       }
     }
-  }, [svgNodeRef, sizingNodeRef, windowWidth, props.vizType, props.data]);
+  }, [svgNodeRef, sizingNodeRef, windowWidth, props]);
 
   return (
     <Root ref={sizingNodeRef}>
