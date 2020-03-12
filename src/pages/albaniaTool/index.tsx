@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Content, Footer } from '../../styling/Grid';
 import {
   TwoColumnSection,
@@ -16,12 +16,109 @@ import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot'
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
 import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
 import Helmet from 'react-helmet';
+import { TreeNode } from 'react-dropdown-tree-select';
 
 const colorScheme = {
   primary: '#F1A189',
   secondary: '#F8CCBF',
   tertiary: '#FCEEEB',
 };
+
+
+const testSearchBarData: TreeNode[] = [
+  {
+    label: 'Agriculture',
+    value: 'A',
+    className: 'no-select-parent',
+    disabled: true,
+    children: [
+      {
+        label: 'Corn',
+        value: 'A1',
+        disabled: false,
+      },
+      {
+        label: 'Potatoes',
+        value: 'A2',
+        disabled: false,
+      },
+      {
+        label: 'Lettuce',
+        value: 'A3',
+        disabled: false,
+      },
+    ],
+  },
+  {
+    label: 'Technology',
+    value: 'B',
+    className: 'no-select-parent',
+    disabled: true,
+    children: [
+      {
+        label: 'Computers',
+        value: 'B1',
+        disabled: false,
+      },
+      {
+        label: 'Cars',
+        value: 'B2',
+        disabled: false,
+      },
+      {
+        label: 'Phones',
+        value: 'B3',
+        disabled: false,
+      },
+    ],
+  },
+  {
+    label: 'Minerals',
+    value: 'C',
+    className: 'no-select-parent',
+    disabled: true,
+    children: [
+      {
+        label: 'Gold',
+        value: 'C1',
+        disabled: false,
+      },
+      {
+        label: 'Diamonds',
+        value: 'C2',
+        disabled: false,
+      },
+      {
+        label: 'Coal',
+        value: 'C3',
+        disabled: false,
+      },
+    ],
+  },
+  {
+    label: 'Services',
+    value: 'D',
+    className: 'no-select-parent',
+    disabled: true,
+    children: [
+      {
+        label: 'Tourism',
+        value: 'D1',
+        disabled: false,
+      },
+      {
+        label: 'Consulting',
+        value: 'D2',
+        disabled: false,
+      },
+      {
+        label: 'Other',
+        value: 'D3',
+        disabled: false,
+      },
+    ],
+  },
+];
 
 const scatterPlotData: ScatterPlotDatum[] = [
   {
@@ -136,6 +233,10 @@ const AlbaniaTool = () => {
   const metaTitle = 'Albania Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
+  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
+
+  const industryName = selectedIndustry && selectedIndustry.label ? selectedIndustry.label : 'No Industry Selected';
+
   return (
     <>
       <Helmet>
@@ -147,6 +248,8 @@ const AlbaniaTool = () => {
       <HeaderWithSearch
         title={'Albania Complexity Analysis'}
         searchLabelTest={'Please Select an Industry'}
+        data={testSearchBarData}
+        onChange={setSelectedIndustry}
       />
       <StickySideNav
         links={links}
@@ -156,7 +259,7 @@ const AlbaniaTool = () => {
       />
       <Content>
         <StickySubHeading
-          title={'Food & Agriculture'}
+          title={industryName}
           highlightColor={colorScheme.tertiary}
         />
         <TwoColumnSection id={'overview'}>

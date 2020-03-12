@@ -9,101 +9,6 @@ import DropdownTreeSelect, {TreeNode} from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 import './multiTierDropdownStyles.scss';
 
-const testData = [
-  {
-    label: 'Agriculture',
-    value: 'A',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Corn',
-        value: 'A1',
-        disabled: false,
-      },
-      {
-        label: 'Potatoes',
-        value: 'A2',
-        disabled: false,
-      },
-      {
-        label: 'Lettuce',
-        value: 'A3',
-        disabled: false,
-      },
-    ],
-  },
-  {
-    label: 'Technology',
-    value: 'B',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Computers',
-        value: 'B1',
-        disabled: false,
-      },
-      {
-        label: 'Cars',
-        value: 'B2',
-        disabled: false,
-      },
-      {
-        label: 'Phones',
-        value: 'B3',
-        disabled: false,
-      },
-    ],
-  },
-  {
-    label: 'Minerals',
-    value: 'C',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Gold',
-        value: 'C1',
-        disabled: false,
-      },
-      {
-        label: 'Diamonds',
-        value: 'C2',
-        disabled: false,
-      },
-      {
-        label: 'Coal',
-        value: 'C3',
-        disabled: false,
-      },
-    ],
-  },
-  {
-    label: 'Services',
-    value: 'D',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Tourism',
-        value: 'D1',
-        disabled: false,
-      },
-      {
-        label: 'Consulting',
-        value: 'D2',
-        disabled: false,
-      },
-      {
-        label: 'Other',
-        value: 'D3',
-        disabled: false,
-      },
-    ],
-  },
-];
-
 const Root = styled(Header)`
   padding-bottom: 2rem;
 `;
@@ -117,17 +22,14 @@ const SearchContainer = styled.div`
 interface Props {
   title: string;
   searchLabelTest: string;
-}
-
-interface Node {
-  label: string;
-  value: string;
+  data: TreeNode[];
+  onChange?: (val: TreeNode) => void;
 }
 
 const HeaderWithSearch = (props: Props) => {
-  const {title, searchLabelTest} = props;
+  const {title, searchLabelTest, data} = props;
 
-  const [selectedValue, setSelectedValue] = useState<Node | undefined>(undefined);
+  const [selectedValue, setSelectedValue] = useState<TreeNode | undefined>(undefined);
 
   useEffect(() => {
     const keydownListener = (e: KeyboardEvent) => {
@@ -143,6 +45,9 @@ const HeaderWithSearch = (props: Props) => {
   const onChange = (currentNode: TreeNode, selectedNodes: TreeNode[]) => {
     if (selectedNodes.length) {
       setSelectedValue(currentNode);
+      if (props.onChange) {
+        props.onChange(currentNode);
+      }
     }
     const activeInput = document.activeElement as HTMLElement;
     if (activeInput) {
@@ -167,7 +72,7 @@ const HeaderWithSearch = (props: Props) => {
         <DropdownTreeSelect
           searchPredicate={searchPredicate}
           className={'multi-tier-dropdown ' + selectedClass}
-          data={testData}
+          data={data}
           onChange={onChange}
           mode={'radioSelect'}
           keepTreeOnSearch={true}
