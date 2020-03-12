@@ -14,6 +14,7 @@ import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock from '../../components/text/TextBlock';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
+import InlineToggle from '../../components/text/InlineToggle';
 import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
@@ -25,6 +26,20 @@ const colorScheme = {
 };
 
 
+const testCountryListData: TreeNode[] = [
+  {
+    label: 'Europe',
+    value: 'Europe',
+  },
+  {
+    label: 'Asia',
+    value: 'Asia',
+  },
+  {
+    label: 'North America',
+    value: 'North America',
+  },
+];
 const testSearchBarData: TreeNode[] = [
   {
     label: 'Agriculture',
@@ -222,6 +237,17 @@ const barChartOverlayData: BarChartDatum[] = [
   },
 ];
 
+const getBarChartOverlayData: (id: string) => BarChartDatum[] = (id) => {
+  if (id === 'Europe') {
+    return barChartOverlayData;
+  } else if (id === 'Asia') {
+    const newData = barChartOverlayData.map(d => ({...d, y: d.y + 1}));
+    return newData;
+  } else {
+    return barChartOverlayData.map(d => ({...d, y: d.y - 1}));
+  }
+};
+
 const links: NavItem[] = [
   {label: 'Overview', target: '#overview'},
   {label: 'Potential', target: '#potential'},
@@ -234,6 +260,7 @@ const AlbaniaTool = () => {
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
   const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
+  const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
 
   const industryName = selectedIndustry && selectedIndustry.label ? selectedIndustry.label : 'No Industry Selected';
 
@@ -247,7 +274,7 @@ const AlbaniaTool = () => {
       </Helmet>
       <HeaderWithSearch
         title={'Albania Complexity Analysis'}
-        searchLabelTest={'Please Select an Industry'}
+        searchLabelText={'Please Select an Industry'}
         data={testSearchBarData}
         onChange={setSelectedIndustry}
       />
@@ -282,10 +309,10 @@ const AlbaniaTool = () => {
         <TwoColumnSection columnDefs={'2.5fr 3fr'}>
           <SectionHeader>Identifying Companies</SectionHeader>
           <DataViz
-            id={'albania-company-bar-chart'}
+            id={'albania-company-bar-chart' + selectedCountry.value}
             vizType={VizType.BarChart}
             data={barChartData}
-            overlayData={barChartOverlayData}
+            overlayData={getBarChartOverlayData(selectedCountry.value)}
             axisLabels={{left: 'Y Axis Label'}}
           />
           <InlineTwoColumnSection>
@@ -325,7 +352,15 @@ const AlbaniaTool = () => {
               </ol>
             </div>
             <div>
-              <HeaderWithLegend legendColor={colorScheme.primary}>Top Global FDI in Europe</HeaderWithLegend>
+              <HeaderWithLegend legendColor={colorScheme.primary}>
+                <div>
+                  Top Global FDI in <InlineToggle
+                      data={testCountryListData}
+                      colorClassName={'albania-orange'}
+                      onChange={setSelectedCountry}
+                    />
+                </div>
+              </HeaderWithLegend>
               <ol>
                 <li>Planet Food World (PFWC)
                   <br /><Light>Suadi Arabia</Light>

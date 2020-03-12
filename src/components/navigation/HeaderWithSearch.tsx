@@ -21,13 +21,13 @@ const SearchContainer = styled.div`
 
 interface Props {
   title: string;
-  searchLabelTest: string;
+  searchLabelText: string;
   data: TreeNode[];
   onChange?: (val: TreeNode) => void;
 }
 
 const HeaderWithSearch = (props: Props) => {
-  const {title, searchLabelTest, data} = props;
+  const {title, searchLabelText, data} = props;
 
   const [selectedValue, setSelectedValue] = useState<TreeNode | undefined>(undefined);
 
@@ -68,7 +68,7 @@ const HeaderWithSearch = (props: Props) => {
     <Root>
       <StandardH1>{title}</StandardH1>
       <SearchContainer>
-        <Label>{searchLabelTest}</Label>
+        <Label>{searchLabelText}</Label>
         <DropdownTreeSelect
           searchPredicate={searchPredicate}
           className={'multi-tier-dropdown ' + selectedClass}
