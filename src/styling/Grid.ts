@@ -39,10 +39,10 @@ export const Root = styled.div`
     [${gridLines.footerBottom} ${gridLines.pageBottom}];
 
   grid-template-columns:
-    [${gridLines.pageLeft} ${gridLines.pageMarginLeft}] 1fr
+    [${gridLines.pageLeft} ${gridLines.pageMarginLeft}] minmax(1rem, 1fr)
     [${gridLines.contentStart}] minmax(auto, 900px)
     [${gridLines.contentEnd} ${gridLines.navStart}]  minmax(auto, 180px)
-    [${gridLines.navEnd} ${gridLines.pageMarginRight}] 1fr
+    [${gridLines.navEnd} ${gridLines.pageMarginRight}] minmax(1rem, 1fr)
     [${gridLines.pageRight}];
 `;
 
@@ -71,8 +71,8 @@ export const NavContainer = styled.nav`
   position: relative;
 
   @media (max-width: ${gridSmallMediaWidth}px) {
-    grid-row: ${gridLines.mobileMenuTop} / ${gridLines.mobileMenuTop};
-    grid-column: ${gridLines.contentStart} / ${gridLines.navEnd};
+    grid-row: ${gridLines.mobileMenuTop} / ${gridLines.mobileMenuBottom};
+    grid-column: ${gridLines.pageLeft} / ${gridLines.pageRight};
     position: sticky;
     top: 0;
   }

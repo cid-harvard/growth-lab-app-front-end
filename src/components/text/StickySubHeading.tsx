@@ -20,6 +20,7 @@ const StickyH2 = styled.h2`
   @media(max-width: ${gridSmallMediaWidth}px) {
     top: ${mobileHeight}px;
     text-align: center;
+    border-top: none;
   }
 `;
 
@@ -42,6 +43,6 @@ const StickySubHeading = (props: Props) => {
       </HighlightBackground>
     </StickyH2>
   );
-}
+};
 
 export default StickySubHeading;

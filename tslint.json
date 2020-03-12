@@ -24,7 +24,8 @@
     "class-name": false,
     "no-namespace": [true, "allow-declarations"],
     "await-promise": true,
-    "interface-name": false
+    "interface-name": false,
+    "max-line-length" : false
   },
   "rulesDirectory": [],
   "linterOptions": {

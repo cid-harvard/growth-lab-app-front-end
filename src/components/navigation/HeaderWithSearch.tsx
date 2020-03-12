@@ -43,6 +43,6 @@ const HeaderWithSearch = (props: Props) => {
       </SearchContainer>
     </Root>
   );
-}
+};
 
 export default HeaderWithSearch;

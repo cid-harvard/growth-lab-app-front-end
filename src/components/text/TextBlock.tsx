@@ -15,6 +15,6 @@ const TextBlock = ({children}: Props) => {
       {children}
     </Root>
   );
-}
+};
 
 export default TextBlock;

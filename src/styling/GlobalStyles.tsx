@@ -21,6 +21,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: ${primaryFont};
     color: ${baseColor};
+    margin: 0;
+    padding: 0;
   }
 
   h1 {
@@ -60,7 +62,15 @@ const GlobalStyles = createGlobalStyle`
         border: 0;
         padding: 0;
     }
+  }
 
+  ol {
+    padding-left: 1rem;
+
+    li {
+      margin-bottom: 0.6rem;
+      font-size: 0.9rem;
+    }
   }
 `;
 

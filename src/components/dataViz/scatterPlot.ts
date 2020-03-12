@@ -32,14 +32,14 @@ export default (input: Input) => {
 
   // append the svg object to the body of the page
   svg
-    .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom);
+    .append('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom);
 
   const container = svg
-    .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+    .append('g')
+      .attr('transform',
+            'translate(' + margin.left + ',' + margin.top + ')');
 
   const allXValues = data.map(({x}) => x);
   const allYValues = data.map(({y}) => y);
@@ -64,15 +64,15 @@ export default (input: Input) => {
     .domain([minX, maxX])
     .range([ 0, width ]);
 
-  container.append("g")
-    .attr("transform", "translate(0," + height + ")")
+  container.append('g')
+    .attr('transform', 'translate(0,' + height + ')')
     .call(d3.axisBottom(xScale));
 
   // Add Y axis
   const yScale = d3.scaleLinear()
     .domain([minY, maxY])
     .range([ height, 0]);
-  container.append("g")
+  container.append('g')
     .call(d3.axisLeft(yScale));
 
   // gridlines in x axis function
@@ -82,42 +82,42 @@ export default (input: Input) => {
   const makeGridlinesY: any = () => d3.axisLeft(yScale).ticks(5);
 
   // add the X gridlines
-  container.append("g")      
-      .attr("class", "grid")
-      .attr("transform", "translate(0," + height + ")")
+  container.append('g')
+      .attr('class', 'grid')
+      .attr('transform', 'translate(0,' + height + ')')
       .style('opacity', '0.25')
       .style('stroke-dasharray', '3 1')
       .call(makeGridlinesX()
           .tickSize(-height)
-          .tickFormat('')
-      )
+          .tickFormat(''),
+      );
 
   // add the Y gridlines
-  container.append("g")      
-      .attr("class", "grid")
+  container.append('g')
+      .attr('class', 'grid')
       .style('opacity', '0.25')
       .style('stroke-dasharray', '3 1')
       .call(makeGridlinesY()
           .tickSize(-width)
-          .tickFormat('')
-      )
+          .tickFormat(''),
+      );
 
   // Add dots
   container.append('g')
-    .selectAll("dot")
+    .selectAll('dot')
     .data(data)
     .enter()
-    .append("circle")
-      .attr("cx", ({x}) => xScale(x))
-      .attr("cy", ({y}) => yScale(y))
-      .attr("r", ({radius}) => radius ? radius : 4)
-      .style("fill", ({fill}) => fill ? fill : "#69b3a2")
+    .append('circle')
+      .attr('cx', ({x}) => xScale(x))
+      .attr('cy', ({y}) => yScale(y))
+      .attr('r', ({radius}) => radius ? radius : 4)
+      .style('fill', ({fill}) => fill ? fill : '#69b3a2')
       .on('mousemove', ({label, tooltipContent}) => {
         const content = tooltipContent === undefined || tooltipContent.length === 0
-          ? '' : `<br />${tooltipContent}`;
+          ? '' : `:<br />${tooltipContent}`;
         tooltip
           .style('display', 'block');
-        tooltip.html(`<strong>${label}:</strong>${content}`)
+        tooltip.html(`<strong>${label}</strong>${content}`)
           .style('left', (d3.event.pageX + 4) + 'px')
           .style('top', (d3.event.pageY - 4) + 'px');
         })
@@ -129,18 +129,18 @@ export default (input: Input) => {
   // append X axis label
   svg
     .append('text')
-    .attr("transform", `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
-      .style("text-anchor", "middle")
+    .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
+      .style('text-anchor', 'middle')
       .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
 
   // append Y axis label
   svg
     .append('text')
-    .attr("transform", "rotate(-90)")
-      .attr("y", margin.right / 2)
-      .attr("x", 0 - (height / 2 + margin.top))
-      .attr("dy", "0.75em")
-      .style("text-anchor", "middle")
+    .attr('transform', 'rotate(-90)')
+      .attr('y', margin.right / 2)
+      .attr('x', 0 - (height / 2 + margin.top))
+      .attr('dy', '0.75em')
+      .style('text-anchor', 'middle')
       .text(axisLabels && axisLabels.left ? axisLabels.left : '');
 
 };

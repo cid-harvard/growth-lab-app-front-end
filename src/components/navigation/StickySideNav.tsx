@@ -158,7 +158,7 @@ const StickySideNav = (props: Props) => {
   };
   const navLinks = links.map(({label, target}) => {
     return (
-      <li>
+      <li key={label + target}>
         <Link
           href={target}
           style={colorTheme}
@@ -166,7 +166,7 @@ const StickySideNav = (props: Props) => {
           {label}
         </Link>
       </li>
-    )
+    );
   });
 
   if (windowWidth > gridSmallMediaWidth) {
@@ -202,6 +202,6 @@ const StickySideNav = (props: Props) => {
       </NavContainer>
     );
   }
-}
+};
 
 export default StickySideNav;

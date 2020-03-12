@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
+import createBarChart, {Datum as BarChartDatum} from './barChart';
 
 const Root = styled.div`
   height: 450px;
@@ -31,6 +32,7 @@ const Tooltip = styled.div`
 
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
+  BarChart = 'BarChart',
 }
 
 interface BaseProps {
@@ -42,6 +44,12 @@ type Props = BaseProps & (
   {
     vizType: VizType.ScatterPlot;
     data: ScatterPlotDatum[];
+    axisLabels?: {left?: string, bottom?: string};
+  } |
+  {
+    vizType: VizType.BarChart;
+    data: BarChartDatum[];
+    overlayData?: BarChartDatum[];
     axisLabels?: {left?: string, bottom?: string};
   }
 );
@@ -65,6 +73,14 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
+        });
+      } else if (props.vizType === VizType.BarChart) {
+        createBarChart({
+          svg, tooltip, data: props.data, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+          axisLabels: props.axisLabels,
+          overlayData: props.overlayData,
         });
       }
     }
