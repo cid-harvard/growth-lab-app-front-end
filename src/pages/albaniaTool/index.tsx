@@ -7,257 +7,33 @@ import {
   HeaderWithLegend,
   lightBorderColor,
   InlineTwoColumnSection,
+  SubSectionHeader,
+  ParagraphHeader,
+  SmallParagraph,
+  SmallOrderedList,
+  NarrowPaddedColumn,
+  LargeParagraph,
 } from '../../styling/styleUtils';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import DataViz, {VizType} from '../../components/dataViz';
-import TextBlock from '../../components/text/TextBlock';
-import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
-import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
-import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
+import TextBlock, {Alignment} from '../../components/text/TextBlock';
 import InlineToggle from '../../components/text/InlineToggle';
 import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
-
-const colorScheme = {
-  primary: '#F1A189',
-  secondary: '#F8CCBF',
-  tertiary: '#FCEEEB',
-};
-
-
-const testCountryListData: TreeNode[] = [
-  {
-    label: 'Europe',
-    value: 'Europe',
-  },
-  {
-    label: 'Asia',
-    value: 'Asia',
-  },
-  {
-    label: 'North America',
-    value: 'North America',
-  },
-];
-const testSearchBarData: TreeNode[] = [
-  {
-    label: 'Agriculture',
-    value: 'A',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Corn',
-        value: 'A1',
-        disabled: false,
-      },
-      {
-        label: 'Potatoes',
-        value: 'A2',
-        disabled: false,
-      },
-      {
-        label: 'Lettuce',
-        value: 'A3',
-        disabled: false,
-      },
-    ],
-  },
-  {
-    label: 'Technology',
-    value: 'B',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Computers',
-        value: 'B1',
-        disabled: false,
-      },
-      {
-        label: 'Cars',
-        value: 'B2',
-        disabled: false,
-      },
-      {
-        label: 'Phones',
-        value: 'B3',
-        disabled: false,
-      },
-    ],
-  },
-  {
-    label: 'Minerals',
-    value: 'C',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Gold',
-        value: 'C1',
-        disabled: false,
-      },
-      {
-        label: 'Diamonds',
-        value: 'C2',
-        disabled: false,
-      },
-      {
-        label: 'Coal',
-        value: 'C3',
-        disabled: false,
-      },
-    ],
-  },
-  {
-    label: 'Services',
-    value: 'D',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      {
-        label: 'Tourism',
-        value: 'D1',
-        disabled: false,
-      },
-      {
-        label: 'Consulting',
-        value: 'D2',
-        disabled: false,
-      },
-      {
-        label: 'Other',
-        value: 'D3',
-        disabled: false,
-      },
-    ],
-  },
-];
-
-const scatterPlotData: ScatterPlotDatum[] = [
-  {
-    label: 'Boston',
-    x: 7,
-    y: 4,
-    tooltipContent: 'Tooltip Content',
-    fill: 'red',
-  },
-  {
-    label: 'Cambridge',
-    x: 5,
-    y: 8,
-    tooltipContent: 'Tooltip Content about Cambridge MA where we work right now test long content length',
-    radius: 10,
-  },
-  {
-    label: 'Somerville',
-    x: 2,
-    y: 11,
-    tooltipContent: 'Tooltip Content',
-    fill: 'blue',
-    radius: 5,
-  },
-  {
-    label: 'Acton',
-    x: 6,
-    y: 3,
-    tooltipContent: 'Tooltip Content',
-  },
-  {
-    label: 'Stow',
-    x: 10,
-    y: 4,
-    tooltipContent: 'Tooltip Content',
-    radius: 6,
-  },
-];
-
-const spiderPlotTestData2: RadarChartDatum[][] = [
-  [
-    {label: 'Value 1', value: 70},
-    {label: 'Value 2', value: 40},
-    {label: 'Value 3', value: 50},
-    {label: 'Value 4', value: 90},
-    {label: 'Value 5', value: 20},
-  ],
-];
-
-const barChartData: BarChartDatum[] = [
-  {
-    x: 'Boston',
-    y: 4,
-    tooltipContent: 'Tooltip Content',
-    fill: lightBorderColor,
-  },
-  {
-    x: 'Cambridge',
-    y: 8,
-    tooltipContent: 'Tooltip Content about Cambridge MA where we work right now test long content length',
-    fill: lightBorderColor,
-  },
-  {
-    x: 'Somerville',
-    y: 11,
-    tooltipContent: 'Tooltip Content',
-    fill: lightBorderColor,
-  },
-  {
-    x: 'Acton',
-    y: 3,
-    tooltipContent: 'Tooltip Content',
-    fill: lightBorderColor,
-  },
-  {
-    x: 'Stow',
-    y: 4,
-    fill: lightBorderColor,
-  },
-];
-
-const barChartOverlayData: BarChartDatum[] = [
-  {
-    x: 'Boston',
-    y: 2,
-    tooltipContent: 'Tooltip Content',
-    fill: colorScheme.primary,
-  },
-  {
-    x: 'Cambridge',
-    y: 4,
-    tooltipContent: 'Tooltip Content about Cambridge MA where we work right now test long content length',
-    fill: colorScheme.primary,
-  },
-  {
-    x: 'Somerville',
-    y: 7,
-    tooltipContent: 'Tooltip Content',
-    fill: colorScheme.primary,
-  },
-  {
-    x: 'Acton',
-    y: 1,
-    tooltipContent: 'Tooltip Content',
-    fill: colorScheme.primary,
-  },
-  {
-    x: 'Stow',
-    y: 3,
-    fill: colorScheme.primary,
-  },
-];
-
-const getBarChartOverlayData: (id: string) => BarChartDatum[] = (id) => {
-  if (id === 'Europe') {
-    return barChartOverlayData;
-  } else if (id === 'Asia') {
-    const newData = barChartOverlayData.map(d => ({...d, y: d.y + 1}));
-    return newData;
-  } else {
-    return barChartOverlayData.map(d => ({...d, y: d.y - 1}));
-  }
-};
+import {
+  testCountryListData,
+  testSearchBarData,
+  scatterPlotData,
+  spiderPlotTestData2,
+  spiderPlotTestData3,
+  barChartData,
+  getBarChartOverlayData,
+  colorScheme,
+  barChartOverlayData2,
+} from './testData';
+import Legend from '../../components/dataViz/Legend';
 
 const links: NavItem[] = [
   {label: 'Overview', target: '#overview'},
@@ -326,12 +102,62 @@ const AlbaniaTool = () => {
             maxValue={100}
           />
           <TextBlock>
-            <p>
+            <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>RCA in Albania</ParagraphHeader>
+            <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>RCA in Peers</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>Water Intensity</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>Electricity Intensity</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>Availability of Inputs</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
-        <TwoColumnSection columnDefs={'2.5fr 3fr'}>
+        <TwoColumnSection>
+          <DataViz
+            id={'albania-spyder-chart-3'}
+            vizType={VizType.RadarChart}
+            data={spiderPlotTestData3}
+            color={{start: colorScheme.primary, end: colorScheme.primary}}
+            maxValue={100}
+          />
+          <TextBlock>
+            <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>RCA in Albania</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>RCA in Peers</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>Water Intensity</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>Electricity Intensity</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+            <ParagraphHeader color={colorScheme.quaternary}>Availability of Inputs</ParagraphHeader>
+            <SmallParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </SmallParagraph>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
           <SectionHeader>Identifying Companies</SectionHeader>
           <DataViz
             id={'albania-company-bar-chart' + selectedCountry.value}
@@ -341,9 +167,9 @@ const AlbaniaTool = () => {
             axisLabels={{left: 'Y Axis Label'}}
           />
           <InlineTwoColumnSection>
-            <div>
+            <NarrowPaddedColumn>
               <HeaderWithLegend legendColor={lightBorderColor}>Top Global FDI Companies</HeaderWithLegend>
-              <ol>
+              <SmallOrderedList>
                 <li>Planet Food World (PFWC)
                   <br /><Light>Suadi Arabia</Light>
                 </li>
@@ -374,9 +200,9 @@ const AlbaniaTool = () => {
                 <li>Rijk Zwaan
                   <br /><Light>Netherlands</Light>
                 </li>
-              </ol>
-            </div>
-            <div>
+              </SmallOrderedList>
+            </NarrowPaddedColumn>
+            <NarrowPaddedColumn>
               <HeaderWithLegend legendColor={colorScheme.primary}>
                 <div>
                   Top Global FDI in <InlineToggle
@@ -386,7 +212,7 @@ const AlbaniaTool = () => {
                     />
                 </div>
               </HeaderWithLegend>
-              <ol>
+              <SmallOrderedList>
                 <li>Planet Food World (PFWC)
                   <br /><Light>Suadi Arabia</Light>
                 </li>
@@ -417,9 +243,30 @@ const AlbaniaTool = () => {
                 <li>Rijk Zwaan
                   <br /><Light>Netherlands</Light>
                 </li>
-              </ol>
-            </div>
+              </SmallOrderedList>
+            </NarrowPaddedColumn>
           </InlineTwoColumnSection>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeader>Industry Now</SectionHeader>
+          <DataViz
+            id={'albania-company-bar-chart-2'}
+            vizType={VizType.BarChart}
+            data={barChartData}
+            overlayData={barChartOverlayData2}
+            axisLabels={{left: 'Y Axis Label'}}
+          />
+          <TextBlock align={Alignment.Center}>
+            <LargeParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </LargeParagraph>
+            <Legend
+              legendList={[
+                {label: 'Industry', fill: lightBorderColor, stroke: undefined},
+                {label: 'Country', fill: undefined, stroke: colorScheme.quaternary},
+              ]}
+            />
+          </TextBlock>
         </TwoColumnSection>
       </Content>
       <StickySideNav

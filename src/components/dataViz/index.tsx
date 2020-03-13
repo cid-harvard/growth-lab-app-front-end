@@ -10,6 +10,7 @@ import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 const Root = styled.div`
   height: 450px;
   width: 100%;
+  margin: auto;
 
   svg {
     width: 100%;
@@ -94,10 +95,18 @@ const DataViz = (props: Props) => {
           overlayData: props.overlayData,
         });
       } else if (props.vizType === VizType.RadarChart) {
+        let width: number;
+        let height: number;
+        if (sizingNode.clientWidth > sizingNode.clientHeight) {
+          width = sizingNode.clientHeight;
+          height = sizingNode.clientHeight;
+        } else {
+          width = sizingNode.clientWidth;
+          height = sizingNode.clientWidth;
+        }
         createRadarChart({
           svg, tooltip, data: props.data, options: {
-            width: sizingNode.clientWidth,
-            height: sizingNode.clientHeight,
+            width, height,
             color: scaleOrdinal().range([props.color.start, props.color.end]),
             maxValue: props.maxValue,
           },

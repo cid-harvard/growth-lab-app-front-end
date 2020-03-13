@@ -61,6 +61,8 @@ export const TwoColumnSectionBase = styled.div<TwoColumnSectionProps>`
 `;
 
 export const TwoColumnSection = styled(TwoColumnSectionBase)`
+  margin-bottom: 2rem;
+
   @media (max-width: 850px) {
     grid-template-columns: auto;
     grid-template-rows: auto auto auto;
@@ -95,5 +97,55 @@ export const SectionHeader = styled.h3`
     border-top: 2px solid ${lightBorderColor};
     flex-grow: 1;
     margin-left: 1.25rem;
+  }
+`;
+
+interface TitleColorProps {
+  color?: string;
+}
+
+export const SubSectionHeader = styled.h4<TitleColorProps>`
+  margin-top: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: ${({color}) => color ? color : baseColor};
+`;
+
+export const ParagraphHeader = styled.h5<TitleColorProps>`
+  font-family: ${secondaryFont};
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  margin: 0 0 0.5rem;
+  color: ${({color}) => color ? color : baseColor};
+
+  &:after {
+    content: '';
+    display: block;
+    height: 0;
+    border-top: 2px solid ${lightBorderColor};
+    flex-grow: 1;
+    margin-left: 1rem;
+  }
+`;
+
+export const NarrowPaddedColumn = styled.div`
+  padding: 0 0.5rem;
+`;
+
+export const LargeParagraph = styled.p`
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+`;
+
+export const SmallParagraph = styled.p`
+  font-size: 0.8rem;
+`;
+
+export const SmallOrderedList = styled.ol`
+  li {
+    font-size: 0.8rem;
   }
 `;

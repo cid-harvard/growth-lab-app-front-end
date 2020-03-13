@@ -5,13 +5,28 @@ const Root = styled.div`
   padding: 1rem;
 `;
 
-interface Props {
-  children: React.ReactNode;
+export enum Alignment {
+  Top = 'top',
+  Bottom = 'bottom',
+  Center = 'center',
 }
 
-const TextBlock = ({children}: Props) => {
+interface Props {
+  children: React.ReactNode;
+  align?: Alignment;
+}
+
+const TextBlock = ({children, align}: Props) => {
+  let style: React.CSSProperties | undefined;
+  if (align === Alignment.Center) {
+    style = {margin: 'auto'};
+  } else if (align === Alignment.Bottom) {
+    style = {marginTop: 'auto'};
+  } else {
+    style = undefined;
+  }
   return (
-    <Root>
+    <Root style={style}>
       {children}
     </Root>
   );
