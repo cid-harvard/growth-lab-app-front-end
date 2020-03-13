@@ -178,6 +178,7 @@ const StickySideNav = (props: Props) => {
       </NavContainer>
     );
   } else {
+    const menuButtonText = mobileMenuOpen === false ? 'Menu' : 'Close';
     const mobileMenu = mobileMenuOpen === false ? null : (
       <Ul
         onClick={() => setMobileMenuOpen(false)}
@@ -196,7 +197,7 @@ const StickySideNav = (props: Props) => {
             <CenterBar className={mobileMenuOpen ? 'close__menu' : undefined} />
             <Bar style={{opacity: mobileMenuOpen ? 0 : undefined}} />
           </Icon>
-          Menu
+          {menuButtonText}
         </MobileMenuButton>
         {mobileMenu}
       </NavContainer>
