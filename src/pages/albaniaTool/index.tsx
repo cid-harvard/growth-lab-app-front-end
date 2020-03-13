@@ -14,6 +14,7 @@ import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock from '../../components/text/TextBlock';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
+import { Datum as RadarChartDatum } from '../../components/dataViz/radarChartUtil';
 import InlineToggle from '../../components/text/InlineToggle';
 import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
 import Helmet from 'react-helmet';
@@ -194,6 +195,15 @@ const spiderPlotTestData1: SpiderSet[] = [
     },
   },
 ];
+const spiderPlotTestData2: Array<RadarChartDatum[]> = [
+  [
+    {label: 'Value 1', value: 70},
+    {label: 'Value 2', value: 40},
+    {label: 'Value 3', value: 50},
+    {label: 'Value 4', value: 90},
+    {label: 'Value 5', value: 20},
+  ],
+];
 
 const barChartData: BarChartDatum[] = [
   {
@@ -336,6 +346,20 @@ const AlbaniaTool = () => {
             variables={spiderPlotTestVariables1}
             sets={spiderPlotTestData1}
             fill={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </p>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <DataViz
+            id={'albania-spyder-chart-2'}
+            vizType={VizType.RadarChart}
+            data={spiderPlotTestData2}
+            color={{start: colorScheme.primary, end: colorScheme.primary}}
+            maxValue={100}
           />
           <TextBlock>
             <p>

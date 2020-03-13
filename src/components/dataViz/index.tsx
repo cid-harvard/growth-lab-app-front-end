@@ -1,4 +1,5 @@
 import { select } from 'd3-selection';
+import { scaleOrdinal } from 'd3-scale';
 import React, {useContext, useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import { AppContext } from '../../App';
@@ -8,6 +9,8 @@ import SpiderChart, {
   Variable as SpiderVariables,
   Set as SpiderSet,
 } from './SpiderChart';
+import createRadarChart, {Datum as RadarChartDatum} from './radarChartUtil';
+
 
 const Root = styled.div`
   height: 450px;
@@ -38,6 +41,7 @@ export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
   SpiderChart = 'SpiderChart',
+  RadarChart = 'RadarChart',
 }
 
 interface BaseProps {
@@ -63,6 +67,12 @@ type Props = BaseProps & (
     variables: SpiderVariables[];
     sets: SpiderSet[];
     fill: string;
+  } |
+  {
+    vizType: VizType.RadarChart;
+    data: Array<RadarChartDatum[]>;
+    color: {start: string, end: string};
+    maxValue: number;
   }
 );
 
@@ -93,6 +103,15 @@ const DataViz = (props: Props) => {
           },
           axisLabels: props.axisLabels,
           overlayData: props.overlayData,
+        });
+      } else if (props.vizType === VizType.RadarChart) {
+        createRadarChart.draw({
+          svg, tooltip, data: props.data, options: {
+            width: sizingNode.clientWidth,
+            height: sizingNode.clientHeight,
+            color: scaleOrdinal().range([props.color.start, props.color.end]),
+            maxValue: props.maxValue,
+          }
         });
       }
     }

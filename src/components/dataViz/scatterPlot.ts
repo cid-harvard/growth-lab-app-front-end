@@ -32,7 +32,6 @@ export default (input: Input) => {
 
   // append the svg object to the body of the page
   svg
-    .append('svg')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom);
 
