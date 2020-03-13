@@ -306,6 +306,17 @@ const AlbaniaTool = () => {
             </p>
           </TextBlock>
         </TwoColumnSection>
+        <TwoColumnSection>
+          <DataViz
+            id={'albania-spyder-chart-1'}
+            vizType={VizType.SpyderChart}
+          />
+          <TextBlock>
+            <p>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </p>
+          </TextBlock>
+        </TwoColumnSection>
         <TwoColumnSection columnDefs={'2.5fr 3fr'}>
           <SectionHeader>Identifying Companies</SectionHeader>
           <DataViz

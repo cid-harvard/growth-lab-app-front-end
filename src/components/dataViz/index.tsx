@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
+import SpyderChart from './SpyderChart';
 
 const Root = styled.div`
   height: 450px;
@@ -33,6 +34,7 @@ const Tooltip = styled.div`
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
+  SpyderChart = 'SpyderChart',
 }
 
 interface BaseProps {
@@ -51,6 +53,10 @@ type Props = BaseProps & (
     data: BarChartDatum[];
     overlayData?: BarChartDatum[];
     axisLabels?: {left?: string, bottom?: string};
+  } |
+  {
+    vizType: VizType.SpyderChart;
+    // data: BarChartDatum[];
   }
 );
 
@@ -86,9 +92,20 @@ const DataViz = (props: Props) => {
     }
   }, [svgNodeRef, sizingNodeRef, windowWidth, props]);
 
+  let vizOutput: React.ReactElement<any>
+  if (props.vizType === VizType.SpyderChart) {
+    vizOutput = (
+      <SpyderChart />
+    );
+  } else {
+    vizOutput = (
+      <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
+    );
+  }
+
   return (
     <Root ref={sizingNodeRef}>
-      <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
+      {vizOutput}
       <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
     </Root>
   );
