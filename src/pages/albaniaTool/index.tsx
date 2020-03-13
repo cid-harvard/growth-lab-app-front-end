@@ -18,6 +18,7 @@ import InlineToggle from '../../components/text/InlineToggle';
 import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
+import { Variable as SpiderVariable, Set as SpiderSet } from '../../components/dataViz/SpiderChart';
 
 const colorScheme = {
   primary: '#F1A189',
@@ -173,6 +174,27 @@ const scatterPlotData: ScatterPlotDatum[] = [
   },
 ];
 
+const spiderPlotTestVariables1: SpiderVariable[] = [
+  {key: 'resilience', label: 'Resilience'},
+  {key: 'strength', label: 'Strength'},
+  {key: 'adaptability', label: 'Adaptability'},
+  {key: 'creativity', label: 'Creativity'},
+  {key: 'openness', label: 'Open to Change'},
+];
+const spiderPlotTestData1: SpiderSet[] = [
+  {
+    key: 'me',
+    label: 'My Scores',
+    values: {
+      resilience: 7,
+      strength: 9,
+      adaptability: 6,
+      creativity: 3,
+      openness: 8,
+    },
+  },
+];
+
 const barChartData: BarChartDatum[] = [
   {
     x: 'Boston',
@@ -309,7 +331,11 @@ const AlbaniaTool = () => {
         <TwoColumnSection>
           <DataViz
             id={'albania-spyder-chart-1'}
-            vizType={VizType.SpyderChart}
+            vizType={VizType.SpiderChart}
+            maxValue={10}
+            variables={spiderPlotTestVariables1}
+            sets={spiderPlotTestData1}
+            fill={colorScheme.primary}
           />
           <TextBlock>
             <p>

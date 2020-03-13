@@ -4,7 +4,10 @@ import styled from 'styled-components';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
-import SpyderChart from './SpyderChart';
+import SpiderChart, {
+  Variable as SpiderVariables,
+  Set as SpiderSet,
+} from './SpiderChart';
 
 const Root = styled.div`
   height: 450px;
@@ -34,7 +37,7 @@ const Tooltip = styled.div`
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
-  SpyderChart = 'SpyderChart',
+  SpiderChart = 'SpiderChart',
 }
 
 interface BaseProps {
@@ -55,8 +58,11 @@ type Props = BaseProps & (
     axisLabels?: {left?: string, bottom?: string};
   } |
   {
-    vizType: VizType.SpyderChart;
-    // data: BarChartDatum[];
+    vizType: VizType.SpiderChart;
+    maxValue: number;
+    variables: SpiderVariables[];
+    sets: SpiderSet[];
+    fill: string;
   }
 );
 
@@ -92,10 +98,27 @@ const DataViz = (props: Props) => {
     }
   }, [svgNodeRef, sizingNodeRef, windowWidth, props]);
 
-  let vizOutput: React.ReactElement<any>
-  if (props.vizType === VizType.SpyderChart) {
+  let vizOutput: React.ReactElement<any>;
+  if (props.vizType === VizType.SpiderChart) {
+    const StyleContainer = styled.div`
+      svg {
+        path {
+          fill: ${props.fill};
+          stroke: ${props.fill};
+          ~ circle {
+            fill: ${props.fill};
+            stroke: ${props.fill};
+          }
+        }
+      }
+    `;
     vizOutput = (
-      <SpyderChart />
+      <SpiderChart
+        maxValue={props.maxValue}
+        variables={props.variables}
+        sets={props.sets}
+        StyleContainer={StyleContainer}
+      />
     );
   } else {
     vizOutput = (
