@@ -14,12 +14,11 @@ import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock from '../../components/text/TextBlock';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
-import { Datum as RadarChartDatum } from '../../components/dataViz/radarChartUtil';
+import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
 import InlineToggle from '../../components/text/InlineToggle';
 import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
-import { Variable as SpiderVariable, Set as SpiderSet } from '../../components/dataViz/SpiderChart';
 
 const colorScheme = {
   primary: '#F1A189',
@@ -175,27 +174,7 @@ const scatterPlotData: ScatterPlotDatum[] = [
   },
 ];
 
-const spiderPlotTestVariables1: SpiderVariable[] = [
-  {key: 'resilience', label: 'Resilience'},
-  {key: 'strength', label: 'Strength'},
-  {key: 'adaptability', label: 'Adaptability'},
-  {key: 'creativity', label: 'Creativity'},
-  {key: 'openness', label: 'Open to Change'},
-];
-const spiderPlotTestData1: SpiderSet[] = [
-  {
-    key: 'me',
-    label: 'My Scores',
-    values: {
-      resilience: 7,
-      strength: 9,
-      adaptability: 6,
-      creativity: 3,
-      openness: 8,
-    },
-  },
-];
-const spiderPlotTestData2: Array<RadarChartDatum[]> = [
+const spiderPlotTestData2: RadarChartDatum[][] = [
   [
     {label: 'Value 1', value: 70},
     {label: 'Value 2', value: 40},
@@ -333,21 +312,6 @@ const AlbaniaTool = () => {
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
             </p>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <DataViz
-            id={'albania-spyder-chart-1'}
-            vizType={VizType.SpiderChart}
-            maxValue={10}
-            variables={spiderPlotTestVariables1}
-            sets={spiderPlotTestData1}
-            fill={colorScheme.primary}
-          />
-          <TextBlock>
             <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </p>

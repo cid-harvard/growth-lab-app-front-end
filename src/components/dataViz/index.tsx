@@ -5,12 +5,7 @@ import styled from 'styled-components';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
-import SpiderChart, {
-  Variable as SpiderVariables,
-  Set as SpiderSet,
-} from './SpiderChart';
-import createRadarChart, {Datum as RadarChartDatum} from './radarChartUtil';
-
+import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 
 const Root = styled.div`
   height: 450px;
@@ -40,7 +35,6 @@ const Tooltip = styled.div`
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
-  SpiderChart = 'SpiderChart',
   RadarChart = 'RadarChart',
 }
 
@@ -62,15 +56,8 @@ type Props = BaseProps & (
     axisLabels?: {left?: string, bottom?: string};
   } |
   {
-    vizType: VizType.SpiderChart;
-    maxValue: number;
-    variables: SpiderVariables[];
-    sets: SpiderSet[];
-    fill: string;
-  } |
-  {
     vizType: VizType.RadarChart;
-    data: Array<RadarChartDatum[]>;
+    data: RadarChartDatum[][];
     color: {start: string, end: string};
     maxValue: number;
   }
@@ -84,10 +71,12 @@ const DataViz = (props: Props) => {
   const { windowWidth } = useContext(AppContext);
 
   useEffect(() => {
+    let svgNode: HTMLDivElement | null = null;
     if (svgNodeRef && svgNodeRef.current && sizingNodeRef && sizingNodeRef.current &&
         tooltipNodeRef && tooltipNodeRef.current) {
       const sizingNode = sizingNodeRef.current;
-      const svg = select(svgNodeRef.current);
+      svgNode = svgNodeRef.current;
+      const svg = select(svgNode);
       const tooltip = select(tooltipNodeRef.current);
       if (props.vizType === VizType.ScatterPlot) {
         createScatterPlot({
@@ -105,49 +94,26 @@ const DataViz = (props: Props) => {
           overlayData: props.overlayData,
         });
       } else if (props.vizType === VizType.RadarChart) {
-        createRadarChart.draw({
+        createRadarChart({
           svg, tooltip, data: props.data, options: {
             width: sizingNode.clientWidth,
             height: sizingNode.clientHeight,
             color: scaleOrdinal().range([props.color.start, props.color.end]),
             maxValue: props.maxValue,
-          }
+          },
         });
       }
     }
-  }, [svgNodeRef, sizingNodeRef, windowWidth, props]);
-
-  let vizOutput: React.ReactElement<any>;
-  if (props.vizType === VizType.SpiderChart) {
-    const StyleContainer = styled.div`
-      svg {
-        path {
-          fill: ${props.fill};
-          stroke: ${props.fill};
-          ~ circle {
-            fill: ${props.fill};
-            stroke: ${props.fill};
-          }
-        }
+    return () => {
+      if (svgNode) {
+        svgNode.innerHTML = '';
       }
-    `;
-    vizOutput = (
-      <SpiderChart
-        maxValue={props.maxValue}
-        variables={props.variables}
-        sets={props.sets}
-        StyleContainer={StyleContainer}
-      />
-    );
-  } else {
-    vizOutput = (
-      <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
-    );
-  }
+    };
+  }, [svgNodeRef, sizingNodeRef, windowWidth, props]);
 
   return (
     <Root ref={sizingNodeRef}>
-      {vizOutput}
+      <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
       <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
     </Root>
   );
