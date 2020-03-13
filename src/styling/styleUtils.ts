@@ -79,16 +79,19 @@ export const InlineTwoColumnSection = styled(TwoColumnSectionBase)`
   }
 `;
 
-export const SectionHeader = styled.h3`
+const SectionHeaderBase = styled.h3`
   grid-row: 1;
   grid-column: 1 / -1;
   font-family: ${secondaryFont};
-  text-transform: uppercase;
   color: ${baseColor};
-  font-size: 1.4rem;
   letter-spacing: 1px;
+`;
+
+export const SectionHeader = styled(SectionHeaderBase)`
   display: flex;
   align-items: center;
+  font-size: 1.4rem;
+  text-transform: uppercase;
 
   &:after {
     content: '';
@@ -98,6 +101,10 @@ export const SectionHeader = styled.h3`
     flex-grow: 1;
     margin-left: 1.25rem;
   }
+`;
+
+export const SectionHeaderSecondary = styled(SectionHeaderBase)`
+  font-size: 1.2rem;
 `;
 
 interface TitleColorProps {

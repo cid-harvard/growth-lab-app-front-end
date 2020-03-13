@@ -1,6 +1,10 @@
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
 import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
+import {
+  Datum as DynamicTableDatum,
+  Column as DynamicTableColumn,
+} from '../../components/text/DynamicTable';
 import { TreeNode } from 'react-dropdown-tree-select';
 import { lightBorderColor } from '../../styling/styleUtils';
 
@@ -258,34 +262,48 @@ export const barChartOverlayData2: BarChartDatum[] = [
     x: 'Boston',
     y: 8,
     tooltipContent: 'Tooltip Content',
-    fill: 'none',
+    fill: 'rgba(0, 0, 0, 0)',
     stroke: colorScheme.quaternary,
   },
   {
     x: 'Cambridge',
     y: 5,
     tooltipContent: 'Tooltip Content about Cambridge MA where we work right now test long content length',
-    fill: 'none',
+    fill: 'rgba(0, 0, 0, 0)',
     stroke: colorScheme.quaternary,
   },
   {
     x: 'Somerville',
     y: 9,
     tooltipContent: 'Tooltip Content',
-    fill: 'none',
+    fill: 'rgba(0, 0, 0, 0)',
     stroke: colorScheme.quaternary,
   },
   {
     x: 'Acton',
     y: 5,
     tooltipContent: 'Tooltip Content',
-    fill: 'none',
+    fill: 'rgba(0, 0, 0, 0)',
     stroke: colorScheme.quaternary,
   },
   {
     x: 'Stow',
     y: 3,
-    fill: 'none',
+    fill: 'rgba(0, 0, 0, 0)',
     stroke: colorScheme.quaternary,
   },
+];
+
+export const testTableColumns1: DynamicTableColumn[] = [
+  {label: 'Schooling', key: 'schooling'},
+  {label: 'Women', key: 'women'},
+  {label: 'Men', key: 'men'},
+];
+export const testTableData1: DynamicTableDatum[] = [
+  {schooling: 'Below ES', women: '5%', men: '18%'},
+  {schooling: 'Below BE', women: '0.7%', men: '1.8%'},
+  {schooling: 'Basic Education', women: '0.7%', men: '8%'},
+  {schooling: 'HS or Apprenticeship', women: '0.5%', men: '0.8%'},
+  {schooling: 'Intermediate diploma', women: '1.5%', men: '0.1%'},
+  {schooling: 'University and more', women: '15%', men: '1%'},
 ];

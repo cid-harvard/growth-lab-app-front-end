@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Content, Footer } from '../../styling/Grid';
+import { Content } from '../../styling/Grid';
 import {
   TwoColumnSection,
   SectionHeader,
@@ -13,6 +13,7 @@ import {
   SmallOrderedList,
   NarrowPaddedColumn,
   LargeParagraph,
+  SectionHeaderSecondary,
 } from '../../styling/styleUtils';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
@@ -32,8 +33,11 @@ import {
   getBarChartOverlayData,
   colorScheme,
   barChartOverlayData2,
+  testTableColumns1,
+  testTableData1,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
+import DynamicTable from '../../components/text/DynamicTable';
 
 const links: NavItem[] = [
   {label: 'Overview', target: '#overview'},
@@ -247,8 +251,21 @@ const AlbaniaTool = () => {
             </NarrowPaddedColumn>
           </InlineTwoColumnSection>
         </TwoColumnSection>
+        <SectionHeader>Industry Now</SectionHeader>
         <TwoColumnSection>
-          <SectionHeader>Industry Now</SectionHeader>
+          <SectionHeaderSecondary>Industry Wages</SectionHeaderSecondary>
+          <DynamicTable
+            columns={testTableColumns1}
+            data={testTableData1}
+            color={colorScheme.quaternary}
+          />
+          <TextBlock align={Alignment.Center}>
+            <LargeParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </LargeParagraph>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
           <DataViz
             id={'albania-company-bar-chart-2'}
             vizType={VizType.BarChart}
@@ -268,6 +285,19 @@ const AlbaniaTool = () => {
             />
           </TextBlock>
         </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary>Occupation Distribution</SectionHeaderSecondary>
+          <DynamicTable
+            columns={testTableColumns1}
+            data={testTableData1}
+            color={colorScheme.quaternary}
+          />
+          <TextBlock align={Alignment.Center}>
+            <LargeParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </LargeParagraph>
+          </TextBlock>
+        </TwoColumnSection>
       </Content>
       <StickySideNav
         links={links}
@@ -275,9 +305,6 @@ const AlbaniaTool = () => {
         hoverColor={colorScheme.secondary}
         borderColor={colorScheme.primary}
       />
-      <Footer>
-        Footer
-      </Footer>
     </>
   );
 };
