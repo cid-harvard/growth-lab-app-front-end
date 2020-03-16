@@ -10,7 +10,7 @@ interface Input {
   fileFormat?: FileFormat;
 }
 
-export default async (input: Input) => {
+export default (input: Input) => {
   const {svg, fileFormat} = input;
   const width = input.width ? input.width : 1500;
   const height = input.height ? input.height : 1500;
@@ -20,29 +20,35 @@ export default async (input: Input) => {
     const serializer = new XMLSerializer();
     const svgStr = serializer.serializeToString(svg);
 
-    img.src = 'data:image/svg+xml;base64,'+ window.btoa(svgStr);
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(svgStr);
     img.width = width;
     img.height = height;
 
     canvas.width = width;
     canvas.height = height;
-    const canvasContext = await canvas.getContext('2d');
+    const canvasContext = canvas.getContext('2d');
+
     let url = '';
-    if (canvasContext) {
-      await canvasContext.drawImage(img, 0, 0, width, height);
+    img.onload = function() {
+      if (canvasContext) {
+        canvasContext.drawImage(img, 0, 0, width, height);
+      }
       url = canvas.toDataURL('image/png');
-    }
-    // Now save as png
-    const a = document.createElement('a');
-    if (fileFormat === FileFormat.SVG) {
-      a.href = img.src;
-      a.download = 'chart.svg';
-    } else {
-      a.href = url;
-      a.download = 'chart-new.png';
-    }
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+      const a = document.createElement('a');
+      if (fileFormat === FileFormat.SVG) {
+        a.href = img.src;
+        a.download = 'chart.svg';
+      } else {
+        a.href = url;
+        a.download = 'chart-new.png';
+      }
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      document.body.removeChild(img);
+    };
+
+    document.body.appendChild(img);
   }
 };

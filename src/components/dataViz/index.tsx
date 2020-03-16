@@ -97,6 +97,7 @@ const DataViz = (props: Props) => {
   const sizingNodeRef = useRef<HTMLDivElement | null>(null);
   const svgNodeRef = useRef<any>(null);
   const tooltipNodeRef = useRef<any>(null);
+  const canvasNodeRef = useRef<HTMLCanvasElement | null>(null);
   const { windowWidth } = useContext(AppContext);
 
   useEffect(() => {
@@ -200,6 +201,7 @@ const DataViz = (props: Props) => {
       </SizingElm>
       {downloadButtons}
       <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
+      <canvas ref={canvasNodeRef} />
     </Root>
   );
 
