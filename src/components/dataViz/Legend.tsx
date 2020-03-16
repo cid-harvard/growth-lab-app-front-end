@@ -32,7 +32,7 @@ interface Props {
 const Legend = ({legendList}: Props) => {
 
   const legendItems = legendList.map(({label, fill, stroke}) => (
-    <LegendItem>
+    <LegendItem key={label + fill + stroke}>
       <LegendBlock
         style={{
           backgroundColor: fill,

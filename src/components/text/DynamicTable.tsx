@@ -39,14 +39,14 @@ const DynamicTable = (props: Props) => {
     gridTemplateColumns: `repeat(${columns.length}, auto)`,
     gridTemplateRows: `repeat(${data.length + 1}, auto)`,
   };
-  const tableHeader = columns.map(({label}) => <Cell style={{color}}>{label}</Cell>);
+  const tableHeader = columns.map(({label}) => <Cell style={{color}} key={label}>{label}</Cell>);
   const rows = data.map((d, i) => {
     const gridRow = i + 2;
     const backgroundColor = gridRow % 2 === 0 ? undefined : rgba(color, 0.08);
     return Object.keys(d).map(function(key: keyof Datum) {
       const gridColumn = columns.findIndex(c => c.key === key) + 1;
       if (gridColumn) {
-        return (<Cell style={{gridColumn, gridRow, backgroundColor}}>{d[key]}</Cell>);
+        return (<Cell style={{gridColumn, gridRow, backgroundColor}} key={d[key].toString() + i}>{d[key]}</Cell>);
       } else {
         return null;
       }

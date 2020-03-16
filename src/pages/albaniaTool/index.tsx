@@ -87,6 +87,7 @@ const AlbaniaTool = () => {
             vizType={VizType.ScatterPlot}
             data={scatterPlotData}
             axisLabels={{bottom: 'X Axis', left: 'Y Axis'}}
+            enableImageDownload={true}
           />
           <TextBlock>
             <p>
@@ -104,6 +105,7 @@ const AlbaniaTool = () => {
             data={spiderPlotTestData2}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
             maxValue={100}
+            enableImageDownload={true}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
@@ -136,6 +138,7 @@ const AlbaniaTool = () => {
             data={spiderPlotTestData3}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
             maxValue={100}
+            enableImageDownload={true}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
@@ -169,6 +172,7 @@ const AlbaniaTool = () => {
             data={barChartData}
             overlayData={getBarChartOverlayData(selectedCountry.value)}
             axisLabels={{left: 'Y Axis Label'}}
+            enableImageDownload={true}
           />
           <InlineTwoColumnSection>
             <NarrowPaddedColumn>

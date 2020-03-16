@@ -6,11 +6,22 @@ import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
+import {
+  lightBorderColor,
+  secondaryFont,
+} from '../../styling/styleUtils';
+import {lighten} from 'polished';
+import downloadData from './downloadData';
+import downloadImage from './downloadImage';
 
 const Root = styled.div`
-  height: 450px;
   width: 100%;
   margin: auto;
+`;
+
+const SizingElm = styled.div`
+  height: 450px;
+  width: 100%;
 
   svg {
     width: 100%;
@@ -33,6 +44,21 @@ const Tooltip = styled.div`
   transform: translateY(-100%);
 `;
 
+const DownloadButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const DownloadButton = styled.button`
+  background-color: ${lightBorderColor};
+  font-family: ${secondaryFont};
+  padding: 0.5rem 0.75rem;
+
+  &:hover {
+    background-color: ${lighten(0.04, lightBorderColor)};
+  }
+`;
+
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
@@ -42,6 +68,8 @@ export enum VizType {
 interface BaseProps {
   id: string;
   vizType: VizType;
+  jsonToDownload?: object;
+  enableImageDownload?: boolean;
 }
 
 type Props = BaseProps & (
@@ -65,7 +93,7 @@ type Props = BaseProps & (
 );
 
 const DataViz = (props: Props) => {
-  const { id } = props;
+  const { id, enableImageDownload, jsonToDownload } = props;
   const sizingNodeRef = useRef<HTMLDivElement | null>(null);
   const svgNodeRef = useRef<any>(null);
   const tooltipNodeRef = useRef<any>(null);
@@ -120,9 +148,57 @@ const DataViz = (props: Props) => {
     };
   }, [svgNodeRef, sizingNodeRef, windowWidth, props]);
 
+  const handleDownloadImage = () => {
+    const svgNode = svgNodeRef ? svgNodeRef.current : null;
+    const sizingNode = sizingNodeRef ? sizingNodeRef.current : null;
+    const highResMultiplier = 3;
+    let width: number | undefined;
+    let height: number | undefined;
+    if (props.vizType === VizType.RadarChart && sizingNode) {
+      if (sizingNode.clientWidth > sizingNode.clientHeight) {
+        width = sizingNode.clientHeight * highResMultiplier;
+        height = sizingNode.clientHeight * highResMultiplier;
+      } else {
+        width = sizingNode.clientWidth * highResMultiplier;
+        height = sizingNode.clientWidth * highResMultiplier;
+      }
+    } else {
+      width = sizingNode && sizingNode.clientWidth ? sizingNode.clientWidth * highResMultiplier : undefined;
+      height = sizingNode && sizingNode.clientHeight ? sizingNode.clientHeight * highResMultiplier : undefined;
+    }
+    downloadImage({svg: svgNode, width, height});
+  };
+
+  const downloadImageButton = enableImageDownload !== true ? null : (
+    <>
+      <DownloadButton
+        onClick={handleDownloadImage}
+      >
+        Download Image
+      </DownloadButton>
+    </>
+  );
+  const downloadDataButton = jsonToDownload === undefined ? null : (
+    <DownloadButton
+      onClick={() => downloadData()}
+    >
+      Download Data
+    </DownloadButton>
+  );
+
+  const downloadButtons = downloadImageButton !== null || downloadDataButton !== null ? (
+    <DownloadButtonsContainer style={{marginTop: props.vizType !== VizType.RadarChart ? '1rem' : undefined}}>
+      {downloadImageButton}
+      {downloadDataButton}
+    </DownloadButtonsContainer>
+  ) : null;
+
   return (
-    <Root ref={sizingNodeRef}>
-      <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
+    <Root>
+      <SizingElm ref={sizingNodeRef}>
+        <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
+      </SizingElm>
+      {downloadButtons}
       <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
     </Root>
   );
