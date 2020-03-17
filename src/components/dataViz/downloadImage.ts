@@ -1,4 +1,4 @@
-enum FileFormat {
+export enum FileFormat {
   SVG = 'svg',
   PNG = 'png',
 }

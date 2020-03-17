@@ -87,7 +87,8 @@ const AlbaniaTool = () => {
             vizType={VizType.ScatterPlot}
             data={scatterPlotData}
             axisLabels={{bottom: 'X Axis', left: 'Y Axis'}}
-            enableImageDownload={true}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
             jsonToDownload={scatterPlotData}
           />
@@ -107,7 +108,8 @@ const AlbaniaTool = () => {
             data={spiderPlotTestData2}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
             maxValue={100}
-            enableImageDownload={true}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
             chartTitle={'Viability Factors - ' + industryName}
             jsonToDownload={spiderPlotTestData2[0]}
           />
@@ -142,7 +144,8 @@ const AlbaniaTool = () => {
             data={spiderPlotTestData3}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
             maxValue={100}
-            enableImageDownload={true}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
             chartTitle={'Viability Factors - ' + industryName}
             jsonToDownload={spiderPlotTestData3[0]}
           />
@@ -178,7 +181,8 @@ const AlbaniaTool = () => {
             data={barChartData}
             overlayData={getBarChartOverlayData(selectedCountry.value)}
             axisLabels={{left: 'Y Axis Label'}}
-            enableImageDownload={true}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
             chartTitle={'Identifying Companies - ' + industryName}
             jsonToDownload={getBarChartOverlayData(selectedCountry.value)}
           />

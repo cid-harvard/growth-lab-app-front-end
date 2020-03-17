@@ -12,7 +12,7 @@ import {
   secondaryFont,
 } from '../../styling/styleUtils';
 import {lighten} from 'polished';
-import downloadImage from './downloadImage';
+import downloadImage, { FileFormat } from './downloadImage';
 import { CSVLink } from 'react-csv';
 
 const Root = styled.div`
@@ -80,7 +80,8 @@ interface BaseProps {
   id: string;
   vizType: VizType;
   jsonToDownload?: object[];
-  enableImageDownload?: boolean;
+  enablePNGDownload?: boolean;
+  enableSVGDownload?: boolean;
   chartTitle?: string;
 }
 
@@ -105,7 +106,7 @@ type Props = BaseProps & (
 );
 
 const DataViz = (props: Props) => {
-  const { id, enableImageDownload, jsonToDownload } = props;
+  const { id, enablePNGDownload, enableSVGDownload, jsonToDownload } = props;
   const sizingNodeRef = useRef<HTMLDivElement | null>(null);
   const svgNodeRef = useRef<any>(null);
   const tooltipNodeRef = useRef<any>(null);
@@ -161,7 +162,7 @@ const DataViz = (props: Props) => {
     };
   }, [svgNodeRef, sizingNodeRef, windowWidth, props]);
 
-  const handleDownloadImage = () => {
+  const handleDownloadImage = (fileFormat: FileFormat) => {
     const svgNode = svgNodeRef ? svgNodeRef.current : null;
     const sizingNode = sizingNodeRef ? sizingNodeRef.current : null;
     const highResMultiplier = 3;
@@ -180,15 +181,24 @@ const DataViz = (props: Props) => {
       height = sizingNode && sizingNode.clientHeight ? sizingNode.clientHeight * highResMultiplier : undefined;
     }
     const title = props.chartTitle ? props.chartTitle : 'chart';
-    downloadImage({svg: svgNode, width, height, title});
+    downloadImage({svg: svgNode, width, height, title, fileFormat});
   };
 
-  const downloadImageButton = enableImageDownload !== true ? null : (
+  const downloadPNGButton = enablePNGDownload !== true ? null : (
     <>
       <DownloadImageButton
-        onClick={handleDownloadImage}
+        onClick={() => handleDownloadImage(FileFormat.PNG)}
       >
-        Download Image
+        Download PNG
+      </DownloadImageButton>
+    </>
+  );
+  const downloadSVGButton = enableSVGDownload !== true ? null : (
+    <>
+      <DownloadImageButton
+        onClick={() => handleDownloadImage(FileFormat.SVG)}
+      >
+        Download SVG
       </DownloadImageButton>
     </>
   );
@@ -207,9 +217,10 @@ const DataViz = (props: Props) => {
     downloadDataButton = null;
   }
 
-  const downloadButtons = downloadImageButton !== null || downloadDataButton !== null ? (
+  const downloadButtons = downloadPNGButton !== null || downloadSVGButton !== null || downloadDataButton !== null ? (
     <DownloadButtonsContainer style={{marginTop: props.vizType !== VizType.RadarChart ? '1rem' : undefined}}>
-      {downloadImageButton}
+      {downloadPNGButton}
+      {downloadSVGButton}
       {downloadDataButton}
     </DownloadButtonsContainer>
   ) : null;
