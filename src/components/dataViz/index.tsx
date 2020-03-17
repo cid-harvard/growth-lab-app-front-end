@@ -1,11 +1,13 @@
 import { select } from 'd3-selection';
 import { scaleOrdinal } from 'd3-scale';
+import { ExtendedFeature } from 'd3';
 import React, {useContext, useEffect, useRef} from 'react';
 import styled from 'styled-components';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
+import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import {
   baseColor,
   lightBorderColor,
@@ -74,6 +76,7 @@ export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
   RadarChart = 'RadarChart',
+  GeoMap = 'GeoMap',
 }
 
 interface BaseProps {
@@ -102,6 +105,12 @@ type Props = BaseProps & (
     data: RadarChartDatum[][];
     color: {start: string, end: string};
     maxValue: number;
+  } |
+  {
+    vizType: VizType.GeoMap;
+    data: ExtendedFeature<any, GeoJsonCustomProperties>;
+    minColor: string;
+    maxColor: string;
   }
 );
 
@@ -110,7 +119,6 @@ const DataViz = (props: Props) => {
   const sizingNodeRef = useRef<HTMLDivElement | null>(null);
   const svgNodeRef = useRef<any>(null);
   const tooltipNodeRef = useRef<any>(null);
-  const canvasNodeRef = useRef<HTMLCanvasElement | null>(null);
   const { windowWidth } = useContext(AppContext);
 
   useEffect(() => {
@@ -152,6 +160,12 @@ const DataViz = (props: Props) => {
             color: scaleOrdinal().range([props.color.start, props.color.end]),
             maxValue: props.maxValue,
           },
+        });
+      } else if (props.vizType === VizType.GeoMap) {
+        createGeoMap({
+          svg, tooltip, data: props.data, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          }, minColor: props.minColor, maxColor: props.maxColor,
         });
       }
     }
@@ -232,7 +246,6 @@ const DataViz = (props: Props) => {
       </SizingElm>
       {downloadButtons}
       <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
-      <canvas ref={canvasNodeRef} />
     </Root>
   );
 

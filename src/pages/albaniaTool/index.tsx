@@ -37,7 +37,18 @@ import {
   testTableData1,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
+import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
+import raw from 'raw.macro';
+
+const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
+const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
+  const percent = (i + 1) * 7;
+  const properties = {...feature.properties, percent, tooltipContent: `
+    <strong>${feature.properties.ADM1_SQ}</strong>: ${percent}%`};
+  return {...feature, properties};
+});
+const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
 const links: NavItem[] = [
   {label: 'Overview', target: '#overview'},
@@ -268,6 +279,28 @@ const AlbaniaTool = () => {
           </InlineTwoColumnSection>
         </TwoColumnSection>
         <SectionHeader>Industry Now</SectionHeader>
+        <TwoColumnSection>
+          <SectionHeaderSecondary>Location of Workers</SectionHeaderSecondary>
+          <DataViz
+            id={'albania-geo-map'}
+            vizType={VizType.GeoMap}
+            data={geoJsonWithValues}
+            minColor={colorScheme.tertiary}
+            maxColor={colorScheme.quaternary}
+          />
+          <TextBlock align={Alignment.Center}>
+            <LargeParagraph>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </LargeParagraph>
+            <ColorScaleLegend
+              minLabel={0.28}
+              maxLabel={30.8}
+              minColor={colorScheme.tertiary}
+              maxColor={colorScheme.quaternary}
+              title={'Percentage of workers in the industry'}
+            />
+          </TextBlock>
+        </TwoColumnSection>
         <TwoColumnSection>
           <SectionHeaderSecondary>Industry Wages</SectionHeaderSecondary>
           <DynamicTable

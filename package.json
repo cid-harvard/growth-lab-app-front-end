@@ -25,6 +25,7 @@
     "node-sass": "^4.13.1",
     "npm": "^6.14.2",
     "polished": "^3.4.4",
+    "raw.macro": "^0.3.0",
     "react": "^16.13.0",
     "react-csv": "^2.0.1",
     "react-dom": "^16.13.0",
