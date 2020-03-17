@@ -136,22 +136,22 @@ export default (input: Input) => {
   container.append('g')
       .call(d3.axisLeft(yScale));
 
-      // append X axis label
+  // append X axis label
   svg
     .append('text')
     .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
+      .style('font-family', "'Source Sans Pro',sans-serif")
       .style('text-anchor', 'middle')
       .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
 
   // append Y axis label
   svg
     .append('text')
-    // .attr("transform", "rotate(-90)")
       .attr('y', margin.top / 2)
       .attr('x', margin.right)
       .attr('dy', '0.75em')
       .style('font-size', '0.8rem')
-      // .style("text-anchor", "middle")
+      .style('font-family', "'Source Sans Pro',sans-serif")
       .text(axisLabels && axisLabels.left ? axisLabels.left : '');
 
 };

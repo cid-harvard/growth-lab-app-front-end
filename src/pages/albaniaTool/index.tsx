@@ -88,6 +88,7 @@ const AlbaniaTool = () => {
             data={scatterPlotData}
             axisLabels={{bottom: 'X Axis', left: 'Y Axis'}}
             enableImageDownload={true}
+            chartTitle={'Overview - ' + industryName}
           />
           <TextBlock>
             <p>
@@ -106,6 +107,7 @@ const AlbaniaTool = () => {
             color={{start: colorScheme.primary, end: colorScheme.primary}}
             maxValue={100}
             enableImageDownload={true}
+            chartTitle={'Viability Factors - ' + industryName}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
@@ -139,6 +141,7 @@ const AlbaniaTool = () => {
             color={{start: colorScheme.primary, end: colorScheme.primary}}
             maxValue={100}
             enableImageDownload={true}
+            chartTitle={'Viability Factors - ' + industryName}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
@@ -173,6 +176,7 @@ const AlbaniaTool = () => {
             overlayData={getBarChartOverlayData(selectedCountry.value)}
             axisLabels={{left: 'Y Axis Label'}}
             enableImageDownload={true}
+            chartTitle={'Identifying Companies - ' + industryName}
           />
           <InlineTwoColumnSection>
             <NarrowPaddedColumn>

@@ -7,11 +7,12 @@ interface Input {
   svg: Node | null;
   width: number | undefined;
   height: number | undefined;
+  title: string;
   fileFormat?: FileFormat;
 }
 
 export default (input: Input) => {
-  const {svg, fileFormat} = input;
+  const {svg, title} = input;
   const width = input.width ? input.width : 1500;
   const height = input.height ? input.height : 1500;
   const canvas = document.createElement('canvas');
@@ -35,14 +36,14 @@ export default (input: Input) => {
       }
       url = canvas.toDataURL('image/png');
 
+      const fileFormat = input.fileFormat !== undefined ? input.fileFormat : FileFormat.PNG;
       const a = document.createElement('a');
       if (fileFormat === FileFormat.SVG) {
         a.href = img.src;
-        a.download = 'chart.svg';
       } else {
         a.href = url;
-        a.download = 'chart-new.png';
       }
+      a.download = title +'.' + fileFormat;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

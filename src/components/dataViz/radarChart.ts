@@ -151,6 +151,7 @@ export default ({svg, data, tooltip, options}: Input) => {
     .attr('class', 'legend')
     .text(d => d)
     .style('font-size', '11px')
+    .style('font-family', "'Source Sans Pro',sans-serif")
     .attr('text-anchor', 'middle')
     .attr('dy', '1.5em')
     .attr('transform', 'translate(0, -10)')

@@ -70,6 +70,7 @@ interface BaseProps {
   vizType: VizType;
   jsonToDownload?: object;
   enableImageDownload?: boolean;
+  chartTitle?: string;
 }
 
 type Props = BaseProps & (
@@ -167,7 +168,8 @@ const DataViz = (props: Props) => {
       width = sizingNode && sizingNode.clientWidth ? sizingNode.clientWidth * highResMultiplier : undefined;
       height = sizingNode && sizingNode.clientHeight ? sizingNode.clientHeight * highResMultiplier : undefined;
     }
-    downloadImage({svg: svgNode, width, height});
+    const title = props.chartTitle ? props.chartTitle : 'chart';
+    downloadImage({svg: svgNode, width, height, title});
   };
 
   const downloadImageButton = enableImageDownload !== true ? null : (

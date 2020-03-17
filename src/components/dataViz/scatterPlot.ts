@@ -130,6 +130,7 @@ export default (input: Input) => {
     .append('text')
     .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
       .style('text-anchor', 'middle')
+      .style('font-family', "'Source Sans Pro',sans-serif")
       .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
 
   // append Y axis label
@@ -140,6 +141,7 @@ export default (input: Input) => {
       .attr('x', 0 - (height / 2 + margin.top))
       .attr('dy', '0.75em')
       .style('text-anchor', 'middle')
+      .style('font-family', "'Source Sans Pro',sans-serif")
       .text(axisLabels && axisLabels.left ? axisLabels.left : '');
 
 };
