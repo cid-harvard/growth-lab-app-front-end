@@ -7,12 +7,13 @@ import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import {
+  baseColor,
   lightBorderColor,
   secondaryFont,
 } from '../../styling/styleUtils';
 import {lighten} from 'polished';
-import downloadData from './downloadData';
 import downloadImage from './downloadImage';
+import { CSVLink } from 'react-csv';
 
 const Root = styled.div`
   width: 100%;
@@ -49,14 +50,24 @@ const DownloadButtonsContainer = styled.div`
   justify-content: center;
 `;
 
-const DownloadButton = styled.button`
+const downloadButtonStyles = `
   background-color: ${lightBorderColor};
   font-family: ${secondaryFont};
   padding: 0.5rem 0.75rem;
+  font-size: 0.6875rem;
+  color: ${baseColor};
 
   &:hover {
     background-color: ${lighten(0.04, lightBorderColor)};
   }
+`;
+
+const DownloadImageButton = styled.button`
+  ${downloadButtonStyles};
+`;
+const DownloadDataButton = styled(CSVLink)`
+  ${downloadButtonStyles};
+  text-decoration: none;
 `;
 
 export enum VizType {
@@ -68,7 +79,7 @@ export enum VizType {
 interface BaseProps {
   id: string;
   vizType: VizType;
-  jsonToDownload?: object;
+  jsonToDownload?: object[];
   enableImageDownload?: boolean;
   chartTitle?: string;
 }
@@ -174,20 +185,27 @@ const DataViz = (props: Props) => {
 
   const downloadImageButton = enableImageDownload !== true ? null : (
     <>
-      <DownloadButton
+      <DownloadImageButton
         onClick={handleDownloadImage}
       >
         Download Image
-      </DownloadButton>
+      </DownloadImageButton>
     </>
   );
-  const downloadDataButton = jsonToDownload === undefined ? null : (
-    <DownloadButton
-      onClick={() => downloadData()}
-    >
-      Download Data
-    </DownloadButton>
-  );
+  let downloadDataButton: React.ReactElement<any> | null;
+  if (jsonToDownload !== undefined) {
+    const filename = props.chartTitle ? props.chartTitle + '.csv' : 'data.csv';
+    downloadDataButton = (
+      <DownloadDataButton
+        data={jsonToDownload}
+        filename={filename}
+      >
+        Download Data
+      </DownloadDataButton>
+    );
+  } else {
+    downloadDataButton = null;
+  }
 
   const downloadButtons = downloadImageButton !== null || downloadDataButton !== null ? (
     <DownloadButtonsContainer style={{marginTop: props.vizType !== VizType.RadarChart ? '1rem' : undefined}}>

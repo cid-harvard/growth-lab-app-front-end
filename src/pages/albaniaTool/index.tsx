@@ -89,6 +89,7 @@ const AlbaniaTool = () => {
             axisLabels={{bottom: 'X Axis', left: 'Y Axis'}}
             enableImageDownload={true}
             chartTitle={'Overview - ' + industryName}
+            jsonToDownload={scatterPlotData}
           />
           <TextBlock>
             <p>
@@ -108,6 +109,7 @@ const AlbaniaTool = () => {
             maxValue={100}
             enableImageDownload={true}
             chartTitle={'Viability Factors - ' + industryName}
+            jsonToDownload={spiderPlotTestData2[0]}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
@@ -142,6 +144,7 @@ const AlbaniaTool = () => {
             maxValue={100}
             enableImageDownload={true}
             chartTitle={'Viability Factors - ' + industryName}
+            jsonToDownload={spiderPlotTestData3[0]}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
@@ -177,6 +180,7 @@ const AlbaniaTool = () => {
             axisLabels={{left: 'Y Axis Label'}}
             enableImageDownload={true}
             chartTitle={'Identifying Companies - ' + industryName}
+            jsonToDownload={getBarChartOverlayData(selectedCountry.value)}
           />
           <InlineTwoColumnSection>
             <NarrowPaddedColumn>
