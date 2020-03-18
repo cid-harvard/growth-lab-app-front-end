@@ -4,6 +4,8 @@ node_js:
 cache:
   directories:
   - node_modules
+script:
+  - npm run build
 
 env:
   - SERVER_IP_ADDRESS=3.90.254.42
@@ -17,12 +19,6 @@ before_install:
 - ssh-add ./deploy_key
 
 deploy:
-  # Build frontend
-  provider: script
-  skip_cleanup: true
-  script: npm run build
-  on:
-    branch: backend
   # Copy build directory to server
   provider: script
   skip_cleanup: true
