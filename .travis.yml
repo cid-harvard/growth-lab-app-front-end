@@ -9,6 +9,7 @@ script:
 
 env:
   - SERVER_IP_ADDRESS=3.90.254.42
+  - APP_DIR=/home/ubuntu
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv
@@ -22,6 +23,12 @@ deploy:
   # Copy build directory to server
   provider: script
   skip_cleanup: true
-  script: rsync -rq --delete --rsync-path="mkdir -p /frontend && rsync" $TRAVIS_BUILD_DIR/build ubuntu@$SERVER_IP_ADDRESS:frontend
+  script: rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BUILD_DIR/build ubuntu@$SERVER_IP_ADDRESS:$APP_DIR/frontend
+  on:
+    branch: backend
+  # Copy NGINX directory to server
+  provider: script
+  skip_cleanup: true
+  script: rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/nginx && rsync" $TRAVIS_BUILD_DIR/nginx ubuntu@$SERVER_IP_ADDRESS:$APP_DIR/nginx
   on:
     branch: backend
