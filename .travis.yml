@@ -22,6 +22,6 @@ deploy:
   # Copy build directory to server
   provider: script
   skip_cleanup: true
-  script: rsync -rq --delete --rsync-path="mkdir -p /frontend && rsync" $TRAVIS_BUILD_DIR/build ubuntu@SERVER_IP_ADDRESS:frontend
+  script: rsync -rq --delete --rsync-path="mkdir -p /frontend && rsync" $TRAVIS_BUILD_DIR/build ubuntu@$SERVER_IP_ADDRESS:frontend
   on:
     branch: backend
