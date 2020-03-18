@@ -4,8 +4,6 @@ node_js:
 cache:
   directories:
   - node_modules
-script:
-  - npm run build
 
 env:
   - SERVER_IP_ADDRESS=3.90.254.42
@@ -19,8 +17,15 @@ before_install:
 - ssh-add ./deploy_key
 
 deploy:
+  # Build frontend
   provider: script
   skip_cleanup: true
-  script: .deploy.sh
+  script: npm run build
+  on:
+    branch: backend
+  # Copy build directory to server
+  provider: script
+  skip_cleanup: true
+  script: rsync -rq --delete --rsync-path="mkdir -p /frontend && rsync" $TRAVIS_BUILD_DIR/build ubuntu@SERVER_IP_ADDRESS:frontend
   on:
     branch: backend
