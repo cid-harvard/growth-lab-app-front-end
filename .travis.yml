@@ -8,7 +8,6 @@ script:
   - npm run build
 
 env:
-  - SERVER_IP_ADDRESS=3.90.254.42
   - APP_DIR=/home/ubuntu
 
 before_install:
@@ -16,19 +15,19 @@ before_install:
   -in deploy_key.enc -out ./deploy_key -d
 - eval "$(ssh-agent -s)"
 - chmod 600 ./deploy_key
-- echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- echo -e "Host $STAGING_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - ssh-add ./deploy_key
 
 deploy:
   # Copy build directory to server
   provider: script
   skip_cleanup: true
-  script: rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BUILD_DIR/build ubuntu@$SERVER_IP_ADDRESS:$APP_DIR/frontend
+  script: rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BUILD_DIR/build ubuntu@$STAGING_IP_ADDRESS:$APP_DIR/frontend
   on:
     branch: backend
   # Copy NGINX directory to server
   provider: script
   skip_cleanup: true
-  script: rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/nginx && rsync" $TRAVIS_BUILD_DIR/nginx ubuntu@$SERVER_IP_ADDRESS:$APP_DIR/nginx
+  script: rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/nginx && rsync" $TRAVIS_BUILD_DIR/nginx ubuntu@$STAGING_IP_ADDRESS:$APP_DIR/nginx
   on:
     branch: backend
