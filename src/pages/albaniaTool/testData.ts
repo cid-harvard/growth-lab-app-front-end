@@ -124,6 +124,118 @@ export const testSearchBarData: TreeNode[] = [
   },
 ];
 
+
+export const testQueryBuilderDataCountry: TreeNode[] = [
+  {
+    label: 'All Countries',
+    value: 'All Countries',
+  },
+  {
+    label: 'China',
+    value: 'China',
+  },
+  {
+    label: 'United States',
+    value: 'United States',
+  },
+  {
+    label: 'France',
+    value: 'France',
+  },
+  {
+    label: 'Chile',
+    value: 'Chile',
+  },
+];
+
+export const testQueryBuilderDataCity: TreeNode[] = [
+  {
+    label: 'All Cities',
+    value: 'All Cities',
+    parentValue: null,
+  },
+  {
+    label: 'Beijing',
+    value: 'Beijing',
+    parentValue: 'China',
+  },
+  {
+    label: 'Shanghai',
+    value: 'Shanghai',
+    parentValue: 'China',
+  },
+  {
+    label: 'Hong Kong',
+    value: 'Hong Kong',
+    parentValue: 'China',
+  },
+  {
+    label: 'Guangzhou',
+    value: 'Guangzhou',
+    parentValue: 'China',
+  },
+  {
+    label: 'Boston',
+    value: 'Boston',
+    parentValue: 'United States',
+  },
+  {
+    label: 'New York',
+    value: 'New York',
+    parentValue: 'United States',
+  },
+  {
+    label: 'Atlanta',
+    value: 'Atlanta',
+    parentValue: 'United States',
+  },
+  {
+    label: 'Portland',
+    value: 'Portland',
+    parentValue: 'United States',
+  },
+  {
+    label: 'Paris',
+    value: 'Paris',
+    parentValue: 'France',
+  },
+  {
+    label: 'Marseille',
+    value: 'Marseille',
+    parentValue: 'France',
+  },
+  {
+    label: 'Lyon',
+    value: 'Lyon',
+    parentValue: 'France',
+  },
+  {
+    label: 'Toulouse',
+    value: 'Toulouse',
+    parentValue: 'France',
+  },
+  {
+    label: 'Santiago',
+    value: 'Santiago',
+    parentValue: 'Chile',
+  },
+  {
+    label: 'Puente Alto',
+    value: 'Puente Alto',
+    parentValue: 'Chile',
+  },
+  {
+    label: 'Antofagasta',
+    value: 'Antofagasta',
+    parentValue: 'Chile',
+  },
+  {
+    label: 'Viña del Mar',
+    value: 'Viña del Mar',
+    parentValue: 'Chile',
+  },
+];
+
 export const scatterPlotData: ScatterPlotDatum[] = [
   {
     label: 'Boston',

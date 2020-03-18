@@ -35,11 +35,15 @@ import {
   barChartOverlayData2,
   testTableColumns1,
   testTableData1,
+  testQueryBuilderDataCountry,
+  testQueryBuilderDataCity,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
+import QueryBuilder from '../../components/tools/QueryBuilder';
 import raw from 'raw.macro';
+import noop from 'lodash/noop';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -184,8 +188,9 @@ const AlbaniaTool = () => {
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
+        <SectionHeader>Industry potential</SectionHeader>
         <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
-          <SectionHeader>Identifying Companies</SectionHeader>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart' + selectedCountry.value}
             vizType={VizType.BarChart}
@@ -278,9 +283,52 @@ const AlbaniaTool = () => {
             </NarrowPaddedColumn>
           </InlineTwoColumnSection>
         </TwoColumnSection>
+        <div>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
+          <QueryBuilder
+            title={'Customize Your List & Download'}
+            fullDownload={{
+              label: 'Download the full list of companies',
+              onClick: noop,
+            }}
+            primaryColor={colorScheme.primary}
+            onQueryDownloadClick={noop}
+            selectFields={[
+              {
+                id: 'country',
+                label: 'Source Country',
+                data: testQueryBuilderDataCountry,
+                required: true,
+              },
+              {
+                id: 'city',
+                label: 'Source City',
+                data: testQueryBuilderDataCity,
+                dependentOn: 'country',
+              },
+            ]}
+            checkboxes={[
+              {
+                label: 'Filter #1',
+                value: 'Filter #1',
+                checked: false,
+              },
+              {
+                label: 'Filter #2',
+                value: 'Filter #2',
+                checked: false,
+              },
+              {
+                label: 'Filter #3',
+                value: 'Filter #3',
+                checked: false,
+              },
+            ]}
+          />
+        </div>
         <SectionHeader>Industry Now</SectionHeader>
         <TwoColumnSection>
-          <SectionHeaderSecondary>Location of Workers</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>Location of Workers</SectionHeaderSecondary>
           <DataViz
             id={'albania-geo-map'}
             vizType={VizType.GeoMap}
@@ -302,7 +350,7 @@ const AlbaniaTool = () => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary>Industry Wages</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>Industry Wages</SectionHeaderSecondary>
           <DynamicTable
             columns={testTableColumns1}
             data={testTableData1}
@@ -335,7 +383,7 @@ const AlbaniaTool = () => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary>Occupation Distribution</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>Occupation Distribution</SectionHeaderSecondary>
           <DynamicTable
             columns={testTableColumns1}
             data={testTableData1}

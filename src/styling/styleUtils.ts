@@ -43,10 +43,11 @@ export const HeaderWithLegend = styled.h4<HeaderWithLegendProps>`
   }
 `;
 
+export const labelMarginBottom = 0.3; // in rem
+
 export const Label = styled.label`
   font-family: ${secondaryFont};
-  text-transform: uppercase;
-  margin-bottom: 0.3rem;
+  margin-bottom: ${labelMarginBottom}rem;
   display: block;
 `;
 
@@ -103,13 +104,14 @@ export const SectionHeader = styled(SectionHeaderBase)`
   }
 `;
 
-export const SectionHeaderSecondary = styled(SectionHeaderBase)`
-  font-size: 1.2rem;
-`;
-
 interface TitleColorProps {
   color?: string;
 }
+
+export const SectionHeaderSecondary = styled(SectionHeaderBase)<TitleColorProps>`
+  font-size: 1.2rem;
+  color: ${({color}) => color ? color : baseColor};
+`;
 
 export const SubSectionHeader = styled.h4<TitleColorProps>`
   margin-top: 0;
