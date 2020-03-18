@@ -4,6 +4,8 @@ node_js:
 cache:
   directories:
   - node_modules
+script:
+  - npm run build
 
 env:
   - SERVER_IP_ADDRESS=3.90.254.42
