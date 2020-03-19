@@ -7,24 +7,27 @@ cache:
 branches:
   only:
   - backend
-
+  - master
+script:
+- npm run build
 before_install:
+  - export SERVER_USER=ubuntu
+  - export APP_DIR=/home/ubuntu
   - if [[ $TRAVIS_BRANCH == "backend" ]]; then
-      export SSH_KEY=deploy_key
       export IP_ADDRESS=$STAGING_IP_ADDRESS
-      export APP_DIR=/home/ubuntu
-      export SERVER_USER=ubuntu
+      export ENCRYPTED_DEPLOY_KEY=./deploy_keys/staging.enc
     fi
+  - if [[ $TRAVIS_BRANCH == "master" ]]; then
+    export IP_ADDRESS=$PRODUCTION_IP_ADDRESS
+    export ENCRYPTED_DEPLOY_KEY=./deploy_keys/prod_key.enc
+  fi
   # Decrypt deploy key and add to SSH keys
   - openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv
-    -in $SSH_KEY.enc -out ./$SSH_KEY -d
+      -in $ENCRYPTED_DEPLOY_KEY -out deploy_key -d
   - eval "$(ssh-agent -s)"
-  - chmod 600 ./$SSH_KEY
+  - chmod 600 ./deploy_key
   - echo -e "Host $IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - ssh-add ./$SSH_KEY
-
-script:
-  - npm run build
+  - ssh-add ./deploy_key
 
 deploy:
   provider: script
@@ -32,7 +35,5 @@ deploy:
   script: bash ./scripts/deploy.sh
   on:
     branch: backend
-
 after_success:
-  # Reload NGINX on server
-  - ssh $SERVER_USER@$IP_ADDRESS "bash -s" < "sudo systemctl reload nginx"
+- ssh $SERVER_USER@$IP_ADDRESS "bash -s" < "sudo systemctl reload nginx"
