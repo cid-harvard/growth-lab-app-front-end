@@ -26,4 +26,4 @@ deploy:
     branch: backend
 
 after_success:
-  - ssh ubuntu@$STAGING_IP_ADDRESS "bash -s" < ./scripts/server.sh
+  - ssh ubuntu@$STAGING_IP_ADDRESS "bash -s" < "sudo systemctl reload nginx"
