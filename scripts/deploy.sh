@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 
-ssh $SERVER_USER@$IP_ADDRESS <<- EOF
+ssh $SERVER_USER@$SERVER_ADDRESS <<- EOF
 	sudo apt update
 	sudo apt install -y nginx
 	sudo systemctl enable nginx
@@ -14,8 +14,8 @@ ssh $SERVER_USER@$IP_ADDRESS <<- EOF
 EOF
 
 # Copy Travis build
-rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BUILD_DIR/build $SERVER_USER@$IP_ADDRESS:$APP_DIR/frontend
+rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BUILD_DIR/build $SERVER_USER@$SERVER_ADDRESS:$APP_DIR/frontend
 
 # Copy NGINX and Gunicorn configs
-scp ./config/nginx.conf $SERVER_USER@$IP_ADDRESS:/etc/nginx
-scp ./config/gunicorn.ini $SERVER_USER@$IP_ADDRESS:$APP_DIR
+scp ./config/nginx.conf $SERVER_USER@$SERVER_ADDRESS:/etc/nginx
+scp ./config/gunicorn.ini $SERVER_USER@$SERVER_ADDRESS:$APP_DIR

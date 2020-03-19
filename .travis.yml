@@ -9,16 +9,16 @@ branches:
   - backend
   - master
 script:
-- npm run build
+  - npm run build
 before_install:
   - export SERVER_USER=ubuntu
   - export APP_DIR=/home/ubuntu
   - if [[ $TRAVIS_BRANCH == "backend" ]]; then
-      export IP_ADDRESS=$STAGING_IP_ADDRESS
+      export SERVER_ADDRESS=$STAGING_IP_ADDRESS
       export ENCRYPTED_DEPLOY_KEY=./deploy_keys/staging.enc
     fi
   - if [[ $TRAVIS_BRANCH == "master" ]]; then
-    export IP_ADDRESS=$PRODUCTION_IP_ADDRESS
+    export SERVER_ADDRESS=$PRODUCTION_IP_ADDRESS
     export ENCRYPTED_DEPLOY_KEY=./deploy_keys/prod_key.enc
   fi
   # Decrypt deploy key and add to SSH keys
@@ -26,14 +26,11 @@ before_install:
       -in $ENCRYPTED_DEPLOY_KEY -out deploy_key -d
   - eval "$(ssh-agent -s)"
   - chmod 600 ./deploy_key
-  - echo -e "Host $IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - echo -e "Host $SERVER_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - ssh-add ./deploy_key
-
 deploy:
   provider: script
   skip_cleanup: true
   script: bash ./scripts/deploy.sh
-  on:
-    branch: backend
 after_success:
-- ssh $SERVER_USER@$IP_ADDRESS "bash -s" < "sudo systemctl reload nginx"
+  - ssh $SERVER_USER@$SERVER_ADDRESS "bash -s" < "sudo systemctl reload nginx"
