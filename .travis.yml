@@ -14,7 +14,7 @@ before_install:
 - chmod 600 ./deploy_key
 - echo -e "Host $STAGING_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - ssh-add ./deploy_key
-- ssh ubuntu@$STAGING_IP_ADDRESS "sudo apt update && sudo apt install nginx && sudo systemctl enable nginx"
+- ssh ubuntu@$STAGING_IP_ADDRESS "sudo apt update && sudo apt install -y nginx && sudo systemctl enable nginx"
 
 script:
   - npm run build
