@@ -48,6 +48,7 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
+import StandardFooter from '../../components/text/StandardFooter';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -431,6 +432,32 @@ const AlbaniaTool = () => {
         backgroundColor={colorScheme.tertiary}
         hoverColor={colorScheme.secondary}
         borderColor={colorScheme.primary}
+      />
+      <StandardFooter
+        footerItems={[
+          {
+            title: 'Optional Column Title',
+            items: [
+              {label: 'List Item', target: '#'},
+              {label: 'List Item 2', target: '#'},
+              {label: 'List items dont have to be links'},
+            ],
+          },
+          {
+            items: [
+              {label: 'Second Colum or Row', target: '#'},
+              {label: 'Link Layout Changes Responsively'},
+              {label: 'Link #3', target: '#'},
+              {label: 'Link #4', target: '#'},
+            ],
+          },
+          {
+            items: [
+              {label: 'Another Link', target: '#'},
+              {label: 'One More Link', target: '#'},
+            ],
+          },
+        ]}
       />
     </>
   );

@@ -91,8 +91,12 @@ export const NavContainer = styled.nav`
   }
 `;
 
-export const Footer = styled.footer`
+export const FullWidthFooter = styled.footer`
   grid-row: ${gridLines.footerTop} / ${gridLines.footerBottom};
-  grid-column: ${gridLines.contentStart} / ${gridLines.navEnd};
+  grid-column: ${gridLines.pageLeft} / ${gridLines.pageRight};
+`;
+export const FullWidthFooterContent = styled.footer`
+  max-width: ${contentMaxWidth + navMaxWidth}px;
+  margin: 0 auto;
 `;
 
