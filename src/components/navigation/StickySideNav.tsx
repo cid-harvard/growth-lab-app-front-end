@@ -11,6 +11,7 @@ import {
 import { AppContext } from '../../App';
 import { useLocation, useHistory } from 'react-router';
 // import { HashLink } from 'react-router-hash-link';
+import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 
 export const mobileHeight = 50; // in px
 
@@ -140,6 +141,7 @@ export interface NavItem {
   label: string;
   target: string;
   internalLink?: boolean;
+  scrollBuffer?: number;
 }
 
 interface Props {
@@ -181,11 +183,12 @@ const StickySideNav = (props: Props) => {
     '--border-hover-color': borderColor,
     cursor: 'default',
   };
-  const navLinks = links.map(({label, target, internalLink}) => {
+  const navLinks = links.map(({label, target, internalLink, scrollBuffer}) => {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       if (internalLink) {
         e.preventDefault();
         push(target);
+        scrollToAnchor({anchor: target, bufferTop: scrollBuffer});
       }
     };
     return (

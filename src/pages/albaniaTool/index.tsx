@@ -55,12 +55,6 @@ const featuresWithValues = albaniaMapData.features.map((feature: any, i: number)
 });
 const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
-const links: NavItem[] = [
-  {label: 'Overview', target: '#overview', internalLink: true},
-  {label: 'Industry Potential', target: '#industry-potential', internalLink: true},
-  {label: 'Industry Now', target: '#industry-now', internalLink: true},
-];
-
 const AlbaniaTool = () => {
   const metaTitle = 'Albania Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
@@ -69,11 +63,17 @@ const AlbaniaTool = () => {
   const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
+  const scrollBuffer = navHeight + stickyHeaderHeight;
 
   const industryName = selectedIndustry && selectedIndustry.label ? selectedIndustry.label : 'No Industry Selected';
 
+  const links: NavItem[] = [
+    {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
+    {label: 'Industry Potential', target: '#industry-potential', internalLink: true, scrollBuffer},
+    {label: 'Industry Now', target: '#industry-now', internalLink: true, scrollBuffer},
+  ];
   useScrollBehavior({
-    bufferTop: navHeight + stickyHeaderHeight,
+    bufferTop: scrollBuffer,
     navAnchors: links.map(({target}) => target),
   });
 
