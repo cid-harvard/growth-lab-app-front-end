@@ -6,7 +6,8 @@ if [ $TRAVIS_BRANCH == 'backend' ] ; then
 		sudo apt update
 		sudo apt install -y nginx
 		sudo systemctl enable nginx
-		mkdir -p /usr/local/nginx/conf/
+		sudo mkdir -p /usr/local/nginx/conf/
+		sudo chmod -R 766 /usr/local/nginx/conf/
 		mkdir -p /var/log/nginx/
 		sudo chmod -R 766 /var/log/nginx/
 	EOF
