@@ -11,6 +11,7 @@ import {
 import { AppContext } from '../../App';
 import { useLocation, useHistory } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
+import BackToTopSVG from './assets/scrolltop.svg';
 
 export const mobileHeight = 50; // in px
 
@@ -69,6 +70,7 @@ const Link = styled.a`
 `;
 
 
+
 const MobileMenuButton = styled.button`
   background-color: var(--background-color);
   border: none;
@@ -123,6 +125,17 @@ const CenterBar = styled(Bar)`
     &:before {
       transform: rotate(90deg);
     }
+  }
+`;
+
+const ScrollToTopButton = styled.button`
+  transition: opacity 0.2s ease-in-out;
+  margin-top: 1.7rem;
+  outline: none;
+
+  img {
+    height: 44px;
+    width: 100%;
   }
 `;
 
@@ -208,6 +221,17 @@ const StickySideNav = (props: Props) => {
       <NavContainer>
         <Ul>
           {navLinks}
+          <li>
+            <ScrollToTopButton
+              style={{
+                opacity: !hash ? 0 : 1,
+                cursor: !hash ? 'default' : 'pointer',
+              }}
+              onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth'})}
+            >
+              <img src={BackToTopSVG} alt={'Scroll to Top'} />
+            </ScrollToTopButton>
+          </li>
         </Ul>
       </NavContainer>
     );
@@ -217,6 +241,18 @@ const StickySideNav = (props: Props) => {
       <Ul
         onClick={() => setMobileMenuOpen(false)}
       >
+        <li>
+          <Link
+            style={colorTheme}
+            href={'#'}
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, left: 0, behavior: 'smooth'});
+            }}
+          >
+            Back to Top
+          </Link>
+        </li>
         {navLinks}
       </Ul>
     );
