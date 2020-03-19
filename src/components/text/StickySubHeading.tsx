@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useEffect, useRef, useContext} from 'react';
 import styled from 'styled-components';
 import {gridSmallMediaWidth} from '../../styling/Grid';
 import { mobileHeight} from '../navigation/StickySideNav';
 import {
   lightBorderColor,
 } from '../../styling/styleUtils';
+import { AppContext } from '../../App';
 
 const StickyH2 = styled.h2`
   position: sticky;
@@ -32,12 +33,24 @@ const HighlightBackground = styled.span`
 interface Props {
   title: string;
   highlightColor: string;
+  onHeightChange?: (height: number) => void;
 }
 
 const StickySubHeading = (props: Props) => {
   const {title, highlightColor} = props;
+
+  const { windowWidth } = useContext(AppContext);
+  const containerNodeRef = useRef<HTMLHeadingElement | null>(null);
+
+  useEffect(() => {
+    if (containerNodeRef && containerNodeRef.current && props.onHeightChange) {
+      const node = containerNodeRef.current;
+      props.onHeightChange(node.clientHeight);
+    }
+  }, [containerNodeRef, windowWidth, props]);
+
   return (
-    <StickyH2>
+    <StickyH2 ref={containerNodeRef}>
       <HighlightBackground style={{backgroundColor: highlightColor}}>
         {title}
       </HighlightBackground>

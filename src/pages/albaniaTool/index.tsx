@@ -44,6 +44,7 @@ import DynamicTable from '../../components/text/DynamicTable';
 import QueryBuilder from '../../components/tools/QueryBuilder';
 import raw from 'raw.macro';
 import noop from 'lodash/noop';
+import useScrollBehavior from '../../hooks/useScrollBehavior';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -55,10 +56,9 @@ const featuresWithValues = albaniaMapData.features.map((feature: any, i: number)
 const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
 const links: NavItem[] = [
-  {label: 'Overview', target: '#overview'},
-  {label: 'Potential', target: '#potential'},
-  {label: 'Industry Now', target: '#industry-now'},
-  {label: 'Region Matching', target: '#region-matching'},
+  {label: 'Overview', target: '#overview', internalLink: true},
+  {label: 'Industry Potential', target: '#industry-potential', internalLink: true},
+  {label: 'Industry Now', target: '#industry-now', internalLink: true},
 ];
 
 const AlbaniaTool = () => {
@@ -67,8 +67,15 @@ const AlbaniaTool = () => {
 
   const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
   const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
+  const [navHeight, setNavHeight] = useState<number>(0);
+  const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
 
   const industryName = selectedIndustry && selectedIndustry.label ? selectedIndustry.label : 'No Industry Selected';
+
+  useScrollBehavior({
+    bufferTop: navHeight + stickyHeaderHeight,
+    navAnchors: links.map(({target}) => target),
+  });
 
   return (
     <>
@@ -89,11 +96,13 @@ const AlbaniaTool = () => {
         backgroundColor={colorScheme.tertiary}
         hoverColor={colorScheme.secondary}
         borderColor={colorScheme.primary}
+        onHeightChange={(h) => setNavHeight(h)}
       />
       <Content>
         <StickySubHeading
           title={industryName}
           highlightColor={colorScheme.tertiary}
+          onHeightChange={(h) => setStickyHeaderHeight(h)}
         />
         <TwoColumnSection id={'overview'}>
           <SectionHeader>Overview</SectionHeader>
@@ -188,7 +197,7 @@ const AlbaniaTool = () => {
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
-        <SectionHeader>Industry potential</SectionHeader>
+        <SectionHeader id={'industry-potential'}>Industry potential</SectionHeader>
         <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
@@ -326,7 +335,7 @@ const AlbaniaTool = () => {
             ]}
           />
         </div>
-        <SectionHeader>Industry Now</SectionHeader>
+        <SectionHeader id={'industry-now'}>Industry Now</SectionHeader>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>Location of Workers</SectionHeaderSecondary>
           <DataViz
