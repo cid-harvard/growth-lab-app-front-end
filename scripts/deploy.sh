@@ -7,9 +7,9 @@ if [ $TRAVIS_BRANCH == 'backend' ] ; then
 		sudo apt install -y nginx
 		sudo systemctl enable nginx
 		sudo mkdir -p /etc/nginx
-		sudo chmod -R 766 /etc/nginx/
+		sudo chmod -R 755 /etc/nginx/
 		sudo mkdir -p /var/log/nginx/
-		sudo chmod -R 766 /var/log/nginx/
+		sudo chmod -R 755 /var/log/nginx/
 	EOF
 
 	# Copy Travis build
