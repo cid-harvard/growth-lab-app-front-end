@@ -5,7 +5,7 @@ export const lightBaseColor = '#7c7c7c'; // light gray color for subtitles and c
 export const lightBorderColor = '#dcdcdc'; // really light gray color for subtle borders between elements
 
 export const primaryFont = "'Source Sans Pro', sans-serif";
-export const secondaryFont = "'PT Mono', monospace";
+export const secondaryFont = "'OfficeCodeProWeb', monospace";
 
 export const semiBoldFontBoldWeight = 600;
 export const boldFontWeight = 700;
