@@ -13,6 +13,7 @@ export const colorScheme = {
   secondary: '#F8CCBF',
   tertiary: '#FCEEEB',
   quaternary: '#D75037',
+  quinary: '#A72F2F',
 };
 
 export const testCountryListData: TreeNode[] = [

@@ -15,7 +15,6 @@ export const Light = styled.span`
 `;
 
 export const StandardH1 = styled.h1`
-  text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 2.2rem;

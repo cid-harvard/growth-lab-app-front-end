@@ -1,17 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {
-  StandardH1,
   Label,
 } from '../../styling/styleUtils';
-import { Header } from '../../styling/Grid';
 import styled from 'styled-components';
 import DropdownTreeSelect, {TreeNode} from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 import './multiTierDropdownStyles.scss';
-
-const Root = styled(Header)`
-  padding-bottom: 2rem;
-`;
 
 const SearchContainer = styled.div`
   max-width: 600px;
@@ -19,8 +13,11 @@ const SearchContainer = styled.div`
   text-align: center;
 `;
 
+const SearchLabel = styled(Label)`
+  text-transform: uppercase;
+`;
+
 interface Props {
-  title: string;
   searchLabelText: string;
   data: TreeNode[];
   initialSelectedValue?: TreeNode;
@@ -28,7 +25,7 @@ interface Props {
 }
 
 const HeaderWithSearch = (props: Props) => {
-  const {title, searchLabelText, data, initialSelectedValue} = props;
+  const {searchLabelText, data, initialSelectedValue} = props;
 
   const [selectedValue, setSelectedValue] = useState<TreeNode | undefined>(initialSelectedValue);
 
@@ -66,22 +63,19 @@ const HeaderWithSearch = (props: Props) => {
   const placeholder = selectedValue && selectedValue.label ? selectedValue.label : 'Type Or Select';
   const selectedClass = selectedValue && selectedValue.label ? 'mulit-tier-selected' : '';
   return (
-    <Root>
-      <StandardH1>{title}</StandardH1>
-      <SearchContainer>
-        <Label>{searchLabelText}</Label>
-        <DropdownTreeSelect
-          searchPredicate={searchPredicate}
-          className={'multi-tier-dropdown ' + selectedClass}
-          data={data}
-          onChange={onChange}
-          mode={'radioSelect'}
-          keepTreeOnSearch={true}
-          texts={{placeholder}}
-          clearSearchOnChange={true}
-        />
-      </SearchContainer>
-    </Root>
+    <SearchContainer>
+      <SearchLabel>{searchLabelText}</SearchLabel>
+      <DropdownTreeSelect
+        searchPredicate={searchPredicate}
+        className={'multi-tier-dropdown ' + selectedClass}
+        data={data}
+        onChange={onChange}
+        mode={'radioSelect'}
+        keepTreeOnSearch={true}
+        texts={{placeholder}}
+        clearSearchOnChange={true}
+      />
+    </SearchContainer>
   );
 };
 

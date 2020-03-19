@@ -28,6 +28,10 @@ const gridLines = {
 
 export const gridSmallMediaWidth = 700; // in px
 
+const contentMaxWidth = 900; // in px
+const navMaxWidth = 180; // in px
+
+
 export const Root = styled.div`
   display: grid;
   grid-template-rows:
@@ -40,10 +44,19 @@ export const Root = styled.div`
 
   grid-template-columns:
     [${gridLines.pageLeft} ${gridLines.pageMarginLeft}] minmax(1rem, 1fr)
-    [${gridLines.contentStart}] minmax(auto, 900px)
-    [${gridLines.contentEnd} ${gridLines.navStart}]  minmax(auto, 180px)
+    [${gridLines.contentStart}] minmax(auto, ${contentMaxWidth}px)
+    [${gridLines.contentEnd} ${gridLines.navStart}]  minmax(auto, ${navMaxWidth}px)
     [${gridLines.navEnd} ${gridLines.pageMarginRight}] minmax(1rem, 1fr)
     [${gridLines.pageRight}];
+`;
+
+export const FullWidthHeader = styled.header`
+  grid-row: ${gridLines.headerTop} / ${gridLines.headerBottom};
+  grid-column: ${gridLines.pageLeft} / ${gridLines.pageRight};
+`;
+export const FullWidthHeaderContent = styled.div`
+  max-width: ${contentMaxWidth + navMaxWidth}px;
+  margin: 0 auto;
 `;
 
 export const Header = styled.header`

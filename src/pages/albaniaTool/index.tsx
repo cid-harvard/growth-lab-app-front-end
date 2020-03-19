@@ -20,7 +20,7 @@ import StickySideNav, { NavItem } from '../../components/navigation/StickySideNa
 import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock, {Alignment} from '../../components/text/TextBlock';
 import InlineToggle from '../../components/text/InlineToggle';
-import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
+import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {
@@ -47,6 +47,7 @@ import noop from 'lodash/noop';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
+import AlbaniaMapSvg from './albania-logo.svg';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -97,12 +98,19 @@ const AlbaniaTool = () => {
         <meta property='og:title' content={metaTitle} />
         <meta property='og:description' content={metaDescription} />
       </Helmet>
-      <HeaderWithSearch
-        title={'Albania Complexity Analysis'}
-        searchLabelText={'Please Select an Industry'}
+      <GradientHeader
+        title={'Albania Complexity Dashboard'}
+        searchLabelText={'To Start Select an Industry'}
         data={testSearchBarData}
         onChange={updateSelectedIndustry}
         initialSelectedValue={initialSelectedIndustry}
+        imageSrc={AlbaniaMapSvg}
+        backgroundColor={colorScheme.quaternary}
+        textColor={'#fff'}
+        linkColor={colorScheme.quinary}
+        links={[
+          {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+        ]}
       />
       <StickySideNav
         links={links}
