@@ -23,13 +23,14 @@ interface Props {
   title: string;
   searchLabelText: string;
   data: TreeNode[];
+  initialSelectedValue?: TreeNode;
   onChange?: (val: TreeNode) => void;
 }
 
 const HeaderWithSearch = (props: Props) => {
-  const {title, searchLabelText, data} = props;
+  const {title, searchLabelText, data, initialSelectedValue} = props;
 
-  const [selectedValue, setSelectedValue] = useState<TreeNode | undefined>(undefined);
+  const [selectedValue, setSelectedValue] = useState<TreeNode | undefined>(initialSelectedValue);
 
   useEffect(() => {
     const keydownListener = (e: KeyboardEvent) => {

@@ -45,6 +45,8 @@ import QueryBuilder from '../../components/tools/QueryBuilder';
 import raw from 'raw.macro';
 import noop from 'lodash/noop';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
+import { useHistory } from 'react-router';
+import queryString from 'query-string';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -59,7 +61,17 @@ const AlbaniaTool = () => {
   const metaTitle = 'Albania Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
-  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
+  const {location: {pathname, search, hash}, push} = useHistory();
+  const { industry } = queryString.parse(search);
+  const flattenedChildData: TreeNode[] = [];
+  testSearchBarData.forEach(({children}: any) => children.forEach((child: TreeNode) => flattenedChildData.push(child)));
+  const initialSelectedIndustry = industry ? flattenedChildData.find(({value}) => value === industry) : undefined;
+  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(initialSelectedIndustry);
+  const updateSelectedIndustry = (val: TreeNode) => {
+    setSelectedIndustry(val);
+    push(pathname + '?industry=' + val.value + hash);
+  };
+
   const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
@@ -89,7 +101,8 @@ const AlbaniaTool = () => {
         title={'Albania Complexity Analysis'}
         searchLabelText={'Please Select an Industry'}
         data={testSearchBarData}
-        onChange={setSelectedIndustry}
+        onChange={updateSelectedIndustry}
+        initialSelectedValue={initialSelectedIndustry}
       />
       <StickySideNav
         links={links}

@@ -32,6 +32,9 @@ const useScrollBehavior = (options?: Options) => {
   useEffect(() => {
     const anchor = location && location.hash ? location.hash : null;
     const bufferTop = options && options.bufferTop ? options.bufferTop : 0;
+    if (!anchor) {
+      setTriggerScroll(false);
+    }
     if (triggerScroll) {
       scrollToAnchor({anchor, bufferTop});
     }
@@ -51,7 +54,7 @@ const useScrollBehavior = (options?: Options) => {
         i++;
       }
       if (newAnchor !== location.hash) {
-        history.push(location.pathname + newAnchor);
+        history.push(location.pathname + location.search + newAnchor);
       }
       if (triggerScroll) {
         setTriggerScroll(false);

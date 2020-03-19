@@ -10,7 +10,6 @@ import {
 } from '../../styling/styleUtils';
 import { AppContext } from '../../App';
 import { useLocation, useHistory } from 'react-router';
-// import { HashLink } from 'react-router-hash-link';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 
 export const mobileHeight = 50; // in px
@@ -160,7 +159,7 @@ const StickySideNav = (props: Props) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const containerNodeRef = useRef<HTMLElement | null>(null);
-  const {hash} = useLocation();
+  const {hash, search, pathname} = useLocation();
   const {push} = useHistory();
 
   useEffect(() => {
@@ -187,7 +186,7 @@ const StickySideNav = (props: Props) => {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       if (internalLink) {
         e.preventDefault();
-        push(target);
+        push(pathname + search + target);
         scrollToAnchor({anchor: target, bufferTop: scrollBuffer});
       }
     };
