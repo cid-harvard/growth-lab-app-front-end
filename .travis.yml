@@ -4,16 +4,24 @@ node_js:
 cache:
   directories:
   - node_modules
-env:
-  - APP_DIR=/home/ubuntu
+branches:
+  only:
+  - backend
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv
-  -in deploy_key.enc -out ./deploy_key -d
-- eval "$(ssh-agent -s)"
-- chmod 600 ./deploy_key
-- echo -e "Host $STAGING_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-- ssh-add ./deploy_key
+  - if [[ $TRAVIS_BRANCH == "backend" ]]; then
+      export SSH_KEY=deploy_key
+      export IP_ADDRESS=$STAGING_IP_ADDRESS
+      export APP_DIR=/home/ubuntu
+      export SERVER_USER=ubuntu
+    fi
+  # Decrypt deploy key and add to SSH keys
+  - openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv
+    -in $SSH_KEY.enc -out ./$SSH_KEY -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 ./$SSH_KEY
+  - echo -e "Host $IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - ssh-add ./$SSH_KEY
 
 script:
   - npm run build
@@ -26,4 +34,5 @@ deploy:
     branch: backend
 
 after_success:
-  - ssh ubuntu@$STAGING_IP_ADDRESS "bash -s" < "sudo systemctl reload nginx"
+  # Reload NGINX on server
+  - ssh $SERVER_USER@$IP_ADDRESS "bash -s" < "sudo systemctl reload nginx"
