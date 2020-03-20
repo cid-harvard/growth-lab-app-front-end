@@ -60,6 +60,7 @@ const HeaderWithSearch = (props: Props) => {
            ? true : false;
   };
 
+
   const placeholder = selectedValue && selectedValue.label ? selectedValue.label : 'Type Or Select';
   const selectedClass = selectedValue && selectedValue.label ? 'mulit-tier-selected' : '';
   return (
@@ -71,7 +72,7 @@ const HeaderWithSearch = (props: Props) => {
         data={data}
         onChange={onChange}
         mode={'radioSelect'}
-        keepTreeOnSearch={true}
+        keepTreeOnSearch={false}
         texts={{placeholder}}
         clearSearchOnChange={true}
       />
