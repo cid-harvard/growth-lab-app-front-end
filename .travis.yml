@@ -4,11 +4,6 @@ node_js:
 cache:
 	directories:
 	- node_modules
-branches:
-	only:
-	- develop
-	- master
-	- backend
 
 script:
 	- npm run build
