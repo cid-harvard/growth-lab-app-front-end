@@ -17,6 +17,7 @@ const StickyH2 = styled.h2`
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 2px;
+  z-index: 100;
 
   @media(max-width: ${gridSmallMediaWidth}px) {
     top: ${mobileHeight}px;

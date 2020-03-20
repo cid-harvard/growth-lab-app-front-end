@@ -25,7 +25,6 @@ import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {
   testCountryListData,
-  testSearchBarData,
   scatterPlotData,
   spiderPlotTestData2,
   spiderPlotTestData3,
@@ -49,6 +48,7 @@ import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import StandardFooter from '../../components/text/StandardFooter';
+import transformNaceData from './transformNaceData';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -65,9 +65,16 @@ const AlbaniaTool = () => {
 
   const {location: {pathname, search, hash}, push} = useHistory();
   const { industry } = queryString.parse(search);
+
+  const naceData = transformNaceData();
+
   const flattenedChildData: TreeNode[] = [];
-  testSearchBarData.forEach(({children}: any) => children.forEach((child: TreeNode) => flattenedChildData.push(child)));
+  naceData.forEach(({children}: any) =>
+    children.forEach((child: TreeNode) =>
+      child.children.forEach((grandChild: TreeNode) => flattenedChildData.push(grandChild))));
+
   const initialSelectedIndustry = industry ? flattenedChildData.find(({value}) => value === industry) : undefined;
+
   const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(initialSelectedIndustry);
   const updateSelectedIndustry = (val: TreeNode) => {
     setSelectedIndustry(val);
@@ -102,7 +109,7 @@ const AlbaniaTool = () => {
       <GradientHeader
         title={'Albania Complexity Dashboard'}
         searchLabelText={'To Start Select an Industry'}
-        data={testSearchBarData}
+        data={naceData}
         onChange={updateSelectedIndustry}
         initialSelectedValue={initialSelectedIndustry}
         imageSrc={AlbaniaMapSvg}

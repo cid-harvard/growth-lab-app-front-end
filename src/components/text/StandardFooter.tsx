@@ -82,18 +82,18 @@ const StandardFooter = (props: Props) => {
     gridAutoFlow = 'row';
   }
 
-  const sectionElms = footerItems.map(({title, items}) => {
+  const sectionElms = footerItems.map(({title, items}, i) => {
     const heading = title ? <Heading>{title}</Heading> : null;
     const list = items.map(({label, target}) => {
       if (target) {
-        return <Link href={target} target={'_blank'}>{label}</Link>;
+        return <Link href={target} target={'_blank'} key={target + label}>{label}</Link>;
       } else {
-        return <Text>{label}</Text>;
+        return <Text key={target + label}>{label}</Text>;
       }
     });
     if (title || list.length) {
       return (
-        <ColumnOrRow>
+        <ColumnOrRow key={'footer-column-row-' + i + list.length}>
           {heading}
           {list}
         </ColumnOrRow>

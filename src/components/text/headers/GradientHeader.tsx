@@ -127,6 +127,7 @@ const HeaderWithSearch = (props: Props) => {
       secondaryColor={textColor}
       href={target}
       target={'_blank'}
+      key={target + label}
     >
       {label}
     </ButtonLink>
