@@ -15,6 +15,7 @@ import Helmet from 'react-helmet';
 import { Root } from './styling/Grid';
 import { Routes } from './routing/routes';
 import debounce from 'lodash/debounce';
+import './styling/fonts/fonts.css';
 
 const LandingPage = lazy(() => import('./pages/landingPage'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));

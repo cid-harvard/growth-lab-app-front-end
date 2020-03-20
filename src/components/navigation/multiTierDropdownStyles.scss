@@ -1,6 +1,10 @@
 .multi-tier-dropdown.react-dropdown-tree-select {
   width: 100%;
 
+  .infinite-scroll-component  {
+    overflow-x: hidden !important;
+  }
+
   .dropdown, .dropdown-trigger, .dropdown-trigger .tag-list, .dropdown-trigger .tag-item, input.search {
     width: 100%;
     box-sizing: border-box;
@@ -13,9 +17,11 @@
     .dropdown-trigger {
       &.arrow::after {
         position: absolute;
-        right: 4px;
+        background-color: #fff;
+        padding: 0 4px;
+        right: 0;
         font-size: 0.8rem;
-        opacity: 0.6;
+        color: rgba(0, 0, 0, 0.6);
         top: 0;
         bottom: 0;
         margin: auto;
@@ -103,10 +109,14 @@
     overflow: auto;
     text-align: left;
     box-sizing: border-box;
+    z-index: 200;
     .node {
+      padding: 0;
       > label {
         width: 100%;
         display: block;
+        white-space: normal;
+        padding: 4px;
       }
       &:hover {
         background-color: #f3f3f3;

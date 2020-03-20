@@ -5,7 +5,7 @@ export const lightBaseColor = '#7c7c7c'; // light gray color for subtitles and c
 export const lightBorderColor = '#dcdcdc'; // really light gray color for subtle borders between elements
 
 export const primaryFont = "'Source Sans Pro', sans-serif";
-export const secondaryFont = "'PT Mono', monospace";
+export const secondaryFont = "'OfficeCodeProWeb', monospace";
 
 export const semiBoldFontBoldWeight = 600;
 export const boldFontWeight = 700;
@@ -15,7 +15,6 @@ export const Light = styled.span`
 `;
 
 export const StandardH1 = styled.h1`
-  text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 2.2rem;
@@ -43,10 +42,11 @@ export const HeaderWithLegend = styled.h4<HeaderWithLegendProps>`
   }
 `;
 
+export const labelMarginBottom = 0.3; // in rem
+
 export const Label = styled.label`
   font-family: ${secondaryFont};
-  text-transform: uppercase;
-  margin-bottom: 0.3rem;
+  margin-bottom: ${labelMarginBottom}rem;
   display: block;
 `;
 
@@ -103,13 +103,14 @@ export const SectionHeader = styled(SectionHeaderBase)`
   }
 `;
 
-export const SectionHeaderSecondary = styled(SectionHeaderBase)`
-  font-size: 1.2rem;
-`;
-
 interface TitleColorProps {
   color?: string;
 }
+
+export const SectionHeaderSecondary = styled(SectionHeaderBase)<TitleColorProps>`
+  font-size: 1.2rem;
+  color: ${({color}) => color ? color : baseColor};
+`;
 
 export const SubSectionHeader = styled.h4<TitleColorProps>`
   margin-top: 0;

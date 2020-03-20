@@ -20,13 +20,13 @@ import StickySideNav, { NavItem } from '../../components/navigation/StickySideNa
 import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock, {Alignment} from '../../components/text/TextBlock';
 import InlineToggle from '../../components/text/InlineToggle';
-import HeaderWithSearch from '../../components/navigation/HeaderWithSearch';
+import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {
   testCountryListData,
-  testSearchBarData,
-  scatterPlotData,
+  generateScatterPlotData,
+  updateScatterPlotData,
   spiderPlotTestData2,
   spiderPlotTestData3,
   barChartData,
@@ -35,11 +35,23 @@ import {
   barChartOverlayData2,
   testTableColumns1,
   testTableData1,
+  testQueryBuilderDataCountry,
+  testQueryBuilderDataCity,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
+import QueryBuilder from '../../components/tools/QueryBuilder';
 import raw from 'raw.macro';
+import noop from 'lodash/noop';
+import useScrollBehavior from '../../hooks/useScrollBehavior';
+import { useHistory } from 'react-router';
+import queryString from 'query-string';
+import AlbaniaMapSvg from './albania-logo.svg';
+import StandardFooter from '../../components/text/StandardFooter';
+import transformNaceData, {RawNaceDatum} from './transformNaceData';
+
+const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -50,58 +62,66 @@ const featuresWithValues = albaniaMapData.features.map((feature: any, i: number)
 });
 const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
-const links: NavItem[] = [
-  {label: 'Overview', target: '#overview'},
-  {label: 'Potential', target: '#potential'},
-  {label: 'Industry Now', target: '#industry-now'},
-  {label: 'Region Matching', target: '#region-matching'},
-];
+const scatterPlotData = generateScatterPlotData(rawNaceData);
 
 const AlbaniaTool = () => {
   const metaTitle = 'Albania Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
-  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
+  const {location: {pathname, search, hash}, push} = useHistory();
+  const { industry } = queryString.parse(search);
+
+  const naceData = transformNaceData(rawNaceData);
+
+  const flattenedChildData: TreeNode[] = [];
+  naceData.forEach(({children}: any) =>
+    children.forEach((child: TreeNode) =>
+      child.children.forEach((grandChild: TreeNode) => flattenedChildData.push(grandChild))));
+
+  const initialSelectedIndustry = industry ? flattenedChildData.find(({value}) => value === industry) : undefined;
+
+  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(initialSelectedIndustry);
+  const updateSelectedIndustry = (val: TreeNode) => {
+    setSelectedIndustry(val);
+    push(pathname + '?industry=' + val.value + hash);
+  };
+
   const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
+  const [navHeight, setNavHeight] = useState<number>(0);
+  const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
+  const scrollBuffer = navHeight + stickyHeaderHeight;
 
   const industryName = selectedIndustry && selectedIndustry.label ? selectedIndustry.label : 'No Industry Selected';
 
-  return (
-    <>
-      <Helmet>
-        <title>{metaTitle}</title>
-        <meta name='description' content={metaDescription} />
-        <meta property='og:title' content={metaTitle} />
-        <meta property='og:description' content={metaDescription} />
-      </Helmet>
-      <HeaderWithSearch
-        title={'Albania Complexity Analysis'}
-        searchLabelText={'Please Select an Industry'}
-        data={testSearchBarData}
-        onChange={setSelectedIndustry}
-      />
-      <StickySideNav
-        links={links}
-        backgroundColor={colorScheme.tertiary}
-        hoverColor={colorScheme.secondary}
-        borderColor={colorScheme.primary}
-      />
-      <Content>
-        <StickySubHeading
-          title={industryName}
-          highlightColor={colorScheme.tertiary}
-        />
+  const links: NavItem[] = [
+    {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
+    {label: 'Industry Potential', target: '#industry-potential', internalLink: true, scrollBuffer},
+    {label: 'Industry Now', target: '#industry-now', internalLink: true, scrollBuffer},
+  ];
+  useScrollBehavior({
+    bufferTop: scrollBuffer,
+    navAnchors: links.map(({target}) => target),
+  });
+
+  let content: React.ReactElement<any> | null;
+  let nav: React.ReactElement<any> | null;
+  if (selectedIndustry === undefined) {
+    content = null;
+    nav = null;
+  } else {
+    content = (
+      <>
         <TwoColumnSection id={'overview'}>
           <SectionHeader>Overview</SectionHeader>
           <DataViz
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
-            data={scatterPlotData}
-            axisLabels={{bottom: 'X Axis', left: 'Y Axis'}}
+            data={updateScatterPlotData(scatterPlotData, selectedIndustry)}
+            axisLabels={{bottom: 'Viability', left: 'Attractiveness'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
-            jsonToDownload={scatterPlotData}
+            jsonToDownload={updateScatterPlotData(scatterPlotData, selectedIndustry)}
           />
           <TextBlock>
             <p>
@@ -184,14 +204,15 @@ const AlbaniaTool = () => {
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
+        <SectionHeader id={'industry-potential'}>Industry potential</SectionHeader>
         <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
-          <SectionHeader>Identifying Companies</SectionHeader>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart' + selectedCountry.value}
             vizType={VizType.BarChart}
             data={barChartData}
             overlayData={getBarChartOverlayData(selectedCountry.value)}
-            axisLabels={{left: 'Y Axis Label'}}
+            axisLabels={{left: 'US$ Millions'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Identifying Companies - ' + industryName}
@@ -278,9 +299,52 @@ const AlbaniaTool = () => {
             </NarrowPaddedColumn>
           </InlineTwoColumnSection>
         </TwoColumnSection>
-        <SectionHeader>Industry Now</SectionHeader>
+        <div>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
+          <QueryBuilder
+            title={'Customize Your List & Download'}
+            fullDownload={{
+              label: 'Download the full list of companies',
+              onClick: noop,
+            }}
+            primaryColor={colorScheme.primary}
+            onQueryDownloadClick={noop}
+            selectFields={[
+              {
+                id: 'country',
+                label: 'Source Country',
+                data: testQueryBuilderDataCountry,
+                required: true,
+              },
+              {
+                id: 'city',
+                label: 'Source City',
+                data: testQueryBuilderDataCity,
+                dependentOn: 'country',
+              },
+            ]}
+            checkboxes={[
+              {
+                label: 'Filter #1',
+                value: 'Filter #1',
+                checked: false,
+              },
+              {
+                label: 'Filter #2',
+                value: 'Filter #2',
+                checked: false,
+              },
+              {
+                label: 'Filter #3',
+                value: 'Filter #3',
+                checked: false,
+              },
+            ]}
+          />
+        </div>
+        <SectionHeader id={'industry-now'}>Industry Now</SectionHeader>
         <TwoColumnSection>
-          <SectionHeaderSecondary>Location of Workers</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>Location of Workers</SectionHeaderSecondary>
           <DataViz
             id={'albania-geo-map'}
             vizType={VizType.GeoMap}
@@ -302,7 +366,7 @@ const AlbaniaTool = () => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary>Industry Wages</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>Industry Wages</SectionHeaderSecondary>
           <DynamicTable
             columns={testTableColumns1}
             data={testTableData1}
@@ -320,7 +384,7 @@ const AlbaniaTool = () => {
             vizType={VizType.BarChart}
             data={barChartData}
             overlayData={barChartOverlayData2}
-            axisLabels={{left: 'Y Axis Label'}}
+            axisLabels={{left: 'US$ Millions'}}
           />
           <TextBlock align={Alignment.Center}>
             <LargeParagraph>
@@ -335,7 +399,7 @@ const AlbaniaTool = () => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary>Occupation Distribution</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>Occupation Distribution</SectionHeaderSecondary>
           <DynamicTable
             columns={testTableColumns1}
             data={testTableData1}
@@ -347,12 +411,75 @@ const AlbaniaTool = () => {
             </LargeParagraph>
           </TextBlock>
         </TwoColumnSection>
-      </Content>
+      </>
+    );
+    nav = (
       <StickySideNav
         links={links}
         backgroundColor={colorScheme.tertiary}
         hoverColor={colorScheme.secondary}
         borderColor={colorScheme.primary}
+        onHeightChange={(h) => setNavHeight(h)}
+      />
+    );
+  }
+
+  return (
+    <>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name='description' content={metaDescription} />
+        <meta property='og:title' content={metaTitle} />
+        <meta property='og:description' content={metaDescription} />
+      </Helmet>
+      <GradientHeader
+        title={'Albania Complexity Dashboard'}
+        searchLabelText={'To Start Select an Industry'}
+        data={naceData}
+        onChange={updateSelectedIndustry}
+        initialSelectedValue={initialSelectedIndustry}
+        imageSrc={AlbaniaMapSvg}
+        backgroundColor={colorScheme.quaternary}
+        textColor={'#fff'}
+        linkColor={colorScheme.quinary}
+        links={[
+          {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+        ]}
+      />
+      {nav}
+      <Content>
+        <StickySubHeading
+          title={industryName}
+          highlightColor={colorScheme.tertiary}
+          onHeightChange={(h) => setStickyHeaderHeight(h)}
+        />
+        {content}
+      </Content>
+      <StandardFooter
+        footerItems={[
+          {
+            title: 'Optional Column Title',
+            items: [
+              {label: 'List Item', target: '#'},
+              {label: 'List Item 2', target: '#'},
+              {label: 'List items dont have to be links'},
+            ],
+          },
+          {
+            items: [
+              {label: 'Second Colum or Row', target: '#'},
+              {label: 'Link Layout Changes Responsively'},
+              {label: 'Link #3', target: '#'},
+              {label: 'Link #4', target: '#'},
+            ],
+          },
+          {
+            items: [
+              {label: 'Another Link', target: '#'},
+              {label: 'One More Link', target: '#'},
+            ],
+          },
+        ]}
       />
     </>
   );

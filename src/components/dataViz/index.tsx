@@ -58,6 +58,8 @@ const downloadButtonStyles = `
   padding: 0.5rem 0.75rem;
   font-size: 0.6875rem;
   color: ${baseColor};
+  display: block;
+  margin: 0;
 
   &:hover {
     background-color: ${lighten(0.04, lightBorderColor)};

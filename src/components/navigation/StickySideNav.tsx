@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useRef, useEffect} from 'react';
 import {
   NavContainer,
   gridSmallMediaWidth,
@@ -9,6 +9,9 @@ import {
   secondaryFont,
 } from '../../styling/styleUtils';
 import { AppContext } from '../../App';
+import { useLocation, useHistory } from 'react-router';
+import { scrollToAnchor } from '../../hooks/useScrollBehavior';
+import BackToTopSVG from './assets/scrolltop.svg';
 
 export const mobileHeight = 50; // in px
 
@@ -47,13 +50,13 @@ const Link = styled.a`
     height: 100%;
     width: 0.35rem;
     margin-left: 0.35rem;
-    background-color: var(--hover-color);
+    background-color: var(--border-color);
   }
 
   &:hover {
     background-color: var(--hover-color);
     &:after {
-      background-color: var(--border-color);
+      background-color: var(--border-hover-color);
     }
   }
 
@@ -65,6 +68,8 @@ const Link = styled.a`
     }
   }
 `;
+
+
 
 const MobileMenuButton = styled.button`
   background-color: var(--background-color);
@@ -123,18 +128,32 @@ const CenterBar = styled(Bar)`
   }
 `;
 
+const ScrollToTopButton = styled.button`
+  transition: opacity 0.2s ease-in-out;
+  margin-top: 1.7rem;
+  outline: none;
+
+  img {
+    height: 44px;
+    width: 100%;
+  }
+`;
+
 // Allow CSS custom properties
 declare module 'csstype' {
   interface Properties {
     '--background-color'?: string;
     '--hover-color'?: string;
     '--border-color'?: string;
+    '--border-hover-color'?: string;
   }
 }
 
 export interface NavItem {
   label: string;
   target: string;
+  internalLink?: boolean;
+  scrollBuffer?: number;
 }
 
 interface Props {
@@ -142,6 +161,7 @@ interface Props {
   backgroundColor: string;
   hoverColor: string;
   borderColor: string;
+  onHeightChange?: (height: number) => void;
 }
 
 
@@ -151,17 +171,44 @@ const StickySideNav = (props: Props) => {
   const { windowWidth } = useContext(AppContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
+  const containerNodeRef = useRef<HTMLElement | null>(null);
+  const {hash, search, pathname} = useLocation();
+  const {push} = useHistory();
+
+  useEffect(() => {
+    if (containerNodeRef && containerNodeRef.current && props.onHeightChange) {
+      const node = containerNodeRef.current;
+      props.onHeightChange(node.clientHeight);
+    }
+  }, [containerNodeRef, windowWidth, props]);
+
   const colorTheme: React.CSSProperties = {
     '--background-color': backgroundColor,
     '--hover-color': hoverColor,
-    '--border-color': borderColor,
+    '--border-color': hoverColor,
+    '--border-hover-color': borderColor,
   };
-  const navLinks = links.map(({label, target}) => {
+  const activeColorTheme: React.CSSProperties = {
+    '--background-color': hoverColor,
+    '--hover-color': hoverColor,
+    '--border-color': borderColor,
+    '--border-hover-color': borderColor,
+    cursor: 'default',
+  };
+  const navLinks = links.map(({label, target, internalLink, scrollBuffer}) => {
+    const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      if (internalLink) {
+        e.preventDefault();
+        push(pathname + search + target);
+        scrollToAnchor({anchor: target, bufferTop: scrollBuffer});
+      }
+    };
     return (
       <li key={label + target}>
         <Link
           href={target}
-          style={colorTheme}
+          style={hash === target ? activeColorTheme : colorTheme}
+          onClick={onClick}
         >
           {label}
         </Link>
@@ -174,6 +221,17 @@ const StickySideNav = (props: Props) => {
       <NavContainer>
         <Ul>
           {navLinks}
+          <li>
+            <ScrollToTopButton
+              style={{
+                opacity: !hash ? 0 : 1,
+                cursor: !hash ? 'default' : 'pointer',
+              }}
+              onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth'})}
+            >
+              <img src={BackToTopSVG} alt={'Scroll to Top'} />
+            </ScrollToTopButton>
+          </li>
         </Ul>
       </NavContainer>
     );
@@ -183,11 +241,23 @@ const StickySideNav = (props: Props) => {
       <Ul
         onClick={() => setMobileMenuOpen(false)}
       >
+        <li>
+          <Link
+            style={colorTheme}
+            href={'#'}
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, left: 0, behavior: 'smooth'});
+            }}
+          >
+            Back to Top
+          </Link>
+        </li>
         {navLinks}
       </Ul>
     );
     return (
-      <NavContainer>
+      <NavContainer ref={containerNodeRef}>
         <MobileMenuButton
           style={colorTheme}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
