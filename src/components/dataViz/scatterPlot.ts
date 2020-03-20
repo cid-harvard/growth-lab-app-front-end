@@ -8,6 +8,7 @@ export interface Datum {
   radius?: number;
   tooltipContent?: string;
   onClick?: () => void;
+  highlighted?: boolean;
 }
 
 interface Dimensions {
@@ -124,6 +125,34 @@ export default (input: Input) => {
         tooltip
             .style('display', 'none');
       });
+
+  const highlighted = data.find(d => d.highlighted);
+  if (highlighted) {
+    // Add highlighted dot background
+    container.append('g')
+      .selectAll('dot')
+      .data([highlighted])
+      .enter()
+      .append('circle')
+        .attr('cx', ({x}) => xScale(x))
+        .attr('cy', ({y}) => yScale(y))
+        .attr('r', 16)
+        .style('fill', ({fill}) => fill ? fill : '#69b3a2')
+        .style('opacity', '0.4')
+        .style('pointer-events', 'none');
+    // Add highlighted dot over to top
+    container.append('g')
+      .selectAll('dot')
+      .data([highlighted])
+      .enter()
+      .append('circle')
+        .attr('cx', ({x}) => xScale(x))
+        .attr('cy', ({y}) => yScale(y))
+        .attr('r', ({radius}) => radius ? radius : 4)
+        .style('fill', ({fill}) => fill ? fill : '#69b3a2')
+        .style('pointer-events', 'none');
+  }
+
 
   // append X axis label
   svg

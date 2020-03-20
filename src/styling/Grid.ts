@@ -34,11 +34,12 @@ const navMaxWidth = 180; // in px
 
 export const Root = styled.div`
   display: grid;
+  min-height: 100vh;
   grid-template-rows:
     [${gridLines.pageTop} ${gridLines.bannerTop}] auto
     [${gridLines.bannerBottom} ${gridLines.headerTop}] auto
     [${gridLines.headerBottom} ${gridLines.mobileMenuTop}] auto
-    [${gridLines.mobileMenuBottom} ${gridLines.contentTop}] auto
+    [${gridLines.mobileMenuBottom} ${gridLines.contentTop}] 1fr
     [${gridLines.contentBottom} ${gridLines.footerTop}] auto
     [${gridLines.footerBottom} ${gridLines.pageBottom}];
 
@@ -82,6 +83,7 @@ export const NavContainer = styled.nav`
   grid-row: ${gridLines.contentTop} / ${gridLines.contentBottom};
   grid-column: ${gridLines.navStart} / ${gridLines.navEnd};
   position: relative;
+  z-index: 500;
 
   @media (max-width: ${gridSmallMediaWidth}px) {
     grid-row: ${gridLines.mobileMenuTop} / ${gridLines.mobileMenuBottom};

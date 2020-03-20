@@ -25,7 +25,8 @@ import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {
   testCountryListData,
-  scatterPlotData,
+  generateScatterPlotData,
+  updateScatterPlotData,
   spiderPlotTestData2,
   spiderPlotTestData3,
   barChartData,
@@ -48,7 +49,9 @@ import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import StandardFooter from '../../components/text/StandardFooter';
-import transformNaceData from './transformNaceData';
+import transformNaceData, {RawNaceDatum} from './transformNaceData';
+
+const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -59,6 +62,8 @@ const featuresWithValues = albaniaMapData.features.map((feature: any, i: number)
 });
 const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
+const scatterPlotData = generateScatterPlotData(rawNaceData);
+
 const AlbaniaTool = () => {
   const metaTitle = 'Albania Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
@@ -66,7 +71,7 @@ const AlbaniaTool = () => {
   const {location: {pathname, search, hash}, push} = useHistory();
   const { industry } = queryString.parse(search);
 
-  const naceData = transformNaceData();
+  const naceData = transformNaceData(rawNaceData);
 
   const flattenedChildData: TreeNode[] = [];
   naceData.forEach(({children}: any) =>
@@ -98,52 +103,25 @@ const AlbaniaTool = () => {
     navAnchors: links.map(({target}) => target),
   });
 
-  return (
-    <>
-      <Helmet>
-        <title>{metaTitle}</title>
-        <meta name='description' content={metaDescription} />
-        <meta property='og:title' content={metaTitle} />
-        <meta property='og:description' content={metaDescription} />
-      </Helmet>
-      <GradientHeader
-        title={'Albania Complexity Dashboard'}
-        searchLabelText={'To Start Select an Industry'}
-        data={naceData}
-        onChange={updateSelectedIndustry}
-        initialSelectedValue={initialSelectedIndustry}
-        imageSrc={AlbaniaMapSvg}
-        backgroundColor={colorScheme.quaternary}
-        textColor={'#fff'}
-        linkColor={colorScheme.quinary}
-        links={[
-          {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
-        ]}
-      />
-      <StickySideNav
-        links={links}
-        backgroundColor={colorScheme.tertiary}
-        hoverColor={colorScheme.secondary}
-        borderColor={colorScheme.primary}
-        onHeightChange={(h) => setNavHeight(h)}
-      />
-      <Content>
-        <StickySubHeading
-          title={industryName}
-          highlightColor={colorScheme.tertiary}
-          onHeightChange={(h) => setStickyHeaderHeight(h)}
-        />
+  let content: React.ReactElement<any> | null;
+  let nav: React.ReactElement<any> | null;
+  if (selectedIndustry === undefined) {
+    content = null;
+    nav = null;
+  } else {
+    content = (
+      <>
         <TwoColumnSection id={'overview'}>
           <SectionHeader>Overview</SectionHeader>
           <DataViz
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
-            data={scatterPlotData}
-            axisLabels={{bottom: 'X Axis', left: 'Y Axis'}}
+            data={updateScatterPlotData(scatterPlotData, selectedIndustry)}
+            axisLabels={{bottom: 'Viability', left: 'Attractiveness'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
-            jsonToDownload={scatterPlotData}
+            jsonToDownload={updateScatterPlotData(scatterPlotData, selectedIndustry)}
           />
           <TextBlock>
             <p>
@@ -234,7 +212,7 @@ const AlbaniaTool = () => {
             vizType={VizType.BarChart}
             data={barChartData}
             overlayData={getBarChartOverlayData(selectedCountry.value)}
-            axisLabels={{left: 'Y Axis Label'}}
+            axisLabels={{left: 'US$ Millions'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Identifying Companies - ' + industryName}
@@ -406,7 +384,7 @@ const AlbaniaTool = () => {
             vizType={VizType.BarChart}
             data={barChartData}
             overlayData={barChartOverlayData2}
-            axisLabels={{left: 'Y Axis Label'}}
+            axisLabels={{left: 'US$ Millions'}}
           />
           <TextBlock align={Alignment.Center}>
             <LargeParagraph>
@@ -433,13 +411,50 @@ const AlbaniaTool = () => {
             </LargeParagraph>
           </TextBlock>
         </TwoColumnSection>
-      </Content>
+      </>
+    );
+    nav = (
       <StickySideNav
         links={links}
         backgroundColor={colorScheme.tertiary}
         hoverColor={colorScheme.secondary}
         borderColor={colorScheme.primary}
+        onHeightChange={(h) => setNavHeight(h)}
       />
+    );
+  }
+
+  return (
+    <>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name='description' content={metaDescription} />
+        <meta property='og:title' content={metaTitle} />
+        <meta property='og:description' content={metaDescription} />
+      </Helmet>
+      <GradientHeader
+        title={'Albania Complexity Dashboard'}
+        searchLabelText={'To Start Select an Industry'}
+        data={naceData}
+        onChange={updateSelectedIndustry}
+        initialSelectedValue={initialSelectedIndustry}
+        imageSrc={AlbaniaMapSvg}
+        backgroundColor={colorScheme.quaternary}
+        textColor={'#fff'}
+        linkColor={colorScheme.quinary}
+        links={[
+          {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+        ]}
+      />
+      {nav}
+      <Content>
+        <StickySubHeading
+          title={industryName}
+          highlightColor={colorScheme.tertiary}
+          onHeightChange={(h) => setStickyHeaderHeight(h)}
+        />
+        {content}
+      </Content>
       <StandardFooter
         footerItems={[
           {
