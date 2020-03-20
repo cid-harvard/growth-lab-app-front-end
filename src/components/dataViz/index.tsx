@@ -16,6 +16,8 @@ import {
 import {lighten} from 'polished';
 import downloadImage, { FileFormat } from './downloadImage';
 import { CSVLink } from 'react-csv';
+import DownloadSVGURL from './assets/download.svg';
+import DataSVGURL from './assets/data.svg';
 
 const Root = styled.div`
   width: 100%;
@@ -58,7 +60,8 @@ const downloadButtonStyles = `
   padding: 0.5rem 0.75rem;
   font-size: 0.6875rem;
   color: ${baseColor};
-  display: block;
+  display: flex;
+  align-items: center;
   margin: 0;
 
   &:hover {
@@ -72,6 +75,11 @@ const DownloadImageButton = styled.button`
 const DownloadDataButton = styled(CSVLink)`
   ${downloadButtonStyles};
   text-decoration: none;
+`;
+
+const SvgIcon = styled.img`
+  width: 0.9rem;
+  margin-right: 0.3rem;
 `;
 
 export enum VizType {
@@ -205,6 +213,7 @@ const DataViz = (props: Props) => {
       <DownloadImageButton
         onClick={() => handleDownloadImage(FileFormat.PNG)}
       >
+        <SvgIcon src={DownloadSVGURL} alt={'Download PNG'} />
         Download PNG
       </DownloadImageButton>
     </>
@@ -214,6 +223,7 @@ const DataViz = (props: Props) => {
       <DownloadImageButton
         onClick={() => handleDownloadImage(FileFormat.SVG)}
       >
+        <SvgIcon src={DownloadSVGURL} alt={'Download SVG'} />
         Download SVG
       </DownloadImageButton>
     </>
@@ -226,6 +236,7 @@ const DataViz = (props: Props) => {
         data={jsonToDownload}
         filename={filename}
       >
+        <SvgIcon src={DataSVGURL} alt={'Download Data'} />
         Download Data
       </DownloadDataButton>
     );

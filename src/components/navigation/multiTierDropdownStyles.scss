@@ -15,18 +15,40 @@
 
   .dropdown {
     .dropdown-trigger {
-      &.arrow::after {
+      padding-left: 30px;
+      &:before {
+        content: '';
         position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 30px;
+        height: 100%;
+        background-color: #fff;
+        display: block;
+        background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 19.8'%3E%3Cg class='cls-1' fill='%23666'%3E%3Cpath class='cls-2' d='M4,14,0,18l1.8,1.8,4-4A5.17,5.17,0,0,1,4,14' transform='translate(0 0)'/%3E%3Cpath class='cls-2' d='M11.7,15.2a6.92,6.92,0,0,1-6.8-7,6.77,6.77,0,0,1,6.64-6.9h.16a6.94,6.94,0,0,1,7,6.88v0a7.15,7.15,0,0,1-7,7M11.7,0A8.15,8.15,0,0,0,3.6,8.2h0a8.17,8.17,0,0,0,8,8.3h.06A8.41,8.41,0,0,0,20,8.2,8.26,8.26,0,0,0,11.7,0' transform='translate(0 0)' /%3E%3C/g%3E%3C/svg%3E%0A");
+        background-repeat: no-repeat;
+        background-position: 5px center;
+        background-size: 20px;
+      }
+      &.arrow::after {
+        content: '';
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9.25 5.39'%3E%3Cpolyline stroke-width='1.2' fill='none' stroke='%23666' points='8.88 0.38 4.64 4.62 0.39 0.38'%3E%3C/polyline%3E%3C/svg%3E");
+        position: absolute;
+        width: 20px;
         background-color: #fff;
         padding: 0 4px;
         right: 0;
         font-size: 0.8rem;
-        color: rgba(0, 0, 0, 0.6);
+        color: #666;
         top: 0;
         bottom: 0;
         margin: auto;
         display: flex;
         align-items: center;
+        background-repeat: no-repeat;
+        background-position: 5px center;
+        background-size: 15px;
       }
     }
 
