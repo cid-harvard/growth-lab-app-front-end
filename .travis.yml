@@ -15,11 +15,12 @@ before_install:
 	- export SERVER_USER=ubuntu
 	- export APP_DIR=/home/ubuntu
 	- if [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "backend" ]; then
-				export SERVER_ADDRESS=$STAGING_IP_ADDRESS;
-				export ENCRYPTED_DEPLOY_KEY=./deploy_keys/staging.enc;
-		elif [ $TRAVIS_BRANCH == "master" ]; then
-				export SERVER_ADDRESS=$PRODUCTION_IP_ADDRESS;
-				export ENCRYPTED_DEPLOY_KEY=./deploy_keys/prod_key.enc;
+			export SERVER_ADDRESS=$STAGING_IP_ADDRESS;
+			export ENCRYPTED_DEPLOY_KEY=./deploy_keys/staging.enc;
+		fi
+	- if [ $TRAVIS_BRANCH == "master" ]; then
+			export SERVER_ADDRESS=$PRODUCTION_IP_ADDRESS;
+			export ENCRYPTED_DEPLOY_KEY=./deploy_keys/prod_key.enc;
 		fi
 	# Decrypt deploy key and add to SSH keys
 	- openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv
