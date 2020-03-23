@@ -53,7 +53,7 @@ const CardImage = styled.img`
   max-height: 200px;
 `;
 
-const AlbaniaTool = () => {
+const LandingPage = () => {
   return (
     <>
       <GradientHeader
@@ -82,4 +82,4 @@ const AlbaniaTool = () => {
   );
 };
 
-export default AlbaniaTool;
+export default LandingPage;

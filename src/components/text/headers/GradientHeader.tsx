@@ -100,6 +100,7 @@ const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
 interface LinkDatum {
   label: string;
   target: string;
+  internal?: boolean;
 }
 
 interface BaseProps {
@@ -128,12 +129,12 @@ const HeaderWithSearch = (props: Props) => {
     title, imageSrc, textColor, backgroundColor, links, linkColor,
   } = props;
 
-  const linkElms = links && links.length ? links.map(({label, target}) => (
+  const linkElms = links && links.length ? links.map(({label, target, internal}) => (
     <ButtonLink
       primaryColor={linkColor}
       secondaryColor={textColor}
       href={target}
-      target={'_blank'}
+      target={internal ? '_blank' : undefined}
       key={target + label}
     >
       {label}
