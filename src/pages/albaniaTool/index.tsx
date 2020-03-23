@@ -65,7 +65,7 @@ const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 const scatterPlotData = generateScatterPlotData(rawNaceData);
 
 const AlbaniaTool = () => {
-  const metaTitle = 'Albania Dashboard | The Growth Lab at Harvard Kennedy School';
+  const metaTitle = 'Albania’s Industry Targeting Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
   const {location: {pathname, search, hash}, push} = useHistory();
@@ -433,7 +433,7 @@ const AlbaniaTool = () => {
         <meta property='og:description' content={metaDescription} />
       </Helmet>
       <GradientHeader
-        title={'Albania Complexity Dashboard'}
+        title={'Albania’s Industry Targeting Dashboard'}
         searchLabelText={'To Start Select an Industry'}
         data={naceData}
         onChange={updateSelectedIndustry}
