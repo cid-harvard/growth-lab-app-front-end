@@ -102,23 +102,30 @@ interface LinkDatum {
   target: string;
 }
 
-interface Props {
+interface BaseProps {
   title: string;
-  searchLabelText: string;
-  data: TreeNode[];
-  initialSelectedValue?: TreeNode;
-  onChange?: (val: TreeNode) => void;
-  imageSrc: string;
+  imageSrc?: string;
   backgroundColor: string;
   textColor: string;
   linkColor: string;
   links?: LinkDatum[];
 }
 
+type Props = BaseProps & (
+  {
+    hasSearch: false;
+  } | {
+    hasSearch: true;
+    searchLabelText: string;
+    data: TreeNode[];
+    initialSelectedValue?: TreeNode;
+    onChange?: (val: TreeNode) => void;
+  }
+);
+
 const HeaderWithSearch = (props: Props) => {
   const {
-    title, searchLabelText, data, initialSelectedValue,
-    imageSrc, textColor, backgroundColor, links, linkColor,
+    title, imageSrc, textColor, backgroundColor, links, linkColor,
   } = props;
 
   const linkElms = links && links.length ? links.map(({label, target}) => (
@@ -133,13 +140,30 @@ const HeaderWithSearch = (props: Props) => {
     </ButtonLink>
   )) : null;
 
+  const searchBar = props.hasSearch === false ? null : (
+    <SearchContainer>
+      <MultiTierSearch
+        searchLabelText={props.searchLabelText}
+        data={props.data}
+        initialSelectedValue={props.initialSelectedValue}
+        onChange={props.onChange}
+      />
+    </SearchContainer>
+  );
+
+  const img = !imageSrc ? null : (
+    <LogoContainer>
+      <Logo src={imageSrc} alt={title} />
+    </LogoContainer>
+  );
+
   return (
     <Root backgroundColor={backgroundColor}>
       <ContentGrid>
-        <LogoContainer>
-          <Logo src={imageSrc} alt={title} />
-        </LogoContainer>
-        <TitleContainer>
+        {img}
+        <TitleContainer
+          style={{gridColumn: imageSrc ? undefined : '1 / 3'}}
+        >
           <Title style={{color: textColor}}>{title}</Title>
           {linkElms}
         </TitleContainer>
@@ -152,14 +176,7 @@ const HeaderWithSearch = (props: Props) => {
             alt={'The Growth Lab at Harvard\'s Center for International Development'}
           />
         </GrowthLabLogoContainer>
-        <SearchContainer>
-          <MultiTierSearch
-            searchLabelText={searchLabelText}
-            data={data}
-            initialSelectedValue={initialSelectedValue}
-            onChange={props.onChange}
-          />
-        </SearchContainer>
+        {searchBar}
       </ContentGrid>
     </Root>
   );

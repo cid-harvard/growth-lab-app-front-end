@@ -434,6 +434,7 @@ const AlbaniaTool = () => {
       </Helmet>
       <GradientHeader
         title={'Albania’s Industry Targeting Dashboard'}
+        hasSearch={true}
         searchLabelText={'To Start Select an Industry'}
         data={naceData}
         onChange={updateSelectedIndustry}
