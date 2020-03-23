@@ -2,7 +2,7 @@ import { select } from 'd3-selection';
 import { scaleOrdinal } from 'd3-scale';
 import { ExtendedFeature } from 'd3';
 import React, {useContext, useEffect, useRef} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';

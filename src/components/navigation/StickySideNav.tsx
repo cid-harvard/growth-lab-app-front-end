@@ -3,7 +3,7 @@ import {
   NavContainer,
   gridSmallMediaWidth,
 } from '../../styling/Grid';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
   baseColor,
   secondaryFont,

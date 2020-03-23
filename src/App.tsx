@@ -16,6 +16,7 @@ import { Root } from './styling/Grid';
 import { Routes } from './routing/routes';
 import debounce from 'lodash/debounce';
 import './styling/fonts/fonts.css';
+import Loading from './components/general/Loading';
 
 const LandingPage = lazy(() => import('./pages/landingPage'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
@@ -64,7 +65,7 @@ function App() {
         <Router basename={basename}>
           <Root>
             <GlobalStyles />
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading />}>
               <Switch>
                 <Route exact path={Routes.Landing}
                   render={(props: any) => <LandingPage {...props} />}

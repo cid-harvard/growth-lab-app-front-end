@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useContext} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {gridSmallMediaWidth} from '../../styling/Grid';
 import { mobileHeight} from '../navigation/StickySideNav';
 import {

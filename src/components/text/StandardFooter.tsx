@@ -7,7 +7,7 @@ import {
   baseColor,
   secondaryFont,
 } from '../../styling/styleUtils';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { AppContext } from '../../App';
 import GrowthLabLogoPNG from './growth-lab-white.png';
 

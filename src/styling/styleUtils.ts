@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 export const baseColor = '#333333'; // dark gray/black color for text
 export const lightBaseColor = '#7c7c7c'; // light gray color for subtitles and contextual information

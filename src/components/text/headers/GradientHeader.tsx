@@ -7,7 +7,7 @@ import {
   FullWidthHeader,
   FullWidthHeaderContent,
 } from '../../../styling/Grid';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {TreeNode} from 'react-dropdown-tree-select';
 import MultiTierSearch from '../../navigation/MultiTierSearch';
 import GrowthLabLogoImgSrc from './growth-lab.png';

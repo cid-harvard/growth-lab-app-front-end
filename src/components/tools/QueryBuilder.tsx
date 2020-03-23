@@ -1,5 +1,5 @@
 import React, {useState, useContext, useRef, useEffect} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
   SectionHeaderSecondary,
   baseColor,
