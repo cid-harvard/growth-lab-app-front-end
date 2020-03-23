@@ -25,8 +25,12 @@ const Ul = styled.ul`
   text-align: right;
 
   @media (max-width: ${gridSmallMediaWidth}px) {
-    height: ${mobileHeight}px;
     padding: 0;
+    position: absolute;
+    top: ${mobileHeight}px;
+    left: 0;
+    right: 0;
+    width: 100%;
   }
 `;
 
