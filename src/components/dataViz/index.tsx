@@ -10,10 +10,9 @@ import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import {
   baseColor,
-  lightBorderColor,
   secondaryFont,
 } from '../../styling/styleUtils';
-import {lighten} from 'polished';
+import {darken} from 'polished';
 import downloadImage, { FileFormat } from './downloadImage';
 import { CSVLink } from 'react-csv';
 import DownloadSVGURL from './assets/download.svg';
@@ -55,7 +54,7 @@ const DownloadButtonsContainer = styled.div`
 `;
 
 const downloadButtonStyles = `
-  background-color: ${lightBorderColor};
+  background-color: #ecf0f2;
   font-family: ${secondaryFont};
   padding: 0.5rem 0.75rem;
   font-size: 0.6875rem;
@@ -65,7 +64,7 @@ const downloadButtonStyles = `
   margin: 0;
 
   &:hover {
-    background-color: ${lighten(0.04, lightBorderColor)};
+    background-color: ${darken(0.04, '#ecf0f2')};
   }
 `;
 

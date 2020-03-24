@@ -35,7 +35,6 @@ const HighlightBorder = styled.span`
 interface Props {
   title: string;
   highlightColor: string;
-  borderColor: string;
   onHeightChange?: (height: number) => void;
 }
 

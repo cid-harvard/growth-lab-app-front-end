@@ -137,7 +137,7 @@ const AlbaniaTool = () => {
             id={'albania-spyder-chart-2'}
             vizType={VizType.RadarChart}
             data={spiderPlotTestData2}
-            color={{start: colorScheme.primary, end: colorScheme.primary}}
+            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
             maxValue={100}
             enablePNGDownload={true}
             enableSVGDownload={true}
@@ -173,7 +173,7 @@ const AlbaniaTool = () => {
             id={'albania-spyder-chart-3'}
             vizType={VizType.RadarChart}
             data={spiderPlotTestData3}
-            color={{start: colorScheme.primary, end: colorScheme.primary}}
+            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
             maxValue={100}
             enablePNGDownload={true}
             enableSVGDownload={true}
@@ -255,11 +255,11 @@ const AlbaniaTool = () => {
               </SmallOrderedList>
             </NarrowPaddedColumn>
             <NarrowPaddedColumn>
-              <HeaderWithLegend legendColor={colorScheme.primary}>
+              <HeaderWithLegend legendColor={colorScheme.quaternary}>
                 <div>
                   Top Global FDI in <InlineToggle
                       data={testCountryListData}
-                      colorClassName={'albania-orange'}
+                      colorClassName={'albania-color-scheme'}
                       onChange={setSelectedCountry}
                     />
                 </div>
@@ -421,7 +421,7 @@ const AlbaniaTool = () => {
         hoverColor={'#b7c7cd'}
         borderTopColor={'#fff'}
         onHeightChange={(h) => setNavHeight(h)}
-        marginTop={(stickyHeaderHeight + 2) + 'px'}
+        marginTop={stickyHeaderHeight + 'px'}
       />
     );
   }
@@ -458,7 +458,6 @@ const AlbaniaTool = () => {
           title={industryName}
           highlightColor={colorScheme.primary}
           onHeightChange={(h) => setStickyHeaderHeight(h)}
-          borderColor={colorScheme.primaryBorder}
         />
         {content}
       </Content>

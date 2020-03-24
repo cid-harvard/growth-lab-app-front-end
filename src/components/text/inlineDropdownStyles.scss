@@ -67,14 +67,14 @@
     }
   }
 
-  &.albania-orange {
+  &.albania-color-scheme {
     .dropdown {
       .dropdown-trigger {
         border: none;
-        border-bottom: solid 2px #D75037;
-        color: #D75037;
+        border-bottom: solid 2px #4d7082;
+        color: #4d7082;
         &.arrow::after {
-          color: #D75037;
+          color: #4d7082;
           margin-left: 0.2rem;
           font-size: 0.6rem;
         }
