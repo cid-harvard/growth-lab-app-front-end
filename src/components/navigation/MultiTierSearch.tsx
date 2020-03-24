@@ -8,13 +8,14 @@ import 'react-dropdown-tree-select/dist/styles.css';
 import './multiTierDropdownStyles.scss';
 
 const SearchContainer = styled.div`
-  max-width: 600px;
+  max-width: 400px;
   margin: auto;
   text-align: center;
 `;
 
 const SearchLabel = styled(Label)`
   text-transform: uppercase;
+  margin-bottom: 0.65rem;
 `;
 
 interface Props {
