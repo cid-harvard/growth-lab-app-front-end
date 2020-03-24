@@ -440,9 +440,12 @@ const AlbaniaTool = () => {
         onChange={updateSelectedIndustry}
         initialSelectedValue={initialSelectedIndustry}
         imageSrc={AlbaniaMapSvg}
-        backgroundColor={colorScheme.quaternary}
+        imageProps={{
+          imgWidth: '110px',
+        }}
+        backgroundColor={colorScheme.header}
         textColor={'#fff'}
-        linkColor={colorScheme.quinary}
+        linkColor={'#fff'}
         links={[
           {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
         ]}
