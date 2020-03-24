@@ -42,7 +42,7 @@ const DynamicTable = (props: Props) => {
   const tableHeader = columns.map(({label}) => <Cell style={{color}} key={label}>{label}</Cell>);
   const rows = data.map((d, i) => {
     const gridRow = i + 2;
-    const backgroundColor = gridRow % 2 === 0 ? undefined : rgba(color, 0.08);
+    const backgroundColor = gridRow % 2 === 0 ? undefined : rgba(color, 0.2);
     return Object.keys(d).map(function(key: keyof Datum) {
       const gridColumn = columns.findIndex(c => c.key === key) + 1;
       if (gridColumn) {

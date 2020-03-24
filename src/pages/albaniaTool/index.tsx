@@ -12,13 +12,12 @@ import {
   SmallParagraph,
   SmallOrderedList,
   NarrowPaddedColumn,
-  LargeParagraph,
   SectionHeaderSecondary,
 } from '../../styling/styleUtils';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import DataViz, {VizType} from '../../components/dataViz';
-import TextBlock, {Alignment} from '../../components/text/TextBlock';
+import TextBlock from '../../components/text/TextBlock';
 import InlineToggle from '../../components/text/InlineToggle';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
@@ -50,6 +49,7 @@ import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import StandardFooter from '../../components/text/StandardFooter';
 import transformNaceData, {RawNaceDatum} from './transformNaceData';
+import {rgba} from 'polished';
 
 const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
 
@@ -302,12 +302,13 @@ const AlbaniaTool = () => {
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
           <QueryBuilder
-            title={'Customize Your List & Download'}
+            title={'Customize your list & download'}
             fullDownload={{
               label: 'Download the full list of companies',
               onClick: noop,
             }}
-            primaryColor={colorScheme.primary}
+            primaryColor={rgba(colorScheme.primary, 0.2)}
+            hoverColor={colorScheme.primary}
             onQueryDownloadClick={noop}
             selectFields={[
               {
@@ -325,18 +326,18 @@ const AlbaniaTool = () => {
             ]}
             checkboxes={[
               {
-                label: 'Filter #1',
-                value: 'Filter #1',
+                label: 'Placeholder #1',
+                value: 'Placeholder #1',
                 checked: false,
               },
               {
-                label: 'Filter #2',
-                value: 'Filter #2',
+                label: 'Placeholder #2',
+                value: 'Placeholder #2',
                 checked: false,
               },
               {
-                label: 'Filter #3',
-                value: 'Filter #3',
+                label: 'Placeholder #3',
+                value: 'Placeholder #3',
                 checked: false,
               },
             ]}
@@ -352,10 +353,10 @@ const AlbaniaTool = () => {
             minColor={colorScheme.tertiary}
             maxColor={colorScheme.quaternary}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
             <ColorScaleLegend
               minLabel={0.28}
               maxLabel={30.8}
@@ -372,10 +373,10 @@ const AlbaniaTool = () => {
             data={testTableData1}
             color={colorScheme.quaternary}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
@@ -386,10 +387,10 @@ const AlbaniaTool = () => {
             overlayData={barChartOverlayData2}
             axisLabels={{left: 'US$ Millions'}}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
             <Legend
               legendList={[
                 {label: 'Industry', fill: lightBorderColor, stroke: undefined},
@@ -405,10 +406,10 @@ const AlbaniaTool = () => {
             data={testTableData1}
             color={colorScheme.quaternary}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
           </TextBlock>
         </TwoColumnSection>
       </>

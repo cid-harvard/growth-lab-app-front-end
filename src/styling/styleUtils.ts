@@ -94,6 +94,7 @@ export const SectionHeader = styled(SectionHeaderBase)`
   align-items: center;
   font-size: 1.4rem;
   text-transform: uppercase;
+  font-weight: 400;
 
   &:after {
     content: '';
@@ -111,6 +112,8 @@ interface TitleColorProps {
 
 export const SectionHeaderSecondary = styled(SectionHeaderBase)<TitleColorProps>`
   font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: 600;
   color: ${({color}) => color ? color : baseColor};
 `;
 
