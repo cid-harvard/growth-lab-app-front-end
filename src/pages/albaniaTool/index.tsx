@@ -416,10 +416,12 @@ const AlbaniaTool = () => {
     nav = (
       <StickySideNav
         links={links}
-        backgroundColor={colorScheme.tertiary}
-        hoverColor={colorScheme.secondary}
-        borderColor={colorScheme.primary}
+        backgroundColor={'#ecf0f2'}
+        borderColor={'#819ea8'}
+        hoverColor={'#b7c7cd'}
+        borderTopColor={'#fff'}
         onHeightChange={(h) => setNavHeight(h)}
+        marginTop={(stickyHeaderHeight + 2) + 'px'}
       />
     );
   }
@@ -454,8 +456,9 @@ const AlbaniaTool = () => {
       <Content>
         <StickySubHeading
           title={industryName}
-          highlightColor={colorScheme.tertiary}
+          highlightColor={colorScheme.primary}
           onHeightChange={(h) => setStickyHeaderHeight(h)}
+          borderColor={colorScheme.primaryBorder}
         />
         {content}
       </Content>

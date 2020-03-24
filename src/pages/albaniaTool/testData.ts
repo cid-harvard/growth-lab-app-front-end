@@ -12,6 +12,7 @@ import {rgba} from 'polished';
 
 export const colorScheme = {
   primary: '#84a9ac',
+  primaryBorder: 'rgb(170, 195, 197)',
   secondary: '#F8CCBF',
   tertiary: '#FCEEEB',
   quaternary: '#D75037',

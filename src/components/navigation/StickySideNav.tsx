@@ -23,6 +23,7 @@ const Ul = styled.ul`
   padding: 0 0 0 1.3rem;
   list-style: none;
   text-align: right;
+  border-top: solid 1px transparent;
 
   @media (max-width: ${gridSmallMediaWidth}px) {
     padding: 0;
@@ -166,11 +167,16 @@ interface Props {
   hoverColor: string;
   borderColor: string;
   onHeightChange?: (height: number) => void;
+  marginTop?: string;
+  borderTopColor?: string;
 }
 
 
 const StickySideNav = (props: Props) => {
-  const { links, backgroundColor, hoverColor, borderColor } = props;
+  const {
+    links, backgroundColor, hoverColor, borderColor, marginTop,
+    borderTopColor,
+   } = props;
 
   const { windowWidth } = useContext(AppContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
@@ -193,7 +199,7 @@ const StickySideNav = (props: Props) => {
     '--border-hover-color': borderColor,
   };
   const activeColorTheme: React.CSSProperties = {
-    '--background-color': hoverColor,
+    '--background-color': backgroundColor,
     '--hover-color': hoverColor,
     '--border-color': borderColor,
     '--border-hover-color': borderColor,
@@ -223,7 +229,7 @@ const StickySideNav = (props: Props) => {
   if (windowWidth > gridSmallMediaWidth) {
     return (
       <NavContainer>
-        <Ul>
+        <Ul style={{top: marginTop, borderTopColor}}>
           {navLinks}
           <li>
             <ScrollToTopButton
