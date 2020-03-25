@@ -1,44 +1,109 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Country Dashboards by the Growth Lab at Harvard's Center for International Development
 
-## Available Scripts
+Country Dashboards provides a framework for quickly building custom data visualization tools.
+https://cid-harvard.github.io/country-tools-front-end/
 
-In the project directory, you can run:
+## Table of Contents
+  - [Getting Started](#gettingstarted)
+  - [Building a Page](#buildingapage)
+  - [Style Utilities](#styleutilites)
+  - [Components](#components)
+  - [Custom Hooks](#customhooks)
+  - [Guidelines For Creating New Components](#componentguidelines)
 
-### `yarn start`
+<a name="gettingstarted"/>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Getting started
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Once this repo has been cloned, navigate to the directory via command line and run
 
-### `yarn test`
+`npm install`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This will install all of your dependencies. You can now run the project locally with
 
-### `yarn build`
+`npm start`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+You should now be able to see the project running at localhost:3000
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+As you work on projects on this repo, make sure to run 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`npm run lint:fix`
 
-### `yarn eject`
+before pushing any code to make sure it keeps consistent standards.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<a name="buildingapage"/>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Building a Page
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+All of the pages along with their uniquely associated content and functions should be housed in `src/pages` directory.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. The first step is to create a new directory for the new page. For example, to create a new folder for the Your Data Viz Dashboard should look similar to this:
+  
+   `src/pages/yourNewDataVizDashboard`
 
-## Learn More
+2. Next create an `index.tsx` file within the new directory and set it up with a minimal structure:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```
+    import React from 'react';
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    const YourNewDataVizDashboard = () => {
+      return (<div>Hello World</div>);
+    }
+
+    export default YourNewDataVizDashboard;
+   ```
+
+3. Now that you have a basic skeleton page ready, navigate to `src/routing/routes.ts` and add a new route for your page, like so:
+
+   ```
+    export enum Routes {
+      Landing = '/',
+      /* Add your new route at the end of the list of existing routes */
+      YourNewDataVizDashboard = '/your-new-data-viz-dashboard',
+    }
+   ```
+4. Once you have the route defined, you will want to add it to `src/App.tsx`. There are two locations within `App.tsx` that will have to be updated. The first is near the top, where you will have to import it with `lazy` the way the other pages are being imported:
+
+   ```
+    const LandingPage = lazy(() => import('./pages/landingPage'));
+    /* import your new page at the end of the list of lazy imports */
+    const YourNewDataVizDashboard = lazy(() => import('./pages/yourNewDataVizDashboard'));
+   ```
+
+   Then near the bottom of the page in the `return` statement and within the `Switch` component, you will have to add a `Route` component for your page:
+
+   ```
+    <Switch>
+      <Route exact path={Routes.Landing}
+        render={(props: any) => <LandingPage {...props} />}
+      />
+      {/* Your page should go at the end of the other routes but before the 404 page */}
+      <Route exact path={Routes.YourNewDataVizDashboard}
+        render={(props: any) => <YourNewDataVizDashboard {...props} />}
+      />
+      {/* If none of the above routes are found show the 404 page */}
+      <Route component={PageNotFound} />
+    </Switch>
+   ```
+
+5. With that, your new page should now be running and visible at the route you specified. To build out the page further, use the style utilites and components specified below. You can also create new components, but make sure to follow our [Guidelines For Creating New Components](#componentguidelines).
+
+<a name="styleutilites"/>
+
+## Style Utilities
+
+
+<a name="components"/>
+
+## Components
+
+
+<a name="customhooks"/>
+
+## Custom Hooks
+
+
+<a name="componentguidelines"/>
+
+## Guidelines For Creating New Components
+
