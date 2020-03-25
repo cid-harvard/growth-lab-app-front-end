@@ -69,7 +69,8 @@ const AlbaniaTool = () => {
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
   const {location: {pathname, search, hash}, push} = useHistory();
-  const { industry } = queryString.parse(search);
+  const parsedQuery = queryString.parse(search);
+  const industry = parsedQuery.location ? parsedQuery.location : '74.1'; // Default to Specialised design activities;
 
   const naceData = transformNaceData(rawNaceData);
 
