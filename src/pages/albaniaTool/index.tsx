@@ -325,6 +325,7 @@ const AlbaniaTool = () => {
                 dependentOn: 'country',
               },
             ]}
+            checkboxTitle={'Include in data:'}
             checkboxes={[
               {
                 label: 'Placeholder #1',

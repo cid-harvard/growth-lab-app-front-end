@@ -200,6 +200,7 @@ interface Props {
   title: string;
   fullDownload?: FullDownloadProps;
   selectFields?: SelectBoxProps[];
+  checkboxTitle?: string;
   checkboxes?: CheckboxProps[];
   primaryColor: string;
   onQueryDownloadClick: (data: CallbackData) => void;
@@ -209,7 +210,7 @@ interface Props {
 const QueryBuilder = (props: Props) => {
   const {
     title, fullDownload, selectFields, checkboxes, primaryColor, onQueryDownloadClick,
-    hoverColor,
+    hoverColor, checkboxTitle,
   } = props;
   const { windowWidth } = useContext(AppContext);
 
@@ -222,13 +223,13 @@ const QueryBuilder = (props: Props) => {
   const firstSelectBoxLabelNodeRef = useRef<HTMLLabelElement | null>(null);
 
   useEffect(() => {
-    if (firstSelectBoxLabelNodeRef && firstSelectBoxLabelNodeRef.current) {
+    if (!checkboxTitle && firstSelectBoxLabelNodeRef && firstSelectBoxLabelNodeRef.current) {
       const node = firstSelectBoxLabelNodeRef.current;
       if (checkboxMarginTop === undefined) {
         setCheckboxMarginTop(node.clientHeight + (labelMarginBottom * 16));
       }
     }
-  }, [firstSelectBoxLabelNodeRef, checkboxMarginTop, setCheckboxMarginTop]);
+  }, [checkboxTitle, firstSelectBoxLabelNodeRef, checkboxMarginTop, setCheckboxMarginTop]);
 
   let fullDownloadColumn: React.ReactElement<any> | null;
   if (fullDownload) {
@@ -346,11 +347,17 @@ const QueryBuilder = (props: Props) => {
         {searchFieldList}
       </div>
     ) : null;
+    const checkboxTitleEl = checkboxTitle ? (
+      <CheckboxContainer>
+        <Label>{checkboxTitle}</Label>
+      </CheckboxContainer>
+    ) : null;
     const checkboxElm = checkboxList ? (
       <div style={{
         gridColumn: searchFieldList && windowWidth >= 600 ? 2 : '1 / -1',
         marginTop: checkboxMarginTop,
       }}>
+        {checkboxTitleEl}
         {checkboxList}
       </div>
     ) : null;
