@@ -47,7 +47,7 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
-import StandardFooter from '../../components/text/StandardFooter';
+import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import transformNaceData, {RawNaceDatum} from './transformNaceData';
 import {rgba} from 'polished';
 
@@ -205,7 +205,9 @@ const AlbaniaTool = () => {
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
-        <SectionHeader id={'industry-potential'}>Industry potential</SectionHeader>
+        <TwoColumnSection id={'industry-potential'}>
+          <SectionHeader>Industry potential</SectionHeader>
+        </TwoColumnSection>
         <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
@@ -345,7 +347,9 @@ const AlbaniaTool = () => {
             ]}
           />
         </div>
-        <SectionHeader id={'industry-now'}>Industry Now</SectionHeader>
+        <TwoColumnSection id={'industry-now'}>
+          <SectionHeader>Industry Now</SectionHeader>
+        </TwoColumnSection>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>Location of Workers</SectionHeaderSecondary>
           <DataViz
@@ -464,30 +468,39 @@ const AlbaniaTool = () => {
         />
         {content}
       </Content>
-      <StandardFooter
-        footerItems={[
+      <ExploreNextFooter
+        backgroundColor={colorScheme.quaternary}
+        socialItems={[
           {
-            title: 'Optional Column Title',
-            items: [
-              {label: 'List Item', target: '#'},
-              {label: 'List Item 2', target: '#'},
-              {label: 'List items dont have to be links'},
-            ],
+            target: '#',
+            type: SocialType.facebook,
           },
           {
-            items: [
-              {label: 'Second Colum or Row', target: '#'},
-              {label: 'Link Layout Changes Responsively'},
-              {label: 'Link #3', target: '#'},
-              {label: 'Link #4', target: '#'},
-            ],
+            target: '#',
+            type: SocialType.twitter,
           },
           {
-            items: [
-              {label: 'Another Link', target: '#'},
-              {label: 'One More Link', target: '#'},
-            ],
+            target: '#',
+            type: SocialType.linkedin,
           },
+        ]}
+        exploreNextLinks={[
+          {
+            label: 'Country Profile',
+            target: '#',
+          },
+          {
+            label: 'Country Research',
+            target: '#',
+          },
+          {
+            label: 'Country Story',
+            target: '#',
+          },
+        ]}
+        attributions={[
+          'Growth Lab’s Albania Research Team:  Miguel Santos, Ermal Frasheri, Timothy O’Brien, Daniela Muhaj, Patricio Goldstein and Jessie Lu.',
+          'Growth Lab’s Digital Development & Design Team:  Annie White, Brendan Leonard, Nil Tuzcu and Kyle Soeltz.',
         ]}
       />
     </>
