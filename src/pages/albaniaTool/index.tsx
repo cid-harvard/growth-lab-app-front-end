@@ -472,22 +472,22 @@ const AlbaniaTool = () => {
         backgroundColor={colorScheme.quaternary}
         socialItems={[
           {
-            target: '#',
+            target: 'https://www.facebook.com/HarvardCID/',
             type: SocialType.facebook,
           },
           {
-            target: '#',
+            target: 'https://twitter.com/HarvardGrwthLab',
             type: SocialType.twitter,
           },
           {
-            target: '#',
+            target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
             type: SocialType.linkedin,
           },
         ]}
         exploreNextLinks={[
           {
             label: 'Country Profile',
-            target: '#',
+            target: 'https://atlas.cid.harvard.edu/countries/4',
           },
           {
             label: 'Country Research',
