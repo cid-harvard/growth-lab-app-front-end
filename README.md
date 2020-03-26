@@ -104,6 +104,70 @@ Style utilities exports everything from global variables like colors and fonts, 
 
 ## Components
 
+Components are more complete and complex pieces that can be used to build out a page. They include data visualizations, headers, search components, and more. If you add a new component or modify an existing one, please update the documentation.
+
+#### DataViz
+
+The data viz component, located at `src/components/dataViz` is the catch-all for any data visualizations. Below are the different props the DataViz component can take in.
+
+- **id** *(required)*: string
+
+   A unique id for visualization.
+
+- **jsonToDownload** *(optional)*: object[]
+
+   An array of objects. Each object in the array should be the same shape. If this is provided it will show the "Download Data" button under the visualization and allow the user to download the data in CSV format.
+
+- **enablePNGDownload** *(optional)*: boolean
+  
+   Set this to `true` to enable the "Download PNG" button and functionality.
+
+- **enableSVGDownload** *(optional)*: boolean
+
+   Set this to `true` to enable the "Download SVG" button and functionality.
+
+- **chartTitle** *(optional)*: string
+
+   The optional chart title is used only if one of the above download features is enabled. The chart title replaces the generic text used for the file name if the user downloads an image or csv.
+
+- **vizType** *(required)*: VizType
+
+   VizType is an enum also exported from `src/components/dataViz`. Depending on the type, there are a number of additional props required, shown below. It can be of the following types -
+
+   ```tsx
+   enum VizType {
+      ScatterPlot = 'ScatterPlot',
+      BarChart = 'BarChart',
+      RadarChart = 'RadarChart',
+      GeoMap = 'GeoMap',
+    }
+   ```
+   - **VizType.ScatterPlot**
+
+      **data** *(required)*: ScatterPlotDatum[];
+      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
+
+
+   - **VizType.BarChart**
+
+      **data** *(required)*: BarChartDatum[];
+      **overlayData** *(optional)*: BarChartDatum[];
+      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
+
+
+   - **VizType.RadarChart**
+
+      **data** *(required)*: RadarChartDatum[];
+      **maxValue** *(required)*: number;
+      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
+
+
+   - **VizType.GeoMap**
+
+      **data** *(required)*: ExtendedFeature<any, GeoJsonCustomProperties>;
+      **minColor** *(required)*: string;
+      **maxColor** *(required)*: string;
+
 
 <a name="customhooks"/>
 
