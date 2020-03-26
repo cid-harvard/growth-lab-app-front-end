@@ -106,11 +106,11 @@ Style utilities exports everything from global variables like colors and fonts, 
 
 Components are more complete and complex pieces that can be used to build out a page. They include data visualizations, headers, search components, and more. If you add a new component or modify an existing one, please update the documentation.
 
-#### DataViz
+#### <DataViz />
 
 The data viz component, located at `src/components/dataViz` is the catch-all for any data visualizations. Below are the different props the DataViz component can take in.
 
-- **id** *(required)*: string
+- **id**: string
 
    A unique id for visualization.
 
@@ -130,7 +130,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
    The optional chart title is used only if one of the above download features is enabled. The chart title replaces the generic text used for the file name if the user downloads an image or csv.
 
-- **vizType** *(required)*: VizType
+- **vizType**: VizType
 
    VizType is an enum also exported from `src/components/dataViz`. Depending on the type, there are a number of additional props required, shown below. It can be of the following types -
 
@@ -143,30 +143,52 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
     }
    ```
    - **VizType.ScatterPlot**
+      **data**: ScatterPlotDatum[];
+         ScatterPlotDatum takes the following values:
+         - label: string;
+         - x: number;
+         - y: number;
+         - fill *(optional)*: string;
+         - radius*(optional)*: number;
+         - tooltipContent *(optional)*: string;
+         - highlighted *(optional)*: boolean;
 
-      **data** *(required)*: ScatterPlotDatum[];
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
    - **VizType.BarChart**
+      **data**: BarChartDatum[];
+         BarChartDatum takes the following values:
+         - x: string;
+         - y: number;
+         - fill *(optional)*: string;
+         - stroke *(optional)*: string;
+         - tooltipContent *(optional)*: string;
 
-      **data** *(required)*: BarChartDatum[];
       **overlayData** *(optional)*: BarChartDatum[];
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
    - **VizType.RadarChart**
+      **data**: RadarChartDatum[];
+         RadarChartDatum takes the following values:
+         - label: string;
+         - value: number;
 
-      **data** *(required)*: RadarChartDatum[];
-      **maxValue** *(required)*: number;
+      **maxValue**: number;
+         Radar charts require a max value at which to compare each individual datums values against.
+
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
    - **VizType.GeoMap**
+      **data**: ExtendedFeature<any, GeoJsonCustomProperties>;
+         ExtendedFeature is a standard GeoJson object but it requires the following values to be appended within the `.features` data:
+         - percent: number; *(Number between 0 and 100)*
+         - tooltipContent *(optional)*: string;
 
-      **data** *(required)*: ExtendedFeature<any, GeoJsonCustomProperties>;
-      **minColor** *(required)*: string;
-      **maxColor** *(required)*: string;
+      **minColor**: string;
+      **maxColor**: string;
 
 
 <a name="customhooks"/>
