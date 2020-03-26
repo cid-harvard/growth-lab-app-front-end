@@ -9,6 +9,7 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
   - [Building a Page](#buildingapage)
   - [Grid Layout and Style Utilities](#styleutilites)
   - [Components](#components)
+    - [DataViz](#datavizcomponent)
   - [Custom Hooks](#customhooks)
   - [Guidelines For Creating New Components](#componentguidelines)
 
@@ -106,6 +107,8 @@ Style utilities exports everything from global variables like colors and fonts, 
 
 Components are more complete and complex pieces that can be used to build out a page. They include data visualizations, headers, search components, and more. If you add a new component or modify an existing one, please update the documentation.
 
+<a name="datavizcomponent"/>
+
 #### <DataViz />
 
 The data viz component, located at `src/components/dataViz` is the catch-all for any data visualizations. Below are the different props the DataViz component can take in.
@@ -172,6 +175,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - tooltipContent *(optional)*: string;
 
       **overlayData** *(optional)*: BarChartDatum[];
+
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
@@ -201,6 +205,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - tooltipContent *(optional)*: string;
 
       **minColor**: string;
+
       **maxColor**: string;
 
 
