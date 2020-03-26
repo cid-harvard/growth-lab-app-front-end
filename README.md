@@ -143,8 +143,11 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
     }
    ```
    - **VizType.ScatterPlot**
+
       **data**: ScatterPlotDatum[];
+
          ScatterPlotDatum takes the following values:
+
          - label: string;
          - x: number;
          - y: number;
@@ -157,8 +160,11 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
 
    - **VizType.BarChart**
+
       **data**: BarChartDatum[];
+
          BarChartDatum takes the following values:
+
          - x: string;
          - y: number;
          - fill *(optional)*: string;
@@ -170,20 +176,27 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
 
    - **VizType.RadarChart**
+
       **data**: RadarChartDatum[];
+
          RadarChartDatum takes the following values:
+
          - label: string;
          - value: number;
 
       **maxValue**: number;
+
          Radar charts require a max value at which to compare each individual datums values against.
 
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
    - **VizType.GeoMap**
+
       **data**: ExtendedFeature<any, GeoJsonCustomProperties>;
+
          ExtendedFeature is a standard GeoJson object but it requires the following values to be appended within the `.features` data:
+
          - percent: number; *(Number between 0 and 100)*
          - tooltipContent *(optional)*: string;
 
