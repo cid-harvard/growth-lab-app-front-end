@@ -170,7 +170,7 @@ const StandardFooter = (props: Props) => {
         href={target}
         target='_blank'
         rel='noopener noreferrer'
-        key={target}
+        key={target + type}
       >
         <Icon src={socialIcon[type]} />
       </SocialLink>
@@ -183,7 +183,7 @@ const StandardFooter = (props: Props) => {
         target='_blank'
         rel='noopener noreferrer'
         hoveColor={backgroundColor}
-        key={target}
+        key={target + label}
       >
         {label}
       </ExploreNextButton>
