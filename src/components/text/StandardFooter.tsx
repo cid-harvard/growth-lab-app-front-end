@@ -7,9 +7,9 @@ import {
   baseColor,
   secondaryFont,
 } from '../../styling/styleUtils';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { AppContext } from '../../App';
-import GrowthLabLogoPNG from './growth-lab-white.png';
+import GrowthLabLogoPNG from './assets/growth-lab-white.png';
 
 const Root = styled(FullWidthFooter)`
   background-color: ${baseColor};

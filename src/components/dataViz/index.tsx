@@ -2,7 +2,7 @@ import { select } from 'd3-selection';
 import { scaleOrdinal } from 'd3-scale';
 import { ExtendedFeature } from 'd3';
 import React, {useContext, useEffect, useRef} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
@@ -10,12 +10,13 @@ import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import {
   baseColor,
-  lightBorderColor,
   secondaryFont,
 } from '../../styling/styleUtils';
-import {lighten} from 'polished';
+import {darken} from 'polished';
 import downloadImage, { FileFormat } from './downloadImage';
 import { CSVLink } from 'react-csv';
+import DownloadSVGURL from './assets/download.svg';
+import DataSVGURL from './assets/data.svg';
 
 const Root = styled.div`
   width: 100%;
@@ -53,16 +54,17 @@ const DownloadButtonsContainer = styled.div`
 `;
 
 const downloadButtonStyles = `
-  background-color: ${lightBorderColor};
+  background-color: #ecf0f2;
   font-family: ${secondaryFont};
   padding: 0.5rem 0.75rem;
   font-size: 0.6875rem;
   color: ${baseColor};
-  display: block;
+  display: flex;
+  align-items: center;
   margin: 0;
 
   &:hover {
-    background-color: ${lighten(0.04, lightBorderColor)};
+    background-color: ${darken(0.04, '#ecf0f2')};
   }
 `;
 
@@ -72,6 +74,11 @@ const DownloadImageButton = styled.button`
 const DownloadDataButton = styled(CSVLink)`
   ${downloadButtonStyles};
   text-decoration: none;
+`;
+
+const SvgIcon = styled.img`
+  width: 0.9rem;
+  margin-right: 0.3rem;
 `;
 
 export enum VizType {
@@ -205,6 +212,7 @@ const DataViz = (props: Props) => {
       <DownloadImageButton
         onClick={() => handleDownloadImage(FileFormat.PNG)}
       >
+        <SvgIcon src={DownloadSVGURL} alt={'Download PNG'} />
         Download PNG
       </DownloadImageButton>
     </>
@@ -214,6 +222,7 @@ const DataViz = (props: Props) => {
       <DownloadImageButton
         onClick={() => handleDownloadImage(FileFormat.SVG)}
       >
+        <SvgIcon src={DownloadSVGURL} alt={'Download SVG'} />
         Download SVG
       </DownloadImageButton>
     </>
@@ -226,6 +235,7 @@ const DataViz = (props: Props) => {
         data={jsonToDownload}
         filename={filename}
       >
+        <SvgIcon src={DataSVGURL} alt={'Download Data'} />
         Download Data
       </DownloadDataButton>
     );

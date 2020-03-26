@@ -1,5 +1,5 @@
 import React, {useState, useContext, useRef, useEffect} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
   SectionHeaderSecondary,
   baseColor,
@@ -87,7 +87,11 @@ const OrColumn = styled.div`
   }
 `;
 
-const DownloadButton = styled.button`
+interface DownloadButtonProps {
+  hoverColor?: string;
+}
+
+const DownloadButton = styled.button<DownloadButtonProps>`
   color: #fff;
   text-align: center;
   font-size: 1.3rem;
@@ -99,7 +103,8 @@ const DownloadButton = styled.button`
 
   &:hover {
     color: #fff;
-    background-color: ${baseColor};
+    background-color: ${({hoverColor}) => hoverColor ? hoverColor : baseColor};
+    border-color: ${({hoverColor}) => hoverColor ? hoverColor : baseColor};
   }
 `;
 
@@ -154,6 +159,10 @@ const CheckboxLabel = styled(Label)<CheckboxLabelProps>`
   }
 `;
 
+const SectionHeader = styled(SectionHeaderSecondary)`
+  text-transform: none;
+`;
+
 interface FullDownloadProps {
   label: string;
   onClick: () => void;
@@ -191,13 +200,18 @@ interface Props {
   title: string;
   fullDownload?: FullDownloadProps;
   selectFields?: SelectBoxProps[];
+  checkboxTitle?: string;
   checkboxes?: CheckboxProps[];
   primaryColor: string;
   onQueryDownloadClick: (data: CallbackData) => void;
+  hoverColor?: string;
 }
 
 const QueryBuilder = (props: Props) => {
-  const { title, fullDownload, selectFields, checkboxes, primaryColor, onQueryDownloadClick } = props;
+  const {
+    title, fullDownload, selectFields, checkboxes, primaryColor, onQueryDownloadClick,
+    hoverColor, checkboxTitle,
+  } = props;
   const { windowWidth } = useContext(AppContext);
 
   const [selectedValues, setSelectedValues] = useState<TreeNode[]>(
@@ -209,13 +223,13 @@ const QueryBuilder = (props: Props) => {
   const firstSelectBoxLabelNodeRef = useRef<HTMLLabelElement | null>(null);
 
   useEffect(() => {
-    if (firstSelectBoxLabelNodeRef && firstSelectBoxLabelNodeRef.current) {
+    if (!checkboxTitle && firstSelectBoxLabelNodeRef && firstSelectBoxLabelNodeRef.current) {
       const node = firstSelectBoxLabelNodeRef.current;
       if (checkboxMarginTop === undefined) {
         setCheckboxMarginTop(node.clientHeight + (labelMarginBottom * 16));
       }
     }
-  }, [firstSelectBoxLabelNodeRef, checkboxMarginTop, setCheckboxMarginTop]);
+  }, [checkboxTitle, firstSelectBoxLabelNodeRef, checkboxMarginTop, setCheckboxMarginTop]);
 
   let fullDownloadColumn: React.ReactElement<any> | null;
   if (fullDownload) {
@@ -228,9 +242,9 @@ const QueryBuilder = (props: Props) => {
     fullDownloadColumn = (
       <>
         <DownloadAllColumn style={style}>
-          <SectionHeaderSecondary>{fullDownload.label}</SectionHeaderSecondary>
+          <SectionHeader>{fullDownload.label}</SectionHeader>
           <DownloadAllButtonContainer>
-            <DownloadButton onClick={fullDownload.onClick}>Download</DownloadButton>
+            <DownloadButton hoverColor={hoverColor} onClick={fullDownload.onClick}>Download</DownloadButton>
           </DownloadAllButtonContainer>
         </DownloadAllColumn>
         {orColumn}
@@ -333,11 +347,17 @@ const QueryBuilder = (props: Props) => {
         {searchFieldList}
       </div>
     ) : null;
+    const checkboxTitleEl = checkboxTitle ? (
+      <CheckboxContainer>
+        <Label>{checkboxTitle}</Label>
+      </CheckboxContainer>
+    ) : null;
     const checkboxElm = checkboxList ? (
       <div style={{
         gridColumn: searchFieldList && windowWidth >= 600 ? 2 : '1 / -1',
         marginTop: checkboxMarginTop,
       }}>
+        {checkboxTitleEl}
         {checkboxList}
       </div>
     ) : null;
@@ -356,11 +376,11 @@ const QueryBuilder = (props: Props) => {
 
     builderColumn = (
       <BuilderColumn style={{gridColumn}}>
-        <SectionHeaderSecondary>{title}</SectionHeaderSecondary>
+        <SectionHeader>{title}</SectionHeader>
         {searchElm}
         {checkboxElm}
         <DownloadQueryButtonContainer>
-          <DownloadButton onClick={onClick}>Download</DownloadButton>
+          <DownloadButton hoverColor={hoverColor} onClick={onClick}>Download</DownloadButton>
         </DownloadQueryButtonContainer>
       </BuilderColumn>
     );

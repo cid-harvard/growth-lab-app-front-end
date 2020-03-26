@@ -40,7 +40,7 @@ const useScrollBehavior = (options?: Options) => {
     }
     const navAnchors = options && options.navAnchors ? options.navAnchors : [];
     const navAnchorElms = navAnchors.map(id => document.querySelector(id) as HTMLElement | null);
-    const scrollBuffer = 100;
+    const scrollBuffer = 300;
     const anchorTops = navAnchorElms.map(el => el ? el.offsetTop - bufferTop - scrollBuffer : 0);
     const handleScroll = debounce(() => {
       const windowPosition = window.scrollY;

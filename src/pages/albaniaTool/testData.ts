@@ -11,11 +11,13 @@ import { RawNaceDatum } from './transformNaceData';
 import {rgba} from 'polished';
 
 export const colorScheme = {
-  primary: '#F1A189',
+  primary: '#84a9ac',
   secondary: '#F8CCBF',
   tertiary: '#FCEEEB',
-  quaternary: '#D75037',
+  quaternary: '#4d7082',
   quinary: '#A72F2F',
+  header: '#204052',
+  data: '#327a76',
 };
 
 export const testCountryListData: TreeNode[] = [
@@ -152,7 +154,7 @@ export const generateScatterPlotData = (rawNaceDatum: RawNaceDatum[]): ScatterPl
         label: Description,
         x: Math.floor((Math.random() * 100) + 1),
         y: Math.floor((Math.random() * 100) + 1),
-        fill: rgba(colorScheme.primary, 0.8),
+        fill: rgba(colorScheme.data, 0.5),
       });
     }
   });
@@ -162,7 +164,7 @@ export const generateScatterPlotData = (rawNaceDatum: RawNaceDatum[]): ScatterPl
 export const updateScatterPlotData = (scatterPlotData: ScatterPlotDatum[], selectedIndustry: TreeNode | undefined) => {
   return scatterPlotData.map(datum => {
     const fill = selectedIndustry && selectedIndustry.label === datum.label
-        ? 'rgba(137,178,176, 0.8)' : rgba(colorScheme.primary, 0.7);
+        ? 'rgba(137,178,176, 0.8)' : rgba(colorScheme.data, 0.5);
     const highlighted = selectedIndustry && selectedIndustry.label === datum.label
         ? true : false;
     return { ...datum, fill, highlighted };
@@ -227,31 +229,31 @@ export const barChartOverlayData: BarChartDatum[] = [
     x: '\'04-\'05',
     y: 2,
     tooltipContent: '$4 Million',
-    fill: colorScheme.primary,
+    fill: colorScheme.quaternary,
   },
   {
     x: '\'07-\'09',
     y: 4,
     tooltipContent: '$8 Million',
-    fill: colorScheme.primary,
+    fill: colorScheme.quaternary,
   },
   {
     x: '\'10-\'12',
     y: 7,
     tooltipContent: '$11 Million',
-    fill: colorScheme.primary,
+    fill: colorScheme.quaternary,
   },
   {
     x: '\'13-\'15',
     y: 1,
     tooltipContent: '$3 Million',
-    fill: colorScheme.primary,
+    fill: colorScheme.quaternary,
   },
   {
     x: '\'16-\'18',
     y: 3,
     tooltipContent: '$4 Million',
-    fill: colorScheme.primary,
+    fill: colorScheme.quaternary,
   },
 ];
 

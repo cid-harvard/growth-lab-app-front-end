@@ -12,13 +12,12 @@ import {
   SmallParagraph,
   SmallOrderedList,
   NarrowPaddedColumn,
-  LargeParagraph,
   SectionHeaderSecondary,
 } from '../../styling/styleUtils';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import DataViz, {VizType} from '../../components/dataViz';
-import TextBlock, {Alignment} from '../../components/text/TextBlock';
+import TextBlock from '../../components/text/TextBlock';
 import InlineToggle from '../../components/text/InlineToggle';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
@@ -48,8 +47,9 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
-import StandardFooter from '../../components/text/StandardFooter';
+import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import transformNaceData, {RawNaceDatum} from './transformNaceData';
+import {rgba} from 'polished';
 
 const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
 
@@ -65,11 +65,12 @@ const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 const scatterPlotData = generateScatterPlotData(rawNaceData);
 
 const AlbaniaTool = () => {
-  const metaTitle = 'Albania Dashboard | The Growth Lab at Harvard Kennedy School';
+  const metaTitle = 'Albania’s Industry Targeting Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
   const {location: {pathname, search, hash}, push} = useHistory();
-  const { industry } = queryString.parse(search);
+  const parsedQuery = queryString.parse(search);
+  const industry = parsedQuery.location ? parsedQuery.location : '74.1'; // Default to Specialised design activities;
 
   const naceData = transformNaceData(rawNaceData);
 
@@ -137,7 +138,7 @@ const AlbaniaTool = () => {
             id={'albania-spyder-chart-2'}
             vizType={VizType.RadarChart}
             data={spiderPlotTestData2}
-            color={{start: colorScheme.primary, end: colorScheme.primary}}
+            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
             maxValue={100}
             enablePNGDownload={true}
             enableSVGDownload={true}
@@ -173,7 +174,7 @@ const AlbaniaTool = () => {
             id={'albania-spyder-chart-3'}
             vizType={VizType.RadarChart}
             data={spiderPlotTestData3}
-            color={{start: colorScheme.primary, end: colorScheme.primary}}
+            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
             maxValue={100}
             enablePNGDownload={true}
             enableSVGDownload={true}
@@ -204,7 +205,9 @@ const AlbaniaTool = () => {
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
-        <SectionHeader id={'industry-potential'}>Industry potential</SectionHeader>
+        <TwoColumnSection id={'industry-potential'}>
+          <SectionHeader>Industry potential</SectionHeader>
+        </TwoColumnSection>
         <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
@@ -255,11 +258,11 @@ const AlbaniaTool = () => {
               </SmallOrderedList>
             </NarrowPaddedColumn>
             <NarrowPaddedColumn>
-              <HeaderWithLegend legendColor={colorScheme.primary}>
+              <HeaderWithLegend legendColor={colorScheme.quaternary}>
                 <div>
                   Top Global FDI in <InlineToggle
                       data={testCountryListData}
-                      colorClassName={'albania-orange'}
+                      colorClassName={'albania-color-scheme'}
                       onChange={setSelectedCountry}
                     />
                 </div>
@@ -302,12 +305,13 @@ const AlbaniaTool = () => {
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
           <QueryBuilder
-            title={'Customize Your List & Download'}
+            title={'Customize your list & download'}
             fullDownload={{
               label: 'Download the full list of companies',
               onClick: noop,
             }}
-            primaryColor={colorScheme.primary}
+            primaryColor={rgba(colorScheme.primary, 0.2)}
+            hoverColor={colorScheme.primary}
             onQueryDownloadClick={noop}
             selectFields={[
               {
@@ -323,26 +327,29 @@ const AlbaniaTool = () => {
                 dependentOn: 'country',
               },
             ]}
+            checkboxTitle={'Include in data:'}
             checkboxes={[
               {
-                label: 'Filter #1',
-                value: 'Filter #1',
+                label: 'Placeholder #1',
+                value: 'Placeholder #1',
                 checked: false,
               },
               {
-                label: 'Filter #2',
-                value: 'Filter #2',
+                label: 'Placeholder #2',
+                value: 'Placeholder #2',
                 checked: false,
               },
               {
-                label: 'Filter #3',
-                value: 'Filter #3',
+                label: 'Placeholder #3',
+                value: 'Placeholder #3',
                 checked: false,
               },
             ]}
           />
         </div>
-        <SectionHeader id={'industry-now'}>Industry Now</SectionHeader>
+        <TwoColumnSection id={'industry-now'}>
+          <SectionHeader>Industry Now</SectionHeader>
+        </TwoColumnSection>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>Location of Workers</SectionHeaderSecondary>
           <DataViz
@@ -352,10 +359,10 @@ const AlbaniaTool = () => {
             minColor={colorScheme.tertiary}
             maxColor={colorScheme.quaternary}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
             <ColorScaleLegend
               minLabel={0.28}
               maxLabel={30.8}
@@ -372,10 +379,10 @@ const AlbaniaTool = () => {
             data={testTableData1}
             color={colorScheme.quaternary}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
@@ -386,10 +393,10 @@ const AlbaniaTool = () => {
             overlayData={barChartOverlayData2}
             axisLabels={{left: 'US$ Millions'}}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
             <Legend
               legendList={[
                 {label: 'Industry', fill: lightBorderColor, stroke: undefined},
@@ -405,10 +412,10 @@ const AlbaniaTool = () => {
             data={testTableData1}
             color={colorScheme.quaternary}
           />
-          <TextBlock align={Alignment.Center}>
-            <LargeParagraph>
+          <TextBlock>
+            <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </LargeParagraph>
+            </p>
           </TextBlock>
         </TwoColumnSection>
       </>
@@ -416,10 +423,12 @@ const AlbaniaTool = () => {
     nav = (
       <StickySideNav
         links={links}
-        backgroundColor={colorScheme.tertiary}
-        hoverColor={colorScheme.secondary}
-        borderColor={colorScheme.primary}
+        backgroundColor={'#ecf0f2'}
+        borderColor={'#819ea8'}
+        hoverColor={'#b7c7cd'}
+        borderTopColor={'#fff'}
         onHeightChange={(h) => setNavHeight(h)}
+        marginTop={stickyHeaderHeight + 'px'}
       />
     );
   }
@@ -433,15 +442,19 @@ const AlbaniaTool = () => {
         <meta property='og:description' content={metaDescription} />
       </Helmet>
       <GradientHeader
-        title={'Albania Complexity Dashboard'}
+        title={'Albania’s Industry Targeting Dashboard'}
+        hasSearch={true}
         searchLabelText={'To Start Select an Industry'}
         data={naceData}
         onChange={updateSelectedIndustry}
         initialSelectedValue={initialSelectedIndustry}
         imageSrc={AlbaniaMapSvg}
-        backgroundColor={colorScheme.quaternary}
+        imageProps={{
+          imgWidth: '110px',
+        }}
+        backgroundColor={colorScheme.header}
         textColor={'#fff'}
-        linkColor={colorScheme.quinary}
+        linkColor={'#fff'}
         links={[
           {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
         ]}
@@ -450,35 +463,44 @@ const AlbaniaTool = () => {
       <Content>
         <StickySubHeading
           title={industryName}
-          highlightColor={colorScheme.tertiary}
+          highlightColor={colorScheme.primary}
           onHeightChange={(h) => setStickyHeaderHeight(h)}
         />
         {content}
       </Content>
-      <StandardFooter
-        footerItems={[
+      <ExploreNextFooter
+        backgroundColor={colorScheme.quaternary}
+        socialItems={[
           {
-            title: 'Optional Column Title',
-            items: [
-              {label: 'List Item', target: '#'},
-              {label: 'List Item 2', target: '#'},
-              {label: 'List items dont have to be links'},
-            ],
+            target: 'https://www.facebook.com/HarvardCID/',
+            type: SocialType.facebook,
           },
           {
-            items: [
-              {label: 'Second Colum or Row', target: '#'},
-              {label: 'Link Layout Changes Responsively'},
-              {label: 'Link #3', target: '#'},
-              {label: 'Link #4', target: '#'},
-            ],
+            target: 'https://twitter.com/HarvardGrwthLab',
+            type: SocialType.twitter,
           },
           {
-            items: [
-              {label: 'Another Link', target: '#'},
-              {label: 'One More Link', target: '#'},
-            ],
+            target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
+            type: SocialType.linkedin,
           },
+        ]}
+        exploreNextLinks={[
+          {
+            label: 'Country Profile',
+            target: 'https://atlas.cid.harvard.edu/countries/4',
+          },
+          {
+            label: 'Country Research',
+            target: '#',
+          },
+          {
+            label: 'Country Story',
+            target: '#',
+          },
+        ]}
+        attributions={[
+          'Growth Lab’s Albania Research Team:  Miguel Santos, Ermal Frasheri, Timothy O’Brien, Daniela Muhaj, Patricio Goldstein and Jessie Lu.',
+          'Growth Lab’s Digital Development & Design Team:  Annie White, Brendan Leonard, Nil Tuzcu and Kyle Soeltz.',
         ]}
       />
     </>

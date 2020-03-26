@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 
 const gridLines = {
@@ -83,7 +83,7 @@ export const NavContainer = styled.nav`
   grid-row: ${gridLines.contentTop} / ${gridLines.contentBottom};
   grid-column: ${gridLines.navStart} / ${gridLines.navEnd};
   position: relative;
-  z-index: 500;
+  z-index: 200;
 
   @media (max-width: ${gridSmallMediaWidth}px) {
     grid-row: ${gridLines.mobileMenuTop} / ${gridLines.mobileMenuBottom};

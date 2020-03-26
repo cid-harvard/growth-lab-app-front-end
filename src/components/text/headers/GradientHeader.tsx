@@ -7,18 +7,22 @@ import {
   FullWidthHeader,
   FullWidthHeaderContent,
 } from '../../../styling/Grid';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {TreeNode} from 'react-dropdown-tree-select';
 import MultiTierSearch from '../../navigation/MultiTierSearch';
 import GrowthLabLogoImgSrc from './growth-lab.png';
 import { rgba } from 'polished';
 
-const Root = styled(FullWidthHeader)<{backgroundColor: string}>`
-  padding: 1rem 0 2rem;
+const Root = styled(FullWidthHeader)`
+  grid-template-rows: auto auto;
+`;
+
+const GradientContainer = styled.div<{backgroundColor: string}>`
+  padding: 2rem 0 2.5rem;
   background: linear-gradient(
     0deg,
     rgba(255,255,255,0) 0%,
-    ${({backgroundColor}) => rgba(backgroundColor, 0.7)} 100%
+    ${({backgroundColor}) => rgba(backgroundColor, 0.85)} 100%
   );
 `;
 
@@ -27,12 +31,12 @@ const smallMediaWidth = 775;
 
 const ContentGrid = styled(FullWidthHeaderContent)`
   display: grid;
-  grid-template-columns: 7% 1fr 20%;
-  grid-template-rows: auto auto;
-  grid-column-gap: 1rem;
+  grid-template-columns: auto 1fr 20%;
+  grid-column-gap: 2rem;
 
   @media (max-width: ${mediumMediaWidth}px) {
-    grid-template-columns: 8vw 1fr 20vw;
+    grid-template-columns: 9vw 1fr 20vw;
+    margin-bottom: 2rem;
   }
 
   @media (max-width: ${smallMediaWidth}px) {
@@ -51,8 +55,19 @@ const LogoContainer = styled.div`
   grid-row: 1;
 `;
 
-const Logo = styled.img`
-  width: 100%;
+interface ImageProps {
+  imgWidth?: string;
+  imgHeight?: string;
+}
+
+const Logo = styled.img<ImageProps>`
+  width: ${({imgWidth}) => imgWidth ? imgWidth : '100%'};
+  height: ${({imgHeight}) => imgHeight ? imgHeight : 'auto'};
+
+  @media (max-width: ${mediumMediaWidth}px) {
+    max-width: 100%;
+    max-height: 100%;
+  }
 `;
 
 const TitleContainer = styled.div`
@@ -78,11 +93,14 @@ const GrowthLabLogoContainer = styled.a`
 const SearchContainer = styled.div`
   grid-column: 1 / -1;
   grid-row: 2;
+  padding: 0 1rem;
+  margin-bottom: 2rem;
 `;
 
 const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
-  border: 2px solid ${({primaryColor}) => primaryColor};
+  border: 1px solid ${({primaryColor}) => primaryColor};
   color: ${({primaryColor}) => primaryColor};
+  font-size: 0.875rem;
   text-transform: uppercase;
   text-decoration: none;
   padding: 0.4rem 0.6rem;
@@ -100,67 +118,91 @@ const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
 interface LinkDatum {
   label: string;
   target: string;
+  internal?: boolean;
 }
 
-interface Props {
+interface BaseProps {
   title: string;
-  searchLabelText: string;
-  data: TreeNode[];
-  initialSelectedValue?: TreeNode;
-  onChange?: (val: TreeNode) => void;
-  imageSrc: string;
+  imageSrc?: string;
+  imageProps?: ImageProps;
   backgroundColor: string;
   textColor: string;
   linkColor: string;
   links?: LinkDatum[];
 }
 
+type Props = BaseProps & (
+  {
+    hasSearch: false;
+  } | {
+    hasSearch: true;
+    searchLabelText: string;
+    data: TreeNode[];
+    initialSelectedValue?: TreeNode;
+    onChange?: (val: TreeNode) => void;
+  }
+);
+
 const HeaderWithSearch = (props: Props) => {
   const {
-    title, searchLabelText, data, initialSelectedValue,
-    imageSrc, textColor, backgroundColor, links, linkColor,
+    title, imageSrc, textColor, backgroundColor, links, linkColor,
+    imageProps,
   } = props;
 
-  const linkElms = links && links.length ? links.map(({label, target}) => (
+  const linkElms = links && links.length ? links.map(({label, target, internal}) => (
     <ButtonLink
       primaryColor={linkColor}
-      secondaryColor={textColor}
+      secondaryColor={linkColor === textColor ? backgroundColor : textColor}
       href={target}
-      target={'_blank'}
+      target={internal ? '_blank' : undefined}
       key={target + label}
     >
       {label}
     </ButtonLink>
   )) : null;
 
+  const searchBar = props.hasSearch === false ? null : (
+    <SearchContainer>
+      <MultiTierSearch
+        searchLabelText={props.searchLabelText}
+        data={props.data}
+        initialSelectedValue={props.initialSelectedValue}
+        onChange={props.onChange}
+      />
+    </SearchContainer>
+  );
+
+  const imgWidth = imageProps && imageProps.imgWidth ? imageProps.imgWidth : undefined;
+  const imgHeight = imageProps && imageProps.imgHeight ? imageProps.imgHeight : undefined;
+  const img = !imageSrc ? null : (
+    <LogoContainer>
+      <Logo src={imageSrc} alt={title} imgWidth={imgWidth} imgHeight={imgHeight} />
+    </LogoContainer>
+  );
+
   return (
-    <Root backgroundColor={backgroundColor}>
-      <ContentGrid>
-        <LogoContainer>
-          <Logo src={imageSrc} alt={title} />
-        </LogoContainer>
-        <TitleContainer>
-          <Title style={{color: textColor}}>{title}</Title>
-          {linkElms}
-        </TitleContainer>
-        <GrowthLabLogoContainer
-          href={'https://growthlab.cid.harvard.edu/'}
-          target={'_blank'}
-        >
-          <Logo
-            src={GrowthLabLogoImgSrc}
-            alt={'The Growth Lab at Harvard\'s Center for International Development'}
-          />
-        </GrowthLabLogoContainer>
-        <SearchContainer>
-          <MultiTierSearch
-            searchLabelText={searchLabelText}
-            data={data}
-            initialSelectedValue={initialSelectedValue}
-            onChange={props.onChange}
-          />
-        </SearchContainer>
-      </ContentGrid>
+    <Root>
+      <GradientContainer backgroundColor={backgroundColor}>
+        <ContentGrid>
+          {img}
+          <TitleContainer
+            style={{gridColumn: imageSrc ? undefined : '1 / 3'}}
+          >
+            <Title style={{color: textColor}}>{title}</Title>
+            {linkElms}
+          </TitleContainer>
+          <GrowthLabLogoContainer
+            href={'https://growthlab.cid.harvard.edu/'}
+            target={'_blank'}
+          >
+            <Logo
+              src={GrowthLabLogoImgSrc}
+              alt={'The Growth Lab at Harvard\'s Center for International Development'}
+            />
+          </GrowthLabLogoContainer>
+        </ContentGrid>
+      </GradientContainer>
+      {searchBar}
     </Root>
   );
 };
