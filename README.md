@@ -13,6 +13,8 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
     - [LegendList](#legendlistcomponent)
     - [ColorScaleLegend](#colorlegendcomponent)
     - [Loading](#loadingcomponent)
+    - [MultiTierSearch](#multitiersearchcomponent)
+    - [StickySideNav](#stickysidenavecomponent)
   - [Custom Hooks](#customhooks)
   - [Guidelines For Creating New Components](#componentguidelines)
 
@@ -257,6 +259,114 @@ The ColorScaleLegend component, located at `src/components/dataViz/ColorScaleLeg
 #### Loading
 
 The Loading component, located at `src/components/general/Loading` is a generic loader that fills the space of its parent component. It does not take any props and is designed to be able to be placed anywhere.
+
+<a name="multitiersearchcomponent"/>
+
+#### MultiTierSearch
+
+The MultiTierSearch component, located at `src/components/navigation/MultiTierSearch` is a multi-hierarchy search/dropdown component. It takes hierarchal data and allows the user to search through and select child elements. Note that at this time, this component only supports selecting the lowest level child element, but it does support an unlimited number of tiers between them. It takes the following props:
+
+- **searchLabelText**: string;
+
+   The label text that appears above the dropdown.
+
+- **data**: TreeNode[];
+
+   The dataset. See the structure of a TreeNode below.
+
+- **initialSelectedValue** *(optional)*: TreeNode;
+
+   The initially selected TreeNode, if desired.
+
+- **onChange** *(optional)*: (val: TreeNode) => void;
+
+   Callback function for when a TreeNode is selected.
+
+**TreeNode** - The MultiTierSearch component uses [react-dropdown-tree-select](https://www.npmjs.com/package/react-dropdown-tree-select). The TreeNode format follows their structure, with some required settings in order to make it work correctly for our use cases. A basic example is below -
+
+```tsx
+const data = [
+  label: 'Top Level Parent',
+  value: 'A',
+  className: 'no-select-parent',
+  disabled: true,
+  children: [
+    label: 'Second Level Parent',
+    value: 'A1',
+    className: 'no-select-parent',
+    disabled: true,
+    children: [
+      label: 'Child Item 1',
+      value: 'A1.1',
+      disabled: false,
+    ],
+    children: [
+      label: 'Child Item 2',
+      value: 'A1.2',
+      disabled: false,
+    ],
+  ],
+]
+```
+
+In the above example, we have three levels of hierarchy. Every element must have a `label` - which is what will be output in the dropdown and compared against when searching - as well as a `value` - which works as the elements unique id. Additionally, all elements that contain `children` must include `className: 'no-select-parent'` and have `disabled: true`. Then all child elements that can be selected must have `disabled: false` to counteract inheritance from the parent.
+
+<a name="stickysidenavecomponent"/>
+
+#### StickySideNav
+
+The StickySideNav component, found at `src/components/navigation/StickySideNav`, sticks to the side of the screen and automatically collapses into an expandable menu on small screen sizes. It takes the following props - 
+
+- **links**: NavItem[];
+
+   A NavItem takes the following properties -
+
+   - **label**: string;
+   - **target**: string;
+   - **internalLink** *(optional)*: boolean;
+
+      Set true to specify if this is linking to an anchor on this page.
+
+   - **scrollBuffer** *(optional)*: number;
+
+     Set an optional pixel value buffer for when to consider this section selected, if an internal link.
+
+- **backgroundColor**: string;
+- **hoverColor**: string;
+- **borderColor**: string;
+- **onHeightChange** *(optional)*: (height: number) => void;
+
+   Optional callback function returning the height of nav whenever it changes.
+
+- **marginTop** *(optional)*: string;
+
+   Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
+
+<a name="dynamictablecomponent"/>
+
+#### DynamicTable
+
+The DynamicTable component, found at `src/components/text/DynamicTable`, quickly creates a styled component from any dataset. It takes the following props - 
+
+- **columns**: Column[];
+
+   Each Column object defines a different column in the table. It takes the following properties -
+
+   - **label**: string;
+
+      This is what the column title will show when it is rendered.
+
+   - **key**: string;
+
+      This is the associated key name for the table's dataset.
+
+- **data**: Datum[];
+
+   Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop.
+
+- **color**: string[];
+
+   Color code for styling the table.
 
 <a name="customhooks"/>
 
