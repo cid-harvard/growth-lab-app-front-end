@@ -10,6 +10,9 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
   - [Grid Layout and Style Utilities](#styleutilites)
   - [Components](#components)
     - [DataViz](#datavizcomponent)
+    - [LegendList](#legendlistcomponent)
+    - [ColorScaleLegend](#colorlegendcomponent)
+    - [Loading](#loadingcomponent)
   - [Custom Hooks](#customhooks)
   - [Guidelines For Creating New Components](#componentguidelines)
 
@@ -208,6 +211,52 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
       **maxColor**: string;
 
+Example of the DataViz component -
+
+```tsx
+<DataViz
+  id={'time-is-money-scatterplot'}
+  vizType={VizType.ScatterPlot}
+  data={scatterplotData}
+  axisLabels={{bottom: 'Time', left: 'Dollars'}}
+  enablePNGDownload={true}
+  enableSVGDownload={true}
+  chartTitle={'Time is Money'}
+  jsonToDownload={rawData}
+/>
+```
+
+<a name="legendlistcomponent"/>
+
+#### <LegendList />
+
+The Legend component, located at `src/components/dataViz/Legend` is for displaying a basic color block based legend. The Legend component only takes a single prop -
+
+- **legendList**: LegendDatum[]
+
+   Each LegendDatum will be rendered as a separate block. It has the following properties -
+
+   - **label**: string;
+   - **fill**: string | undefined;
+   - **stroke**: string | undefined;
+
+<a name="colorlegendcomponent"/>
+
+#### <ColorScaleLegend />
+
+The ColorScaleLegend component, located at `src/components/dataViz/ColorScaleLegend` is for displaying a color range scale. The ColorScaleLegend component takes the following props -
+
+- **maxColor**: string;
+- **minColor**: string;
+- **title**: string;
+- **maxLabel**: string | number;
+- **minLabel**: string | number;
+
+<a name="loadingcomponent"/>
+
+#### <Loading />
+
+The Loading component, located at `src/components/general/Loading` is a generic loader that fills the space of its parent component. It does not take any props and is designed to be able to be placed anywhere.
 
 <a name="customhooks"/>
 
