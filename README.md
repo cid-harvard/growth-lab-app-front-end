@@ -112,7 +112,7 @@ Components are more complete and complex pieces that can be used to build out a 
 
 <a name="datavizcomponent"/>
 
-#### <DataViz />
+#### DataViz
 
 The data viz component, located at `src/components/dataViz` is the catch-all for any data visualizations. Below are the different props the DataViz component can take in.
 
@@ -228,7 +228,7 @@ Example of the DataViz component -
 
 <a name="legendlistcomponent"/>
 
-#### <LegendList />
+#### LegendList
 
 The Legend component, located at `src/components/dataViz/Legend` is for displaying a basic color block based legend. The Legend component only takes a single prop -
 
@@ -242,7 +242,7 @@ The Legend component, located at `src/components/dataViz/Legend` is for displayi
 
 <a name="colorlegendcomponent"/>
 
-#### <ColorScaleLegend />
+#### ColorScaleLegend
 
 The ColorScaleLegend component, located at `src/components/dataViz/ColorScaleLegend` is for displaying a color range scale. The ColorScaleLegend component takes the following props -
 
@@ -254,7 +254,7 @@ The ColorScaleLegend component, located at `src/components/dataViz/ColorScaleLeg
 
 <a name="loadingcomponent"/>
 
-#### <Loading />
+#### Loading
 
 The Loading component, located at `src/components/general/Loading` is a generic loader that fills the space of its parent component. It does not take any props and is designed to be able to be placed anywhere.
 
