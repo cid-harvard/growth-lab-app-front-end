@@ -23,6 +23,7 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
     - [TextBlock](#textblockcomponent)
     - [QueryBuilder](#querybuildercomponent)
   - [Custom Hooks](#customhooks)
+    - [useScrollBehavior](#usescrollbehaviorhook)
   - [Guidelines For Creating New Components](#componentguidelines)
 
 <a name="gettingstarted"/>
@@ -504,15 +505,44 @@ The TextBlock component, located at `src/components/text/TextBlock` is a generic
 
 #### QueryBuilder
 
-The QueryBuilder component, located at `src/components/tools/QueryBuilder` is a customizable query building component. It can take a number of different paramaters to suit a large array of needs.
+The QueryBuilder component, located at `src/components/tools/QueryBuilder` is a customizable query building component. It can take a number of different parameters to suit a large array of needs. It takes the following props -
 
+- **title**: string;
+- **primaryColor**: string;
+- **onQueryDownloadClick**: (data: CallbackData) => void;
+- **fullDownload** *(optional)*: FullDownloadProps;
+- **selectFields** *(optional)*: SelectBoxProps[];
+- **checkboxTitle** *(optional)*: string;
+- **checkboxes** *(optional)*: CheckboxProps[];
+- **hoverColor** *(optional)*: string;
 
 <a name="customhooks"/>
 
 ## Custom Hooks
 
+<a name="usescrollbehaviorhook"/>
+
+#### useScrollBehavior
+
+Located in `src/hooks/useScrollBehavior`. The useScrollBehavior hook enables a page to load to an anchor point on load, as well as update the url with anchor points as it scrolls past the target element.
+
+useScrollBehavior takes an optional object as an input with the following options -
+
+- **bufferTop** *(optional)*: number;
+
+   The amount of space above an element at which it is considered to be scrolled to. Defaults to 0 if none is specified.
+
+- **navAnchors** *(optional)*: string[];
+
+   A list of strings designating the ids for each element the hook should watch for scrolling. The ids should be written with the `#`, for example - `#overview`.
 
 <a name="componentguidelines"/>
 
 ## Guidelines For Creating New Components
+
+As components are created, they should strive to be as generic as possible without becoming overly complicated. Props can be left to optional, where appropriate, and required if it is felt that the component would not function correctly without. Any optional props should allow the component to render something viable with or without it specified. Unknown data sources should also be taken into account, and as much as possible the type should be enforced using TypeScript. `any` should be avoided as much as possible. 
+
+At the same time, one should not go overboard making things totally generic. If a certain use case is not needed now, some thought to how it might be fit in down the line would be good, but a component does not have to fit everything right away. We can always go back and modify components or create similar ones as requirements and needs grow.
+
+When editing an existing component, make sure to check on all instances that are currently using that component so as not to break any existing implementations. Take careful thought as to how additions should be made, and everything should always be 100% backwards compatible. Make sure to think through if modifications to the component are the best course of action. Sometimes it may just need some more tinkering with the configuration or perhaps a discussion with the team on how to utilize the existing component structure. It may also be the case that creating a new component that is very similar but fills a different role would be the best decision.
 
