@@ -546,3 +546,5 @@ At the same time, one should not go overboard making things totally generic. If 
 
 When editing an existing component, make sure to check on all instances that are currently using that component so as not to break any existing implementations. Take careful thought as to how additions should be made, and everything should always be 100% backwards compatible. Make sure to think through if modifications to the component are the best course of action. Sometimes it may just need some more tinkering with the configuration or perhaps a discussion with the team on how to utilize the existing component structure. It may also be the case that creating a new component that is very similar but fills a different role would be the best decision.
 
+Last but far from least, make sure to always update this documentation when any changes or updates are made.
+
