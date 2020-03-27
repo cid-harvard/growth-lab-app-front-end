@@ -18,6 +18,10 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
     - [DynamicTable](#dynamictablecomponent)
     - [ExploreNextFooter](#explorenextfootercomponent)
     - [InlineToggle](#inlinetogglecomponent)
+    - [StickySubHeading](#stickysubheadingcomponent)
+    - [GradientHeader](#gradientheadercomponent)
+    - [TextBlock](#textblockcomponent)
+    - [QueryBuilder](#querybuildercomponent)
   - [Custom Hooks](#customhooks)
   - [Guidelines For Creating New Components](#componentguidelines)
 
@@ -425,6 +429,83 @@ The InlineToggle component, located at `src/components/text/InlineToggle` is a s
 - **onChange** *(optional)*: (val: TreeNode) => void;
 
    Optional callback function for when a TreeNode is selected.
+
+
+<a name="stickysubheadingcomponent"/>
+
+#### StickySubHeading
+
+The StickySubHeading component, located at `src/components/StickySubHeading` is a heading element that will stick to the top of the page as the user scrolls. It takes in the following props -
+
+- **title**: string;
+- **highlightColor**: string;
+- **onHeightChange** *(optional)*: (height: number) => void;
+
+   Optional callback function returning the height of component whenever it changes.
+
+<a name="gradientheadercomponent"/>
+
+#### GradientHeader
+
+The GradientHeader component, located at `src/components/headers/GradientHeader` is a full, top level header element meant for the top of a page. It optionally can have the [MultiTierSearch](#multitiersearchcomponent) embeded in it. It takes in the following props -
+
+- **title**: string;
+- **backgroundColor**: string;
+- **textColor**: string;
+- **linkColor**: string;
+- **imageSrc** *(optional)*: string;
+  
+   Optional URL to the image that will appear on the left hand side of the header.
+
+- **imageProps** *(optional)*: ImageProps;
+
+   Optional custom dimensions for the image.
+
+   - imgWidth *(optional)*: string;
+   - imgHeight *(optional)*: string;
+
+- **links** *(optional)*: LinkDatum[];
+
+   Optional list for links underneath the title.
+
+    - label: string;
+    - target: string;
+    - internal *(optional)*: boolean;
+
+    Internal defaults to false. Internal means it should scroll to an anchor on the page instead of opening a url in a new tab.
+
+- hasSearch: boolean;
+
+   If true, you must also pass all the same props to GradientHeader as you would [MultiTierSearch](#multitiersearchcomponent).
+
+<a name="textblockcomponent"/>
+
+#### TextBlock
+
+The TextBlock component, located at `src/components/text/TextBlock` is a generic, formatted container for other simple components. It takes the following props -
+
+- **children**: React.ReactNode;
+
+   Any React Element, string, null, or array of any of those types, to be output inside of the TextBlock.
+
+- **align** *(optional)*: Alignment;
+
+   Optional vertical alignment of the content in the container relative to the height of the TextBlock siblings.
+
+   ```tsx
+    enum Alignment {
+      Top = 'top',
+      Bottom = 'bottom',
+      Center = 'center',
+    }
+   ```
+ 
+<a name="querybuildercomponent"/>
+
+#### QueryBuilder
+
+The QueryBuilder component, located at `src/components/tools/QueryBuilder` is a customizable query building component. It can take a number of different paramaters to suit a large array of needs.
+
 
 <a name="customhooks"/>
 
