@@ -8,7 +8,6 @@ import {
 } from '../../styling/styleUtils';
 import styled from 'styled-components/macro';
 import GrowthLabLogoPNG from './assets/growth-lab-white.png';
-import {rgba} from 'polished';
 import FacebookIconSVG from './assets/facebook.svg';
 import TwitterIconSVG from './assets/twitter.svg';
 import LinkedinIconSVG from './assets/linkedin.svg';
@@ -19,6 +18,10 @@ const Root = styled(FullWidthFooter)`
 
 const Container = styled.div`
   padding: 2rem 2rem 2rem;
+`;
+
+const AttributionContainer = styled(Container)`
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAI0lEQVQYV2NkwAEYYeLeeU3GIPbWSXVnQTRhCXQT4TqIlgAACbAIB9ZyaUoAAAAASUVORK5CYII=) repeat;
 `;
 
 const smallMediaWidth = 700; // in px
@@ -158,7 +161,7 @@ interface Props {
   backgroundColor: string;
 }
 
-const StandardFooter = (props: Props) => {
+const ExploreNextFooter = (props: Props) => {
   const {
     backgroundColor, attributions, socialItems, exploreNextLinks,
   } = props;
@@ -192,11 +195,11 @@ const StandardFooter = (props: Props) => {
 
   return (
     <Root>
-      <Container style={{backgroundColor: rgba(backgroundColor, 0.5)}}>
-        <FullWidthFooterContent>
+      <AttributionContainer>
+        <FullWidthFooterContent style={{color: backgroundColor}}>
           {attributionsList}
         </FullWidthFooterContent>
-      </Container>
+      </AttributionContainer>
       <Container style={{backgroundColor}}>
         <Content>
           <SocialColumn>
@@ -228,4 +231,4 @@ const StandardFooter = (props: Props) => {
   );
 };
 
-export default StandardFooter;
+export default ExploreNextFooter;

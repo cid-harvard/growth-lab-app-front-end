@@ -15,6 +15,9 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
     - [Loading](#loadingcomponent)
     - [MultiTierSearch](#multitiersearchcomponent)
     - [StickySideNav](#stickysidenavecomponent)
+    - [DynamicTable](#dynamictablecomponent)
+    - [ExploreNextFooter](#explorenextfootercomponent)
+    - [InlineToggle](#inlinetogglecomponent)
   - [Custom Hooks](#customhooks)
   - [Guidelines For Creating New Components](#componentguidelines)
 
@@ -367,6 +370,61 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 - **color**: string[];
 
    Color code for styling the table.
+
+<a name="explorenextfootercomponent"/>
+
+#### ExploreNextFooter
+
+The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter`, creates a footer with social icon links, attributions, links to explore next, and the Growth Lab logo. It takes the following props - 
+
+- **attributions**: string[];
+
+   An array of strings for the attributions. Each string will appear on a new line at the top of the footer.
+
+- **socialItems**: {target: string, type: SocialType}[];
+
+   Each social item will render an icon link based on the SocialType. SocialType can be one of the following -
+
+   ```tsx
+    enum SocialType {
+      facebook = 'facebook',
+      twitter = 'twitter',
+      linkedin = 'linkedin',
+    }
+   ```
+
+- **exploreNextLinks**: {label: string, target: string}[];
+
+   Each explore next item will render a button that links out to its target. It will open in a new tab.
+
+- **backgroundColor**: string;
+
+   Color code for styling the table.
+
+<a name="inlinetogglecomponent"/>
+
+#### InlineToggle
+
+The InlineToggle component, located at `src/components/text/InlineToggle` is a search/dropdown component running on the same core library as the [MultiTierSearch](#multitiersearchcomponent) found above. The main difference is that it appears as inline text instead of as a search box, and it should only take a single level of children instead of multiple tiers. It takes the following props -
+
+- **data**: TreeNode[];
+
+   TreeNode data has a much simpler structure compared to the MultiTierSearch component. It should like the following -
+
+   ```tsx
+   interface TreeNode {
+     label: string,
+     value: string,
+   }
+  ```
+
+- **colorClassName** *(optional)*: string;
+
+   Optional classname for setting the color. Additional rules will have to be added to `src/components/text/inlineDropdownStyles.scss` in order to properly display your custom color.
+
+- **onChange** *(optional)*: (val: TreeNode) => void;
+
+   Optional callback function for when a TreeNode is selected.
 
 <a name="customhooks"/>
 
