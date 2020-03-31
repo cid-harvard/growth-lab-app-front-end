@@ -15,6 +15,7 @@ import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock from '../../components/text/TextBlock';
+import PasswordProtectedComponent from '../../components/text/PasswordProtectedComponent';
 import InlineToggle from '../../components/text/InlineToggle';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
@@ -33,11 +34,13 @@ import {
   testTableData1,
   testQueryBuilderDataCountry,
   testQueryBuilderDataCity,
+  testFDIColumns1,
+  testFDIData1,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
-import QueryBuilder from '../../components/tools/QueryBuilder';
+import QueryTableBuilder from '../../components/tools/QueryTableBuilder';
 import raw from 'raw.macro';
 import noop from 'lodash/noop';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
@@ -46,7 +49,6 @@ import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import transformNaceData, {RawNaceDatum} from './transformNaceData';
-import {rgba} from 'polished';
 
 const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
 
@@ -254,48 +256,33 @@ const AlbaniaTool = () => {
         </TwoColumnSection>
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
-          <QueryBuilder
-            title={'Customize your list & download'}
-            fullDownload={{
-              label: 'Download the full list of companies',
-              onClick: noop,
-            }}
-            primaryColor={rgba(colorScheme.primary, 0.2)}
-            hoverColor={colorScheme.primary}
-            onQueryDownloadClick={noop}
-            selectFields={[
-              {
-                id: 'country',
-                label: 'Source Country',
-                data: testQueryBuilderDataCountry,
-                required: true,
-              },
-              {
-                id: 'city',
-                label: 'Source City',
-                data: testQueryBuilderDataCity,
-                dependentOn: 'country',
-              },
-            ]}
-            checkboxTitle={'Include in data:'}
-            checkboxes={[
-              {
-                label: 'Placeholder #1',
-                value: 'Placeholder #1',
-                checked: false,
-              },
-              {
-                label: 'Placeholder #2',
-                value: 'Placeholder #2',
-                checked: false,
-              },
-              {
-                label: 'Placeholder #3',
-                value: 'Placeholder #3',
-                checked: false,
-              },
-            ]}
-          />
+          <PasswordProtectedComponent
+            title={'This section is password protected. Please enter your password to access the FDI Company list.'}
+            buttonColor={colorScheme.primary}
+          >
+            <QueryTableBuilder
+              primaryColor={colorScheme.primary}
+              onQueryDownloadClick={noop}
+              onUpdateClick={noop}
+              selectFields={[
+                {
+                  id: 'country',
+                  label: 'Source Country',
+                  data: testQueryBuilderDataCountry,
+                  required: true,
+                },
+                {
+                  id: 'city',
+                  label: 'Source City',
+                  data: testQueryBuilderDataCity,
+                  dependentOn: 'country',
+                },
+              ]}
+              itemName={'companies'}
+              columns={testFDIColumns1}
+              tableData={testFDIData1}
+            />
+          </PasswordProtectedComponent>
         </div>
         <TwoColumnSection id={'industry-now'}>
           <SectionHeader>Industry Now</SectionHeader>
