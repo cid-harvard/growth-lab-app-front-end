@@ -22,15 +22,15 @@ export const colorScheme = {
 
 export const testCountryListData: TreeNode[] = [
   {
+    label: 'World',
+    value: 'World',
+  },
+  {
     label: 'Europe',
     value: 'Europe',
   },
   {
-    label: 'Asia',
-    value: 'Asia',
-  },
-  {
-    label: 'North America',
+    label: 'Balkins',
     value: 'North America',
   },
 ];
@@ -258,9 +258,9 @@ export const barChartOverlayData: BarChartDatum[] = [
 ];
 
 export const getBarChartOverlayData: (id: string) => BarChartDatum[] = (id) => {
-  if (id === 'Europe') {
+  if (id === 'World') {
     return barChartOverlayData;
-  } else if (id === 'Asia') {
+  } else if (id === 'Europe') {
     const newData = barChartOverlayData.map(d => ({...d, y: d.y + 1, tooltipContent: `$${d.y + 1}Million`}));
     return newData;
   } else {

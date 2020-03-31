@@ -6,12 +6,9 @@ import {
   Light,
   HeaderWithLegend,
   lightBorderColor,
-  InlineTwoColumnSection,
   SubSectionHeader,
   ParagraphHeader,
   SmallParagraph,
-  SmallOrderedList,
-  NarrowPaddedColumn,
   SectionHeaderSecondary,
 } from '../../styling/styleUtils';
 import StickySubHeading from '../../components/text/StickySubHeading';
@@ -208,7 +205,7 @@ const AlbaniaTool = () => {
         <TwoColumnSection id={'industry-potential'}>
           <SectionHeader>Industry potential</SectionHeader>
         </TwoColumnSection>
-        <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
+        <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart' + selectedCountry.value}
@@ -221,86 +218,39 @@ const AlbaniaTool = () => {
             chartTitle={'Identifying Companies - ' + industryName}
             jsonToDownload={getBarChartOverlayData(selectedCountry.value)}
           />
-          <InlineTwoColumnSection>
-            <NarrowPaddedColumn>
-              <HeaderWithLegend legendColor={lightBorderColor}>Top Global FDI Companies</HeaderWithLegend>
-              <SmallOrderedList>
-                <li>Planet Food World (PFWC)
-                  <br /><Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy
-                  <br /><Light>India</Light>
-                </li>
-                <li>Al-Bader International Development
-                  <br /><Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang
-                  <br /><Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group
-                  <br /><Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group
-                  <br /><Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim
-                  <br /><Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan
-                  <br /><Light>Netherlands</Light>
-                </li>
-              </SmallOrderedList>
-            </NarrowPaddedColumn>
-            <NarrowPaddedColumn>
-              <HeaderWithLegend legendColor={colorScheme.quaternary}>
-                <div>
-                  Top Global FDI in <InlineToggle
-                      data={testCountryListData}
-                      colorClassName={'albania-color-scheme'}
-                      onChange={setSelectedCountry}
-                    />
-                </div>
-              </HeaderWithLegend>
-              <SmallOrderedList>
-                <li>Planet Food World (PFWC)
-                  <br /><Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy
-                  <br /><Light>India</Light>
-                </li>
-                <li>Al-Bader International Development
-                  <br /><Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang
-                  <br /><Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group
-                  <br /><Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group
-                  <br /><Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim
-                  <br /><Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan
-                  <br /><Light>Netherlands</Light>
-                </li>
-              </SmallOrderedList>
-            </NarrowPaddedColumn>
-          </InlineTwoColumnSection>
+          <TextBlock>
+            <HeaderWithLegend legendColor={colorScheme.quaternary}>
+              <div>
+                Top Global FDI in <InlineToggle
+                    data={testCountryListData}
+                    colorClassName={'albania-color-scheme'}
+                    onChange={setSelectedCountry}
+                  />
+              </div>
+            </HeaderWithLegend>
+            <ol>
+              <li>Planet Food World (PFWC), <Light>Suadi Arabia</Light>
+              </li>
+              <li>Biopalm Energy, <Light>India</Light>
+              </li>
+              <li>Al-Bader International Development, <Light>Kuwait</Light>
+              </li>
+              <li>Heilongjiang Beidahuang, <Light>China</Light>
+              </li>
+              <li>Chongqing Grain Group, <Light>China</Light>
+              </li>
+              <li>Charoen Pokphand Group, <Light>Thailand</Light>
+              </li>
+              <li>Fresh Del Monte Produce, <Light>United States of America</Light>
+              </li>
+              <li>Herakles Farms, <Light>United States of America</Light>
+              </li>
+              <li>Nader &amp; Ebrahim, <Light>Bahrain</Light>
+              </li>
+              <li>Rijk Zwaan, <Light>Netherlands</Light>
+              </li>
+            </ol>
+          </TextBlock>
         </TwoColumnSection>
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
