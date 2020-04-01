@@ -30,7 +30,7 @@ export const testCountryListData: TreeNode[] = [
     value: 'Europe',
   },
   {
-    label: 'Balkins',
+    label: 'Balkans',
     value: 'North America',
   },
 ];
