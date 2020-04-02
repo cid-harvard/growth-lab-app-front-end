@@ -8,14 +8,14 @@ const Root = styled.ul`
 const LegendItem = styled.li`
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 `;
 
 const LegendBlock = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-right: 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
   border: solid 3px transparent;
 `;
 

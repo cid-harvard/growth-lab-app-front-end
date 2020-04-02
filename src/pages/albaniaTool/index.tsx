@@ -412,8 +412,8 @@ const AlbaniaTool = () => {
         textColor={'#fff'}
         linkColor={'#fff'}
         links={[
-          {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
-          {label: 'Albania Research', target: '#'},
+          {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+          {label: 'Country Research', target: '#'},
         ]}
       />
       {nav}
@@ -447,7 +447,7 @@ const AlbaniaTool = () => {
             target: 'https://atlas.cid.harvard.edu/countries/4',
           },
           {
-            label: 'Albania Research',
+            label: 'Country Research',
             target: '#',
           },
         ]}
