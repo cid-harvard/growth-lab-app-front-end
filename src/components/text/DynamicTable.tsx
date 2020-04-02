@@ -11,6 +11,7 @@ const Root = styled.div`
   overflow: auto;
   max-width: 100%;
   width: 100%;
+  box-sizing: border-box;
 `;
 
 const Cell = styled.div`
@@ -37,10 +38,11 @@ interface Props {
   color?: string;
   stickFirstCol?: boolean;
   hideGridLines?: boolean;
+  fontSize?: string;
 }
 
 const DynamicTable = (props: Props) => {
-  const {columns, data, color, stickFirstCol, hideGridLines} = props;
+  const {columns, data, color, stickFirstCol, hideGridLines, fontSize} = props;
   const rootStyle: React.CSSProperties = {
     gridTemplateColumns: `repeat(${columns.length}, auto)`,
     gridTemplateRows: `repeat(${data.length + 1}, auto)`,
@@ -48,7 +50,7 @@ const DynamicTable = (props: Props) => {
   };
   const tableHeader = columns.map(({label}, i) => {
     const style: React.CSSProperties = {
-      color,
+      color, fontSize,
       textTransform: !color ? 'uppercase' : undefined,
       position: stickFirstCol && i === 0 ? 'sticky' : undefined,
       left: stickFirstCol && i === 0 ? '0' : undefined,
@@ -67,6 +69,7 @@ const DynamicTable = (props: Props) => {
         gridRow,
         backgroundColor: gridRow % 2 === 0 || !color ? undefined : rgba(color, 0.2),
         borderBottom: hideGridLines ? 'none' : undefined,
+        fontSize,
       };
       const gridColumn = columns.findIndex(c => c.key === key) + 1;
       if (gridColumn) {

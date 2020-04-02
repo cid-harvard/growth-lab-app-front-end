@@ -123,6 +123,7 @@ export const SubSectionHeader = styled.h4<TitleColorProps>`
   text-transform: uppercase;
   font-size: 1.2rem;
   letter-spacing: 1px;
+  font-family: ${secondaryFont};
   color: ${({color}) => color ? color : baseColor};
 `;
 

@@ -4,7 +4,6 @@ import {
   baseColor,
   secondaryFont,
   Label,
-  SectionHeaderSecondary,
 } from '../../styling/styleUtils';
 import DropdownTreeSelect, {TreeNode} from 'react-dropdown-tree-select';
 import '../navigation/multiTierDropdownStyles.scss';
@@ -31,7 +30,6 @@ interface DownloadButtonProps {
 const ButtonBase = styled.button<DownloadButtonProps>`
   color: #fff;
   text-align: center;
-  font-size: 1.3rem;
   background-color: ${({primaryColor}) => primaryColor ? primaryColor : baseColor};
   padding: 0.7rem 1.2rem;
   font-family: ${secondaryFont};
@@ -44,12 +42,13 @@ const ButtonBase = styled.button<DownloadButtonProps>`
 `;
 
 const DownloadButton = styled(ButtonBase)`
-  margin: 2rem auto 0;
+  font-size: 1rem;
+  margin: 2rem auto 1rem;
 `;
 
 const BuilderContainer = styled.div`
   background-color: #fff;
-  padding: 1rem;
+  padding: 1rem 1rem 0;
 `;
 
 const FormContainer = styled.div`
@@ -64,11 +63,17 @@ const FieldLabel = styled(Label)`
 
 const InputContainer = styled.div`
   grid-row: 2;
+
+  .multi-tier-dropdown.react-dropdown-tree-select .dropdown input.search {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 
 const UpdateButton = styled(ButtonBase)`
   grid-row: 2;
-  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
 `;
 
 const Lowercase = styled.span`
@@ -78,6 +83,10 @@ const Lowercase = styled.span`
 const TableContainer = styled.div`
   width: 100%;
   display: grid;
+`;
+
+const SectionHeader = styled.h3`
+  text-transform: uppercase;
 `;
 
 interface SelectData extends TreeNode {
@@ -209,14 +218,15 @@ const QueryBuilder = (props: Props) => {
           </UpdateButton>
         </FormContainer>
         <TableContainer>
-          <SectionHeaderSecondary color={primaryColor}>
+          <SectionHeader style={{color: primaryColor}}>
             Top 10 Preview List
-          </SectionHeaderSecondary>
+          </SectionHeader>
           <DynamicTable
             data={tableData}
             columns={columns}
             stickFirstCol={true}
             hideGridLines={true}
+            fontSize={'0.875rem'}
           />
         </TableContainer>
       </BuilderContainer>

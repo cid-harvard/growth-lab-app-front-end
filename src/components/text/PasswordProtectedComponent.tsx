@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import {
-  SectionHeaderSecondary,
   lightBorderColor,
   secondaryFont,
 } from '../../styling/styleUtils';
@@ -9,25 +8,19 @@ import {lighten} from 'polished';
 
 const Root = styled.div`
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAI0lEQVQYV2NkwAEYYeLeeU3GIPbWSXVnQTRhCXQT4TqIlgAACbAIB9ZyaUoAAAAASUVORK5CYII=) repeat;
-  padding: 1rem;
+  padding: 1rem 2.5rem;
+  box-sizing: border-box;
 
   @media(max-width: 900px) {
-    padding: 1rem 0.75rem;
+    padding: 1rem;
   }
 `;
 
-const Content = styled.div`
-  padding: 1rem 2rem;
-
-  @media(max-width:900px) {
-    padding: 1rem 0;
-  }
-`;
-
-const SectionHeader = styled(SectionHeaderSecondary)`
-  text-transform: none;
-  font-weight: 400;
+const Label = styled.p`
   margin: 0 0 1rem;
+`;
+const LabelBackground = styled.span`
+  background-color: #fff;
 `;
 
 const PasswordContainer = styled.div`
@@ -36,8 +29,8 @@ const PasswordContainer = styled.div`
 `;
 
 const Password = styled.input`
-  font-size: 1rem;
-  padding: 0.65rem 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid ${lightBorderColor};
   width: 300px;
   max-width: 300px;
@@ -59,16 +52,18 @@ interface ButtonProps {
 
 const SubmitButton = styled.button<ButtonProps>`
   text-align: center;
-  font-size: 1rem;
+  font-size: 0.875rem;
   text-transform: uppercase;
   height: 100%;
   color: #fff;
-  padding: 0.7rem 1.2rem;
+  padding: 0.45rem 0.75rem;
   font-family: ${secondaryFont};
   background-color: ${({primaryColor}) => primaryColor};
+  border: solid 1px ${({primaryColor}) => primaryColor};
 
   &:hover {
     background-color: ${({primaryColor}) => lighten(0.1 ,primaryColor)};
+    border-color: ${({primaryColor}) => lighten(0.1 ,primaryColor)};
   }
 `;
 
@@ -85,14 +80,16 @@ const PasswordProtectedComponent = (props: Props) => {
 
   return (
     <Root>
-      <SectionHeader>{title}</SectionHeader>
-      <Content>
-        <PasswordContainer>
-          <Password type='password' placeholder='Type Your Password' />
-          <SubmitButton primaryColor={buttonColor}>Submit</SubmitButton>
-        </PasswordContainer>
-        {children}
-      </Content>
+      <Label>
+        <LabelBackground>
+          {title}
+        </LabelBackground>
+      </Label>
+      <PasswordContainer>
+        <Password type='password' placeholder='Type Your Password' />
+        <SubmitButton primaryColor={buttonColor}>Submit</SubmitButton>
+      </PasswordContainer>
+      {children}
     </Root>
   );
 };
