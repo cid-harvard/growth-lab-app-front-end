@@ -276,7 +276,7 @@ const AlbaniaTool = () => {
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
           <PasswordProtectedComponent
-            title={'This section is password protected. Please enter your password to access the FDI Company list.'}
+            title={'This section is password protected. Please enter your password to access FDI data.'}
             buttonColor={colorScheme.primary}
           >
             <QueryTableBuilder
@@ -400,7 +400,7 @@ const AlbaniaTool = () => {
       <GradientHeader
         title={'Albania’s Industry Targeting Dashboard'}
         hasSearch={true}
-        searchLabelText={'To Start Select an Industry'}
+        searchLabelText={'To Start Select an Industry:'}
         data={naceData}
         onChange={updateSelectedIndustry}
         initialSelectedValue={initialSelectedIndustry}
@@ -413,6 +413,7 @@ const AlbaniaTool = () => {
         linkColor={'#fff'}
         links={[
           {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+          {label: 'Albania Research', target: '#'},
         ]}
       />
       {nav}
@@ -446,11 +447,7 @@ const AlbaniaTool = () => {
             target: 'https://atlas.cid.harvard.edu/countries/4',
           },
           {
-            label: 'Country Research',
-            target: '#',
-          },
-          {
-            label: 'Country Story',
+            label: 'Albania Research',
             target: '#',
           },
         ]}
