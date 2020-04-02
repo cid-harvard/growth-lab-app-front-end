@@ -1,6 +1,7 @@
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
 import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
+import { Datum as ClusterBarChartDatum } from '../../components/dataViz/clusterBarChart';
 import {
   Datum as DynamicTableDatum,
   Column as DynamicTableColumn,
@@ -12,10 +13,7 @@ import {rgba} from 'polished';
 
 export const colorScheme = {
   primary: '#84a9ac',
-  secondary: '#F8CCBF',
-  tertiary: '#FCEEEB',
   quaternary: '#4d7082',
-  quinary: '#A72F2F',
   header: '#204052',
   data: '#327a76',
 };
@@ -31,7 +29,7 @@ export const testCountryListData: TreeNode[] = [
   },
   {
     label: 'Balkans',
-    value: 'North America',
+    value: 'Balkans',
   },
 ];
 
@@ -342,3 +340,98 @@ export const testFDIData1: DynamicTableDatum[] = [
   {company: 'ParentCompany', country: 'Germany', city: 'Vilsbiburg', val1: 98, val2: 34, val3: 809.2, val4: 34, val5: 34},
   {company: 'Draexlmaier', country: 'South Korea', city: 'Cheongju', val1: 14, val2: 94, val3: 94.2, val4: 94, val5: 94},
 ];
+
+
+export const clusterBarGrapphTestData: ClusterBarChartDatum[] = [{
+    'groupName': 'World',
+    'y': 76,
+    'x': "'04-'05",
+    'fill': colorScheme.primary,
+    'tooltipContent': '$76 Million USD',
+  }, {
+    'groupName': 'Europe',
+    'y': 50,
+    'x': "'04-'05",
+    'fill': colorScheme.quaternary,
+    'tooltipContent': '$50 Million USD',
+  },  {
+    'groupName': 'Balkans',
+    'y': 21,
+    'x': "'04-'05",
+    'fill': colorScheme.header,
+    'tooltipContent': '$21 Million USD',
+  }, {
+    'groupName': 'World',
+    'y': 67,
+    'x': "'07-'09",
+    'fill': colorScheme.primary,
+    'tooltipContent': '$67 Million USD',
+  }, {
+    'groupName': 'Europe',
+    'y': 52,
+    'x': "'07-'09",
+    'fill': colorScheme.quaternary,
+    'tooltipContent': '$52 Million USD',
+  }, {
+    'groupName': 'Balkans',
+    'y': 28,
+    'x': "'07-'09",
+    'fill': colorScheme.header,
+    'tooltipContent': '$28 Million USD',
+  }, {
+    'groupName': 'World',
+    'y': 97,
+    'x': "'10-'12",
+    'fill': colorScheme.primary,
+    'tooltipContent': '$97 Million USD',
+  }, {
+    'groupName': 'Europe',
+    'y': 36,
+    'x': "'10-'12",
+    'fill': colorScheme.quaternary,
+    'tooltipContent': '$36 Million USD',
+  }, {
+    'groupName': 'Balkans',
+    'y': 51,
+    'x': "'10-'12",
+    'fill': colorScheme.header,
+    'tooltipContent': '$51 Million USD',
+  }, {
+    'groupName': 'World',
+    'y': 54,
+    'x': "'13-'15",
+    'fill': colorScheme.primary,
+    'tooltipContent': '$54 Million USD',
+  }, {
+    'groupName': 'Europe',
+    'y': 26,
+    'x': "'13-'15",
+    'fill': colorScheme.quaternary,
+    'tooltipContent': '$26 Million USD',
+  }, {
+    'groupName': 'Balkans',
+    'y': 15,
+    'x': "'13-'15",
+    'fill': colorScheme.header,
+    'tooltipContent': '$15 Million USD',
+  }, {
+    'groupName': 'World',
+    'y': 69,
+    'x': "'16-'18",
+    'fill': colorScheme.primary,
+    'tooltipContent': '$69 Million USD',
+  }, {
+    'groupName': 'Europe',
+    'y': 52,
+    'x': "'16-'18",
+    'fill': colorScheme.quaternary,
+    'tooltipContent': '$52 Million USD',
+  }, {
+    'groupName': 'Balkans',
+    'y': 40,
+    'x': "'16-'18",
+    'fill': colorScheme.header,
+    'tooltipContent': '$40 Million USD',
+  },
+  ];
+

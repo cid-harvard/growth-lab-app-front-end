@@ -36,6 +36,7 @@ import {
   testQueryBuilderDataCity,
   testFDIColumns1,
   testFDIData1,
+  clusterBarGrapphTestData,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
@@ -49,6 +50,7 @@ import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import transformNaceData, {RawNaceDatum} from './transformNaceData';
+import {lighten} from 'polished';
 
 const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
 
@@ -211,9 +213,8 @@ const AlbaniaTool = () => {
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart' + selectedCountry.value}
-            vizType={VizType.BarChart}
-            data={barChartData}
-            overlayData={getBarChartOverlayData(selectedCountry.value)}
+            vizType={VizType.ClusterBarChart}
+            data={clusterBarGrapphTestData}
             axisLabels={{left: 'US$ Millions'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
@@ -221,7 +222,18 @@ const AlbaniaTool = () => {
             jsonToDownload={getBarChartOverlayData(selectedCountry.value)}
           />
           <TextBlock>
-            <HeaderWithLegend legendColor={colorScheme.quaternary}>
+            <HeaderWithLegend legendColor={ (() => {
+              if (selectedCountry.value === 'World') {
+                return colorScheme.primary;
+              }
+              if (selectedCountry.value === 'Europe') {
+                return colorScheme.quaternary;
+              }
+              if (selectedCountry.value === 'Balkans') {
+                return colorScheme.header;
+              }
+              return colorScheme.primary;
+            })()}>
               <div>
                 Top Global FDI in <InlineToggle
                     data={testCountryListData}
@@ -252,6 +264,13 @@ const AlbaniaTool = () => {
               <li>Rijk Zwaan, <Light>Netherlands</Light>
               </li>
             </ol>
+            <Legend
+              legendList={[
+                {label: 'World', fill: colorScheme.primary, stroke: undefined},
+                {label: 'Europe', fill: colorScheme.quaternary, stroke: undefined},
+                {label: 'Balkans', fill: colorScheme.header, stroke: undefined},
+              ]}
+            />
           </TextBlock>
         </TwoColumnSection>
         <div>
@@ -293,7 +312,7 @@ const AlbaniaTool = () => {
             id={'albania-geo-map'}
             vizType={VizType.GeoMap}
             data={geoJsonWithValues}
-            minColor={colorScheme.tertiary}
+            minColor={lighten(0.5, colorScheme.quaternary)}
             maxColor={colorScheme.quaternary}
           />
           <TextBlock>
@@ -303,7 +322,7 @@ const AlbaniaTool = () => {
             <ColorScaleLegend
               minLabel={0.28}
               maxLabel={30.8}
-              minColor={colorScheme.tertiary}
+              minColor={lighten(0.5, colorScheme.quaternary)}
               maxColor={colorScheme.quaternary}
               title={'Percentage of workers in the industry'}
             />
