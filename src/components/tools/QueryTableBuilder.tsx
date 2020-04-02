@@ -63,11 +63,23 @@ const FieldLabel = styled(Label)`
 
 const InputContainer = styled.div`
   grid-row: 2;
+  position: relative;
 
   .multi-tier-dropdown.react-dropdown-tree-select .dropdown input.search {
     font-size: 0.875rem;
     padding: 0.5rem 0.5rem;
   }
+`;
+
+const ClearSearch = styled.button`
+  position: absolute;
+  right: 2rem;
+  top: 3px;
+  height: 1.7rem;
+  background-color: #fff;
+  color: #666;
+  border: none;
+  font-size: 1.2rem;
 `;
 
 const UpdateButton = styled(ButtonBase)`
@@ -166,6 +178,11 @@ const QueryBuilder = (props: Props) => {
       } else {
         data = field.data;
       }
+      const onClear = () => onChange(data[0], [data[0]]);
+
+      const clearButton = selectedValues[i].value !== data[0].value ? (
+        <ClearSearch onClick={onClear}>×</ClearSearch>
+      ) : null;
 
       const label = field.required ? field.label : field.label + ' (Optional)';
       return (
@@ -181,6 +198,7 @@ const QueryBuilder = (props: Props) => {
               texts={{placeholder}}
               onChange={onChange}
             />
+            {clearButton}
           </InputContainer>
         </React.Fragment>
       );
