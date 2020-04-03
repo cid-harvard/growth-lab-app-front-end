@@ -21,7 +21,7 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
     - [StickySubHeading](#stickysubheadingcomponent)
     - [GradientHeader](#gradientheadercomponent)
     - [TextBlock](#textblockcomponent)
-    - [QueryBuilder](#querybuildercomponent)
+    - [QueryTableBuilder](#querytablebuildercomponent)
   - [Custom Hooks](#customhooks)
     - [useScrollBehavior](#usescrollbehaviorhook)
   - [Guidelines For Creating New Components](#componentguidelines)
@@ -154,6 +154,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
    enum VizType {
       ScatterPlot = 'ScatterPlot',
       BarChart = 'BarChart',
+      ClusterBarChart = 'ClusterBarChart',
       RadarChart = 'RadarChart',
       GeoMap = 'GeoMap',
     }
@@ -220,6 +221,23 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
       **minColor**: string;
 
       **maxColor**: string;
+
+
+   - **VizType.ClusterBarChart**
+
+      **data**: ClusterBarChartDatum[];
+
+         ClusterBarChartDatum takes the following values:
+
+         - groupName: string;
+         - x: string;
+         - y: number;
+         - fill?: string;
+         - tooltipContent?: string;
+
+         Each x value will create a cluster of every groupName that has a matching x value.
+
+      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 Example of the DataViz component -
 
@@ -501,20 +519,59 @@ The TextBlock component, located at `src/components/text/TextBlock` is a generic
     }
    ```
  
-<a name="querybuildercomponent"/>
+<a name="passwordprotectedcomponent"/>
 
-#### QueryBuilder
+#### PasswordProtectedComponent
 
-The QueryBuilder component, located at `src/components/tools/QueryBuilder` is a customizable query building component. It can take a number of different parameters to suit a large array of needs. It takes the following props -
-
+The PasswordProtectedComponent component, located at `src/components/tools/PasswordProtectedComponent` is a generic component that password protects any child components. It takes only three props -
+  
 - **title**: string;
+- **buttonColor**: string;
+- **children**: React.ReactNode;
+ 
+<a name="querytablebuildercomponent"/>
+
+#### QueryTableBuilder
+
+The QueryTableBuilder component, located at `src/components/tools/QueryTableBuilder` is a customizable table query building component. It can take a number of different parameters to suit a large array of needs. It takes the following props -
+
 - **primaryColor**: string;
+
+   The color of the buttons and title found within the table.
+
+- **onUpdateClick**: (data: CallbackData) => void;
+
+   Callback function for when a user clicks the "Update" button.
+
 - **onQueryDownloadClick**: (data: CallbackData) => void;
-- **fullDownload** *(optional)*: FullDownloadProps;
+
+   Callback function for when a user clicks the "Download" button.
+
 - **selectFields** *(optional)*: SelectBoxProps[];
-- **checkboxTitle** *(optional)*: string;
-- **checkboxes** *(optional)*: CheckboxProps[];
-- **hoverColor** *(optional)*: string;
+
+   Each selectFields item in the array creates a [MultiTierSearch](#multitiersearchcomponent) and can take the following values -
+
+       - id: string;
+       - label: string;
+       - data: SelectData[];
+
+          Where SelectData extends a [TreeNode](#multitiersearchcomponent) with the optional `parentValue: string | null` field, in which the value of the selected node in the optionally dependent field (see below) is specified.
+
+       - dependentOn?: string;
+
+          Optional value relating to the `id` of another selectField in which this selectField is dependent on. Use the optional `parentValue` in the SelectData mentioned above to set up the relationship between dependent values within the datasets.
+
+       - required?: boolean;
+
+- **itemName**: string;
+- **columns**: Column[];
+
+   columns use the same format as those in the [DynamicTable](#dynamictablecomponent) component.
+
+- **tableData**: Datum[];
+
+   tableData uses the same format as the data prop in the [DynamicTable](#dynamictablecomponent) component.
+
 
 <a name="customhooks"/>
 
