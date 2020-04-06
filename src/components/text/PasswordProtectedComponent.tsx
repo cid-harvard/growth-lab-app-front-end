@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/macro';
 import {
   lightBorderColor,
@@ -71,12 +71,20 @@ interface Props {
   title: string;
   buttonColor: string;
   children: React.ReactNode;
+  onPasswordSubmit: (value: string) => void;
 }
 
 const PasswordProtectedComponent = (props: Props) => {
   const {
-    title, children, buttonColor,
+    title, children, buttonColor, onPasswordSubmit,
   } = props;
+
+  const [password, setPassword] = useState<string>('');
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onPasswordSubmit(password);
+  };
 
   return (
     <Root>
@@ -86,8 +94,19 @@ const PasswordProtectedComponent = (props: Props) => {
         </LabelBackground>
       </Label>
       <PasswordContainer>
-        <Password type='password' placeholder='Type Your Password' />
-        <SubmitButton primaryColor={buttonColor}>Submit</SubmitButton>
+        <form onSubmit={onSubmit}>
+          <Password
+            type='password'
+            placeholder='Type Your Password'
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          <SubmitButton
+            primaryColor={buttonColor}
+          >
+            Submit
+          </SubmitButton>
+        </form>
       </PasswordContainer>
       {children}
     </Root>

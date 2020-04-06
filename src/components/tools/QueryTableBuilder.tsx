@@ -39,6 +39,12 @@ const ButtonBase = styled.button<DownloadButtonProps>`
   &:hover {
     background-color: ${({primaryColor}) => primaryColor ? lighten(0.1 ,primaryColor) : baseColor};
   }
+
+  &:disabled,
+  &[disabled]{
+    background-color: ${({primaryColor}) => primaryColor ? lighten(0.2 ,primaryColor) : baseColor};
+    cursor: not-allowed;
+  }
 `;
 
 const DownloadButton = styled(ButtonBase)`
@@ -130,12 +136,13 @@ interface Props {
   itemName: string;
   columns: Column[];
   tableData: Datum[];
+  disabled?: boolean;
 }
 
 const QueryBuilder = (props: Props) => {
   const {
     selectFields, primaryColor, onQueryDownloadClick,
-    itemName, onUpdateClick, tableData, columns,
+    itemName, onUpdateClick, columns, disabled,
   } = props;
 
   const [selectedValues, setSelectedValues] = useState<TreeNode[]>(
@@ -226,12 +233,27 @@ const QueryBuilder = (props: Props) => {
     onQueryDownloadClick({selectedFields: selectFieldValues});
   };
 
+  let tableData: Datum[] = [];
+  if (!disabled) {
+    tableData = [...props.tableData];
+  } else {
+    for (let i = 0; i < 10; i++) {
+      const datum: Datum = {};
+      columns.forEach(({key}) => {
+        datum[key] = null;
+      });
+      tableData.push(datum);
+    }
+  }
+
+  const itemCount = disabled ? null : <Lowercase>(1200 {itemName})</Lowercase>;
+
   return (
     <Root>
       <BuilderContainer>
         <FormContainer>
           {searchFieldList}
-          <UpdateButton primaryColor={primaryColor} onClick={onUpdate}>
+          <UpdateButton primaryColor={primaryColor} onClick={onUpdate} disabled={disabled}>
             Update
           </UpdateButton>
         </FormContainer>
@@ -249,8 +271,8 @@ const QueryBuilder = (props: Props) => {
         </TableContainer>
       </BuilderContainer>
       <DownloadQueryButtonContainer>
-        <DownloadButton primaryColor={primaryColor} onClick={onDownload}>
-          Download Full List <Lowercase>(1200 {itemName})</Lowercase>
+        <DownloadButton primaryColor={primaryColor} onClick={onDownload}  disabled={disabled}>
+          Download Full List {itemCount}
         </DownloadButton>
       </DownloadQueryButtonContainer>
     </Root>
