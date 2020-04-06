@@ -28,6 +28,6 @@ before_install:
 deploy:
   provider: script
   skip_cleanup: true
-  script: bash ./scripts/deploy.sh
+  script: bash ./deploy.sh
 after_success:
   - ssh $SERVER_USER@$SERVER_ADDRESS "bash -s" < "sudo systemctl reload nginx"
