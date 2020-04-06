@@ -12,7 +12,7 @@ before_install:
 	- export APP_DIR=/home/ubuntu
 	- if [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "backend" ]; then
 			export SERVER_ADDRESS=$STAGING_IP_ADDRESS;
-			export ENCRYPTED_DEPLOY_KEY=./deploy_keys/staging.enc;
+			export ENCRYPTED_DEPLOY_KEY=./deploy_keys/staging_key.enc;
 		fi
 	- if [ $TRAVIS_BRANCH == "master" ]; then
 			export SERVER_ADDRESS=$PRODUCTION_IP_ADDRESS;
