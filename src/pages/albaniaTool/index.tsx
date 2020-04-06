@@ -6,18 +6,16 @@ import {
   Light,
   HeaderWithLegend,
   lightBorderColor,
-  InlineTwoColumnSection,
   SubSectionHeader,
   ParagraphHeader,
   SmallParagraph,
-  SmallOrderedList,
-  NarrowPaddedColumn,
   SectionHeaderSecondary,
 } from '../../styling/styleUtils';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock from '../../components/text/TextBlock';
+import PasswordProtectedComponent from '../../components/text/PasswordProtectedComponent';
 import InlineToggle from '../../components/text/InlineToggle';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
@@ -36,11 +34,14 @@ import {
   testTableData1,
   testQueryBuilderDataCountry,
   testQueryBuilderDataCity,
+  testFDIColumns1,
+  testFDIData1,
+  clusterBarGrapphTestData,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
-import QueryBuilder from '../../components/tools/QueryBuilder';
+import QueryTableBuilder from '../../components/tools/QueryTableBuilder';
 import raw from 'raw.macro';
 import noop from 'lodash/noop';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
@@ -49,7 +50,7 @@ import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import transformNaceData, {RawNaceDatum} from './transformNaceData';
-import {rgba} from 'polished';
+import {lighten} from 'polished';
 
 const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
 
@@ -208,144 +209,99 @@ const AlbaniaTool = () => {
         <TwoColumnSection id={'industry-potential'}>
           <SectionHeader>Industry potential</SectionHeader>
         </TwoColumnSection>
-        <TwoColumnSection columnDefs={'2.5fr 3.5fr'}>
+        <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart' + selectedCountry.value}
-            vizType={VizType.BarChart}
-            data={barChartData}
-            overlayData={getBarChartOverlayData(selectedCountry.value)}
+            vizType={VizType.ClusterBarChart}
+            data={clusterBarGrapphTestData}
             axisLabels={{left: 'US$ Millions'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Identifying Companies - ' + industryName}
             jsonToDownload={getBarChartOverlayData(selectedCountry.value)}
           />
-          <InlineTwoColumnSection>
-            <NarrowPaddedColumn>
-              <HeaderWithLegend legendColor={lightBorderColor}>Top Global FDI Companies</HeaderWithLegend>
-              <SmallOrderedList>
-                <li>Planet Food World (PFWC)
-                  <br /><Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy
-                  <br /><Light>India</Light>
-                </li>
-                <li>Al-Bader International Development
-                  <br /><Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang
-                  <br /><Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group
-                  <br /><Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group
-                  <br /><Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim
-                  <br /><Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan
-                  <br /><Light>Netherlands</Light>
-                </li>
-              </SmallOrderedList>
-            </NarrowPaddedColumn>
-            <NarrowPaddedColumn>
-              <HeaderWithLegend legendColor={colorScheme.quaternary}>
-                <div>
-                  Top Global FDI in <InlineToggle
-                      data={testCountryListData}
-                      colorClassName={'albania-color-scheme'}
-                      onChange={setSelectedCountry}
-                    />
-                </div>
-              </HeaderWithLegend>
-              <SmallOrderedList>
-                <li>Planet Food World (PFWC)
-                  <br /><Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy
-                  <br /><Light>India</Light>
-                </li>
-                <li>Al-Bader International Development
-                  <br /><Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang
-                  <br /><Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group
-                  <br /><Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group
-                  <br /><Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms
-                  <br /><Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim
-                  <br /><Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan
-                  <br /><Light>Netherlands</Light>
-                </li>
-              </SmallOrderedList>
-            </NarrowPaddedColumn>
-          </InlineTwoColumnSection>
+          <TextBlock>
+            <HeaderWithLegend legendColor={ (() => {
+              if (selectedCountry.value === 'World') {
+                return colorScheme.primary;
+              }
+              if (selectedCountry.value === 'Europe') {
+                return colorScheme.quaternary;
+              }
+              if (selectedCountry.value === 'Balkans') {
+                return colorScheme.header;
+              }
+              return colorScheme.primary;
+            })()}>
+              <div>
+                Top Global FDI in <InlineToggle
+                    data={testCountryListData}
+                    colorClassName={'albania-color-scheme'}
+                    onChange={setSelectedCountry}
+                  />
+              </div>
+            </HeaderWithLegend>
+            <ol>
+              <li>Planet Food World (PFWC), <Light>Suadi Arabia</Light>
+              </li>
+              <li>Biopalm Energy, <Light>India</Light>
+              </li>
+              <li>Al-Bader International Development, <Light>Kuwait</Light>
+              </li>
+              <li>Heilongjiang Beidahuang, <Light>China</Light>
+              </li>
+              <li>Chongqing Grain Group, <Light>China</Light>
+              </li>
+              <li>Charoen Pokphand Group, <Light>Thailand</Light>
+              </li>
+              <li>Fresh Del Monte Produce, <Light>United States of America</Light>
+              </li>
+              <li>Herakles Farms, <Light>United States of America</Light>
+              </li>
+              <li>Nader &amp; Ebrahim, <Light>Bahrain</Light>
+              </li>
+              <li>Rijk Zwaan, <Light>Netherlands</Light>
+              </li>
+            </ol>
+            <Legend
+              legendList={[
+                {label: 'World', fill: colorScheme.primary, stroke: undefined},
+                {label: 'Europe', fill: colorScheme.quaternary, stroke: undefined},
+                {label: 'Balkans', fill: colorScheme.header, stroke: undefined},
+              ]}
+            />
+          </TextBlock>
         </TwoColumnSection>
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
-          <QueryBuilder
-            title={'Customize your list & download'}
-            fullDownload={{
-              label: 'Download the full list of companies',
-              onClick: noop,
-            }}
-            primaryColor={rgba(colorScheme.primary, 0.2)}
-            hoverColor={colorScheme.primary}
-            onQueryDownloadClick={noop}
-            selectFields={[
-              {
-                id: 'country',
-                label: 'Source Country',
-                data: testQueryBuilderDataCountry,
-                required: true,
-              },
-              {
-                id: 'city',
-                label: 'Source City',
-                data: testQueryBuilderDataCity,
-                dependentOn: 'country',
-              },
-            ]}
-            checkboxTitle={'Include in data:'}
-            checkboxes={[
-              {
-                label: 'Placeholder #1',
-                value: 'Placeholder #1',
-                checked: false,
-              },
-              {
-                label: 'Placeholder #2',
-                value: 'Placeholder #2',
-                checked: false,
-              },
-              {
-                label: 'Placeholder #3',
-                value: 'Placeholder #3',
-                checked: false,
-              },
-            ]}
-          />
+          <PasswordProtectedComponent
+            title={'This section is password protected. Please enter your password to access FDI data.'}
+            buttonColor={colorScheme.primary}
+          >
+            <QueryTableBuilder
+              primaryColor={colorScheme.primary}
+              onQueryDownloadClick={noop}
+              onUpdateClick={noop}
+              selectFields={[
+                {
+                  id: 'country',
+                  label: 'Source Country',
+                  data: testQueryBuilderDataCountry,
+                  required: true,
+                },
+                {
+                  id: 'city',
+                  label: 'Source City',
+                  data: testQueryBuilderDataCity,
+                  dependentOn: 'country',
+                },
+              ]}
+              itemName={'companies'}
+              columns={testFDIColumns1}
+              tableData={testFDIData1}
+            />
+          </PasswordProtectedComponent>
         </div>
         <TwoColumnSection id={'industry-now'}>
           <SectionHeader>Industry Now</SectionHeader>
@@ -356,7 +312,7 @@ const AlbaniaTool = () => {
             id={'albania-geo-map'}
             vizType={VizType.GeoMap}
             data={geoJsonWithValues}
-            minColor={colorScheme.tertiary}
+            minColor={lighten(0.5, colorScheme.quaternary)}
             maxColor={colorScheme.quaternary}
           />
           <TextBlock>
@@ -366,7 +322,7 @@ const AlbaniaTool = () => {
             <ColorScaleLegend
               minLabel={0.28}
               maxLabel={30.8}
-              minColor={colorScheme.tertiary}
+              minColor={lighten(0.5, colorScheme.quaternary)}
               maxColor={colorScheme.quaternary}
               title={'Percentage of workers in the industry'}
             />
@@ -444,7 +400,7 @@ const AlbaniaTool = () => {
       <GradientHeader
         title={'Albania’s Industry Targeting Dashboard'}
         hasSearch={true}
-        searchLabelText={'To Start Select an Industry'}
+        searchLabelText={'To Start Select an Industry:'}
         data={naceData}
         onChange={updateSelectedIndustry}
         initialSelectedValue={initialSelectedIndustry}
@@ -456,7 +412,8 @@ const AlbaniaTool = () => {
         textColor={'#fff'}
         linkColor={'#fff'}
         links={[
-          {label: 'Review Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+          {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+          {label: 'Country Research', target: '#'},
         ]}
       />
       {nav}
@@ -491,10 +448,6 @@ const AlbaniaTool = () => {
           },
           {
             label: 'Country Research',
-            target: '#',
-          },
-          {
-            label: 'Country Story',
             target: '#',
           },
         ]}

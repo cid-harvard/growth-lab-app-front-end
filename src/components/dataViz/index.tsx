@@ -6,6 +6,7 @@ import styled from 'styled-components/macro';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
 import createBarChart, {Datum as BarChartDatum} from './barChart';
+import createClusterBarChart, {Datum as ClusterBarChartDatum} from './clusterBarChart';
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import {
@@ -84,6 +85,7 @@ const SvgIcon = styled.img`
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
+  ClusterBarChart = 'ClusterBarChart',
   RadarChart = 'RadarChart',
   GeoMap = 'GeoMap',
 }
@@ -107,6 +109,11 @@ type Props = BaseProps & (
     vizType: VizType.BarChart;
     data: BarChartDatum[];
     overlayData?: BarChartDatum[];
+    axisLabels?: {left?: string, bottom?: string};
+  } |
+  {
+    vizType: VizType.ClusterBarChart;
+    data: ClusterBarChartDatum[];
     axisLabels?: {left?: string, bottom?: string};
   } |
   {
@@ -175,6 +182,13 @@ const DataViz = (props: Props) => {
           svg, tooltip, data: props.data, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           }, minColor: props.minColor, maxColor: props.maxColor,
+        });
+      } else if (props.vizType) {
+        createClusterBarChart({
+          svg, tooltip, data: props.data, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+          axisLabels: props.axisLabels,
         });
       }
     }
