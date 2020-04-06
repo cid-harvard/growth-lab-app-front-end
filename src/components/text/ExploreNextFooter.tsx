@@ -141,6 +141,16 @@ const ExploreNextButton = styled.a<{hoveColor: string}>`
     margin-bottom: 0;
   }
 `;
+const LicenseAndReadme = styled.p`
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  text-align: center;
+  margin: 5rem auto 0;
+
+  a {
+    color: rgba(255, 255, 255, 0.8);
+  }
+`;
 
 export enum SocialType {
   facebook = 'facebook',
@@ -226,6 +236,9 @@ const ExploreNextFooter = (props: Props) => {
             </LogoLink>
           </LogoColumn>
         </Content>
+        <LicenseAndReadme>
+          Country Dashboards are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>. The GitHub repo for the code as well as all the documentation for the Country Dashboards project can be found <a href='https://github.com/cid-harvard/country-tools-front-end' target='_blank' rel='noopener noreferrer'>here</a>.
+        </LicenseAndReadme>
       </Container>
     </Root>
   );

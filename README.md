@@ -4,6 +4,8 @@ Country Dashboards provides a framework for quickly building custom data visuali
 
 View the site live at https://cid-harvard.github.io/country-tools-front-end/
 
+License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 ## Table of Contents
   - [Getting Started](#gettingstarted)
   - [Building a Page](#buildingapage)
