@@ -390,7 +390,7 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 
 - **data**: Datum[];
 
-   Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop.
+   Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
 
 - **color**: string[];
 
@@ -530,6 +530,9 @@ The PasswordProtectedComponent component, located at `src/components/tools/Passw
 - **title**: string;
 - **buttonColor**: string;
 - **children**: React.ReactNode;
+- **onPasswordSubmit**: (value: string) => void;
+
+   Callback function for when the user submits the password.
  
 <a name="querytablebuildercomponent"/>
 
@@ -573,6 +576,10 @@ The QueryTableBuilder component, located at `src/components/tools/QueryTableBuil
 - **tableData**: Datum[];
 
    tableData uses the same format as the data prop in the [DynamicTable](#dynamictablecomponent) component.
+
+- **disabled** *(optional)*: boolean;
+
+   If true, the buttons will be disabled and the table will render with 10 blank rows based on the column data.
 
 
 <a name="customhooks"/>
