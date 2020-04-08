@@ -107,8 +107,7 @@ type Props = BaseProps & (
   } |
   {
     vizType: VizType.BarChart;
-    data: BarChartDatum[];
-    overlayData?: BarChartDatum[];
+    data: BarChartDatum[][];
     axisLabels?: {left?: string, bottom?: string};
   } |
   {
@@ -158,7 +157,6 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
-          overlayData: props.overlayData,
         });
       } else if (props.vizType === VizType.RadarChart) {
         let width: number;

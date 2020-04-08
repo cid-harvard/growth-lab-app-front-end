@@ -36,7 +36,7 @@ import {
   testQueryBuilderDataCity,
   testFDIColumns1,
   testFDIData1,
-  clusterBarGrapphTestData,
+  tripleStackBarChartTestData,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
@@ -263,8 +263,8 @@ const AlbaniaTool = () => {
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart' + selectedCountry.value}
-            vizType={VizType.ClusterBarChart}
-            data={clusterBarGrapphTestData}
+            vizType={VizType.BarChart}
+            data={tripleStackBarChartTestData}
             axisLabels={{left: 'US$ Millions'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
@@ -375,8 +375,7 @@ const AlbaniaTool = () => {
           <DataViz
             id={'albania-company-bar-chart-2'}
             vizType={VizType.BarChart}
-            data={barChartData}
-            overlayData={barChartOverlayData2}
+            data={[barChartData, barChartOverlayData2]}
             axisLabels={{left: 'US$ Millions'}}
           />
           <TextBlock>

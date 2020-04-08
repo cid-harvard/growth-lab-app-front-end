@@ -20,11 +20,11 @@ export const colorScheme = {
 
 export const testCountryListData: TreeNode[] = [
   {
-    label: 'World',
+    label: 'Rest of World',
     value: 'World',
   },
   {
-    label: 'Europe',
+    label: 'Rest of Europe',
     value: 'Europe',
   },
   {
@@ -341,7 +341,6 @@ export const testFDIData1: DynamicTableDatum[] = [
   {company: 'Draexlmaier', country: 'South Korea', city: 'Cheongju', val1: 14, val2: 94, val3: 94.2, val4: 94, val5: 94},
 ];
 
-
 export const clusterBarGrapphTestData: ClusterBarChartDatum[] = [{
     'groupName': 'World',
     'y': 76,
@@ -434,4 +433,74 @@ export const clusterBarGrapphTestData: ClusterBarChartDatum[] = [{
     'tooltipContent': '$40 Million USD',
   },
   ];
+
+export const tripleStackBarChartTestData: BarChartDatum[][] = [
+  [
+    {
+      'y': 76,
+      'x': "'03-'06",
+      'fill': colorScheme.primary,
+      'tooltipContent': 'Total for World: $76 Million USD',
+    }, {
+      'y': 67,
+      'x': "'07-'10",
+      'fill': colorScheme.primary,
+      'tooltipContent': '<strong>Total for World:</strong> $67 Million USD',
+    }, {
+      'y': 97,
+      'x': "'11-'14",
+      'fill': colorScheme.primary,
+      'tooltipContent': '<strong>Total for World:</strong> $97 Million USD',
+    }, {
+      'y': 54,
+      'x': "'15-'18",
+      'fill': colorScheme.primary,
+      'tooltipContent': '<strong>Total for World:</strong> $54 Million USD',
+    },
+  ],[
+    {
+      'y': 36,
+      'x': "'03-'06",
+      'fill': colorScheme.quaternary,
+      'tooltipContent': '<strong>Total for Europe:</strong> $36 Million USD',
+    }, {
+      'y': 57,
+      'x': "'07-'10",
+      'fill': colorScheme.quaternary,
+      'tooltipContent': '<strong>Total for Europe:</strong> $57 Million USD',
+    }, {
+      'y': 27,
+      'x': "'11-'14",
+      'fill': colorScheme.quaternary,
+      'tooltipContent': '<strong>Total for Europe:</strong> $27 Million USD',
+    }, {
+      'y': 34,
+      'x': "'15-'18",
+      'fill': colorScheme.quaternary,
+      'tooltipContent': '<strong>Total for Europe:</strong> $34 Million USD',
+    },
+  ], [
+   {
+      'y': 16,
+      'x': "'03-'06",
+      'fill': colorScheme.header,
+      'tooltipContent': '<strong>Total for Balkans:</strong> $16 Million USD',
+    },  {
+      'y': 27,
+      'x': "'07-'10",
+      'fill': colorScheme.header,
+      'tooltipContent': '<strong>Total for Balkans:</strong> $27 Million USD',
+    }, {
+      'y': 13,
+      'x': "'11-'14",
+      'fill': colorScheme.header,
+      'tooltipContent': '<strong>Total for Balkans:</strong> $13 Million USD',
+    },  {
+      'y': 23,
+      'x': "'15-'18",
+      'fill': colorScheme.header,
+      'tooltipContent': '<strong>Total for Balkans:</strong> $23 Million USD',
+    },
+  ],
+];
 

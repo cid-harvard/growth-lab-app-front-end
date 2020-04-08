@@ -17,14 +17,13 @@ interface Dimensions {
 interface Input {
   svg: d3.Selection<any, unknown, null, undefined>;
   tooltip: d3.Selection<any, unknown, null, undefined>;
-  data: Datum[];
-  overlayData?: Datum[];
+  data: Datum[][];
   size: Dimensions;
   axisLabels?: {left?: string, bottom?: string};
 }
 
 export default (input: Input) => {
-  const { svg, data, overlayData, size, axisLabels, tooltip } = input;
+  const { svg, data, size, axisLabels, tooltip } = input;
 
   const margin = {
     top: 30, right: 30,
@@ -51,9 +50,8 @@ export default (input: Input) => {
     .append('g')
       .attr('transform',
             'translate(' + margin.left + ',' + margin.top + ')');
-  const allDataYValues = data.map(({y}) => y);
-  const allOverlayDataYValues = overlayData ? overlayData.map(({y}) => y) : [];
-  const allYValues = [...allDataYValues, ...allOverlayDataYValues];
+  const allYValues: number[] = [];
+  data.forEach(datum => datum.forEach(({y}) => allYValues.push(y)));
 
   const rawMinY = d3.min(allYValues);
   const rawMaxY = d3.max(allYValues);
@@ -64,42 +62,15 @@ export default (input: Input) => {
   const minY = rawMinY ? Math.floor(rawMinY * minScaleBuffer) : 0;
   const maxY = rawMaxY ? Math.floor(rawMaxY * maxScaleBuffer) : 0;
   // Scale the range of the data in the domains
-  xScale.domain(data.map(function(d) { return d.x; }));
+  xScale.domain(data[0].map(function(d) { return d.x; }))
+        .rangeRound([0, width])
+        .paddingInner(0.2);
   yScale.domain([minY, maxY]);
 
   // append the rectangles for the bar chart
-  container.selectAll('.bar')
-      .data(data)
-    .enter().append('rect')
-      .attr('class', 'bar')
-      .attr('x', function(d) {
-        const xVal = xScale(d.x);
-        return xVal ? xVal : 0;
-      })
-      .attr('width', xScale.bandwidth())
-      .attr('y', function(d) { return yScale(d.y); })
-      .style('fill', ({fill}) => fill ? fill : '#69b3a2')
-      .style('stroke', ({stroke}) => stroke ? stroke : 'none')
-      .style('stroke-width', 3)
-      .attr('height', function(d) { return height - yScale(d.y); })
-      .on('mousemove', ({x, tooltipContent}) => {
-        const content = tooltipContent === undefined || tooltipContent.length === 0
-          ? '' : `:<br />${tooltipContent}`;
-        tooltip
-          .style('display', 'block');
-        tooltip.html(`<strong>${x}</strong>${content}`)
-          .style('left', (d3.event.pageX + 4) + 'px')
-          .style('top', (d3.event.pageY - 4) + 'px');
-        })
-      .on('mouseout', () => {
-        tooltip
-            .style('display', 'none');
-      });
-
-  if (overlayData) {
-    // append the rectangles for the overlay bar chart
-    container.selectAll('.overlayBars')
-        .data(overlayData)
+  data.forEach((dataset, i) => {
+    container.selectAll('.bar-' + i)
+        .data(dataset)
       .enter().append('rect')
         .attr('class', 'bar')
         .attr('x', function(d) {
@@ -125,7 +96,7 @@ export default (input: Input) => {
           tooltip
               .style('display', 'none');
         });
-  }
+  });
 
   // add the x Axis
   container.append('g')
