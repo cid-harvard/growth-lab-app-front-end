@@ -180,7 +180,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
    - **VizType.BarChart**
 
-      **data**: BarChartDatum[];
+      **data**: Array<BarChartDatum[]>;
 
          BarChartDatum takes the following values:
 
@@ -189,6 +189,8 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - fill *(optional)*: string;
          - stroke *(optional)*: string;
          - tooltipContent *(optional)*: string;
+
+         The data it takes is an array of BarChartDatum arrays. Each array will render ontop of the previous one.
 
       **overlayData** *(optional)*: BarChartDatum[];
 
