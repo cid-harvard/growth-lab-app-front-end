@@ -440,44 +440,68 @@ export const tripleStackBarChartTestData: BarChartDatum[][] = [
       'y': 76,
       'x': "'03-'06",
       'fill': colorScheme.primary,
-      'tooltipContent': 'Total for World: $76 Million USD',
+      'tooltipContent':
+        'Total for World: $76 Million USD' +
+        '<br />' +
+        '<strong>Difference for World:</strong> $40 Million USD',
     }, {
       'y': 67,
       'x': "'07-'10",
       'fill': colorScheme.primary,
-      'tooltipContent': '<strong>Total for World:</strong> $67 Million USD',
+      'tooltipContent':
+        '<strong>Total for World:</strong> $67 Million USD' +
+        '<br />' +
+        '<strong>Difference for World:</strong> $10 Million USD',
     }, {
       'y': 97,
       'x': "'11-'14",
       'fill': colorScheme.primary,
-      'tooltipContent': '<strong>Total for World:</strong> $97 Million USD',
+      'tooltipContent':
+        '<strong>Total for World:</strong> $97 Million USD' +
+        '<br />' +
+        '<strong>Difference for World:</strong> $70 Million USD',
     }, {
       'y': 54,
       'x': "'15-'18",
       'fill': colorScheme.primary,
-      'tooltipContent': '<strong>Total for World:</strong> $54 Million USD',
+      'tooltipContent':
+        '<strong>Total for World:</strong> $54 Million USD' +
+        '<br />' +
+        '<strong>Difference for World:</strong> $20 Million USD',
     },
   ],[
     {
       'y': 36,
       'x': "'03-'06",
       'fill': colorScheme.quaternary,
-      'tooltipContent': '<strong>Total for Europe:</strong> $36 Million USD',
+      'tooltipContent':
+        '<strong>Total for Europe:</strong> $36 Million USD' +
+        '<br />' +
+        '<strong>Difference for Europe:</strong> $20 Million USD',
     }, {
       'y': 57,
       'x': "'07-'10",
       'fill': colorScheme.quaternary,
-      'tooltipContent': '<strong>Total for Europe:</strong> $57 Million USD',
+      'tooltipContent':
+        '<strong>Total for Europe:</strong> $57 Million USD' +
+        '<br />' +
+        '<strong>Difference for Europe:</strong> $30 Million USD',
     }, {
       'y': 27,
       'x': "'11-'14",
       'fill': colorScheme.quaternary,
-      'tooltipContent': '<strong>Total for Europe:</strong> $27 Million USD',
+      'tooltipContent':
+        '<strong>Total for Europe:</strong> $27 Million USD' +
+        '<br />' +
+        '<strong>Difference for Europe:</strong> $14 Million USD',
     }, {
       'y': 34,
       'x': "'15-'18",
       'fill': colorScheme.quaternary,
-      'tooltipContent': '<strong>Total for Europe:</strong> $34 Million USD',
+      'tooltipContent':
+        '<strong>Total for Europe:</strong> $34 Million USD' +
+        '<br />' +
+        '<strong>Difference for Europe:</strong> $11 Million USD',
     },
   ], [
    {

@@ -316,8 +316,8 @@ const AlbaniaTool = () => {
             </ol>
             <Legend
               legendList={[
-                {label: 'World', fill: colorScheme.primary, stroke: undefined},
-                {label: 'Europe', fill: colorScheme.quaternary, stroke: undefined},
+                {label: 'Rest of World', fill: colorScheme.primary, stroke: undefined},
+                {label: 'Rest of Europe', fill: colorScheme.quaternary, stroke: undefined},
                 {label: 'Balkans', fill: colorScheme.header, stroke: undefined},
               ]}
             />
