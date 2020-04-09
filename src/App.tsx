@@ -20,6 +20,7 @@ import Loading from './components/general/Loading';
 
 const LandingPage = lazy(() => import('./pages/landingPage'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
+const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
 
 export interface IAppContext {
@@ -72,6 +73,9 @@ function App() {
                 />
                 <Route exact path={Routes.AlbaniaTool}
                   render={(props: any) => <AlbaniaTool {...props} />}
+                />
+                <Route exact path={Routes.JordanTool}
+                  render={(props: any) => <JordanTool {...props} />}
                 />
                 {/* If none of the above routes are found show the 404 page */}
                 <Route component={PageNotFound} />

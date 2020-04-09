@@ -12,7 +12,6 @@ import AlbaniaMapSvg from '../albaniaTool/albania-logo.svg';
 const Content = styled(ContentFull)`
   display: flex;
   justify-content: space-around;
-  align-items: flex-start;
   align-content: flex-start;
   flex-wrap: wrap;
 `;
@@ -25,6 +24,7 @@ const CardLinkWrapper = styled(Link)`
   height: auto;
   flex-shrink: 0;
   margin-bottom: 2rem;
+  display: block;
 
   &:hover {
     color: inherit;
@@ -74,6 +74,13 @@ const LandingPage = () => {
             <CardImage src={AlbaniaMapSvg} alt={'Albania’s Industry Targeting Dashboard'} />
             <CardTitle>
               Albania’s Industry Targeting Dashboard
+            </CardTitle>
+          </ProjectCard>
+        </CardLinkWrapper>
+        <CardLinkWrapper to={Routes.JordanTool}>
+          <ProjectCard>
+            <CardTitle>
+              Jordan’s Complexity Profile
             </CardTitle>
           </ProjectCard>
         </CardLinkWrapper>
