@@ -22,6 +22,24 @@ interface Input {
   axisLabels?: {left?: string, bottom?: string};
 }
 
+const ranges = [
+  { divider: 1e18 , suffix: 'E' },
+  { divider: 1e15 , suffix: 'P' },
+  { divider: 1e12 , suffix: 'T' },
+  { divider: 1e9 , suffix: 'G' },
+  { divider: 1e6 , suffix: 'M' },
+  { divider: 1e3 , suffix: 'k' },
+];
+
+const formatNumber = (n: number) => {
+  for (const range of ranges) {
+    if (n >= range.divider) {
+      return (n / range.divider).toString() + range.suffix;
+    }
+  }
+  return n.toString();
+};
+
 export default (input: Input) => {
   const { svg, data, size, axisLabels, tooltip } = input;
 
@@ -62,7 +80,7 @@ export default (input: Input) => {
   const minY = rawMinY ? Math.floor(rawMinY * minScaleBuffer) : 0;
   const maxY = rawMaxY ? Math.floor(rawMaxY * maxScaleBuffer) : 0;
   // Scale the range of the data in the domains
-  xScale.domain(data[0].map(function(d) { return d.x; }))
+  xScale.domain(data && data.length ? data[0].map(function(d) { return d.x; }) : [])
         .rangeRound([0, width])
         .paddingInner(0.2);
   yScale.domain([minY, maxY]);
@@ -105,7 +123,7 @@ export default (input: Input) => {
 
   // add the y Axis
   container.append('g')
-      .call(d3.axisLeft(yScale));
+      .call(d3.axisLeft(yScale).tickFormat(formatNumber));
 
   // append X axis label
   svg

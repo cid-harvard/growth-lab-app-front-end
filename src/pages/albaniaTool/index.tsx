@@ -229,7 +229,7 @@ const AlbaniaTool = () => {
             maxValue={100}
             enablePNGDownload={true}
             enableSVGDownload={true}
-            chartTitle={'Viability Factors - ' + industryName}
+            chartTitle={'Attractiveness Factors - ' + industryName}
             jsonToDownload={spiderPlotTestData3[0]}
           />
           <TextBlock>

@@ -192,8 +192,6 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
          The data it takes is an array of BarChartDatum arrays. Each array will render ontop of the previous one.
 
-      **overlayData** *(optional)*: BarChartDatum[];
-
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
