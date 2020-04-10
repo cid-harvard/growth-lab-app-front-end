@@ -173,6 +173,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - fill *(optional)*: string;
          - radius*(optional)*: number;
          - tooltipContent *(optional)*: string;
+         - tooltipContentOnly *(optional)*: boolean;
          - highlighted *(optional)*: boolean;
 
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
@@ -189,6 +190,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - fill *(optional)*: string;
          - stroke *(optional)*: string;
          - tooltipContent *(optional)*: string;
+         - tooltipContentOnly *(optional)*: boolean;
 
          The data it takes is an array of BarChartDatum arrays. Each array will render ontop of the previous one.
 
@@ -236,6 +238,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - y: number;
          - fill?: string;
          - tooltipContent?: string;
+         - tooltipContentOnly *(optional)*: boolean;
 
          Each x value will create a cluster of every groupName that has a matching x value.
 

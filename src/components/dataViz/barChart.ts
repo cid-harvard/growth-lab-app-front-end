@@ -6,6 +6,7 @@ export interface Datum {
   fill?: string;
   stroke?: string;
   tooltipContent?: string;
+  tooltipContentOnly?: boolean;
   onClick?: () => void;
 }
 
@@ -101,14 +102,18 @@ export default (input: Input) => {
         .style('stroke', ({stroke}) => stroke ? stroke : 'none')
         .style('stroke-width', 3)
         .attr('height', function(d) { return height - yScale(d.y); })
-        .on('mousemove', ({x, tooltipContent}) => {
-          const content = tooltipContent === undefined || tooltipContent.length === 0
-            ? '' : `:<br />${tooltipContent}`;
+        .on('mousemove', ({x, tooltipContent, tooltipContentOnly}) => {
+          if (tooltipContentOnly && tooltipContent && tooltipContent.length) {
+            tooltip.html(tooltipContent);
+          } else {
+            const content = tooltipContent === undefined || tooltipContent.length === 0
+              ? '' : `:<br />${tooltipContent}`;
+            tooltip.html(`<strong>${x}</strong>${content}`);
+          }
           tooltip
-            .style('display', 'block');
-          tooltip.html(`<strong>${x}</strong>${content}`)
+            .style('display', 'block')
             .style('left', (d3.event.pageX + 4) + 'px')
-            .style('top', (d3.event.pageY - 4) + 'px');
+            .style('top', (d3.event.pageY - 4) + 'px');;
           })
         .on('mouseout', () => {
           tooltip

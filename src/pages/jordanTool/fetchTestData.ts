@@ -30,14 +30,24 @@ interface Input {
 
 const generateScatterPlotData = (rawIndustryDatum: RawIndustryDatum[], id: string): ScatterPlotDatum[] => {
   const transformedData: ScatterPlotDatum[] = [];
-  rawIndustryDatum.forEach(({Code, Title}) => {
+  rawIndustryDatum.forEach((datum) => {
+    const { Code, Title, Keywords, Description } = datum;
     const color = Math.round(Math.random()) === 0 ? '#5387b1' : '#FF996E';
+    const x = Math.floor((Math.random() * 100) + 1);
+    const y = Math.floor((Math.random() * 100) + 1);
     transformedData.push({
       label: Title,
-      x: Math.floor((Math.random() * 100) + 1),
-      y: Math.floor((Math.random() * 100) + 1),
+      x,
+      y,
       fill: rgba(color, 0.5),
       highlighted: (Code === id),
+      tooltipContent:
+        '<strong>Theme:</strong> ' + Description +
+        '<br /><strong>SubTheme:</strong> ' + Keywords +
+        '<br /><strong>Description:</strong> ' + Title +
+        '<br /><strong>Viability:</strong> ' + x +
+        '<br /><strong>Attractiveness:</strong> ' + y,
+      tooltipContentOnly: true,
     });
   });
   return transformedData;
