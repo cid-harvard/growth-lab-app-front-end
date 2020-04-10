@@ -413,9 +413,25 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 
    Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
 
-- **color**: string[];
+- **color** *(Optional)*: string[];
 
-   Color code for styling the table.
+   Color code for styling the table. Will render with bolder labels and lines if no color is given.
+
+- **stickFirstCol** *(Optional)*: boolean;
+
+   Will make the first column stick if content overflows horizontally.
+
+- **verticalGridLines** *(Optional)*: boolean;
+
+   Will add vertical grid lines to the table.
+
+- **hideGridLines** *(Optional)*: boolean;
+
+   Will hide the grid lines of the table.
+
+- **fontSize** *(Optional)*: boolean;
+
+   Will override the default font-size of all of the text in the table.
 
 <a name="explorenextfootercomponent"/>
 

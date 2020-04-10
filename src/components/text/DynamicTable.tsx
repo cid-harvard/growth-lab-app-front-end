@@ -45,33 +45,49 @@ interface Props {
   stickFirstCol?: boolean;
   hideGridLines?: boolean;
   fontSize?: string;
+  verticalGridLines?: boolean;
 }
 
 const DynamicTable = (props: Props) => {
-  const {columns, data, color, stickFirstCol, hideGridLines, fontSize} = props;
+  const {columns, data, color, stickFirstCol, hideGridLines, fontSize, verticalGridLines} = props;
   const rootStyle: React.CSSProperties = {
     gridTemplateColumns: `repeat(${columns.length}, auto)`,
     gridTemplateRows: `repeat(${data.length + 1}, auto)`,
-    whiteSpace: stickFirstCol ? 'nowrap' : undefined,
   };
   const tableHeader = columns.map(({label}, i) => {
+    let borderRight: string | undefined;
+    if (stickFirstCol && i === 0) {
+      borderRight = `solid 2px ${lightBorderColor}`;
+    } else if (verticalGridLines) {
+      borderRight = `solid 1px ${lightBorderColor}`;
+    } else {
+      borderRight = undefined;
+    }
     const style: React.CSSProperties = {
       color, fontSize,
       textTransform: !color ? 'uppercase' : undefined,
       position: stickFirstCol && i === 0 ? 'sticky' : undefined,
       left: stickFirstCol && i === 0 ? '0' : undefined,
-      borderBottom: hideGridLines ? `solid 2px ${lightBorderColor}` : undefined,
+      borderBottom: (hideGridLines || verticalGridLines) ? `solid 2px ${lightBorderColor}` : undefined,
+      borderRight,
     };
     return <Cell style={style} key={label}>{label}</Cell>;
   });
   const rows = data.map((d, i) => {
     const gridRow = i + 2;
     return Object.keys(d).map(function(key: keyof Datum, j) {
+      let borderRight: string | undefined;
+      if (stickFirstCol && j === 0) {
+        borderRight = `solid 2px ${lightBorderColor}`;
+      } else if (verticalGridLines) {
+        borderRight = `solid 1px ${lightBorderColor}`;
+      } else {
+        borderRight = undefined;
+      }
       const style: React.CSSProperties = {
         position: stickFirstCol && j === 0 ? 'sticky' : undefined,
         left: stickFirstCol && j === 0 ? '0' : undefined,
-        borderRight: stickFirstCol && j === 0
-          ? `solid 2px ${lightBorderColor}` : undefined,
+        borderRight,
         gridRow,
         backgroundColor: gridRow % 2 === 0 || !color ? undefined : rgba(color, 0.2),
         borderBottom: hideGridLines ? 'none' : undefined,

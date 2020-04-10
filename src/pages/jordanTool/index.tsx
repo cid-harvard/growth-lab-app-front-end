@@ -138,6 +138,22 @@ const colorScheme = {
               ]}
               highlighted={highlighted}
             />
+            <DynamicTable
+              columns={[
+                {label: '', key: 'phase'},
+                {label: 'Intensive (RCA ≥ 1', key: 'intensive'},
+                {label: 'Extensive (RCA < 1', key: 'extensive'},
+              ]}
+              data={[
+                {phase: 'Phase 0', intensive: 'Above median Attractiveness', extensive: ''},
+                {phase: 'Phase 1', intensive: '', extensive: 'Above median in both Attractiveness and Viability'},
+                {phase: 'Phase 2', intensive: 'Below median Attractiveness', extensive: 'Above median in either Attractiveness and Viability'},
+                {phase: 'Phase 4', intensive: '', extensive: 'Below median in both Attractiveness and Viability'},
+              ]}
+              fontSize={'0.85rem'}
+              stickFirstCol={true}
+              verticalGridLines={true}
+            />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
