@@ -20,11 +20,12 @@ import {
   lightBorderColor,
 } from '../../styling/styleUtils';
 import Legend from '../../components/dataViz/Legend';
+import HowToReadDots from '../../components/dataViz/HowToReadDots';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
 import TextBlock from '../../components/text/TextBlock';
 import BlowoutValue from '../../components/text/BlowoutValue';
-import {lighten} from 'polished';
+import {lighten, rgba} from 'polished';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 
@@ -103,7 +104,12 @@ const colorScheme = {
         />
       );
     }
-    const industryName = selectedIndustry ? selectedIndustry.name : '';
+    const industryName: string = selectedIndustry ? selectedIndustry.label : '';
+    const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
+    const highlighted = scatterPlotNode ? {
+      color: scatterPlotNode.fill ? scatterPlotNode.fill : '#666',
+      label: industryName,
+    } : undefined;
     content = (
       <>
         <TwoColumnSection id={'overview'}>
@@ -125,6 +131,13 @@ const colorScheme = {
             <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </p>
+            <HowToReadDots
+              items={[
+                {color: rgba(colorScheme.primary, 0.5), label: 'RCA < 1'},
+                {color: rgba(colorScheme.secondary, 0.5), label: 'RCA ≥ 1'},
+              ]}
+              highlighted={highlighted}
+            />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>

@@ -113,7 +113,7 @@ export default (input: Input) => {
           tooltip
             .style('display', 'block')
             .style('left', (d3.event.pageX + 4) + 'px')
-            .style('top', (d3.event.pageY - 4) + 'px');;
+            .style('top', (d3.event.pageY - 4) + 'px');
           })
         .on('mouseout', () => {
           tooltip

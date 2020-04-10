@@ -120,7 +120,7 @@ export default (input: Input) => {
           const content = tooltipContent === undefined || tooltipContent.length === 0
             ? '' : `:<br />${tooltipContent}`;
           tooltip.html(`<strong>${label}</strong>${content}`);
-            
+
         }
         tooltip
           .style('display', 'block')
