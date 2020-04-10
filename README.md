@@ -13,6 +13,7 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
   - [Components](#components)
     - [DataViz](#datavizcomponent)
     - [LegendList](#legendlistcomponent)
+    - [HowToReadDots](#howtoreaddotscomponent)
     - [ColorScaleLegend](#colorlegendcomponent)
     - [Loading](#loadingcomponent)
     - [MultiTierSearch](#multitiersearchcomponent)
@@ -272,6 +273,23 @@ The Legend component, located at `src/components/dataViz/Legend` is for displayi
    - **label**: string;
    - **fill**: string | undefined;
    - **stroke**: string | undefined;
+
+<a name="howtoreaddotscomponent"/>
+
+#### HowToReadDots
+
+The HowToReadDots component, located at `src/components/dataViz/HowToReadDots` is for displaying a basic color circle based legend. The HowToReadDots component takes two props -
+
+- **items**: LegendItem[]
+
+   Each LegendItem will be rendered as a separate dot. It has the following properties -
+
+   - **label**: string;
+   - **color**: string;
+
+- **highlighted** *(Optional)*: LegendItem
+
+   Optionally add a highlighted value to distinguish it from the other values.
 
 <a name="colorlegendcomponent"/>
 
