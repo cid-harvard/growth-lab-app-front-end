@@ -32,7 +32,7 @@ const generateScatterPlotData = (rawIndustryDatum: RawIndustryDatum[], id: strin
   const transformedData: ScatterPlotDatum[] = [];
   rawIndustryDatum.forEach((datum) => {
     const { Code, Title, Keywords, Description } = datum;
-    const color = Math.round(Math.random()) === 0 ? '#5387b1' : '#FF996E';
+    const color = Math.round(Math.random()) === 0 ? '#46899F' : '#E0B04E';
     const x = Math.floor((Math.random() * 100) + 1);
     const y = Math.floor((Math.random() * 100) + 1);
     transformedData.push({
@@ -109,27 +109,27 @@ const generateBarChartData = () => {
       {
         x: '2004-2006',
         y: Math.floor((Math.random() * 10000000) + 1),
-        fill: '#5387b1',
+        fill: '#46899F',
       },
       {
         x: '2007-2009',
         y: Math.floor((Math.random() * 30000000) + 1),
-        fill: '#5387b1',
+        fill: '#46899F',
       },
       {
         x: '2010-2012',
         y: Math.floor((Math.random() * 20000000) + 1),
-        fill: '#5387b1',
+        fill: '#46899F',
       },
       {
         x: '2013-2015',
         y: Math.floor((Math.random() * 8000000) + 1),
-        fill: '#5387b1',
+        fill: '#46899F',
       },
       {
         x: '2016-2018',
         y: Math.floor((Math.random() * 30000000) + 1),
-        fill: '#5387b1',
+        fill: '#46899F',
       },
     ],
   ];
@@ -168,31 +168,31 @@ const generateBarChartData2 = () => {
         x: '2004-2006',
         y: Math.floor((Math.random() * 10000000) + 1),
         fill: 'transparent',
-        stroke: '#5387b1',
+        stroke: '#46899F',
       },
       {
         x: '2007-2009',
         y: Math.floor((Math.random() * 30000000) + 1),
         fill: 'transparent',
-        stroke: '#5387b1',
+        stroke: '#46899F',
       },
       {
         x: '2010-2012',
         y: Math.floor((Math.random() * 20000000) + 1),
         fill: 'transparent',
-        stroke: '#5387b1',
+        stroke: '#46899F',
       },
       {
         x: '2013-2015',
         y: Math.floor((Math.random() * 8000000) + 1),
         fill: 'transparent',
-        stroke: '#5387b1',
+        stroke: '#46899F',
       },
       {
         x: '2016-2018',
         y: Math.floor((Math.random() * 30000000) + 1),
         fill: 'transparent',
-        stroke: '#5387b1',
+        stroke: '#46899F',
       },
     ],
   ];

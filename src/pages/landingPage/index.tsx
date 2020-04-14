@@ -8,6 +8,7 @@ import {
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import styled from 'styled-components/macro';
 import AlbaniaMapSvg from '../albaniaTool/albania-logo.svg';
+import JordanLogoSVG from '../jordanTool/jordan-dotted-map.svg';
 
 const Content = styled(ContentFull)`
   display: flex;
@@ -79,6 +80,7 @@ const LandingPage = () => {
         </CardLinkWrapper>
         <CardLinkWrapper to={Routes.JordanTool}>
           <ProjectCard>
+            <CardImage src={JordanLogoSVG} alt={'A Roadmap For Export Diversification: Jordan’s Complexity Profile'} />
             <CardTitle>
               Jordan’s Complexity Profile
             </CardTitle>

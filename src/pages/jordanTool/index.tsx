@@ -28,12 +28,13 @@ import BlowoutValue from '../../components/text/BlowoutValue';
 import {lighten, rgba} from 'polished';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
+import JordanLogoSVG from './jordan-dotted-map.svg';
 
 const colorScheme = {
-  primary: '#5387b1',
-  secondary: '#FF996E',
-  teriary: '#7bb7e8',
-  quaternary: '#0f3656',
+  primary: '#46899F',
+  secondary: '#E0B04E',
+  teriary: '#9ac5d3',
+  quaternary: '#ecf0f2',
 };
 
  const JordanTool = () => {
@@ -64,8 +65,9 @@ const colorScheme = {
       title={metaTitle}
       hasSearch={false}
       imageProps={{
-        imgWidth: '110px',
+        imgWidth: '150px',
       }}
+      imageSrc={JordanLogoSVG}
       backgroundColor={colorScheme.primary}
       textColor={'#fff'}
       linkColor={'#fff'}
@@ -92,11 +94,12 @@ const colorScheme = {
           title={metaTitle}
           hasSearch={true}
           searchLabelText={'To Start Select an Industry:'}
+          imageSrc={JordanLogoSVG}
           data={industryData}
           onChange={setSelectedIndustry}
           initialSelectedValue={industryData[0].children[0]}
           imageProps={{
-            imgWidth: '110px',
+            imgWidth: '150px',
           }}
           backgroundColor={colorScheme.primary}
           textColor={'#fff'}
@@ -169,24 +172,24 @@ const colorScheme = {
             jsonToDownload={viabilityData[0]}
           />
           <TextBlock>
-            <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.quaternary}>RCA in Jordan</ParagraphHeader>
+            <SubSectionHeader color={colorScheme.primary}>Viability Factors</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.primary}>RCA in Jordan</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>RCA in Peers</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>RCA in Peers</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Water Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>Water Intensity</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Electricity Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>Electricity Intensity</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Availability of Inputs</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>Availability of Inputs</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
@@ -205,24 +208,24 @@ const colorScheme = {
             jsonToDownload={attractivenessData[0]}
           />
           <TextBlock>
-            <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.quaternary}>Female Employment Potential</ParagraphHeader>
+            <SubSectionHeader color={colorScheme.primary}>Attractiveness Factors</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.primary}>Female Employment Potential</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>High Skill Employment Potential</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>High Skill Employment Potential</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>FDI in the World</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>FDI in the World</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>FDI in the Region</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>FDI in the Region</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Export Propensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>Export Propensity</ParagraphHeader>
             <SmallParagraph>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </SmallParagraph>
@@ -232,7 +235,7 @@ const colorScheme = {
           <SectionHeader>Industry potential</SectionHeader>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Foreign Direct Investment</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>Foreign Direct Investment</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart'}
             vizType={VizType.BarChart}
@@ -245,7 +248,7 @@ const colorScheme = {
           />
           <InlineTwoColumnSection>
             <TextBlock>
-              <HeaderWithLegend legendColor={'#E0E0E0'}>
+              <HeaderWithLegend legendColor={colorScheme.primary}>
                 <div>
                   Top Global FDI Companies
                 </div>
@@ -320,11 +323,11 @@ const colorScheme = {
           <SectionHeader>Industry Now</SectionHeader>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Sector Demographics</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>Sector Demographics</SectionHeaderSecondary>
           <DynamicTable
             columns={tableColumns}
             data={tableData}
-            color={colorScheme.quaternary}
+            color={colorScheme.primary}
           />
           <TextBlock>
             <p>
@@ -333,13 +336,13 @@ const colorScheme = {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Location of Workers</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>Location of Workers</SectionHeaderSecondary>
           <DataViz
             id={'albania-geo-map'}
             vizType={VizType.GeoMap}
             data={jordanGeoJson}
-            minColor={lighten(0.5, colorScheme.quaternary)}
-            maxColor={colorScheme.quaternary}
+            minColor={lighten(0.5, colorScheme.primary)}
+            maxColor={colorScheme.primary}
           />
           <TextBlock>
             <p>
@@ -348,18 +351,18 @@ const colorScheme = {
             <ColorScaleLegend
               minLabel={0.28}
               maxLabel={30.8}
-              minColor={lighten(0.5, colorScheme.quaternary)}
-              maxColor={colorScheme.quaternary}
+              minColor={lighten(0.5, colorScheme.primary)}
+              maxColor={colorScheme.primary}
               title={'Percentage of workers in the industry'}
             />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Schooling Distribution</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>Schooling Distribution</SectionHeaderSecondary>
           <DynamicTable
             columns={tableColumns}
             data={tableData}
-            color={colorScheme.quaternary}
+            color={colorScheme.primary}
           />
           <TextBlock>
             <p>
@@ -368,11 +371,11 @@ const colorScheme = {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Industry Wages</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>Industry Wages</SectionHeaderSecondary>
           <DynamicTable
             columns={tableColumns}
             data={tableData}
-            color={colorScheme.quaternary}
+            color={colorScheme.primary}
           />
           <TextBlock>
             <p>
@@ -400,11 +403,11 @@ const colorScheme = {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Occupation Distribution</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>Occupation Distribution</SectionHeaderSecondary>
           <DynamicTable
             columns={tableColumns}
             data={tableData}
-            color={colorScheme.quaternary}
+            color={colorScheme.primary}
           />
           <TextBlock>
             <p>
@@ -417,9 +420,9 @@ const colorScheme = {
     nav = (
       <StickySideNav
         links={links}
-        backgroundColor={'#ecf0f2'}
-        borderColor={'#819ea8'}
-        hoverColor={'#b7c7cd'}
+        backgroundColor={colorScheme.quaternary}
+        borderColor={colorScheme.primary}
+        hoverColor={colorScheme.teriary}
         borderTopColor={'#fff'}
         onHeightChange={(h) => setNavHeight(h)}
         marginTop={stickyHeaderHeight + 'px'}
@@ -441,13 +444,13 @@ const colorScheme = {
       <Content>
         <StickySubHeading
           title={selectedIndustry ? selectedIndustry.label : ''}
-          highlightColor={colorScheme.primary}
+          highlightColor={colorScheme.secondary}
           onHeightChange={(h) => setStickyHeaderHeight(h)}
         />
         {content}
       </Content>
       <ExploreNextFooter
-        backgroundColor={colorScheme.quaternary}
+        backgroundColor={colorScheme.primary}
         socialItems={[
           {
             target: 'https://www.facebook.com/HarvardCID/',
