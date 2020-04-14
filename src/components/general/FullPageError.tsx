@@ -25,7 +25,7 @@ const FullPageError = ({message}: Props) => {
     <Root>
       <Text>
         <h3>
-          There was an error retrieving the data. Please refresh the page or contacting the Growth Lab if this continues
+          There was an error retrieving the data. Please refresh the page or contact the Growth Lab if this continues
         </h3>
         <p>
           {message}

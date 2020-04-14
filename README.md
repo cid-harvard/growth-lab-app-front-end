@@ -28,6 +28,7 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
   - [Custom Hooks](#customhooks)
     - [useScrollBehavior](#usescrollbehaviorhook)
   - [Guidelines For Creating New Components](#componentguidelines)
+    - [Style Guide](#styleguide)
 
 <a name="gettingstarted"/>
 
@@ -308,6 +309,12 @@ The ColorScaleLegend component, located at `src/components/dataViz/ColorScaleLeg
 #### Loading
 
 The Loading component, located at `src/components/general/Loading` is a generic loader that fills the space of its parent component. It does not take any props and is designed to be able to be placed anywhere.
+
+<a name="fullpageerrorcomponent"/>
+
+#### FullPageError
+
+The FullPageError component, located at `src/components/general/FullPageError` is a generic error message that fills the space of its parent component. It takes a single props - `message: string` - that will output the error message underneath a generic `There was an error retrieving the data. Please refresh the page or contact the Growth Lab if this continues` message.
 
 <a name="multitiersearchcomponent"/>
 
@@ -650,4 +657,12 @@ At the same time, one should not go overboard making things totally generic. If 
 When editing an existing component, make sure to check on all instances that are currently using that component so as not to break any existing implementations. Take careful thought as to how additions should be made, and everything should always be 100% backwards compatible. Make sure to think through if modifications to the component are the best course of action. Sometimes it may just need some more tinkering with the configuration or perhaps a discussion with the team on how to utilize the existing component structure. It may also be the case that creating a new component that is very similar but fills a different role would be the best decision.
 
 Last but far from least, make sure to always update this documentation when any changes or updates are made.
+
+<a name="styleguide"/>
+
+#### Style Guide
+
+When building new components and pages, it is important to maintain consistent styling standards. Please consult the styling documentation for guidelines regarding the visual styles -
+
+**[http://cid-harvard.github.io/dashboard-styling/](http://cid-harvard.github.io/dashboard-styling/)**
 
