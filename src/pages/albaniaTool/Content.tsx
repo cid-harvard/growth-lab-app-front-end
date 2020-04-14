@@ -49,7 +49,7 @@ import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
-import transformNaceData, {RawNaceDatum} from './transformNaceData';
+import {RawNaceDatum} from './transformNaceData';
 import {lighten} from 'polished';
 
 const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
@@ -65,15 +65,21 @@ const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
 const scatterPlotData = generateScatterPlotData(rawNaceData);
 
-const AlbaniaToolContent = () => {
+interface Props {
+  naceData: TreeNode[];
+}
+
+const AlbaniaToolContent = (props: Props) => {
+  const {
+    naceData,
+  } = props;
+
   const metaTitle = 'Albania’s Industry Targeting Dashboard | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania\'s industries.';
 
   const {location: {pathname, search, hash}, push} = useHistory();
   const parsedQuery = queryString.parse(search);
-  const industry = parsedQuery.location ? parsedQuery.location : '74.1'; // Default to Specialised design activities;
-
-  const naceData = transformNaceData(rawNaceData);
+  const industry = parsedQuery.location ? parsedQuery.location : '511'; // Default to Specialised design activities;
 
   const flattenedChildData: TreeNode[] = [];
   naceData.forEach(({children}: any) =>

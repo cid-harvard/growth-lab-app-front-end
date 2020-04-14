@@ -1,7 +1,13 @@
+export enum NACELevel {
+  section = 'section', // highest tier
+  division = 'division', // middle tier
+  group = 'group', // lowest tier
+}
+
 export interface NACEIndustry {
   id: string;
   naceId: string | null;
-  level: string | null;
+  level: NACELevel | null;
   code: string | null;
   name: string | null;
   parentId: string | null;
@@ -12,5 +18,5 @@ export interface NACEIndustryEdge {
 }
 
 export interface NACEIndustryConnection {
-  edges: Array<NACEIndustryEdge | null>;
+  edges: (NACEIndustryEdge | null)[];
 }
