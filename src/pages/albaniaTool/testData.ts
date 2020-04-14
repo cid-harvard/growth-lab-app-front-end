@@ -1,4 +1,3 @@
-import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
 import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
 import { Datum as ClusterBarChartDatum } from '../../components/dataViz/clusterBarChart';
@@ -8,8 +7,6 @@ import {
 } from '../../components/text/DynamicTable';
 import { TreeNode } from 'react-dropdown-tree-select';
 import { lightBorderColor } from '../../styling/styleUtils';
-import { RawNaceDatum } from './transformNaceData';
-import {rgba} from 'polished';
 
 export const colorScheme = {
   primary: '#84a9ac',
@@ -143,31 +140,6 @@ export const testQueryBuilderDataCity: TreeNode[] = [
     parentValue: 'Chile',
   },
 ];
-
-export const generateScatterPlotData = (rawNaceDatum: RawNaceDatum[]): ScatterPlotDatum[] => {
-  const transformedData: ScatterPlotDatum[] = [];
-  rawNaceDatum.forEach(({Level, Description}) => {
-    if (Level === '3') {
-      transformedData.push({
-        label: Description,
-        x: Math.floor((Math.random() * 100) + 1),
-        y: Math.floor((Math.random() * 100) + 1),
-        fill: rgba(colorScheme.data, 0.5),
-      });
-    }
-  });
-  return transformedData;
-};
-
-export const updateScatterPlotData = (scatterPlotData: ScatterPlotDatum[], selectedIndustry: TreeNode | undefined) => {
-  return scatterPlotData.map(datum => {
-    const fill = selectedIndustry && selectedIndustry.label === datum.label
-        ? 'rgba(137,178,176, 0.8)' : rgba(colorScheme.data, 0.5);
-    const highlighted = selectedIndustry && selectedIndustry.label === datum.label
-        ? true : false;
-    return { ...datum, fill, highlighted };
-  });
-};
 
 export const spiderPlotTestData2: RadarChartDatum[][] = [
   [

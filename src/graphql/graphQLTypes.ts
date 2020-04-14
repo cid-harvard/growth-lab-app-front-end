@@ -20,3 +20,28 @@ export interface NACEIndustryEdge {
 export interface NACEIndustryConnection {
   edges: (NACEIndustryEdge | null)[];
 }
+
+export interface Factors {
+  naceId: string | null;
+  rca: string | null;
+  vRca: string | null;
+  vDist: string | null;
+  vFdipeers: string | null;
+  vContracts: string | null;
+  vElect: string | null;
+  avgViability: string | null;
+  aYouth: string | null;
+  aWage: string | null;
+  aFdiworld: string | null;
+  aExport: string | null;
+  avgAttractiveness: string | null;
+  id: string;
+}
+
+export interface FactorsEdge {
+  node: Factors | null;
+}
+
+export interface FactorsConnection {
+  edges: (FactorsEdge | null)[];
+}

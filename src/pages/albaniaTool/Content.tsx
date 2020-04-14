@@ -22,8 +22,6 @@ import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {
   testCountryListData,
-  generateScatterPlotData,
-  updateScatterPlotData,
   spiderPlotTestData2,
   spiderPlotTestData3,
   barChartData,
@@ -40,6 +38,7 @@ import {
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
+import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import DynamicTable from '../../components/text/DynamicTable';
 import QueryTableBuilder from '../../components/tools/QueryTableBuilder';
 import raw from 'raw.macro';
@@ -49,10 +48,8 @@ import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
-import {RawNaceDatum} from './transformNaceData';
 import {lighten} from 'polished';
-
-const rawNaceData: RawNaceDatum[] = JSON.parse(raw('./nace-industries.json'));
+import {updateScatterPlotData, CSVDatum as ScatterPlotCSVDatum} from './transformScatterplotData';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -63,15 +60,15 @@ const featuresWithValues = albaniaMapData.features.map((feature: any, i: number)
 });
 const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
-const scatterPlotData = generateScatterPlotData(rawNaceData);
-
 interface Props {
   naceData: TreeNode[];
+  scatterPlotData: ScatterPlotDatum[];
+  scatterPlotDataForDownload: ScatterPlotCSVDatum[];
 }
 
 const AlbaniaToolContent = (props: Props) => {
   const {
-    naceData,
+    naceData, scatterPlotData, scatterPlotDataForDownload,
   } = props;
 
   const metaTitle = 'Albania’s Industry Targeting Dashboard | The Growth Lab at Harvard Kennedy School';
@@ -79,7 +76,7 @@ const AlbaniaToolContent = (props: Props) => {
 
   const {location: {pathname, search, hash}, push} = useHistory();
   const parsedQuery = queryString.parse(search);
-  const industry = parsedQuery.location ? parsedQuery.location : '511'; // Default to Specialised design activities;
+  const industry = parsedQuery.industry ? parsedQuery.industry : '511'; // Default to Specialised design activities;
 
   const flattenedChildData: TreeNode[] = [];
   naceData.forEach(({children}: any) =>
@@ -179,7 +176,7 @@ const AlbaniaToolContent = (props: Props) => {
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
-            jsonToDownload={updateScatterPlotData(scatterPlotData, selectedIndustry)}
+            jsonToDownload={scatterPlotDataForDownload}
           />
           <TextBlock>
             <p>

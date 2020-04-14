@@ -2,10 +2,14 @@ import React from 'react';
 import Content from './Content';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { NACEIndustryConnection } from '../../graphql/graphQLTypes';
+import {
+  NACEIndustryConnection,
+  FactorsConnection,
+} from '../../graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import transformNaceData from './transformNaceData';
+import transformScatterplotData from './transformScatterplotData';
 
 const GET_ALL_INDUSTRIES = gql`
   query GetAllIndustries {
@@ -21,11 +25,22 @@ const GET_ALL_INDUSTRIES = gql`
         }
       }
     }
+    factorsList {
+      edges {
+        node {
+          naceId
+          avgViability
+          avgAttractiveness
+          id
+        }
+      }
+    }
   }
 `;
 
 interface SuccessResponse {
   naceIndustryList: NACEIndustryConnection;
+  factorsList: FactorsConnection;
 }
 
 const AlbaniaTool = () => {
@@ -39,12 +54,18 @@ const AlbaniaTool = () => {
       />
     );
   } else if (data !== undefined) {
-    const { naceIndustryList: {edges} } = data;
-    const naceData = transformNaceData(edges);
+    const {
+      naceIndustryList: {edges: naceEdges},
+      factorsList: {edges: factorsEdges},
+    } = data;
+    const naceData = transformNaceData(naceEdges);
+    const { scatterPlotData, csvData } = transformScatterplotData(factorsEdges, naceEdges);
     return (
       <>
         <Content
           naceData={naceData}
+          scatterPlotData={scatterPlotData}
+          scatterPlotDataForDownload={csvData}
         />
       </>
     );

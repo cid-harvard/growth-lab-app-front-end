@@ -1,13 +1,6 @@
 import { TreeNode } from 'react-dropdown-tree-select';
 import { NACEIndustryEdge, NACELevel } from '../../graphql/graphQLTypes';
 
-export interface RawNaceDatum {
-  Level: string;
-  Code: string;
-  Parent: string;
-  Description: string;
-}
-
 const transformNaceData = (rawNaceData: (NACEIndustryEdge | null)[]): TreeNode[] => {
   const transformedData: TreeNode[] = [];
   rawNaceData.forEach((rawDatum) => {
