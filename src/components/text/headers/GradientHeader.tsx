@@ -74,9 +74,14 @@ const TitleContainer = styled.div`
   grid-column: 2;
   grid-row: 1;
   font-family: ${secondaryFont};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Title = styled(StandardH1)`
+  margin: 0;
+
   @media (max-width: ${mediumMediaWidth}px) {
     font-size: 1.7rem;
   }
@@ -95,6 +100,10 @@ const SearchContainer = styled.div`
   grid-row: 2;
   padding: 0 1rem;
   margin-bottom: 2rem;
+`;
+
+const ButtonContainer = styled.div`
+  margin-top: 1.2rem;
 `;
 
 const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
@@ -161,6 +170,10 @@ const HeaderWithSearch = (props: Props) => {
     </ButtonLink>
   )) : null;
 
+  const buttons = !linkElms || !linkElms.length ? null : (
+    <ButtonContainer>{linkElms}</ButtonContainer>
+  );
+
   const searchBar = props.hasSearch === false ? null : (
     <SearchContainer>
       <MultiTierSearch
@@ -189,7 +202,7 @@ const HeaderWithSearch = (props: Props) => {
             style={{gridColumn: imageSrc ? undefined : '1 / 3'}}
           >
             <Title style={{color: textColor}}>{title}</Title>
-            {linkElms}
+            {buttons}
           </TitleContainer>
           <GrowthLabLogoContainer
             href={'https://growthlab.cid.harvard.edu/'}

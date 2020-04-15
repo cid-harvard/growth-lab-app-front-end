@@ -81,7 +81,7 @@ export default ({svg, data, tooltip, options}: Input) => {
   const width = config.width - margin.left - margin.right;
   const height = config.height - margin.bottom - margin.top;
 
-  const allAxis = (data[0].map(d => d.label));
+  const allAxis = (data && data.length ? data[0].map(d => d.label) : []);
   const total = allAxis.length;
   const radius = config.factor * Math.min(width / 2, height / 2);
 

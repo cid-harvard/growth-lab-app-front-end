@@ -6,6 +6,7 @@ export interface Datum {
   y: number;
   fill?: string;
   tooltipContent?: string;
+  tooltipContentOnly?: boolean;
   onClick?: () => void;
 }
 
@@ -87,12 +88,16 @@ export default (input: Input) => {
       return height - y(d.y);
     })
     .attr('fill', d => d.fill ? d.fill : color(d.groupName))
-    .on('mousemove', ({groupName, x: valueName, tooltipContent}) => {
-      const content = tooltipContent === undefined || tooltipContent.length === 0
-        ? '' : `:<br />${tooltipContent}`;
+    .on('mousemove', ({groupName, x: valueName, tooltipContent, tooltipContentOnly}) => {
+      if (tooltipContentOnly && tooltipContent && tooltipContent.length) {
+        tooltip.html(tooltipContent);
+      } else {
+        const content = tooltipContent === undefined || tooltipContent.length === 0
+          ? '' : `:<br />${tooltipContent}`;
+        tooltip.html(`<strong>${groupName}, ${valueName}</strong>${content}`);
+      }
       tooltip
-        .style('display', 'block');
-      tooltip.html(`<strong>${groupName}, ${valueName}</strong>${content}`)
+        .style('display', 'block')
         .style('left', (d3.event.pageX + 4) + 'px')
         .style('top', (d3.event.pageY - 4) + 'px');
       })

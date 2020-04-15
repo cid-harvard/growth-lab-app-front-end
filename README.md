@@ -4,6 +4,8 @@ Country Dashboards provides a framework for quickly building custom data visuali
 
 View the site live at https://cid-harvard.github.io/country-tools-front-end/
 
+License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 ## Table of Contents
   - [Getting Started](#gettingstarted)
   - [Building a Page](#buildingapage)
@@ -11,6 +13,7 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
   - [Components](#components)
     - [DataViz](#datavizcomponent)
     - [LegendList](#legendlistcomponent)
+    - [HowToReadDots](#howtoreaddotscomponent)
     - [ColorScaleLegend](#colorlegendcomponent)
     - [Loading](#loadingcomponent)
     - [MultiTierSearch](#multitiersearchcomponent)
@@ -25,6 +28,7 @@ View the site live at https://cid-harvard.github.io/country-tools-front-end/
   - [Custom Hooks](#customhooks)
     - [useScrollBehavior](#usescrollbehaviorhook)
   - [Guidelines For Creating New Components](#componentguidelines)
+    - [Style Guide](#styleguide)
 
 <a name="gettingstarted"/>
 
@@ -171,6 +175,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - fill *(optional)*: string;
          - radius*(optional)*: number;
          - tooltipContent *(optional)*: string;
+         - tooltipContentOnly *(optional)*: boolean;
          - highlighted *(optional)*: boolean;
 
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
@@ -178,7 +183,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
    - **VizType.BarChart**
 
-      **data**: BarChartDatum[];
+      **data**: Array<BarChartDatum[]>;
 
          BarChartDatum takes the following values:
 
@@ -187,8 +192,9 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - fill *(optional)*: string;
          - stroke *(optional)*: string;
          - tooltipContent *(optional)*: string;
+         - tooltipContentOnly *(optional)*: boolean;
 
-      **overlayData** *(optional)*: BarChartDatum[];
+         The data it takes is an array of BarChartDatum arrays. Each array will render ontop of the previous one.
 
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
@@ -234,6 +240,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - y: number;
          - fill?: string;
          - tooltipContent?: string;
+         - tooltipContentOnly *(optional)*: boolean;
 
          Each x value will create a cluster of every groupName that has a matching x value.
 
@@ -268,6 +275,23 @@ The Legend component, located at `src/components/dataViz/Legend` is for displayi
    - **fill**: string | undefined;
    - **stroke**: string | undefined;
 
+<a name="howtoreaddotscomponent"/>
+
+#### HowToReadDots
+
+The HowToReadDots component, located at `src/components/dataViz/HowToReadDots` is for displaying a basic color circle based legend. The HowToReadDots component takes two props -
+
+- **items**: LegendItem[]
+
+   Each LegendItem will be rendered as a separate dot. It has the following properties -
+
+   - **label**: string;
+   - **color**: string;
+
+- **highlighted** *(Optional)*: LegendItem
+
+   Optionally add a highlighted value to distinguish it from the other values.
+
 <a name="colorlegendcomponent"/>
 
 #### ColorScaleLegend
@@ -285,6 +309,12 @@ The ColorScaleLegend component, located at `src/components/dataViz/ColorScaleLeg
 #### Loading
 
 The Loading component, located at `src/components/general/Loading` is a generic loader that fills the space of its parent component. It does not take any props and is designed to be able to be placed anywhere.
+
+<a name="fullpageerrorcomponent"/>
+
+#### FullPageError
+
+The FullPageError component, located at `src/components/general/FullPageError` is a generic error message that fills the space of its parent component. It takes a single props - `message: string` - that will output the error message underneath a generic `There was an error retrieving the data. Please refresh the page or contact the Growth Lab if this continues` message.
 
 <a name="multitiersearchcomponent"/>
 
@@ -388,11 +418,27 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 
 - **data**: Datum[];
 
-   Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop.
+   Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
 
-- **color**: string[];
+- **color** *(Optional)*: string[];
 
-   Color code for styling the table.
+   Color code for styling the table. Will render with bolder labels and lines if no color is given.
+
+- **stickFirstCol** *(Optional)*: boolean;
+
+   Will make the first column stick if content overflows horizontally.
+
+- **verticalGridLines** *(Optional)*: boolean;
+
+   Will add vertical grid lines to the table.
+
+- **hideGridLines** *(Optional)*: boolean;
+
+   Will hide the grid lines of the table.
+
+- **fontSize** *(Optional)*: boolean;
+
+   Will override the default font-size of all of the text in the table.
 
 <a name="explorenextfootercomponent"/>
 
@@ -528,6 +574,9 @@ The PasswordProtectedComponent component, located at `src/components/tools/Passw
 - **title**: string;
 - **buttonColor**: string;
 - **children**: React.ReactNode;
+- **onPasswordSubmit**: (value: string) => void;
+
+   Callback function for when the user submits the password.
  
 <a name="querytablebuildercomponent"/>
 
@@ -572,6 +621,10 @@ The QueryTableBuilder component, located at `src/components/tools/QueryTableBuil
 
    tableData uses the same format as the data prop in the [DynamicTable](#dynamictablecomponent) component.
 
+- **disabled** *(optional)*: boolean;
+
+   If true, the buttons will be disabled and the table will render with 10 blank rows based on the column data.
+
 
 <a name="customhooks"/>
 
@@ -604,4 +657,12 @@ At the same time, one should not go overboard making things totally generic. If 
 When editing an existing component, make sure to check on all instances that are currently using that component so as not to break any existing implementations. Take careful thought as to how additions should be made, and everything should always be 100% backwards compatible. Make sure to think through if modifications to the component are the best course of action. Sometimes it may just need some more tinkering with the configuration or perhaps a discussion with the team on how to utilize the existing component structure. It may also be the case that creating a new component that is very similar but fills a different role would be the best decision.
 
 Last but far from least, make sure to always update this documentation when any changes or updates are made.
+
+<a name="styleguide"/>
+
+#### Style Guide
+
+When building new components and pages, it is important to maintain consistent styling standards. Please consult the styling documentation for guidelines regarding the visual styles -
+
+**[http://cid-harvard.github.io/dashboard-styling/](http://cid-harvard.github.io/dashboard-styling/)**
 
