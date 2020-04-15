@@ -23,5 +23,7 @@ deploy:
   provider: script
   skip_cleanup: true
   script: bash ./deploy.sh
+  on:
+    all_branches: true
 after_success:
   - ssh $SERVER_USER@$SERVER_ADDRESS "bash -s" < "sudo systemctl reload nginx"
