@@ -1,6 +1,17 @@
 #!/bin/bash
 set -xe
 
+SERVER_ADDRESS=$1
+SERVER_USER=ubuntu
+APP_DIR=/home/ubuntu
+
+# Decrypt deploy key and add to SSH keys
+openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv -in deploy_key.enc -out ./deploy_key -d
+eval "$(ssh-agent -s)"
+chmod 600 ./deploy_key
+echo -e "Host $SERVER_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+ssh-add ./deploy_key
+
 ssh $SERVER_USER@$SERVER_ADDRESS <<- EOF
 	sudo apt update
 	sudo apt install -y nginx
@@ -18,3 +29,6 @@ rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BU
 
 # Copy NGINX config
 scp ./config/nginx.conf $SERVER_USER@$SERVER_ADDRESS:/etc/nginx
+
+# Reset NGINX
+sh $SERVER_USER@$SERVER_ADDRESS "bash -s" < "sudo systemctl reload nginx"

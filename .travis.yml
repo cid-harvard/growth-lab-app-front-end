@@ -4,26 +4,20 @@ node_js:
 
 script:
   - npm run build
-before_install:
-  - export SERVER_USER=ubuntu
-  - export APP_DIR=/home/ubuntu
-  - if [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "backend" ]; then
-      export SERVER_ADDRESS=$STAGING_IP_ADDRESS;
-    fi
-  - if [ $TRAVIS_BRANCH == "master" ]; then
-      export SERVER_ADDRESS=$PRODUCTION_IP_ADDRESS;
-    fi
-  # Decrypt deploy key and add to SSH keys
-  - openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv -in deploy_key.enc -out ./deploy_key -d
-  - eval "$(ssh-agent -s)"
-  - chmod 600 ./deploy_key
-  - echo -e "Host $SERVER_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - ssh-add ./deploy_key
+
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: bash ./deploy.sh
-  on:
-    all_branches: true
-after_success:
-  - ssh $SERVER_USER@$SERVER_ADDRESS "bash -s" < "sudo systemctl reload nginx"
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh $STAGING_IP_ADDRESS
+    on:
+      branch: backend
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh $STAGING_IP_ADDRESS
+    on:
+      branch: staging
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh $PRODUCTION_IP_ADDRESS
+    on:
+      branch: master
