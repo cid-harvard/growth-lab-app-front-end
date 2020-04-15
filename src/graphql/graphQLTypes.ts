@@ -21,9 +21,14 @@ export interface NACEIndustryConnection {
   edges: (NACEIndustryEdge | null)[];
 }
 
+export enum RCADirection {
+  LessThanOne = '< 1',
+  GreaterThanOrEqualToOne = '>= 1',
+}
+
 export interface Factors {
   naceId: string | null;
-  rca: string | null;
+  rca: RCADirection | null;
   vRca: string | null;
   vDist: string | null;
   vFdipeers: string | null;

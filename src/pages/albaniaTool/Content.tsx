@@ -48,8 +48,9 @@ import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
-import {lighten} from 'polished';
+import {lighten, rgba} from 'polished';
 import {updateScatterPlotData, CSVDatum as ScatterPlotCSVDatum} from './transformScatterplotData';
+import HowToReadDots from '../../components/dataViz/HowToReadDots';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -109,6 +110,12 @@ const AlbaniaToolContent = (props: Props) => {
     bufferTop: scrollBuffer,
     navAnchors: links.map(({target}) => target),
   });
+
+  const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
+  const highlighted = scatterPlotNode ? {
+      color: scatterPlotNode.fill ? rgba(scatterPlotNode.fill, 0.5) : '#666',
+      label: industryName,
+    } : undefined;
 
   let content: React.ReactElement<any> | null;
   let nav: React.ReactElement<any> | null;
@@ -185,6 +192,13 @@ const AlbaniaToolContent = (props: Props) => {
             <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </p>
+            <HowToReadDots
+              items={[
+                {color: rgba(colorScheme.dataSecondary, 0.5), label: 'RCA < 1'},
+                {color: rgba(colorScheme.data, 0.5), label: 'RCA ≥ 1'},
+              ]}
+              highlighted={highlighted}
+            />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>

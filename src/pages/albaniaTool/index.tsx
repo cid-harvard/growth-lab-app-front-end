@@ -31,6 +31,7 @@ const GET_ALL_INDUSTRIES = gql`
           naceId
           avgViability
           avgAttractiveness
+          rca
           id
         }
       }

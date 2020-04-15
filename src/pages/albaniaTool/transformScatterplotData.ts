@@ -1,6 +1,7 @@
 import {
   FactorsEdge,
   NACEIndustryEdge,
+  RCADirection,
 } from '../../graphql/graphQLTypes';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { colorScheme } from './testData';
@@ -12,6 +13,7 @@ export interface CSVDatum {
   naceId: string;
   avgViability: string;
   avgAttractiveness: string;
+  rcaDirection: string;
 }
 
 export default (rawFactors: (FactorsEdge | null)[], rawNaceData: (NACEIndustryEdge | null)[]) => {
@@ -20,12 +22,17 @@ export default (rawFactors: (FactorsEdge | null)[], rawNaceData: (NACEIndustryEd
   rawFactors.forEach((rawDatum) => {
     if (rawDatum && rawDatum.node) {
       const {
-        naceId, avgViability, avgAttractiveness,
+        naceId, avgViability, avgAttractiveness, rca,
       } = rawDatum.node;
-      if (naceId !== null && avgViability !== null && avgAttractiveness !== null) {
+      if (naceId !== null && avgViability !== null && avgAttractiveness !== null && rca !== null) {
         const targetNaceIndustry = rawNaceData.find(edge => edge && edge.node && edge.node.naceId === naceId);
         if (targetNaceIndustry && targetNaceIndustry.node && targetNaceIndustry.node.name) {
-          csvData.push({naceId, industryName: targetNaceIndustry.node.name, avgViability, avgAttractiveness});
+          csvData.push({
+            naceId,
+            industryName: targetNaceIndustry.node.name,
+            avgViability, avgAttractiveness,
+            rcaDirection: rca,
+          });
           scatterPlotData.push({
             label: targetNaceIndustry.node.name,
             x: parseFloat(avgViability),
@@ -35,6 +42,7 @@ export default (rawFactors: (FactorsEdge | null)[], rawNaceData: (NACEIndustryEd
               <br />
               <strong>Attractiveness:</strong> ${avgAttractiveness}
             `,
+            fill: rca === RCADirection.LessThanOne ? colorScheme.dataSecondary : colorScheme.data,
           });
         }
       }
@@ -45,8 +53,9 @@ export default (rawFactors: (FactorsEdge | null)[], rawNaceData: (NACEIndustryEd
 
 export const updateScatterPlotData = (scatterPlotData: ScatterPlotDatum[], selectedIndustry: TreeNode | undefined) => {
   return scatterPlotData.map(datum => {
+    const existingFill = datum.fill ? datum.fill : colorScheme.data;
     const fill = selectedIndustry && selectedIndustry.label === datum.label
-        ? rgba(colorScheme.data, 0.4) : rgba(colorScheme.data, 0.5);
+        ? rgba(existingFill, 0.4) : rgba(existingFill, 0.5);
     const highlighted = selectedIndustry && selectedIndustry.label === datum.label
         ? true : false;
     return { ...datum, fill, highlighted };
