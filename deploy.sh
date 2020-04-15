@@ -2,6 +2,7 @@
 set -xe
 
 SERVER_ADDRESS=$1
+NGINX_SSL_CONF=$2
 SERVER_USER=ubuntu
 APP_DIR=/home/ubuntu
 
@@ -29,6 +30,7 @@ rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BU
 
 # Copy NGINX config
 scp ./config/nginx.conf $SERVER_USER@$SERVER_ADDRESS:/etc/nginx
+scp ./config/$NGINX_SSL_CONF $SERVER_USER@$SERVER_ADDRESS:/etc/nginx/nginx_ssl.conf
 
 # Reset NGINX
 ssh $SERVER_USER@$SERVER_ADDRESS sudo systemctl reload nginx
