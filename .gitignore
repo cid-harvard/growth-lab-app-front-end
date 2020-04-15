@@ -22,3 +22,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Unencrypted TravisCI deploy key
+deploy_key
+staging_key
+prod_key
+deploy_keys

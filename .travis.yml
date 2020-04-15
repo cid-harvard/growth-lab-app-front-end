@@ -1,13 +1,23 @@
 language: node_js
 node_js:
   - 11.11.0
+
 script:
   - npm run build
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $github_token
-  local_dir: build
-  on:
-    branch: master
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh $STAGING_IP_ADDRESS
+    on:
+      branch: backend
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh $STAGING_IP_ADDRESS
+    on:
+      branch: staging
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh $PRODUCTION_IP_ADDRESS
+    on:
+      branch: master
