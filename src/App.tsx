@@ -32,7 +32,7 @@ export interface IAppContext {
 export const AppContext = createContext<IAppContext>({windowWidth: window.innerWidth});
 
 const client = new ApolloClient({
-  uri: 'http://hgl-app-staging.cid-labs.com/graphql',
+  uri: 'https://hgl-app-staging.cid-labs.com/graphql',
 });
 
 function App() {
