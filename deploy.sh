@@ -31,4 +31,4 @@ rsync -rq --delete --rsync-path="mkdir -p $APP_DIR/frontend && rsync" $TRAVIS_BU
 scp ./config/nginx.conf $SERVER_USER@$SERVER_ADDRESS:/etc/nginx
 
 # Reset NGINX
-sh $SERVER_USER@$SERVER_ADDRESS "bash -s" < "sudo systemctl reload nginx"
+ssh $SERVER_USER@$SERVER_ADDRESS sudo systemctl reload nginx
