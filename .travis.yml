@@ -9,15 +9,13 @@ before_install:
   - export APP_DIR=/home/ubuntu
   - if [ $TRAVIS_BRANCH == "develop" ] || [ $TRAVIS_BRANCH == "backend" ]; then
       export SERVER_ADDRESS=$STAGING_IP_ADDRESS;
-      export ENCRYPTED_DEPLOY_KEY=./deploy_keys/staging_key.enc;
+      openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv -in staging_key.enc -out ./deploy_key -d;
     fi
   - if [ $TRAVIS_BRANCH == "master" ]; then
       export SERVER_ADDRESS=$PRODUCTION_IP_ADDRESS;
-      export ENCRYPTED_DEPLOY_KEY=./deploy_keys/prod_key.enc;
+      openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv -in prod_key.enc -out ./deploy_key -d;
     fi
   # Decrypt deploy key and add to SSH keys
-  - openssl aes-256-cbc -K $encrypted_ba9faf39c0a7_key -iv $encrypted_ba9faf39c0a7_iv
-      -in $ENCRYPTED_DEPLOY_KEY -out deploy_key -d
   - eval "$(ssh-agent -s)"
   - chmod 600 ./deploy_key
   - echo -e "Host $SERVER_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
