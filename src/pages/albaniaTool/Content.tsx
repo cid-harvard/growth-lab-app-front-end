@@ -123,7 +123,7 @@ const AlbaniaToolContent = (props: Props) => {
     content = null;
     nav = null;
   } else {
-    const fdiBuilder = fdiPasswordValue === 'albania' ? (
+    const fdiBuilder = fdiPasswordValue === process.env.REACT_APP_ALBANIA_FDI_PASSWORD ? (
       <QueryTableBuilder
         primaryColor={colorScheme.primary}
         onQueryDownloadClick={noop}

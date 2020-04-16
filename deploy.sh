@@ -22,6 +22,8 @@ ssh $SERVER_USER@$SERVER_ADDRESS <<- EOF
 	sudo mkdir -p /var/log/nginx/
 	sudo chown -R $SERVER_USER /var/log/nginx
 	sudo chmod -R 755 /var/log/nginx/
+  export REACT_APP_API_URL='https://hgl-app-staging.cid-labs.com/graphql'
+  export REACT_APP_ALBANIA_FDI_PASSWORD=$REACT_APP_ALBANIA_FDI_PASSWORD
 EOF
 
 # Copy Travis build

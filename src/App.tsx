@@ -32,7 +32,7 @@ export interface IAppContext {
 export const AppContext = createContext<IAppContext>({windowWidth: window.innerWidth});
 
 const client = new ApolloClient({
-  uri: 'https://hgl-app-staging.cid-labs.com/graphql',
+  uri: process.env.REACT_APP_API_URL,
 });
 
 function App() {
@@ -55,10 +55,6 @@ function App() {
   const defaultMetaTitle = 'Country Tools - The Growth Lab at Harvard Kennedy School';
   const defaultMetaDescription = 'Explore the Country Tools from the Growth Lab at Harvard Kennedy School';
 
-  // REMOVE THIS ONCE WE MOVE TO AWS
-  const basename = window.location.host === 'cid-harvard.github.io'
-    ? '/country-tools-front-end' : undefined;
-
   return (
     <>
       <AppContext.Provider value={appContext}>
@@ -70,7 +66,7 @@ function App() {
           <meta property='og:description' content={defaultMetaDescription} />
         </Helmet>
         <ApolloProvider client={client}>
-          <Router basename={basename}>
+          <Router>
             <Root>
               <GlobalStyles />
               <Suspense fallback={<Loading />}>
