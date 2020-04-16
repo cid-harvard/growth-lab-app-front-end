@@ -8,16 +8,16 @@ script:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: bash ./deploy.sh $STAGING_IP_ADDRESS
+    script: bash ./deploy.sh $STAGING_IP_ADDRESS nginx_ssl_staging.conf
     on:
-      branch: backend
+      branch: develop
   - provider: script
     skip_cleanup: true
-    script: bash ./deploy.sh $STAGING_IP_ADDRESS
+    script: bash ./deploy.sh $STAGING_IP_ADDRESS nginx_ssl_staging.conf
     on:
       branch: staging
   - provider: script
     skip_cleanup: true
-    script: bash ./deploy.sh $PRODUCTION_IP_ADDRESS
+    script: bash ./deploy.sh $PRODUCTION_IP_ADDRESS nginx_ssl_prod.conf
     on:
       branch: master
