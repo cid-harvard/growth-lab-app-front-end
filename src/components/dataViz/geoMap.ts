@@ -52,6 +52,8 @@ export default (input: Input) => {
 
   const colorScale = d3.scaleLinear<string>().domain([0, 100]).range([minColor, maxColor]);
 
+  const pixelRatio = window.devicePixelRatio;
+
   svg
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom);
@@ -66,9 +68,10 @@ export default (input: Input) => {
       .enter()
      .append('path')
      .attr('d', path)
-     .attr('stroke-width',1)
-     .attr('stroke',baseColor)
-     .attr('class','pathClass')
+     // .style('stroke-width',1)
+     .style('stroke', pixelRatio === 2 ? 'none' : baseColor)
+     // .attr('class','geo-json-viz-path')
+     .attr('fill', (d: any) => colorScale(d.properties.percent))
      .on('mousemove', function(d: any) {
        if (d.properties.tooltipContent) {
         tooltip
@@ -82,6 +85,8 @@ export default (input: Input) => {
         tooltip.style('display', 'none');
       });
 
-  container.selectAll('.pathClass').attr('fill', (d: any) => colorScale(d.properties.percent));
+  // container.selectAll('.geo-json-viz-path')
+  //   .style('transform', 'scale(0.9)')
+  //    .style('transform-origin', 'left center')
 
 };
