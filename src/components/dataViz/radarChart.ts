@@ -147,18 +147,6 @@ export default ({svg, data, tooltip, options}: Input) => {
     .style('stroke', 'grey')
     .style('stroke-width', '1px');
 
-  axis.append('text')
-    .attr('class', 'legend')
-    .text(d => d)
-    .style('font-size', '11px')
-    .style('font-family', "'Source Sans Pro',sans-serif")
-    .attr('text-anchor', 'middle')
-    .attr('dy', '1.5em')
-    .attr('transform', 'translate(0, -10)')
-    .attr('x', (_d, i) => width / 2 * (1 - config.factorLegend * Math.sin(i * config.radians / total)) -60 * Math.sin(i * config.radians/total))
-    .attr('y', (_d, i) => height / 2 * (1 - Math.cos(i * config.radians / total)) - 20 * Math.cos(i *config.radians / total));
-
-
   data.forEach((d) => {
     const dataValues = d.map(({value}, i) => [
       width/2*(1-(parseFloat(Math.max(value, 0).toString())/config.maxValue)*config.factor*Math.sin(i*config.radians/total)),
@@ -230,5 +218,44 @@ export default ({svg, data, tooltip, options}: Input) => {
 
     series++;
   });
+
+  const labels = axis.append('text')
+    .style('font-size', '11px')
+    .style('font-family', "'Source Sans Pro',sans-serif")
+    .attr('text-anchor', 'middle')
+    .attr('dy', '1.5em')
+    .attr('transform', (_d, i) => {
+      if (i === 0) {
+        return 'translate(0, -12)';
+      } else {
+        return 'translate(0, 4)';
+      }
+    })
+    .attr('class', 'legend')
+    .attr('x', (_d, i) => width / 2 * (1 - config.factorLegend * Math.sin(i * config.radians / total)) -60 * Math.sin(i * config.radians/total))
+    .attr('y', (_d, i) => height / 2 * (1 - Math.cos(i * config.radians / total)) - 20 * Math.cos(i *config.radians / total));
+
+  const seperator = '|||||';
+
+  labels.selectAll('tspan')
+    .data((d, i) => {
+      const res = d.split('\n');
+      const arr = res.map(text => `${i}${seperator}${text}`);
+      return arr;
+    })
+    .enter()
+    .append('tspan')
+    .text(d => {
+      const text = d.split(seperator).pop();
+      return text !== undefined ? text : '';
+    })
+    .attr('x', (d) => {
+      const originalI = d.split(seperator).shift();
+      const i = originalI !== undefined ? parseInt(originalI, 10) : 0;
+      return width / 2 * (1 - config.factorLegend * Math.sin(i * config.radians / total)) -60 * Math.sin(i * config.radians/total);
+    })
+    .attr('dx', 0)
+    .attr('dy', (_d, i) => i * 15);
+
 };
 

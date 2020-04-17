@@ -239,19 +239,19 @@ const AlbaniaToolContent = (props: Props) => {
         viabilityCsvData['RCA in Albania'] = factors.vRca;
       }
       if (factors.vDist !== null) {
-        viabilityData.push({ label: 'Low Distance to Industry', value: factors.vDist });
+        viabilityData.push({ label: 'Low Distance\nto Industry', value: factors.vDist });
         viabilityCsvData['Low Distance to Industry'] = factors.vDist;
       }
       if (factors.vFdipeers !== null) {
-        viabilityData.push({ label: 'High FDI to Peer Countries', value: factors.vFdipeers });
+        viabilityData.push({ label: 'High FDI to\nPeer Countries', value: factors.vFdipeers });
         viabilityCsvData['High FDI to Peer Countries'] = factors.vFdipeers;
       }
       if (factors.vContracts !== null) {
-        viabilityData.push({ label: 'Low Contract Intensity', value: factors.vContracts });
+        viabilityData.push({ label: 'Low Contract\nIntensity', value: factors.vContracts });
         viabilityCsvData['Low Contract Intensity'] = factors.vContracts;
       }
       if (factors.vElect !== null) {
-        viabilityData.push({ label: 'High Electricity Intensity', value: factors.vElect });
+        viabilityData.push({ label: 'High Electricity\nIntensity', value: factors.vElect });
         viabilityCsvData['High Electricity Intensity'] = factors.vElect;
       }
       if (viabilityData.length > 2) {
@@ -280,19 +280,19 @@ const AlbaniaToolContent = (props: Props) => {
       const attractivenessData: RadarChartDatum[] = [];
       const attractivenessCsvData: any = { 'Industry': industryName };
       if (factors.aWage !== null) {
-        attractivenessData.push({ label: 'High Relative Wages', value: factors.aWage });
+        attractivenessData.push({ label: 'High Relative\nWages', value: factors.aWage });
         attractivenessCsvData['High Relative Wages'] = factors.aWage;
       }
       if (factors.aYouth !== null) {
-        attractivenessData.push({ label: 'High Youth Employment', value: factors.aYouth });
+        attractivenessData.push({ label: 'High Youth\nEmployment', value: factors.aYouth });
         attractivenessCsvData['High Youth Employment'] = factors.aYouth;
       }
       if (factors.aFdiworld !== null) {
-        attractivenessData.push({ label: 'High Global FDI Flows', value: factors.aFdiworld });
+        attractivenessData.push({ label: 'High Global\nFDI Flows', value: factors.aFdiworld });
         attractivenessCsvData['High Global FDI Flows'] = factors.aFdiworld;
       }
       if (factors.aExport !== null) {
-        attractivenessData.push({ label: 'High Export Propensity', value: factors.aExport });
+        attractivenessData.push({ label: 'High Export\nPropensity', value: factors.aExport });
         attractivenessCsvData['High Export Propensity'] = factors.aExport;
       }
       if (attractivenessData.length > 2) {
