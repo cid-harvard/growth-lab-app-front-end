@@ -227,8 +227,10 @@ export default ({svg, data, tooltip, options}: Input) => {
     .attr('transform', (_d, i) => {
       if (i === 0) {
         return 'translate(0, -12)';
+      } else if (i === 1 && total === 4) {
+        return 'translate(4, 0)';
       } else {
-        return 'translate(0, 4)';
+        return 'translate(0, 0)';
       }
     })
     .attr('class', 'legend')
@@ -255,7 +257,7 @@ export default ({svg, data, tooltip, options}: Input) => {
       return width / 2 * (1 - config.factorLegend * Math.sin(i * config.radians / total)) -60 * Math.sin(i * config.radians/total);
     })
     .attr('dx', 0)
-    .attr('dy', (_d, i) => i * 15);
+    .attr('dy', (_d, i) => i !== 0 ? 15 : 0);
 
 };
 

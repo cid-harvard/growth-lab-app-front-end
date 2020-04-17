@@ -208,6 +208,8 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - label: string;
          - value: number;
 
+         To include multi-line labels, include a newline character, \n, to indicate a new line.
+
       **maxValue**: number;
 
          Radar charts require a max value at which to compare each individual datums values against.

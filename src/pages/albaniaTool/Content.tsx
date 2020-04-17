@@ -232,14 +232,14 @@ const AlbaniaToolContent = (props: Props) => {
     let viabilityRadarChart: React.ReactElement<any> | null;
     let attractivenessRadarChart: React.ReactElement<any> | null;
     if (factors) {
-      const viabilityData: RadarChartDatum[] = [];
+      let viabilityData: RadarChartDatum[] = [];
       const viabilityCsvData: any = { 'Industry': industryName };
       if (factors.vRca !== null) {
         viabilityData.push({ label: 'RCA in Albania', value: factors.vRca });
         viabilityCsvData['RCA in Albania'] = factors.vRca;
       }
       if (factors.vDist !== null) {
-        viabilityData.push({ label: 'Low Distance\nto Industry', value: factors.vDist });
+        viabilityData.push({ label: 'Low \0Distance\nto Industry', value: factors.vDist });
         viabilityCsvData['Low Distance to Industry'] = factors.vDist;
       }
       if (factors.vFdipeers !== null) {
@@ -251,8 +251,13 @@ const AlbaniaToolContent = (props: Props) => {
         viabilityCsvData['Low Contract Intensity'] = factors.vContracts;
       }
       if (factors.vElect !== null) {
-        viabilityData.push({ label: 'High Electricity\nIntensity', value: factors.vElect });
+        viabilityData.push({ label: 'High \0Electricity\nIntensity', value: factors.vElect });
         viabilityCsvData['High Electricity Intensity'] = factors.vElect;
+      }
+      if (viabilityData.length === 4) {
+        viabilityData = viabilityData.map(({label, value}) => ({
+          label: label.replace('\0', '\n'), value,
+        }))
       }
       if (viabilityData.length > 2) {
         viabilityRadarChart = (
@@ -277,14 +282,14 @@ const AlbaniaToolContent = (props: Props) => {
           />
         );
       }
-      const attractivenessData: RadarChartDatum[] = [];
+      let attractivenessData: RadarChartDatum[] = [];
       const attractivenessCsvData: any = { 'Industry': industryName };
       if (factors.aWage !== null) {
         attractivenessData.push({ label: 'High Relative\nWages', value: factors.aWage });
         attractivenessCsvData['High Relative Wages'] = factors.aWage;
       }
       if (factors.aYouth !== null) {
-        attractivenessData.push({ label: 'High Youth\nEmployment', value: factors.aYouth });
+        attractivenessData.push({ label: 'High \0Youth\nEmployment', value: factors.aYouth });
         attractivenessCsvData['High Youth Employment'] = factors.aYouth;
       }
       if (factors.aFdiworld !== null) {
@@ -292,8 +297,13 @@ const AlbaniaToolContent = (props: Props) => {
         attractivenessCsvData['High Global FDI Flows'] = factors.aFdiworld;
       }
       if (factors.aExport !== null) {
-        attractivenessData.push({ label: 'High Export\nPropensity', value: factors.aExport });
+        attractivenessData.push({ label: 'High \0Export\nPropensity', value: factors.aExport });
         attractivenessCsvData['High Export Propensity'] = factors.aExport;
+      }
+      if (attractivenessData.length === 4) {
+        attractivenessData = attractivenessData.map(({label, value}) => ({
+          label: label.replace('\0', '\n'), value,
+        }))
       }
       if (attractivenessData.length > 2) {
         attractivenessRadarChart = (
