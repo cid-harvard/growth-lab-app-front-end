@@ -77,10 +77,10 @@ export default (input: Input) => {
     .call(d3.axisLeft(yScale));
 
   // gridlines in x axis function
-  const makeGridlinesX: any = () => d3.axisBottom(xScale).ticks(5);
+  const makeGridlinesX: any = () => d3.axisBottom(xScale).ticks(10);
 
   // gridlines in y axis function
-  const makeGridlinesY: any = () => d3.axisLeft(yScale).ticks(5);
+  const makeGridlinesY: any = () => d3.axisLeft(yScale).ticks(10);
 
   // add the X gridlines
   container.append('g')
