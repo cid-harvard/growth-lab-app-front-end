@@ -5,6 +5,8 @@ import gql from 'graphql-tag';
 import {
   NACEIndustryConnection,
   FactorsConnection,
+  ScriptsConnection,
+  Script,
 } from '../../graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
@@ -36,12 +38,23 @@ const GET_ALL_INDUSTRIES = gql`
         }
       }
     }
+    script {
+      edges {
+        node {
+          section
+          subsection
+          text
+          id
+        }
+      }
+    }
   }
 `;
 
 interface SuccessResponse {
   naceIndustryList: NACEIndustryConnection;
   factorsList: FactorsConnection;
+  script: ScriptsConnection;
 }
 
 const AlbaniaTool = () => {
@@ -58,7 +71,15 @@ const AlbaniaTool = () => {
     const {
       naceIndustryList: {edges: naceEdges},
       factorsList: {edges: factorsEdges},
+      script: {edges: scriptEdges},
     } = data;
+    const scripts: Script[] = []
+    scriptEdges.forEach(edge => {
+      if (edge !== null && edge.node !== null) {
+        scripts.push({...edge.node});
+      }
+    })
+    console.log(data);
     const naceData = transformNaceData(naceEdges);
     const { scatterPlotData, csvData } = transformScatterplotData(factorsEdges, naceEdges);
     return (

@@ -29,17 +29,17 @@ export enum RCADirection {
 export interface Factors {
   naceId: string | null;
   rca: RCADirection | null;
-  vRca: string | null;
-  vDist: string | null;
-  vFdipeers: string | null;
-  vContracts: string | null;
-  vElect: string | null;
-  avgViability: string | null;
-  aYouth: string | null;
-  aWage: string | null;
-  aFdiworld: string | null;
-  aExport: string | null;
-  avgAttractiveness: string | null;
+  vRca: number | null;
+  vDist: number | null;
+  vFdipeers: number | null;
+  vContracts: number | null;
+  vElect: number | null;
+  avgViability: number | null;
+  aYouth: number | null;
+  aWage: number | null;
+  aFdiworld: number | null;
+  aExport: number | null;
+  avgAttractiveness: number | null;
   id: string;
 }
 
@@ -49,4 +49,42 @@ export interface FactorsEdge {
 
 export interface FactorsConnection {
   edges: (FactorsEdge | null)[];
+}
+
+export enum SectionEnum {
+  Overview = 'Overview',
+  ViabilityFactors = 'Viability Factors',
+  AttractivenessFactors = 'Attractiveness Factors',
+  IndustryPotential = 'Industry Potential',
+  IndustryNow = 'Industry Now',
+}
+
+export enum SubSectionEnum {
+  Overview = 'Overview',
+  RCAInAlbania = 'RCA in Albania',
+  LowDistanceToIndustry = 'Low Distance to Industry',
+  HighFDIToPeerCountries = 'High FDI to Peer Countries',
+  LowContractIntensity = 'Low Contract Intensity',
+  HighElectricityIntensity = 'High Electricity Intensity',
+  HighYouthEmployment = 'High Youth Employment',
+  HighGlobalFDIFlows = 'High Global FDI Flows',
+  HighExportPropensity = 'High Export Propensity',
+  PlaceholderFor5thFactor = 'Placeholder for 5th Factor',
+  IndustryPotential = 'Industry Potential',
+  IndustryNow = 'Industry Now',
+}
+
+export interface Script {
+  section: SectionEnum;
+  subsection: SubSectionEnum;
+  text: string | null;
+  id: string;
+}
+
+export interface ScriptsEdge {
+  node: Script | null;
+}
+
+export interface ScriptsConnection {
+  edges: (ScriptsEdge | null)[];
 }

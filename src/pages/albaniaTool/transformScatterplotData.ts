@@ -11,8 +11,8 @@ import {rgba} from 'polished';
 export interface CSVDatum {
   industryName: string;
   naceId: string;
-  avgViability: string;
-  avgAttractiveness: string;
+  avgViability: number;
+  avgAttractiveness: number;
   rcaDirection: string;
 }
 
@@ -35,8 +35,8 @@ export default (rawFactors: (FactorsEdge | null)[], rawNaceData: (NACEIndustryEd
           });
           scatterPlotData.push({
             label: targetNaceIndustry.node.name,
-            x: parseFloat(avgViability),
-            y: parseFloat(avgAttractiveness),
+            x: avgViability,
+            y: avgAttractiveness,
             tooltipContent: `
               <strong>Viability:</strong> ${avgViability}
               <br />
