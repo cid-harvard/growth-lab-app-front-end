@@ -12,6 +12,7 @@ import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import {
   baseColor,
   secondaryFont,
+  tertiaryColor,
 } from '../../styling/styleUtils';
 import {darken} from 'polished';
 import downloadImage, { FileFormat } from './downloadImage';
@@ -82,12 +83,24 @@ const SvgIcon = styled.img`
   margin-right: 0.3rem;
 `;
 
+const ErrorMessage = styled.p`
+  width: 100%;
+  min-height: 400px;
+  background-color: ${tertiaryColor};
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
   ClusterBarChart = 'ClusterBarChart',
   RadarChart = 'RadarChart',
   GeoMap = 'GeoMap',
+  Error = 'Error',
 }
 
 interface BaseProps {
@@ -101,6 +114,9 @@ interface BaseProps {
 
 type Props = BaseProps & (
   {
+    vizType: VizType.Error;
+    message: string;
+  } | {
     vizType: VizType.ScatterPlot;
     data: ScatterPlotDatum[];
     axisLabels?: {left?: string, bottom?: string};
@@ -181,7 +197,7 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           }, minColor: props.minColor, maxColor: props.maxColor,
         });
-      } else if (props.vizType) {
+      } else if (props.vizType === VizType.ClusterBarChart) {
         createClusterBarChart({
           svg, tooltip, data: props.data, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
@@ -263,16 +279,25 @@ const DataViz = (props: Props) => {
     </DownloadButtonsContainer>
   ) : null;
 
-  return (
-    <Root>
-      <SizingElm ref={sizingNodeRef}>
-        <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
-      </SizingElm>
-      {downloadButtons}
-      <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
-    </Root>
-  );
-
+  if (props.vizType === VizType.Error) {
+    return (
+      <Root>
+        <ErrorMessage>
+          {props.message}
+        </ErrorMessage>
+      </Root>
+    );
+  } else {
+    return (
+      <Root>
+        <SizingElm ref={sizingNodeRef}>
+          <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
+        </SizingElm>
+        {downloadButtons}
+        <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
+      </Root>
+    );
+  }
 };
 
 export default DataViz;

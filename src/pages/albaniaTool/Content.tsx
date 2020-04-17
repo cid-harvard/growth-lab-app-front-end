@@ -22,8 +22,6 @@ import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {
   testCountryListData,
-  spiderPlotTestData2,
-  spiderPlotTestData3,
   barChartData,
   getBarChartOverlayData,
   colorScheme,
@@ -51,10 +49,83 @@ import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFo
 import {lighten, rgba} from 'polished';
 import {updateScatterPlotData, CSVDatum as ScatterPlotCSVDatum} from './transformScatterplotData';
 import HowToReadDots from '../../components/dataViz/HowToReadDots';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import {
     Script,
     SubSectionEnum,
+    NACEIndustry,
 } from '../../graphql/graphQLTypes';
+import Loading from '../../components/general/Loading';
+import FullPageError from '../../components/general/FullPageError';
+import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
+
+const GET_DATA_FOR_NACE_ID = gql`
+  query GetDataForNaceId($naceId: Int!) {
+    naceIndustry(naceId: $naceId) {
+      naceId
+      name
+      code
+      level
+      factors {
+        edges {
+          node {
+            rca
+            vRca
+            vDist
+            vFdipeers
+            vContracts
+            vElect
+            avgViability
+            aYouth
+            aWage
+            aFdiworld
+            aExport
+            avgAttractiveness
+            vText
+            aText
+            rcaText1
+            rcaText2
+          }
+        }
+      }
+      fdiMarkets {
+        edges {
+          node {
+            parentCompany
+            sourceCountry
+            sourceCity
+            capexWorld
+            capexEurope
+            capexBalkans
+            projectsWorld
+            projectsEurope
+            projectsBalkans
+          }
+        }
+      }
+      fdiMarketsOvertime {
+        edges {
+          node {
+            destination
+            projects0306
+            projects0710
+            projects1114
+            projects1518
+          }
+        }
+      }
+    }
+  }
+`;
+
+interface SuccessResponse {
+  naceIndustry: NACEIndustry;
+}
+
+interface Variables {
+  naceId: number;
+}
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -89,9 +160,9 @@ const AlbaniaToolContent = (props: Props) => {
     children.forEach((child: TreeNode) =>
       child.children.forEach((grandChild: TreeNode) => flattenedChildData.push(grandChild))));
 
-  const initialSelectedIndustry = industry ? flattenedChildData.find(({value}) => value === industry) : undefined;
+  const initialSelectedIndustry = flattenedChildData.find(({value}) => value === industry);
 
-  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(initialSelectedIndustry);
+  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode>(initialSelectedIndustry as TreeNode);
   const updateSelectedIndustry = (val: TreeNode) => {
     setSelectedIndustry(val);
     push(pathname + '?industry=' + val.value + hash);
@@ -122,12 +193,135 @@ const AlbaniaToolContent = (props: Props) => {
       label: industryName,
     } : undefined;
 
+  const getSubsectionText = (subsection: SubSectionEnum, variables?: {key: string, value: string}[]) => {
+    const selectedScript = scripts ? scripts.find((script) => script.subsection === subsection) : null;
+    if (selectedScript && selectedScript.text) {
+      let text = selectedScript.text;
+      if (variables) {
+        variables.forEach(({key, value}) => text = text.replace(key, value));
+      }
+      return text;
+    } else {
+      return 'No script found for ' + subsection;
+    }
+  };
+
+  const {loading, error, data} = useQuery<SuccessResponse, Variables>(GET_DATA_FOR_NACE_ID,
+    {variables: {naceId: parseInt(selectedIndustry.value, 10)}});
+
   let content: React.ReactElement<any> | null;
   let nav: React.ReactElement<any> | null;
   if (selectedIndustry === undefined) {
     content = null;
     nav = null;
-  } else {
+  } else if (loading === true) {
+    content = <Loading />;
+    nav = null;
+  } else if (error !== undefined) {
+    content = (
+      <FullPageError
+        message={error.message}
+      />
+    );
+    nav = null;
+  } else if (data && data.naceIndustry) {
+    const {
+      factors: {edges: factorsEdge},
+    } = data.naceIndustry;
+    const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
+    let viabilityRadarChart: React.ReactElement<any> | null;
+    let attractivenessRadarChart: React.ReactElement<any> | null;
+    if (factors) {
+      const viabilityData: RadarChartDatum[] = [];
+      const viabilityCsvData: any = { 'Industry': industryName };
+      if (factors.vRca !== null) {
+        viabilityData.push({ label: 'RCA in Albania', value: factors.vRca });
+        viabilityCsvData['RCA in Albania'] = factors.vRca;
+      }
+      if (factors.vDist !== null) {
+        viabilityData.push({ label: 'Low Distance to Industry', value: factors.vDist });
+        viabilityCsvData['Low Distance to Industry'] = factors.vDist;
+      }
+      if (factors.vFdipeers !== null) {
+        viabilityData.push({ label: 'High FDI to Peer Countries', value: factors.vFdipeers });
+        viabilityCsvData['High FDI to Peer Countries'] = factors.vFdipeers;
+      }
+      if (factors.vContracts !== null) {
+        viabilityData.push({ label: 'Low Contract Intensity', value: factors.vContracts });
+        viabilityCsvData['Low Contract Intensity'] = factors.vContracts;
+      }
+      if (factors.vElect !== null) {
+        viabilityData.push({ label: 'High Electricity Intensity', value: factors.vElect });
+        viabilityCsvData['High Electricity Intensity'] = factors.vElect;
+      }
+      if (viabilityData.length > 2) {
+        viabilityRadarChart = (
+          <DataViz
+            id={'albania-viability-radar-chart'}
+            vizType={VizType.RadarChart}
+            data={[viabilityData]}
+            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
+            maxValue={10}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
+            chartTitle={'Viability Factors - ' + industryName}
+            jsonToDownload={[viabilityCsvData]}
+          />
+        );
+      } else {
+        viabilityRadarChart = (
+          <DataViz
+            id={'albania-viability-radar-chart'}
+            vizType={VizType.Error}
+            message={'There are not enough data points for this chart'}
+          />
+        );
+      }
+      const attractivenessData: RadarChartDatum[] = [];
+      const attractivenessCsvData: any = { 'Industry': industryName };
+      if (factors.aWage !== null) {
+        attractivenessData.push({ label: 'High Relative Wages', value: factors.aWage });
+        attractivenessCsvData['High Relative Wages'] = factors.aWage;
+      }
+      if (factors.aYouth !== null) {
+        attractivenessData.push({ label: 'High Youth Employment', value: factors.aYouth });
+        attractivenessCsvData['High Youth Employment'] = factors.aYouth;
+      }
+      if (factors.aFdiworld !== null) {
+        attractivenessData.push({ label: 'High Global FDI Flows', value: factors.aFdiworld });
+        attractivenessCsvData['High Global FDI Flows'] = factors.aFdiworld;
+      }
+      if (factors.aExport !== null) {
+        attractivenessData.push({ label: 'High Export Propensity', value: factors.aExport });
+        attractivenessCsvData['High Export Propensity'] = factors.aExport;
+      }
+      if (attractivenessData.length > 2) {
+        attractivenessRadarChart = (
+          <DataViz
+            id={'albania-attractiveness-radar-chart'}
+            vizType={VizType.RadarChart}
+            data={[attractivenessData]}
+            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
+            maxValue={10}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
+            chartTitle={'Attractiveness Factors - ' + industryName}
+            jsonToDownload={[attractivenessCsvData]}
+          />
+        );
+      } else {
+        attractivenessRadarChart = (
+          <DataViz
+            id={'albania-attractiveness-radar-chart'}
+            vizType={VizType.Error}
+            message={'There are not enough data points for this chart'}
+          />
+        );
+      }
+    } else {
+      viabilityRadarChart = null;
+      attractivenessRadarChart = null;
+    }
     const fdiBuilder = fdiPasswordValue === process.env.REACT_APP_ALBANIA_FDI_PASSWORD ? (
       <QueryTableBuilder
         primaryColor={colorScheme.primary}
@@ -176,18 +370,11 @@ const AlbaniaToolContent = (props: Props) => {
         disabled={true}
       />
     );
-    const getSubsectionText = (subsection: SubSectionEnum) => {
-      const selectedScript = scripts ? scripts.find((script) => script.subsection === subsection) : null;
-      if (selectedScript && selectedScript.text) {
-        return selectedScript.text;
-      } else {
-        return 'No script found for ' + subsection;
-      }
-    }
+
     content = (
       <>
         <TwoColumnSection id={'overview'}>
-          <SectionHeader>Overview</SectionHeader>
+          <SectionHeader>{SubSectionEnum.Overview}</SectionHeader>
           <DataViz
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
@@ -200,7 +387,17 @@ const AlbaniaToolContent = (props: Props) => {
           />
           <TextBlock>
             <p
-              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Overview)}}
+              dangerouslySetInnerHTML={{
+                __html: getSubsectionText(SubSectionEnum.Overview, [
+                    {key: '<<description>>', value: `<strong>${industryName}</strong>`},
+                    {key: '<<v_text>>', value: factors && factors.vText ? factors.vText : 'MISSING VALUE'},
+                    {key: '<<a_text>>', value: factors && factors.aText ? factors.aText : 'MISSING VALUE'},
+                    {key: '<<rca_text1>>', value: factors && factors.rcaText1 ? factors.rcaText1 : 'MISSING VALUE'},
+                    {key: '<<rca_text2>>', value: factors && factors.rcaText2 ? factors.rcaText2 : 'MISSING VALUE'},
+                    {key: '<<v_text>>', value: factors && factors.vText ? factors.vText : 'MISSING VALUE'},
+                    {key: '<<a_text>>', value: factors && factors.aText ? factors.aText : 'MISSING VALUE'},
+                  ]),
+              }}
             />
             <HowToReadDots
               items={[
@@ -212,17 +409,7 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <DataViz
-            id={'albania-spyder-chart-2'}
-            vizType={VizType.RadarChart}
-            data={spiderPlotTestData2}
-            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
-            maxValue={100}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Viability Factors - ' + industryName}
-            jsonToDownload={spiderPlotTestData2[0]}
-          />
+          {viabilityRadarChart}
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.RCAInAlbania}</ParagraphHeader>
@@ -248,17 +435,7 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <DataViz
-            id={'albania-spyder-chart-3'}
-            vizType={VizType.RadarChart}
-            data={spiderPlotTestData3}
-            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
-            maxValue={100}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Attractiveness Factors - ' + industryName}
-            jsonToDownload={spiderPlotTestData3[0]}
-          />
+          {attractivenessRadarChart}
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighRelativeWages}</ParagraphHeader>
@@ -439,6 +616,9 @@ const AlbaniaToolContent = (props: Props) => {
         marginTop={stickyHeaderHeight + 'px'}
       />
     );
+  } else {
+    content = null;
+    nav = null;
   }
 
   return (
