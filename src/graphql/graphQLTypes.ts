@@ -66,6 +66,7 @@ export enum SubSectionEnum {
   HighFDIToPeerCountries = 'High FDI to Peer Countries',
   LowContractIntensity = 'Low Contract Intensity',
   HighElectricityIntensity = 'High Electricity Intensity',
+  HighRelativeWages = 'High Relative Wages',
   HighYouthEmployment = 'High Youth Employment',
   HighGlobalFDIFlows = 'High Global FDI Flows',
   HighExportPropensity = 'High Export Propensity',

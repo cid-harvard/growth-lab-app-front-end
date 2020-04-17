@@ -79,7 +79,6 @@ const AlbaniaTool = () => {
         scripts.push({...edge.node});
       }
     })
-    console.log(data);
     const naceData = transformNaceData(naceEdges);
     const { scatterPlotData, csvData } = transformScatterplotData(factorsEdges, naceEdges);
     return (
@@ -88,6 +87,7 @@ const AlbaniaTool = () => {
           naceData={naceData}
           scatterPlotData={scatterPlotData}
           scatterPlotDataForDownload={csvData}
+          scripts={scripts}
         />
       </>
     );

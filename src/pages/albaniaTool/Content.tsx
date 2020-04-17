@@ -51,6 +51,10 @@ import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFo
 import {lighten, rgba} from 'polished';
 import {updateScatterPlotData, CSVDatum as ScatterPlotCSVDatum} from './transformScatterplotData';
 import HowToReadDots from '../../components/dataViz/HowToReadDots';
+import {
+    Script,
+    SubSectionEnum,
+} from '../../graphql/graphQLTypes';
 
 const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
@@ -65,11 +69,12 @@ interface Props {
   naceData: TreeNode[];
   scatterPlotData: ScatterPlotDatum[];
   scatterPlotDataForDownload: ScatterPlotCSVDatum[];
+  scripts: Script[];
 }
 
 const AlbaniaToolContent = (props: Props) => {
   const {
-    naceData, scatterPlotData, scatterPlotDataForDownload,
+    naceData, scatterPlotData, scatterPlotDataForDownload, scripts,
   } = props;
 
   const metaTitle = 'Albania’s Industry Targeting Dashboard | The Growth Lab at Harvard Kennedy School';
@@ -171,6 +176,14 @@ const AlbaniaToolContent = (props: Props) => {
         disabled={true}
       />
     );
+    const getSubsectionText = (subsection: SubSectionEnum) => {
+      const selectedScript = scripts.find((script) => script.subsection === subsection);
+      if (selectedScript && selectedScript.text) {
+        return selectedScript.text;
+      } else {
+        return 'No script found for ' + subsection;
+      }
+    }
     content = (
       <>
         <TwoColumnSection id={'overview'}>
@@ -187,10 +200,7 @@ const AlbaniaToolContent = (props: Props) => {
           />
           <TextBlock>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            </p>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.Overview)}
             </p>
             <HowToReadDots
               items={[
@@ -215,25 +225,25 @@ const AlbaniaToolContent = (props: Props) => {
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.quaternary}>RCA in Albania</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.RCAInAlbania}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.RCAInAlbania)}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>RCA in Peers</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.LowDistanceToIndustry}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.LowDistanceToIndustry)}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Water Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighFDIToPeerCountries}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.HighFDIToPeerCountries)}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Electricity Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.LowContractIntensity}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.LowContractIntensity)}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Availability of Inputs</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighElectricityIntensity}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.HighElectricityIntensity)}
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
@@ -251,25 +261,21 @@ const AlbaniaToolContent = (props: Props) => {
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.quaternary}>RCA in Albania</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighRelativeWages}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.HighRelativeWages)}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>RCA in Peers</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighYouthEmployment}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.HighYouthEmployment)}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Water Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighGlobalFDIFlows}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.HighGlobalFDIFlows)}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Electricity Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighExportPropensity}</ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </SmallParagraph>
-            <ParagraphHeader color={colorScheme.quaternary}>Availability of Inputs</ParagraphHeader>
-            <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {getSubsectionText(SubSectionEnum.HighExportPropensity)}
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>

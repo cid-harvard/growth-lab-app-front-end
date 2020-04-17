@@ -157,7 +157,6 @@ export const spiderPlotTestData3: RadarChartDatum[][] = [
     {label: 'RCA Albania', value: 67},
     {label: 'RCA Peers', value: 13},
     {label: 'Water Intensity', value: 89},
-    {label: 'Electricity Intensity', value: 78},
     {label: 'Avail. of Inputs', value: 91},
   ],
 ];
