@@ -1,33 +1,10 @@
-export enum NACELevel {
-  section = 'section', // highest tier
-  division = 'division', // middle tier
-  group = 'group', // lowest tier
-}
-
-export interface NACEIndustry {
-  id: string;
-  naceId: string | null;
-  level: NACELevel | null;
-  code: string | null;
-  name: string | null;
-  parentId: string | null;
-}
-
-export interface NACEIndustryEdge {
-  node: NACEIndustry | null;
-}
-
-export interface NACEIndustryConnection {
-  edges: (NACEIndustryEdge | null)[];
-}
-
 export enum RCADirection {
   LessThanOne = '< 1',
   GreaterThanOrEqualToOne = '>= 1',
 }
 
 export interface Factors {
-  naceId: string | null;
+  naceId: string;
   rca: RCADirection | null;
   vRca: number | null;
   vDist: number | null;
@@ -40,7 +17,10 @@ export interface Factors {
   aFdiworld: number | null;
   aExport: number | null;
   avgAttractiveness: number | null;
-  id: string;
+  vText: string | null;
+  aText: string | null;
+  rcaText1: string | null;
+  rcaText2: string | null;
 }
 
 export interface FactorsEdge {
@@ -49,6 +29,96 @@ export interface FactorsEdge {
 
 export interface FactorsConnection {
   edges: (FactorsEdge | null)[];
+}
+
+export enum LocationLevel {
+  Region = 'REGION',
+  Country = 'COUNTRY',
+}
+
+export interface Country {
+  locationId: string;
+  code: string | null;
+  level: LocationLevel;
+  nameEn: string | null;
+  nameShortEn: string | null;
+  iso2: string | null;
+  parentId: number | null;
+  name: string | null;
+  isTrusted: boolean | null;
+  inRankings: boolean | null;
+  reportedServ: boolean | null;
+  reportedServRecent: boolean | null;
+  formerCountry: boolean | null;
+}
+
+export interface CountryEdge {
+  node: Country | null;
+}
+
+export interface CountryConnection {
+  edges: (CountryEdge | null)[];
+}
+
+export interface FDIMarket {
+  naceId: string;
+  locationId: number | null;
+  parentCompany: string;
+  sourceCountry: string;
+  sourceCity: string;
+  capexWorld: number | null;
+  capexEurope: number | null;
+  capexBalkans: number | null;
+  projectsWorld: number | null;
+  projectsEurope: number | null;
+  projectsBalkans: number | null;
+  country: CountryConnection;
+}
+
+export interface FDIMarketEdge {
+  node: FDIMarket | null;
+}
+
+export interface FDIMarketConnection {
+  edges: (FDIMarketEdge | null)[];
+}
+
+export enum FDIMarketOvertimeDestination {
+  Balkans = 'Balkans',
+  RestOfEurope = 'Rest of Europe',
+  RestOfWorld = 'Rest of World',
+}
+
+export interface FDIMarketOvertime {
+  naceId: string;
+  destination: FDIMarketOvertimeDestination | null;
+  projects0306: number | null;
+  projects0710: number | null;
+  projects1114: number | null;
+  projects1518: number | null;
+}
+
+export interface FDIMarketOvertimeEdge {
+  node: FDIMarketOvertime | null;
+}
+
+export interface FDIMarketOvertimeConnection {
+  edges: (FDIMarketEdge | null)[];
+}
+
+export enum NACELevel {
+  section = 'SECTION', // highest tier
+  division = 'DIVISION', // middle tier
+  group = 'GROUP', // lowest tier
+}
+
+export interface NACEIndustry {
+  naceId: string;
+  level: NACELevel | null;
+  code: string | null;
+  name: string | null;
+  parentId: number | null;
+  factors: FactorsConnection;
 }
 
 export enum SectionEnum {
@@ -80,12 +150,4 @@ export interface Script {
   subsection: SubSectionEnum;
   text: string | null;
   id: string;
-}
-
-export interface ScriptsEdge {
-  node: Script | null;
-}
-
-export interface ScriptsConnection {
-  edges: (ScriptsEdge | null)[];
 }

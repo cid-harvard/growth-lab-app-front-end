@@ -3,10 +3,9 @@ import Content from './Content';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {
-  NACEIndustryConnection,
-  FactorsConnection,
-  ScriptsConnection,
+  Factors,
   Script,
+  NACEIndustry,
 } from '../../graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
@@ -16,45 +15,30 @@ import transformScatterplotData from './transformScatterplotData';
 const GET_ALL_INDUSTRIES = gql`
   query GetAllIndustries {
     naceIndustryList {
-      edges {
-        node {
-          naceId
-          level
-          code
-          name
-          parentId
-          id
-        }
-      }
+      naceId
+      level
+      code
+      name
+      parentId
     }
-    factorsList {
-      edges {
-        node {
-          naceId
-          avgViability
-          avgAttractiveness
-          rca
-          id
-        }
-      }
+    factors {
+      naceId
+      avgViability
+      avgAttractiveness
+      rca
     }
     script {
-      edges {
-        node {
-          section
-          subsection
-          text
-          id
-        }
-      }
+      section
+      subsection
+      text
     }
   }
 `;
 
 interface SuccessResponse {
-  naceIndustryList: NACEIndustryConnection;
-  factorsList: FactorsConnection;
-  script: ScriptsConnection;
+  naceIndustryList: NACEIndustry[];
+  factors: Factors[];
+  script: Script[];
 }
 
 const AlbaniaTool = () => {
@@ -69,25 +53,19 @@ const AlbaniaTool = () => {
     );
   } else if (data !== undefined) {
     const {
-      naceIndustryList: {edges: naceEdges},
-      factorsList: {edges: factorsEdges},
-      script: {edges: scriptEdges},
+      naceIndustryList,
+      factors,
+      script,
     } = data;
-    const scripts: Script[] = []
-    scriptEdges.forEach(edge => {
-      if (edge !== null && edge.node !== null) {
-        scripts.push({...edge.node});
-      }
-    })
-    const naceData = transformNaceData(naceEdges);
-    const { scatterPlotData, csvData } = transformScatterplotData(factorsEdges, naceEdges);
+    const naceData = transformNaceData(naceIndustryList);
+    const { scatterPlotData, csvData } = transformScatterplotData(factors, naceIndustryList);
     return (
       <>
         <Content
           naceData={naceData}
           scatterPlotData={scatterPlotData}
           scatterPlotDataForDownload={csvData}
-          scripts={scripts}
+          scripts={script}
         />
       </>
     );

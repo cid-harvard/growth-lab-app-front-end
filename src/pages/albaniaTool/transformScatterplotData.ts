@@ -1,6 +1,6 @@
 import {
-  FactorsEdge,
-  NACEIndustryEdge,
+  Factors,
+  NACEIndustry,
   RCADirection,
 } from '../../graphql/graphQLTypes';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
@@ -16,25 +16,25 @@ export interface CSVDatum {
   rcaDirection: string;
 }
 
-export default (rawFactors: (FactorsEdge | null)[], rawNaceData: (NACEIndustryEdge | null)[]) => {
+export default (rawFactors: Factors[], rawNaceData: NACEIndustry[]) => {
   const scatterPlotData: ScatterPlotDatum[] = [];
   const csvData: CSVDatum[] = [];
   rawFactors.forEach((rawDatum) => {
-    if (rawDatum && rawDatum.node) {
+    if (rawDatum) {
       const {
         naceId, avgViability, avgAttractiveness, rca,
-      } = rawDatum.node;
+      } = rawDatum;
       if (naceId !== null && avgViability !== null && avgAttractiveness !== null && rca !== null) {
-        const targetNaceIndustry = rawNaceData.find(edge => edge && edge.node && edge.node.naceId === naceId);
-        if (targetNaceIndustry && targetNaceIndustry.node && targetNaceIndustry.node.name) {
+        const targetNaceIndustry = rawNaceData.find(node => node && node.naceId === naceId);
+        if (targetNaceIndustry && targetNaceIndustry.name) {
           csvData.push({
             naceId,
-            industryName: targetNaceIndustry.node.name,
+            industryName: targetNaceIndustry.name,
             avgViability, avgAttractiveness,
             rcaDirection: rca,
           });
           scatterPlotData.push({
-            label: targetNaceIndustry.node.name,
+            label: targetNaceIndustry.name,
             x: avgViability,
             y: avgAttractiveness,
             tooltipContent: `

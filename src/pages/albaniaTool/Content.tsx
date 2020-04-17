@@ -177,7 +177,7 @@ const AlbaniaToolContent = (props: Props) => {
       />
     );
     const getSubsectionText = (subsection: SubSectionEnum) => {
-      const selectedScript = scripts.find((script) => script.subsection === subsection);
+      const selectedScript = scripts ? scripts.find((script) => script.subsection === subsection) : null;
       if (selectedScript && selectedScript.text) {
         return selectedScript.text;
       } else {
@@ -199,9 +199,9 @@ const AlbaniaToolContent = (props: Props) => {
             jsonToDownload={scatterPlotDataForDownload}
           />
           <TextBlock>
-            <p>
-              {getSubsectionText(SubSectionEnum.Overview)}
-            </p>
+            <p
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Overview)}}
+            />
             <HowToReadDots
               items={[
                 {color: rgba(colorScheme.dataSecondary, 0.5), label: 'RCA < 1'},
@@ -226,25 +226,25 @@ const AlbaniaToolContent = (props: Props) => {
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.RCAInAlbania}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.RCAInAlbania)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.RCAInAlbania)}}
+            />
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.LowDistanceToIndustry}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.LowDistanceToIndustry)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.LowDistanceToIndustry)}}
+            />
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighFDIToPeerCountries}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.HighFDIToPeerCountries)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.HighFDIToPeerCountries)}}
+            />
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.LowContractIntensity}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.LowContractIntensity)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.LowContractIntensity)}}
+            />
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighElectricityIntensity}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.HighElectricityIntensity)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.HighElectricityIntensity)}}
+            />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
@@ -262,21 +262,21 @@ const AlbaniaToolContent = (props: Props) => {
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighRelativeWages}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.HighRelativeWages)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.HighRelativeWages)}}
+            />
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighYouthEmployment}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.HighYouthEmployment)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.HighYouthEmployment)}}
+            />
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighGlobalFDIFlows}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.HighGlobalFDIFlows)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.HighGlobalFDIFlows)}}
+            />
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighExportPropensity}</ParagraphHeader>
-            <SmallParagraph>
-              {getSubsectionText(SubSectionEnum.HighExportPropensity)}
-            </SmallParagraph>
+            <SmallParagraph
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.HighExportPropensity)}}
+            />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection id={'industry-potential'}>
