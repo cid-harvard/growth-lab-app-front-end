@@ -2,7 +2,7 @@
 
 Country Dashboards provides a framework for quickly building custom data visualization tools.
 
-View the site live at https://cid-harvard.github.io/country-tools-front-end/
+View the site live at https://harvardgrowthlab.app/
 
 License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
