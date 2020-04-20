@@ -18,11 +18,11 @@ export const colorScheme = {
 
 export const testCountryListData: TreeNode[] = [
   {
-    label: 'Rest of World',
+    label: 'World',
     value: 'World',
   },
   {
-    label: 'Rest of Europe',
+    label: 'Europe',
     value: 'Europe',
   },
   {

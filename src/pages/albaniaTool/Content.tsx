@@ -23,7 +23,6 @@ import { TreeNode } from 'react-dropdown-tree-select';
 import {
   testCountryListData,
   barChartData,
-  getBarChartOverlayData,
   colorScheme,
   barChartOverlayData2,
   testTableColumns1,
@@ -32,7 +31,6 @@ import {
   testQueryBuilderDataCity,
   testFDIColumns1,
   testFDIData1,
-  tripleStackBarChartTestData,
 } from './testData';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
@@ -59,6 +57,7 @@ import {
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
+import transformStackedBarChartData from './transformStackedBarChartData';
 
 const GET_DATA_FOR_NACE_ID = gql`
   query GetDataForNaceId($naceId: Int!) {
@@ -227,6 +226,7 @@ const AlbaniaToolContent = (props: Props) => {
   } else if (data && data.naceIndustry) {
     const {
       factors: {edges: factorsEdge},
+      fdiMarketsOvertime: {edges: fdiMarketsOvertimeEdges},
     } = data.naceIndustry;
     const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
     let viabilityRadarChart: React.ReactElement<any> | null;
@@ -257,7 +257,7 @@ const AlbaniaToolContent = (props: Props) => {
       if (viabilityData.length === 4) {
         viabilityData = viabilityData.map(({label, value}) => ({
           label: label.replace('\0', '\n'), value,
-        }))
+        }));
       }
       if (viabilityData.length > 2) {
         viabilityRadarChart = (
@@ -303,7 +303,7 @@ const AlbaniaToolContent = (props: Props) => {
       if (attractivenessData.length === 4) {
         attractivenessData = attractivenessData.map(({label, value}) => ({
           label: label.replace('\0', '\n'), value,
-        }))
+        }));
       }
       if (attractivenessData.length > 2) {
         attractivenessRadarChart = (
@@ -332,6 +332,27 @@ const AlbaniaToolContent = (props: Props) => {
       viabilityRadarChart = null;
       attractivenessRadarChart = null;
     }
+    const {
+      stackedBarChartData, stackedBarChartCSVData,
+    } = transformStackedBarChartData(fdiMarketsOvertimeEdges, selectedIndustry.value);
+    const stackedBarChart = stackedBarChartData.length ? (
+      <DataViz
+        id={'albania-company-bar-chart' + selectedCountry.value}
+        vizType={VizType.BarChart}
+        data={stackedBarChartData}
+        axisLabels={{left: 'Totals by Capex'}}
+        enablePNGDownload={true}
+        enableSVGDownload={true}
+        chartTitle={'Identifying Companies - ' + industryName}
+        jsonToDownload={stackedBarChartCSVData}
+      />
+    ) : (
+      <DataViz
+        id={'albania-company-bar-chart' + selectedCountry.value}
+        vizType={VizType.Error}
+        message={'There are not enough data points for this chart'}
+      />
+    );
     const fdiBuilder = fdiPasswordValue === process.env.REACT_APP_ALBANIA_FDI_PASSWORD ? (
       <QueryTableBuilder
         primaryColor={colorScheme.primary}
@@ -471,16 +492,7 @@ const AlbaniaToolContent = (props: Props) => {
         </TwoColumnSection>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
-          <DataViz
-            id={'albania-company-bar-chart' + selectedCountry.value}
-            vizType={VizType.BarChart}
-            data={tripleStackBarChartTestData}
-            axisLabels={{left: 'US$ Millions'}}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Identifying Companies - ' + industryName}
-            jsonToDownload={getBarChartOverlayData(selectedCountry.value)}
-          />
+          {stackedBarChart}
           <TextBlock>
             <HeaderWithLegend legendColor={ (() => {
               if (selectedCountry.value === 'World') {
@@ -496,7 +508,11 @@ const AlbaniaToolContent = (props: Props) => {
             })()}>
               <div>
                 Top Global FDI in <InlineToggle
-                    data={testCountryListData}
+                    data={[
+                      { label: 'World', value: 'World' },
+                      { label: 'Europe', value: 'Europe' },
+                      { label: 'Balkans', value: 'Balkans' },
+                    ]}
                     colorClassName={'albania-color-scheme'}
                     onChange={setSelectedCountry}
                   />
@@ -526,8 +542,8 @@ const AlbaniaToolContent = (props: Props) => {
             </ol>
             <Legend
               legendList={[
-                {label: 'Rest of World', fill: colorScheme.primary, stroke: undefined},
-                {label: 'Rest of Europe', fill: colorScheme.quaternary, stroke: undefined},
+                {label: 'World', fill: colorScheme.primary, stroke: undefined},
+                {label: 'Europe', fill: colorScheme.quaternary, stroke: undefined},
                 {label: 'Balkans', fill: colorScheme.header, stroke: undefined},
               ]}
             />

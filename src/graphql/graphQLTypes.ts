@@ -103,7 +103,7 @@ export interface FDIMarketOvertimeEdge {
 }
 
 export interface FDIMarketOvertimeConnection {
-  edges: (FDIMarketEdge | null)[];
+  edges: (FDIMarketOvertimeEdge | null)[];
 }
 
 export enum NACELevel {
@@ -119,6 +119,8 @@ export interface NACEIndustry {
   name: string | null;
   parentId: number | null;
   factors: FactorsConnection;
+  fdiMarketsOvertime: FDIMarketOvertimeConnection;
+  fdiMarkets: FDIMarketConnection;
 }
 
 export enum SectionEnum {
