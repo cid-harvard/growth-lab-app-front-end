@@ -3,8 +3,6 @@ import { Content } from '../../styling/Grid';
 import {
   TwoColumnSection,
   SectionHeader,
-  Light,
-  HeaderWithLegend,
   lightBorderColor,
   SubSectionHeader,
   ParagraphHeader,
@@ -15,12 +13,10 @@ import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock from '../../components/text/TextBlock';
-import InlineToggle from '../../components/text/InlineToggle';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {
-  testCountryListData,
   barChartData,
   barChartOverlayData2,
   testTableColumns1,
@@ -53,6 +49,7 @@ import ViabilityRadarChart from './components/ViabilityRadarChart';
 import AttractivenessRadarChart from './components/AttractivenessRadarChart';
 import FDIStackedBarChart from './components/FDIStackedBarChart';
 import FDIBuilderTable from './components/FDIBuilderTable';
+import FDITop10List from './components/FDITop10List';
 
 const GET_DATA_FOR_NACE_ID = gql`
   query GetDataForNaceId($naceId: Int!) {
@@ -162,7 +159,6 @@ const AlbaniaToolContent = (props: Props) => {
     push(pathname + '?industry=' + val.value + hash);
   };
 
-  const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
   const scrollBuffer = navHeight + stickyHeaderHeight;
@@ -220,9 +216,9 @@ const AlbaniaToolContent = (props: Props) => {
     const {
       factors: {edges: factorsEdge},
       fdiMarketsOvertime: {edges: fdiMarketsOvertimeEdges},
+      fdiMarkets: {edges: fdiMarketsEdges},
     } = data.naceIndustry;
     const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
-    
     content = (
       <>
         <TwoColumnSection id={'overview'}>
@@ -315,64 +311,9 @@ const AlbaniaToolContent = (props: Props) => {
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <FDIStackedBarChart
             selectedIndustry={selectedIndustry}
-            destination={selectedCountry.label}
             fdiMarketsOvertimeEdges={fdiMarketsOvertimeEdges}
           />
-          <TextBlock>
-            <HeaderWithLegend legendColor={ (() => {
-              if (selectedCountry.value === 'World') {
-                return colorScheme.primary;
-              }
-              if (selectedCountry.value === 'Europe') {
-                return colorScheme.quaternary;
-              }
-              if (selectedCountry.value === 'Balkans') {
-                return colorScheme.header;
-              }
-              return colorScheme.primary;
-            })()}>
-              <div>
-                Top Global FDI in <InlineToggle
-                    data={[
-                      { label: 'World', value: 'World' },
-                      { label: 'Europe', value: 'Europe' },
-                      { label: 'Balkans', value: 'Balkans' },
-                    ]}
-                    colorClassName={'albania-color-scheme'}
-                    onChange={setSelectedCountry}
-                  />
-              </div>
-            </HeaderWithLegend>
-            <ol>
-              <li>Planet Food World (PFWC), <Light>Suadi Arabia</Light>
-              </li>
-              <li>Biopalm Energy, <Light>India</Light>
-              </li>
-              <li>Al-Bader International Development, <Light>Kuwait</Light>
-              </li>
-              <li>Heilongjiang Beidahuang, <Light>China</Light>
-              </li>
-              <li>Chongqing Grain Group, <Light>China</Light>
-              </li>
-              <li>Charoen Pokphand Group, <Light>Thailand</Light>
-              </li>
-              <li>Fresh Del Monte Produce, <Light>United States of America</Light>
-              </li>
-              <li>Herakles Farms, <Light>United States of America</Light>
-              </li>
-              <li>Nader &amp; Ebrahim, <Light>Bahrain</Light>
-              </li>
-              <li>Rijk Zwaan, <Light>Netherlands</Light>
-              </li>
-            </ol>
-            <Legend
-              legendList={[
-                {label: 'World', fill: colorScheme.primary, stroke: undefined},
-                {label: 'Europe', fill: colorScheme.quaternary, stroke: undefined},
-                {label: 'Balkans', fill: colorScheme.header, stroke: undefined},
-              ]}
-            />
-          </TextBlock>
+          <FDITop10List fdiMarketsEdges={fdiMarketsEdges} />
         </TwoColumnSection>
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>

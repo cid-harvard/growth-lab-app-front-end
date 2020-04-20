@@ -7,20 +7,19 @@ import transformStackedBarChartData from '../transformers/transformStackedBarCha
 
 interface Props {
   selectedIndustry: {label: string, value: string};
-  destination: string;
   fdiMarketsOvertimeEdges: FDIMarketOvertimeConnection['edges'];
 }
 
 export default (props: Props) => {
   const {
-    selectedIndustry, destination, fdiMarketsOvertimeEdges,
+    selectedIndustry, fdiMarketsOvertimeEdges,
   } = props;
   const {
     stackedBarChartData, stackedBarChartCSVData,
   } = transformStackedBarChartData(fdiMarketsOvertimeEdges, selectedIndustry.value);
   const stackedBarChart = stackedBarChartData.length ? (
     <DataViz
-      id={'albania-company-bar-chart' + destination}
+      id={'albania-company-bar-chart'}
       vizType={VizType.BarChart}
       data={stackedBarChartData}
       axisLabels={{left: 'Totals by Capex'}}
@@ -31,10 +30,10 @@ export default (props: Props) => {
     />
   ) : (
     <DataViz
-      id={'albania-company-bar-chart' + destination}
+      id={'albania-company-bar-chart'}
       vizType={VizType.Error}
       message={'There are not enough data points for this chart'}
     />
   );
   return stackedBarChart;
-}
+};
