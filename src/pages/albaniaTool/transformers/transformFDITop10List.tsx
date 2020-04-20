@@ -4,15 +4,24 @@ import {
 } from '../../../graphql/graphQLTypes';
 import sortBy from 'lodash/sortBy';
 
-export default (fdiMarketsEdges: FDIMarketConnection['edges'], destination: FDIMarketOvertimeDestination) => {
+interface Input {
+  fdiMarketsEdges: FDIMarketConnection['edges'];
+  destination: FDIMarketOvertimeDestination;
+  showZeroValues?: boolean;
+}
+
+export default (input: Input) => {
+  const {
+    fdiMarketsEdges, destination, showZeroValues,
+  } = input;
   const sortedMarkets = sortBy(fdiMarketsEdges, (edge) => {
     if (edge && edge.node) {
       if (destination === FDIMarketOvertimeDestination.Balkans) {
-        return edge.node.capexBalkans;
+        return edge.node.projectsBalkans;
       } else if (destination === FDIMarketOvertimeDestination.RestOfEurope) {
-        return edge.node.capexEurope;
+        return edge.node.projectsEurope;
       } else if (destination === FDIMarketOvertimeDestination.RestOfWorld) {
-        return edge.node.capexWorld;
+        return edge.node.projectsWorld;
       } else {
         return 0;
       }
@@ -25,9 +34,10 @@ export default (fdiMarketsEdges: FDIMarketConnection['edges'], destination: FDIM
   topList.forEach(edge => {
     if (edge && edge.node) {
       if (
-        (destination === FDIMarketOvertimeDestination.Balkans && edge.node.capexBalkans) ||
-        (destination === FDIMarketOvertimeDestination.RestOfEurope && edge.node.capexEurope) ||
-        (destination === FDIMarketOvertimeDestination.RestOfWorld && edge.node.capexWorld)
+        (destination === FDIMarketOvertimeDestination.Balkans && edge.node.projectsBalkans) ||
+        (destination === FDIMarketOvertimeDestination.RestOfEurope && edge.node.projectsEurope) ||
+        (destination === FDIMarketOvertimeDestination.RestOfWorld && edge.node.projectsWorld) ||
+        showZeroValues
       ) {
         transformedList.push({
           company: edge.node.parentCompany,

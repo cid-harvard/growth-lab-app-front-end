@@ -45,7 +45,7 @@ export default (props: Props) => {
     destination = FDIMarketOvertimeDestination.Balkans;
   }
 
-  const fdiTop10List = transformFDITop10List(fdiMarketsEdges, destination);
+  const fdiTop10List = transformFDITop10List({fdiMarketsEdges, destination});
   const listItems = fdiTop10List.length === 0 ? (
     <p>There are no results for this industry in {the} <strong>{selectedCountry.value}</strong></p>
   ) : fdiTop10List.map(({company, country, city}) => (

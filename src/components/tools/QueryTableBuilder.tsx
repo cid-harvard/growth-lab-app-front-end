@@ -124,7 +124,7 @@ interface CallbackSelectionDatum {
   value: string;
 }
 
-interface CallbackData {
+export interface CallbackData {
   selectedFields: CallbackSelectionDatum[];
 }
 
@@ -137,12 +137,13 @@ interface Props {
   columns: Column[];
   tableData: Datum[];
   disabled?: boolean;
+  queryLength: number;
 }
 
 const QueryBuilder = (props: Props) => {
   const {
     selectFields, primaryColor, onQueryDownloadClick,
-    itemName, onUpdateClick, columns, disabled,
+    itemName, onUpdateClick, columns, disabled, queryLength,
   } = props;
 
   const [selectedValues, setSelectedValues] = useState<TreeNode[]>(
@@ -246,7 +247,7 @@ const QueryBuilder = (props: Props) => {
     }
   }
 
-  const itemCount = disabled ? null : <Lowercase>(1200 {itemName})</Lowercase>;
+  const itemCount = disabled ? null : <Lowercase>({queryLength} {itemName})</Lowercase>;
 
   return (
     <Root>
