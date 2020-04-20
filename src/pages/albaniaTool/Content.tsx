@@ -15,7 +15,6 @@ import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import DataViz, {VizType} from '../../components/dataViz';
 import TextBlock from '../../components/text/TextBlock';
-import PasswordProtectedComponent from '../../components/text/PasswordProtectedComponent';
 import InlineToggle from '../../components/text/InlineToggle';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
@@ -23,29 +22,23 @@ import { TreeNode } from 'react-dropdown-tree-select';
 import {
   testCountryListData,
   barChartData,
-  colorScheme,
   barChartOverlayData2,
   testTableColumns1,
   testTableData1,
-  testQueryBuilderDataCountry,
-  testQueryBuilderDataCity,
-  testFDIColumns1,
-  testFDIData1,
 } from './testData';
+import { colorScheme } from './Utils';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import DynamicTable from '../../components/text/DynamicTable';
-import QueryTableBuilder from '../../components/tools/QueryTableBuilder';
 import raw from 'raw.macro';
-import noop from 'lodash/noop';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
-import AlbaniaMapSvg from './albania-logo.svg';
+import AlbaniaMapSvg from './assets/albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import {lighten, rgba} from 'polished';
-import {updateScatterPlotData, CSVDatum as ScatterPlotCSVDatum} from './transformScatterplotData';
+import {updateScatterPlotData, CSVDatum as ScatterPlotCSVDatum} from './transformers/transformScatterplotData';
 import HowToReadDots from '../../components/dataViz/HowToReadDots';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -56,8 +49,10 @@ import {
 } from '../../graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
-import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
-import transformStackedBarChartData from './transformStackedBarChartData';
+import ViabilityRadarChart from './components/ViabilityRadarChart';
+import AttractivenessRadarChart from './components/AttractivenessRadarChart';
+import FDIStackedBarChart from './components/FDIStackedBarChart';
+import FDIBuilderTable from './components/FDIBuilderTable';
 
 const GET_DATA_FOR_NACE_ID = gql`
   query GetDataForNaceId($naceId: Int!) {
@@ -126,7 +121,7 @@ interface Variables {
   naceId: number;
 }
 
-const albaniaMapData = JSON.parse(raw('./albania-geojson.geojson'));
+const albaniaMapData = JSON.parse(raw('./assets/albania-geojson.geojson'));
 const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
   const percent = (i + 1) * 7;
   const properties = {...feature.properties, percent, tooltipContent: `
@@ -166,8 +161,6 @@ const AlbaniaToolContent = (props: Props) => {
     setSelectedIndustry(val);
     push(pathname + '?industry=' + val.value + hash);
   };
-
-  const [fdiPasswordValue, setFdiPasswordValue] = useState<string>('');
 
   const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
   const [navHeight, setNavHeight] = useState<number>(0);
@@ -229,179 +222,7 @@ const AlbaniaToolContent = (props: Props) => {
       fdiMarketsOvertime: {edges: fdiMarketsOvertimeEdges},
     } = data.naceIndustry;
     const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
-    let viabilityRadarChart: React.ReactElement<any> | null;
-    let attractivenessRadarChart: React.ReactElement<any> | null;
-    if (factors) {
-      let viabilityData: RadarChartDatum[] = [];
-      const viabilityCsvData: any = { 'Industry': industryName };
-      if (factors.vRca !== null) {
-        viabilityData.push({ label: 'RCA in Albania', value: factors.vRca });
-        viabilityCsvData['RCA in Albania'] = factors.vRca;
-      }
-      if (factors.vDist !== null) {
-        viabilityData.push({ label: 'Low \0Distance\nto Industry', value: factors.vDist });
-        viabilityCsvData['Low Distance to Industry'] = factors.vDist;
-      }
-      if (factors.vFdipeers !== null) {
-        viabilityData.push({ label: 'High FDI to\nPeer Countries', value: factors.vFdipeers });
-        viabilityCsvData['High FDI to Peer Countries'] = factors.vFdipeers;
-      }
-      if (factors.vContracts !== null) {
-        viabilityData.push({ label: 'Low Contract\nIntensity', value: factors.vContracts });
-        viabilityCsvData['Low Contract Intensity'] = factors.vContracts;
-      }
-      if (factors.vElect !== null) {
-        viabilityData.push({ label: 'High \0Electricity\nIntensity', value: factors.vElect });
-        viabilityCsvData['High Electricity Intensity'] = factors.vElect;
-      }
-      if (viabilityData.length === 4) {
-        viabilityData = viabilityData.map(({label, value}) => ({
-          label: label.replace('\0', '\n'), value,
-        }));
-      }
-      if (viabilityData.length > 2) {
-        viabilityRadarChart = (
-          <DataViz
-            id={'albania-viability-radar-chart'}
-            vizType={VizType.RadarChart}
-            data={[viabilityData]}
-            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
-            maxValue={10}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Viability Factors - ' + industryName}
-            jsonToDownload={[viabilityCsvData]}
-          />
-        );
-      } else {
-        viabilityRadarChart = (
-          <DataViz
-            id={'albania-viability-radar-chart'}
-            vizType={VizType.Error}
-            message={'There are not enough data points for this chart'}
-          />
-        );
-      }
-      let attractivenessData: RadarChartDatum[] = [];
-      const attractivenessCsvData: any = { 'Industry': industryName };
-      if (factors.aWage !== null) {
-        attractivenessData.push({ label: 'High Relative\nWages', value: factors.aWage });
-        attractivenessCsvData['High Relative Wages'] = factors.aWage;
-      }
-      if (factors.aYouth !== null) {
-        attractivenessData.push({ label: 'High \0Youth\nEmployment', value: factors.aYouth });
-        attractivenessCsvData['High Youth Employment'] = factors.aYouth;
-      }
-      if (factors.aFdiworld !== null) {
-        attractivenessData.push({ label: 'High Global\nFDI Flows', value: factors.aFdiworld });
-        attractivenessCsvData['High Global FDI Flows'] = factors.aFdiworld;
-      }
-      if (factors.aExport !== null) {
-        attractivenessData.push({ label: 'High \0Export\nPropensity', value: factors.aExport });
-        attractivenessCsvData['High Export Propensity'] = factors.aExport;
-      }
-      if (attractivenessData.length === 4) {
-        attractivenessData = attractivenessData.map(({label, value}) => ({
-          label: label.replace('\0', '\n'), value,
-        }));
-      }
-      if (attractivenessData.length > 2) {
-        attractivenessRadarChart = (
-          <DataViz
-            id={'albania-attractiveness-radar-chart'}
-            vizType={VizType.RadarChart}
-            data={[attractivenessData]}
-            color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
-            maxValue={10}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Attractiveness Factors - ' + industryName}
-            jsonToDownload={[attractivenessCsvData]}
-          />
-        );
-      } else {
-        attractivenessRadarChart = (
-          <DataViz
-            id={'albania-attractiveness-radar-chart'}
-            vizType={VizType.Error}
-            message={'There are not enough data points for this chart'}
-          />
-        );
-      }
-    } else {
-      viabilityRadarChart = null;
-      attractivenessRadarChart = null;
-    }
-    const {
-      stackedBarChartData, stackedBarChartCSVData,
-    } = transformStackedBarChartData(fdiMarketsOvertimeEdges, selectedIndustry.value);
-    const stackedBarChart = stackedBarChartData.length ? (
-      <DataViz
-        id={'albania-company-bar-chart' + selectedCountry.value}
-        vizType={VizType.BarChart}
-        data={stackedBarChartData}
-        axisLabels={{left: 'Totals by Capex'}}
-        enablePNGDownload={true}
-        enableSVGDownload={true}
-        chartTitle={'Identifying Companies - ' + industryName}
-        jsonToDownload={stackedBarChartCSVData}
-      />
-    ) : (
-      <DataViz
-        id={'albania-company-bar-chart' + selectedCountry.value}
-        vizType={VizType.Error}
-        message={'There are not enough data points for this chart'}
-      />
-    );
-    const fdiBuilder = fdiPasswordValue === process.env.REACT_APP_ALBANIA_FDI_PASSWORD ? (
-      <QueryTableBuilder
-        primaryColor={colorScheme.primary}
-        onQueryDownloadClick={noop}
-        onUpdateClick={noop}
-        selectFields={[
-          {
-            id: 'country',
-            label: 'Source Country',
-            data: testQueryBuilderDataCountry,
-            required: true,
-          },
-          {
-            id: 'city',
-            label: 'Source City',
-            data: testQueryBuilderDataCity,
-            dependentOn: 'country',
-          },
-        ]}
-        itemName={'companies'}
-        columns={testFDIColumns1}
-        tableData={testFDIData1}
-      />
-    ) : (
-      <QueryTableBuilder
-        primaryColor={colorScheme.primary}
-        onQueryDownloadClick={noop}
-        onUpdateClick={noop}
-        selectFields={[
-          {
-            id: 'country',
-            label: 'Source Country',
-            data: [testQueryBuilderDataCountry[0]],
-            required: true,
-          },
-          {
-            id: 'city',
-            label: 'Source City',
-            data: [testQueryBuilderDataCity[0]],
-            dependentOn: 'country',
-          },
-        ]}
-        itemName={'companies'}
-        columns={testFDIColumns1}
-        tableData={[]}
-        disabled={true}
-      />
-    );
-
+    
     content = (
       <>
         <TwoColumnSection id={'overview'}>
@@ -440,7 +261,7 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          {viabilityRadarChart}
+          <ViabilityRadarChart industryName={industryName} factors={factors} />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.RCAInAlbania}</ParagraphHeader>
@@ -466,7 +287,7 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          {attractivenessRadarChart}
+          <AttractivenessRadarChart industryName={industryName} factors={factors} />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighRelativeWages}</ParagraphHeader>
@@ -492,7 +313,11 @@ const AlbaniaToolContent = (props: Props) => {
         </TwoColumnSection>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
-          {stackedBarChart}
+          <FDIStackedBarChart
+            selectedIndustry={selectedIndustry}
+            destination={selectedCountry.label}
+            fdiMarketsOvertimeEdges={fdiMarketsOvertimeEdges}
+          />
           <TextBlock>
             <HeaderWithLegend legendColor={ (() => {
               if (selectedCountry.value === 'World') {
@@ -551,13 +376,7 @@ const AlbaniaToolContent = (props: Props) => {
         </TwoColumnSection>
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
-          <PasswordProtectedComponent
-            title={'This section is password protected. Please enter your password to access FDI data.'}
-            buttonColor={colorScheme.primary}
-            onPasswordSubmit={setFdiPasswordValue}
-          >
-            {fdiBuilder}
-          </PasswordProtectedComponent>
+          <FDIBuilderTable />
         </div>
         <TwoColumnSection id={'industry-now'}>
           <SectionHeader>Industry Now</SectionHeader>

@@ -7,14 +7,7 @@ import {
 } from '../../components/text/DynamicTable';
 import { TreeNode } from 'react-dropdown-tree-select';
 import { lightBorderColor } from '../../styling/styleUtils';
-
-export const colorScheme = {
-  primary: '#84a9ac',
-  quaternary: '#4d7082',
-  header: '#204052',
-  data: '#327a76',
-  dataSecondary: '#8A5396',
-};
+import { colorScheme } from './Utils';
 
 export const testCountryListData: TreeNode[] = [
   {

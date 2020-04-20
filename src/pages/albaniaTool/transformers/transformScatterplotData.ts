@@ -2,11 +2,11 @@ import {
   Factors,
   NACEIndustry,
   RCADirection,
-} from '../../graphql/graphQLTypes';
-import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
-import { colorScheme } from './testData';
+} from '../../../graphql/graphQLTypes';
+import { Datum as ScatterPlotDatum } from '../../../components/dataViz/scatterPlot';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {rgba} from 'polished';
+import { colorScheme } from '../Utils';
 
 export interface CSVDatum {
   industryName: string;

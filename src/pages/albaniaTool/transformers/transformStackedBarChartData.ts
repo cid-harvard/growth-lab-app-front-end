@@ -1,10 +1,10 @@
-import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
+import { Datum as BarChartDatum } from '../../../components/dataViz/barChart';
 import {
     FDIMarketOvertimeDestination,
     FDIMarketOvertime,
     FDIMarketOvertimeEdge,
-} from '../../graphql/graphQLTypes';
-import { colorScheme } from './testData';
+} from '../../../graphql/graphQLTypes';
+import { colorScheme } from '../Utils';
 
 export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
   const stackedBarChartData: BarChartDatum[][] = [];

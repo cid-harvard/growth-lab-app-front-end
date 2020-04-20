@@ -7,7 +7,7 @@ import {
 } from '../../styling/styleUtils';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import styled from 'styled-components/macro';
-import AlbaniaMapSvg from '../albaniaTool/albania-logo.svg';
+import AlbaniaMapSvg from '../albaniaTool/assets/albania-logo.svg';
 import JordanLogoSVG from '../jordanTool/jordan-dotted-map.svg';
 
 const Content = styled(ContentFull)`
