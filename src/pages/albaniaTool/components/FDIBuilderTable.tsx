@@ -16,11 +16,12 @@ import sortBy from 'lodash/sortBy';
 
 interface Props {
   fdiMarketsEdges: FDIMarketConnection['edges'];
+  industryName: string;
 }
 
 export default (props: Props) => {
   const {
-    fdiMarketsEdges,
+    fdiMarketsEdges, industryName,
   } = props;
   const [fdiPasswordValue, setFdiPasswordValue] = useState<string>('');
   const [filterCountry, setFilterCountry] = useState<string | undefined>(undefined);
@@ -75,6 +76,7 @@ export default (props: Props) => {
   let content: React.ReactElement<any>;
   if (fdiPasswordValue === process.env.REACT_APP_ALBANIA_FDI_PASSWORD) {
     const filteredEdgeData: FDIMarketConnection['edges'] = [];
+    const flattendDataForCSV: object[] = [];
     fdiMarketsEdges.forEach(edge => {
       if (edge && edge.node && edge.node.sourceCountry && edge.node.sourceCity) {
         if (
@@ -82,6 +84,16 @@ export default (props: Props) => {
           (filterCity === undefined || filterCity === edge.node.sourceCity)
           ) {
           filteredEdgeData.push(edge);
+          const {
+            parentCompany, sourceCountry, sourceCity,
+            capexBalkans, capexEurope, capexWorld,
+            projectsBalkans, projectsEurope, projectsWorld,
+          } = edge.node;
+          flattendDataForCSV.push({
+            parentCompany, sourceCountry, sourceCity,
+            capexBalkans, capexEurope, capexWorld,
+            projectsBalkans, projectsEurope, projectsWorld,
+          });
         }
       }
     });
@@ -89,10 +101,17 @@ export default (props: Props) => {
       fdiMarketsEdges: filteredEdgeData, destination: FDIMarketOvertimeDestination.Balkans,
       showZeroValues: true,
     });
+    let filename = `Company List for ${industryName}`;
+    if (filterCountry !== undefined) {
+      filename = `${filename} - ${filterCountry}`;
+    }
+    if (filterCity !== undefined) {
+      filename = `${filename} - ${filterCity}`;
+    }
+    filename = filename + '.csv';
     content = (
       <QueryTableBuilder
         primaryColor={colorScheme.primary}
-        onQueryDownloadClick={noop}
         onUpdateClick={filterData}
         selectFields={[
           {
@@ -112,13 +131,14 @@ export default (props: Props) => {
         columns={columns}
         queryLength={filteredEdgeData.length}
         tableData={topPreviewData}
+        queryToDownload={flattendDataForCSV}
+        filename={filename}
       />
     );
   } else {
     content = (
       <QueryTableBuilder
         primaryColor={colorScheme.primary}
-        onQueryDownloadClick={noop}
         onUpdateClick={noop}
         selectFields={[
           {
@@ -139,6 +159,8 @@ export default (props: Props) => {
         tableData={[]}
         queryLength={0}
         disabled={true}
+        queryToDownload={[]}
+        filename={''}
       />
     );
   }

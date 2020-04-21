@@ -317,7 +317,7 @@ const AlbaniaToolContent = (props: Props) => {
         </TwoColumnSection>
         <div>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
-          <FDIBuilderTable fdiMarketsEdges={fdiMarketsEdges} />
+          <FDIBuilderTable industryName={industryName} fdiMarketsEdges={fdiMarketsEdges} />
         </div>
         <TwoColumnSection id={'industry-now'}>
           <SectionHeader>Industry Now</SectionHeader>

@@ -12,6 +12,7 @@ import DynamicTable, {
   Column,
   Datum,
 } from '../text/DynamicTable';
+import { CSVLink } from 'react-csv';
 
 const Root = styled.div`
   font-family: ${secondaryFont};
@@ -46,10 +47,28 @@ const ButtonBase = styled.button<DownloadButtonProps>`
     cursor: not-allowed;
   }
 `;
-
-const DownloadButton = styled(ButtonBase)`
+const DownloadButtonDisabled = styled(ButtonBase)<DownloadButtonProps>`
   font-size: 1rem;
   margin: 2rem auto 1rem;
+  background-color: ${({primaryColor}) => primaryColor ? lighten(0.2 ,primaryColor) : baseColor};
+  cursor: not-allowed;
+  pointer-events: none;
+`;
+const DownloadButton = styled(CSVLink)<DownloadButtonProps>`
+  color: #fff;
+  text-align: center;
+  background-color: ${({primaryColor}) => primaryColor ? primaryColor : baseColor};
+  padding: 0.7rem 1.2rem;
+  font-family: ${secondaryFont};
+  font-size: 1rem;
+  margin: 2rem auto 1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  &:hover {
+    background-color: ${({primaryColor}) => primaryColor ? lighten(0.1 ,primaryColor) : baseColor};
+  }
+
 `;
 
 const BuilderContainer = styled.div`
@@ -132,18 +151,21 @@ interface Props {
   selectFields?: SelectBoxProps[];
   primaryColor: string;
   onUpdateClick: (data: CallbackData) => void;
-  onQueryDownloadClick: (data: CallbackData) => void;
   itemName: string;
   columns: Column[];
   tableData: Datum[];
   disabled?: boolean;
   queryLength: number;
+  queryToDownload: object[];
+  filename: string;
 }
 
 const QueryBuilder = (props: Props) => {
   const {
-    selectFields, primaryColor, onQueryDownloadClick,
+    selectFields, primaryColor,
     itemName, onUpdateClick, columns, disabled, queryLength,
+    queryToDownload, filename,
+
   } = props;
 
   const [selectedValues, setSelectedValues] = useState<TreeNode[]>(
@@ -224,15 +246,6 @@ const QueryBuilder = (props: Props) => {
     });
     onUpdateClick({selectedFields: selectFieldValues});
   };
-  const onDownload = () => {
-    const selectFieldValues: CallbackSelectionDatum[] = [];
-    selectedValues.forEach(({value}, i) => {
-      if (selectFields && selectFields[i]) {
-        selectFieldValues.push({id: selectFields[i].id, value});
-      }
-    });
-    onQueryDownloadClick({selectedFields: selectFieldValues});
-  };
 
   let tableData: Datum[] = [];
   if (!disabled) {
@@ -248,6 +261,23 @@ const QueryBuilder = (props: Props) => {
   }
 
   const itemCount = disabled ? null : <Lowercase>({queryLength} {itemName})</Lowercase>;
+
+  const downloadButton = disabled ? (
+    <DownloadButtonDisabled
+      primaryColor={primaryColor}
+    >
+      Download Full List {itemCount}
+    </DownloadButtonDisabled>
+  ) : (
+    <DownloadButton
+      primaryColor={primaryColor}
+      data={queryToDownload}
+      filename={filename}
+      key={filename + queryToDownload.length}
+    >
+      Download Full List {itemCount}
+    </DownloadButton>
+  );
 
   return (
     <Root>
@@ -272,9 +302,7 @@ const QueryBuilder = (props: Props) => {
         </TableContainer>
       </BuilderContainer>
       <DownloadQueryButtonContainer>
-        <DownloadButton primaryColor={primaryColor} onClick={onDownload}  disabled={disabled}>
-          Download Full List {itemCount}
-        </DownloadButton>
+        {downloadButton}
       </DownloadQueryButtonContainer>
     </Root>
   );
