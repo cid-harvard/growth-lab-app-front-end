@@ -1,6 +1,7 @@
 import {
   IndustryNowSchooling,
   IndustryNowOccupation,
+  IndustryNowNearestIndustryEdge,
 } from '../../../graphql/graphQLTypes';
 import {
   Datum as DynamicTableDatum,
@@ -10,11 +11,12 @@ import {
 interface Input {
   schoolingNode: IndustryNowSchooling | null;
   occupationNode: IndustryNowOccupation | null;
+  nearbyIndustryEdge: (IndustryNowNearestIndustryEdge | null)[];
 }
 
 export default (input: Input) => {
   const {
-    schoolingNode, occupationNode,
+    schoolingNode, occupationNode, nearbyIndustryEdge,
   } = input;
 
   const schoolingColumns: DynamicTableColumn[] = [
@@ -139,8 +141,33 @@ export default (input: Input) => {
     ];
   }
 
+  const nearbyIndustryColumns: DynamicTableColumn[] = [
+    {label: 'Industry Name', key: 'industryName'},
+    {label: 'RCA > 1', key: 'rcaGreaterThan1'},
+  ];
+
+  const nearbyIndustryTableData: DynamicTableDatum[] = [];
+  nearbyIndustryEdge.forEach(edge => {
+    if (edge !== null && edge.node !== null) {
+      const {
+        neighborName, neighborRcaGte1,
+      } = edge.node;
+      let rcaGreaterThan1: string;
+      if (neighborRcaGte1 === null) {
+        rcaGreaterThan1 = 'No data';
+      } else {
+        rcaGreaterThan1 = neighborRcaGte1 === true ? 'Yes' : 'No';
+      }
+      nearbyIndustryTableData.push({
+        industryName: neighborName !== null ? neighborName : 'Unknown',
+        rcaGreaterThan1,
+      });
+    }
+  });
+
   return {
     schooling: {columns: schoolingColumns, data: schoolingTableData},
     occupation: {columns: occupationColumns, data: occupationTableData},
+    nearbyIndustry: {columns: nearbyIndustryColumns, data: nearbyIndustryTableData},
   };
 };

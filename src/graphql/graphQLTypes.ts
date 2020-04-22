@@ -93,6 +93,24 @@ export interface IndustryNowOccupationConnection {
   edges: (IndustryNowOccupationEdge | null)[];
 }
 
+export interface IndustryNowNearestIndustry {
+  naceId: string;
+  place: string;
+  neighborNaceId: number | null;
+  neighborCode: string | null;
+  neighborName: string | null;
+  neighborRcaGte1: boolean;
+  id: string;
+}
+
+export interface IndustryNowNearestIndustryEdge {
+  node: IndustryNowNearestIndustry | null;
+}
+
+export interface IndustryNowNearestIndustryConnection {
+  edges: (IndustryNowNearestIndustryEdge | null)[];
+}
+
 export interface IndustryNowSchooling {
   naceId: string;
   esBelowMale: number | null;
@@ -205,6 +223,7 @@ export interface NACEIndustry {
   industryNowLocation: IndustryNowLocationConnection;
   industryNowSchooling: IndustryNowSchoolingConnection;
   industryNowOccupation: IndustryNowOccupationConnection;
+  industryNowNearestIndustry: IndustryNowNearestIndustryConnection;
 }
 
 export enum SectionEnum {

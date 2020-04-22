@@ -19,8 +19,6 @@ import { TreeNode } from 'react-dropdown-tree-select';
 import {
   barChartData,
   barChartOverlayData2,
-  testTableColumns1,
-  testTableData1,
 } from './testData';
 import { colorScheme } from './Utils';
 import Legend from '../../components/dataViz/Legend';
@@ -167,6 +165,14 @@ const GET_DATA_FOR_NACE_ID = gql`
           }
         }
       }
+      industryNowNearestIndustry {
+        edges {
+          node {
+            neighborName
+            neighborRcaGte1
+          }
+        }
+      }
     }
   }
 `;
@@ -272,6 +278,7 @@ const AlbaniaToolContent = (props: Props) => {
       industryNowLocation: {edges: industryNowLocationEdges},
       industryNowSchooling: {edges: industryNowSchoolingEdges},
       industryNowOccupation: {edges: industryNowOccupationEdges},
+      industryNowNearestIndustry: {edges: industryNowNearestIndustryEdges},
     } = data.naceIndustry;
     const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
     const industryNowLocationNode = industryNowLocationEdges && industryNowLocationEdges.length && industryNowLocationEdges[0]
@@ -280,9 +287,13 @@ const AlbaniaToolContent = (props: Props) => {
       ? industryNowSchoolingEdges[0].node : null;
     const industryNowOccupationNode = industryNowOccupationEdges && industryNowOccupationEdges.length && industryNowOccupationEdges[0]
       ? industryNowOccupationEdges[0].node : null;
-    const { schooling, occupation } = transformIndustryNowTableData({
+    const industryNowNearestIndustryEdge =
+      industryNowNearestIndustryEdges !== null
+      ? industryNowNearestIndustryEdges : [];
+    const { schooling, occupation, nearbyIndustry } = transformIndustryNowTableData({
       schoolingNode: industryNowSchoolingNode,
       occupationNode: industryNowOccupationNode,
+      nearbyIndustryEdge: industryNowNearestIndustryEdge,
     });
     content = (
       <>
@@ -454,8 +465,8 @@ const AlbaniaToolContent = (props: Props) => {
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.NearbyIndustries}</SectionHeaderSecondary>
           <DynamicTable
-            columns={testTableColumns1}
-            data={testTableData1}
+            columns={nearbyIndustry.columns}
+            data={nearbyIndustry.data}
             color={colorScheme.quaternary}
           />
           <TextBlock>
