@@ -50,6 +50,7 @@ import FDIStackedBarChart from './components/FDIStackedBarChart';
 import FDIBuilderTable from './components/FDIBuilderTable';
 import FDITop10List from './components/FDITop10List';
 import IndustryNowLocation from './components/IndustryNowLocation';
+import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
 
 const GET_DATA_FOR_NACE_ID = gql`
   query GetDataForNaceId($naceId: Int!) {
@@ -109,7 +110,6 @@ const GET_DATA_FOR_NACE_ID = gql`
       industryNowLocation {
         edges {
           node {
-            naceId
             berat
             diber
             durres
@@ -122,6 +122,48 @@ const GET_DATA_FOR_NACE_ID = gql`
             shkoder
             tirane
             vlore
+          }
+        }
+      }
+      industryNowSchooling {
+        edges {
+          node {
+            esBelowMale
+            esBelowFemale
+            lowerSecondaryMale
+            lowerSecondaryFemale
+            technicalVocationalMale
+            technicalVocationalFemale
+            hsSomeCollegeMale
+            hsSomeCollegeFemale
+            universityHigherMale
+            universityHigherFemale
+          }
+        }
+      }
+      industryNowOccupation {
+        edges {
+          node {
+            managersMale
+            managersFemale
+            professionalsMale
+            professionalsFemale
+            techniciansMale
+            techniciansFemale
+            clericalMale
+            clericalFemale
+            servicesMale
+            servicesFemale
+            craftMale
+            craftFemale
+            assemblyMale
+            assemblyFemale
+            primaryMale
+            primaryFemale
+            elementaryMale
+            elementaryFemale
+            otherMale
+            otherFemale
           }
         }
       }
@@ -228,10 +270,20 @@ const AlbaniaToolContent = (props: Props) => {
       fdiMarketsOvertime: {edges: fdiMarketsOvertimeEdges},
       fdiMarkets: {edges: fdiMarketsEdges},
       industryNowLocation: {edges: industryNowLocationEdges},
+      industryNowSchooling: {edges: industryNowSchoolingEdges},
+      industryNowOccupation: {edges: industryNowOccupationEdges},
     } = data.naceIndustry;
     const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
     const industryNowLocationNode = industryNowLocationEdges && industryNowLocationEdges.length && industryNowLocationEdges[0]
       ? industryNowLocationEdges[0].node : null;
+    const industryNowSchoolingNode = industryNowSchoolingEdges && industryNowSchoolingEdges.length && industryNowSchoolingEdges[0]
+      ? industryNowSchoolingEdges[0].node : null;
+    const industryNowOccupationNode = industryNowOccupationEdges && industryNowOccupationEdges.length && industryNowOccupationEdges[0]
+      ? industryNowOccupationEdges[0].node : null;
+    const { schooling, occupation } = transformIndustryNowTableData({
+      schoolingNode: industryNowSchoolingNode,
+      occupationNode: industryNowOccupationNode,
+    });
     content = (
       <>
         <TwoColumnSection id={'overview'}>
@@ -356,8 +408,8 @@ const AlbaniaToolContent = (props: Props) => {
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.EducationDistribution}</SectionHeaderSecondary>
           <DynamicTable
-            columns={testTableColumns1}
-            data={testTableData1}
+            columns={schooling.columns}
+            data={schooling.data}
             color={colorScheme.quaternary}
           />
           <TextBlock>
@@ -369,8 +421,8 @@ const AlbaniaToolContent = (props: Props) => {
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.OccupationDistribution}</SectionHeaderSecondary>
           <DynamicTable
-            columns={testTableColumns1}
-            data={testTableData1}
+            columns={occupation.columns}
+            data={occupation.data}
             color={colorScheme.quaternary}
           />
           <TextBlock>

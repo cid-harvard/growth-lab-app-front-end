@@ -60,6 +60,62 @@ export interface CountryConnection {
   edges: (CountryEdge | null)[];
 }
 
+export interface IndustryNowOccupation {
+  naceId: string;
+  managersMale: number | null;
+  managersFemale: number | null;
+  professionalsMale: number | null;
+  professionalsFemale: number | null;
+  techniciansMale: number | null;
+  techniciansFemale: number | null;
+  clericalMale: number | null;
+  clericalFemale: number | null;
+  servicesMale: number | null;
+  servicesFemale: number | null;
+  craftMale: number | null;
+  craftFemale: number | null;
+  assemblyMale: number | null;
+  assemblyFemale: number | null;
+  primaryMale: number | null;
+  primaryFemale: number | null;
+  elementaryMale: number | null;
+  elementaryFemale: number | null;
+  otherMale: number | null;
+  otherFemale: number | null;
+  id: string;
+}
+
+export interface IndustryNowOccupationEdge {
+  node: IndustryNowOccupation | null;
+}
+
+export interface IndustryNowOccupationConnection {
+  edges: (IndustryNowOccupationEdge | null)[];
+}
+
+export interface IndustryNowSchooling {
+  naceId: string;
+  esBelowMale: number | null;
+  esBelowFemale: number | null;
+  lowerSecondaryMale: number | null;
+  lowerSecondaryFemale: number | null;
+  technicalVocationalMale: number | null;
+  technicalVocationalFemale: number | null;
+  hsSomeCollegeMale: number | null;
+  hsSomeCollegeFemale: number | null;
+  universityHigherMale: number | null;
+  universityHigherFemale: number | null;
+  id: string;
+}
+
+export interface IndustryNowSchoolingEdge {
+  node: IndustryNowSchooling | null;
+}
+
+export interface IndustryNowSchoolingConnection {
+  edges: (IndustryNowSchoolingEdge | null)[];
+}
+
 export interface IndustryNowLocation {
   naceId: string;
   berat: number | null;
@@ -147,6 +203,8 @@ export interface NACEIndustry {
   fdiMarketsOvertime: FDIMarketOvertimeConnection;
   fdiMarkets: FDIMarketConnection;
   industryNowLocation: IndustryNowLocationConnection;
+  industryNowSchooling: IndustryNowSchoolingConnection;
+  industryNowOccupation: IndustryNowOccupationConnection;
 }
 
 export enum SectionEnum {

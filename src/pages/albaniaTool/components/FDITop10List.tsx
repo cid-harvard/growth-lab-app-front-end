@@ -6,9 +6,6 @@ import {
 } from '../../../styling/styleUtils';
 import { colorScheme } from '../Utils';
 import TextBlock from '../../../components/text/TextBlock';
-import {
-  testCountryListData,
-} from '../testData';
 import { TreeNode } from 'react-dropdown-tree-select';
 import Legend from '../../../components/dataViz/Legend';
 import transformFDITop10List from '../transformers/transformFDITop10List';
@@ -26,7 +23,7 @@ export default (props: Props) => {
     fdiMarketsEdges,
   } = props;
 
-  const [selectedCountry, setSelectedCountry] = useState<TreeNode>(testCountryListData[0]);
+  const [selectedCountry, setSelectedCountry] = useState<TreeNode>({ label: 'World', value: 'World' });
   let destination: FDIMarketOvertimeDestination;
   let legendColor: string;
   let the = 'the';
