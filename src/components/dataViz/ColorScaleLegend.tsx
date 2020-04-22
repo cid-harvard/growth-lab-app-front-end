@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 const Root = styled.div`
-  max-width: 300px;
+  max-width: 350px;
   display: flex;
   flex-direction: column;
 `;

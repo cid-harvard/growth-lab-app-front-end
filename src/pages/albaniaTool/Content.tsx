@@ -16,10 +16,6 @@ import TextBlock from '../../components/text/TextBlock';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
-import {
-  barChartData,
-  barChartOverlayData2,
-} from './testData';
 import { colorScheme } from './Utils';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
@@ -48,6 +44,7 @@ import FDIStackedBarChart from './components/FDIStackedBarChart';
 import FDIBuilderTable from './components/FDIBuilderTable';
 import FDITop10List from './components/FDITop10List';
 import IndustryNowLocation from './components/IndustryNowLocation';
+import IndustryWagesBarChart from './components/IndustryWagesBarChart';
 import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
 
 const GET_DATA_FOR_NACE_ID = gql`
@@ -173,6 +170,24 @@ const GET_DATA_FOR_NACE_ID = gql`
           }
         }
       }
+      industryNowWage {
+        edges {
+          node {
+            ind010k
+            ind10k25k
+            ind25k50k
+            ind50k75k
+            ind75k100k
+            ind100kUp
+            national010k
+            national10k25k
+            national25k50k
+            national50k75k
+            national75k100k
+            national100kUp
+          }
+        }
+      }
     }
   }
 `;
@@ -279,6 +294,7 @@ const AlbaniaToolContent = (props: Props) => {
       industryNowSchooling: {edges: industryNowSchoolingEdges},
       industryNowOccupation: {edges: industryNowOccupationEdges},
       industryNowNearestIndustry: {edges: industryNowNearestIndustryEdges},
+      industryNowWage: {edges: IndustryNowWageEdges},
     } = data.naceIndustry;
     const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
     const industryNowLocationNode = industryNowLocationEdges && industryNowLocationEdges.length && industryNowLocationEdges[0]
@@ -290,6 +306,9 @@ const AlbaniaToolContent = (props: Props) => {
     const industryNowNearestIndustryEdge =
       industryNowNearestIndustryEdges !== null
       ? industryNowNearestIndustryEdges : [];
+      const industryNowWageEdge =
+      IndustryNowWageEdges !== null
+      ? IndustryNowWageEdges[0] : null;
     const { schooling, occupation, nearbyIndustry } = transformIndustryNowTableData({
       schoolingNode: industryNowSchoolingNode,
       occupationNode: industryNowOccupationNode,
@@ -444,12 +463,7 @@ const AlbaniaToolContent = (props: Props) => {
         </TwoColumnSection>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.IndustryWages}</SectionHeaderSecondary>
-          <DataViz
-            id={'albania-company-bar-chart-2'}
-            vizType={VizType.BarChart}
-            data={[barChartData, barChartOverlayData2]}
-            axisLabels={{left: 'US$ Millions'}}
-          />
+          <IndustryWagesBarChart industryWageEdge={industryNowWageEdge} />
           <TextBlock>
             <p
               dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryWages)}}

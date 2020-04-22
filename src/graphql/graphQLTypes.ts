@@ -111,6 +111,31 @@ export interface IndustryNowNearestIndustryConnection {
   edges: (IndustryNowNearestIndustryEdge | null)[];
 }
 
+export interface IndustryNowWage {
+  naceId: string;
+  ind010k: number | null;
+  ind10k25k: number | null;
+  ind25k50k: number | null;
+  ind50k75k: number | null;
+  ind75k100k: number | null;
+  ind100kUp: number | null;
+  national010k: number | null;
+  national10k25k: number | null;
+  national25k50k: number | null;
+  national50k75k: number | null;
+  national75k100k: number | null;
+  national100kUp: number | null;
+  id: string;
+}
+
+export interface IndustryNowWageEdge {
+  node: IndustryNowWage | null;
+}
+
+export interface IndustryNowWageConnection {
+  edges: (IndustryNowWageEdge | null)[];
+}
+
 export interface IndustryNowSchooling {
   naceId: string;
   esBelowMale: number | null;
@@ -224,6 +249,7 @@ export interface NACEIndustry {
   industryNowSchooling: IndustryNowSchoolingConnection;
   industryNowOccupation: IndustryNowOccupationConnection;
   industryNowNearestIndustry: IndustryNowNearestIndustryConnection;
+  industryNowWage: IndustryNowWageConnection;
 }
 
 export enum SectionEnum {
