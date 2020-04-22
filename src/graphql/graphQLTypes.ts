@@ -60,6 +60,31 @@ export interface CountryConnection {
   edges: (CountryEdge | null)[];
 }
 
+export interface IndustryNowLocation {
+  naceId: string;
+  berat: number | null;
+  diber: number | null;
+  durres: number | null;
+  elbasan: number | null;
+  fier: number | null;
+  gjirokaster: number | null;
+  korce: number | null;
+  kukes: number | null;
+  lezhe: number | null;
+  shkoder: number | null;
+  tirane: number | null;
+  vlore: number | null;
+  id: string;
+}
+
+export interface IndustryNowLocationEdge {
+  node: IndustryNowLocation | null;
+}
+
+export interface IndustryNowLocationConnection {
+  edges: (IndustryNowLocationEdge | null)[];
+}
+
 export interface FDIMarket {
   naceId: string;
   locationId: number | null;
@@ -121,6 +146,7 @@ export interface NACEIndustry {
   factors: FactorsConnection;
   fdiMarketsOvertime: FDIMarketOvertimeConnection;
   fdiMarkets: FDIMarketConnection;
+  industryNowLocation: IndustryNowLocationConnection;
 }
 
 export enum SectionEnum {
@@ -145,6 +171,11 @@ export enum SubSectionEnum {
   PlaceholderFor5thFactor = 'Placeholder for 5th Factor',
   IndustryPotential = 'Industry Potential',
   IndustryNow = 'Industry Now',
+  LocationOfWorkers = 'Location of Workers',
+  EducationDistribution = 'Education Distribution',
+  OccupationDistribution = 'Occupation Distribution',
+  IndustryWages = 'Industry Wages',
+  NearbyIndustries = 'Nearby Industries',
 }
 
 export interface Script {

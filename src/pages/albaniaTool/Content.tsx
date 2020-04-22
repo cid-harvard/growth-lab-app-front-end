@@ -27,7 +27,6 @@ import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import DynamicTable from '../../components/text/DynamicTable';
-import raw from 'raw.macro';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
@@ -50,6 +49,7 @@ import AttractivenessRadarChart from './components/AttractivenessRadarChart';
 import FDIStackedBarChart from './components/FDIStackedBarChart';
 import FDIBuilderTable from './components/FDIBuilderTable';
 import FDITop10List from './components/FDITop10List';
+import IndustryNowLocation from './components/IndustryNowLocation';
 
 const GET_DATA_FOR_NACE_ID = gql`
   query GetDataForNaceId($naceId: Int!) {
@@ -106,6 +106,25 @@ const GET_DATA_FOR_NACE_ID = gql`
           }
         }
       }
+      industryNowLocation {
+        edges {
+          node {
+            naceId
+            berat
+            diber
+            durres
+            elbasan
+            fier
+            gjirokaster
+            korce
+            kukes
+            lezhe
+            shkoder
+            tirane
+            vlore
+          }
+        }
+      }
     }
   }
 `;
@@ -117,15 +136,6 @@ interface SuccessResponse {
 interface Variables {
   naceId: number;
 }
-
-const albaniaMapData = JSON.parse(raw('./assets/albania-geojson.geojson'));
-const featuresWithValues = albaniaMapData.features.map((feature: any, i: number) => {
-  const percent = (i + 1) * 7;
-  const properties = {...feature.properties, percent, tooltipContent: `
-    <strong>${feature.properties.ADM1_SQ}</strong>: ${percent}%`};
-  return {...feature, properties};
-});
-const geoJsonWithValues = {...albaniaMapData, features: featuresWithValues};
 
 interface Props {
   naceData: TreeNode[];
@@ -217,8 +227,11 @@ const AlbaniaToolContent = (props: Props) => {
       factors: {edges: factorsEdge},
       fdiMarketsOvertime: {edges: fdiMarketsOvertimeEdges},
       fdiMarkets: {edges: fdiMarketsEdges},
+      industryNowLocation: {edges: industryNowLocationEdges},
     } = data.naceIndustry;
     const factors = factorsEdge && factorsEdge.length && factorsEdge[0] ? factorsEdge[0].node : null;
+    const industryNowLocationNode = industryNowLocationEdges && industryNowLocationEdges.length && industryNowLocationEdges[0]
+      ? industryNowLocationEdges[0].node : null;
     content = (
       <>
         <TwoColumnSection id={'overview'}>
@@ -323,41 +336,51 @@ const AlbaniaToolContent = (props: Props) => {
           <SectionHeader>Industry Now</SectionHeader>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Location of Workers</SectionHeaderSecondary>
-          <DataViz
-            id={'albania-geo-map'}
-            vizType={VizType.GeoMap}
-            data={geoJsonWithValues}
-            minColor={lighten(0.5, colorScheme.quaternary)}
-            maxColor={colorScheme.quaternary}
+          <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.LocationOfWorkers}</SectionHeaderSecondary>
+          <IndustryNowLocation
+            locationNode={industryNowLocationNode}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.LocationOfWorkers)}}
+            />
             <ColorScaleLegend
-              minLabel={0.28}
-              maxLabel={30.8}
-              minColor={lighten(0.5, colorScheme.quaternary)}
+              minLabel={0}
+              maxLabel={100}
+              minColor={lighten(0.55, colorScheme.quaternary)}
               maxColor={colorScheme.quaternary}
-              title={'Percentage of workers in the industry'}
+              title={'Percentage of industry workers in each region'}
             />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Industry Wages</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.EducationDistribution}</SectionHeaderSecondary>
           <DynamicTable
             columns={testTableColumns1}
             data={testTableData1}
             color={colorScheme.quaternary}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.EducationDistribution)}}
+            />
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.OccupationDistribution}</SectionHeaderSecondary>
+          <DynamicTable
+            columns={testTableColumns1}
+            data={testTableData1}
+            color={colorScheme.quaternary}
+          />
+          <TextBlock>
+            <p
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.OccupationDistribution)}}
+            />
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.IndustryWages}</SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart-2'}
             vizType={VizType.BarChart}
@@ -365,9 +388,9 @@ const AlbaniaToolContent = (props: Props) => {
             axisLabels={{left: 'US$ Millions'}}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryWages)}}
+            />
             <Legend
               legendList={[
                 {label: 'Industry', fill: lightBorderColor, stroke: undefined},
@@ -377,16 +400,16 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Occupation Distribution</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.NearbyIndustries}</SectionHeaderSecondary>
           <DynamicTable
             columns={testTableColumns1}
             data={testTableData1}
             color={colorScheme.quaternary}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.NearbyIndustries)}}
+            />
           </TextBlock>
         </TwoColumnSection>
       </>
