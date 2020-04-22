@@ -48,6 +48,7 @@ const Tooltip = styled.div`
   border: solid 1px gray;
   max-width: 300px;
   transform: translateY(-100%);
+  z-index: 1000;
 `;
 
 const DownloadButtonsContainer = styled.div`

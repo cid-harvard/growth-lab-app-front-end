@@ -103,7 +103,7 @@ export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
        tooltipContent:
         `<strong>Total for Europe:</strong> ${europeProjects.projects0306 + balkansProjects.projects0306}
         <br />
-        <strong>Difference for Europe:</strong> ${worldProjects.projects0306}`,
+        <strong>Difference for Europe:</strong> ${europeProjects.projects0306}`,
       },
       {
        y: europeProjects.projects0710 + balkansProjects.projects0710,
@@ -112,7 +112,7 @@ export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
        tooltipContent:
         `<strong>Total for Europe:</strong> ${europeProjects.projects0710 + balkansProjects.projects0710}
         <br />
-        <strong>Difference for Europe:</strong> ${worldProjects.projects0710}`,
+        <strong>Difference for Europe:</strong> ${europeProjects.projects0710}`,
       },
       {
        y: europeProjects.projects1114 + balkansProjects.projects1114,
@@ -121,7 +121,7 @@ export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
        tooltipContent:
         `<strong>Total for Europe:</strong> ${europeProjects.projects1114 + balkansProjects.projects1114}
         <br />
-        <strong>Difference for Europe:</strong> ${worldProjects.projects1114}`,
+        <strong>Difference for Europe:</strong> ${europeProjects.projects1114}`,
       },
       {
        y: europeProjects.projects1518 + balkansProjects.projects1518,
@@ -130,7 +130,7 @@ export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
        tooltipContent:
         `<strong>Total for Europe:</strong> ${europeProjects.projects1518 + balkansProjects.projects1518}
         <br />
-        <strong>Difference for Europe:</strong> ${worldProjects.projects1518}`,
+        <strong>Difference for Europe:</strong> ${europeProjects.projects1518}`,
       },
     ]);
     stackedBarChartData.push([

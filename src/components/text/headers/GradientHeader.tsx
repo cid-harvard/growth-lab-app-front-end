@@ -124,6 +124,15 @@ const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
   }
 `;
 
+const IntroText = styled.p<{primaryColor: string}>`
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+
+  a {
+    color: ${({primaryColor}) => primaryColor};
+  }
+`;
+
 interface LinkDatum {
   label: string;
   target: string;
@@ -138,6 +147,7 @@ interface BaseProps {
   textColor: string;
   linkColor: string;
   links?: LinkDatum[];
+  introText?: string;
 }
 
 type Props = BaseProps & (
@@ -155,7 +165,7 @@ type Props = BaseProps & (
 const HeaderWithSearch = (props: Props) => {
   const {
     title, imageSrc, textColor, backgroundColor, links, linkColor,
-    imageProps,
+    imageProps, introText,
   } = props;
 
   const linkElms = links && links.length ? links.map(({label, target, internal}) => (
@@ -193,6 +203,17 @@ const HeaderWithSearch = (props: Props) => {
     </LogoContainer>
   );
 
+  const introPara = introText ? (
+    <FullWidthHeaderContent>
+      <FullWidthHeaderContent>
+        <IntroText
+          dangerouslySetInnerHTML={{__html: introText}}
+          primaryColor={backgroundColor}
+        />
+      </FullWidthHeaderContent>
+    </FullWidthHeaderContent>
+  ) : null;
+
   return (
     <Root>
       <GradientContainer backgroundColor={backgroundColor}>
@@ -215,6 +236,7 @@ const HeaderWithSearch = (props: Props) => {
           </GrowthLabLogoContainer>
         </ContentGrid>
       </GradientContainer>
+        {introPara}
       {searchBar}
     </Root>
   );

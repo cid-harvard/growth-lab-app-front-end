@@ -253,6 +253,7 @@ export interface NACEIndustry {
 }
 
 export enum SectionEnum {
+  Introduction = 'Introduction',
   Overview = 'Overview',
   ViabilityFactors = 'Viability Factors',
   AttractivenessFactors = 'Attractiveness Factors',
@@ -261,6 +262,7 @@ export enum SectionEnum {
 }
 
 export enum SubSectionEnum {
+  Introduction = 'Introduction',
   Overview = 'Overview',
   RCAInAlbania = 'RCA in Albania',
   LowDistanceToIndustry = 'Low Distance to Industry',

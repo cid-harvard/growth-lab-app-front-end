@@ -399,9 +399,14 @@ const AlbaniaToolContent = (props: Props) => {
             />
           </TextBlock>
         </TwoColumnSection>
-        <TwoColumnSection id={'industry-potential'}>
-          <SectionHeader>Industry potential</SectionHeader>
-        </TwoColumnSection>
+        <div id={'industry-potential'}>
+          <SectionHeader>{SubSectionEnum.IndustryPotential}</SectionHeader>
+        </div>
+        <div>
+          <p
+            dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryPotential)}}
+          />
+        </div>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
           <FDIStackedBarChart
@@ -414,9 +419,14 @@ const AlbaniaToolContent = (props: Props) => {
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
           <FDIBuilderTable industryName={industryName} fdiMarketsEdges={fdiMarketsEdges} />
         </div>
-        <TwoColumnSection id={'industry-now'}>
-          <SectionHeader>Industry Now</SectionHeader>
-        </TwoColumnSection>
+        <div id={'industry-now'}>
+          <SectionHeader>{SubSectionEnum.IndustryNow}</SectionHeader>
+        </div>
+        <div>
+          <p
+            dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryNow)}}
+          />
+        </div>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.LocationOfWorkers}</SectionHeaderSecondary>
           <IndustryNowLocation
@@ -533,6 +543,11 @@ const AlbaniaToolContent = (props: Props) => {
           {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
           {label: 'Country Research', target: '#'},
         ]}
+        introText={getSubsectionText(SubSectionEnum.Introduction, [{
+          key: '<link to growth story>', value: '(<a href="#">View the Country Research</a>)',
+        }, {
+          key: 'here <insert link>', value: '<a href="#">here</a>',
+        }])}
       />
       {nav}
       <Content>
