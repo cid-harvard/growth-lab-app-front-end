@@ -331,9 +331,11 @@ const AlbaniaToolContent = (props: Props) => {
           <StyledP
             dangerouslySetInnerHTML={{
               __html: getSubsectionText(SubSectionEnum.Introduction, [{
-                  key: '<link to growth story>', value: '(<a href="#">View the Country Research</a>)',
+                  key: '<link to growth story>',
+                  value: '(<a href="https://albania.growthlab.cid.harvard.edu/">View the Country Research</a>)',
                 }, {
-                  key: 'here <insert link>', value: '<a href="#">here</a>',
+                  key: 'here <insert link>',
+                  value: '(<a href="https://albania.growthlab.cid.harvard.edu/">here</a>)',
                 }]),
             }}
           />
@@ -574,7 +576,7 @@ const AlbaniaToolContent = (props: Props) => {
         linkColor={'#fff'}
         links={[
           {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
-          {label: 'Country Research', target: '#'},
+          {label: 'Country Research', target: 'https://albania.growthlab.cid.harvard.edu/'},
         ]}
       />
       {nav}
@@ -609,7 +611,7 @@ const AlbaniaToolContent = (props: Props) => {
           },
           {
             label: 'Country Research',
-            target: '#',
+            target: 'https://albania.growthlab.cid.harvard.edu/',
           },
         ]}
         attributions={[
