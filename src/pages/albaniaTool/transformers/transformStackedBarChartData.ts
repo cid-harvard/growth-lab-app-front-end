@@ -55,44 +55,48 @@ export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
        x: "'03-'06",
        fill: colorScheme.primary,
        tooltipContent:
-        `<strong>Total for World:</strong> ${
+        `<strong>2003-2006</strong>
+          <br />
+          <strong>Total for World:</strong> $${
           worldProjects.projects0306 + europeProjects.projects0306 + balkansProjects.projects0306
-        }
-        <br />
-        <strong>Difference for World:</strong> ${worldProjects.projects0306}`,
+        } Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: worldProjects.projects0710 + europeProjects.projects0710 + balkansProjects.projects0710,
        x: "'07-'10",
        fill: colorScheme.primary,
        tooltipContent:
-        `<strong>Total for World:</strong> ${
+        `<strong>2007-2010</strong>
+          <br />
+          <strong>Total for World:</strong> $${
           worldProjects.projects0710 + europeProjects.projects0710 + balkansProjects.projects0710
-        }
-        <br />
-        <strong>Difference for World:</strong> ${worldProjects.projects0710}`,
+        } Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: worldProjects.projects1114 + europeProjects.projects1114 + balkansProjects.projects1114,
        x: "'11-'14",
        fill: colorScheme.primary,
        tooltipContent:
-        `<strong>Total for World:</strong> ${
+        `<strong>2011-2014</strong>
+          <br />
+          <strong>Total for World:</strong> $${
           worldProjects.projects1114 + europeProjects.projects1114 + balkansProjects.projects1114
-        }
-        <br />
-        <strong>Difference for World:</strong> ${worldProjects.projects1114}`,
+        } Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: worldProjects.projects1518 + europeProjects.projects1518 + balkansProjects.projects1518,
        x: "'15-'18",
        fill: colorScheme.primary,
        tooltipContent:
-        `<strong>Total for World:</strong> ${
+        `<strong>2015-2018</strong>
+          <br />
+          <strong>Total for World:</strong> $${
           worldProjects.projects1518 + europeProjects.projects1518 + balkansProjects.projects1518
-        }
-        <br />
-        <strong>Difference for World:</strong> ${worldProjects.projects1518}`,
+        } Million USD`,
+        tooltipContentOnly: true,
       },
     ]);
     stackedBarChartData.push([
@@ -101,36 +105,36 @@ export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
        x: "'03-'06",
        fill: colorScheme.quaternary,
        tooltipContent:
-        `<strong>Total for Europe:</strong> ${europeProjects.projects0306 + balkansProjects.projects0306}
-        <br />
-        <strong>Difference for Europe:</strong> ${europeProjects.projects0306}`,
+        `<strong>2003-2006</strong><br />
+          <strong>Total for Europe:</strong> $${europeProjects.projects0306 + balkansProjects.projects0306} Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: europeProjects.projects0710 + balkansProjects.projects0710,
        x: "'07-'10",
        fill: colorScheme.quaternary,
        tooltipContent:
-        `<strong>Total for Europe:</strong> ${europeProjects.projects0710 + balkansProjects.projects0710}
-        <br />
-        <strong>Difference for Europe:</strong> ${europeProjects.projects0710}`,
+        `<strong>2007-2010</strong><br />
+          <strong>Total for Europe:</strong> $${europeProjects.projects0710 + balkansProjects.projects0710} Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: europeProjects.projects1114 + balkansProjects.projects1114,
        x: "'11-'14",
        fill: colorScheme.quaternary,
        tooltipContent:
-        `<strong>Total for Europe:</strong> ${europeProjects.projects1114 + balkansProjects.projects1114}
-        <br />
-        <strong>Difference for Europe:</strong> ${europeProjects.projects1114}`,
+        `<strong>2011-2014</strong><br />
+          <strong>Total for Europe:</strong> $${europeProjects.projects1114 + balkansProjects.projects1114} Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: europeProjects.projects1518 + balkansProjects.projects1518,
        x: "'15-'18",
        fill: colorScheme.quaternary,
        tooltipContent:
-        `<strong>Total for Europe:</strong> ${europeProjects.projects1518 + balkansProjects.projects1518}
-        <br />
-        <strong>Difference for Europe:</strong> ${europeProjects.projects1518}`,
+        `<strong>2015-2018</strong><br />
+          <strong>Total for Europe:</strong> $${europeProjects.projects1518 + balkansProjects.projects1518} Million USD`,
+        tooltipContentOnly: true,
       },
     ]);
     stackedBarChartData.push([
@@ -139,28 +143,36 @@ export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {
        x: "'03-'06",
        fill: colorScheme.header,
        tooltipContent:
-        `<strong>Total for Balkans:</strong> ${balkansProjects.projects0306}`,
+        `<strong>2003-2006</strong><br />
+          <strong>Total for Balkans:</strong> $${balkansProjects.projects0306} Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: balkansProjects.projects0710,
        x: "'07-'10",
        fill: colorScheme.header,
        tooltipContent:
-        `<strong>Total for Balkans:</strong> ${balkansProjects.projects0710}`,
+        `<strong>2007-2010</strong><br />
+          <strong>Total for Balkans:</strong> $${balkansProjects.projects0710} Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: balkansProjects.projects1114,
        x: "'11-'14",
        fill: colorScheme.header,
        tooltipContent:
-        `<strong>Total for Balkans:</strong> ${balkansProjects.projects1114}`,
+        `<strong>2011-2014</strong><br />
+          <strong>Total for Balkans:</strong> $${balkansProjects.projects1114} Million USD`,
+        tooltipContentOnly: true,
       },
       {
        y: balkansProjects.projects1518,
        x: "'15-'18",
        fill: colorScheme.header,
        tooltipContent:
-        `<strong>Total for Balkans:</strong> ${balkansProjects.projects1518}`,
+        `<strong>2015-2018</strong><br />
+          <strong>Total for Balkans:</strong> $${balkansProjects.projects1518} Million USD`,
+        tooltipContentOnly: true,
       },
     ]);
     stackedBarChartCSVData = [

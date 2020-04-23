@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 const Root = styled.div`
+  margin-top: 3rem;
   max-width: 350px;
   display: flex;
   flex-direction: column;
+  font-size: 0.85rem;
 `;
 
 interface ColorScaleBarProps {

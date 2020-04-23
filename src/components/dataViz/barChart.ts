@@ -135,6 +135,7 @@ export default (input: Input) => {
     .append('text')
     .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
       .style('font-family', "'Source Sans Pro',sans-serif")
+      .style('font-size', '0.8rem')
       .style('text-anchor', 'middle')
       .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
 

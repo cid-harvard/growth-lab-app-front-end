@@ -46,6 +46,13 @@ import FDITop10List from './components/FDITop10List';
 import IndustryNowLocation from './components/IndustryNowLocation';
 import IndustryWagesBarChart from './components/IndustryWagesBarChart';
 import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
+import styled from 'styled-components/macro';
+
+const StyledP = styled.p`
+  a {
+    color: ${colorScheme.quaternary};
+  }
+`;
 
 const GET_DATA_FOR_NACE_ID = gql`
   query GetDataForNaceId($naceId: Int!) {
@@ -316,8 +323,19 @@ const AlbaniaToolContent = (props: Props) => {
     });
     content = (
       <>
-        <TwoColumnSection id={'overview'}>
+        <div id={'overview'}>
           <SectionHeader>{SubSectionEnum.Overview}</SectionHeader>
+          <StyledP
+            dangerouslySetInnerHTML={{
+              __html: getSubsectionText(SubSectionEnum.Introduction, [{
+                  key: '<link to growth story>', value: '(<a href="#">View the Country Research</a>)',
+                }, {
+                  key: 'here <insert link>', value: '<a href="#">here</a>',
+                }]),
+            }}
+          />
+        </div>
+        <TwoColumnSection>
           <DataViz
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
@@ -329,6 +347,7 @@ const AlbaniaToolContent = (props: Props) => {
             jsonToDownload={scatterPlotDataForDownload}
           />
           <TextBlock>
+            <SubSectionHeader color={colorScheme.quaternary}>How Strategic is the Industry?</SubSectionHeader>
             <p
               dangerouslySetInnerHTML={{
                 __html: getSubsectionText(SubSectionEnum.Overview, [
@@ -400,7 +419,7 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <div id={'industry-potential'}>
-          <SectionHeader>{SubSectionEnum.IndustryPotential}</SectionHeader>
+          <SectionHeader>FDI Company Trading</SectionHeader>
         </div>
         <div>
           <p
@@ -416,7 +435,7 @@ const AlbaniaToolContent = (props: Props) => {
           <FDITop10List fdiMarketsEdges={fdiMarketsEdges} />
         </TwoColumnSection>
         <div>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Company Builder</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.quaternary}>Custom FDI Companies List</SectionHeaderSecondary>
           <FDIBuilderTable industryName={industryName} fdiMarketsEdges={fdiMarketsEdges} />
         </div>
         <div id={'industry-now'}>
@@ -543,11 +562,6 @@ const AlbaniaToolContent = (props: Props) => {
           {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
           {label: 'Country Research', target: '#'},
         ]}
-        introText={getSubsectionText(SubSectionEnum.Introduction, [{
-          key: '<link to growth story>', value: '(<a href="#">View the Country Research</a>)',
-        }, {
-          key: 'here <insert link>', value: '<a href="#">here</a>',
-        }])}
       />
       {nav}
       <Content>

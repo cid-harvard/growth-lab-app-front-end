@@ -52,6 +52,7 @@ const LogoLink = styled.a`
 const GrowthLabLogo = styled.img`
   width: 200px;
   max-width: 100%;
+  height: 100%;
 `;
 
 const AttributionText = styled.p`

@@ -109,7 +109,7 @@ export default ({svg, data, tooltip, options}: Input) => {
         .attr('class', 'line')
         .style('stroke', 'grey')
         .style('stroke-opacity', '0.75')
-        .style('stroke-width', '0.3px')
+        .style('stroke-width', '0.6px')
         .attr('transform', `translate(${width / 2 - levelFactor}, ${height / 2 - levelFactor})`);
   }
 

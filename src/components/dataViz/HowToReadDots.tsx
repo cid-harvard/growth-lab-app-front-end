@@ -6,6 +6,8 @@ const Root = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-column-gap: 1rem;
+  font-size: 0.85rem;
+  margin-top: 3rem;
 `;
 
 const ListContainer = styled.ul`
