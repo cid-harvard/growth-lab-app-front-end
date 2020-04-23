@@ -126,7 +126,9 @@ type Props = BaseProps & (
       maxX?: number,
       minY?: number,
       maxY?: number,
-    }
+    };
+    showAverageLines?: boolean;
+    averageLineText?: {left?: string, bottom?: string};
   } |
   {
     vizType: VizType.BarChart;
@@ -174,6 +176,8 @@ const DataViz = (props: Props) => {
           },
           axisLabels: props.axisLabels,
           axisMinMax: props.axisMinMax,
+          showAverageLines: props.showAverageLines,
+          averageLineText: props.averageLineText,
         });
       } else if (props.vizType === VizType.BarChart) {
         createBarChart({

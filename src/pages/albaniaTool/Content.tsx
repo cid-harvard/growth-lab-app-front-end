@@ -347,6 +347,11 @@ const AlbaniaToolContent = (props: Props) => {
               minY: 0,
               maxY: 10,
             }}
+            showAverageLines={true}
+            averageLineText={{
+              left: 'Avg. Attractiveness: 5',
+              bottom: 'Avg. Viability: 5',
+            }}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}

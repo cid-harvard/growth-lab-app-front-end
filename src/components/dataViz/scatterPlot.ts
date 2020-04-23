@@ -29,10 +29,15 @@ interface Input {
     minY?: number,
     maxY?: number,
   };
+  showAverageLines?: boolean;
+  averageLineText?: {left?: string, bottom?: string};
 }
 
 export default (input: Input) => {
-  const { svg, tooltip, data, size, axisLabels, axisMinMax } = input;
+  const {
+    svg, tooltip, data, size, axisLabels, axisMinMax, showAverageLines,
+    averageLineText,
+  } = input;
 
   const margin = {top: 30, right: 30, bottom: 60, left: 60};
   const width = size.width - margin.left - margin.right;
@@ -108,6 +113,49 @@ export default (input: Input) => {
           .tickSize(-width)
           .tickFormat(''),
       );
+
+  if (showAverageLines) {
+    container.append('line')
+      .attr('x1',xScale(minX))
+      .attr('x2',xScale(maxX))
+      .attr('y1',yScale(maxY / 2) + 0.5)
+      .attr('y2',yScale(maxY / 2) + 0.5)
+      .attr('stroke-width', '1px')
+      .style('pointer-events', 'none')
+      .attr('stroke', '#9e9e9e');
+    container.append('line')
+      .attr('x1',xScale(maxX / 2) + 0.5)
+      .attr('x2',xScale(maxX / 2) + 0.5)
+      .attr('y1',yScale(minY))
+      .attr('y2',yScale(maxY))
+      .attr('stroke-width', '1px')
+      .style('pointer-events', 'none')
+      .attr('stroke', '#9e9e9e');
+  }
+
+  if (averageLineText) {
+    if (averageLineText.left) {
+      container.append('text')
+        .attr('x',xScale(minX) + 4)
+        .attr('y',yScale(maxY / 2) + 12)
+        .style('opacity', 0.8)
+        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-size', '12px')
+        .style('pointer-events', 'none')
+        .text(averageLineText.left);
+    }
+    if (averageLineText.bottom) {
+      container.append('text')
+        .attr('x',xScale(maxX / 2) + 4)
+        .attr('y',yScale(minY) - 6)
+        .style('opacity', 0.8)
+        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-size', '12px')
+        .style('pointer-events', 'none')
+        .text(averageLineText.bottom);
+
+    }
+  }
 
   // Add dots
   container.append('g')
