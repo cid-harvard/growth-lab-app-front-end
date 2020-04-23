@@ -121,6 +121,12 @@ type Props = BaseProps & (
     vizType: VizType.ScatterPlot;
     data: ScatterPlotDatum[];
     axisLabels?: {left?: string, bottom?: string};
+    axisMinMax?: {
+      minX?: number,
+      maxX?: number,
+      minY?: number,
+      maxY?: number,
+    }
   } |
   {
     vizType: VizType.BarChart;
@@ -167,6 +173,7 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
+          axisMinMax: props.axisMinMax,
         });
       } else if (props.vizType === VizType.BarChart) {
         createBarChart({

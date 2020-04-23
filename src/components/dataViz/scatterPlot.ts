@@ -23,10 +23,16 @@ interface Input {
   data: Datum[];
   size: Dimensions;
   axisLabels?: {left?: string, bottom?: string};
+  axisMinMax?: {
+    minX?: number,
+    maxX?: number,
+    minY?: number,
+    maxY?: number,
+  };
 }
 
 export default (input: Input) => {
-  const { svg, tooltip, data, size, axisLabels } = input;
+  const { svg, tooltip, data, size, axisLabels, axisMinMax } = input;
 
   const margin = {top: 30, right: 30, bottom: 60, left: 60};
   const width = size.width - margin.left - margin.right;
@@ -45,13 +51,13 @@ export default (input: Input) => {
   const allXValues = data.map(({x}) => x);
   const allYValues = data.map(({y}) => y);
 
-  const rawMinX = d3.min(allXValues);
-  const rawMaxX = d3.max(allXValues);
-  const rawMinY = d3.min(allYValues);
-  const rawMaxY = d3.max(allYValues);
+  const rawMinX = axisMinMax && axisMinMax.minX !== undefined ? axisMinMax.minX : d3.min(allXValues);
+  const rawMaxX = axisMinMax && axisMinMax.maxX !== undefined ? axisMinMax.maxX : d3.max(allXValues);
+  const rawMinY = axisMinMax && axisMinMax.minY !== undefined ? axisMinMax.minY : d3.min(allYValues);
+  const rawMaxY = axisMinMax && axisMinMax.maxY !== undefined ? axisMinMax.maxY : d3.max(allYValues);
 
-  const minScaleBuffer = 0.9;
-  const maxScaleBuffer = 1.1;
+  const minScaleBuffer = axisMinMax ? 1 : 0.9;
+  const maxScaleBuffer = axisMinMax ? 1 : 1.1;
 
   const minX = rawMinX ? Math.floor(rawMinX * minScaleBuffer) : 0;
   const maxX = rawMaxX ? Math.floor(rawMaxX * maxScaleBuffer) : 0;

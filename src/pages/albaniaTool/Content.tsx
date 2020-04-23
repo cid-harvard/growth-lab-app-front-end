@@ -341,6 +341,12 @@ const AlbaniaToolContent = (props: Props) => {
             vizType={VizType.ScatterPlot}
             data={updateScatterPlotData(scatterPlotData, selectedIndustry)}
             axisLabels={{bottom: 'Viability', left: 'Attractiveness'}}
+            axisMinMax={{
+              minX: 0,
+              maxX: 10,
+              minY: 0,
+              maxY: 10,
+            }}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
