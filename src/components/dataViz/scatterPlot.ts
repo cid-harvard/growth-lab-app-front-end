@@ -167,6 +167,7 @@ export default (input: Input) => {
       .attr('cy', ({y}) => yScale(y))
       .attr('r', ({radius}) => radius ? radius : 4)
       .style('fill', ({fill}) => fill ? fill : '#69b3a2')
+      .style('cursor', ({onClick}) => onClick ? 'pointer' : 'default')
       .on('mousemove', ({label, tooltipContent, tooltipContentOnly}) => {
         if (tooltipContentOnly && tooltipContent && tooltipContent.length) {
           tooltip.html(tooltipContent);
@@ -184,7 +185,8 @@ export default (input: Input) => {
       .on('mouseout', () => {
         tooltip
             .style('display', 'none');
-      });
+      })
+      .on('click', ({onClick}) => onClick ? onClick() : undefined);
 
   const highlighted = data.find(d => d.highlighted);
   if (highlighted) {

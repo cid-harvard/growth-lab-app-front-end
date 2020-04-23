@@ -47,7 +47,7 @@ const ThirdChild = styled(ChildBase)`
 `;
 
 const Text = styled.div`
-  margin-top: 2rem;
+  margin: 2rem auto;
   color: #333;
 `;
 

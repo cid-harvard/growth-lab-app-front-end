@@ -16,8 +16,12 @@ export interface CSVDatum {
   rcaDirection: string;
 }
 
+export interface NaceIdEnhancedScatterPlotDatum extends ScatterPlotDatum {
+  naceId: string;
+}
+
 export default (rawFactors: Factors[], rawNaceData: NACEIndustry[]) => {
-  const scatterPlotData: ScatterPlotDatum[] = [];
+  const scatterPlotData: NaceIdEnhancedScatterPlotDatum[] = [];
   const csvData: CSVDatum[] = [];
   rawFactors.forEach((rawDatum) => {
     if (rawDatum) {
@@ -43,6 +47,7 @@ export default (rawFactors: Factors[], rawNaceData: NACEIndustry[]) => {
               <strong>Attractiveness:</strong> ${avgAttractiveness}
             `,
             fill: rca === RCADirection.LessThanOne ? colorScheme.dataSecondary : colorScheme.data,
+            naceId,
           });
         }
       }
@@ -51,13 +56,17 @@ export default (rawFactors: Factors[], rawNaceData: NACEIndustry[]) => {
   return {scatterPlotData, csvData};
 };
 
-export const updateScatterPlotData = (scatterPlotData: ScatterPlotDatum[], selectedIndustry: TreeNode | undefined) => {
-  return scatterPlotData.map(datum => {
-    const existingFill = datum.fill ? datum.fill : colorScheme.data;
-    const fill = selectedIndustry && selectedIndustry.label === datum.label
-        ? rgba(existingFill, 0.4) : rgba(existingFill, 0.5);
-    const highlighted = selectedIndustry && selectedIndustry.label === datum.label
-        ? true : false;
-    return { ...datum, fill, highlighted };
-  });
-};
+export const updateScatterPlotData = (
+  scatterPlotData: NaceIdEnhancedScatterPlotDatum[],
+  selectedIndustry: TreeNode | undefined,
+  setSelectedIndustry: (value: TreeNode) => void) => {
+    return scatterPlotData.map(datum => {
+      const existingFill = datum.fill ? datum.fill : colorScheme.data;
+      const fill = selectedIndustry && selectedIndustry.label === datum.label
+          ? rgba(existingFill, 0.4) : rgba(existingFill, 0.5);
+      const highlighted = selectedIndustry && selectedIndustry.label === datum.label
+          ? true : false;
+      const onClick = () => setSelectedIndustry({value: datum.naceId, label: datum.label });
+      return { ...datum, fill, highlighted, onClick };
+    });
+  };

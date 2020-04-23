@@ -19,7 +19,6 @@ import { TreeNode } from 'react-dropdown-tree-select';
 import { colorScheme } from './Utils';
 import Legend from '../../components/dataViz/Legend';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
-import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import DynamicTable from '../../components/text/DynamicTable';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
@@ -27,7 +26,11 @@ import queryString from 'query-string';
 import AlbaniaMapSvg from './assets/albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import {lighten, rgba} from 'polished';
-import {updateScatterPlotData, CSVDatum as ScatterPlotCSVDatum} from './transformers/transformScatterplotData';
+import {
+  updateScatterPlotData,
+  CSVDatum as ScatterPlotCSVDatum,
+  NaceIdEnhancedScatterPlotDatum,
+} from './transformers/transformScatterplotData';
 import HowToReadDots from '../../components/dataViz/HowToReadDots';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -209,7 +212,7 @@ interface Variables {
 
 interface Props {
   naceData: TreeNode[];
-  scatterPlotData: ScatterPlotDatum[];
+  scatterPlotData: NaceIdEnhancedScatterPlotDatum[];
   scatterPlotDataForDownload: ScatterPlotCSVDatum[];
   scripts: Script[];
 }
@@ -339,7 +342,7 @@ const AlbaniaToolContent = (props: Props) => {
           <DataViz
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
-            data={updateScatterPlotData(scatterPlotData, selectedIndustry)}
+            data={updateScatterPlotData(scatterPlotData, selectedIndustry, updateSelectedIndustry)}
             axisLabels={{bottom: 'Viability', left: 'Attractiveness'}}
             axisMinMax={{
               minX: 0,
