@@ -196,6 +196,8 @@ export interface FDIMarket {
   projectsWorld: number | null;
   projectsEurope: number | null;
   projectsBalkans: number | null;
+  avgCapex: number | null;
+  avgJobs: number | null;
   country: CountryConnection;
 }
 

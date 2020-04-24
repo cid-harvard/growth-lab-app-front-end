@@ -98,6 +98,8 @@ const GET_DATA_FOR_NACE_ID = gql`
             projectsWorld
             projectsEurope
             projectsBalkans
+            avgCapex
+            avgJobs
           }
         }
       }

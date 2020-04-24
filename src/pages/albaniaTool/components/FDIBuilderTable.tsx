@@ -88,11 +88,20 @@ export default (props: Props) => {
             parentCompany, sourceCountry, sourceCity,
             capexBalkans, capexEurope, capexWorld,
             projectsBalkans, projectsEurope, projectsWorld,
+            avgCapex, avgJobs,
           } = edge.node;
           flattendDataForCSV.push({
-            parentCompany, sourceCountry, sourceCity,
-            capexBalkans, capexEurope, capexWorld,
-            projectsBalkans, projectsEurope, projectsWorld,
+            'Parent Company': parentCompany,
+            'Source Country': sourceCountry,
+            'Source City': sourceCity,
+            'Capex Balkans': capexBalkans,
+            'Capex Europe': capexEurope,
+            'Capex World': capexWorld,
+            'Projects Balkans': projectsBalkans,
+            'Projects Europe': projectsEurope,
+            'Projects World': projectsWorld,
+            'Average Capex': avgCapex,
+            'Average Jobs': avgJobs,
           });
         }
       }
