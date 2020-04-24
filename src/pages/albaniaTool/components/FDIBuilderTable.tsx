@@ -34,7 +34,7 @@ export default (props: Props) => {
   ];
 
   const countryData: TreeNode[] = [];
-  const cityData: TreeNode[] = [];
+  const cityData: TreeNode[] = [{label: 'Not Specified', value: 'Not Specified', parentValue: null}];
   fdiMarketsEdges.forEach(edge => {
     if (edge && edge.node && edge.node.sourceCountry && edge.node.sourceCity) {
       const sourceCountry = edge.node.sourceCountry;

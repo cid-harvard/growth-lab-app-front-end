@@ -252,7 +252,7 @@ const AlbaniaToolContent = (props: Props) => {
 
   const links: NavItem[] = [
     {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
-    {label: 'Industry Potential', target: '#industry-potential', internalLink: true, scrollBuffer},
+    {label: 'Major FDI Companies', target: '#major-fdi-companies', internalLink: true, scrollBuffer},
     {label: 'Industry Now', target: '#industry-now', internalLink: true, scrollBuffer},
   ];
   useScrollBehavior({
@@ -436,8 +436,8 @@ const AlbaniaToolContent = (props: Props) => {
             />
           </TextBlock>
         </TwoColumnSection>
-        <div id={'industry-potential'}>
-          <SectionHeader>FDI Company Trading</SectionHeader>
+        <div id={'major-fdi-companies'}>
+          <SectionHeader>Major FDI Companies</SectionHeader>
         </div>
         <div>
           <p
