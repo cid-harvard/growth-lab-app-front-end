@@ -11,7 +11,6 @@ interface Props {
 
 export default (props: Props) => {
   const { industryWageEdge } = props;
-  console.log(industryWageEdge);
   if (
     industryWageEdge === null ||
     industryWageEdge.node === null ||

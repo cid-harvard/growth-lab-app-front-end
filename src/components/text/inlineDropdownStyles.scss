@@ -81,4 +81,11 @@
       }
     }
   }
+  &.hide-search {
+    .dropdown {
+      input.search {
+        display: none;
+      }
+    }
+  }
 }

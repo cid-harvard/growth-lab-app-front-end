@@ -137,6 +137,7 @@ const ScrollToTopButton = styled.button`
   transition: opacity 0.2s ease-in-out;
   margin-top: 1.7rem;
   outline: none;
+  background-color: transparent;
 
   img {
     height: 44px;

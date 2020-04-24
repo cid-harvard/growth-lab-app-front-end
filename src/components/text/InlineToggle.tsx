@@ -36,12 +36,13 @@ const InlineToggle = (props: Props) => {
 
   const placeholder = selectedValue && selectedValue.label ? selectedValue.label : 'Type Or Select';
   const selectedClass = selectedValue && selectedValue.label ? 'inline-selected' : '';
-  const colorClassName = props.colorClassName ? ' ' + props.colorClassName : ';';
+  const colorClassName = props.colorClassName ? ' ' + props.colorClassName : '';
+  const hideSearch = data.length < 10 ? ' hide-search' : '';
 
   return (
     <DropdownTreeSelect
       searchPredicate={searchPredicate}
-      className={'inline-dropdown ' + selectedClass + colorClassName}
+      className={'inline-dropdown ' + selectedClass + colorClassName + hideSearch}
       data={data}
       onChange={onChange}
       mode={'radioSelect'}

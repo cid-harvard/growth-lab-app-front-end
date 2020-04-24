@@ -38,29 +38,29 @@ export default (input: Input) => {
     } = schoolingNode;
     schoolingTableData = [
       {
-        education: 'Primary of below',
-        male: esBelowMale !== null ? esBelowMale.toFixed(2) + '%' : 'No data',
-        female: esBelowFemale !== null ? esBelowFemale.toFixed(2) + '%' : 'No data',
+        education: 'Primary or below',
+        male: esBelowMale !== null ? esBelowMale.toFixed(1) + '%' : 'No data',
+        female: esBelowFemale !== null ? esBelowFemale.toFixed(1) + '%' : 'No data',
       },
       {
         education: 'Lower Secondary',
-        male: lowerSecondaryMale !== null ? lowerSecondaryMale.toFixed(2) + '%' : 'No data',
-        female: lowerSecondaryFemale !== null ? lowerSecondaryFemale.toFixed(2) + '%' : 'No data',
+        male: lowerSecondaryMale !== null ? lowerSecondaryMale.toFixed(1) + '%' : 'No data',
+        female: lowerSecondaryFemale !== null ? lowerSecondaryFemale.toFixed(1) + '%' : 'No data',
       },
       {
         education: 'Vocational or Technical',
-        male: technicalVocationalMale !== null ? technicalVocationalMale.toFixed(2) + '%' : 'No data',
-        female: technicalVocationalFemale !== null ? technicalVocationalFemale.toFixed(2) + '%' : 'No data',
+        male: technicalVocationalMale !== null ? technicalVocationalMale.toFixed(1) + '%' : 'No data',
+        female: technicalVocationalFemale !== null ? technicalVocationalFemale.toFixed(1) + '%' : 'No data',
       },
       {
         education: 'Secondary and Some College',
-        male: hsSomeCollegeMale !== null ? hsSomeCollegeMale.toFixed(2) + '%' : 'No data',
-        female: hsSomeCollegeFemale !== null ? hsSomeCollegeFemale.toFixed(2) + '%' : 'No data',
+        male: hsSomeCollegeMale !== null ? hsSomeCollegeMale.toFixed(1) + '%' : 'No data',
+        female: hsSomeCollegeFemale !== null ? hsSomeCollegeFemale.toFixed(1) + '%' : 'No data',
       },
       {
         education: 'University and above',
-        male: universityHigherMale !== null ? universityHigherMale.toFixed(2) + '%' : 'No data',
-        female: universityHigherFemale !== null ? universityHigherFemale.toFixed(2) + '%' : 'No data',
+        male: universityHigherMale !== null ? universityHigherMale.toFixed(1) + '%' : 'No data',
+        female: universityHigherFemale !== null ? universityHigherFemale.toFixed(1) + '%' : 'No data',
       },
     ];
   }
@@ -90,53 +90,53 @@ export default (input: Input) => {
     occupationTableData = [
       {
         occupation: 'Managers',
-        male: managersMale !== null ? managersMale.toFixed(2) + '%' : 'No data',
-        female: managersFemale !== null ? managersFemale.toFixed(2) + '%' : 'No data',
+        male: managersMale !== null ? managersMale.toFixed(1) + '%' : 'No data',
+        female: managersFemale !== null ? managersFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Professionals',
-        male: professionalsMale !== null ? professionalsMale.toFixed(2) + '%' : 'No data',
-        female: professionalsFemale !== null ? professionalsFemale.toFixed(2) + '%' : 'No data',
+        male: professionalsMale !== null ? professionalsMale.toFixed(1) + '%' : 'No data',
+        female: professionalsFemale !== null ? professionalsFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Technicians and Associate Professionals',
-        male: techniciansMale !== null ? techniciansMale.toFixed(2) + '%' : 'No data',
-        female: techniciansFemale !== null ? techniciansFemale.toFixed(2) + '%' : 'No data',
+        male: techniciansMale !== null ? techniciansMale.toFixed(1) + '%' : 'No data',
+        female: techniciansFemale !== null ? techniciansFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Clerical Support Workers',
-        male: clericalMale !== null ? clericalMale.toFixed(2) + '%' : 'No data',
-        female: clericalFemale !== null ? clericalFemale.toFixed(2) + '%' : 'No data',
+        male: clericalMale !== null ? clericalMale.toFixed(1) + '%' : 'No data',
+        female: clericalFemale !== null ? clericalFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Service and Sales Workers',
-        male: servicesMale !== null ? servicesMale.toFixed(2) + '%' : 'No data',
-        female: servicesFemale !== null ? servicesFemale.toFixed(2) + '%' : 'No data',
+        male: servicesMale !== null ? servicesMale.toFixed(1) + '%' : 'No data',
+        female: servicesFemale !== null ? servicesFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Craft and Related Trade Workers',
-        male: craftMale !== null ? craftMale.toFixed(2) + '%' : 'No data',
-        female: craftFemale !== null ? craftFemale.toFixed(2) + '%' : 'No data',
+        male: craftMale !== null ? craftMale.toFixed(1) + '%' : 'No data',
+        female: craftFemale !== null ? craftFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Machine Operators and Assemblers',
-        male: assemblyMale !== null ? assemblyMale.toFixed(2) + '%' : 'No data',
-        female: assemblyFemale !== null ? assemblyFemale.toFixed(2) + '%' : 'No data',
+        male: assemblyMale !== null ? assemblyMale.toFixed(1) + '%' : 'No data',
+        female: assemblyFemale !== null ? assemblyFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Skilled Agriculture and Fishery Workers',
-        male: primaryMale !== null ? primaryMale.toFixed(2) + '%' : 'No data',
-        female: primaryFemale !== null ? primaryFemale.toFixed(2) + '%' : 'No data',
+        male: primaryMale !== null ? primaryMale.toFixed(1) + '%' : 'No data',
+        female: primaryFemale !== null ? primaryFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Elementary Occupations',
-        male: elementaryMale !== null ? elementaryMale.toFixed(2) + '%' : 'No data',
-        female: elementaryFemale !== null ? elementaryFemale.toFixed(2) + '%' : 'No data',
+        male: elementaryMale !== null ? elementaryMale.toFixed(1) + '%' : 'No data',
+        female: elementaryFemale !== null ? elementaryFemale.toFixed(1) + '%' : 'No data',
       },
       {
         occupation: 'Other',
-        male: otherMale !== null ? otherMale.toFixed(2) + '%' : 'No data',
-        female: otherFemale !== null ? otherFemale.toFixed(2) + '%' : 'No data',
+        male: otherMale !== null ? otherMale.toFixed(1) + '%' : 'No data',
+        female: otherFemale !== null ? otherFemale.toFixed(1) + '%' : 'No data',
       },
     ];
   }

@@ -18,14 +18,13 @@ import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import { colorScheme } from './Utils';
 import Legend from '../../components/dataViz/Legend';
-import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './assets/albania-logo.svg';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
-import {lighten, rgba} from 'polished';
+import {rgba} from 'polished';
 import {
   updateScatterPlotData,
   CSVDatum as ScatterPlotCSVDatum,
@@ -468,19 +467,8 @@ const AlbaniaToolContent = (props: Props) => {
           <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.LocationOfWorkers}</SectionHeaderSecondary>
           <IndustryNowLocation
             locationNode={industryNowLocationNode}
+            sectionHtml={getSubsectionText(SubSectionEnum.LocationOfWorkers)}
           />
-          <TextBlock>
-            <p
-              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.LocationOfWorkers)}}
-            />
-            <ColorScaleLegend
-              minLabel={0}
-              maxLabel={100}
-              minColor={lighten(0.55, colorScheme.quaternary)}
-              maxColor={colorScheme.quaternary}
-              title={'Percentage of industry workers in each region'}
-            />
-          </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.EducationDistribution}</SectionHeaderSecondary>

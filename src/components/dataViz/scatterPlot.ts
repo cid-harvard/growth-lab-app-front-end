@@ -65,9 +65,9 @@ export default (input: Input) => {
   const maxScaleBuffer = axisMinMax ? 1 : 1.1;
 
   const minX = rawMinX ? Math.floor(rawMinX * minScaleBuffer) : 0;
-  const maxX = rawMaxX ? Math.floor(rawMaxX * maxScaleBuffer) : 0;
+  const maxX = rawMaxX ? Math.ceil(rawMaxX * maxScaleBuffer) : 0;
   const minY = rawMinY ? Math.floor(rawMinY * minScaleBuffer) : 0;
-  const maxY = rawMaxY ? Math.floor(rawMaxY * maxScaleBuffer) : 0;
+  const maxY = rawMaxY ? Math.ceil(rawMaxY * maxScaleBuffer) : 0;
 
 
 

@@ -79,7 +79,7 @@ export default (input: Input) => {
   const maxScaleBuffer = 1.1;
 
   const minY = rawMinY ? Math.floor(rawMinY * minScaleBuffer) : 0;
-  const maxY = rawMaxY ? Math.floor(rawMaxY * maxScaleBuffer) : 0;
+  const maxY = rawMaxY ? Math.ceil(rawMaxY * maxScaleBuffer) : 0;
   // Scale the range of the data in the domains
   xScale.domain(data && data.length ? data[0].map(function(d) { return d.x; }) : [])
         .rangeRound([0, width])
