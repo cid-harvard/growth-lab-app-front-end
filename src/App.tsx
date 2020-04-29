@@ -20,7 +20,7 @@ import Loading from './components/general/Loading';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 
-const LandingPage = lazy(() => import('./pages/landingPage'));
+const LandingPage = lazy(() => import('./pages/landingPage/ComingSoon'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
