@@ -23,7 +23,7 @@ export default (props: Props) => {
       viabilityCsvData['RCA in Albania'] = factors.vRca;
     }
     if (factors.vDist !== null) {
-      viabilityData.push({ label: 'Low \0Distance\nto Industry', value: factors.vDist });
+      viabilityData.push({ label: 'Low {{SPACE_OR_LINE}}Distance\nto Industry', value: factors.vDist });
       viabilityCsvData['Low Distance to Industry'] = factors.vDist;
     }
     if (factors.vFdipeers !== null) {
@@ -35,12 +35,16 @@ export default (props: Props) => {
       viabilityCsvData['Low Contract Intensity'] = factors.vContracts;
     }
     if (factors.vElect !== null) {
-      viabilityData.push({ label: 'High \0Electricity\nIntensity', value: factors.vElect });
+      viabilityData.push({ label: 'High {{SPACE_OR_LINE}}Electricity\nIntensity', value: factors.vElect });
       viabilityCsvData['High Electricity Intensity'] = factors.vElect;
     }
     if (viabilityData.length === 4) {
       viabilityData = viabilityData.map(({label, value}) => ({
-        label: label.replace('\0', '\n'), value,
+        label: label.replace('{{SPACE_OR_LINE}}', '\n'), value,
+      }));
+    } else {
+      viabilityData = viabilityData.map(({label, value}) => ({
+        label: label.replace('{{SPACE_OR_LINE}}', ' '), value,
       }));
     }
     if (viabilityData.length > 2) {

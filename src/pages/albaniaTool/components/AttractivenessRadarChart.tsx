@@ -23,7 +23,7 @@ export default (props: Props) => {
       attractivenessCsvData['High Relative Wages'] = factors.aWage;
     }
     if (factors.aYouth !== null) {
-      attractivenessData.push({ label: 'High \0Youth\nEmployment', value: factors.aYouth });
+      attractivenessData.push({ label: 'High {{SPACE_OR_LINE}}Youth\nEmployment', value: factors.aYouth });
       attractivenessCsvData['High Youth Employment'] = factors.aYouth;
     }
     if (factors.aFdiworld !== null) {
@@ -31,12 +31,16 @@ export default (props: Props) => {
       attractivenessCsvData['High Global FDI Flows'] = factors.aFdiworld;
     }
     if (factors.aExport !== null) {
-      attractivenessData.push({ label: 'High \0Export\nPropensity', value: factors.aExport });
+      attractivenessData.push({ label: 'High {{SPACE_OR_LINE}}Export\nPropensity', value: factors.aExport });
       attractivenessCsvData['High Export Propensity'] = factors.aExport;
     }
     if (attractivenessData.length === 4) {
       attractivenessData = attractivenessData.map(({label, value}) => ({
-        label: label.replace('\0', '\n'), value,
+        label: label.replace('{{SPACE_OR_LINE}}', '\n'), value,
+      }));
+    } else {
+      attractivenessData = attractivenessData.map(({label, value}) => ({
+        label: label.replace('{{SPACE_OR_LINE}}', ' '), value,
       }));
     }
     if (attractivenessData.length > 2) {
@@ -51,6 +55,7 @@ export default (props: Props) => {
           enableSVGDownload={true}
           chartTitle={'Attractiveness Factors - ' + industryName}
           jsonToDownload={[attractivenessCsvData]}
+          key={'albania-attractiveness-radar-chart' + industryName}
         />
       );
     } else {

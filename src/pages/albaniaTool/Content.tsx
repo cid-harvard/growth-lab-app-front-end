@@ -388,7 +388,10 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <ViabilityRadarChart industryName={industryName} factors={factors} />
+          <ViabilityRadarChart
+            industryName={industryName}
+            factors={factors}
+          />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.RCAInAlbania}</ParagraphHeader>
