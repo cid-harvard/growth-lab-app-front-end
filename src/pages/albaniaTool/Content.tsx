@@ -336,7 +336,7 @@ const AlbaniaToolContent = (props: Props) => {
                   value: '(<a href="https://albania.growthlab.cid.harvard.edu/">View the Country Research</a>)',
                 }, {
                   key: 'here <insert link>',
-                  value: '(<a href="https://albania.growthlab.cid.harvard.edu/">here</a>)',
+                  value: '<a href="https://albania.growthlab.cid.harvard.edu/">here</a>',
                 }]),
             }}
           />
@@ -559,7 +559,7 @@ const AlbaniaToolContent = (props: Props) => {
         searchLabelText={'To Start Select an Industry:'}
         data={naceData}
         onChange={updateSelectedIndustry}
-        initialSelectedValue={initialSelectedIndustry}
+        initialSelectedValue={selectedIndustry}
         imageSrc={AlbaniaMapSvg}
         imageProps={{
           imgWidth: '110px',

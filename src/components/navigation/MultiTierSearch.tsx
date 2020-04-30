@@ -41,6 +41,12 @@ const HeaderWithSearch = (props: Props) => {
     return () => window.removeEventListener('keydown', keydownListener);
   });
 
+  useEffect(() => {
+    if (initialSelectedValue !== undefined && selectedValue !== undefined &&
+        initialSelectedValue.value !== selectedValue.value)
+      setSelectedValue(initialSelectedValue);
+  }, [initialSelectedValue, selectedValue, setSelectedValue]);
+
   const onChange = (currentNode: TreeNode, selectedNodes: TreeNode[]) => {
     if (selectedNodes.length) {
       setSelectedValue(currentNode);

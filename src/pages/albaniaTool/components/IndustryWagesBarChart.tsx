@@ -43,7 +43,7 @@ export default (props: Props) => {
       id={'albania-industry-wages-bar-chart'}
       vizType={VizType.BarChart}
       data={tableData}
-      axisLabels={{left: 'Percentage of Workers', bottom: 'Industry Wages'}}
+      axisLabels={{left: 'Percentage of Workers', bottom: 'Industry Wages (Lek/Month)'}}
     />
   );
 };
