@@ -2,7 +2,7 @@
 
 Country Dashboards provides a framework for quickly building custom data visualization tools.
 
-View the site live at https://harvardgrowthlab.app/
+View the site live at https://growthlab.app/
 
 License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -27,6 +27,7 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
     - [QueryTableBuilder](#querytablebuildercomponent)
   - [Custom Hooks](#customhooks)
     - [useScrollBehavior](#usescrollbehaviorhook)
+  - [Querying Data with GraphQL](#queryingdatagraphql)
   - [Guidelines For Creating New Components](#componentguidelines)
     - [Style Guide](#styleguide)
 
@@ -179,6 +180,15 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
          - highlighted *(optional)*: boolean;
 
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
+
+      **axisMinMax** *(optional)*: {
+        **minX** *(optional)*: number,
+        **maxX** *(optional)*: number,
+        **minY** *(optional)*: number,
+        **maxY** *(optional)*: number,
+      };
+      **showAverageLines** *(optional)*: boolean;
+      **averageLineText** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
    - **VizType.BarChart**
@@ -594,10 +604,6 @@ The QueryTableBuilder component, located at `src/components/tools/QueryTableBuil
 
    Callback function for when a user clicks the "Update" button.
 
-- **onQueryDownloadClick**: (data: CallbackData) => void;
-
-   Callback function for when a user clicks the "Download" button.
-
 - **selectFields** *(optional)*: SelectBoxProps[];
 
    Each selectFields item in the array creates a [MultiTierSearch](#multitiersearchcomponent) and can take the following values -
@@ -627,6 +633,10 @@ The QueryTableBuilder component, located at `src/components/tools/QueryTableBuil
 
    If true, the buttons will be disabled and the table will render with 10 blank rows based on the column data.
 
+- **queryLength**: number;
+- **queryToDownload**: object[];
+- **filename**: string;
+
 
 <a name="customhooks"/>
 
@@ -647,6 +657,18 @@ useScrollBehavior takes an optional object as an input with the following option
 - **navAnchors** *(optional)*: string[];
 
    A list of strings designating the ids for each element the hook should watch for scrolling. The ids should be written with the `#`, for example - `#overview`.
+
+<a name="queryingdatagraphql"/>
+
+## Querying Data with GraphQL
+
+The Country Dashboards utilize GraphQL to make calls for the exact data that is needed for each page and component. The GraphQL endpoint connection has already been setup, and individual pages can query it using `gql` from `graphql-tag` and the `useQuery` hook, exported from `@apollo/react-hooks`.
+
+The different queries available to Country Dashboards can be viewed here - https://hgl-app-staging.cid-labs.com/graphql
+
+When new queries are added to the GraphQL endpoint, make sure to add the type definitions for their return values at `src/graphql/graphQLTypes.ts`. Keeping the types consistent helps keep the Country Dashboards project easier to develop and less prone to bugs as it continues to expand.
+
+For more information on using GraphQL, see the official GraphQL documentation here - https://graphql.org/learn/ 
 
 <a name="componentguidelines"/>
 
