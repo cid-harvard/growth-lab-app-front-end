@@ -182,12 +182,19 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
       **axisMinMax** *(optional)*: {
+
         **minX** *(optional)*: number,
+
         **maxX** *(optional)*: number,
+
         **minY** *(optional)*: number,
+
         **maxY** *(optional)*: number,
+
       };
+
       **showAverageLines** *(optional)*: boolean;
+
       **averageLineText** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
 
