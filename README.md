@@ -183,13 +183,13 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
       **axisMinMax** *(optional)*: {
 
-        **minX** *(optional)*: number,
+         **minX** *(optional)*: number,
 
-        **maxX** *(optional)*: number,
+         **maxX** *(optional)*: number,
 
-        **minY** *(optional)*: number,
+         **minY** *(optional)*: number,
 
-        **maxY** *(optional)*: number,
+         **maxY** *(optional)*: number,
 
       };
 
