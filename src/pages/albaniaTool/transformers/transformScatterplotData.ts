@@ -42,9 +42,9 @@ export default (rawFactors: Factors[], rawNaceData: NACEIndustry[]) => {
             x: avgViability,
             y: avgAttractiveness,
             tooltipContent: `
-              <strong>Viability:</strong> ${avgViability}
+              <strong>Viability:</strong> ${avgViability.toFixed(2)}
               <br />
-              <strong>Attractiveness:</strong> ${avgAttractiveness}
+              <strong>Attractiveness:</strong> ${avgAttractiveness.toFixed(2)}
             `,
             fill: rca === RCADirection.LessThanOne ? colorScheme.dataSecondary : colorScheme.data,
             naceId,
