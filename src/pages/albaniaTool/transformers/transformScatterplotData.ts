@@ -9,15 +9,15 @@ import {rgba} from 'polished';
 import { colorScheme } from '../Utils';
 
 export interface CSVDatum {
-  ['Industry Name']: string;
-  ['NACE Code']: string;
+  ['3-Digit Industry Name']: string;
+  ['3-Digit NACE Code']: string;
   ['Average Viability']: number;
   ['Average Attractiveness']: number;
   ['RCA Direction']: string;
-  ['Parent Industry Name']: string;
-  ['Parent Industry NACE Code']: string;
-  ['Grandparent Industry Name']: string;
-  ['Grandparent Industry NACE Code']: string;
+  ['2-Digit Industry Name']: string;
+  ['2-Digit Industry NACE Code']: string;
+  ['Sector Name']: string;
+  ['Sector NACE Code']: string;
 }
 
 export interface NaceIdEnhancedScatterPlotDatum extends ScatterPlotDatum {
@@ -46,18 +46,18 @@ export default (rawFactors: Factors[], rawNaceData: NACEIndustry[]) => {
             grandparentTarget = undefined;
           }
           csvData.push({
-            'NACE Code': targetNaceIndustry.code,
-            'Industry Name': targetNaceIndustry.name,
+            '3-Digit NACE Code': targetNaceIndustry.code,
+            '3-Digit Industry Name': targetNaceIndustry.name,
             'Average Viability': avgViability,
             'Average Attractiveness': avgAttractiveness,
             'RCA Direction': rca,
-            'Parent Industry Name': parentTarget && parentTarget.name !== null
+            '2-Digit Industry Name': parentTarget && parentTarget.name !== null
                                 ? parentTarget.name : '',
-            'Parent Industry NACE Code': parentTarget && parentTarget.code !== null
+            '2-Digit Industry NACE Code': parentTarget && parentTarget.code !== null
                                 ? parentTarget.code : '',
-            'Grandparent Industry Name': grandparentTarget && grandparentTarget.name !== null
+            'Sector Name': grandparentTarget && grandparentTarget.name !== null
                                 ? grandparentTarget.name : '',
-            'Grandparent Industry NACE Code': grandparentTarget && grandparentTarget.code !== null
+            'Sector NACE Code': grandparentTarget && grandparentTarget.code !== null
                                 ? grandparentTarget.code : '',
           });
           scatterPlotData.push({

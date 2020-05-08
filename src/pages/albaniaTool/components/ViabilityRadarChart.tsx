@@ -20,7 +20,7 @@ export default (props: Props) => {
   } = props;
   if (factors) {
     let viabilityData: RadarChartDatum[] = [];
-    const viabilityCsvData: any = { 'Industry': industryName };
+    const viabilityCsvData: any = { '3-Digit Industry Name': industryName };
     if (factors.vRca !== null) {
       viabilityData.push({ label: 'RCA in Albania', value: factors.vRca });
       viabilityCsvData['RCA in Albania'] = factors.vRca;
@@ -52,6 +52,9 @@ export default (props: Props) => {
     }
     const targetNaceIndustry = rawNaceData.find(node => node && node.naceId === naceId);
     if (targetNaceIndustry) {
+      if (targetNaceIndustry.code) {
+        viabilityCsvData['3-Digit Industry NACE Code'] = targetNaceIndustry.code;
+      }
       const parentTarget = rawNaceData.find(
         (datum) =>
           targetNaceIndustry.parentId !== null && datum.naceId === targetNaceIndustry.parentId.toString());
@@ -63,13 +66,13 @@ export default (props: Props) => {
         grandparentTarget = undefined;
       }
 
-      viabilityCsvData['Parent Industry Name'] =
+      viabilityCsvData['2-Digit Industry Name'] =
         parentTarget && parentTarget.name !== null ? parentTarget.name : '';
-      viabilityCsvData['Parent Industry Nace Code'] =
+      viabilityCsvData['2-Digit Industry NACE Code'] =
         parentTarget && parentTarget.code !== null ? parentTarget.code : '';
-      viabilityCsvData['Grandparent Industry Name'] =
+      viabilityCsvData['Sector Name'] =
         grandparentTarget && grandparentTarget.name !== null ? grandparentTarget.name : '';
-      viabilityCsvData['Grandparent Industry Nace Code'] =
+      viabilityCsvData['Sector NACE Code'] =
         grandparentTarget && grandparentTarget.code !== null? grandparentTarget.code : '';
     }
     if (viabilityData.length > 2) {

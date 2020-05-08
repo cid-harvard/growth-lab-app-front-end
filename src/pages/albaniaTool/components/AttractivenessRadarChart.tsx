@@ -20,7 +20,7 @@ export default (props: Props) => {
   } = props;
   if (factors) {
     let attractivenessData: RadarChartDatum[] = [];
-    const attractivenessCsvData: any = {'Industry': industryName};
+    const attractivenessCsvData: any = {'3-Digit Industry Name': industryName};
     if (factors.aWage !== null) {
       attractivenessData.push({ label: 'High Relative\nWages', value: factors.aWage });
       attractivenessCsvData['High Relative Wages'] = factors.aWage;
@@ -48,6 +48,9 @@ export default (props: Props) => {
     }
     const targetNaceIndustry = rawNaceData.find(node => node && node.naceId === naceId);
     if (targetNaceIndustry) {
+      if (targetNaceIndustry.code) {
+        attractivenessCsvData['3-Digit Industry NACE Code'] = targetNaceIndustry.code;
+      }
       const parentTarget = rawNaceData.find(
         (datum) =>
           targetNaceIndustry.parentId !== null && datum.naceId === targetNaceIndustry.parentId.toString());
@@ -59,13 +62,13 @@ export default (props: Props) => {
         grandparentTarget = undefined;
       }
 
-      attractivenessCsvData['Parent Industry Name'] =
+      attractivenessCsvData['2-Digit Industry Name'] =
         parentTarget && parentTarget.name !== null ? parentTarget.name : '';
-      attractivenessCsvData['Parent Industry Nace Code'] =
+      attractivenessCsvData['2-Digit Industry NACE Code'] =
         parentTarget && parentTarget.code !== null ? parentTarget.code : '';
-      attractivenessCsvData['Grandparent Industry Name'] =
+      attractivenessCsvData['Sector Name'] =
         grandparentTarget && grandparentTarget.name !== null ? grandparentTarget.name : '';
-      attractivenessCsvData['Grandparent Industry Nace Code'] =
+      attractivenessCsvData['Sector NACE Code'] =
         grandparentTarget && grandparentTarget.code !== null? grandparentTarget.code : '';
     }
     if (attractivenessData.length > 2) {
