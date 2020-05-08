@@ -265,7 +265,25 @@ export default (input: Input) => {
         .attr('cy', ({y}) => yScale(y))
         .attr('r', ({radius}) => radius ? radius : 4)
         .style('fill', ({fill}) => fill ? fill : '#69b3a2')
-        .style('pointer-events', 'none');
+        .style('cursor', ({onClick}) => onClick ? 'pointer' : 'default')
+        .on('mousemove', ({label, tooltipContent, tooltipContentOnly}) => {
+          if (tooltipContentOnly && tooltipContent && tooltipContent.length) {
+            tooltip.html(tooltipContent);
+          } else {
+            const content = tooltipContent === undefined || tooltipContent.length === 0
+              ? '' : `:<br />${tooltipContent}`;
+            tooltip.html(`<strong>${label}</strong>${content}`);
+
+          }
+          tooltip
+            .style('display', 'block')
+            .style('left', (d3.event.pageX + 4) + 'px')
+            .style('top', (d3.event.pageY - 4) + 'px');
+          })
+        .on('mouseout', () => {
+          tooltip
+              .style('display', 'none');
+        });
   }
 
 
