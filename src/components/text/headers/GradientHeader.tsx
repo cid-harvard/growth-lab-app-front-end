@@ -147,7 +147,7 @@ interface BaseProps {
   textColor: string;
   linkColor: string;
   links?: LinkDatum[];
-  introText?: string;
+  introText?: React.ReactNode;
 }
 
 type Props = BaseProps & (
@@ -207,9 +207,10 @@ const HeaderWithSearch = (props: Props) => {
     <FullWidthHeaderContent>
       <FullWidthHeaderContent>
         <IntroText
-          dangerouslySetInnerHTML={{__html: introText}}
           primaryColor={backgroundColor}
-        />
+        >
+          {introText}
+        </IntroText>
       </FullWidthHeaderContent>
     </FullWidthHeaderContent>
   ) : null;

@@ -228,7 +228,7 @@ const AlbaniaToolContent = (props: Props) => {
 
   const {location: {pathname, search, hash}, push} = useHistory();
   const parsedQuery = queryString.parse(search);
-  const industry = parsedQuery.industry ? parsedQuery.industry : '511'; // Default to Specialised design activities;
+  const industry = parsedQuery.industry ? parsedQuery.industry : '484'; // Default to Data processing, hosting
 
   const flattenedChildData: TreeNode[] = [];
   naceData.forEach(({children}: any) =>
@@ -329,17 +329,6 @@ const AlbaniaToolContent = (props: Props) => {
       <>
         <div id={'overview'}>
           <SectionHeader>{SubSectionEnum.Overview}</SectionHeader>
-          <StyledP
-            dangerouslySetInnerHTML={{
-              __html: getSubsectionText(SubSectionEnum.Introduction, [{
-                  key: '<link to growth story>',
-                  value: '(<a href="https://albania.growthlab.cid.harvard.edu/">View the Country Research</a>)',
-                }, {
-                  key: 'here <insert link>',
-                  value: '<a href="https://albania.growthlab.cid.harvard.edu/">here</a>',
-                }]),
-            }}
-          />
         </div>
         <TwoColumnSection>
           <DataViz
@@ -380,8 +369,8 @@ const AlbaniaToolContent = (props: Props) => {
             />
             <HowToReadDots
               items={[
-                {color: rgba(colorScheme.dataSecondary, 0.5), label: 'RCA < 1'},
-                {color: rgba(colorScheme.data, 0.5), label: 'RCA ≥ 1'},
+                {color: rgba(colorScheme.dataSecondary, 0.5), label: 'Not intensively present in Albania'},
+                {color: rgba(colorScheme.data, 0.5), label: 'Intensively present in Albania'},
               ]}
               highlighted={highlighted}
             />
@@ -545,6 +534,18 @@ const AlbaniaToolContent = (props: Props) => {
     nav = null;
   }
 
+  const introText = (
+    <StyledP
+      dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction, [{
+        key: '<link to growth story>',
+        value: '(<a href="https://albania.growthlab.cid.harvard.edu/">View the Country Research</a>)',
+      }, {
+        key: 'here <insert link>',
+        value: '<a href="https://albania.growthlab.cid.harvard.edu/">here</a>',
+      }])}}
+    />
+  );
+
   return (
     <>
       <Helmet>
@@ -571,6 +572,7 @@ const AlbaniaToolContent = (props: Props) => {
           {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
           {label: 'Country Research', target: 'https://albania.growthlab.cid.harvard.edu/'},
         ]}
+        introText={introText}
       />
       {nav}
       <Content>

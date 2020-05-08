@@ -551,9 +551,11 @@ The GradientHeader component, located at `src/components/headers/GradientHeader`
 
     Internal defaults to false. Internal means it should scroll to an anchor on the page instead of opening a url in a new tab.
 
-- hasSearch: boolean;
+- **hasSearch**: boolean;
 
    If true, you must also pass all the same props to GradientHeader as you would [MultiTierSearch](#multitiersearchcomponent).
+
+- **introText** *(optional)*: string;
 
 <a name="textblockcomponent"/>
 
