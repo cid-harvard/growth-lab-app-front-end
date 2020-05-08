@@ -63,6 +63,7 @@ const AlbaniaTool = () => {
       <>
         <Content
           naceData={naceData}
+          rawNaceData={naceIndustryList}
           scatterPlotData={scatterPlotData}
           scatterPlotDataForDownload={csvData}
           scripts={script}

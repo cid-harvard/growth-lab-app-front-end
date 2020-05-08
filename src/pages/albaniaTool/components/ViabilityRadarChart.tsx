@@ -3,17 +3,20 @@ import { Datum as RadarChartDatum } from '../../../components/dataViz/radarChart
 import DataViz, {VizType} from '../../../components/dataViz';
 import {
     Factors,
+    NACEIndustry,
 } from '../../../graphql/graphQLTypes';
 import { colorScheme } from '../Utils';
 
 interface Props {
   industryName: string;
+  naceId: string;
   factors: Factors | null;
+  rawNaceData: NACEIndustry[];
 }
 
 export default (props: Props) => {
   const {
-    industryName, factors,
+    industryName, factors, naceId, rawNaceData,
   } = props;
   if (factors) {
     let viabilityData: RadarChartDatum[] = [];
@@ -46,6 +49,28 @@ export default (props: Props) => {
       viabilityData = viabilityData.map(({label, value}) => ({
         label: label.replace('{{SPACE_OR_LINE}}', ' '), value,
       }));
+    }
+    const targetNaceIndustry = rawNaceData.find(node => node && node.naceId === naceId);
+    if (targetNaceIndustry) {
+      const parentTarget = rawNaceData.find(
+        (datum) =>
+          targetNaceIndustry.parentId !== null && datum.naceId === targetNaceIndustry.parentId.toString());
+      let grandparentTarget: NACEIndustry | undefined;
+      if (parentTarget && parentTarget.parentId !== null) {
+        grandparentTarget = rawNaceData.find(
+          (datum) =>parentTarget.parentId !== null && datum.naceId === parentTarget.parentId.toString());
+      } else {
+        grandparentTarget = undefined;
+      }
+
+      viabilityCsvData['Parent Industry Name'] =
+        parentTarget && parentTarget.name !== null ? parentTarget.name : '';
+      viabilityCsvData['Parent Industry Nace Code'] =
+        parentTarget && parentTarget.code !== null ? parentTarget.code : '';
+      viabilityCsvData['Grandparent Industry Name'] =
+        grandparentTarget && grandparentTarget.name !== null ? grandparentTarget.name : '';
+      viabilityCsvData['Grandparent Industry Nace Code'] =
+        grandparentTarget && grandparentTarget.code !== null? grandparentTarget.code : '';
     }
     if (viabilityData.length > 2) {
       return (

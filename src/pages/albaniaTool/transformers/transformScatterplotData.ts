@@ -9,11 +9,15 @@ import {rgba} from 'polished';
 import { colorScheme } from '../Utils';
 
 export interface CSVDatum {
-  industryName: string;
-  naceId: string;
-  avgViability: number;
-  avgAttractiveness: number;
-  rcaDirection: string;
+  ['Industry Name']: string;
+  ['NACE Code']: string;
+  ['Average Viability']: number;
+  ['Average Attractiveness']: number;
+  ['RCA Direction']: string;
+  ['Parent Industry Name']: string;
+  ['Parent Industry NACE Code']: string;
+  ['Grandparent Industry Name']: string;
+  ['Grandparent Industry NACE Code']: string;
 }
 
 export interface NaceIdEnhancedScatterPlotDatum extends ScatterPlotDatum {
@@ -30,12 +34,31 @@ export default (rawFactors: Factors[], rawNaceData: NACEIndustry[]) => {
       } = rawDatum;
       if (naceId !== null && avgViability !== null && avgAttractiveness !== null && rca !== null) {
         const targetNaceIndustry = rawNaceData.find(node => node && node.naceId === naceId);
-        if (targetNaceIndustry && targetNaceIndustry.name) {
+        if (targetNaceIndustry && targetNaceIndustry.name && targetNaceIndustry.code) {
+          const parentTarget = rawNaceData.find(
+            (datum) =>
+              targetNaceIndustry.parentId !== null && datum.naceId === targetNaceIndustry.parentId.toString());
+          let grandparentTarget: NACEIndustry | undefined;
+          if (parentTarget && parentTarget.parentId !== null) {
+            grandparentTarget = rawNaceData.find(
+              (datum) =>parentTarget.parentId !== null && datum.naceId === parentTarget.parentId.toString());
+          } else {
+            grandparentTarget = undefined;
+          }
           csvData.push({
-            naceId,
-            industryName: targetNaceIndustry.name,
-            avgViability, avgAttractiveness,
-            rcaDirection: rca,
+            'NACE Code': targetNaceIndustry.code,
+            'Industry Name': targetNaceIndustry.name,
+            'Average Viability': avgViability,
+            'Average Attractiveness': avgAttractiveness,
+            'RCA Direction': rca,
+            'Parent Industry Name': parentTarget && parentTarget.name !== null
+                                ? parentTarget.name : '',
+            'Parent Industry NACE Code': parentTarget && parentTarget.code !== null
+                                ? parentTarget.code : '',
+            'Grandparent Industry Name': grandparentTarget && grandparentTarget.name !== null
+                                ? grandparentTarget.name : '',
+            'Grandparent Industry NACE Code': grandparentTarget && grandparentTarget.code !== null
+                                ? grandparentTarget.code : '',
           });
           scatterPlotData.push({
             label: targetNaceIndustry.name,

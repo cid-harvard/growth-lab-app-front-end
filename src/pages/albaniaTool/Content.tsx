@@ -216,11 +216,13 @@ interface Props {
   scatterPlotData: NaceIdEnhancedScatterPlotDatum[];
   scatterPlotDataForDownload: ScatterPlotCSVDatum[];
   scripts: Script[];
+  rawNaceData: NACEIndustry[];
 }
 
 const AlbaniaToolContent = (props: Props) => {
   const {
     naceData, scatterPlotData, scatterPlotDataForDownload, scripts,
+    rawNaceData,
   } = props;
 
   const metaTitle = 'Albania’s Industry Targeting Dashboard | The Growth Lab at Harvard Kennedy School';
@@ -380,6 +382,8 @@ const AlbaniaToolContent = (props: Props) => {
           <ViabilityRadarChart
             industryName={industryName}
             factors={factors}
+            naceId={selectedIndustry.value}
+            rawNaceData={rawNaceData}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
@@ -406,7 +410,12 @@ const AlbaniaToolContent = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <AttractivenessRadarChart industryName={industryName} factors={factors} />
+          <AttractivenessRadarChart
+            industryName={industryName}
+            factors={factors}
+            naceId={selectedIndustry.value}
+            rawNaceData={rawNaceData}
+          />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
             <ParagraphHeader color={colorScheme.quaternary}>{SubSectionEnum.HighRelativeWages}</ParagraphHeader>

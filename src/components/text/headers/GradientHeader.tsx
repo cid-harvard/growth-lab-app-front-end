@@ -124,7 +124,7 @@ const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
   }
 `;
 
-const IntroText = styled.p<{primaryColor: string}>`
+const IntroText = styled.div<{primaryColor: string}>`
   padding: 0 1rem;
   margin-bottom: 2rem;
 
