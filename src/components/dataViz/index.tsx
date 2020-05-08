@@ -129,6 +129,7 @@ type Props = BaseProps & (
     };
     showAverageLines?: boolean;
     averageLineText?: {left?: string, bottom?: string};
+    quadrantLabels?: {I?: string, II?: string, III?: string, IV?: string};
   } |
   {
     vizType: VizType.BarChart;
@@ -178,6 +179,7 @@ const DataViz = (props: Props) => {
           axisMinMax: props.axisMinMax,
           showAverageLines: props.showAverageLines,
           averageLineText: props.averageLineText,
+          quadrantLabels: props.quadrantLabels,
         });
       } else if (props.vizType === VizType.BarChart) {
         createBarChart({

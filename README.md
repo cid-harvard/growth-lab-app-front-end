@@ -208,6 +208,9 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
+      **quadrantLabels** *(optional)*: {**I** *(optional)*: string, **II** *(optional)*: string, **III** *(optional)*: string, **IV** *(optional)*: string};
+
+         Use the new line escape character, `\n`, to indicate when the label text should break to a new line.
 
    - **VizType.RadarChart**
 
@@ -226,6 +229,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
       **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
 
+         Use the new line escape character, `\n`, to indicate when the label text should break to a new line.
 
    - **VizType.GeoMap**
 

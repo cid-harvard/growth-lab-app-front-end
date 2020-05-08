@@ -31,12 +31,13 @@ interface Input {
   };
   showAverageLines?: boolean;
   averageLineText?: {left?: string, bottom?: string};
+  quadrantLabels?: {I?: string, II?: string, III?: string, IV?: string};
 }
 
 export default (input: Input) => {
   const {
     svg, tooltip, data, size, axisLabels, axisMinMax, showAverageLines,
-    averageLineText,
+    averageLineText, quadrantLabels,
   } = input;
 
   const margin = {top: 30, right: 30, bottom: 60, left: 60};
@@ -154,6 +155,58 @@ export default (input: Input) => {
         .style('pointer-events', 'none')
         .text(averageLineText.bottom);
 
+    }
+  }
+
+  const appendQuadrantLabel = (xVal: number, yVal: number, textParts: string[], textAnchor: string) => {
+    const label = container.append('text')
+        .style('text-anchor', textAnchor)
+        .style('opacity', 0.8)
+        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-size', '12px')
+        .style('pointer-events', 'none')
+        .style('dominant-baseline', 'bottom')
+        .attr('x', xVal)
+        .attr('y', yVal);
+
+      label.selectAll('tspan')
+        .data(textParts)
+        .enter()
+        .append('tspan')
+        .text(d => {
+          const text = d;
+          return text !== undefined ? text : '';
+        })
+        .attr('x', xVal)
+        .attr('dx', 0)
+        .attr('dy', (_d, i) => i !== 0 ? 15 : 0);
+
+  };
+
+  if (quadrantLabels !== undefined) {
+    if (quadrantLabels.I !== undefined) {
+      const xVal = width - 4;
+      const yVal = yScale(maxY) + 12;
+      const textParts = (quadrantLabels.I as string).split('\n');
+      appendQuadrantLabel(xVal, yVal, textParts, 'end');
+    }
+    if (quadrantLabels.II !== undefined) {
+      const xVal = xScale(minX) + 4;
+      const yVal = yScale(maxY) + 12;
+      const textParts = (quadrantLabels.II as string).split('\n');
+      appendQuadrantLabel(xVal, yVal, textParts, 'start');
+    }
+    if (quadrantLabels.III !== undefined) {
+      const textParts = (quadrantLabels.III as string).split('\n');
+      const xVal = xScale(minX) + 4;
+      const yVal = yScale(minY) - ((textParts.length - 1) * 15) - 6;
+      appendQuadrantLabel(xVal, yVal, textParts, 'start');
+    }
+    if (quadrantLabels.IV !== undefined) {
+      const textParts = (quadrantLabels.IV as string).split('\n');
+      const xVal = width - 4;
+      const yVal = yScale(minY) - ((textParts.length - 1) * 15) - 6;
+      appendQuadrantLabel(xVal, yVal, textParts, 'end');
     }
   }
 
