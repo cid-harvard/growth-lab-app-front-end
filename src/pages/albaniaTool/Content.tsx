@@ -356,7 +356,7 @@ const AlbaniaToolContent = (props: Props) => {
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>How Strategic is the Industry?</SubSectionHeader>
-            <p
+            <div
               dangerouslySetInnerHTML={{
                 __html: getSubsectionText(SubSectionEnum.Overview, [
                     {key: '<<description>>', value: `<strong>${industryName}</strong>`},
@@ -366,6 +366,8 @@ const AlbaniaToolContent = (props: Props) => {
                     {key: '<<rca_text2>>', value: factors && factors.rcaText2 ? factors.rcaText2 : 'MISSING VALUE'},
                     {key: '<<v_text>>', value: factors && factors.vText ? factors.vText : 'MISSING VALUE'},
                     {key: '<<a_text>>', value: factors && factors.aText ? factors.aText : 'MISSING VALUE'},
+                    {key: '<<description>>', value: `<strong>${industryName}</strong>`},
+                    {key: '<<strategy>>', value: `STRATEGY`},
                   ]),
               }}
             />
@@ -441,7 +443,9 @@ const AlbaniaToolContent = (props: Props) => {
         </div>
         <div>
           <p
-            dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryPotential)}}
+            dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryPotential, [
+                {key: '<<description>>', value: `<strong>${industryName}</strong>`},
+              ])}}
           />
         </div>
         <TwoColumnSection>
@@ -461,7 +465,9 @@ const AlbaniaToolContent = (props: Props) => {
         </div>
         <div>
           <p
-            dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryNow)}}
+            dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryNow, [
+                {key: '<<description>>', value: `<strong>${industryName}</strong>`},
+                ])}}
           />
         </div>
         <TwoColumnSection>
@@ -545,13 +551,7 @@ const AlbaniaToolContent = (props: Props) => {
 
   const introText = (
     <StyledP
-      dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction, [{
-        key: '<link to growth story>',
-        value: '(<a href="https://albania.growthlab.cid.harvard.edu/">View the Country Research</a>)',
-      }, {
-        key: 'here <insert link>',
-        value: '<a href="https://albania.growthlab.cid.harvard.edu/">here</a>',
-      }])}}
+      dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction)}}
     />
   );
 
