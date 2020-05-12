@@ -374,8 +374,8 @@ const AlbaniaToolContent = (props: Props) => {
                     {key: '<<rca_text2>>', value: factors && factors.rcaText2 ? factors.rcaText2 : 'MISSING VALUE'},
                     {key: '<<v_text>>', value: factors && factors.vText ? factors.vText : 'MISSING VALUE'},
                     {key: '<<a_text>>', value: factors && factors.aText ? factors.aText : 'MISSING VALUE'},
-                    {key: '<<description>>',
-                     value: `<strong style="text-transform: lowercase">${industryName}</strong>`},
+                    {key: '<strong><<description>></strong>',
+                     value: `<span style="text-transform: lowercase">${industryName}</span>`},
                     {key: '<<strategy>>', value: strategy},
                   ]),
               }}
