@@ -21,6 +21,7 @@ export interface Factors {
   aText: string | null;
   rcaText1: string | null;
   rcaText2: string | null;
+  strategy: string | null;
 }
 
 export interface FactorsEdge {

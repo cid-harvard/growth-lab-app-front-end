@@ -82,6 +82,7 @@ const GET_DATA_FOR_NACE_ID = gql`
             aText
             rcaText1
             rcaText2
+            strategy
           }
         }
       }
@@ -327,6 +328,7 @@ const AlbaniaToolContent = (props: Props) => {
       occupationNode: industryNowOccupationNode,
       nearbyIndustryEdge: industryNowNearestIndustryEdge,
     });
+    const strategy = factors && factors.strategy ? factors.strategy : '';
     content = (
       <>
         <div id={'overview'}>
@@ -367,7 +369,7 @@ const AlbaniaToolContent = (props: Props) => {
                     {key: '<<v_text>>', value: factors && factors.vText ? factors.vText : 'MISSING VALUE'},
                     {key: '<<a_text>>', value: factors && factors.aText ? factors.aText : 'MISSING VALUE'},
                     {key: '<<description>>', value: `<strong>${industryName}</strong>`},
-                    {key: '<<strategy>>', value: `STRATEGY`},
+                    {key: '<<strategy>>', value: strategy},
                   ]),
               }}
             />
