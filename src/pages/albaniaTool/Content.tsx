@@ -355,6 +355,12 @@ const AlbaniaToolContent = (props: Props) => {
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
             jsonToDownload={scatterPlotDataForDownload}
+            quadrantLabels={{
+              I: 'Most strategic\nfor investment\npromotion',
+              II: 'Strategic if\nviability can\nbe improved',
+              III: 'Least strategic\nfor investment\npromotion',
+              IV: 'Limited\ngovernment\nsupport\nneeded',
+            }}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.quaternary}>How Strategic is the Industry?</SubSectionHeader>
