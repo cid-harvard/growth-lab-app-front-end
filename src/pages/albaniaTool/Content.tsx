@@ -333,6 +333,11 @@ const AlbaniaToolContent = (props: Props) => {
       <>
         <div id={'overview'}>
           <SectionHeader>{SubSectionEnum.Overview}</SectionHeader>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: getSubsectionText(SubSectionEnum.Overview),
+            }}
+          />
         </div>
         <TwoColumnSection>
           <DataViz
@@ -366,7 +371,7 @@ const AlbaniaToolContent = (props: Props) => {
             <SubSectionHeader color={colorScheme.quaternary}>How Strategic is the Industry?</SubSectionHeader>
             <div
               dangerouslySetInnerHTML={{
-                __html: getSubsectionText(SubSectionEnum.Overview, [
+                __html: getSubsectionText(SubSectionEnum.HowStrategicIsTheIndustry, [
                     {key: '<<description>>', value: `<strong>${industryName}</strong>`},
                     {key: '<<v_text>>', value: factors && factors.vText ? factors.vText : 'MISSING VALUE'},
                     {key: '<<a_text>>', value: factors && factors.aText ? factors.aText : 'MISSING VALUE'},
@@ -374,7 +379,7 @@ const AlbaniaToolContent = (props: Props) => {
                     {key: '<<rca_text2>>', value: factors && factors.rcaText2 ? factors.rcaText2 : 'MISSING VALUE'},
                     {key: '<<v_text>>', value: factors && factors.vText ? factors.vText : 'MISSING VALUE'},
                     {key: '<<a_text>>', value: factors && factors.aText ? factors.aText : 'MISSING VALUE'},
-                    {key: '<strong><<description>></strong>',
+                    {key: '<<description>>',
                      value: `<span style="text-transform: lowercase">${industryName}</span>`},
                     {key: '<<strategy>>', value: strategy},
                   ]),

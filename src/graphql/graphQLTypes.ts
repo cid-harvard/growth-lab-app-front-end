@@ -267,6 +267,7 @@ export enum SectionEnum {
 export enum SubSectionEnum {
   Introduction = 'Introduction',
   Overview = 'Overview',
+  HowStrategicIsTheIndustry = 'How Strategic is the Industry?',
   RCAInAlbania = 'RCA in Albania',
   LowDistanceToIndustry = 'Low Distance to Industry',
   HighFDIToPeerCountries = 'High FDI to Peer Countries',
