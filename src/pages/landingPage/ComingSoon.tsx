@@ -74,6 +74,7 @@ const Container = styled.div`
   z-index:9999;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 `;
 
 export default () => {
@@ -189,9 +190,11 @@ export default () => {
       <Blur />
       <Title>
         <H1>Coming Soon</H1>
-        <H4>Harvard Growth Lab's App</H4>
+        <H4>Harvard Growth Lab’s Digital Applications</H4>
       </Title>
-      <Logo src={LogoIMG} alt={'The Growth at Harvard Center for International Development'} />
+      <a href='https://growthlab.cid.harvard.edu/' target='_blank' rel='noopener noreferrer'>
+        <Logo src={LogoIMG} alt={'The Growth at Harvard Center for International Development'} />
+      </a>
       <Container ref={containerRef}>
         <canvas ref={canvasRef} width='100%' height='100%' />
       </Container>
