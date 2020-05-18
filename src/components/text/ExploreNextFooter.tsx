@@ -4,20 +4,21 @@ import {
   FullWidthFooterContent,
 } from '../../styling/Grid';
 import {
-  secondaryFont,
+  primaryFont,
 } from '../../styling/styleUtils';
 import styled from 'styled-components/macro';
-import GrowthLabLogoPNG from './assets/growth-lab-white.png';
+import GrowthLabLogoPNG from './headers/growth-lab.png';
 import FacebookIconSVG from './assets/facebook.svg';
 import TwitterIconSVG from './assets/twitter.svg';
 import LinkedinIconSVG from './assets/linkedin.svg';
 
 const Root = styled(FullWidthFooter)`
-  color: #fff;
+  color: #333;
 `;
 
 const Container = styled.div`
   padding: 2rem 2rem 2rem;
+  background-color: #e6e6e6;
 `;
 
 const AttributionContainer = styled(Container)`
@@ -28,9 +29,8 @@ const smallMediaWidth = 700; // in px
 
 const Content = styled(FullWidthFooterContent)`
   display: grid;
-  grid-column-gap: 1rem;
-  grid-template-columns: 1fr auto auto 1fr;
-  font-family: ${secondaryFont};
+  grid-column-gap: 2rem;
+  grid-template-columns: 2fr auto auto minmax(auto, 1fr);
 
   @media (max-width: ${smallMediaWidth}px) {
     grid-template-columns: auto 1fr;
@@ -50,9 +50,13 @@ const LogoLink = styled.a`
 `;
 
 const GrowthLabLogo = styled.img`
-  width: 200px;
+  width: 350px;
   max-width: 100%;
   height: 100%;
+
+  @media (max-width: 920px) {
+    width: 280px;
+  }
 `;
 
 const AttributionText = styled.p`
@@ -77,7 +81,7 @@ const CenteredColumn = styled(ColumnOrRow)`
   margin-bottom: 0;
 `;
 
-const SocialColumn = styled(CenteredColumn)`
+const SocialColumn = styled(ColumnOrRow)`
   @media (max-width: ${smallMediaWidth}px) {
     grid-column: 1;
     grid-row: 2;
@@ -85,6 +89,10 @@ const SocialColumn = styled(CenteredColumn)`
 `;
 
 const ExploreNextTitleColumn = styled(ColumnOrRow)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   @media (max-width: ${smallMediaWidth}px) {
     grid-column: 1;
     grid-row: 1;
@@ -99,9 +107,23 @@ const ExploreNextButtonsColumn = styled(ColumnOrRow)`
 `;
 
 const LogoColumn = styled(CenteredColumn)`
+  display: flex;
+  align-items: flex-end;
+
   @media (max-width: ${smallMediaWidth}px) {
     grid-column: 2;
     grid-row: 2;
+  }
+`;
+
+const GrowthLabInfo = styled.small`
+  margin-top: 1rem;
+  width: 350px;
+  max-width: 100%;
+  font-family: ${primaryFont};
+
+  @media (max-width: 920px) {
+    width: 280px;
   }
 `;
 
@@ -124,32 +146,52 @@ const Icon = styled.img`
   max-width: 100%;
 `;
 
-const ExploreNextButton = styled.a<{hoveColor: string}>`
+const ExploreNextButton = styled.a`
   display: block;
   padding: 0.4rem 0.8rem;
   text-transform: uppercase;
   margin-bottom: 0.9rem;
   text-decoration: none;
-  color: #fff;
-  border: solid 1px #fff;
+  color: #333;
+  border: solid 1px #333;
 
   &:hover {
-    background-color: #fff;
-    color: ${({hoveColor}) => hoveColor};
+    background-color: #333;
+    color: #fff;
   }
 
   &:last-child {
     margin-bottom: 0;
   }
 `;
+
+const GitHubLink = styled(ExploreNextButton)`
+  text-transform: none;
+  display: flex;
+  align-items: center;
+`;
+
+const GitHubIcon = styled.img`
+  width: 22px;
+  margin-right: 0.5rem;
+`;
+
 const LicenseAndReadme = styled.p`
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.75rem;
+  padding: 0.5rem;
   text-align: center;
-  margin: 5rem auto 0;
+  background-color: #333;
+  color: #fff;
+  font-size: 0.875rem;
+  margin-bottom: 0;
 
   a {
-    color: rgba(255, 255, 255, 0.8);
+    color: #fff;
+    text-decoration: none;
+    border-bottom: solid 1px transparent;
+
+    &:hover {
+      border-bottom-color: #fff;
+    }
   }
 `;
 
@@ -196,7 +238,6 @@ const ExploreNextFooter = (props: Props) => {
         href={target}
         target='_blank'
         rel='noopener noreferrer'
-        hoveColor={backgroundColor}
         key={target + label}
       >
         {label}
@@ -211,19 +252,8 @@ const ExploreNextFooter = (props: Props) => {
           {attributionsList}
         </FullWidthFooterContent>
       </AttributionContainer>
-      <Container style={{backgroundColor}}>
+      <Container>
         <Content>
-          <SocialColumn>
-            {socialItemsList}
-          </SocialColumn>
-          <ExploreNextTitleColumn>
-            <ExploreNextText>
-              Explore Next <Arrow>→</Arrow>
-            </ExploreNextText>
-          </ExploreNextTitleColumn>
-          <ExploreNextButtonsColumn>
-            {exploreNextList}
-          </ExploreNextButtonsColumn>
           <LogoColumn>
             <LogoLink
               href='https://growthlab.cid.harvard.edu/'
@@ -235,12 +265,36 @@ const ExploreNextFooter = (props: Props) => {
                 alt={'The Growth Lab at Harvard\'s Center for International Development'}
               />
             </LogoLink>
+            <GrowthLabInfo>
+              Center for International Development at Harvard University<br />
+              79 JFK St. | Mailbox 34 | Cambridge, MA 02138<br />
+              617-495-4112 | cid@harvard.edu
+            </GrowthLabInfo>
           </LogoColumn>
+          <ExploreNextTitleColumn>
+            <ExploreNextText>
+              Explore Next <Arrow>→</Arrow>
+            </ExploreNextText>
+            <GitHubLink
+              href='https://github.com/cid-harvard/country-tools-front-end'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <GitHubIcon src={require('./assets/githubicon.svg')} />
+              GitHub Repo
+            </GitHubLink>
+          </ExploreNextTitleColumn>
+          <ExploreNextButtonsColumn>
+            {exploreNextList}
+          </ExploreNextButtonsColumn>
+          <SocialColumn>
+            {socialItemsList}
+          </SocialColumn>
         </Content>
-        <LicenseAndReadme>
-          Harvard Growth Lab’s Country Dashboards are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>. The GitHub repo for the code as well as all the documentation for the Country Dashboards project can be found <a href='https://github.com/cid-harvard/country-tools-front-end' target='_blank' rel='noopener noreferrer'>here</a>.
-        </LicenseAndReadme>
       </Container>
+      <LicenseAndReadme>
+        Harvard Growth Lab’s Country Dashboards are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.
+      </LicenseAndReadme>
     </Root>
   );
 };
