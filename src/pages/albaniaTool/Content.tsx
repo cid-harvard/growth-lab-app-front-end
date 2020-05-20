@@ -37,7 +37,7 @@ import {
     Script,
     SubSectionEnum,
     NACEIndustry,
-} from '../../graphql/graphQLTypes';
+} from './graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import ViabilityRadarChart from './components/ViabilityRadarChart';

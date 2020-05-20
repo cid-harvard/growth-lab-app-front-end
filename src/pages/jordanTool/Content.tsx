@@ -5,6 +5,7 @@ import { Content } from '../../styling/Grid';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import useFetchTestData from './fetchTestData';
+import useFetchData from './fetchData';
 import { TreeNode } from 'react-dropdown-tree-select';
 import DataViz, {VizType} from '../../components/dataViz';
 import {
@@ -37,13 +38,16 @@ export const colorScheme = {
   quaternary: '#ecf0f2',
 };
 
- const JordanTool = () => {
+const JordanTool = () => {
   const metaTitle = 'A Roadmap for Export Diversification: Jordan’s Complexity Profile';
   const metaDescription = 'This tool displays the results of the complexity analysis developed for Jordan by the Growth Lab at Harvard University.';
 
   const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
-  const {data, loading, error} = useFetchTestData({variables: {
+  const {data: testData} = useFetchTestData({variables: {
     id: selectedIndustry ? selectedIndustry.value : null,
+  }});
+  const {data, loading, error} = useFetchData({variables: {
+    id: selectedIndustry ? selectedIndustry.value : '161',
   }});
 
   const [navHeight, setNavHeight] = useState<number>(0);
@@ -63,11 +67,15 @@ export const colorScheme = {
   let header: React.ReactElement<any> = (
     <GradientHeader
       title={metaTitle}
-      hasSearch={false}
+      hasSearch={true}
+      searchLabelText={'To Start Select an Industry:'}
+      imageSrc={JordanLogoSVG}
+      data={[]}
+      onChange={setSelectedIndustry}
+      initialSelectedValue={selectedIndustry}
       imageProps={{
         imgWidth: '150px',
       }}
-      imageSrc={JordanLogoSVG}
       backgroundColor={colorScheme.primary}
       textColor={'#fff'}
       linkColor={'#fff'}
@@ -80,10 +88,12 @@ export const colorScheme = {
   } else if (error) {
     console.error(error);
     content = null;
-  } else if (data !== undefined) {
+  } else if (data !== undefined && testData !== undefined) {
+    const {
+      barChartData, jordanGeoJson, barChartData2, tableColumns, tableData,
+    } = testData;
     const {
       industryData, scatterPlotData, viabilityData, attractivenessData,
-      barChartData, jordanGeoJson, barChartData2, tableColumns, tableData,
     } = data;
     if (industryData) {
       if (selectedIndustry === undefined) {
@@ -97,7 +107,7 @@ export const colorScheme = {
           imageSrc={JordanLogoSVG}
           data={industryData}
           onChange={setSelectedIndustry}
-          initialSelectedValue={industryData[0].children[0]}
+          initialSelectedValue={selectedIndustry}
           imageProps={{
             imgWidth: '150px',
           }}
@@ -125,6 +135,12 @@ export const colorScheme = {
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
+            axisMinMax={{
+              minX: 10,
+              minY: 10,
+              maxX: 40,
+              maxY: 40,
+            }}
             jsonToDownload={scatterPlotData}
           />
           <TextBlock>
@@ -165,7 +181,7 @@ export const colorScheme = {
             vizType={VizType.RadarChart}
             data={viabilityData}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
-            maxValue={100}
+            maxValue={10}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Viability Factors - ' + industryName}
@@ -201,7 +217,7 @@ export const colorScheme = {
             vizType={VizType.RadarChart}
             data={attractivenessData}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
-            maxValue={100}
+            maxValue={10}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Attractiveness Factors - ' + industryName}

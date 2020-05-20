@@ -1,6 +1,6 @@
 import {
   IndustryNowWage,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import { Datum as BarChartDatum } from '../../../components/dataViz/barChart';
 import { colorScheme } from '../Utils';
 import { lightBorderColor } from '../../../styling/styleUtils';

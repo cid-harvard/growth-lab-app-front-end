@@ -2,7 +2,7 @@ import React from 'react';
 import DataViz, {VizType} from '../../../components/dataViz';
 import {
     FDIMarketOvertimeConnection,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import transformStackedBarChartData from '../transformers/transformStackedBarChartData';
 
 interface Props {

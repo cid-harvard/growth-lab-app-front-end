@@ -2,7 +2,7 @@ import {
   Factors,
   NACEIndustry,
   RCADirection,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import { Datum as ScatterPlotDatum } from '../../../components/dataViz/scatterPlot';
 import { TreeNode } from 'react-dropdown-tree-select';
 import {rgba} from 'polished';

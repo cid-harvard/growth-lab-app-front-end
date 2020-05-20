@@ -6,7 +6,7 @@ import {
   Factors,
   Script,
   NACEIndustry,
-} from '../../graphql/graphQLTypes';
+} from './graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import transformNaceData from './transformers/transformNaceData';

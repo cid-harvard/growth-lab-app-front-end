@@ -19,7 +19,7 @@ const JordanToolEntry = () => {
     if (storedKeyVal === process.env.REACT_APP_JORDAN_PASSWORD && storedKeyTimestamp) {
       const d1 = new Date();
       const d2 = new Date(storedKeyTimestamp);
-      if (numDaysBetween(d1, d2) < 1) {
+      if (numDaysBetween(d1, d2) < 30) {
         initialLockedState = false;
       }
     }

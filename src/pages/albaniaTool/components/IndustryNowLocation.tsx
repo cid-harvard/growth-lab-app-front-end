@@ -5,7 +5,7 @@ import {lighten} from 'polished';
 import { colorScheme } from '../Utils';
 import {
     IndustryNowLocation as IndustryNowLocationNode,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import TextBlock from '../../../components/text/TextBlock';
 import ColorScaleLegend from '../../../components/dataViz/ColorScaleLegend';
 import {min, max} from 'd3-array';

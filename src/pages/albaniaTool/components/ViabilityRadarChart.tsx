@@ -4,7 +4,7 @@ import DataViz, {VizType} from '../../../components/dataViz';
 import {
     Factors,
     NACEIndustry,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import { colorScheme } from '../Utils';
 
 interface Props {

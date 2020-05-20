@@ -3,7 +3,7 @@ import {
     FDIMarketOvertimeDestination,
     FDIMarketOvertime,
     FDIMarketOvertimeEdge,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import { colorScheme } from '../Utils';
 
 export default (edgeData: (FDIMarketOvertimeEdge | null)[], naceId: string) => {

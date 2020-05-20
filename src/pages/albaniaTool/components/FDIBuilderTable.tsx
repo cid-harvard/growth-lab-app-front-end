@@ -6,7 +6,7 @@ import PasswordProtectedComponent from '../../../components/text/PasswordProtect
 import {
   FDIMarketConnection,
   FDIMarketOvertimeDestination,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import transformFDITop10List from '../transformers/transformFDITop10List';
 import {
   Column as DynamicTableColumn,

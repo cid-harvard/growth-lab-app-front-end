@@ -1,5 +1,5 @@
 import { TreeNode } from 'react-dropdown-tree-select';
-import { NACEIndustry, NACELevel } from '../../../graphql/graphQLTypes';
+import { NACEIndustry, NACELevel } from '../graphql/graphQLTypes';
 
 const transformNaceData = (rawNaceData: NACEIndustry[]): TreeNode[] => {
   const transformedData: TreeNode[] = [];
