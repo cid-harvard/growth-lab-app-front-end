@@ -30,18 +30,46 @@ import {lighten, rgba} from 'polished';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import JordanLogoSVG from './jordan-dotted-map.svg';
+import {JordanIndustry} from './graphql/graphQLTypes';
+import queryString from 'query-string';
+import { useHistory } from 'react-router';
+import Loading from '../../components/general/Loading';
+import FullPageError from '../../components/general/FullPageError';
 
-const JordanTool = () => {
+interface Props {
+  industryList: TreeNode[];
+  rawIndustryList: JordanIndustry[];
+}
+
+const JordanTool = (props: Props) => {
+  const {
+    industryList, rawIndustryList,
+  } = props;
   const metaTitle = 'A Roadmap for Export Diversification: Jordan’s Complexity Profile';
   const metaDescription = 'This tool displays the results of the complexity analysis developed for Jordan by the Growth Lab at Harvard University.';
 
-  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
+
+  const {location: {pathname, search, hash}, push} = useHistory();
+  const parsedQuery = queryString.parse(search);
+  const industry = parsedQuery.industry ? parsedQuery.industry : '161'; // default to vegetables and melons
+
+  const flattenedChildData: TreeNode[] = [];
+  industryList.forEach(({children}: any) =>
+    children.forEach((child: TreeNode) => flattenedChildData.push(child)));
+
+  const initialSelectedIndustry = flattenedChildData.find(({value}) => value === industry);
+
+  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode>(initialSelectedIndustry as TreeNode);
+  const updateSelectedIndustry = (val: TreeNode) => {
+    setSelectedIndustry(val);
+    push(pathname + '?industry=' + val.value + hash);
+  };
   const {data: testData} = useFetchTestData({variables: {
     id: selectedIndustry ? selectedIndustry.value : null,
   }});
   const {data, loading, error} = useFetchData({variables: {
     id: selectedIndustry ? selectedIndustry.value : '161',
-  }});
+  }, rawIndustryList});
 
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
@@ -57,14 +85,14 @@ const JordanTool = () => {
     navAnchors: links.map(({target}) => target),
   });
 
-  let header: React.ReactElement<any> = (
+  const header: React.ReactElement<any> = (
     <GradientHeader
       title={metaTitle}
       hasSearch={true}
       searchLabelText={'To Start Select an Industry:'}
       imageSrc={JordanLogoSVG}
-      data={[]}
-      onChange={setSelectedIndustry}
+      data={industryList}
+      onChange={updateSelectedIndustry}
       initialSelectedValue={selectedIndustry}
       imageProps={{
         imgWidth: '150px',
@@ -75,42 +103,23 @@ const JordanTool = () => {
     />
   );
   let content: React.ReactElement<any> | null;
-  let nav: React.ReactElement<any> | null = null;
   if (loading) {
-    content = null;
+    content = <Loading />;
   } else if (error) {
     console.error(error);
-    content = null;
+    content = (
+      <FullPageError
+        message={error.message}
+      />
+    );
   } else if (data !== undefined && testData !== undefined) {
     const {
       barChartData, jordanGeoJson, barChartData2, tableColumns, tableData,
     } = testData;
     const {
-      industryData, scatterPlotData, viabilityData, attractivenessData,
+      scatterPlotData, viabilityData, attractivenessData,
       globalTopFdiList, regionTopFdiList,
     } = data;
-    if (industryData) {
-      if (selectedIndustry === undefined) {
-        setSelectedIndustry(industryData[0].children[0]);
-      }
-      header = (
-        <GradientHeader
-          title={metaTitle}
-          hasSearch={true}
-          searchLabelText={'To Start Select an Industry:'}
-          imageSrc={JordanLogoSVG}
-          data={industryData}
-          onChange={setSelectedIndustry}
-          initialSelectedValue={selectedIndustry}
-          imageProps={{
-            imgWidth: '150px',
-          }}
-          backgroundColor={colorScheme.primary}
-          textColor={'#fff'}
-          linkColor={'#fff'}
-        />
-      );
-    }
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
     const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
     const highlighted = scatterPlotNode ? {
@@ -395,17 +404,6 @@ const JordanTool = () => {
         </TwoColumnSection>
       </>
     );
-    nav = (
-      <StickySideNav
-        links={links}
-        backgroundColor={colorScheme.quaternary}
-        borderColor={colorScheme.primary}
-        hoverColor={colorScheme.teriary}
-        borderTopColor={'#fff'}
-        onHeightChange={(h) => setNavHeight(h)}
-        marginTop={stickyHeaderHeight + 'px'}
-      />
-    );
   } else {
     content = null;
   }
@@ -418,7 +416,15 @@ const JordanTool = () => {
         <meta property='og:description' content={metaDescription} />
       </Helmet>
       {header}
-      {nav}
+      <StickySideNav
+        links={links}
+        backgroundColor={colorScheme.quaternary}
+        borderColor={colorScheme.primary}
+        hoverColor={colorScheme.teriary}
+        borderTopColor={'#fff'}
+        onHeightChange={(h) => setNavHeight(h)}
+        marginTop={stickyHeaderHeight + 'px'}
+      />
       <Content>
         <StickySubHeading
           title={selectedIndustry ? selectedIndustry.label : ''}

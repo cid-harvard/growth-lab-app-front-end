@@ -1,5 +1,4 @@
 import raw from 'raw.macro';
-import { TreeNode } from 'react-dropdown-tree-select';
 import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
 import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
 import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
@@ -23,23 +22,8 @@ export const colorScheme = {
   lightGray: '#E0E0E0',
 };
 
-const GET_JORDAN_INDUSTRIES_DATA = gql`
-  query GetJordanData($industryCode: Int!) {
-    jordanIndustryList {
-      industryCode
-      title
-      description
-      keywords
-      factors {
-        edges {
-          node {
-            attractiveness
-            viability
-            rca
-          }
-        }
-      }
-    }
+const GET_JORDAN_INDUSTRY_DATA = gql`
+  query GetJordanIndustryData($industryCode: Int!) {
     jordanIndustry(industryCode: $industryCode) {
       industryCode
       factors {
@@ -83,13 +67,6 @@ const GET_JORDAN_INDUSTRIES_DATA = gql`
 `;
 
 interface SuccessResponse {
-  jordanIndustryList: {
-    industryCode: JordanIndustry['industryCode'];
-    title: JordanIndustry['title'];
-    description: JordanIndustry['description'];
-    keywords: JordanIndustry['keywords'];
-    factors: JordanIndustry['factors'];
-  }[];
   jordanIndustry: {
     industryCode: JordanIndustry['industryCode'];
     factors: JordanIndustry['factors'];
@@ -109,7 +86,7 @@ interface FdiListDatum {
   capitalInvestment: number;
 }
 
-const generateScatterPlotData = (rawDatum: SuccessResponse['jordanIndustryList'], id: string): ScatterPlotDatum[] => {
+const generateScatterPlotData = (rawDatum: JordanIndustry[], id: string): ScatterPlotDatum[] => {
   const transformedData: ScatterPlotDatum[] = [];
   rawDatum.forEach((datum) => {
     const { industryCode, title, keywords, description, factors } = datum;
@@ -141,6 +118,7 @@ const generateScatterPlotData = (rawDatum: SuccessResponse['jordanIndustryList']
 };
 
 interface Input {
+  rawIndustryList: JordanIndustry[];
   variables: {
     id: string,
   };
@@ -150,7 +128,6 @@ interface ReturnValue {
   error: undefined | any;
   loading: boolean;
   data: undefined | {
-    industryData: undefined | TreeNode[];
     scatterPlotData: ScatterPlotDatum[];
     viabilityData: RadarChartDatum[][];
     attractivenessData: RadarChartDatum[][];
@@ -164,7 +141,7 @@ interface ReturnValue {
   };
 }
 
-export default ({variables: {id}}: Input): ReturnValue => {
+export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
   const jordanMapData = JSON.parse(raw('./data/jordanmap.json'));
   const featuresWithValues = jordanMapData.features.map((feature: any, i: number) => {
     const percent = (i + 1) * 7;
@@ -173,45 +150,17 @@ export default ({variables: {id}}: Input): ReturnValue => {
   });
   const jordanGeoJson = {...jordanMapData, features: featuresWithValues};
 
-  const {loading, error, data: rawDatum} = useQuery<SuccessResponse, Variables>(GET_JORDAN_INDUSTRIES_DATA, {
+  const {loading, error, data: rawDatum} = useQuery<SuccessResponse, Variables>(GET_JORDAN_INDUSTRY_DATA, {
     variables: {industryCode: parseInt(id, 10)},
   });
   let data: undefined | ReturnValue['data'];
   if (rawDatum !== undefined) {
     const {
-      jordanIndustryList, jordanIndustry: {
+      jordanIndustry: {
         factors, globalTopFdi: {edges: globalTopFdiEdges}, regionTopFdi: {edges: regionTopFdiEdges},
       },
     } = rawDatum;
     const factorsNode = factors.edges !== null && factors.edges[0] ? factors.edges[0].node : null;
-    const industryData: TreeNode[] = [];
-    jordanIndustryList.forEach(({industryCode, title, description}) => {
-      if (title && description) {
-        const parentIndex = industryData.length
-          ? industryData.findIndex(({value}) => value === description) : -1;
-        if (parentIndex === -1) {
-          // parent does not exist, create new entry
-          industryData.push({
-            label: description,
-            value: description,
-            className: 'no-select-parent',
-            disabled: true,
-            children: [{
-              label: title,
-              value: industryCode,
-              disabled: false,
-            }],
-          });
-        } else {
-          // parent already exists, push to existing parent
-          industryData[parentIndex].children.push({
-            label: title,
-            value: industryCode,
-            disabled: false,
-          });
-        }
-      }
-    });
 
     const viabilityData: RadarChartDatum[] = [];
     const attractivenessData: RadarChartDatum[] = [];
@@ -286,8 +235,7 @@ export default ({variables: {id}}: Input): ReturnValue => {
 
 
     data = {
-      industryData,
-      scatterPlotData: generateScatterPlotData(jordanIndustryList, id),
+      scatterPlotData: generateScatterPlotData(rawIndustryList, id),
       viabilityData: [viabilityData],
       attractivenessData: [attractivenessData],
       fdiBarChartData: [],
