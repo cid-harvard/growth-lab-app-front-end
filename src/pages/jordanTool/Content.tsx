@@ -5,7 +5,7 @@ import { Content } from '../../styling/Grid';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
 import useFetchTestData from './fetchTestData';
-import useFetchData from './fetchData';
+import useFetchData, {colorScheme} from './fetchData';
 import { TreeNode } from 'react-dropdown-tree-select';
 import DataViz, {VizType} from '../../components/dataViz';
 import {
@@ -30,13 +30,6 @@ import {lighten, rgba} from 'polished';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import JordanLogoSVG from './jordan-dotted-map.svg';
-
-export const colorScheme = {
-  primary: '#46899F',
-  secondary: '#E0B04E',
-  teriary: '#9ac5d3',
-  quaternary: '#ecf0f2',
-};
 
 const JordanTool = () => {
   const metaTitle = 'A Roadmap for Export Diversification: Jordan’s Complexity Profile';
@@ -94,6 +87,7 @@ const JordanTool = () => {
     } = testData;
     const {
       industryData, scatterPlotData, viabilityData, attractivenessData,
+      globalTopFdiList, regionTopFdiList,
     } = data;
     if (industryData) {
       if (selectedIndustry === undefined) {
@@ -123,6 +117,12 @@ const JordanTool = () => {
       color: scatterPlotNode.fill ? scatterPlotNode.fill : '#666',
       label: industryName,
     } : undefined;
+    const globalTopFdiListElms = globalTopFdiList.map(({company, sourceCountry, rank}) => (
+        <li key={rank}>{company},<br /><Light>{sourceCountry}</Light></li>
+      ));
+    const regionTopFdiListElms = regionTopFdiList.map(({company, sourceCountry, rank}) => (
+        <li key={rank}>{company},<br /><Light>{sourceCountry}</Light></li>
+      ));
     content = (
       <>
         <TwoColumnSection id={'overview'}>
@@ -264,32 +264,13 @@ const JordanTool = () => {
           />
           <InlineTwoColumnSection>
             <TextBlock>
-              <HeaderWithLegend legendColor={colorScheme.primary}>
+              <HeaderWithLegend legendColor={colorScheme.lightGray}>
                 <div>
                   Top Global FDI Companies
                 </div>
               </HeaderWithLegend>
               <ol>
-                <li>Planet Food World (PFWC), <Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy, <Light>India</Light>
-                </li>
-                <li>Al-Bader International Development, <Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang, <Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group, <Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group, <Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce, <Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms, <Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim, <Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan, <Light>Netherlands</Light>
-                </li>
+                {globalTopFdiListElms}
               </ol>
             </TextBlock>
             <TextBlock>
@@ -299,26 +280,7 @@ const JordanTool = () => {
                 </div>
               </HeaderWithLegend>
               <ol>
-                <li>Planet Food World (PFWC), <Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy, <Light>India</Light>
-                </li>
-                <li>Al-Bader International Development, <Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang, <Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group, <Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group, <Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce, <Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms, <Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim, <Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan, <Light>Netherlands</Light>
-                </li>
+                {regionTopFdiListElms}
               </ol>
             </TextBlock>
           </InlineTwoColumnSection>

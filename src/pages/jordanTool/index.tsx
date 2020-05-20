@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import Content, {colorScheme} from './Content';
+import Content from './Content';
 import PasswordProtectedPage from '../../components/text/PasswordProtectedPage';
+import {colorScheme} from './fetchData';
 
 const numDaysBetween = function(d1: Date, d2: Date) {
   const diff = Math.abs(d1.getTime() - d2.getTime());

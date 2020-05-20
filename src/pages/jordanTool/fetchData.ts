@@ -13,6 +13,15 @@ import {
   JordanIndustry,
 } from './graphql/graphQLTypes';
 import {rgba} from 'polished';
+import sortBy from 'lodash/sortBy';
+
+export const colorScheme = {
+  primary: '#46899F',
+  secondary: '#E0B04E',
+  teriary: '#9ac5d3',
+  quaternary: '#ecf0f2',
+  lightGray: '#E0E0E0',
+};
 
 const GET_JORDAN_INDUSTRIES_DATA = gql`
   query GetJordanData($industryCode: Int!) {
@@ -49,6 +58,26 @@ const GET_JORDAN_INDUSTRIES_DATA = gql`
           }
         }
       }
+      globalTopFdi {
+        edges {
+          node {
+            rank
+            company
+            sourceCountry
+            capitalInvestment
+          }
+        }
+      }
+      regionTopFdi {
+        edges {
+          node {
+            rank
+            company
+            sourceCountry
+            capitalInvestment
+          }
+        }
+      }
     }
   }
 `;
@@ -64,11 +93,20 @@ interface SuccessResponse {
   jordanIndustry: {
     industryCode: JordanIndustry['industryCode'];
     factors: JordanIndustry['factors'];
+    globalTopFdi: JordanIndustry['globalTopFdi'];
+    regionTopFdi: JordanIndustry['regionTopFdi'];
   };
 }
 
 interface Variables {
   industryCode: number;
+}
+
+interface FdiListDatum {
+  rank: number;
+  company: string;
+  sourceCountry: string;
+  capitalInvestment: number;
 }
 
 const generateScatterPlotData = (rawDatum: SuccessResponse['jordanIndustryList'], id: string): ScatterPlotDatum[] => {
@@ -116,7 +154,9 @@ interface ReturnValue {
     scatterPlotData: ScatterPlotDatum[];
     viabilityData: RadarChartDatum[][];
     attractivenessData: RadarChartDatum[][];
-    barChartData: BarChartDatum[][];
+    fdiBarChartData: BarChartDatum[][];
+    globalTopFdiList: FdiListDatum[];
+    regionTopFdiList: FdiListDatum[];
     barChartData2: BarChartDatum[][];
     jordanGeoJson: any;
     tableColumns: DynamicTableColumn[]
@@ -138,7 +178,11 @@ export default ({variables: {id}}: Input): ReturnValue => {
   });
   let data: undefined | ReturnValue['data'];
   if (rawDatum !== undefined) {
-    const { jordanIndustryList, jordanIndustry: {factors} } = rawDatum;
+    const {
+      jordanIndustryList, jordanIndustry: {
+        factors, globalTopFdi: {edges: globalTopFdiEdges}, regionTopFdi: {edges: regionTopFdiEdges},
+      },
+    } = rawDatum;
     const factorsNode = factors.edges !== null && factors.edges[0] ? factors.edges[0].node : null;
     const industryData: TreeNode[] = [];
     jordanIndustryList.forEach(({industryCode, title, description}) => {
@@ -215,12 +259,40 @@ export default ({variables: {id}}: Input): ReturnValue => {
       }
     }
 
+    const globalTopFdiList: FdiListDatum[] = [];
+    globalTopFdiEdges.forEach(edge => {
+      if (edge && edge.node) {
+        const { rank, company, sourceCountry, capitalInvestment } = edge.node;
+        if (company !== null && sourceCountry !== null && capitalInvestment !== null) {
+          globalTopFdiList.push({
+            rank: parseInt(rank, 10),
+            company, sourceCountry, capitalInvestment,
+          });
+        }
+      }
+    });
+    const regionTopFdiList: FdiListDatum[] = [];
+    regionTopFdiEdges.forEach(edge => {
+      if (edge && edge.node) {
+        const { rank, company, sourceCountry, capitalInvestment } = edge.node;
+        if (company !== null && sourceCountry !== null && capitalInvestment !== null) {
+          regionTopFdiList.push({
+            rank: parseInt(rank, 10),
+            company, sourceCountry, capitalInvestment,
+          });
+        }
+      }
+    });
+
+
     data = {
       industryData,
       scatterPlotData: generateScatterPlotData(jordanIndustryList, id),
       viabilityData: [viabilityData],
       attractivenessData: [attractivenessData],
-      barChartData: [],
+      fdiBarChartData: [],
+      globalTopFdiList: sortBy(globalTopFdiList, ['rank']),
+      regionTopFdiList: sortBy(regionTopFdiList, ['rank']),
       barChartData2: [],
       jordanGeoJson,
       tableColumns: [],
