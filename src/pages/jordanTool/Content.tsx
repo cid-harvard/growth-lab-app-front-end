@@ -247,7 +247,7 @@ const JordanTool = (props: Props) => {
             id={'albania-company-bar-chart'}
             vizType={VizType.BarChart}
             data={overTimeHistogramData}
-            axisLabels={{left: 'US$ Millions'}}
+            axisLabels={{left: 'USD'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Identifying Companies - ' + industryName}

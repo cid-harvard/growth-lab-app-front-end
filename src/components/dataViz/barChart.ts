@@ -27,15 +27,15 @@ const ranges = [
   { divider: 1e18 , suffix: 'E' },
   { divider: 1e15 , suffix: 'P' },
   { divider: 1e12 , suffix: 'T' },
-  { divider: 1e9 , suffix: 'G' },
+  { divider: 1e9 , suffix: 'B' },
   { divider: 1e6 , suffix: 'M' },
   { divider: 1e3 , suffix: 'k' },
 ];
 
-const formatNumber = (n: number) => {
+export const formatNumber = (n: number) => {
   for (const range of ranges) {
     if (n >= range.divider) {
-      return (n / range.divider).toString() + range.suffix;
+      return parseFloat((n / range.divider).toFixed(2)).toString() + range.suffix;
     }
   }
   return n.toString();
@@ -47,7 +47,7 @@ export default (input: Input) => {
   const margin = {
     top: 30, right: 30,
     bottom: axisLabels && axisLabels.bottom ? 60 : 30,
-    left: 30};
+    left: 35};
   const width = size.width - margin.left - margin.right;
   const height = size.height - margin.bottom - margin.top;
 
