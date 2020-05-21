@@ -511,7 +511,7 @@ const JordanTool = (props: Props) => {
           },
         ]}
         attributions={[
-          'Growth Lab’s Jordan Research Team:  -----',
+          'Growth Lab’s Jordan Research Team:  Miguel Santos, Timothy O’Brien and Patricio Goldstein',
           'Growth Lab’s Digital Development & Design Team:  Annie White, Brendan Leonard, Nil Tuzcu and Kyle Soeltz.',
         ]}
       />
