@@ -4,7 +4,6 @@ import GradientHeader from '../../components/text/headers/GradientHeader';
 import { Content } from '../../styling/Grid';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
-import useFetchTestData from './fetchTestData';
 import useFetchData, {colorScheme} from './fetchData';
 import { TreeNode } from 'react-dropdown-tree-select';
 import DataViz, {VizType} from '../../components/dataViz';
@@ -64,9 +63,6 @@ const JordanTool = (props: Props) => {
     setSelectedIndustry(val);
     push(pathname + '?industry=' + val.value + hash);
   };
-  const {data: testData} = useFetchTestData({variables: {
-    id: selectedIndustry ? selectedIndustry.value : null,
-  }});
   const {data, loading, error} = useFetchData({variables: {
     id: selectedIndustry ? selectedIndustry.value : '161',
   }, rawIndustryList});
@@ -95,10 +91,7 @@ const JordanTool = (props: Props) => {
         message={error.message}
       />
     );
-  } else if (data !== undefined && testData !== undefined) {
-    const {
-      barChartData,
-    } = testData;
+  } else if (data !== undefined) {
     const {
       scatterPlotData, viabilityData, attractivenessData,
       globalTopFdiList, regionTopFdiList,
@@ -107,7 +100,7 @@ const JordanTool = (props: Props) => {
       schoolTableColumns, schoolTableData,
       occupationTableColumns, occupationTableData,
       jordanGeoJson, jordanMapMinVal, jordanMapMaxVal,
-      wageHistogramData,
+      wageHistogramData, overTimeHistogramData,
     } = data;
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
     const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
@@ -253,12 +246,12 @@ const JordanTool = (props: Props) => {
           <DataViz
             id={'albania-company-bar-chart'}
             vizType={VizType.BarChart}
-            data={barChartData}
+            data={overTimeHistogramData}
             axisLabels={{left: 'US$ Millions'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Identifying Companies - ' + industryName}
-            jsonToDownload={barChartData[0]}
+            jsonToDownload={overTimeHistogramData[0]}
           />
           <InlineTwoColumnSection>
             <TextBlock>

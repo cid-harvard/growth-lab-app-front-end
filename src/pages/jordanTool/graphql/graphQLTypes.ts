@@ -125,6 +125,34 @@ export interface WageHistogramConnection {
   edges: (WageHistogramEdge | null)[];
 }
 
+export enum OverTimeVisualization {
+  FDIBarChart = 'fdi_bar_chart',
+  Histogram = 'histogram',
+}
+
+export enum OverTimeTarget {
+  Global = '1',
+  Mena = '2',
+}
+
+export interface OverTimeHistogram {
+  visualization: OverTimeVisualization;
+  variable: OverTimeTarget;
+  years20042006: number | null;
+  years20072009: number | null;
+  years20102012: number | null;
+  years20132015: number | null;
+  years20162018: number | null;
+}
+
+export interface OverTimeHistogramEdge {
+  node: OverTimeHistogram | null;
+}
+
+export interface OverTimeHistogramConnection {
+  edges: (OverTimeHistogramEdge | null)[];
+}
+
 export interface JordanIndustry {
   industryCode: string;
   title: string | null;
@@ -140,4 +168,5 @@ export interface JordanIndustry {
   occupation: OccupationConnection;
   mapLocation: MapLocationConnection;
   wageHistogram: WageHistogramConnection;
+  overTime: OverTimeHistogramConnection;
 }

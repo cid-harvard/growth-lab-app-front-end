@@ -11,6 +11,7 @@ import {
 import {
   JordanIndustry,
   WageHistogramFacet,
+  OverTimeTarget,
 } from './graphql/graphQLTypes';
 import {rgba} from 'polished';
 import sortBy from 'lodash/sortBy';
@@ -118,6 +119,19 @@ const GET_JORDAN_INDUSTRY_DATA = gql`
           }
         }
       }
+      overTime {
+        edges {
+          node {
+            visualization
+            variable
+            years20042006
+            years20072009
+            years20102012
+            years20132015
+            years20162018
+          }
+        }
+      }
     }
   }
 `;
@@ -133,6 +147,7 @@ interface SuccessResponse {
     occupation: JordanIndustry['occupation'];
     mapLocation: JordanIndustry['mapLocation'];
     wageHistogram: JordanIndustry['wageHistogram'];
+    overTime: JordanIndustry['overTime'];
   };
 }
 
@@ -147,7 +162,7 @@ interface FdiListDatum {
   capitalInvestment: number;
 }
 
-enum wageHistogramXValues {
+enum WageHistogramXValues {
   range0100 = '0-100',
   range100200 = '100-200',
   range200300 = '200-300',
@@ -155,6 +170,14 @@ enum wageHistogramXValues {
   range400500 = '400-500',
   range500600 = '500-600',
   range600Plus = '600+',
+}
+
+enum OverTimeHistogramXValues {
+  years20042006 = '2004-2006',
+  years20072009 = '2007-2009',
+  years20102012 = '2010-2012',
+  years20132015 = '2013-2015',
+  years20162018 = '2016-2018',
 }
 
 const generateScatterPlotData = (rawDatum: JordanIndustry[], id: string): ScatterPlotDatum[] => {
@@ -206,6 +229,7 @@ interface ReturnValue {
     globalTopFdiList: FdiListDatum[];
     regionTopFdiList: FdiListDatum[];
     wageHistogramData: BarChartDatum[][];
+    overTimeHistogramData: BarChartDatum[][];
     jordanGeoJson: any;
     jordanMapMinVal: number;
     jordanMapMaxVal: number;
@@ -234,7 +258,7 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
         factors, globalTopFdi: {edges: globalTopFdiEdges}, regionTopFdi: {edges: regionTopFdiEdges},
         nationality: {edges: nationalityEdges}, schooling: {edges: schoolingEdges},
         occupation: {edges: occupationEdges}, mapLocation: {edges: mapLocationEdges},
-        wageHistogram: {edges: wageHistogramEdges},
+        wageHistogram: {edges: wageHistogramEdges}, overTime: {edges: overTimeHistogramEdges},
       },
     } = rawDatum;
 
@@ -437,43 +461,43 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
 
       const industryData: BarChartDatum[] = [
         {
-          x: wageHistogramXValues.range0100,
+          x: WageHistogramXValues.range0100,
           y: industryrange0100,
           tooltipContent: `Industry: ${industryrange0100}%<br />Country: ${countryrange0100}%`,
           fill: lightBorderColor,
         },
         {
-          x: wageHistogramXValues.range100200,
+          x: WageHistogramXValues.range100200,
           y: industryrange100200,
           tooltipContent: `Industry: ${industryrange100200}%<br />Country: ${countryrange100200}%`,
           fill: lightBorderColor,
         },
         {
-          x: wageHistogramXValues.range200300,
+          x: WageHistogramXValues.range200300,
           y: industryrange200300,
           tooltipContent: `Industry: ${industryrange200300}%<br />Country: ${countryrange200300}%`,
           fill: lightBorderColor,
         },
         {
-          x: wageHistogramXValues.range300400,
+          x: WageHistogramXValues.range300400,
           y: industryrange300400,
           tooltipContent: `Industry: ${industryrange300400}%<br />Country: ${countryrange300400}%`,
           fill: lightBorderColor,
         },
         {
-          x: wageHistogramXValues.range400500,
+          x: WageHistogramXValues.range400500,
           y: industryrange400500,
           tooltipContent: `Industry: ${industryrange400500}%<br />Country: ${countryrange400500}%`,
           fill: lightBorderColor,
         },
         {
-          x: wageHistogramXValues.range500600,
+          x: WageHistogramXValues.range500600,
           y: industryrange500600,
           tooltipContent: `Industry: ${industryrange500600}%<br />Country: ${countryrange500600}%`,
           fill: lightBorderColor,
         },
         {
-          x: wageHistogramXValues.range600Plus,
+          x: WageHistogramXValues.range600Plus,
           y: industryrange600Up,
           tooltipContent: `Industry: ${industryrange600Up}%<br />Country: ${countryrange600Up}%`,
           fill: lightBorderColor,
@@ -482,49 +506,49 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
 
       const countryData: BarChartDatum[] = [
         {
-          x: wageHistogramXValues.range0100,
+          x: WageHistogramXValues.range0100,
           y: countryrange0100,
           tooltipContent: `Industry: ${industryrange0100}%<br />Country: ${countryrange0100}%`,
           fill: 'rgba(0, 0, 0, 0)',
           stroke: colorScheme.primary,
         },
         {
-          x: wageHistogramXValues.range100200,
+          x: WageHistogramXValues.range100200,
           y: countryrange100200,
           tooltipContent: `Industry: ${industryrange100200}%<br />Country: ${countryrange100200}%`,
           fill: 'rgba(0, 0, 0, 0)',
           stroke: colorScheme.primary,
         },
         {
-          x: wageHistogramXValues.range200300,
+          x: WageHistogramXValues.range200300,
           y: countryrange200300,
           tooltipContent: `Industry: ${industryrange200300}%<br />Country: ${countryrange200300}%`,
           fill: 'rgba(0, 0, 0, 0)',
           stroke: colorScheme.primary,
         },
         {
-          x: wageHistogramXValues.range300400,
+          x: WageHistogramXValues.range300400,
           y: countryrange300400,
           tooltipContent: `Industry: ${industryrange300400}%<br />Country: ${countryrange300400}%`,
           fill: 'rgba(0, 0, 0, 0)',
           stroke: colorScheme.primary,
         },
         {
-          x: wageHistogramXValues.range400500,
+          x: WageHistogramXValues.range400500,
           y: countryrange400500,
           tooltipContent: `Industry: ${industryrange400500}%<br />Country: ${countryrange400500}%`,
           fill: 'rgba(0, 0, 0, 0)',
           stroke: colorScheme.primary,
         },
         {
-          x: wageHistogramXValues.range500600,
+          x: WageHistogramXValues.range500600,
           y: countryrange500600,
           tooltipContent: `Industry: ${industryrange500600}%<br />Country: ${countryrange500600}%`,
           fill: 'rgba(0, 0, 0, 0)',
           stroke: colorScheme.primary,
         },
         {
-          x: wageHistogramXValues.range600Plus,
+          x: WageHistogramXValues.range600Plus,
           y: countryrange600Up,
           tooltipContent: `Industry: ${industryrange600Up}%<br />Country: ${countryrange600Up}%`,
           fill: 'rgba(0, 0, 0, 0)',
@@ -533,6 +557,94 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
       ];
       wageHistogramData.push(industryData);
       wageHistogramData.push(countryData);
+    }
+
+    /*****
+      Transform data for OverTime Histogram
+    ******/
+    const overTimeHistogramData: BarChartDatum[][] = [];
+    const menaData = overTimeHistogramEdges.find(e => e && e.node && e.node.variable === OverTimeTarget.Mena);
+    const globalData = overTimeHistogramEdges.find(e => e && e.node && e.node.variable === OverTimeTarget.Global);
+    if (menaData !== null && menaData !== undefined && menaData.node !== null &&
+        globalData !== null && globalData !== undefined && globalData.node !== null) {
+      const menaYears20042006 = menaData.node.years20042006 !== null ? menaData.node.years20042006 : 0;
+      const menaYears20072009 = menaData.node.years20072009 !== null ? menaData.node.years20072009 : 0;
+      const menaYears20102012 = menaData.node.years20102012 !== null ? menaData.node.years20102012 : 0;
+      const menaYears20132015 = menaData.node.years20132015 !== null ? menaData.node.years20132015 : 0;
+      const menaYears20162018 = menaData.node.years20162018 !== null ? menaData.node.years20162018 : 0;
+      const globalYears20042006 = globalData.node.years20042006 !== null ? globalData.node.years20042006 : 0;
+      const globalYears20072009 = globalData.node.years20072009 !== null ? globalData.node.years20072009 : 0;
+      const globalYears20102012 = globalData.node.years20102012 !== null ? globalData.node.years20102012 : 0;
+      const globalYears20132015 = globalData.node.years20132015 !== null ? globalData.node.years20132015 : 0;
+      const globalYears20162018 = globalData.node.years20162018 !== null ? globalData.node.years20162018 : 0;
+
+      const menaBarChartData: BarChartDatum[] = [
+        {
+          x: OverTimeHistogramXValues.years20042006,
+          y: menaYears20042006,
+          tooltipContent: `Industry: ${menaYears20042006.toFixed(2)}<br />Country: ${globalYears20042006.toFixed(2)}`,
+          fill: lightBorderColor,
+        },
+        {
+          x: OverTimeHistogramXValues.years20072009,
+          y: menaYears20072009,
+          tooltipContent: `Industry: ${menaYears20072009.toFixed(2)}<br />Country: ${globalYears20072009.toFixed(2)}`,
+          fill: lightBorderColor,
+        },
+        {
+          x: OverTimeHistogramXValues.years20102012,
+          y: menaYears20102012,
+          tooltipContent: `Industry: ${menaYears20102012.toFixed(2)}<br />Country: ${globalYears20102012.toFixed(2)}`,
+          fill: lightBorderColor,
+        },
+        {
+          x: OverTimeHistogramXValues.years20132015,
+          y: menaYears20132015,
+          tooltipContent: `Industry: ${menaYears20132015.toFixed(2)}<br />Country: ${globalYears20132015.toFixed(2)}`,
+          fill: lightBorderColor,
+        },
+        {
+          x: OverTimeHistogramXValues.years20162018,
+          y: menaYears20162018,
+          tooltipContent: `Industry: ${menaYears20162018.toFixed(2)}<br />Country: ${globalYears20162018.toFixed(2)}`,
+          fill: lightBorderColor,
+        },
+      ];
+
+      const globalBarChartData: BarChartDatum[] = [
+        {
+          x: OverTimeHistogramXValues.years20042006,
+          y: globalYears20042006,
+          tooltipContent: `Industry: ${menaYears20042006.toFixed(2)}<br />Country: ${globalYears20042006.toFixed(2)}`,
+          fill: colorScheme.primary,
+        },
+        {
+          x: OverTimeHistogramXValues.years20072009,
+          y: globalYears20072009,
+          tooltipContent: `Industry: ${menaYears20072009.toFixed(2)}<br />Country: ${globalYears20072009.toFixed(2)}`,
+          fill: colorScheme.primary,
+        },
+        {
+          x: OverTimeHistogramXValues.years20102012,
+          y: globalYears20102012,
+          tooltipContent: `Industry: ${menaYears20102012.toFixed(2)}<br />Country: ${globalYears20102012.toFixed(2)}`,
+          fill: colorScheme.primary,
+        },
+        {
+          x: OverTimeHistogramXValues.years20132015,
+          y: globalYears20132015,
+          tooltipContent: `Industry: ${menaYears20132015.toFixed(2)}<br />Country: ${globalYears20132015.toFixed(2)}`,
+          fill: colorScheme.primary,
+        },
+        {
+          x: OverTimeHistogramXValues.years20162018,
+          y: globalYears20162018,
+          tooltipContent: `Industry: ${menaYears20162018.toFixed(2)}<br />Country: ${globalYears20162018.toFixed(2)}`,
+          fill: colorScheme.primary,
+        },
+      ];
+      overTimeHistogramData.push(menaBarChartData);
+      overTimeHistogramData.push(globalBarChartData);
     }
 
     data = {
@@ -554,6 +666,7 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
       schoolTableData,
       occupationTableColumns,
       occupationTableData,
+      overTimeHistogramData,
     };
   } else {
     data = undefined;
