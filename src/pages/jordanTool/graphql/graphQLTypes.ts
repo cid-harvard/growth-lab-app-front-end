@@ -153,6 +153,28 @@ export interface OverTimeHistogramConnection {
   edges: (OverTimeHistogramEdge | null)[];
 }
 
+export interface Text {
+  occupation: string | null;
+  demographic: string | null;
+  location: string | null;
+  avgWage: string | null;
+  wageHist: string | null;
+  scatter: string | null;
+  schooling: string | null;
+  percentFemale: string | null;
+  percentHighSkill: string | null;
+  female: string | null;
+  highSkill: string | null;
+}
+
+export interface TextEdge {
+  node: Text | null;
+}
+
+export interface TextConnection {
+  edges: (TextEdge | null)[];
+}
+
 export interface JordanIndustry {
   industryCode: string;
   title: string | null;
@@ -169,4 +191,5 @@ export interface JordanIndustry {
   mapLocation: MapLocationConnection;
   wageHistogram: WageHistogramConnection;
   overTime: OverTimeHistogramConnection;
+  text: TextConnection;
 }

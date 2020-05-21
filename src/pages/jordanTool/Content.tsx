@@ -34,6 +34,7 @@ import queryString from 'query-string';
 import { useHistory } from 'react-router';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
+import staticText from './data/staticText';
 
 interface Props {
   industryList: TreeNode[];
@@ -101,6 +102,7 @@ const JordanTool = (props: Props) => {
       occupationTableColumns, occupationTableData,
       jordanGeoJson, jordanMapMinVal, jordanMapMaxVal,
       wageHistogramData, overTimeHistogramData,
+      text,
     } = data;
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
     const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
@@ -116,8 +118,11 @@ const JordanTool = (props: Props) => {
       ));
     content = (
       <>
-        <TwoColumnSection id={'overview'}>
+        <div id={'overview'}>
           <SectionHeader>Overview</SectionHeader>
+          <p>{staticText.overview}</p>
+        </div>
+        <TwoColumnSection>
           <DataViz
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
@@ -136,10 +141,7 @@ const JordanTool = (props: Props) => {
           />
           <TextBlock>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            </p>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {text.scatter}
             </p>
             <HowToReadDots
               items={[
@@ -179,26 +181,36 @@ const JordanTool = (props: Props) => {
             jsonToDownload={viabilityData[0]}
           />
           <TextBlock>
-            <SubSectionHeader color={colorScheme.primary}>Viability Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.primary}>RCA in Jordan</ParagraphHeader>
+            <SubSectionHeader color={colorScheme.primary}>{staticText.viabilityFactors.title}</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.rcaJordan.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.rcaJordan.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>RCA in Peers</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.rcaPeers.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.rcaPeers.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Water Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.waterIntensity.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.waterIntensity.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Electricity Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.electricityIntensity.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.electricityIntensity.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Availability of Inputs</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.availabilityOfInputs.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.availabilityOfInputs.description}
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
@@ -215,34 +227,46 @@ const JordanTool = (props: Props) => {
             jsonToDownload={attractivenessData[0]}
           />
           <TextBlock>
-            <SubSectionHeader color={colorScheme.primary}>Attractiveness Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.primary}>Female Employment Potential</ParagraphHeader>
+            <SubSectionHeader color={colorScheme.primary}>{staticText.attractivenessFactors.title}</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.femaleEmploymentPotential.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.femaleEmploymentPotential.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>High Skill Employment Potential</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.highSkillEmploymentPotential.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.highSkillEmploymentPotential.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>FDI in the World</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.FDIWorld.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.FDIWorld.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>FDI in the Region</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.FDIRegion.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.FDIRegion.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Export Propensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.exportPropensity.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.exportPropensity.description}
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection id={'industry-potential'}>
-          <SectionHeader>Industry potential</SectionHeader>
+          <SectionHeader>{staticText.industryPotential.title}</SectionHeader>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Foreign Direct Investment</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryPotential.fdiTitle}
+          </SectionHeaderSecondary>
           <DataViz
             id={'albania-company-bar-chart'}
             vizType={VizType.BarChart}
@@ -257,7 +281,7 @@ const JordanTool = (props: Props) => {
             <TextBlock>
               <HeaderWithLegend legendColor={colorScheme.lightGray}>
                 <div>
-                  Top Global FDI Companies
+                  {staticText.industryPotential.globalFdi}
                 </div>
               </HeaderWithLegend>
               <ol>
@@ -267,7 +291,7 @@ const JordanTool = (props: Props) => {
             <TextBlock>
               <HeaderWithLegend legendColor={colorScheme.primary}>
                 <div>
-                  Top FDI Investors in MENA
+                  {staticText.industryPotential.menaFdi}
                 </div>
               </HeaderWithLegend>
               <ol>
@@ -278,34 +302,36 @@ const JordanTool = (props: Props) => {
         </TwoColumnSection>
         <TwoColumnSection>
           <BlowoutValue
-            value={'24%'}
+            value={text.percentFemale}
             color={colorScheme.primary}
-            description={'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'}
+            description={text.female}
           />
           <BlowoutValue
-            value={'22%'}
+            value={text.percentHighSkill}
             color={colorScheme.primary}
-            description={'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'}
+            description={text.highSkill}
           />
         </TwoColumnSection>
         <TwoColumnSection id={'industry-now'}>
-          <SectionHeader>Industry Now</SectionHeader>
+          <SectionHeader>{staticText.industryNow.title}</SectionHeader>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Sector Demographics</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.sectorDemographics}
+          </SectionHeaderSecondary>
           <DynamicTable
             columns={sectorTableColumns}
             data={sectorTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p>{text.demographic}</p>
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Location of Workers</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.locationOfWorkers}
+          </SectionHeaderSecondary>
           <DataViz
             id={'albania-geo-map'}
             vizType={VizType.GeoMap}
@@ -314,9 +340,7 @@ const JordanTool = (props: Props) => {
             maxColor={colorScheme.primary}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p>{text.location}</p>
             <ColorScaleLegend
               minLabel={jordanMapMinVal}
               maxLabel={jordanMapMaxVal}
@@ -327,29 +351,29 @@ const JordanTool = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Schooling Distribution</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.schoolingDistribution}
+          </SectionHeaderSecondary>
           <DynamicTable
             columns={schoolTableColumns}
             data={schoolTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p>{text.schooling}</p>
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Industry Wages</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.industryWages}
+          </SectionHeaderSecondary>
           <DynamicTable
             columns={wagesTableColumns}
             data={wagesTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p>{text.avgWage}</p>
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
@@ -360,9 +384,7 @@ const JordanTool = (props: Props) => {
             axisLabels={{left: '% of Workers', bottom: 'Industry Wages (JD)'}}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p>{text.wageHist}</p>
             <Legend
               legendList={[
                 {label: 'Industry', fill: lightBorderColor, stroke: undefined},
@@ -372,16 +394,16 @@ const JordanTool = (props: Props) => {
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Occupation Distribution</SectionHeaderSecondary>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.occupationDistribution}
+          </SectionHeaderSecondary>
           <DynamicTable
             columns={occupationTableColumns}
             data={occupationTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
+            <p>{text.occupation}</p>
           </TextBlock>
         </TwoColumnSection>
       </>
@@ -411,6 +433,7 @@ const JordanTool = (props: Props) => {
         backgroundColor={colorScheme.primary}
         textColor={'#fff'}
         linkColor={'#fff'}
+        introText={<p dangerouslySetInnerHTML={{__html: staticText.intro}} />}
       />
       <StickySideNav
         links={links}

@@ -9,6 +9,7 @@ import {
 } from '../../components/text/DynamicTable';
 import {
   JordanIndustry,
+  Text,
 } from './graphql/graphQLTypes';
 import sortBy from 'lodash/sortBy';
 import generateScatterPlotData from './transformers/transformScatterplotData';
@@ -133,6 +134,23 @@ const GET_JORDAN_INDUSTRY_DATA = gql`
           }
         }
       }
+      text {
+        edges {
+          node {
+            occupation
+            demographic
+            location
+            avgWage
+            wageHist
+            scatter
+            schooling
+            percentFemale
+            percentHighSkill
+            female
+            highSkill
+          }
+        }
+      }
     }
   }
 `;
@@ -149,6 +167,7 @@ interface SuccessResponse {
     mapLocation: JordanIndustry['mapLocation'];
     wageHistogram: JordanIndustry['wageHistogram'];
     overTime: JordanIndustry['overTime'];
+    text: JordanIndustry['text'];
   };
 }
 
@@ -167,6 +186,7 @@ interface ReturnValue {
   error: undefined | any;
   loading: boolean;
   data: undefined | {
+    text: Text;
     scatterPlotData: ScatterPlotDatum[];
     viabilityData: RadarChartDatum[][];
     attractivenessData: RadarChartDatum[][];
@@ -202,8 +222,26 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
         nationality: {edges: nationalityEdges}, schooling: {edges: schoolingEdges},
         occupation: {edges: occupationEdges}, mapLocation: {edges: mapLocationEdges},
         wageHistogram: {edges: wageHistogramEdges}, overTime: {edges: overTimeHistogramEdges},
+        text: {edges: textEdges},
       },
     } = rawDatum;
+
+    /*****
+      Flatten Text into single non-null object
+    ******/
+    const text: Text = textEdges && textEdges[0] && textEdges[0].node ? textEdges[0].node : {
+      occupation: null,
+      demographic: null,
+      location: null,
+      avgWage: null,
+      wageHist: null,
+      scatter: null,
+      schooling: null,
+      percentFemale: null,
+      percentHighSkill: null,
+      female: null,
+      highSkill: null,
+    };
 
     /*****
       Transform Viability and Attractiveness Factors
@@ -241,6 +279,7 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
     const overTimeHistogramData = generateOverTimeHistogramData(overTimeHistogramEdges);
 
     data = {
+      text,
       scatterPlotData: generateScatterPlotData(rawIndustryList, id),
       viabilityData: [viabilityData],
       attractivenessData: [attractivenessData],
