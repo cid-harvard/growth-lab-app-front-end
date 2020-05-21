@@ -20,7 +20,7 @@ export default {
      description: 'Considering that electricity was identified as a binding constraint, the factor places higher weight to industries less intensive on electricity as an input.',
    },
    availabilityOfInputs: {
-     title: 'Availability of Inputs.',
+     title: 'Availability of Inputs',
      description: 'Ranks highly industries where most inputs that are deemed strategic for the industry’s development are available in the local market (either locally produced or imported).',
    },
  },

@@ -94,14 +94,17 @@ const JordanTool = (props: Props) => {
     );
   } else if (data !== undefined) {
     const {
-      scatterPlotData, viabilityData, attractivenessData,
+      scatterPlotData, scatterPlotCsvData,
+      viabilityData, viabilityCsvData,
+      attractivenessData, attractivenessCsvData,
       globalTopFdiList, regionTopFdiList,
       sectorTableColumns, sectorTableData,
       wagesTableColumns, wagesTableData,
       schoolTableColumns, schoolTableData,
       occupationTableColumns, occupationTableData,
       jordanGeoJson, jordanMapMinVal, jordanMapMaxVal,
-      wageHistogramData, overTimeHistogramData,
+      wageHistogramData,
+      overTimeHistogramData, overTimeHistogramCsvData,
       text, control,
     } = data;
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
@@ -125,8 +128,8 @@ const JordanTool = (props: Props) => {
             axisLabels={{left: 'USD'}}
             enablePNGDownload={true}
             enableSVGDownload={true}
-            chartTitle={'Identifying Companies - ' + industryName}
-            jsonToDownload={overTimeHistogramData[0]}
+            chartTitle={'Foreign Direct Investment - ' + industryName}
+            jsonToDownload={overTimeHistogramCsvData}
           />
           <InlineTwoColumnSection>
             <TextBlock>
@@ -302,7 +305,7 @@ const JordanTool = (props: Props) => {
               maxX: 40,
               maxY: 40,
             }}
-            jsonToDownload={scatterPlotData}
+            jsonToDownload={scatterPlotCsvData}
           />
           <TextBlock>
             <p>
@@ -343,7 +346,7 @@ const JordanTool = (props: Props) => {
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Viability Factors - ' + industryName}
-            jsonToDownload={viabilityData[0]}
+            jsonToDownload={[viabilityCsvData]}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.primary}>{staticText.viabilityFactors.title}</SubSectionHeader>
@@ -389,7 +392,7 @@ const JordanTool = (props: Props) => {
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Attractiveness Factors - ' + industryName}
-            jsonToDownload={attractivenessData[0]}
+            jsonToDownload={[attractivenessCsvData]}
           />
           <TextBlock>
             <SubSectionHeader color={colorScheme.primary}>{staticText.attractivenessFactors.title}</SubSectionHeader>

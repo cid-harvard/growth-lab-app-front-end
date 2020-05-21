@@ -5,17 +5,29 @@ import {rgba} from 'polished';
 import { Datum as ScatterPlotDatum } from '../../../components/dataViz/scatterPlot';
 import { TreeNode } from 'react-dropdown-tree-select';
 
+
+export interface CSVDatum {
+  ['Industry Code']: string;
+  ['Theme']: string;
+  ['SubTheme']: string;
+  ['Description']: string;
+  ['Average Viability']: number;
+  ['Average Attractiveness']: number;
+  ['RCA']: number;
+}
+
 interface Input {
   rawDatum: JordanIndustry[];
   id: string;
   setSelectedIndustry: (value: TreeNode) => void;
 }
 
-export default (input: Input): ScatterPlotDatum[] => {
+export default (input: Input): {scatterPlotData: ScatterPlotDatum[], csvData: CSVDatum[]} => {
   const {
     rawDatum, id, setSelectedIndustry,
   } = input;
   const transformedData: ScatterPlotDatum[] = [];
+  const csvData: CSVDatum[] = [];
   rawDatum.forEach((datum) => {
     const { industryCode, title, keywords, description, factors } = datum;
     if (industryCode && title && keywords && description &&
@@ -42,7 +54,16 @@ export default (input: Input): ScatterPlotDatum[] => {
         tooltipContentOnly: true,
         onClick,
       });
+      csvData.push({
+        'Industry Code': industryCode,
+        'Theme': description,
+        'SubTheme': keywords,
+        'Description': title,
+        'Average Viability': x,
+        'Average Attractiveness': y,
+        'RCA': factors.edges[0].node.rca,
+      });
     }
   });
-  return transformedData;
+  return {scatterPlotData: transformedData, csvData};
 };

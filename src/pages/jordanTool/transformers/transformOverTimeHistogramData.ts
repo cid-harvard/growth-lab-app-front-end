@@ -16,6 +16,7 @@ enum OverTimeHistogramXValues {
 
 export default (overTimeHistogramEdges: OverTimeHistogramConnection['edges']) => {
   const overTimeHistogramData: BarChartDatum[][] = [];
+  let overTimeHistogramCsvData: object[] = [];
   const menaData = overTimeHistogramEdges.find(e => e && e.node && e.node.variable === OverTimeTarget.Mena);
   const globalData = overTimeHistogramEdges.find(e => e && e.node && e.node.variable === OverTimeTarget.Global);
   const multiplier = 1000000;
@@ -129,6 +130,24 @@ export default (overTimeHistogramEdges: OverTimeHistogramConnection['edges']) =>
     ];
     overTimeHistogramData.push(menaBarChartData);
     overTimeHistogramData.push(globalBarChartData);
+    overTimeHistogramCsvData = [
+      {
+        'For': 'MENA',
+        '2004-2006': menaYears20042006,
+        '2007-2009': menaYears20072009,
+        '2010-2012': menaYears20102012,
+        '2013-2015': menaYears20132015,
+        '2016-2018': menaYears20162018,
+      },
+      {
+        'For': 'Global',
+        '2004-2006': globalYears20042006,
+        '2007-2009': globalYears20072009,
+        '2010-2012': globalYears20102012,
+        '2013-2015': globalYears20132015,
+        '2016-2018': globalYears20162018,
+      },
+    ];
   }
-  return overTimeHistogramData;
+  return {overTimeHistogramData, overTimeHistogramCsvData};
 };

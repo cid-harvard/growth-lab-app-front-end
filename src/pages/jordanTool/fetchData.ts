@@ -12,7 +12,9 @@ import {
   Text,
 } from './graphql/graphQLTypes';
 import sortBy from 'lodash/sortBy';
-import generateScatterPlotData from './transformers/transformScatterplotData';
+import generateScatterPlotData, {
+  CSVDatum as ScatterPlotCsvDatum,
+} from './transformers/transformScatterplotData';
 import generateRadarChartData from './transformers/transformRadarChartData';
 import generateFdiListsData, {FdiListDatum} from './transformers/transformFdiListsData';
 import generateIndustryNowTableData from './transformers/transformIndustryNowTableData';
@@ -33,6 +35,9 @@ const GET_JORDAN_INDUSTRY_DATA = gql`
   query GetJordanIndustryData($industryCode: Int!) {
     jordanIndustry(industryCode: $industryCode) {
       industryCode
+      title
+      description
+      keywords
       factors {
         edges {
           node {
@@ -168,6 +173,9 @@ const GET_JORDAN_INDUSTRY_DATA = gql`
 interface SuccessResponse {
   jordanIndustry: {
     industryCode: JordanIndustry['industryCode'];
+    title: JordanIndustry['title'];
+    description: JordanIndustry['description'];
+    keywords: JordanIndustry['keywords'];
     factors: JordanIndustry['factors'];
     globalTopFdi: JordanIndustry['globalTopFdi'];
     regionTopFdi: JordanIndustry['regionTopFdi'];
@@ -206,13 +214,17 @@ interface ReturnValue {
   data: undefined | {
     text: Text;
     scatterPlotData: ScatterPlotDatum[];
+    scatterPlotCsvData: ScatterPlotCsvDatum[];
     viabilityData: RadarChartDatum[][];
+    viabilityCsvData: object;
     attractivenessData: RadarChartDatum[][];
+    attractivenessCsvData: object;
     fdiBarChartData: BarChartDatum[][];
     globalTopFdiList: FdiListDatum[];
     regionTopFdiList: FdiListDatum[];
     wageHistogramData: BarChartDatum[][];
     overTimeHistogramData: BarChartDatum[][];
+    overTimeHistogramCsvData: object[];
     jordanGeoJson: any;
     jordanMapMinVal: number;
     jordanMapMaxVal: number;
@@ -237,6 +249,7 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
   if (rawDatum !== undefined) {
     const {
       jordanIndustry: {
+        industryCode, title, description, keywords,
         factors, globalTopFdi: {edges: globalTopFdiEdges}, regionTopFdi: {edges: regionTopFdiEdges},
         nationality: {edges: nationalityEdges}, schooling: {edges: schoolingEdges},
         occupation: {edges: occupationEdges}, mapLocation: {edges: mapLocationEdges},
@@ -265,7 +278,16 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
     /*****
       Transform Viability and Attractiveness Factors
     ******/
-    const {viabilityData, attractivenessData} = generateRadarChartData(factors);
+    const basicCsvDatum = {
+      'Industry Code': industryCode,
+      'Theme': description,
+      'SubTheme': keywords,
+      'Description': title,
+    };
+    const {
+      viabilityData, viabilityCsvData,
+      attractivenessData, attractivenessCsvData,
+    } = generateRadarChartData(factors);
 
     /*****
       Transform data for Top FDI Lists (Global and Regional)
@@ -295,7 +317,7 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
     /*****
       Transform data for OverTime Histogram
     ******/
-    const overTimeHistogramData = generateOverTimeHistogramData(overTimeHistogramEdges);
+    const {overTimeHistogramData, overTimeHistogramCsvData} = generateOverTimeHistogramData(overTimeHistogramEdges);
 
     /****
       Get Control data
@@ -310,11 +332,18 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
       labor: false,
     };
 
+    const {scatterPlotData, csvData: scatterPlotCsvData} = generateScatterPlotData({
+      rawDatum: rawIndustryList, id, setSelectedIndustry,
+    });
+
     data = {
       text,
-      scatterPlotData: generateScatterPlotData({rawDatum: rawIndustryList, id, setSelectedIndustry}),
+      scatterPlotData,
+      scatterPlotCsvData,
       viabilityData: [viabilityData],
+      viabilityCsvData: {...basicCsvDatum, ...viabilityCsvData},
       attractivenessData: [attractivenessData],
+      attractivenessCsvData: {...basicCsvDatum, ...attractivenessCsvData},
       fdiBarChartData: [],
       globalTopFdiList: sortBy(globalTopFdiList, ['rank']),
       regionTopFdiList: sortBy(regionTopFdiList, ['rank']),
@@ -331,6 +360,7 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
       occupationTableColumns,
       occupationTableData,
       overTimeHistogramData,
+      overTimeHistogramCsvData,
       control,
     };
   } else {
