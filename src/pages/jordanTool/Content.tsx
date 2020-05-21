@@ -66,7 +66,7 @@ const JordanTool = (props: Props) => {
   };
   const {data, loading, error} = useFetchData({variables: {
     id: selectedIndustry ? selectedIndustry.value : '161',
-  }, rawIndustryList});
+  }, rawIndustryList, setSelectedIndustry: updateSelectedIndustry});
 
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);

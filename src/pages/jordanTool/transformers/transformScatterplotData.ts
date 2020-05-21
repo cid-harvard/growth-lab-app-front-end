@@ -3,8 +3,18 @@ import {
 } from '../graphql/graphQLTypes';
 import {rgba} from 'polished';
 import { Datum as ScatterPlotDatum } from '../../../components/dataViz/scatterPlot';
+import { TreeNode } from 'react-dropdown-tree-select';
 
-export default (rawDatum: JordanIndustry[], id: string): ScatterPlotDatum[] => {
+interface Input {
+  rawDatum: JordanIndustry[];
+  id: string;
+  setSelectedIndustry: (value: TreeNode) => void;
+}
+
+export default (input: Input): ScatterPlotDatum[] => {
+  const {
+    rawDatum, id, setSelectedIndustry,
+  } = input;
   const transformedData: ScatterPlotDatum[] = [];
   rawDatum.forEach((datum) => {
     const { industryCode, title, keywords, description, factors } = datum;
@@ -16,6 +26,7 @@ export default (rawDatum: JordanIndustry[], id: string): ScatterPlotDatum[] => {
       const color = factors.edges[0].node.rca < 1 ? '#46899F' : '#E0B04E';
       const x = factors.edges[0].node.viability;
       const y = factors.edges[0].node.attractiveness;
+      const onClick = () => setSelectedIndustry({value: industryCode, label: title });
       transformedData.push({
         label: title,
         x,
@@ -29,6 +40,7 @@ export default (rawDatum: JordanIndustry[], id: string): ScatterPlotDatum[] => {
           '<br /><strong>Viability:</strong> ' + x +
           '<br /><strong>Attractiveness:</strong> ' + y,
         tooltipContentOnly: true,
+        onClick,
       });
     }
   });

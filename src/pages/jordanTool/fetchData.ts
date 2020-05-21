@@ -19,6 +19,7 @@ import generateIndustryNowTableData from './transformers/transformIndustryNowTab
 import generateGeoJsonData from './transformers/transformGeoJsonData';
 import generateWageHistogramData from './transformers/transformWageHistogramData';
 import generateOverTimeHistogramData from './transformers/transformOverTimeHistogramData';
+import { TreeNode } from 'react-dropdown-tree-select';
 
 export const colorScheme = {
   primary: '#46899F',
@@ -190,6 +191,7 @@ interface Input {
   variables: {
     id: string,
   };
+  setSelectedIndustry: (value: TreeNode) => void;
 }
 
 interface Control {
@@ -226,7 +228,7 @@ interface ReturnValue {
   };
 }
 
-export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
+export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input): ReturnValue => {
 
   const {loading, error, data: rawDatum} = useQuery<SuccessResponse, Variables>(GET_JORDAN_INDUSTRY_DATA, {
     variables: {industryCode: parseInt(id, 10)},
@@ -310,7 +312,7 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
 
     data = {
       text,
-      scatterPlotData: generateScatterPlotData(rawIndustryList, id),
+      scatterPlotData: generateScatterPlotData({rawDatum: rawIndustryList, id, setSelectedIndustry}),
       viabilityData: [viabilityData],
       attractivenessData: [attractivenessData],
       fdiBarChartData: [],
