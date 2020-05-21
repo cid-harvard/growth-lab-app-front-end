@@ -175,6 +175,20 @@ export interface TextConnection {
   edges: (TextEdge | null)[];
 }
 
+export interface Control {
+  labor: number | null;
+  women: number | null;
+  fdi: number | null;
+}
+
+export interface ControlEdge {
+  node: Control | null;
+}
+
+export interface ControlConnection {
+  edges: (ControlEdge | null)[];
+}
+
 export interface JordanIndustry {
   industryCode: string;
   title: string | null;
@@ -192,4 +206,5 @@ export interface JordanIndustry {
   wageHistogram: WageHistogramConnection;
   overTime: OverTimeHistogramConnection;
   text: TextConnection;
+  control: ControlConnection;
 }

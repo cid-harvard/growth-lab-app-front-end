@@ -23,7 +23,7 @@ import Legend from '../../components/dataViz/Legend';
 import HowToReadDots from '../../components/dataViz/HowToReadDots';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
-import TextBlock from '../../components/text/TextBlock';
+import TextBlock, {Alignment} from '../../components/text/TextBlock';
 import BlowoutValue from '../../components/text/BlowoutValue';
 import {lighten, rgba} from 'polished';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
@@ -102,7 +102,7 @@ const JordanTool = (props: Props) => {
       occupationTableColumns, occupationTableData,
       jordanGeoJson, jordanMapMinVal, jordanMapMaxVal,
       wageHistogramData, overTimeHistogramData,
-      text,
+      text, control,
     } = data;
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
     const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
@@ -116,6 +116,171 @@ const JordanTool = (props: Props) => {
     const regionTopFdiListElms = regionTopFdiList.map(({company, sourceCountry, rank}) => (
         <li key={rank}>{company},<br /><Light>{sourceCountry}</Light></li>
       ));
+    const fdiBarSection = control.fdi ? (
+        <>
+          <DataViz
+            id={'albania-company-bar-chart'}
+            vizType={VizType.BarChart}
+            data={overTimeHistogramData}
+            axisLabels={{left: 'USD'}}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
+            chartTitle={'Identifying Companies - ' + industryName}
+            jsonToDownload={overTimeHistogramData[0]}
+          />
+          <InlineTwoColumnSection>
+            <TextBlock>
+              <HeaderWithLegend legendColor={colorScheme.lightGray}>
+                <div>
+                  {staticText.industryPotential.globalFdi}
+                </div>
+              </HeaderWithLegend>
+              <ol>
+                {globalTopFdiListElms}
+              </ol>
+            </TextBlock>
+            <TextBlock>
+              <HeaderWithLegend legendColor={colorScheme.primary}>
+                <div>
+                  {staticText.industryPotential.menaFdi}
+                </div>
+              </HeaderWithLegend>
+              <ol>
+                {regionTopFdiListElms}
+              </ol>
+            </TextBlock>
+          </InlineTwoColumnSection>
+        </>
+      ) : (
+        <>
+          <DataViz
+            id={'albania-company-bar-chart'}
+            vizType={VizType.Error}
+            message={'No Data'}
+          />
+          <TextBlock align={Alignment.Center}>
+            <strong>{selectedIndustry.label}</strong> could not be matched with disaggregated data on Foreign Direct Investments.
+          </TextBlock>
+        </>) ;
+    const womenAndHighSkill = control.women ? (
+      <TwoColumnSection>
+        <BlowoutValue
+          value={text.percentFemale}
+          color={colorScheme.primary}
+          description={text.female}
+        />
+        <BlowoutValue
+          value={text.percentHighSkill}
+          color={colorScheme.primary}
+          description={text.highSkill}
+        />
+      </TwoColumnSection>
+    ) : (
+      <p style={{textAlign: 'center'}}>
+        There is not enough data for female labor and high-skilled labor for <strong>{selectedIndustry.label}</strong>.
+      </p>
+    );
+    const industryNow = control.labor ? (
+      <>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.sectorDemographics}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={sectorTableColumns}
+            data={sectorTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.demographic}</p>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.locationOfWorkers}
+          </SectionHeaderSecondary>
+          <DataViz
+            id={'albania-geo-map'}
+            vizType={VizType.GeoMap}
+            data={jordanGeoJson}
+            minColor={lighten(0.5, colorScheme.primary)}
+            maxColor={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.location}</p>
+            <ColorScaleLegend
+              minLabel={jordanMapMinVal}
+              maxLabel={jordanMapMaxVal}
+              minColor={lighten(0.5, colorScheme.primary)}
+              maxColor={colorScheme.primary}
+              title={'Percentage of workers in the industry'}
+            />
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.schoolingDistribution}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={schoolTableColumns}
+            data={schoolTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.schooling}</p>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.industryWages}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={wagesTableColumns}
+            data={wagesTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.avgWage}</p>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <DataViz
+            id={'jordan-company-bar-chart-2'}
+            vizType={VizType.BarChart}
+            data={wageHistogramData}
+            axisLabels={{left: '% of Workers', bottom: 'Industry Wages (JD)'}}
+          />
+          <TextBlock>
+            <p>{text.wageHist}</p>
+            <Legend
+              legendList={[
+                {label: 'Industry', fill: lightBorderColor, stroke: undefined},
+                {label: 'Country', fill: undefined, stroke: colorScheme.primary},
+              ]}
+            />
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.occupationDistribution}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={occupationTableColumns}
+            data={occupationTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.occupation}</p>
+          </TextBlock>
+        </TwoColumnSection>
+      </>
+    ) : (
+      <TextBlock>
+        <p style={{textAlign: 'center'}}>
+          <strong>{selectedIndustry.label}</strong> could not be matched with existing labor markets data, based on 2018 household surveys.
+        </p>
+      </TextBlock>
+    );
     content = (
       <>
         <div id={'overview'}>
@@ -267,145 +432,13 @@ const JordanTool = (props: Props) => {
           <SectionHeaderSecondary color={colorScheme.primary}>
             {staticText.industryPotential.fdiTitle}
           </SectionHeaderSecondary>
-          <DataViz
-            id={'albania-company-bar-chart'}
-            vizType={VizType.BarChart}
-            data={overTimeHistogramData}
-            axisLabels={{left: 'USD'}}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Identifying Companies - ' + industryName}
-            jsonToDownload={overTimeHistogramData[0]}
-          />
-          <InlineTwoColumnSection>
-            <TextBlock>
-              <HeaderWithLegend legendColor={colorScheme.lightGray}>
-                <div>
-                  {staticText.industryPotential.globalFdi}
-                </div>
-              </HeaderWithLegend>
-              <ol>
-                {globalTopFdiListElms}
-              </ol>
-            </TextBlock>
-            <TextBlock>
-              <HeaderWithLegend legendColor={colorScheme.primary}>
-                <div>
-                  {staticText.industryPotential.menaFdi}
-                </div>
-              </HeaderWithLegend>
-              <ol>
-                {regionTopFdiListElms}
-              </ol>
-            </TextBlock>
-          </InlineTwoColumnSection>
+          {fdiBarSection}
         </TwoColumnSection>
-        <TwoColumnSection>
-          <BlowoutValue
-            value={text.percentFemale}
-            color={colorScheme.primary}
-            description={text.female}
-          />
-          <BlowoutValue
-            value={text.percentHighSkill}
-            color={colorScheme.primary}
-            description={text.highSkill}
-          />
-        </TwoColumnSection>
+        {womenAndHighSkill}
         <TwoColumnSection id={'industry-now'}>
           <SectionHeader>{staticText.industryNow.title}</SectionHeader>
         </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>
-            {staticText.industryNow.sectorDemographics}
-          </SectionHeaderSecondary>
-          <DynamicTable
-            columns={sectorTableColumns}
-            data={sectorTableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>{text.demographic}</p>
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>
-            {staticText.industryNow.locationOfWorkers}
-          </SectionHeaderSecondary>
-          <DataViz
-            id={'albania-geo-map'}
-            vizType={VizType.GeoMap}
-            data={jordanGeoJson}
-            minColor={lighten(0.5, colorScheme.primary)}
-            maxColor={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>{text.location}</p>
-            <ColorScaleLegend
-              minLabel={jordanMapMinVal}
-              maxLabel={jordanMapMaxVal}
-              minColor={lighten(0.5, colorScheme.primary)}
-              maxColor={colorScheme.primary}
-              title={'Percentage of workers in the industry'}
-            />
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>
-            {staticText.industryNow.schoolingDistribution}
-          </SectionHeaderSecondary>
-          <DynamicTable
-            columns={schoolTableColumns}
-            data={schoolTableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>{text.schooling}</p>
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>
-            {staticText.industryNow.industryWages}
-          </SectionHeaderSecondary>
-          <DynamicTable
-            columns={wagesTableColumns}
-            data={wagesTableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>{text.avgWage}</p>
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <DataViz
-            id={'jordan-company-bar-chart-2'}
-            vizType={VizType.BarChart}
-            data={wageHistogramData}
-            axisLabels={{left: '% of Workers', bottom: 'Industry Wages (JD)'}}
-          />
-          <TextBlock>
-            <p>{text.wageHist}</p>
-            <Legend
-              legendList={[
-                {label: 'Industry', fill: lightBorderColor, stroke: undefined},
-                {label: 'Country', fill: undefined, stroke: colorScheme.primary},
-              ]}
-            />
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>
-            {staticText.industryNow.occupationDistribution}
-          </SectionHeaderSecondary>
-          <DynamicTable
-            columns={occupationTableColumns}
-            data={occupationTableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>{text.occupation}</p>
-          </TextBlock>
-        </TwoColumnSection>
+        {industryNow}
       </>
     );
   } else {

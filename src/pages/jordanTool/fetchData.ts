@@ -151,6 +151,15 @@ const GET_JORDAN_INDUSTRY_DATA = gql`
           }
         }
       }
+      control {
+        edges {
+          node {
+            labor
+            women
+            fdi
+          }
+        }
+      }
     }
   }
 `;
@@ -168,6 +177,7 @@ interface SuccessResponse {
     wageHistogram: JordanIndustry['wageHistogram'];
     overTime: JordanIndustry['overTime'];
     text: JordanIndustry['text'];
+    control: JordanIndustry['control'];
   };
 }
 
@@ -180,6 +190,12 @@ interface Input {
   variables: {
     id: string,
   };
+}
+
+interface Control {
+  fdi: boolean;
+  women: boolean;
+  labor: boolean;
 }
 
 interface ReturnValue {
@@ -206,6 +222,7 @@ interface ReturnValue {
     schoolTableData: DynamicTableDatum[];
     occupationTableColumns: DynamicTableColumn[];
     occupationTableData: DynamicTableDatum[];
+    control: Control;
   };
 }
 
@@ -222,7 +239,7 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
         nationality: {edges: nationalityEdges}, schooling: {edges: schoolingEdges},
         occupation: {edges: occupationEdges}, mapLocation: {edges: mapLocationEdges},
         wageHistogram: {edges: wageHistogramEdges}, overTime: {edges: overTimeHistogramEdges},
-        text: {edges: textEdges},
+        text: {edges: textEdges}, control: {edges: controlEdges},
       },
     } = rawDatum;
 
@@ -278,6 +295,19 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
     ******/
     const overTimeHistogramData = generateOverTimeHistogramData(overTimeHistogramEdges);
 
+    /****
+      Get Control data
+    ****/
+    const control: Control = controlEdges && controlEdges[0] && controlEdges[0].node ? {
+      fdi: !!(controlEdges[0].node.fdi),
+      women: !!(controlEdges[0].node.women),
+      labor: !!(controlEdges[0].node.labor),
+    } : {
+      fdi: false,
+      women: false,
+      labor: false,
+    };
+
     data = {
       text,
       scatterPlotData: generateScatterPlotData(rawIndustryList, id),
@@ -299,6 +329,7 @@ export default ({variables: {id}, rawIndustryList}: Input): ReturnValue => {
       occupationTableColumns,
       occupationTableData,
       overTimeHistogramData,
+      control,
     };
   } else {
     data = undefined;

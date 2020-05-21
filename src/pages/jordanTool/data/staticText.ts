@@ -5,46 +5,46 @@ export default {
    title: 'Viability Factors',
    rcaJordan: {
      title: 'RCA in Jordan',
-     description: 'The sector’s Revealed Comparative Advantage measures the relative advantage or disadvantage a country has in the production of a certain good or service, based on its weight in the country’s current total employment.'
+     description: 'The sector’s Revealed Comparative Advantage measures the relative advantage or disadvantage a country has in the production of a certain good or service, based on its weight in the country’s current total employment.',
    },
    rcaPeers: {
      title: 'RCA in Peers',
-     description: 'The factor measures the average Revealed Comparative Advantage in peer economies for Jordan, setting a higher ranking for industries that are relatively more prevalent in pre-selected benchmarks.'
+     description: 'The factor measures the average Revealed Comparative Advantage in peer economies for Jordan, setting a higher ranking for industries that are relatively more prevalent in pre-selected benchmarks.',
    },
    waterIntensity: {
      title: 'Water Intensity',
-     description: 'Taking into consideration Jordan’s water scarcity problem, the factor places a higher weight to industries that are less dependent on water supply.'
+     description: 'Taking into consideration Jordan’s water scarcity problem, the factor places a higher weight to industries that are less dependent on water supply.',
    },
    electricityIntensity: {
      title: 'Electricity Intensity',
-     description: 'Considering that electricity was identified as a binding constraint, the factor places higher weight to industries less intensive on electricity as an input.'
+     description: 'Considering that electricity was identified as a binding constraint, the factor places higher weight to industries less intensive on electricity as an input.',
    },
    availabilityOfInputs: {
      title: 'Availability of Inputs.',
-     description: 'Ranks highly industries where most inputs that are deemed strategic for the industry’s development are available in the local market (either locally produced or imported).'
+     description: 'Ranks highly industries where most inputs that are deemed strategic for the industry’s development are available in the local market (either locally produced or imported).',
    },
  },
  attractivenessFactors: {
    title: 'Attractiveness Factors',
    femaleEmploymentPotential: {
      title: 'Female Employment Potential',
-     description: 'Potential the sector has of employing women, considering its current behavior in other economies.'
+     description: 'Potential the sector has of employing women, considering its current behavior in other economies.',
    },
    highSkillEmploymentPotential: {
      title: 'High Skill Employment Potential',
-     description: 'Potential the sector has of employing highly skilled workers, considering its current behavior in other economies.'
+     description: 'Potential the sector has of employing highly skilled workers, considering its current behavior in other economies.',
    },
    FDIWorld: {
      title: 'FDI in the World',
-     description: 'A measure of global FDI flows is considered a proxy for world demand for each industry.'
+     description: 'A measure of global FDI flows is considered a proxy for world demand for each industry.',
    },
    FDIRegion: {
      title: 'FDI in the Region',
-     description: 'A measure of regional FDI flows weights the region’s capacity to attract FDI in the sector.'
+     description: 'A measure of regional FDI flows weights the region’s capacity to attract FDI in the sector.',
    },
    exportPropensity: {
      title: 'Export Propensity',
-     description: 'Measures the probability of exporting of a firm within the industry, considering their behavior in the world.'
+     description: 'Measures the probability of exporting of a firm within the industry, considering their behavior in the world.',
    },
  },
  industryPotential: {
@@ -62,4 +62,4 @@ export default {
    occupationDistribution: 'Occupation Distribution',
  },
 
-}
+};
