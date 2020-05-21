@@ -321,8 +321,8 @@ const JordanTool = (props: Props) => {
             <DynamicTable
               columns={[
                 {label: '', key: 'phase'},
-                {label: 'Intensive (RCA ≥ 1', key: 'intensive'},
-                {label: 'Extensive (RCA < 1', key: 'extensive'},
+                {label: 'Intensive (RCA ≥ 1)', key: 'intensive'},
+                {label: 'Extensive (RCA < 1)', key: 'extensive'},
               ]}
               data={[
                 {phase: 'Phase 0', intensive: 'Above median Attractiveness', extensive: ''},
