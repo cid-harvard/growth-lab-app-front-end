@@ -1,0 +1,103 @@
+import {
+  OverTimeHistogramConnection,
+  OverTimeTarget,
+} from '../graphql/graphQLTypes';
+import {colorScheme} from '../fetchData';
+import { Datum as BarChartDatum } from '../../../components/dataViz/barChart';
+import {lightBorderColor} from '../../../styling/styleUtils';
+
+enum OverTimeHistogramXValues {
+  years20042006 = '2004-2006',
+  years20072009 = '2007-2009',
+  years20102012 = '2010-2012',
+  years20132015 = '2013-2015',
+  years20162018 = '2016-2018',
+}
+
+export default (overTimeHistogramEdges: OverTimeHistogramConnection['edges']) => {
+  const overTimeHistogramData: BarChartDatum[][] = [];
+  const menaData = overTimeHistogramEdges.find(e => e && e.node && e.node.variable === OverTimeTarget.Mena);
+  const globalData = overTimeHistogramEdges.find(e => e && e.node && e.node.variable === OverTimeTarget.Global);
+  if (menaData !== null && menaData !== undefined && menaData.node !== null &&
+      globalData !== null && globalData !== undefined && globalData.node !== null) {
+    const menaYears20042006 = menaData.node.years20042006 !== null ? menaData.node.years20042006 : 0;
+    const menaYears20072009 = menaData.node.years20072009 !== null ? menaData.node.years20072009 : 0;
+    const menaYears20102012 = menaData.node.years20102012 !== null ? menaData.node.years20102012 : 0;
+    const menaYears20132015 = menaData.node.years20132015 !== null ? menaData.node.years20132015 : 0;
+    const menaYears20162018 = menaData.node.years20162018 !== null ? menaData.node.years20162018 : 0;
+    const globalYears20042006 = globalData.node.years20042006 !== null ? globalData.node.years20042006 : 0;
+    const globalYears20072009 = globalData.node.years20072009 !== null ? globalData.node.years20072009 : 0;
+    const globalYears20102012 = globalData.node.years20102012 !== null ? globalData.node.years20102012 : 0;
+    const globalYears20132015 = globalData.node.years20132015 !== null ? globalData.node.years20132015 : 0;
+    const globalYears20162018 = globalData.node.years20162018 !== null ? globalData.node.years20162018 : 0;
+
+    const menaBarChartData: BarChartDatum[] = [
+      {
+        x: OverTimeHistogramXValues.years20042006,
+        y: menaYears20042006,
+        tooltipContent: `Industry: ${menaYears20042006.toFixed(2)}<br />Country: ${globalYears20042006.toFixed(2)}`,
+        fill: lightBorderColor,
+      },
+      {
+        x: OverTimeHistogramXValues.years20072009,
+        y: menaYears20072009,
+        tooltipContent: `Industry: ${menaYears20072009.toFixed(2)}<br />Country: ${globalYears20072009.toFixed(2)}`,
+        fill: lightBorderColor,
+      },
+      {
+        x: OverTimeHistogramXValues.years20102012,
+        y: menaYears20102012,
+        tooltipContent: `Industry: ${menaYears20102012.toFixed(2)}<br />Country: ${globalYears20102012.toFixed(2)}`,
+        fill: lightBorderColor,
+      },
+      {
+        x: OverTimeHistogramXValues.years20132015,
+        y: menaYears20132015,
+        tooltipContent: `Industry: ${menaYears20132015.toFixed(2)}<br />Country: ${globalYears20132015.toFixed(2)}`,
+        fill: lightBorderColor,
+      },
+      {
+        x: OverTimeHistogramXValues.years20162018,
+        y: menaYears20162018,
+        tooltipContent: `Industry: ${menaYears20162018.toFixed(2)}<br />Country: ${globalYears20162018.toFixed(2)}`,
+        fill: lightBorderColor,
+      },
+    ];
+
+    const globalBarChartData: BarChartDatum[] = [
+      {
+        x: OverTimeHistogramXValues.years20042006,
+        y: globalYears20042006,
+        tooltipContent: `Industry: ${menaYears20042006.toFixed(2)}<br />Country: ${globalYears20042006.toFixed(2)}`,
+        fill: colorScheme.primary,
+      },
+      {
+        x: OverTimeHistogramXValues.years20072009,
+        y: globalYears20072009,
+        tooltipContent: `Industry: ${menaYears20072009.toFixed(2)}<br />Country: ${globalYears20072009.toFixed(2)}`,
+        fill: colorScheme.primary,
+      },
+      {
+        x: OverTimeHistogramXValues.years20102012,
+        y: globalYears20102012,
+        tooltipContent: `Industry: ${menaYears20102012.toFixed(2)}<br />Country: ${globalYears20102012.toFixed(2)}`,
+        fill: colorScheme.primary,
+      },
+      {
+        x: OverTimeHistogramXValues.years20132015,
+        y: globalYears20132015,
+        tooltipContent: `Industry: ${menaYears20132015.toFixed(2)}<br />Country: ${globalYears20132015.toFixed(2)}`,
+        fill: colorScheme.primary,
+      },
+      {
+        x: OverTimeHistogramXValues.years20162018,
+        y: globalYears20162018,
+        tooltipContent: `Industry: ${menaYears20162018.toFixed(2)}<br />Country: ${globalYears20162018.toFixed(2)}`,
+        fill: colorScheme.primary,
+      },
+    ];
+    overTimeHistogramData.push(menaBarChartData);
+    overTimeHistogramData.push(globalBarChartData);
+  }
+  return overTimeHistogramData;
+};
