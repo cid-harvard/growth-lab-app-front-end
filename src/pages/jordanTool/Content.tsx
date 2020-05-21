@@ -85,23 +85,6 @@ const JordanTool = (props: Props) => {
     navAnchors: links.map(({target}) => target),
   });
 
-  const header: React.ReactElement<any> = (
-    <GradientHeader
-      title={metaTitle}
-      hasSearch={true}
-      searchLabelText={'To Start Select an Industry:'}
-      imageSrc={JordanLogoSVG}
-      data={industryList}
-      onChange={updateSelectedIndustry}
-      initialSelectedValue={selectedIndustry}
-      imageProps={{
-        imgWidth: '150px',
-      }}
-      backgroundColor={colorScheme.primary}
-      textColor={'#fff'}
-      linkColor={'#fff'}
-    />
-  );
   let content: React.ReactElement<any> | null;
   if (loading) {
     content = <Loading />;
@@ -114,11 +97,17 @@ const JordanTool = (props: Props) => {
     );
   } else if (data !== undefined && testData !== undefined) {
     const {
-      barChartData, jordanGeoJson, barChartData2, tableColumns, tableData,
+      barChartData,
     } = testData;
     const {
       scatterPlotData, viabilityData, attractivenessData,
       globalTopFdiList, regionTopFdiList,
+      sectorTableColumns, sectorTableData,
+      wagesTableColumns, wagesTableData,
+      schoolTableColumns, schoolTableData,
+      occupationTableColumns, occupationTableData,
+      jordanGeoJson, jordanMapMinVal, jordanMapMaxVal,
+      wageHistogramData,
     } = data;
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
     const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
@@ -312,8 +301,8 @@ const JordanTool = (props: Props) => {
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.primary}>Sector Demographics</SectionHeaderSecondary>
           <DynamicTable
-            columns={tableColumns}
-            data={tableData}
+            columns={sectorTableColumns}
+            data={sectorTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
@@ -336,8 +325,8 @@ const JordanTool = (props: Props) => {
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
             </p>
             <ColorScaleLegend
-              minLabel={0.28}
-              maxLabel={30.8}
+              minLabel={jordanMapMinVal}
+              maxLabel={jordanMapMaxVal}
               minColor={lighten(0.5, colorScheme.primary)}
               maxColor={colorScheme.primary}
               title={'Percentage of workers in the industry'}
@@ -347,8 +336,8 @@ const JordanTool = (props: Props) => {
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.primary}>Schooling Distribution</SectionHeaderSecondary>
           <DynamicTable
-            columns={tableColumns}
-            data={tableData}
+            columns={schoolTableColumns}
+            data={schoolTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
@@ -360,8 +349,8 @@ const JordanTool = (props: Props) => {
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.primary}>Industry Wages</SectionHeaderSecondary>
           <DynamicTable
-            columns={tableColumns}
-            data={tableData}
+            columns={wagesTableColumns}
+            data={wagesTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
@@ -372,10 +361,10 @@ const JordanTool = (props: Props) => {
         </TwoColumnSection>
         <TwoColumnSection>
           <DataViz
-            id={'albania-company-bar-chart-2'}
+            id={'jordan-company-bar-chart-2'}
             vizType={VizType.BarChart}
-            data={barChartData2}
-            axisLabels={{left: 'US$ Millions'}}
+            data={wageHistogramData}
+            axisLabels={{left: '% of Workers', bottom: 'Industry Wages (JD)'}}
           />
           <TextBlock>
             <p>
@@ -392,8 +381,8 @@ const JordanTool = (props: Props) => {
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.primary}>Occupation Distribution</SectionHeaderSecondary>
           <DynamicTable
-            columns={tableColumns}
-            data={tableData}
+            columns={occupationTableColumns}
+            data={occupationTableData}
             color={colorScheme.primary}
           />
           <TextBlock>
@@ -415,7 +404,21 @@ const JordanTool = (props: Props) => {
         <meta property='og:title' content={metaTitle} />
         <meta property='og:description' content={metaDescription} />
       </Helmet>
-      {header}
+      <GradientHeader
+        title={metaTitle}
+        hasSearch={true}
+        searchLabelText={'To Start Select an Industry:'}
+        imageSrc={JordanLogoSVG}
+        data={industryList}
+        onChange={updateSelectedIndustry}
+        initialSelectedValue={selectedIndustry}
+        imageProps={{
+          imgWidth: '150px',
+        }}
+        backgroundColor={colorScheme.primary}
+        textColor={'#fff'}
+        linkColor={'#fff'}
+      />
       <StickySideNav
         links={links}
         backgroundColor={colorScheme.quaternary}

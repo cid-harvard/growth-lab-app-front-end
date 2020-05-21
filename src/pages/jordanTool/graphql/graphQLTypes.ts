@@ -42,6 +42,89 @@ export interface TopFDIConnection {
   edges: (TopFDIEdge | null)[];
 }
 
+export interface Nationality {
+  nationality: string;
+  men: string | null;
+  women: string | null;
+  meanwage: string | null;
+  medianwage: string | null;
+}
+
+export interface NationalityEdge {
+  node: Nationality | null;
+}
+
+export interface NationalityConnection {
+  edges: (NationalityEdge | null)[];
+}
+
+export interface Schooling {
+  schooling: string;
+  men: string | null;
+  women: string | null;
+}
+
+export interface SchoolingEdge {
+  node: Schooling | null;
+}
+
+export interface SchoolingConnection {
+  edges: (SchoolingEdge | null)[];
+}
+
+export interface Occupation {
+  occupation: string;
+  men: string | null;
+  women: string | null;
+}
+
+export interface OccupationEdge {
+  node: Occupation | null;
+}
+
+export interface OccupationConnection {
+  edges: (OccupationEdge | null)[];
+}
+
+export interface MapLocation {
+  govCode: string;
+  governorate: string | null;
+  shareState: string | null;
+  shareCountry: string | null;
+}
+
+export interface MapLocationEdge {
+  node: MapLocation | null;
+}
+
+export interface MapLocationConnection {
+  edges: (MapLocationEdge | null)[];
+}
+
+export enum WageHistogramFacet {
+  Industry = 'Industry',
+  Country = 'Country',
+}
+
+export interface WageHistogram {
+  facet: WageHistogramFacet;
+  range0100: number | null;
+  range100200: number | null;
+  range200300: number | null;
+  range300400: number | null;
+  range400500: number | null;
+  range500600: number | null;
+  range600Plus: number | null;
+}
+
+export interface WageHistogramEdge {
+  node: WageHistogram | null;
+}
+
+export interface WageHistogramConnection {
+  edges: (WageHistogramEdge | null)[];
+}
+
 export interface JordanIndustry {
   industryCode: string;
   title: string | null;
@@ -52,4 +135,9 @@ export interface JordanIndustry {
   factors: FactorsConnection;
   globalTopFdi: TopFDIConnection;
   regionTopFdi: TopFDIConnection;
+  nationality: NationalityConnection;
+  schooling: SchoolingConnection;
+  occupation: OccupationConnection;
+  mapLocation: MapLocationConnection;
+  wageHistogram: WageHistogramConnection;
 }

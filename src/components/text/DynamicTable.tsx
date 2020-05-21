@@ -84,6 +84,7 @@ const DynamicTable = (props: Props) => {
       } else {
         borderRight = undefined;
       }
+      const gridColumn = columns.findIndex(c => c.key === key) + 1;
       const style: React.CSSProperties = {
         position: stickFirstCol && j === 0 ? 'sticky' : undefined,
         left: stickFirstCol && j === 0 ? '0' : undefined,
@@ -92,8 +93,8 @@ const DynamicTable = (props: Props) => {
         backgroundColor: gridRow % 2 === 0 || !color ? undefined : rgba(color, 0.2),
         borderBottom: hideGridLines ? 'none' : undefined,
         fontSize,
+        gridColumn,
       };
-      const gridColumn = columns.findIndex(c => c.key === key) + 1;
       if (gridColumn) {
         if (d[key] !== null) {
           return (<Cell style={style} key={(d[key] as string | number).toString() + i + key}>{d[key]}</Cell>);
