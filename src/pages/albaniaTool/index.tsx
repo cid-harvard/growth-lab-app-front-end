@@ -14,7 +14,7 @@ import transformScatterplotData from './transformers/transformScatterplotData';
 
 const GET_ALL_INDUSTRIES = gql`
   query GetAllIndustries {
-    naceIndustryList {
+    naceIndustryList: albaniaNaceIndustryList {
       naceId
       level
       code

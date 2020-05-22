@@ -58,7 +58,7 @@ const StyledP = styled.p`
 
 const GET_DATA_FOR_NACE_ID = gql`
   query GetDataForNaceId($naceId: Int!) {
-    naceIndustry(naceId: $naceId) {
+    naceIndustry: albaniaNaceIndustry(naceId: $naceId) {
       naceId
       name
       code
