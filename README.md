@@ -106,6 +106,16 @@ All of the pages along with their uniquely associated content and functions shou
     </Switch>
    ```
 
+5. Finally you will need to also add the route to `/config/nginx.conf`. This will specify the routes location for when the page is pushed to the server. Without this step, your page will work locally but it will not work on the staging or production servers. To add it, scroll to the bottom of the file where you see `# Country-specific URLs` and add your url to the end of the list. The url *must match* the one added in `src/routing/routes.ts`. For example:
+
+
+   ```conf
+        # Country-specific URLs
+        rewrite ^/albania-tool                      /index.html;
+        rewrite ^/jordan-tool                       /index.html;
+        rewrite ^/your-new-data-viz-dashboard       /index.html;
+   ```
+
 5. With that, your new page should now be running and visible at the route you specified. To build out the page further, use the style utilities and components specified below. You can also create new components, but make sure to follow our [Guidelines For Creating New Components](#componentguidelines).
 
 <a name="styleutilites"/>
@@ -679,7 +689,7 @@ The Country Dashboards utilize GraphQL to make calls for the exact data that is 
 
 The different queries available to Country Dashboards can be viewed here - https://hgl-app-staging.cid-labs.com/graphql
 
-When new queries are added to the GraphQL endpoint, make sure to add the type definitions for their return values at `src/graphql/graphQLTypes.ts`. Keeping the types consistent helps keep the Country Dashboards project easier to develop and less prone to bugs as it continues to expand.
+When new queries are added to the GraphQL endpoint, make sure to add the type definitions for their return values. For each project, create a folder within it's pages directory called `graphql` and add a file called `graphQLTypes.ts`. The folder structure should look something like this - `/src/pages/yourProjectFolder/graphql/graphQLTypes.ts`. Within there you can keep all of the relevant types for the return values for your project's GraphQL queries. Keeping the types consistent helps keep the Country Dashboards project easier to develop and less prone to bugs as it continues to expand.
 
 For more information on using GraphQL, see the official GraphQL documentation here - https://graphql.org/learn/ 
 
