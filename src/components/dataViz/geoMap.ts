@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { baseColor } from '../../styling/styleUtils';
+// import { baseColor } from '../../styling/styleUtils';
 
 interface Dimensions {
   width: number;
@@ -74,8 +74,8 @@ export default (input: Input) => {
       .enter()
      .append('path')
      .attr('d', path)
-     .attr('stroke-width',1)
-     .attr('stroke',baseColor)
+     // .attr('stroke-width',1)
+     // .attr('stroke',baseColor)
      .attr('class','pathClass')
      .on('mousemove', function(d: any) {
        if (d.properties.tooltipContent) {

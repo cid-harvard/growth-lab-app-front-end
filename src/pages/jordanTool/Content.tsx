@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import { Content } from '../../styling/Grid';
 import StickySubHeading from '../../components/text/StickySubHeading';
-import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
+import ExploreNextFooter, {defaultSocialIcons} from '../../components/text/ExploreNextFooter';
 import useFetchData, {colorScheme} from './fetchData';
 import { TreeNode } from 'react-dropdown-tree-select';
 import DataViz, {VizType} from '../../components/dataViz';
@@ -490,20 +490,7 @@ const JordanTool = (props: Props) => {
       </Content>
       <ExploreNextFooter
         backgroundColor={colorScheme.primary}
-        socialItems={[
-          {
-            target: 'https://www.facebook.com/HarvardCID/',
-            type: SocialType.facebook,
-          },
-          {
-            target: 'https://twitter.com/HarvardGrwthLab',
-            type: SocialType.twitter,
-          },
-          {
-            target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
-            type: SocialType.linkedin,
-          },
-        ]}
+        socialItems={defaultSocialIcons}
         exploreNextLinks={[
           {
             label: 'Country Profile',

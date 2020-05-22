@@ -23,7 +23,7 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './assets/albania-logo.svg';
-import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
+import ExploreNextFooter, {defaultSocialIcons} from '../../components/text/ExploreNextFooter';
 import {rgba} from 'polished';
 import {
   updateScatterPlotData,
@@ -610,20 +610,7 @@ const AlbaniaToolContent = (props: Props) => {
       </Content>
       <ExploreNextFooter
         backgroundColor={colorScheme.quaternary}
-        socialItems={[
-          {
-            target: 'https://www.facebook.com/HarvardCID/',
-            type: SocialType.facebook,
-          },
-          {
-            target: 'https://twitter.com/HarvardGrwthLab',
-            type: SocialType.twitter,
-          },
-          {
-            target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
-            type: SocialType.linkedin,
-          },
-        ]}
+        socialItems={defaultSocialIcons}
         exploreNextLinks={[
           {
             label: 'Country Profile',

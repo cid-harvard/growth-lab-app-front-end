@@ -11,6 +11,9 @@ import GrowthLabLogoPNG from './headers/growth-lab.png';
 import FacebookIconSVG from './assets/facebook.svg';
 import TwitterIconSVG from './assets/twitter.svg';
 import LinkedinIconSVG from './assets/linkedin.svg';
+import YouTubeIconSVG from './assets/youtube.svg';
+import ApplePodcastSVG from './assets/applepodcast.svg';
+import { rgba } from 'polished';
 
 const Root = styled(FullWidthFooter)`
   color: #333;
@@ -29,12 +32,13 @@ const smallMediaWidth = 700; // in px
 
 const Content = styled(FullWidthFooterContent)`
   display: grid;
-  grid-column-gap: 2rem;
-  grid-template-columns: 2fr auto auto minmax(auto, 1fr);
+  grid-column-gap: 3rem;
+  grid-template-columns: 2fr auto minmax(auto, 1fr);
 
   @media (max-width: ${smallMediaWidth}px) {
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
+    grid-column-gap: 1.5rem;
   }
 `;
 
@@ -44,18 +48,13 @@ const ColumnOrRow = styled.div`
   margin-bottom: 1rem;
 `;
 
-const LogoLink = styled.a`
-  display: flex;
-  justify-content: flex-end;
-`;
-
 const GrowthLabLogo = styled.img`
-  width: 350px;
+  width: 300px;
   max-width: 100%;
   height: 100%;
 
   @media (max-width: 920px) {
-    width: 280px;
+    width: 250px;
   }
 `;
 
@@ -74,6 +73,7 @@ const ExploreNextText = styled.div`
   justify-content: flex-end;
   align-items: center;
   font-size: 1.2rem;
+  margin-right: 1rem;
 `;
 
 const CenteredColumn = styled(ColumnOrRow)`
@@ -83,53 +83,59 @@ const CenteredColumn = styled(ColumnOrRow)`
 
 const SocialColumn = styled(ColumnOrRow)`
   @media (max-width: ${smallMediaWidth}px) {
-    grid-column: 1;
-    grid-row: 2;
+    grid-column: 2;
+    grid-row: 1;
   }
 `;
 
-const ExploreNextTitleColumn = styled(ColumnOrRow)`
+const RepoColumn = styled(ColumnOrRow)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   @media (max-width: ${smallMediaWidth}px) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    padding: 2rem 0 0;
+    display: flex;
+    align-items: center;;
+  }
+`;
+
+const ExploreNextContainer = styled(FullWidthFooterContent)`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1.25rem 1rem;
+  white-space: nowrap;
+`;
+
+const LogoColumn = styled(CenteredColumn)`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: ${smallMediaWidth}px) {
     grid-column: 1;
     grid-row: 1;
   }
 `;
 
-const ExploreNextButtonsColumn = styled(ColumnOrRow)`
-  @media (max-width: ${smallMediaWidth}px) {
-    grid-column: 2;
-    grid-row: 1;
-  }
-`;
-
-const LogoColumn = styled(CenteredColumn)`
-  display: flex;
-  align-items: flex-end;
-
-  @media (max-width: ${smallMediaWidth}px) {
-    grid-column: 2;
-    grid-row: 2;
-  }
-`;
-
 const GrowthLabInfo = styled.small`
   margin-top: 1rem;
-  width: 350px;
+  width: 300px;
   max-width: 100%;
   font-family: ${primaryFont};
+  font-size: 0.75rem;
 
   @media (max-width: 920px) {
-    width: 280px;
+    width: 250px;
   }
 `;
 
 
 const Arrow = styled.span`
-  margin-left: 1rem;
+  margin-left: 0.35rem;
   font-family: Arial;
 `;
 
@@ -146,22 +152,18 @@ const Icon = styled.img`
   max-width: 100%;
 `;
 
-const ExploreNextButton = styled.a`
+const ExploreNextButton = styled.a<{color: string}>`
   display: block;
-  padding: 0.4rem 0.8rem;
+  padding: 0.55rem 0.8rem;
   text-transform: uppercase;
-  margin-bottom: 0.9rem;
+  margin: 0.4rem 0.9rem;
   text-decoration: none;
-  color: #333;
-  border: solid 1px #333;
+  color: ${({color}) => color};
+  border: solid 1px ${({color}) => color};
 
   &:hover {
-    background-color: #333;
+    background-color: ${({color}) => color};
     color: #fff;
-  }
-
-  &:last-child {
-    margin-bottom: 0;
   }
 `;
 
@@ -169,6 +171,7 @@ const GitHubLink = styled(ExploreNextButton)`
   text-transform: none;
   display: flex;
   align-items: center;
+  padding: 0.3rem 0.8rem;
 `;
 
 const GitHubIcon = styled.img`
@@ -199,12 +202,40 @@ export enum SocialType {
   facebook = 'facebook',
   twitter = 'twitter',
   linkedin = 'linkedin',
+  youtube = 'youtube',
+  applepodcast = 'applepodcast',
 }
+
+
+export const defaultSocialIcons = [
+  {
+    target: 'https://www.facebook.com/HarvardCID/',
+    type: SocialType.facebook,
+  },
+  {
+    target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
+    type: SocialType.linkedin,
+  },
+  {
+    target: 'https://twitter.com/HarvardGrwthLab',
+    type: SocialType.twitter,
+  },
+  {
+    target: 'https://www.youtube.com/user/HarvardCID',
+    type: SocialType.youtube,
+  },
+  {
+    target: 'https://podcasts.apple.com/us/podcast/growth-lab-podcast-series/id1486218164',
+    type: SocialType.applepodcast,
+  },
+];
 
 const socialIcon = {
   facebook: FacebookIconSVG,
   twitter: TwitterIconSVG,
   linkedin: LinkedinIconSVG,
+  youtube: YouTubeIconSVG,
+  applepodcast: ApplePodcastSVG,
 };
 
 interface Props {
@@ -239,14 +270,23 @@ const ExploreNextFooter = (props: Props) => {
         target='_blank'
         rel='noopener noreferrer'
         key={target + label}
+        color={backgroundColor}
       >
-        {label}
+        {label} <Arrow>↗</Arrow>
       </ExploreNextButton>
     );
   });
 
   return (
     <Root>
+      <div style={{backgroundColor: rgba(backgroundColor, 0.2)}}>
+        <ExploreNextContainer>
+          <ExploreNextText style={{color: backgroundColor}}>
+            Explore Next <Arrow>→</Arrow>
+          </ExploreNextText>
+          {exploreNextList}
+        </ExploreNextContainer>
+      </div>
       <AttributionContainer>
         <FullWidthFooterContent style={{color: backgroundColor}}>
           {attributionsList}
@@ -255,7 +295,7 @@ const ExploreNextFooter = (props: Props) => {
       <Container>
         <Content>
           <LogoColumn>
-            <LogoLink
+            <a
               href='https://growthlab.cid.harvard.edu/'
               target='_blank'
               rel='noopener noreferrer'
@@ -264,29 +304,24 @@ const ExploreNextFooter = (props: Props) => {
                 src={GrowthLabLogoPNG}
                 alt={'The Growth Lab at Harvard\'s Center for International Development'}
               />
-            </LogoLink>
+            </a>
             <GrowthLabInfo>
               Center for International Development at Harvard University<br />
               79 JFK St. | Mailbox 34 | Cambridge, MA 02138<br />
               617-495-4112 | cid@harvard.edu
             </GrowthLabInfo>
           </LogoColumn>
-          <ExploreNextTitleColumn>
-            <ExploreNextText>
-              Explore Next <Arrow>→</Arrow>
-            </ExploreNextText>
+          <RepoColumn>
             <GitHubLink
               href='https://github.com/cid-harvard/country-tools-front-end'
               target='_blank'
               rel='noopener noreferrer'
+              color={'#333'}
             >
               <GitHubIcon src={require('./assets/githubicon.svg')} />
               GitHub Repo
             </GitHubLink>
-          </ExploreNextTitleColumn>
-          <ExploreNextButtonsColumn>
-            {exploreNextList}
-          </ExploreNextButtonsColumn>
+          </RepoColumn>
           <SocialColumn>
             {socialItemsList}
           </SocialColumn>
