@@ -3,8 +3,8 @@ import Helmet from 'react-helmet';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import { Content } from '../../styling/Grid';
 import StickySubHeading from '../../components/text/StickySubHeading';
-import ExploreNextFooter, {SocialType} from '../../components/text/ExploreNextFooter';
-import useFetchTestData from './fetchTestData';
+import ExploreNextFooter, {defaultSocialIcons} from '../../components/text/ExploreNextFooter';
+import useFetchData, {colorScheme} from './fetchData';
 import { TreeNode } from 'react-dropdown-tree-select';
 import DataViz, {VizType} from '../../components/dataViz';
 import {
@@ -23,28 +23,50 @@ import Legend from '../../components/dataViz/Legend';
 import HowToReadDots from '../../components/dataViz/HowToReadDots';
 import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
-import TextBlock from '../../components/text/TextBlock';
+import TextBlock, {Alignment} from '../../components/text/TextBlock';
 import BlowoutValue from '../../components/text/BlowoutValue';
 import {lighten, rgba} from 'polished';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import JordanLogoSVG from './jordan-dotted-map.svg';
+import {JordanIndustry} from './graphql/graphQLTypes';
+import queryString from 'query-string';
+import { useHistory } from 'react-router';
+import Loading from '../../components/general/Loading';
+import FullPageError from '../../components/general/FullPageError';
+import staticText from './data/staticText';
 
-export const colorScheme = {
-  primary: '#46899F',
-  secondary: '#E0B04E',
-  teriary: '#9ac5d3',
-  quaternary: '#ecf0f2',
-};
+interface Props {
+  industryList: TreeNode[];
+  rawIndustryList: JordanIndustry[];
+}
 
- const JordanTool = () => {
+const JordanTool = (props: Props) => {
+  const {
+    industryList, rawIndustryList,
+  } = props;
   const metaTitle = 'A Roadmap for Export Diversification: Jordan’s Complexity Profile';
   const metaDescription = 'This tool displays the results of the complexity analysis developed for Jordan by the Growth Lab at Harvard University.';
 
-  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode | undefined>(undefined);
-  const {data, loading, error} = useFetchTestData({variables: {
-    id: selectedIndustry ? selectedIndustry.value : null,
-  }});
+
+  const {location: {pathname, search, hash}, push} = useHistory();
+  const parsedQuery = queryString.parse(search);
+  const industry = parsedQuery.industry ? parsedQuery.industry : '161'; // default to vegetables and melons
+
+  const flattenedChildData: TreeNode[] = [];
+  industryList.forEach(({children}: any) =>
+    children.forEach((child: TreeNode) => flattenedChildData.push(child)));
+
+  const initialSelectedIndustry = flattenedChildData.find(({value}) => value === industry);
+
+  const [selectedIndustry, setSelectedIndustry] = useState<TreeNode>(initialSelectedIndustry as TreeNode);
+  const updateSelectedIndustry = (val: TreeNode) => {
+    setSelectedIndustry(val);
+    push(pathname + '?industry=' + val.value + hash);
+  };
+  const {data, loading, error} = useFetchData({variables: {
+    id: selectedIndustry ? selectedIndustry.value : '161',
+  }, rawIndustryList, setSelectedIndustry: updateSelectedIndustry});
 
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
@@ -60,63 +82,215 @@ export const colorScheme = {
     navAnchors: links.map(({target}) => target),
   });
 
-  let header: React.ReactElement<any> = (
-    <GradientHeader
-      title={metaTitle}
-      hasSearch={false}
-      imageProps={{
-        imgWidth: '150px',
-      }}
-      imageSrc={JordanLogoSVG}
-      backgroundColor={colorScheme.primary}
-      textColor={'#fff'}
-      linkColor={'#fff'}
-    />
-  );
   let content: React.ReactElement<any> | null;
-  let nav: React.ReactElement<any> | null = null;
   if (loading) {
-    content = null;
+    content = <Loading />;
   } else if (error) {
     console.error(error);
-    content = null;
+    content = (
+      <FullPageError
+        message={error.message}
+      />
+    );
   } else if (data !== undefined) {
     const {
-      industryData, scatterPlotData, viabilityData, attractivenessData,
-      barChartData, jordanGeoJson, barChartData2, tableColumns, tableData,
+      scatterPlotData, scatterPlotCsvData,
+      viabilityData, viabilityCsvData,
+      attractivenessData, attractivenessCsvData,
+      globalTopFdiList, regionTopFdiList,
+      sectorTableColumns, sectorTableData,
+      wagesTableColumns, wagesTableData,
+      schoolTableColumns, schoolTableData,
+      occupationTableColumns, occupationTableData,
+      jordanGeoJson, jordanMapMinVal, jordanMapMaxVal,
+      wageHistogramData,
+      overTimeHistogramData, overTimeHistogramCsvData,
+      text, control,
     } = data;
-    if (industryData) {
-      if (selectedIndustry === undefined) {
-        setSelectedIndustry(industryData[0].children[0]);
-      }
-      header = (
-        <GradientHeader
-          title={metaTitle}
-          hasSearch={true}
-          searchLabelText={'To Start Select an Industry:'}
-          imageSrc={JordanLogoSVG}
-          data={industryData}
-          onChange={setSelectedIndustry}
-          initialSelectedValue={industryData[0].children[0]}
-          imageProps={{
-            imgWidth: '150px',
-          }}
-          backgroundColor={colorScheme.primary}
-          textColor={'#fff'}
-          linkColor={'#fff'}
-        />
-      );
-    }
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
     const scatterPlotNode = scatterPlotData.find(({label}) => label === industryName);
     const highlighted = scatterPlotNode ? {
       color: scatterPlotNode.fill ? scatterPlotNode.fill : '#666',
       label: industryName,
     } : undefined;
+    const globalTopFdiListElms = globalTopFdiList.map(({company, sourceCountry, rank}) => (
+        <li key={rank}>{company},<br /><Light>{sourceCountry}</Light></li>
+      ));
+    const regionTopFdiListElms = regionTopFdiList.map(({company, sourceCountry, rank}) => (
+        <li key={rank}>{company},<br /><Light>{sourceCountry}</Light></li>
+      ));
+    const fdiBarSection = control.fdi ? (
+        <>
+          <DataViz
+            id={'albania-company-bar-chart'}
+            vizType={VizType.BarChart}
+            data={overTimeHistogramData}
+            axisLabels={{left: 'USD'}}
+            enablePNGDownload={true}
+            enableSVGDownload={true}
+            chartTitle={'Foreign Direct Investment - ' + industryName}
+            jsonToDownload={overTimeHistogramCsvData}
+          />
+          <InlineTwoColumnSection>
+            <TextBlock>
+              <HeaderWithLegend legendColor={colorScheme.lightGray}>
+                <div>
+                  {staticText.industryPotential.globalFdi}
+                </div>
+              </HeaderWithLegend>
+              <ol>
+                {globalTopFdiListElms}
+              </ol>
+            </TextBlock>
+            <TextBlock>
+              <HeaderWithLegend legendColor={colorScheme.primary}>
+                <div>
+                  {staticText.industryPotential.menaFdi}
+                </div>
+              </HeaderWithLegend>
+              <ol>
+                {regionTopFdiListElms}
+              </ol>
+            </TextBlock>
+          </InlineTwoColumnSection>
+        </>
+      ) : (
+        <>
+          <DataViz
+            id={'albania-company-bar-chart'}
+            vizType={VizType.Error}
+            message={'No Data'}
+          />
+          <TextBlock align={Alignment.Center}>
+            <strong>{selectedIndustry.label}</strong> could not be matched with disaggregated data on Foreign Direct Investments.
+          </TextBlock>
+        </>) ;
+    const womenAndHighSkill = control.women ? (
+      <TwoColumnSection>
+        <BlowoutValue
+          value={text.percentFemale}
+          color={colorScheme.primary}
+          description={text.female}
+        />
+        <BlowoutValue
+          value={text.percentHighSkill}
+          color={colorScheme.primary}
+          description={text.highSkill}
+        />
+      </TwoColumnSection>
+    ) : (
+      <p style={{textAlign: 'center'}}>
+        There is not enough data for female labor and high-skilled labor for <strong>{selectedIndustry.label}</strong>.
+      </p>
+    );
+    const industryNow = control.labor ? (
+      <>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.sectorDemographics}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={sectorTableColumns}
+            data={sectorTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.demographic}</p>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.locationOfWorkers}
+          </SectionHeaderSecondary>
+          <DataViz
+            id={'albania-geo-map'}
+            vizType={VizType.GeoMap}
+            data={jordanGeoJson}
+            minColor={lighten(0.5, colorScheme.primary)}
+            maxColor={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.location}</p>
+            <ColorScaleLegend
+              minLabel={jordanMapMinVal}
+              maxLabel={jordanMapMaxVal}
+              minColor={lighten(0.5, colorScheme.primary)}
+              maxColor={colorScheme.primary}
+              title={'Percentage of workers in the industry'}
+            />
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.schoolingDistribution}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={schoolTableColumns}
+            data={schoolTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.schooling}</p>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.industryWages}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={wagesTableColumns}
+            data={wagesTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.avgWage}</p>
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <DataViz
+            id={'jordan-company-bar-chart-2'}
+            vizType={VizType.BarChart}
+            data={wageHistogramData}
+            axisLabels={{left: '% of Workers', bottom: 'Industry Wages (JD)'}}
+          />
+          <TextBlock>
+            <p>{text.wageHist}</p>
+            <Legend
+              legendList={[
+                {label: 'Industry', fill: lightBorderColor, stroke: undefined},
+                {label: 'Country', fill: undefined, stroke: colorScheme.primary},
+              ]}
+            />
+          </TextBlock>
+        </TwoColumnSection>
+        <TwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryNow.occupationDistribution}
+          </SectionHeaderSecondary>
+          <DynamicTable
+            columns={occupationTableColumns}
+            data={occupationTableData}
+            color={colorScheme.primary}
+          />
+          <TextBlock>
+            <p>{text.occupation}</p>
+          </TextBlock>
+        </TwoColumnSection>
+      </>
+    ) : (
+      <TextBlock>
+        <p style={{textAlign: 'center'}}>
+          <strong>{selectedIndustry.label}</strong> could not be matched with existing labor markets data, based on 2018 household surveys.
+        </p>
+      </TextBlock>
+    );
     content = (
       <>
-        <TwoColumnSection id={'overview'}>
+        <div id={'overview'}>
           <SectionHeader>Overview</SectionHeader>
+          <p>{staticText.overview}</p>
+        </div>
+        <TwoColumnSection>
           <DataViz
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
@@ -125,14 +299,17 @@ export const colorScheme = {
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
-            jsonToDownload={scatterPlotData}
+            axisMinMax={{
+              minX: 10,
+              minY: 10,
+              maxX: 40,
+              maxY: 40,
+            }}
+            jsonToDownload={scatterPlotCsvData}
           />
           <TextBlock>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            </p>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {text.scatter}
             </p>
             <HowToReadDots
               items={[
@@ -144,8 +321,8 @@ export const colorScheme = {
             <DynamicTable
               columns={[
                 {label: '', key: 'phase'},
-                {label: 'Intensive (RCA ≥ 1', key: 'intensive'},
-                {label: 'Extensive (RCA < 1', key: 'extensive'},
+                {label: 'Intensive (RCA ≥ 1)', key: 'intensive'},
+                {label: 'Extensive (RCA < 1)', key: 'extensive'},
               ]}
               data={[
                 {phase: 'Phase 0', intensive: 'Above median Attractiveness', extensive: ''},
@@ -165,33 +342,43 @@ export const colorScheme = {
             vizType={VizType.RadarChart}
             data={viabilityData}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
-            maxValue={100}
+            maxValue={10}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Viability Factors - ' + industryName}
-            jsonToDownload={viabilityData[0]}
+            jsonToDownload={[viabilityCsvData]}
           />
           <TextBlock>
-            <SubSectionHeader color={colorScheme.primary}>Viability Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.primary}>RCA in Jordan</ParagraphHeader>
+            <SubSectionHeader color={colorScheme.primary}>{staticText.viabilityFactors.title}</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.rcaJordan.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.rcaJordan.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>RCA in Peers</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.rcaPeers.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.rcaPeers.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Water Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.waterIntensity.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.waterIntensity.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Electricity Intensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.electricityIntensity.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.electricityIntensity.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Availability of Inputs</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.viabilityFactors.availabilityOfInputs.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.viabilityFactors.availabilityOfInputs.description}
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
@@ -201,232 +388,61 @@ export const colorScheme = {
             vizType={VizType.RadarChart}
             data={attractivenessData}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
-            maxValue={100}
+            maxValue={10}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Attractiveness Factors - ' + industryName}
-            jsonToDownload={attractivenessData[0]}
+            jsonToDownload={[attractivenessCsvData]}
           />
           <TextBlock>
-            <SubSectionHeader color={colorScheme.primary}>Attractiveness Factors</SubSectionHeader>
-            <ParagraphHeader color={colorScheme.primary}>Female Employment Potential</ParagraphHeader>
+            <SubSectionHeader color={colorScheme.primary}>{staticText.attractivenessFactors.title}</SubSectionHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.femaleEmploymentPotential.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.femaleEmploymentPotential.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>High Skill Employment Potential</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.highSkillEmploymentPotential.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.highSkillEmploymentPotential.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>FDI in the World</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.FDIWorld.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.FDIWorld.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>FDI in the Region</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.FDIRegion.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.FDIRegion.description}
             </SmallParagraph>
-            <ParagraphHeader color={colorScheme.primary}>Export Propensity</ParagraphHeader>
+            <ParagraphHeader color={colorScheme.primary}>
+              {staticText.attractivenessFactors.exportPropensity.title}
+            </ParagraphHeader>
             <SmallParagraph>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              {staticText.attractivenessFactors.exportPropensity.description}
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
         <TwoColumnSection id={'industry-potential'}>
-          <SectionHeader>Industry potential</SectionHeader>
+          <SectionHeader>{staticText.industryPotential.title}</SectionHeader>
         </TwoColumnSection>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Foreign Direct Investment</SectionHeaderSecondary>
-          <DataViz
-            id={'albania-company-bar-chart'}
-            vizType={VizType.BarChart}
-            data={barChartData}
-            axisLabels={{left: 'US$ Millions'}}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Identifying Companies - ' + industryName}
-            jsonToDownload={barChartData[0]}
-          />
-          <InlineTwoColumnSection>
-            <TextBlock>
-              <HeaderWithLegend legendColor={colorScheme.primary}>
-                <div>
-                  Top Global FDI Companies
-                </div>
-              </HeaderWithLegend>
-              <ol>
-                <li>Planet Food World (PFWC), <Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy, <Light>India</Light>
-                </li>
-                <li>Al-Bader International Development, <Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang, <Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group, <Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group, <Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce, <Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms, <Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim, <Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan, <Light>Netherlands</Light>
-                </li>
-              </ol>
-            </TextBlock>
-            <TextBlock>
-              <HeaderWithLegend legendColor={colorScheme.primary}>
-                <div>
-                  Top FDI Investors in MENA
-                </div>
-              </HeaderWithLegend>
-              <ol>
-                <li>Planet Food World (PFWC), <Light>Suadi Arabia</Light>
-                </li>
-                <li>Biopalm Energy, <Light>India</Light>
-                </li>
-                <li>Al-Bader International Development, <Light>Kuwait</Light>
-                </li>
-                <li>Heilongjiang Beidahuang, <Light>China</Light>
-                </li>
-                <li>Chongqing Grain Group, <Light>China</Light>
-                </li>
-                <li>Charoen Pokphand Group, <Light>Thailand</Light>
-                </li>
-                <li>Fresh Del Monte Produce, <Light>United States of America</Light>
-                </li>
-                <li>Herakles Farms, <Light>United States of America</Light>
-                </li>
-                <li>Nader &amp; Ebrahim, <Light>Bahrain</Light>
-                </li>
-                <li>Rijk Zwaan, <Light>Netherlands</Light>
-                </li>
-              </ol>
-            </TextBlock>
-          </InlineTwoColumnSection>
+          <SectionHeaderSecondary color={colorScheme.primary}>
+            {staticText.industryPotential.fdiTitle}
+          </SectionHeaderSecondary>
+          {fdiBarSection}
         </TwoColumnSection>
-        <TwoColumnSection>
-          <BlowoutValue
-            value={'24%'}
-            color={colorScheme.primary}
-            description={'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'}
-          />
-          <BlowoutValue
-            value={'22%'}
-            color={colorScheme.primary}
-            description={'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'}
-          />
-        </TwoColumnSection>
+        {womenAndHighSkill}
         <TwoColumnSection id={'industry-now'}>
-          <SectionHeader>Industry Now</SectionHeader>
+          <SectionHeader>{staticText.industryNow.title}</SectionHeader>
         </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Sector Demographics</SectionHeaderSecondary>
-          <DynamicTable
-            columns={tableColumns}
-            data={tableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Location of Workers</SectionHeaderSecondary>
-          <DataViz
-            id={'albania-geo-map'}
-            vizType={VizType.GeoMap}
-            data={jordanGeoJson}
-            minColor={lighten(0.5, colorScheme.primary)}
-            maxColor={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
-            <ColorScaleLegend
-              minLabel={0.28}
-              maxLabel={30.8}
-              minColor={lighten(0.5, colorScheme.primary)}
-              maxColor={colorScheme.primary}
-              title={'Percentage of workers in the industry'}
-            />
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Schooling Distribution</SectionHeaderSecondary>
-          <DynamicTable
-            columns={tableColumns}
-            data={tableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Industry Wages</SectionHeaderSecondary>
-          <DynamicTable
-            columns={tableColumns}
-            data={tableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <DataViz
-            id={'albania-company-bar-chart-2'}
-            vizType={VizType.BarChart}
-            data={barChartData2}
-            axisLabels={{left: 'US$ Millions'}}
-          />
-          <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
-            <Legend
-              legendList={[
-                {label: 'Industry', fill: lightBorderColor, stroke: undefined},
-                {label: 'Country', fill: undefined, stroke: colorScheme.primary},
-              ]}
-            />
-          </TextBlock>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>Occupation Distribution</SectionHeaderSecondary>
-          <DynamicTable
-            columns={tableColumns}
-            data={tableData}
-            color={colorScheme.primary}
-          />
-          <TextBlock>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            </p>
-          </TextBlock>
-        </TwoColumnSection>
+        {industryNow}
       </>
-    );
-    nav = (
-      <StickySideNav
-        links={links}
-        backgroundColor={colorScheme.quaternary}
-        borderColor={colorScheme.primary}
-        hoverColor={colorScheme.teriary}
-        borderTopColor={'#fff'}
-        onHeightChange={(h) => setNavHeight(h)}
-        marginTop={stickyHeaderHeight + 'px'}
-      />
     );
   } else {
     content = null;
@@ -439,8 +455,31 @@ export const colorScheme = {
         <meta property='og:title' content={metaTitle} />
         <meta property='og:description' content={metaDescription} />
       </Helmet>
-      {header}
-      {nav}
+      <GradientHeader
+        title={metaTitle}
+        hasSearch={true}
+        searchLabelText={'To Start Select an Industry:'}
+        imageSrc={JordanLogoSVG}
+        data={industryList}
+        onChange={updateSelectedIndustry}
+        initialSelectedValue={selectedIndustry}
+        imageProps={{
+          imgWidth: '150px',
+        }}
+        backgroundColor={colorScheme.primary}
+        textColor={'#fff'}
+        linkColor={'#fff'}
+        introText={<p dangerouslySetInnerHTML={{__html: staticText.intro}} />}
+      />
+      <StickySideNav
+        links={links}
+        backgroundColor={colorScheme.quaternary}
+        borderColor={colorScheme.primary}
+        hoverColor={colorScheme.teriary}
+        borderTopColor={'#fff'}
+        onHeightChange={(h) => setNavHeight(h)}
+        marginTop={stickyHeaderHeight + 'px'}
+      />
       <Content>
         <StickySubHeading
           title={selectedIndustry ? selectedIndustry.label : ''}
@@ -451,20 +490,7 @@ export const colorScheme = {
       </Content>
       <ExploreNextFooter
         backgroundColor={colorScheme.primary}
-        socialItems={[
-          {
-            target: 'https://www.facebook.com/HarvardCID/',
-            type: SocialType.facebook,
-          },
-          {
-            target: 'https://twitter.com/HarvardGrwthLab',
-            type: SocialType.twitter,
-          },
-          {
-            target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
-            type: SocialType.linkedin,
-          },
-        ]}
+        socialItems={defaultSocialIcons}
         exploreNextLinks={[
           {
             label: 'Country Profile',
@@ -472,7 +498,7 @@ export const colorScheme = {
           },
         ]}
         attributions={[
-          'Growth Lab’s Jordan Research Team:  -----',
+          'Growth Lab’s Jordan Research Team:  Miguel Santos, Timothy O’Brien and Patricio Goldstein',
           'Growth Lab’s Digital Development & Design Team:  Annie White, Brendan Leonard, Nil Tuzcu and Kyle Soeltz.',
         ]}
       />

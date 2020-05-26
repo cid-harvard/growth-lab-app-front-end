@@ -13,8 +13,8 @@ const Value = styled.div`
 
 interface Props {
   color: string;
-  value: string;
-  description: string;
+  value: string | null;
+  description: string | null;
 }
 
 const TextBlock = ({value, color, description}: Props) => {

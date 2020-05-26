@@ -6,7 +6,7 @@ import {
   Factors,
   Script,
   NACEIndustry,
-} from '../../graphql/graphQLTypes';
+} from './graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import transformNaceData from './transformers/transformNaceData';
@@ -14,7 +14,7 @@ import transformScatterplotData from './transformers/transformScatterplotData';
 
 const GET_ALL_INDUSTRIES = gql`
   query GetAllIndustries {
-    naceIndustryList {
+    naceIndustryList: albaniaNaceIndustryList {
       naceId
       level
       code

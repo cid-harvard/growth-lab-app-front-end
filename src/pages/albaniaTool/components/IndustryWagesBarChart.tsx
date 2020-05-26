@@ -2,7 +2,7 @@ import React from 'react';
 import DataViz, {VizType} from '../../../components/dataViz';
 import {
   IndustryNowWageEdge,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import transformIndustryNowWageData from '../transformers/transformIndustryNowWageData';
 
 interface Props {

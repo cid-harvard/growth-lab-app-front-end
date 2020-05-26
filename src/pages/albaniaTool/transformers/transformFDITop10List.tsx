@@ -1,7 +1,7 @@
 import {
   FDIMarketConnection,
   FDIMarketOvertimeDestination,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import sortBy from 'lodash/sortBy';
 
 interface Input {

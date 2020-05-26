@@ -2,7 +2,7 @@ import {
   IndustryNowSchooling,
   IndustryNowOccupation,
   IndustryNowNearestIndustryEdge,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 import {
   Datum as DynamicTableDatum,
   Column as DynamicTableColumn,

@@ -12,7 +12,7 @@ import transformFDITop10List from '../transformers/transformFDITop10List';
 import {
   FDIMarketConnection,
   FDIMarketOvertimeDestination,
-} from '../../../graphql/graphQLTypes';
+} from '../graphql/graphQLTypes';
 
 interface Props {
   fdiMarketsEdges: FDIMarketConnection['edges'];
