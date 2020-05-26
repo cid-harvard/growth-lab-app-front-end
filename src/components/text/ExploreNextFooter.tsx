@@ -313,7 +313,7 @@ const ExploreNextFooter = (props: Props) => {
           </LogoColumn>
           <RepoColumn>
             <GitHubLink
-              href='https://github.com/cid-harvard/country-tools-front-end'
+              href='https://github.com/cid-harvard/growth-lab-app-front-end'
               target='_blank'
               rel='noopener noreferrer'
               color={'#333'}
