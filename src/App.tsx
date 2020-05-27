@@ -26,7 +26,7 @@ if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
 }
 const TrackedRoute = (props: any) => {
   useEffect(() => {
-    const page = props.location.pathname;
+    const page = props.location.pathname + window.location.search;
     ReactGA.set({page});
     ReactGA.pageview(page);
   }, [props.location.pathname]);
