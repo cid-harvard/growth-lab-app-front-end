@@ -472,6 +472,7 @@ const JordanTool = (props: Props) => {
         introText={<p dangerouslySetInnerHTML={{__html: staticText.intro}} />}
       />
       <StickySideNav
+        id={'jordan-tool-side-navigation'}
         links={links}
         backgroundColor={colorScheme.quaternary}
         borderColor={colorScheme.primary}

@@ -146,7 +146,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
 - **id**: string
 
-   A unique id for visualization.
+   A unique id for the visualization. Make sure that this is unique not only for this page, but across all pages as it will be used for Google Analytics Event tracking. Consider prefixing all your ids with a unique, page specific identifier.
 
 - **jsonToDownload** *(optional)*: object[]
 
@@ -408,6 +408,10 @@ In the above example, we have three levels of hierarchy. Every element must have
 #### StickySideNav
 
 The StickySideNav component, found at `src/components/navigation/StickySideNav`, sticks to the side of the screen and automatically collapses into an expandable menu on small screen sizes. It takes the following props - 
+
+- **id**: string;
+  
+  Make sure that this is unique not only for this page, but across all pages as it will be used for Google Analytics Event tracking. Consider prefixing all your ids with a unique, page specific identifier.
 
 - **links**: NavItem[];
 

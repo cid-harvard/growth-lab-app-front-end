@@ -551,6 +551,7 @@ const AlbaniaToolContent = (props: Props) => {
     );
     nav = (
       <StickySideNav
+        id={'albania-tool-side-navigation'}
         links={links}
         backgroundColor={'#ecf0f2'}
         borderColor={'#819ea8'}
