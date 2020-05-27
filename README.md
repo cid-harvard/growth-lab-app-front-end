@@ -486,6 +486,10 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 
 The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter`, creates a footer with social icon links, attributions, links to explore next, and the Growth Lab logo. It takes the following props - 
 
+- **title**: string;
+
+   The title of the page for Google Analytics event tracking. This should match the page title found in the header.
+
 - **attributions**: string[];
 
    An array of strings for the attributions. Each string will appear on a new line at the top of the footer.

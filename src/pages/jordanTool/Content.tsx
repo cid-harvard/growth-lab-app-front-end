@@ -490,6 +490,7 @@ const JordanTool = (props: Props) => {
         {content}
       </Content>
       <ExploreNextFooter
+        title={metaTitle}
         backgroundColor={colorScheme.primary}
         socialItems={defaultSocialIcons}
         exploreNextLinks={[

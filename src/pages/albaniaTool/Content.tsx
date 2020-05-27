@@ -226,8 +226,9 @@ const AlbaniaToolContent = (props: Props) => {
     rawNaceData,
   } = props;
 
-  const metaTitle = 'Albania’s Industry Targeting Dashboard | The Growth Lab at Harvard Kennedy School';
-  const metaDescription = 'View data visualizations for Albania\'s industries.';
+  const title='Albania’s Industry Targeting Dashboard';
+  const metaTitle = title + ' | The Growth Lab at Harvard Kennedy School';
+  const metaDescription = 'View data visualizations for Albania’s industries.';
 
   const {location: {pathname, search, hash}, push} = useHistory();
   const parsedQuery = queryString.parse(search);
@@ -581,7 +582,7 @@ const AlbaniaToolContent = (props: Props) => {
         <meta property='og:description' content={metaDescription} />
       </Helmet>
       <GradientHeader
-        title={'Albania’s Industry Targeting Dashboard'}
+        title={title}
         hasSearch={true}
         searchLabelText={'To Start Select an Industry:'}
         data={naceData}
@@ -610,6 +611,7 @@ const AlbaniaToolContent = (props: Props) => {
         {content}
       </Content>
       <ExploreNextFooter
+        title={title}
         backgroundColor={colorScheme.quaternary}
         socialItems={defaultSocialIcons}
         exploreNextLinks={[

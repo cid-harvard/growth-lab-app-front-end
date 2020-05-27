@@ -14,6 +14,7 @@ import LinkedinIconSVG from './assets/linkedin.svg';
 import YouTubeIconSVG from './assets/youtube.svg';
 import ApplePodcastSVG from './assets/applepodcast.svg';
 import { rgba } from 'polished';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 const Root = styled(FullWidthFooter)`
   color: #333;
@@ -243,12 +244,15 @@ interface Props {
   socialItems: {target: string, type: SocialType}[];
   exploreNextLinks: {label: string, target: string}[];
   backgroundColor: string;
+  title: string;
 }
 
 const ExploreNextFooter = (props: Props) => {
   const {
-    backgroundColor, attributions, socialItems, exploreNextLinks,
+    backgroundColor, attributions, socialItems, exploreNextLinks, title,
   } = props;
+
+  const gaEventCategory = 'FOOTER: ' + title;
 
   const attributionsList = attributions.map(a => <AttributionText key={a}>{a}</AttributionText>);
   const socialItemsList = socialItems.map(({target, type}) =>{
@@ -270,6 +274,7 @@ const ExploreNextFooter = (props: Props) => {
         target='_blank'
         rel='noopener noreferrer'
         key={target + label}
+        onClick={() => triggerGoogleAnalyticsEvent(gaEventCategory, 'click-link', label)}
         color={backgroundColor}
       >
         {label} <Arrow>↗</Arrow>
