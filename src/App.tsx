@@ -37,7 +37,7 @@ const TrackedRoute = (props: any) => {
 };
 
 
-const LandingPage = lazy(() => import('./pages/landingPage/ComingSoon'));
+const LandingPage = lazy(() => import('./pages/landingPage'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
