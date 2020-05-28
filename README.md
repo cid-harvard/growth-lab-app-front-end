@@ -712,14 +712,14 @@ For more information on using GraphQL, see the official GraphQL documentation he
 
 #### Setting Up GA For Your Page
 
-Google Analytics is already setup for all of the Growth Lab App site. Additional configuration may be required to more preciesly track user interactions on individual pages. This includes creating a new view for your page, setting up specific filters, and optionally tracking search parameters, if applicable.
+Google Analytics is already setup for all of the Growth Lab App site. Additional configuration may be required to more precisely track user interactions on individual pages. This includes creating a new view for your page, setting up specific filters, and optionally tracking search parameters, if applicable.
 
 First, to create a new view -
 
 1. open the **Growth Lab App** property (under *Properties & Apps*) and select the **All Web Site Data** view (under **Views**). 
 1. Click on **Admin** on the bottom of the left-hand panel (it has the gear icon).
 1. Under the **View** column, click **Create View**.
-1. Setup the View Settings, giving it a name and setting the page's URL. From this screen you can also optionally enable "Site search Tracking", where any query paramaters can be tracked as well. **Make sure to hit Save at the very bottom of the page**
+1. Setup the View Settings, giving it a name and setting the page's URL. From this screen you can also optionally enable "Site search Tracking", where any query parameters can be tracked as well. **Make sure to hit Save at the very bottom of the page**
 
 Now that the view has been created, you can add the filters -
 
