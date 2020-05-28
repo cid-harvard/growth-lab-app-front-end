@@ -725,7 +725,7 @@ Now that the view has been created, you can add the filters -
 
 1. Select "Filters" from the list of options on the left and click **Add Filter**
 1. This filter is to only include data from the production site. The settings should be `[include only]` `[traffic from the ISP domain]` `[that contain]` and the ISP Domain should be `growthlab.app`. Save the filter.
-1. Create another filter. This one is to only show the data for the specific page you are tracking. The settings should be  `[include only]` `[traffic from the ISP domain]` `[that contain]` and the Subdirectory should be `/your-page-name`
+1. Create another filter. This one is to only show the data for the specific page you are tracking. The settings should be  `[include only]` `[traffic to the subdirectories]` `[that contain]` and the Subdirectory should be `/your-page-name`
 
 <a name="triggergoogleanalyticsevents"/>
 
