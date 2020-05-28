@@ -6,7 +6,7 @@ import BackgroundIMG from './image.jpg';
 const Blur = styled.div`
   width: 100%;
   height: 100vh;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
@@ -18,10 +18,9 @@ const Blur = styled.div`
 `;
 const Title = styled.div`
   position: absolute;
-  top: 40%;
   z-index: 2;
-  text-align: center;
-  margin: auto;
+  text-align: left;
+  margin: 18% 0 0 6vw;
   left:0;
   right: 0;
   font-family: 'Open Sans Condensed', sans-serif;
@@ -32,7 +31,7 @@ const Title = styled.div`
 const H1 = styled.h1`
   font-size: 40px;
   font-weight: 200;
-  letter-spacing: 15px;
+  letter-spacing: 2px;
 `;
 const H4 = styled.h4`
   font-size: 15px;
@@ -189,8 +188,8 @@ export default () => {
     <>
       <Blur />
       <Title>
-        <H1>Coming Soon</H1>
-        <H4>Harvard Growth Lab’s Digital Applications</H4>
+        <H1>Harvard Growth Lab’s Digital Hub</H1>
+        <H4>Translating Growth Lab’s research into effective online tools and digital platforms</H4>
       </Title>
       <a href='https://growthlab.cid.harvard.edu/' target='_blank' rel='noopener noreferrer'>
         <Logo src={LogoIMG} alt={'The Growth at Harvard Center for International Development'} />
