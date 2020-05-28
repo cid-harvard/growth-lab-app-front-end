@@ -11,6 +11,7 @@ import styled from 'styled-components/macro';
 import {TreeNode} from 'react-dropdown-tree-select';
 import MultiTierSearch from '../../navigation/MultiTierSearch';
 import GrowthLabLogoImgSrc from './growth-lab.png';
+import {triggerGoogleAnalyticsEvent} from '../../../routing/tracking';
 import { rgba } from 'polished';
 
 const Root = styled(FullWidthHeader)`
@@ -168,12 +169,15 @@ const HeaderWithSearch = (props: Props) => {
     imageProps, introText,
   } = props;
 
+  const gaEventCategory = 'HEADER: ' + title;
+
   const linkElms = links && links.length ? links.map(({label, target, internal}) => (
     <ButtonLink
       primaryColor={linkColor}
       secondaryColor={linkColor === textColor ? backgroundColor : textColor}
+      onClick={() => triggerGoogleAnalyticsEvent(gaEventCategory, 'click-link', label)}
       href={target}
-      target={internal ? '_blank' : undefined}
+      target={!internal ? '_blank' : undefined}
       key={target + label}
     >
       {label}

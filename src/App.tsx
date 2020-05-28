@@ -19,6 +19,23 @@ import './styling/fonts/fonts.css';
 import Loading from './components/general/Loading';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
+import ReactGA from 'react-ga';
+
+if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
+  ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {debug: false});
+}
+const TrackedRoute = (props: any) => {
+  useEffect(() => {
+    const page = props.location.pathname + window.location.search;
+    ReactGA.set({page});
+    ReactGA.pageview(page);
+  }, [props.location.pathname]);
+
+  return (
+    <Route {...props}/>
+  );
+};
+
 
 const LandingPage = lazy(() => import('./pages/landingPage/ComingSoon'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
@@ -71,17 +88,17 @@ function App() {
               <GlobalStyles />
               <Suspense fallback={<Loading />}>
                 <Switch>
-                  <Route exact path={Routes.Landing}
+                  <TrackedRoute exact path={Routes.Landing}
                     render={(props: any) => <LandingPage {...props} />}
                   />
-                  <Route exact path={Routes.AlbaniaTool}
+                  <TrackedRoute exact path={Routes.AlbaniaTool}
                     render={(props: any) => <AlbaniaTool {...props} />}
                   />
-                  <Route exact path={Routes.JordanTool}
+                  <TrackedRoute exact path={Routes.JordanTool}
                     render={(props: any) => <JordanTool {...props} />}
                   />
                   {/* If none of the above routes are found show the 404 page */}
-                  <Route component={PageNotFound} />
+                  <TrackedRoute component={PageNotFound} />
                 </Switch>
               </Suspense>
             </Root>

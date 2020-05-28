@@ -1,9 +1,8 @@
-## Country Dashboards by the Growth Lab at Harvard's Center for International Development
+## The Growth Lab App by the Growth Lab at Harvard's Center for International Development
 
-Country Dashboards provides a framework for quickly building custom data visualization tools.
+The Growth Lab App provides a framework for quickly building custom data visualization tools.
 
 View the site live at https://growthlab.app/
-
 
 License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -29,6 +28,9 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
   - [Custom Hooks](#customhooks)
     - [useScrollBehavior](#usescrollbehaviorhook)
   - [Querying Data with GraphQL](#queryingdatagraphql)
+  - [Using Google Analytics](#googleanalytics)
+    - [Setting Up GA For Your Page](#settingupgoogleanalytics)
+    - [Triggering GA Events](#triggergoogleanalyticsevents)
   - [Guidelines For Creating New Components](#componentguidelines)
     - [Style Guide](#styleguide)
 
@@ -91,19 +93,19 @@ All of the pages along with their uniquely associated content and functions shou
     const YourNewDataVizDashboard = lazy(() => import('./pages/yourNewDataVizDashboard'));
    ```
 
-   Then near the bottom of the page in the `return` statement and within the `Switch` component, you will have to add a `Route` component for your page:
+   Then near the bottom of the page in the `return` statement and within the `Switch` component, you will have to add a `TrackedRoute` component for your page. `TrackedRoute` is a modification of the standard `Route` included in `react-router` that allows for better Google Analytics tracking in React. See [Using Google Analytics](#googleanalytics) for more information about Google Analytics and the Growth Lab App project:
 
    ```tsx
     <Switch>
-      <Route exact path={Routes.Landing}
+      <TrackedRoute exact path={Routes.Landing}
         render={(props: any) => <LandingPage {...props} />}
       />
       {/* Your page should go at the end of the other routes but before the 404 page */}
-      <Route exact path={Routes.YourNewDataVizDashboard}
+      <TrackedRoute exact path={Routes.YourNewDataVizDashboard}
         render={(props: any) => <YourNewDataVizDashboard {...props} />}
       />
       {/* If none of the above routes are found show the 404 page */}
-      <Route component={PageNotFound} />
+      <TrackedRoute component={PageNotFound} />
     </Switch>
    ```
 
@@ -144,7 +146,7 @@ The data viz component, located at `src/components/dataViz` is the catch-all for
 
 - **id**: string
 
-   A unique id for visualization.
+   A unique id for the visualization. Make sure that this is unique not only for this page, but across all pages as it will be used for Google Analytics Event tracking. Consider prefixing all your ids with a unique, page specific identifier.
 
 - **jsonToDownload** *(optional)*: object[]
 
@@ -407,6 +409,10 @@ In the above example, we have three levels of hierarchy. Every element must have
 
 The StickySideNav component, found at `src/components/navigation/StickySideNav`, sticks to the side of the screen and automatically collapses into an expandable menu on small screen sizes. It takes the following props - 
 
+- **id**: string;
+  
+  Make sure that this is unique not only for this page, but across all pages as it will be used for Google Analytics Event tracking. Consider prefixing all your ids with a unique, page specific identifier.
+
 - **links**: NavItem[];
 
    A NavItem takes the following properties -
@@ -479,6 +485,10 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 #### ExploreNextFooter
 
 The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter`, creates a footer with social icon links, attributions, links to explore next, and the Growth Lab logo. It takes the following props - 
+
+- **title**: string;
+
+   The title of the page for Google Analytics event tracking. This should match the page title found in the header.
 
 - **attributions**: string[];
 
@@ -693,6 +703,48 @@ The different queries available to Country Dashboards can be viewed here - https
 When new queries are added to the GraphQL endpoint, make sure to add the type definitions for their return values. For each project, create a folder within it's pages directory called `graphql` and add a file called `graphQLTypes.ts`. The folder structure should look something like this - `/src/pages/yourProjectFolder/graphql/graphQLTypes.ts`. Within there you can keep all of the relevant types for the return values for your project's GraphQL queries. Keeping the types consistent helps keep the Country Dashboards project easier to develop and less prone to bugs as it continues to expand.
 
 For more information on using GraphQL, see the official GraphQL documentation here - https://graphql.org/learn/ 
+
+<a name="googleanalytics"/>
+
+## Using Google Analytics
+
+<a name="settingupgoogleanalytics"/>
+
+#### Setting Up GA For Your Page
+
+Google Analytics is already setup for all of the Growth Lab App site. Additional configuration may be required to more precisely track user interactions on individual pages. This includes creating a new view for your page, setting up specific filters, and optionally tracking search parameters, if applicable.
+
+First, to create a new view -
+
+1. open the **Growth Lab App** property (under *Properties & Apps*) and select the **All Web Site Data** view (under **Views**). 
+1. Click on **Admin** on the bottom of the left-hand panel (it has the gear icon).
+1. Under the **View** column, click **Create View**.
+1. Setup the View Settings, giving it a name and setting the page's URL. From this screen you can also optionally enable "Site search Tracking", where any query parameters can be tracked as well. **Make sure to hit Save at the very bottom of the page**
+
+Now that the view has been created, you can add the filters -
+
+1. Select "Filters" from the list of options on the left and click **Add Filter**
+1. This filter is to only include data from the production site. The settings should be `[include only]` `[traffic from the ISP domain]` `[that contain]` and the ISP Domain should be `growthlab.app`. Save the filter.
+1. Create another filter. This one is to only show the data for the specific page you are tracking. The settings should be  `[include only]` `[traffic to the subdirectories]` `[that contain]` and the Subdirectory should be `/your-page-name`
+
+<a name="triggergoogleanalyticsevents"/>
+
+#### Triggering GA Events
+
+To add a Google Analytics Event to any action, you simply have to call the `triggerGoogleAnalyticsEvent` function. The function must first be imported from `/src/routing/tracking.ts`. Then it can be simply called like so -
+
+```ts
+  triggerGoogleAnalyticsEvent(category, action, label, value);
+```
+
+And an event will be registered. The function has two required parameters and two optional ones:
+
+- **category**: string;
+- **action**: string;
+- **label**: *(optional)* string; 
+- **value**: *(optional)* number;
+
+For more information on the difference between a category, action, label, and value, as well as their best practices, see the Google Analytics help article here - https://support.google.com/analytics/answer/1033068?hl=en
 
 <a name="componentguidelines"/>
 

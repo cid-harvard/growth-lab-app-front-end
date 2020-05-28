@@ -12,6 +12,7 @@ import { AppContext } from '../../App';
 import { useLocation, useHistory } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 import BackToTopSVG from './assets/scrolltop.svg';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 export const mobileHeight = 50; // in px
 
@@ -163,6 +164,7 @@ export interface NavItem {
 }
 
 interface Props {
+  id: string;
   links: NavItem[];
   backgroundColor: string;
   hoverColor: string;
@@ -176,7 +178,7 @@ interface Props {
 const StickySideNav = (props: Props) => {
   const {
     links, backgroundColor, hoverColor, borderColor, marginTop,
-    borderTopColor,
+    borderTopColor, id,
    } = props;
 
   const { windowWidth } = useContext(AppContext);
@@ -208,6 +210,7 @@ const StickySideNav = (props: Props) => {
   };
   const navLinks = links.map(({label, target, internalLink, scrollBuffer}) => {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      triggerGoogleAnalyticsEvent(id, 'click-link', label);
       if (internalLink) {
         e.preventDefault();
         push(pathname + search + target);
@@ -228,6 +231,10 @@ const StickySideNav = (props: Props) => {
   });
 
   if (windowWidth > gridSmallMediaWidth) {
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth'});
+      triggerGoogleAnalyticsEvent(id, 'click-link', 'Scroll To Top');
+    };
     return (
       <NavContainer>
         <Ul style={{top: marginTop, borderTopColor}}>
@@ -238,7 +245,7 @@ const StickySideNav = (props: Props) => {
                 opacity: !hash ? 0 : 1,
                 cursor: !hash ? 'default' : 'pointer',
               }}
-              onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth'})}
+              onClick={scrollToTop}
             >
               <img src={BackToTopSVG} alt={'Scroll to Top'} />
             </ScrollToTopButton>

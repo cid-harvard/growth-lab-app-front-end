@@ -122,7 +122,7 @@ const JordanTool = (props: Props) => {
     const fdiBarSection = control.fdi ? (
         <>
           <DataViz
-            id={'albania-company-bar-chart'}
+            id={'jordan-fdi-bar-chart'}
             vizType={VizType.BarChart}
             data={overTimeHistogramData}
             axisLabels={{left: 'USD'}}
@@ -157,7 +157,7 @@ const JordanTool = (props: Props) => {
       ) : (
         <>
           <DataViz
-            id={'albania-company-bar-chart'}
+            id={'jordan-company-bar-chart'}
             vizType={VizType.Error}
             message={'No Data'}
           />
@@ -203,7 +203,7 @@ const JordanTool = (props: Props) => {
             {staticText.industryNow.locationOfWorkers}
           </SectionHeaderSecondary>
           <DataViz
-            id={'albania-geo-map'}
+            id={'jordan-geo-map'}
             vizType={VizType.GeoMap}
             data={jordanGeoJson}
             minColor={lighten(0.5, colorScheme.primary)}
@@ -292,7 +292,7 @@ const JordanTool = (props: Props) => {
         </div>
         <TwoColumnSection>
           <DataViz
-            id={'albania-scatterplot'}
+            id={'jordan-scatterplot'}
             vizType={VizType.ScatterPlot}
             data={scatterPlotData}
             axisLabels={{bottom: 'Viability', left: 'Attractiveness'}}
@@ -338,7 +338,7 @@ const JordanTool = (props: Props) => {
         </TwoColumnSection>
         <TwoColumnSection>
           <DataViz
-            id={'albania-spyder-chart-2'}
+            id={'jordan-viability-radar-chart'}
             vizType={VizType.RadarChart}
             data={viabilityData}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
@@ -384,7 +384,7 @@ const JordanTool = (props: Props) => {
         </TwoColumnSection>
         <TwoColumnSection>
           <DataViz
-            id={'albania-spyder-chart-3'}
+            id={'jordan-attractiveness-radar-chart'}
             vizType={VizType.RadarChart}
             data={attractivenessData}
             color={{start: colorScheme.primary, end: colorScheme.primary}}
@@ -472,6 +472,7 @@ const JordanTool = (props: Props) => {
         introText={<p dangerouslySetInnerHTML={{__html: staticText.intro}} />}
       />
       <StickySideNav
+        id={'jordan-tool-side-navigation'}
         links={links}
         backgroundColor={colorScheme.quaternary}
         borderColor={colorScheme.primary}
@@ -489,6 +490,7 @@ const JordanTool = (props: Props) => {
         {content}
       </Content>
       <ExploreNextFooter
+        title={metaTitle}
         backgroundColor={colorScheme.primary}
         socialItems={defaultSocialIcons}
         exploreNextLinks={[

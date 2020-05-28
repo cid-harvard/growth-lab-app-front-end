@@ -19,6 +19,7 @@ import downloadImage, { FileFormat } from './downloadImage';
 import { CSVLink } from 'react-csv';
 import DownloadSVGURL from './assets/download.svg';
 import DataSVGURL from './assets/data.svg';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 const Root = styled.div`
   width: 100%;
@@ -247,6 +248,7 @@ const DataViz = (props: Props) => {
     }
     const title = props.chartTitle ? props.chartTitle : 'chart';
     downloadImage({svg: svgNode, width, height, title, fileFormat});
+    triggerGoogleAnalyticsEvent(id, 'download-' + fileFormat, title);
   };
 
   const downloadPNGButton = enablePNGDownload !== true ? null : (
@@ -272,10 +274,14 @@ const DataViz = (props: Props) => {
   let downloadDataButton: React.ReactElement<any> | null;
   if (jsonToDownload !== undefined) {
     const filename = props.chartTitle ? props.chartTitle + '.csv' : 'data.csv';
+    const onClick = () => {
+      triggerGoogleAnalyticsEvent(id, 'download-csv', props.chartTitle);
+    };
     downloadDataButton = (
       <DownloadDataButton
         data={jsonToDownload}
         filename={filename}
+        onClick={onClick}
       >
         <SvgIcon src={DataSVGURL} alt={'Download Data'} />
         Download Data
