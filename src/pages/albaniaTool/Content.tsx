@@ -49,6 +49,7 @@ import IndustryNowLocation from './components/IndustryNowLocation';
 import IndustryWagesBarChart from './components/IndustryWagesBarChart';
 import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
 import styled from 'styled-components/macro';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 const StyledP = styled.p`
   a {
@@ -280,6 +281,81 @@ const AlbaniaToolContent = (props: Props) => {
     } else {
       return 'No script found for ' + subsection;
     }
+  };
+
+  const overviewLinkDivider = '[LINK]';
+
+  const OverviewText = ({text}: {text: string}) => {
+    let parsedText = text.replace('<p>', '');
+    parsedText = parsedText.replace('<p>', '');
+    parsedText = parsedText.replace('</p>', '');
+    parsedText = parsedText.replace('</p>', '');
+    const paragraphs = parsedText.split('\n');
+    const textChunks = paragraphs[1].split(overviewLinkDivider).filter(t => t);
+    if (textChunks.length === 3) {
+      const gaCategory = 'Albania-overview-text-links';
+      const gaEvent = 'click-link';
+      return (
+        <>
+          <StyledP>
+            {paragraphs[0]}
+          </StyledP>
+          <StyledP>
+            <a
+              href='https://albania.growthlab.cid.harvard.edu/'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() =>
+                triggerGoogleAnalyticsEvent(gaCategory, gaEvent, 'growth_lab_link')
+              }
+            >
+              Harvard Growth Lab research in Albania
+            </a> {textChunks[0]} <a
+              href='https://docs.google.com/document/d/1p1x3SmNF4ycsVdaE9-As6d9SN9FSYPFRF9ng5a-qVxc/edit?usp=sharing'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() =>
+                triggerGoogleAnalyticsEvent(gaCategory, gaEvent, 'methodology_link')
+              }
+            >here</a> {textChunks[1]} <a
+              href='https://atlas.cid.harvard.edu/explore?country=4&product=undefined&year=2017&productClass=HS&target=Product&partner=undefined&startYear=undefined'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() =>
+                triggerGoogleAnalyticsEvent(gaCategory, gaEvent, 'atlas_link')
+              }
+            >Atlas of Economic Complexity
+            </a> {textChunks[2]}
+          </StyledP>
+        </>
+      );
+    } else {
+      return (
+        <StyledP
+          dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction, [
+            {key: '<<growth_lab_link>>', value: `<a
+              href='https://albania.growthlab.cid.harvard.edu/'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              Harvard Growth Lab research in Albania
+            </a>`},
+            {key: '<<methodology_link>>', value: `<a
+              href='https://docs.google.com/document/d/1p1x3SmNF4ycsVdaE9-As6d9SN9FSYPFRF9ng5a-qVxc/edit?usp=sharing'
+              target='_blank'
+              rel='noopener noreferrer'
+            >here</a>`},
+            {key: '<<atlas_link>>', value: `<a
+              href='https://atlas.cid.harvard.edu/explore?country=4&product=undefined&year=2017&productClass=HS&target=Product&partner=undefined&startYear=undefined'
+              target='_blank'
+              rel='noopener noreferrer'
+            >Atlas of Economic Complexity
+            </a>`},
+          ])}}
+        />
+      );
+    }
+
   };
 
   const {loading, error, data} = useQuery<SuccessResponse, Variables>(GET_DATA_FOR_NACE_ID,
@@ -568,8 +644,12 @@ const AlbaniaToolContent = (props: Props) => {
   }
 
   const introText = (
-    <StyledP
-      dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction)}}
+    <OverviewText
+      text={getSubsectionText(SubSectionEnum.Introduction, [
+        {key: '<<growth_lab_link>>', value: overviewLinkDivider},
+        {key: '<<methodology_link>>', value: overviewLinkDivider},
+        {key: '<<atlas_link>>', value: overviewLinkDivider},
+      ])}
     />
   );
 
