@@ -23,7 +23,7 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './assets/albania-logo.svg';
-import ExploreNextFooter, {defaultSocialIcons} from '../../components/text/ExploreNextFooter';
+import ExploreNextFooter from '../../components/text/ExploreNextFooter';
 import {rgba} from 'polished';
 import {
   updateScatterPlotData,
@@ -705,7 +705,6 @@ const AlbaniaToolContent = (props: Props) => {
       <ExploreNextFooter
         title={title}
         backgroundColor={colorScheme.quaternary}
-        socialItems={defaultSocialIcons}
         exploreNextLinks={[
           {
             label: 'Country Profile',
