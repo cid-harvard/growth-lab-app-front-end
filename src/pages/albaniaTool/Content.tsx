@@ -235,10 +235,18 @@ const AlbaniaToolContent = (props: Props) => {
   const parsedQuery = queryString.parse(search);
   const industry = parsedQuery.industry ? parsedQuery.industry : '484'; // Default to Data processing, hosting
 
+  let parent: TreeNode = {label: '', value: 'the industry'};
   const flattenedChildData: TreeNode[] = [];
   naceData.forEach(({children}: any) =>
     children.forEach((child: TreeNode) =>
-      child.children.forEach((grandChild: TreeNode) => flattenedChildData.push(grandChild))));
+      child.children.forEach((grandChild: TreeNode) => {
+        flattenedChildData.push(grandChild);
+        if (grandChild.value === industry) {
+          parent = child;
+        }
+      }),
+    ),
+  );
 
   const initialSelectedIndustry = flattenedChildData.find(({value}) => value === industry);
 
@@ -258,6 +266,7 @@ const AlbaniaToolContent = (props: Props) => {
     {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
     {label: 'Major FDI Companies', target: '#major-fdi-companies', internalLink: true, scrollBuffer},
     {label: 'Industry Now', target: '#industry-now', internalLink: true, scrollBuffer},
+    {label: 'Nearby Industries', target: '#nearby-industries', internalLink: true, scrollBuffer},
   ];
   useScrollBehavior({
     bufferTop: scrollBuffer,
@@ -560,6 +569,7 @@ const AlbaniaToolContent = (props: Props) => {
             dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryNow, [
                 {key: '<<description>>',
                  value: `<strong style="text-transform: lowercase">${industryName}</strong>`},
+                {key: '<<parent>>', value: parent.label.toLowerCase()},
                 ])}}
           />
         </div>
@@ -611,8 +621,10 @@ const AlbaniaToolContent = (props: Props) => {
             />
           </TextBlock>
         </TwoColumnSection>
+        <div id={'nearby-industries'}>
+          <SectionHeader>{SubSectionEnum.NearbyIndustries}</SectionHeader>
+        </div>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.NearbyIndustries}</SectionHeaderSecondary>
           <DynamicTable
             columns={nearbyIndustry.columns}
             data={nearbyIndustry.data}
@@ -620,7 +632,9 @@ const AlbaniaToolContent = (props: Props) => {
           />
           <TextBlock>
             <p
-              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.NearbyIndustries)}}
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.NearbyIndustries, [
+                  {key: '<<description>>', value: `<strong>${industryName.toLowerCase()}</strong>`},
+              ])}}
             />
           </TextBlock>
         </TwoColumnSection>
