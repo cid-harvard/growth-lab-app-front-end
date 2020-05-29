@@ -79,6 +79,16 @@ export const ContentFull = styled.main`
   grid-column: ${gridLines.contentStart} / ${gridLines.navEnd};
 `;
 
+export const FullWidthContent = styled.main`
+  grid-row: ${gridLines.contentTop} / ${gridLines.contentBottom};
+  grid-column: ${gridLines.pageLeft} / ${gridLines.pageRight};
+`;
+
+export const FullWidthContentContainer = styled.div`
+  max-width: ${contentMaxWidth + navMaxWidth}px;
+  margin: 0 auto;
+`;
+
 export const NavContainer = styled.nav`
   grid-row: ${gridLines.contentTop} / ${gridLines.contentBottom};
   grid-column: ${gridLines.navStart} / ${gridLines.navEnd};

@@ -38,6 +38,8 @@ const TrackedRoute = (props: any) => {
 
 
 const LandingPage = lazy(() => import('./pages/landingPage'));
+const AboutPage = lazy(() => import('./pages/landingPage/About'));
+const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
@@ -90,6 +92,12 @@ function App() {
                 <Switch>
                   <TrackedRoute exact path={Routes.Landing}
                     render={(props: any) => <LandingPage {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.About}
+                    render={(props: any) => <AboutPage {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.Community}
+                    render={(props: any) => <CommunityPage {...props} />}
                   />
                   <TrackedRoute exact path={Routes.AlbaniaTool}
                     render={(props: any) => <AlbaniaTool {...props} />}

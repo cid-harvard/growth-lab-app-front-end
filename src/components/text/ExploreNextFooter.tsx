@@ -1,62 +1,33 @@
 import React from 'react';
 import {
-  FullWidthFooter,
   FullWidthFooterContent,
 } from '../../styling/Grid';
-import {
-  primaryFont,
-} from '../../styling/styleUtils';
 import styled from 'styled-components/macro';
 import GrowthLabLogoPNG from './headers/growth-lab.png';
-import FacebookIconSVG from './assets/facebook.svg';
-import TwitterIconSVG from './assets/twitter.svg';
-import LinkedinIconSVG from './assets/linkedin.svg';
-import YouTubeIconSVG from './assets/youtube.svg';
-import ApplePodcastSVG from './assets/applepodcast.svg';
 import { rgba } from 'polished';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
-
-const Root = styled(FullWidthFooter)`
-  color: #333;
-`;
-
-const Container = styled.div`
-  padding: 2rem 2rem 2rem;
-  background-color: #e6e6e6;
-`;
+import {
+  Root,
+  Container,
+  Content,
+  GrowthLabLogo,
+  SocialColumn,
+  RepoColumn,
+  LogoColumn,
+  GrowthLabInfo,
+  SocialLink,
+  Icon,
+  ExploreNextButton,
+  GitHubLink,
+  GitHubIcon,
+  LicenseAndReadme,
+  SocialType,
+  defaultSocialIcons,
+  socialIcon,
+} from './StandardFooter';
 
 const AttributionContainer = styled(Container)`
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAI0lEQVQYV2NkwAEYYeLeeU3GIPbWSXVnQTRhCXQT4TqIlgAACbAIB9ZyaUoAAAAASUVORK5CYII=) repeat;
-`;
-
-const smallMediaWidth = 700; // in px
-
-const Content = styled(FullWidthFooterContent)`
-  display: grid;
-  grid-column-gap: 3rem;
-  grid-template-columns: 2fr auto minmax(auto, 1fr);
-
-  @media (max-width: ${smallMediaWidth}px) {
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-    grid-column-gap: 1.5rem;
-  }
-`;
-
-const ColumnOrRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-`;
-
-const GrowthLabLogo = styled.img`
-  width: 300px;
-  max-width: 100%;
-  height: 100%;
-
-  @media (max-width: 920px) {
-    width: 250px;
-  }
 `;
 
 const AttributionText = styled.p`
@@ -77,32 +48,6 @@ const ExploreNextText = styled.div`
   margin-right: 1rem;
 `;
 
-const CenteredColumn = styled(ColumnOrRow)`
-  justify-content: center;
-  margin-bottom: 0;
-`;
-
-const SocialColumn = styled(ColumnOrRow)`
-  @media (max-width: ${smallMediaWidth}px) {
-    grid-column: 2;
-    grid-row: 1;
-  }
-`;
-
-const RepoColumn = styled(ColumnOrRow)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  @media (max-width: ${smallMediaWidth}px) {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    padding: 2rem 0 0;
-    display: flex;
-    align-items: center;;
-  }
-`;
-
 const ExploreNextContainer = styled(FullWidthFooterContent)`
   display: flex;
   justify-content: center;
@@ -112,136 +57,14 @@ const ExploreNextContainer = styled(FullWidthFooterContent)`
   white-space: nowrap;
 `;
 
-const LogoColumn = styled(CenteredColumn)`
-  display: flex;
-  align-items: center;
-
-  @media (max-width: ${smallMediaWidth}px) {
-    grid-column: 1;
-    grid-row: 1;
-  }
-`;
-
-const GrowthLabInfo = styled.small`
-  margin-top: 1rem;
-  width: 300px;
-  max-width: 100%;
-  font-family: ${primaryFont};
-  font-size: 0.75rem;
-
-  @media (max-width: 920px) {
-    width: 250px;
-  }
-`;
-
-
 const Arrow = styled.span`
   margin-left: 0.35rem;
   font-family: Arial;
 `;
 
-const SocialLink = styled.a`
-  width: 25px;
-  margin: 0 auto 0.9rem;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const Icon = styled.img`
-  max-width: 100%;
-`;
-
-const ExploreNextButton = styled.a<{color: string}>`
-  display: block;
-  padding: 0.55rem 0.8rem;
-  text-transform: uppercase;
-  margin: 0.4rem 0.9rem;
-  text-decoration: none;
-  color: ${({color}) => color};
-  border: solid 1px ${({color}) => color};
-
-  &:hover {
-    background-color: ${({color}) => color};
-    color: #fff;
-  }
-`;
-
-const GitHubLink = styled(ExploreNextButton)`
-  text-transform: none;
-  display: flex;
-  align-items: center;
-  padding: 0.3rem 0.8rem;
-`;
-
-const GitHubIcon = styled.img`
-  width: 22px;
-  margin-right: 0.5rem;
-`;
-
-const LicenseAndReadme = styled.p`
-  padding: 0.5rem;
-  text-align: center;
-  background-color: #333;
-  color: #fff;
-  font-size: 0.875rem;
-  margin-bottom: 0;
-
-  a {
-    color: #fff;
-    text-decoration: none;
-    border-bottom: solid 1px transparent;
-
-    &:hover {
-      border-bottom-color: #fff;
-    }
-  }
-`;
-
-export enum SocialType {
-  facebook = 'facebook',
-  twitter = 'twitter',
-  linkedin = 'linkedin',
-  youtube = 'youtube',
-  applepodcast = 'applepodcast',
-}
-
-
-export const defaultSocialIcons = [
-  {
-    target: 'https://www.facebook.com/HarvardCID/',
-    type: SocialType.facebook,
-  },
-  {
-    target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
-    type: SocialType.linkedin,
-  },
-  {
-    target: 'https://twitter.com/HarvardGrwthLab',
-    type: SocialType.twitter,
-  },
-  {
-    target: 'https://www.youtube.com/user/HarvardCID',
-    type: SocialType.youtube,
-  },
-  {
-    target: 'https://podcasts.apple.com/us/podcast/growth-lab-podcast-series/id1486218164',
-    type: SocialType.applepodcast,
-  },
-];
-
-const socialIcon = {
-  facebook: FacebookIconSVG,
-  twitter: TwitterIconSVG,
-  linkedin: LinkedinIconSVG,
-  youtube: YouTubeIconSVG,
-  applepodcast: ApplePodcastSVG,
-};
-
 interface Props {
   attributions: string[];
-  socialItems: {target: string, type: SocialType}[];
+  socialItems?: {target: string, type: SocialType}[];
   exploreNextLinks: {label: string, target: string}[];
   backgroundColor: string;
   title: string;
@@ -249,10 +72,12 @@ interface Props {
 
 const ExploreNextFooter = (props: Props) => {
   const {
-    backgroundColor, attributions, socialItems, exploreNextLinks, title,
+    backgroundColor, attributions, exploreNextLinks, title,
   } = props;
 
   const gaEventCategory = 'FOOTER: ' + title;
+
+  const socialItems = props.socialItems === undefined ? defaultSocialIcons : props.socialItems;
 
   const attributionsList = attributions.map(a => <AttributionText key={a}>{a}</AttributionText>);
   const socialItemsList = socialItems.map(({target, type}) =>{
