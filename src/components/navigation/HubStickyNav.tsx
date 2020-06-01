@@ -10,7 +10,7 @@ const Root = styled.ul`
 `;
 
 const ListItem = styled.li`
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
 `;
 
 const ListButton = styled.button<{primaryColor: string, isActive: boolean}>`
