@@ -20,6 +20,11 @@ import StandardFooter from '../../components/text/StandardFooter';
 import {hubId} from '../../routing/routes';
 import {navHeight} from '../../components/navigation/TopLevelStickyNav';
 import StickySideNav, {View} from './components/StickySideNav';
+import GridView from './hubViews/GridView';
+import ListView from './hubViews/ListView';
+import SearchView from './hubViews/SearchView';
+import { useLocation } from 'react-router';
+import queryString from 'query-string';
 
 const SplashScreenContainer = styled.div`
   width: 100%;
@@ -32,12 +37,26 @@ const PlaceholderSpace = styled.div`
   height: 2000px;
 `;
 
+// examples: /?query=albania%20tool&keywords=usa,jordan,albania#hub
+interface QueryString {
+  query?: string;
+  keywords?: string[];
+}
+
 const LandingPage = () => {
+
+  const {search} = useLocation();
+  const parsedQuery: QueryString | undefined = queryString.parse(search, {arrayFormat: 'comma'});
 
   const containerNodeRef = createRef<HTMLDivElement>();
 
   const [isNavOverContent, setIsNavOverContent] = useState(false);
-  const [activeView, setActiveView] = useState<View>(View.grid);
+
+  const defaultActiveView = parsedQuery !== undefined && (
+                              (parsedQuery.query !== undefined && parsedQuery.query.length) ||
+                              (parsedQuery.keywords !== undefined && parsedQuery.keywords.length)
+                            ) ? View.search : View.grid;
+  const [activeView, setActiveView] = useState<View>(defaultActiveView);
 
   useEffect(()=>{
     const cachedRef = containerNodeRef.current as HTMLDivElement,
@@ -59,6 +78,24 @@ const LandingPage = () => {
     navAnchors: ['#' + hubId],
     smooth: false,
   });
+
+  let contentView: React.ReactElement<any> | null;
+  if (activeView === View.grid) {
+    contentView = (
+      <GridView />
+    );
+  } else if (activeView === View.list) {
+    contentView = (
+      <ListView />
+    );
+  } else if (activeView === View.search) {
+    contentView = (
+      <SearchView />
+    );
+  } else {
+    console.error('Invalid view type ' + activeView);
+    contentView = null;
+  }
 
   return (
     <>
@@ -82,7 +119,7 @@ const LandingPage = () => {
             />
           </NavColumn>
           <ContentColumn>
-            <h2>Hub</h2>
+            {contentView}
             <PlaceholderSpace/>
           </ContentColumn>
         </Grid>
