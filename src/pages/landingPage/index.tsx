@@ -61,7 +61,13 @@ const LandingPage = () => {
         title={'Country Dashboards from Harvard\'s Growth Lab'}
         hasSearch={false}
         imageSrc={''}
-        backgroundColor={'#54A3C6'}
+        primaryColor={'#54A3C6'}
+        gradient={`linear-gradient(
+            0deg,
+            rgba(224, 176, 78, 0.3) 0%,
+            #54A3C6 100%
+          )`
+        }
         textColor={'#fff'}
         linkColor={'#54A3C6'}
         links={[

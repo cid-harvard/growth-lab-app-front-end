@@ -8,7 +8,13 @@ const PageNotFound = () => {
         title={'404: The page you are looking for could not be found'}
         hasSearch={false}
         imageSrc={''}
-        backgroundColor={'#333'}
+        primaryColor={'#54A3C6'}
+        gradient={`linear-gradient(
+            0deg,
+            rgba(224, 176, 78, 0.3) 0%,
+            #54A3C6 100%
+          )`
+        }
         textColor={'#fff'}
         linkColor={'#333'}
         links={[

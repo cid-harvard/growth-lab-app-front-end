@@ -686,7 +686,13 @@ const AlbaniaToolContent = (props: Props) => {
         imageProps={{
           imgWidth: '110px',
         }}
-        backgroundColor={colorScheme.header}
+        primaryColor={colorScheme.header}
+        gradient={`linear-gradient(
+            0deg,
+            rgba(255,255,255,0) 0%,
+            ${rgba(colorScheme.header, 0.85)} 100%
+          )`
+        }
         textColor={'#fff'}
         linkColor={'#fff'}
         links={[

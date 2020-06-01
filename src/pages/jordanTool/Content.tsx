@@ -466,7 +466,13 @@ const JordanTool = (props: Props) => {
         imageProps={{
           imgWidth: '150px',
         }}
-        backgroundColor={colorScheme.primary}
+        primaryColor={colorScheme.primary}
+        gradient={`linear-gradient(
+            0deg,
+            rgba(224, 176, 78, 0.3) 0%,
+            ${rgba(colorScheme.primary, 1)} 100%
+          );=`
+        }
         textColor={'#fff'}
         linkColor={'#fff'}
         introText={<p dangerouslySetInnerHTML={{__html: staticText.intro}} />}

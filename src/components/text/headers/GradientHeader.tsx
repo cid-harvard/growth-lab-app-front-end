@@ -12,19 +12,14 @@ import {TreeNode} from 'react-dropdown-tree-select';
 import MultiTierSearch from '../../navigation/MultiTierSearch';
 import GrowthLabLogoImgSrc from './growth-lab.png';
 import {triggerGoogleAnalyticsEvent} from '../../../routing/tracking';
-import { rgba } from 'polished';
 
 const Root = styled(FullWidthHeader)`
   grid-template-rows: auto auto;
 `;
 
-const GradientContainer = styled.div<{backgroundColor: string}>`
+const GradientContainer = styled.div<{gradient: string}>`
   padding: 2rem 0 2.5rem;
-  background: linear-gradient(
-    0deg,
-    rgba(255,255,255,0) 0%,
-    ${({backgroundColor}) => rgba(backgroundColor, 0.85)} 100%
-  );
+  background: ${({gradient}) => gradient};
 `;
 
 const mediumMediaWidth = 1000;
@@ -144,7 +139,8 @@ interface BaseProps {
   title: string;
   imageSrc?: string;
   imageProps?: ImageProps;
-  backgroundColor: string;
+  primaryColor: string;
+  gradient: string;
   textColor: string;
   linkColor: string;
   links?: LinkDatum[];
@@ -165,8 +161,8 @@ type Props = BaseProps & (
 
 const HeaderWithSearch = (props: Props) => {
   const {
-    title, imageSrc, textColor, backgroundColor, links, linkColor,
-    imageProps, introText,
+    title, imageSrc, textColor, primaryColor, links, linkColor,
+    imageProps, introText, gradient,
   } = props;
 
   const gaEventCategory = 'HEADER: ' + title;
@@ -174,7 +170,7 @@ const HeaderWithSearch = (props: Props) => {
   const linkElms = links && links.length ? links.map(({label, target, internal}) => (
     <ButtonLink
       primaryColor={linkColor}
-      secondaryColor={linkColor === textColor ? backgroundColor : textColor}
+      secondaryColor={linkColor === textColor ? primaryColor : textColor}
       onClick={() => triggerGoogleAnalyticsEvent(gaEventCategory, 'click-link', label)}
       href={target}
       target={!internal ? '_blank' : undefined}
@@ -211,7 +207,7 @@ const HeaderWithSearch = (props: Props) => {
     <FullWidthHeaderContent>
       <FullWidthHeaderContent>
         <IntroText
-          primaryColor={backgroundColor}
+          primaryColor={primaryColor}
         >
           {introText}
         </IntroText>
@@ -221,7 +217,7 @@ const HeaderWithSearch = (props: Props) => {
 
   return (
     <Root>
-      <GradientContainer backgroundColor={backgroundColor}>
+      <GradientContainer gradient={gradient}>
         <ContentGrid>
           {img}
           <TitleContainer
