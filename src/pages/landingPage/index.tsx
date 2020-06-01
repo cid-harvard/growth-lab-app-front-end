@@ -5,7 +5,6 @@ import React, {
 } from 'react';
 import {
   FullWidthHeader,
-  FullWidthContentContainer,
 } from '../../styling/Grid';
 import SplashScreen from './SplashScreen';
 import styled from 'styled-components/macro';
@@ -16,9 +15,11 @@ import {
   HubContentContainer,
   backgroundColor,
 } from './Utils';
+import {Grid, NavColumn, ContentColumn} from './Grid';
 import StandardFooter from '../../components/text/StandardFooter';
 import {hubId} from '../../routing/routes';
 import {navHeight} from '../../components/navigation/TopLevelStickyNav';
+import StickySideNav, {View} from './components/StickySideNav';
 
 const SplashScreenContainer = styled.div`
   width: 100%;
@@ -36,6 +37,7 @@ const LandingPage = () => {
   const containerNodeRef = createRef<HTMLDivElement>();
 
   const [isNavOverContent, setIsNavOverContent] = useState(false);
+  const [activeView, setActiveView] = useState<View>(View.grid);
 
   useEffect(()=>{
     const cachedRef = containerNodeRef.current as HTMLDivElement,
@@ -72,10 +74,18 @@ const LandingPage = () => {
         </SplashScreenContainer>
       </FullWidthHeader>
       <HubContentContainer id={hubId} ref={containerNodeRef}>
-        <FullWidthContentContainer>
-          <h2>Hub</h2>
-          <PlaceholderSpace/>
-        </FullWidthContentContainer>
+        <Grid>
+          <NavColumn>
+            <StickySideNav
+              activeView={activeView}
+              setActiveView={setActiveView}
+            />
+          </NavColumn>
+          <ContentColumn>
+            <h2>Hub</h2>
+            <PlaceholderSpace/>
+          </ContentColumn>
+        </Grid>
       </HubContentContainer>
       <StandardFooter />
     </>

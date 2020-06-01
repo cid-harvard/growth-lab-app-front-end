@@ -154,7 +154,7 @@ const StyledLink = styled.a`
   }
 `;
 
-export const LicenseAndReadme = styled.p`
+export const LicenseAndReadme = styled.div`
   padding: 0.5rem;
   text-align: center;
   background-color: #333;
