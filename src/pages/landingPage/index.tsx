@@ -37,10 +37,32 @@ const PlaceholderSpace = styled.div`
   height: 2000px;
 `;
 
-// examples: /?query=albania%20tool&keywords=usa,jordan,albania#hub
+const sampleKeywords = [
+  'Albania',
+  'Jordan',
+  'Indonesia',
+  'Colombia',
+  'International',
+  'FDI',
+  'Growth Diagnostic',
+  'Trade Data',
+  'Open Source',
+  'Python',
+  'Product Space',
+];
+
+const sampleCategories = [
+  'Atlas Projects',
+  'Country Dashboards',
+  'Research Tools',
+  'Prototypes / Codes',
+];
+
+// examples: /?query=albania%20tool&keywords=usa,jordan,albania&categories=usa,jordan,albania#hub
 export interface QueryString {
   query?: string;
   keywords?: string[];
+  categories?: string[];
 }
 
 const LandingPage = () => {
@@ -54,7 +76,8 @@ const LandingPage = () => {
 
   const defaultActiveView = parsedQuery !== undefined && (
                               (parsedQuery.query !== undefined && parsedQuery.query.length) ||
-                              (parsedQuery.keywords !== undefined && parsedQuery.keywords.length)
+                              (parsedQuery.keywords !== undefined && parsedQuery.keywords.length) ||
+                              (parsedQuery.categories !== undefined && parsedQuery.categories.length)
                             ) ? View.search : View.grid;
   const [activeView, setActiveView] = useState<View>(defaultActiveView);
 
@@ -90,9 +113,15 @@ const LandingPage = () => {
     );
   } else if (activeView === View.search) {
     const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
+    const initialSelectedKeywords = parsedQuery && parsedQuery.keywords !== undefined ? parsedQuery.keywords : [];
+    const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined ? parsedQuery.categories : [];
     contentView = (
       <SearchView
         initialQuery={initialQuery}
+        keywords={sampleKeywords}
+        initialSelectedKeywords={initialSelectedKeywords}
+        categories={sampleCategories}
+        initialSelectedCategories={initialSelectedCategories}
       />
     );
   } else {

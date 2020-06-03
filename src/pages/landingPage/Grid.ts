@@ -5,7 +5,7 @@ import styled from 'styled-components/macro';
 
 export const Grid = styled(FullWidthContentContainer)`
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 5rem 1fr;
   grid-column-gap: 2.5rem;
 `;
 

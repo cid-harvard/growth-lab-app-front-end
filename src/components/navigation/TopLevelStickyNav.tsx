@@ -25,6 +25,7 @@ const ContentContainer = styled(FullWidthHeaderContent)`
   align-items: center;
   position: relative;
   height: ${navHeight}rem;
+  padding: 0 0.5rem;
 `;
 
 const Title = styled.h1`

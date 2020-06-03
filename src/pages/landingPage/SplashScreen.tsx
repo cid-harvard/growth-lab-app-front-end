@@ -40,6 +40,7 @@ const H1 = styled.h1`
 const UnderlineText = styled.span`
   border-bottom: solid 2px #fff;
   padding-bottom: 1rem;
+  line-height: 2;
 `;
 const H4 = styled.h4`
   color: #d2d2d2;
