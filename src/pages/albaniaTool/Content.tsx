@@ -295,20 +295,12 @@ const AlbaniaToolContent = (props: Props) => {
   const overviewLinkDivider = '[LINK]';
 
   const OverviewText = ({text}: {text: string}) => {
-    let parsedText = text.replace('<p>', '');
-    parsedText = parsedText.replace('<p>', '');
-    parsedText = parsedText.replace('</p>', '');
-    parsedText = parsedText.replace('</p>', '');
-    const paragraphs = parsedText.split('\n');
-    const textChunks = paragraphs[1].split(overviewLinkDivider).filter(t => t);
+    const textChunks = text.split(overviewLinkDivider).filter(t => t);
     if (textChunks.length === 3) {
       const gaCategory = 'Albania-overview-text-links';
       const gaEvent = 'click-link';
       return (
         <>
-          <StyledP>
-            {paragraphs[0]}
-          </StyledP>
           <StyledP>
             <a
               href='https://albania.growthlab.cid.harvard.edu/'
