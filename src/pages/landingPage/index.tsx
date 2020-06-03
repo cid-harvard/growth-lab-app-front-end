@@ -38,7 +38,7 @@ const PlaceholderSpace = styled.div`
 `;
 
 // examples: /?query=albania%20tool&keywords=usa,jordan,albania#hub
-interface QueryString {
+export interface QueryString {
   query?: string;
   keywords?: string[];
 }
@@ -89,8 +89,11 @@ const LandingPage = () => {
       <ListView />
     );
   } else if (activeView === View.search) {
+    const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
     contentView = (
-      <SearchView />
+      <SearchView
+        initialQuery={initialQuery}
+      />
     );
   } else {
     console.error('Invalid view type ' + activeView);
