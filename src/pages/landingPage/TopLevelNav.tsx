@@ -15,10 +15,10 @@ const TopLevelNav = (props: Props) => {
     linkColor, showTitle, activeColor, backgroundColor,
   } = props;
 
-  const {pathname, search, hash} = useLocation();
+  const {pathname, hash} = useLocation();
 
   const hubLink: NavItem = pathname === Routes.Landing
-    ? { label: 'Hub', target: search + '#' + hubId, internalLink: true,  active: hash === '#' + hubId}
+    ? { label: 'Hub', target: '#' + hubId, internalLink: true,  active: hash === '#' + hubId}
     : { label: 'Hub', target: Routes.Landing + '#' + hubId, active: false};
 
   const navLinks: NavItem[] = [
