@@ -49,6 +49,7 @@ import IndustryNowLocation from './components/IndustryNowLocation';
 import IndustryWagesBarChart from './components/IndustryWagesBarChart';
 import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
 import styled from 'styled-components/macro';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 const StyledP = styled.p`
   a {
@@ -234,10 +235,18 @@ const AlbaniaToolContent = (props: Props) => {
   const parsedQuery = queryString.parse(search);
   const industry = parsedQuery.industry ? parsedQuery.industry : '484'; // Default to Data processing, hosting
 
+  let parent: TreeNode = {label: '', value: 'the industry'};
   const flattenedChildData: TreeNode[] = [];
   naceData.forEach(({children}: any) =>
     children.forEach((child: TreeNode) =>
-      child.children.forEach((grandChild: TreeNode) => flattenedChildData.push(grandChild))));
+      child.children.forEach((grandChild: TreeNode) => {
+        flattenedChildData.push(grandChild);
+        if (grandChild.value === industry) {
+          parent = child;
+        }
+      }),
+    ),
+  );
 
   const initialSelectedIndustry = flattenedChildData.find(({value}) => value === industry);
 
@@ -257,6 +266,7 @@ const AlbaniaToolContent = (props: Props) => {
     {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
     {label: 'Major FDI Companies', target: '#major-fdi-companies', internalLink: true, scrollBuffer},
     {label: 'Industry Now', target: '#industry-now', internalLink: true, scrollBuffer},
+    {label: 'Nearby Industries', target: '#nearby-industries', internalLink: true, scrollBuffer},
   ];
   useScrollBehavior({
     bufferTop: scrollBuffer,
@@ -280,6 +290,73 @@ const AlbaniaToolContent = (props: Props) => {
     } else {
       return 'No script found for ' + subsection;
     }
+  };
+
+  const overviewLinkDivider = '[LINK]';
+
+  const OverviewText = ({text}: {text: string}) => {
+    const textChunks = text.split(overviewLinkDivider).filter(t => t);
+    if (textChunks.length === 3) {
+      const gaCategory = 'Albania-overview-text-links';
+      const gaEvent = 'click-link';
+      return (
+        <>
+          <StyledP>
+            <a
+              href='https://albania.growthlab.cid.harvard.edu/'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() =>
+                triggerGoogleAnalyticsEvent(gaCategory, gaEvent, 'growth_lab_link')
+              }
+            >
+              Harvard Growth Lab research in Albania
+            </a> {textChunks[0]} <a
+              href='https://docs.google.com/document/d/1p1x3SmNF4ycsVdaE9-As6d9SN9FSYPFRF9ng5a-qVxc/edit?usp=sharing'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() =>
+                triggerGoogleAnalyticsEvent(gaCategory, gaEvent, 'methodology_link')
+              }
+            >here</a> {textChunks[1]} <a
+              href='https://atlas.cid.harvard.edu/explore?country=4&product=undefined&year=2017&productClass=HS&target=Product&partner=undefined&startYear=undefined'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() =>
+                triggerGoogleAnalyticsEvent(gaCategory, gaEvent, 'atlas_link')
+              }
+            >Atlas of Economic Complexity
+            </a> {textChunks[2]}
+          </StyledP>
+        </>
+      );
+    } else {
+      return (
+        <StyledP
+          dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction, [
+            {key: '<<growth_lab_link>>', value: `<a
+              href='https://albania.growthlab.cid.harvard.edu/'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              Harvard Growth Lab research in Albania
+            </a>`},
+            {key: '<<methodology_link>>', value: `<a
+              href='https://docs.google.com/document/d/1p1x3SmNF4ycsVdaE9-As6d9SN9FSYPFRF9ng5a-qVxc/edit?usp=sharing'
+              target='_blank'
+              rel='noopener noreferrer'
+            >here</a>`},
+            {key: '<<atlas_link>>', value: `<a
+              href='https://atlas.cid.harvard.edu/explore?country=4&product=undefined&year=2017&productClass=HS&target=Product&partner=undefined&startYear=undefined'
+              target='_blank'
+              rel='noopener noreferrer'
+            >Atlas of Economic Complexity
+            </a>`},
+          ])}}
+        />
+      );
+    }
+
   };
 
   const {loading, error, data} = useQuery<SuccessResponse, Variables>(GET_DATA_FOR_NACE_ID,
@@ -484,6 +561,7 @@ const AlbaniaToolContent = (props: Props) => {
             dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryNow, [
                 {key: '<<description>>',
                  value: `<strong style="text-transform: lowercase">${industryName}</strong>`},
+                {key: '<<parent>>', value: parent.label.toLowerCase()},
                 ])}}
           />
         </div>
@@ -535,8 +613,10 @@ const AlbaniaToolContent = (props: Props) => {
             />
           </TextBlock>
         </TwoColumnSection>
+        <div id={'nearby-industries'}>
+          <SectionHeader>{SubSectionEnum.NearbyIndustries}</SectionHeader>
+        </div>
         <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>{SubSectionEnum.NearbyIndustries}</SectionHeaderSecondary>
           <DynamicTable
             columns={nearbyIndustry.columns}
             data={nearbyIndustry.data}
@@ -544,7 +624,9 @@ const AlbaniaToolContent = (props: Props) => {
           />
           <TextBlock>
             <p
-              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.NearbyIndustries)}}
+              dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.NearbyIndustries, [
+                  {key: '<<description>>', value: `<strong>${industryName.toLowerCase()}</strong>`},
+              ])}}
             />
           </TextBlock>
         </TwoColumnSection>
@@ -568,8 +650,12 @@ const AlbaniaToolContent = (props: Props) => {
   }
 
   const introText = (
-    <StyledP
-      dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction)}}
+    <OverviewText
+      text={getSubsectionText(SubSectionEnum.Introduction, [
+        {key: '<<growth_lab_link>>', value: overviewLinkDivider},
+        {key: '<<methodology_link>>', value: overviewLinkDivider},
+        {key: '<<atlas_link>>', value: overviewLinkDivider},
+      ])}
     />
   );
 
@@ -592,7 +678,13 @@ const AlbaniaToolContent = (props: Props) => {
         imageProps={{
           imgWidth: '110px',
         }}
-        backgroundColor={colorScheme.header}
+        primaryColor={colorScheme.header}
+        gradient={`linear-gradient(
+            0deg,
+            rgba(255,255,255,0) 0%,
+            ${rgba(colorScheme.header, 0.85)} 100%
+          )`
+        }
         textColor={'#fff'}
         linkColor={'#fff'}
         links={[

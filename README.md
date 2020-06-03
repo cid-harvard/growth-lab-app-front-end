@@ -559,7 +559,20 @@ The StickySubHeading component, located at `src/components/StickySubHeading` is 
 The GradientHeader component, located at `src/components/headers/GradientHeader` is a full, top level header element meant for the top of a page. It optionally can have the [MultiTierSearch](#multitiersearchcomponent) embeded in it. It takes in the following props -
 
 - **title**: string;
-- **backgroundColor**: string;
+- **primaryColor**: string;
+- **gradient**: string;
+
+   The gradient will be applied to the css `background` propery. And should follow (standared css gradient syntax)[https://cssgradient.io/]. For example -
+
+   ```tsx
+    gradient={`linear-gradient(
+        0deg,
+        rgba(224, 176, 78, 0.3) 0%,
+        #54A3C6 100%
+      )'
+    }
+   ```
+
 - **textColor**: string;
 - **linkColor**: string;
 - **imageSrc** *(optional)*: string;
