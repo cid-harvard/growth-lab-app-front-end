@@ -737,8 +737,9 @@ First, to create a new view -
 Now that the view has been created, you can add the filters -
 
 1. Select "Filters" from the list of options on the left and click **Add Filter**
-1. This filter is to only include data from the production site. The settings should be `[include only]` `[traffic from the ISP domain]` `[that contain]` and the ISP Domain should be `growthlab.app`. Save the filter.
-1. Create another filter. This one is to only show the data for the specific page you are tracking. The settings should be  `[include only]` `[traffic to the subdirectories]` `[that contain]` and the Subdirectory should be `/your-page-name`
+1. This filter is to exclude all data from the staging site. The settings should be `[exclude]` `[traffic to the hostname]` `[that contain]` and the Hostname should be `hgl-app-staging.cid-labs.com`
+1. Create another filter. This filter is to exclude all data from localhost. The settings should be `[exclude]` `[traffic to the hostname]` `[that contain]` and the Hostname should be `localhost`
+1. Create another filter. This one is to only show the data for the specific page you are tracking. The settings should be `[include only]` `[traffic to the subdirectories]` `[that contain]` and the Subdirectory should be `/your-page-name`
 
 <a name="triggergoogleanalyticsevents"/>
 
