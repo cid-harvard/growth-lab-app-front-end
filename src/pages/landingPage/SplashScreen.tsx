@@ -2,11 +2,12 @@ import React, {useRef, useEffect} from 'react';
 import styled from 'styled-components/macro';
 import LogoIMG from './logo.png';
 import BackgroundIMG from './image.jpg';
+import {secondaryFont} from '../../styling/styleUtils';
 
 const Blur = styled.div`
   width: 100%;
   height: 100vh;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
@@ -18,47 +19,38 @@ const Blur = styled.div`
 `;
 const Title = styled.div`
   position: absolute;
-  top: 40%;
   z-index: 2;
-  text-align: center;
-  margin: auto;
+  text-align: left;
+  margin: 18% 0 0 6vw;
   left:0;
   right: 0;
-  font-family: 'Open Sans Condensed', sans-serif;
   text-shadow: 1px 1px 10px black;
-  color: white;
-  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
 `;
 const H1 = styled.h1`
-  font-size: 40px;
+  color: white;
+  font-size: 2.35rem;
   font-weight: 200;
-  letter-spacing: 15px;
+  letter-spacing: 1px;
+  display: inline-block;
+  text-transform: uppercase;
+  font-family: ${secondaryFont};
+`;
+const UnderlineText = styled.span`
+  border-bottom: solid 2px #fff;
+  padding-bottom: 1rem;
+  line-height: 2;
 `;
 const H4 = styled.h4`
-  font-size: 15px;
-  font-weight: 200;
-  letter-spacing: 4px;
+  color: #d2d2d2;
+  font-weight: 300;
+  letter-spacing: 2px;
   margin-top: 1rem;
-
-  &::before {
-    content: "";
-    height: 1px;
-    width: 50px;
-    background-color: white;
-    display: inline-block;
-    margin-bottom: 5px;
-    margin-right: 10px;
-  }
-
-  &::after {
-    content: "";
-    height: 1px;
-    width: 60px;
-    background-color: white;
-    display: inline-block;
-    margin-bottom: 5px;
-    margin-left: 10px;
-  }
+  font-size: 1.6rem;
+  max-width: 600px;
+  display: inline-block;
+  margin-top: 1.5rem;
 `;
 const Logo = styled.img`
   position: absolute;
@@ -189,8 +181,14 @@ export default () => {
     <>
       <Blur />
       <Title>
-        <H1>Coming Soon</H1>
-        <H4>Harvard Growth Lab’s Digital Applications</H4>
+        <H1>
+          <UnderlineText>
+            Harvard Growth Lab’s Digital Hub
+          </UnderlineText>
+        </H1>
+        <H4>
+          Translating Growth Lab’s research into effective online tools and digital platforms
+        </H4>
       </Title>
       <a href='https://growthlab.cid.harvard.edu/' target='_blank' rel='noopener noreferrer'>
         <Logo src={LogoIMG} alt={'The Growth at Harvard Center for International Development'} />
