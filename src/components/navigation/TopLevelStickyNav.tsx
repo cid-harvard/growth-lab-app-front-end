@@ -83,7 +83,6 @@ export interface NavItem {
   label: string;
   target: string;
   internalLink?: boolean;
-  scrollBuffer?: number;
   active: boolean;
 }
 
