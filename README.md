@@ -16,14 +16,21 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
     - [HowToReadDots](#howtoreaddotscomponent)
     - [ColorScaleLegend](#colorlegendcomponent)
     - [Loading](#loadingcomponent)
+    - [FullPageError](#fullpageerrorcomponent)
+    - [BasicSearch](#basicsearchcomponent)
     - [MultiTierSearch](#multitiersearchcomponent)
     - [StickySideNav](#stickysidenavecomponent)
+    - [TopLevelStickyNav](#toplevelstickynav)
+    - [HubStickyNav](#hubstickynav)
     - [DynamicTable](#dynamictablecomponent)
+    - [StandardFooter](#standardfooter)
     - [ExploreNextFooter](#explorenextfootercomponent)
     - [InlineToggle](#inlinetogglecomponent)
     - [StickySubHeading](#stickysubheadingcomponent)
     - [GradientHeader](#gradientheadercomponent)
     - [TextBlock](#textblockcomponent)
+    -[PasswordProtectedComponent](#passwordprotectedcomponent)
+    -[PasswordProtectedPage](#passwordprotectedpage)
     - [QueryTableBuilder](#querytablebuildercomponent)
   - [Custom Hooks](#customhooks)
     - [useScrollBehavior](#usescrollbehaviorhook)
@@ -352,6 +359,23 @@ The Loading component, located at `src/components/general/Loading` is a generic 
 
 The FullPageError component, located at `src/components/general/FullPageError` is a generic error message that fills the space of its parent component. It takes a single props - `message: string` - that will output the error message underneath a generic `There was an error retrieving the data. Please refresh the page or contact the Growth Lab if this continues` message.
 
+<a name="basicsearchcomponent"/>
+
+#### BasicSearch
+
+The BasicSearch component, located at `src/components/form/BasicSearch` is a generic search bar. It takes the following props:
+
+- **placeholder**: string;
+- **setSearchQuery**: (value: string) => void;
+
+   A callback function for when the value of the search bar changes. Use this to get the value of the search bar and set it as state.
+
+- **initialQuery**: string;
+- **focusOnMount**: boolean;
+- **searchBarStyleOverrides** *(optional)*: React.CSSProperties;
+
+   Optional CSS properties that will be applied directly to the `input` element.
+
 <a name="multitiersearchcomponent"/>
 
 #### MultiTierSearch
@@ -438,6 +462,58 @@ The StickySideNav component, found at `src/components/navigation/StickySideNav`,
 
    Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
 
+<a name="toplevelstickynav"/>
+
+#### TopLevelStickyNav
+
+The TopLevelStickyNav component, found at `src/components/navigation/TopLevelStickyNav`, sticks to the top right of the screen. It takes the following props - 
+
+- **id**: string;
+- **title**: string;
+- **links**: NavItem[];
+   
+   A NavItem takes the following properties -
+
+   - **label**: string;
+   - **target**: string;
+   - **internalLink** *(optional)*: boolean;
+
+      Set true to specify if this is linking to an anchor on this page.
+
+   - **active**: boolean;
+   
+      Set true to denote this link to have 'active' styles.
+
+- **linkColor**: string;
+- **activeColor**: string;
+- **backgroundColor**: string;
+
+<a name="hubstickynav"/>
+
+#### HubStickyNav
+
+The HubStickyNav component, found at `src/components/navigation/HubStickyNav`, sticks to the top left of its container. It takes the following props - 
+
+- **links**: NavItem[];
+   
+   A NavItem takes the following properties -
+
+   - **label**: string;
+   - **onClick**: () => void;
+
+      Callback function for when the link is clicked.
+
+   - **isActive**: boolean;
+   
+      Set true to denote this link to have 'active' styles.
+
+
+- **offsetTop** *(optional)*: string;
+
+   Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
+
+- **primaryColor**: string;
+
 <a name="dynamictablecomponent"/>
 
 #### DynamicTable
@@ -480,6 +556,26 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 
    Will override the default font-size of all of the text in the table.
 
+<a name="standardfooter"/>
+
+#### StandardFooter
+
+The StandardFooter component, found at `src/components/text/StandardFooter`, creates a standard Growth Lab footer with little customization. It takes the following optional prop - 
+
+- **socialItems** *(optional)*: {target: string, type: SocialType}[];
+
+   Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons. SocialType can be one of the following -
+
+   ```tsx
+    enum SocialType {
+      facebook = 'facebook',
+      twitter = 'twitter',
+      linkedin = 'linkedin',
+      youtube = 'youtube',
+      applepodcast = 'applepodcast',
+    }
+   ```
+
 <a name="explorenextfootercomponent"/>
 
 #### ExploreNextFooter
@@ -494,15 +590,17 @@ The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter
 
    An array of strings for the attributions. Each string will appear on a new line at the top of the footer.
 
-- **socialItems**: {target: string, type: SocialType}[];
+- **socialItems** *(optional)*: {target: string, type: SocialType}[];
 
-   Each social item will render an icon link based on the SocialType. SocialType can be one of the following -
+   Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons. SocialType can be one of the following -
 
    ```tsx
     enum SocialType {
       facebook = 'facebook',
       twitter = 'twitter',
       linkedin = 'linkedin',
+      youtube = 'youtube',
+      applepodcast = 'applepodcast',
     }
    ```
 
@@ -628,11 +726,23 @@ The TextBlock component, located at `src/components/text/TextBlock` is a generic
 
 #### PasswordProtectedComponent
 
-The PasswordProtectedComponent component, located at `src/components/tools/PasswordProtectedComponent` is a generic component that password protects any child components. It takes only three props -
+The PasswordProtectedComponent component, located at `src/components/tools/PasswordProtectedComponent` is a generic component that password protects any child components. It takes only four props -
   
 - **title**: string;
 - **buttonColor**: string;
 - **children**: React.ReactNode;
+- **onPasswordSubmit**: (value: string) => void;
+
+   Callback function for when the user submits the password.
+
+<a name="passwordprotectedpage"/>
+
+#### PasswordProtectedPage
+
+Sim PasswordProtectedPage component, located at `src/components/tools/PasswordProtectedPage` is a generic component that fills its entire container and provides a callback function for when the user submits the password. Useful for protecting an entire page. It takes only three props -
+  
+- **title**: string;
+- **buttonColor**: string;
 - **onPasswordSubmit**: (value: string) => void;
 
    Callback function for when the user submits the password.
@@ -704,6 +814,10 @@ useScrollBehavior takes an optional object as an input with the following option
 - **navAnchors** *(optional)*: string[];
 
    A list of strings designating the ids for each element the hook should watch for scrolling. The ids should be written with the `#`, for example - `#overview`.
+
+- **smooth** *(optional)*: boolean[];
+
+   Specifies if the scroll should animate smoothly to the anchor or jump directly to it.
 
 <a name="queryingdatagraphql"/>
 
