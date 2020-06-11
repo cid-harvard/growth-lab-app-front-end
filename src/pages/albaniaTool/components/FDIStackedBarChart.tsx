@@ -23,6 +23,7 @@ export default (props: Props) => {
       vizType={VizType.BarChart}
       data={stackedBarChartData}
       axisLabels={{left: 'Estimated Capital Expenditure (Millions USD)'}}
+      chartCaption={'Source: fDi Markets Library, a service from The Financial Times Limited (2019). All Rights Reserved.'}
       enablePNGDownload={true}
       enableSVGDownload={true}
       chartTitle={'Identifying Companies - ' + selectedIndustry.label}

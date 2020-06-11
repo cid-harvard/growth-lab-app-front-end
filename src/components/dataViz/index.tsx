@@ -96,6 +96,12 @@ const ErrorMessage = styled.p`
   justify-content: center;
 `;
 
+const Caption = styled.p`
+  text-align: center;
+  font-style: italic;
+  font-size: 0.8rem;
+`;
+
 export enum VizType {
   ScatterPlot = 'ScatterPlot',
   BarChart = 'BarChart',
@@ -112,6 +118,7 @@ interface BaseProps {
   enablePNGDownload?: boolean;
   enableSVGDownload?: boolean;
   chartTitle?: string;
+  chartCaption?: string;
 }
 
 type Props = BaseProps & (
@@ -308,11 +315,15 @@ const DataViz = (props: Props) => {
       </Root>
     );
   } else {
+    const caption = props.chartCaption ? (
+      <Caption>{props.chartCaption}</Caption>
+    ) : null;
     return (
       <Root>
         <SizingElm ref={sizingNodeRef}>
           <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
         </SizingElm>
+        {caption}
         {downloadButtons}
         <Tooltip ref={tooltipNodeRef} key={id + windowWidth + 'tooltip'} />
       </Root>

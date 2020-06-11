@@ -180,6 +180,11 @@ export default (props: Props) => {
       onPasswordSubmit={setFdiPasswordValue}
     >
       {content}
+      <p style={{textAlign: 'center', fontSize: '0.8rem'}}>
+        <em>
+          Source: fDi Markets Library, a service from The Financial Times Limited (2019). All Rights Reserved.
+        </em>
+      </p>
     </PasswordProtectedComponent>
   );
 };
