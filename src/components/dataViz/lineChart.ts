@@ -7,10 +7,12 @@ interface Coords {
 
 export interface Datum {
   coords: Coords[];
+  animationDuration: number;
   label?: string;
   color?: string;
   width?: number;
   tooltipContent?: string;
+  totalLength?: number;
 }
 
 interface Dimensions {
@@ -64,7 +66,7 @@ export default (input: Input) => {
   const y = d3.scaleLinear().range([height, 0]);
 
   // define the line
-  const valueline: any = d3.line()
+  const valueline = d3.line()
     .x(function(d: any) { return x(d.x); })
     .y(function(d: any) { return y(d.y); });
 
@@ -100,7 +102,7 @@ export default (input: Input) => {
   y.domain([minY, maxY]);
 
   // Add the valueline path.
-  g.selectAll('.paths')
+  const paths = g.selectAll('.paths')
       .data(data)
       .enter()
         .append('path')
@@ -110,7 +112,7 @@ export default (input: Input) => {
         .attr('stroke-width', (line) => line.width ? line.width : 1.5)
         .attr('stroke-linejoin', 'round')
         .attr('stroke-linecap', 'round')
-        .attr('d', d => valueline(d.coords))
+        .attr('d', d => valueline(d.coords as any as [[number, number]]))
         .attr('transform', 'translate(' + margin.left + ', 0)')
         .on('mousemove', ({tooltipContent}) => {
           if (tooltipContent && tooltipContent.length) {
@@ -125,6 +127,15 @@ export default (input: Input) => {
           tooltip
               .style('display', 'none');
         });
+
+  // Set Properties of Dash Array and Dash Offset and initiate Transition
+  paths.each(function(d) { d.totalLength = this.getTotalLength(); })
+    .attr('stroke-dasharray', d => d.totalLength ? d.totalLength : 0)
+    .attr('stroke-dashoffset', d => d.totalLength ? d.totalLength : 0)
+    .transition() // Call Transition Method
+    .duration(d => d.animationDuration) // Set Duration timing (ms)
+    .ease(d3.easeLinear) // Set Easing option
+    .attr('stroke-dashoffset', 0); // Set final value of dash-offset for transition
 
   // Add the labels
   g.selectAll('.labels')

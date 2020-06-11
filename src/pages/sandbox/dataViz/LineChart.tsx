@@ -25,6 +25,7 @@ const data: Datum[] = [
       {x: 2015, y: 5},
       {x: 2016, y: 8},
     ],
+    animationDuration: 0,
     label: 'Evergreen Forest Growth',
     color: 'forestgreen',
     width: 3,
@@ -44,6 +45,7 @@ const data: Datum[] = [
       {x: 2015, y: 6},
       {x: 2016, y: 7},
     ],
+    animationDuration: 1000,
     label: 'Salmon Hatchery',
     color: 'darksalmon',
     width: 3,
@@ -67,8 +69,11 @@ const dataAsString = `const data: Datum[] = [
       {x: 2015, y: 5},
       {x: 2016, y: 8},
     ],
+    animationDuration: 0,
+    label: 'Evergreen Forest Growth',
     color: 'forestgreen',
-    width: 2,
+    width: 3,
+    tooltipContent: 'Number of trees overtime',
   }, {
     coords: [
       {x: 2005, y: 2},
@@ -84,8 +89,11 @@ const dataAsString = `const data: Datum[] = [
       {x: 2015, y: 6},
       {x: 2016, y: 7},
     ],
+    animationDuration: 1000,
+    label: 'Salmon Hatchery',
     color: 'darksalmon',
-    width: 2,
+    width: 3,
+    tooltipContent: 'Number of salmon overtime',
   },
 ];
 `;
@@ -93,6 +101,12 @@ const codeAsString = `<DataViz
   id={'sandbox-line-chart'}
   vizType={VizType.LineChart}
   data={data}
+  axisLabels={{left: 'Value', bottom: 'Year'}}
+  axisMinMax={{
+    minY: -10,
+    maxY: 20,
+    maxX: 2021,
+  }}
 />
 `;
 
@@ -109,15 +123,15 @@ const LineChart = () => {
           axisMinMax={{
             minY: -10,
             maxY: 20,
-            maxX: 2020,
+            maxX: 2021,
           }}
         />
         <TextBlock>
           <Code>
-            {dataAsString}
+            {codeAsString}
           </Code>
           <Code>
-            {codeAsString}
+            {dataAsString}
           </Code>
         </TextBlock>
       </TwoColumnSection>
