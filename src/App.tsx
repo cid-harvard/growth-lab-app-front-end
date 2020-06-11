@@ -43,6 +43,7 @@ const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
+const Sandbox = lazy(() => import('./pages/sandbox'));
 
 export interface IAppContext {
   windowWidth: number;
@@ -98,6 +99,9 @@ function App() {
                   />
                   <TrackedRoute exact path={Routes.Community}
                     render={(props: any) => <CommunityPage {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.Sandbox}
+                    render={(props: any) => <Sandbox {...props} />}
                   />
                   <TrackedRoute exact path={Routes.AlbaniaTool}
                     render={(props: any) => <AlbaniaTool {...props} />}

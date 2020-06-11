@@ -9,6 +9,7 @@ import createBarChart, {Datum as BarChartDatum} from './barChart';
 import createClusterBarChart, {Datum as ClusterBarChartDatum} from './clusterBarChart';
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
+import creatLineChart, {Datum as LineChartDatum} from './lineChart';
 import {
   baseColor,
   secondaryFont,
@@ -102,6 +103,7 @@ export enum VizType {
   ClusterBarChart = 'ClusterBarChart',
   RadarChart = 'RadarChart',
   GeoMap = 'GeoMap',
+  LineChart = 'LineChart',
   Error = 'Error',
 }
 
@@ -153,6 +155,10 @@ type Props = BaseProps & (
     data: ExtendedFeature<any, GeoJsonCustomProperties>;
     minColor: string;
     maxColor: string;
+  }|
+  {
+    vizType: VizType.LineChart;
+    data: LineChartDatum[];
   }
 );
 
@@ -218,6 +224,12 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
+        });
+      } else if (props.vizType === VizType.LineChart) {
+        creatLineChart({
+          svg, tooltip, data: props.data, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
         });
       }
     }

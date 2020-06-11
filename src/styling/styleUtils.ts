@@ -176,3 +176,10 @@ export const Card = styled.div`
     background-color: ${tertiaryColor};
   }
 `;
+
+export const Code = styled.pre`
+  background-color: ${tertiaryColor};
+  color: #444;
+  padding: 1rem;
+  box-sizing: border-box;
+`;
