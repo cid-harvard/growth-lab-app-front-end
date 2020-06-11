@@ -540,6 +540,13 @@ const AlbaniaToolContent = (props: Props) => {
                  value: `<strong style="text-transform: lowercase">${industryName}</strong>`},
               ])}}
           />
+          <p>
+            <em>
+              <strong>Source:</strong> fDi Markets Library, a service from The Financial Times Limited {
+                new Date().getFullYear()
+              }. All Rights Reserved.
+            </em>
+          </p>
         </div>
         <TwoColumnSection>
           <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
