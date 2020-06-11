@@ -118,7 +118,6 @@ export default (input: Input) => {
   x.domain([minX, maxX]);
   y.domain([minY, maxY]);
 
-
   g.selectAll('.label-lines')
       .data(data)
       .enter()
