@@ -159,6 +159,13 @@ type Props = BaseProps & (
   {
     vizType: VizType.LineChart;
     data: LineChartDatum[];
+    axisLabels?: {left?: string, bottom?: string};
+    axisMinMax?: {
+      minX?: number,
+      maxX?: number,
+      minY?: number,
+      maxY?: number,
+    };
   }
 );
 
@@ -230,6 +237,8 @@ const DataViz = (props: Props) => {
           svg, tooltip, data: props.data, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
+          axisLabels: props.axisLabels,
+          axisMinMax: props.axisMinMax,
         });
       }
     }

@@ -25,8 +25,10 @@ const data: Datum[] = [
       {x: 2015, y: 5},
       {x: 2016, y: 8},
     ],
+    label: 'Evergreen Forest Growth',
     color: 'forestgreen',
-    width: 2,
+    width: 3,
+    tooltipContent: 'Number of trees overtime',
   }, {
     coords: [
       {x: 2005, y: 2},
@@ -42,8 +44,10 @@ const data: Datum[] = [
       {x: 2015, y: 6},
       {x: 2016, y: 7},
     ],
+    label: 'Salmon Hatchery',
     color: 'darksalmon',
-    width: 2,
+    width: 3,
+    tooltipContent: 'Number of salmon overtime',
   },
 ];
 
@@ -101,6 +105,12 @@ const LineChart = () => {
           id={'sandbox-line-chart'}
           vizType={VizType.LineChart}
           data={data}
+          axisLabels={{left: 'Value', bottom: 'Year'}}
+          axisMinMax={{
+            minY: -10,
+            maxY: 20,
+            maxX: 2020,
+          }}
         />
         <TextBlock>
           <Code>
