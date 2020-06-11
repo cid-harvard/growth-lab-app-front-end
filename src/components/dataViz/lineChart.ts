@@ -5,10 +5,27 @@ interface Coords {
   y: number;
 }
 
+export enum LabelAnchor {
+  Left = 'start',
+  Middle = 'middle',
+  Right = 'end',
+}
+
+export enum LabelPosition {
+  Top = 'top',
+  Center = 'center',
+  Bottom = 'bottom',
+}
+
 export interface Datum {
   coords: Coords[];
   animationDuration: number;
+  animationStartPercentAsDecimal?: number;
   label?: string;
+  labelColor?: string;
+  showLabelLine?: boolean;
+  labelPosition?: LabelPosition;
+  labelAnchor?: LabelAnchor;
   color?: string;
   width?: number;
   tooltipContent?: string;
@@ -101,6 +118,26 @@ export default (input: Input) => {
   x.domain([minX, maxX]);
   y.domain([minY, maxY]);
 
+
+  g.selectAll('.label-lines')
+      .data(data)
+      .enter()
+        .append('line')
+        .attr('transform', 'translate(' + margin.left + ', 0)')
+        .style('stroke-dasharray', '3 1')
+        .attr('stroke', ({labelColor}) => labelColor ? labelColor : 'gray')
+        .attr('y1', ({coords}) => y(coords[coords.length - 1].y))
+        .attr('x1', ({coords}) => x(coords[coords.length - 1].x))
+        .attr('y2', height)
+        .attr('x2', ({coords}) => x(coords[coords.length - 1].x))
+        .text(({label}) => label ? label : '')
+        .attr('opacity', '0')
+        .transition() // Call Transition Method
+        .delay(d => d.animationDuration ) // Set Duration timing (ms)
+        .duration(d => d.animationDuration ) // Set Duration timing (ms)
+        .ease(d3.easeLinear) // Set Easing option
+        .attr('opacity', d => d.showLabelLine ? '1' : '0');
+
   // Add the valueline path.
   const paths = g.selectAll('.paths')
       .data(data)
@@ -129,9 +166,14 @@ export default (input: Input) => {
         });
 
   // Set Properties of Dash Array and Dash Offset and initiate Transition
-  paths.each(function(d) { d.totalLength = this.getTotalLength(); })
+  paths.each(function(d) {
+      d.totalLength = this.getTotalLength();
+    })
     .attr('stroke-dasharray', d => d.totalLength ? d.totalLength : 0)
-    .attr('stroke-dashoffset', d => d.totalLength ? d.totalLength : 0)
+    .attr('stroke-dashoffset', d => {
+      const multiplier = d.animationStartPercentAsDecimal !== undefined ? d.animationStartPercentAsDecimal : 1;
+      return d.totalLength ? d.totalLength * multiplier : 0;
+    })
     .transition() // Call Transition Method
     .duration(d => d.animationDuration) // Set Duration timing (ms)
     .ease(d3.easeLinear) // Set Easing option
@@ -142,14 +184,31 @@ export default (input: Input) => {
       .data(data)
       .enter()
         .append('text')
-        .attr('transform', 'translate(40 2)')
+        .attr('transform', d => {
+          if (d.labelPosition === LabelPosition.Top) {
+            return `translate(${margin.left + 8} -8)`;
+          } else if (d.labelPosition === LabelPosition.Bottom) {
+            return `translate(${margin.left + 8} 10)`;
+          } else if (d.labelPosition === LabelPosition.Center) {
+            return `translate(${margin.left + 8} 2)`;
+          } else {
+            return `translate(${margin.left + 8} 2)`;
+          }
+        })
+        .attr('text-anchor', d => d.labelAnchor ? d.labelAnchor : LabelAnchor.Left)
         .attr('class', 'line-label')
-        .attr('fill', ({color}) => color ? color : 'gray')
+        .attr('fill', ({labelColor}) => labelColor ? labelColor : 'gray')
         .attr('font-size', '0.7rem')
         .attr('y', ({coords}) => y(coords[coords.length - 1].y))
         .attr('x', ({coords}) => x(coords[coords.length - 1].x))
         .style('font-family', "'Source Sans Pro',sans-serif")
-        .text(({label}) => label ? label : '');
+        .text(({label}) => label ? label : '')
+        .attr('opacity', '0')
+        .transition() // Call Transition Method
+        .delay(d => d.animationDuration ) // Set Duration timing (ms)
+        .duration(d => d.animationDuration ) // Set Duration timing (ms)
+        .ease(d3.easeLinear) // Set Easing option
+        .attr('opacity', '1');
 
   // Add the x Axis
   g.append('g')
@@ -162,21 +221,21 @@ export default (input: Input) => {
       .attr('transform', 'translate(' + margin.left + ', 0)');
 
   // gridlines in x axis function
-  const makeGridlinesX: any = () => d3.axisBottom(x).ticks(10);
+  // const makeGridlinesX: any = () => d3.axisBottom(x).ticks(10);
 
   // gridlines in y axis function
   const makeGridlinesY: any = () => d3.axisLeft(y).ticks(10);
 
   // add the X gridlines
-  g.append('g')
-      .attr('class', 'grid')
-      .attr('transform', 'translate(' + margin.left + ',' + height + ')')
-      .style('opacity', '0.25')
-      .style('stroke-dasharray', '3 1')
-      .call(makeGridlinesX()
-          .tickSize(-height)
-          .tickFormat(''),
-      );
+  // g.append('g')
+  //     .attr('class', 'grid')
+  //     .attr('transform', 'translate(' + margin.left + ',' + height + ')')
+  //     .style('opacity', '0.25')
+  //     .style('stroke-dasharray', '3 1')
+  //     .call(makeGridlinesX()
+  //         .tickSize(-height)
+  //         .tickFormat(''),
+  //     );
 
   // add the Y gridlines
   g.append('g')
