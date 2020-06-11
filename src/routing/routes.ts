@@ -15,4 +15,5 @@ export enum SandboxSection {
 
 export enum DataVizSections {
   LineChart = 'linechart',
+  GeoMap = 'geomap',
 }
