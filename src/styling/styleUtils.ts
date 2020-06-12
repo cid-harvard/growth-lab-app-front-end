@@ -183,3 +183,37 @@ export const Code = styled.pre`
   padding: 1rem;
   box-sizing: border-box;
 `;
+
+export const FullWidth = styled.div`
+  grid-column: 1 / -1;
+`;
+
+export const CoverPhoto = styled.div`
+  grid-column: 1 / -1;
+  height: 50vh;
+  background-color: ${tertiaryColor};
+`;
+
+export const StoryTitle = styled.h1`
+  text-align: center;
+  margin: 2rem 0 3rem;
+  font-size: 1.85rem;
+`;
+
+export const StoryHeading = styled.h2`
+  grid-column: 1 / -1;
+  font-weight: 600;
+  font-size: 1.3rem;
+`;
+
+
+export const StorySectionContainer = styled.div`
+  min-height: 50vh;
+  position: relative;
+  padding-bottom: 10vh;
+`;
+
+export const StickyContainer = styled.div`
+  position: sticky;
+  top: 0;
+`;

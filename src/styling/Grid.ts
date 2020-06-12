@@ -112,3 +112,9 @@ export const FullWidthFooterContent = styled.footer`
   margin: 0 auto;
 `;
 
+export const StoriesGrid = styled(FullWidthContentContainer)`
+  display: grid;
+  grid-template-columns: 8fr 5fr;
+  column-gap: 2rem;
+  position: relative;
+`;
