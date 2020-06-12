@@ -173,6 +173,10 @@ type Props = BaseProps & (
       minY?: number,
       maxY?: number,
     };
+    showGridLines?: {
+      xAxis?: boolean;
+      yAxis?: boolean;
+    }
   }
 );
 
@@ -246,6 +250,7 @@ const DataViz = (props: Props) => {
           },
           axisLabels: props.axisLabels,
           axisMinMax: props.axisMinMax,
+          showGridLines: props.showGridLines,
         });
       }
     }

@@ -17,15 +17,22 @@ export enum LabelPosition {
   Bottom = 'bottom',
 }
 
+export enum AnimationDirection {
+  Forward = 'forward',
+  Backward = 'backward',
+}
+
 export interface Datum {
   coords: Coords[];
-  animationDuration: number;
+  animationDuration?: number;
   animationStartPercentAsDecimal?: number;
+  animationDirection?: AnimationDirection;
   label?: string;
   labelColor?: string;
   showLabelLine?: boolean;
   labelPosition?: LabelPosition;
   labelAnchor?: LabelAnchor;
+  labelDataIndex?: number;
   color?: string;
   width?: number;
   tooltipContent?: string;
@@ -67,11 +74,16 @@ interface Input {
     minY?: number,
     maxY?: number,
   };
+  showGridLines?: {
+    xAxis?: boolean;
+    yAxis?: boolean;
+  };
 }
 
 export default (input: Input) => {
   const {
     svg, data, size, axisLabels, tooltip, axisMinMax,
+    showGridLines,
   } = input;
 
   const margin = {top: 30, right: 30, bottom: 30, left: 35};
@@ -125,15 +137,24 @@ export default (input: Input) => {
         .attr('transform', 'translate(' + margin.left + ', 0)')
         .style('stroke-dasharray', '3 1')
         .attr('stroke', ({labelColor}) => labelColor ? labelColor : 'gray')
-        .attr('y1', ({coords}) => y(coords[coords.length - 1].y))
-        .attr('x1', ({coords}) => x(coords[coords.length - 1].x))
+        .attr('y1', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return y(coords[targetCood].y);
+        })
+        .attr('x1', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return x(coords[targetCood].x);
+        })
         .attr('y2', height)
-        .attr('x2', ({coords}) => x(coords[coords.length - 1].x))
+        .attr('x2', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return x(coords[targetCood].x);
+        })
         .text(({label}) => label ? label : '')
         .attr('opacity', '0')
         .transition() // Call Transition Method
-        .delay(d => d.animationDuration ) // Set Duration timing (ms)
-        .duration(d => d.animationDuration ) // Set Duration timing (ms)
+        .delay(d => d.animationDuration ? d.animationDuration : 0) // Set Delay timing (ms)
+        .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
         .ease(d3.easeLinear) // Set Easing option
         .attr('opacity', d => d.showLabelLine ? '1' : '0');
 
@@ -171,12 +192,15 @@ export default (input: Input) => {
     .attr('stroke-dasharray', d => d.totalLength ? d.totalLength : 0)
     .attr('stroke-dashoffset', d => {
       const multiplier = d.animationStartPercentAsDecimal !== undefined ? d.animationStartPercentAsDecimal : 1;
-      return d.totalLength ? d.totalLength * multiplier : 0;
+      return d.totalLength && d.animationDirection !== AnimationDirection.Backward ? d.totalLength * multiplier : 0;
     })
     .transition() // Call Transition Method
-    .duration(d => d.animationDuration) // Set Duration timing (ms)
+    .duration(d => d.animationDuration ? d.animationDuration : 0) // Set Duration timing (ms)
     .ease(d3.easeLinear) // Set Easing option
-    .attr('stroke-dashoffset', 0); // Set final value of dash-offset for transition
+    .attr('stroke-dashoffset', d => {
+      const multiplier = d.animationStartPercentAsDecimal !== undefined ? d.animationStartPercentAsDecimal : 1;
+      return d.totalLength && d.animationDirection === AnimationDirection.Backward ? d.totalLength * multiplier : 0;
+    }); // Set final value of dash-offset for transition
 
   // Add the labels
   g.selectAll('.labels')
@@ -198,14 +222,20 @@ export default (input: Input) => {
         .attr('class', 'line-label')
         .attr('fill', ({labelColor}) => labelColor ? labelColor : 'gray')
         .attr('font-size', '0.7rem')
-        .attr('y', ({coords}) => y(coords[coords.length - 1].y))
-        .attr('x', ({coords}) => x(coords[coords.length - 1].x))
+        .attr('y', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return y(coords[targetCood].y);
+        })
+        .attr('x', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return x(coords[targetCood].x);
+        })
         .style('font-family', "'Source Sans Pro',sans-serif")
         .text(({label}) => label ? label : '')
         .attr('opacity', '0')
         .transition() // Call Transition Method
-        .delay(d => d.animationDuration ) // Set Duration timing (ms)
-        .duration(d => d.animationDuration ) // Set Duration timing (ms)
+        .delay(d => d.animationDuration ? d.animationDuration : 0) // Set Delay timing (ms)
+        .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
         .ease(d3.easeLinear) // Set Easing option
         .attr('opacity', '1');
 
@@ -220,24 +250,27 @@ export default (input: Input) => {
       .attr('transform', 'translate(' + margin.left + ', 0)');
 
   // gridlines in x axis function
-  // const makeGridlinesX: any = () => d3.axisBottom(x).ticks(10);
+  const makeGridlinesX: any = () => d3.axisBottom(x).ticks(10);
 
   // gridlines in y axis function
   const makeGridlinesY: any = () => d3.axisLeft(y).ticks(10);
 
   // add the X gridlines
-  // g.append('g')
-  //     .attr('class', 'grid')
-  //     .attr('transform', 'translate(' + margin.left + ',' + height + ')')
-  //     .style('opacity', '0.25')
-  //     .style('stroke-dasharray', '3 1')
-  //     .call(makeGridlinesX()
-  //         .tickSize(-height)
-  //         .tickFormat(''),
-  //     );
+  if (showGridLines && showGridLines.xAxis) {
+    g.append('g')
+      .attr('class', 'grid')
+      .attr('transform', 'translate(' + margin.left + ',' + height + ')')
+      .style('opacity', '0.25')
+      .style('stroke-dasharray', '3 1')
+      .call(makeGridlinesX()
+          .tickSize(-height)
+          .tickFormat(''),
+      );
+  }
 
   // add the Y gridlines
-  g.append('g')
+  if (showGridLines && showGridLines.yAxis) {
+    g.append('g')
       .attr('class', 'grid')
       .attr('transform', 'translate(' + margin.left + ', 0)')
       .style('opacity', '0.25')
@@ -246,6 +279,7 @@ export default (input: Input) => {
           .tickSize(-width)
           .tickFormat(''),
       );
+  }
 
   // append X axis label
   svg

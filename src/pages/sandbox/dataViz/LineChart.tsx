@@ -7,7 +7,7 @@ import {
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import DataViz, {VizType} from '../../../components/dataViz';
-import {Datum, LabelPosition, LabelAnchor} from '../../../components/dataViz/lineChart';
+import {Datum, LabelPosition, LabelAnchor, AnimationDirection} from '../../../components/dataViz/lineChart';
 
 const data: Datum[] = [
   {
@@ -68,17 +68,21 @@ const data: Datum[] = [
       {x: 2012, y: 7},
       {x: 2013, y: 6},
       {x: 2014, y: 15},
+      {x: 2015, y: 6},
+      {x: 2016, y: 7},
     ],
-    animationDuration: 1000,
-    animationStartPercentAsDecimal: 0.5,
+    animationDuration: 500,
+    animationStartPercentAsDecimal: 0.3,
     label: 'Salmon Hatchery',
     showLabelLine: true,
+    labelDataIndex: 9,
     color: 'aqua',
     labelColor: 'purple',
     width: 3,
     tooltipContent: 'Number of salmon overtime',
     labelPosition: LabelPosition.Top,
     labelAnchor: LabelAnchor.Right,
+    animationDirection: AnimationDirection.Backward,
   },
 ];
 
