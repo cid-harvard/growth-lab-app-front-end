@@ -41,6 +41,7 @@ const LandingPage = lazy(() => import('./pages/landingPage'));
 const AboutPage = lazy(() => import('./pages/landingPage/About'));
 const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
+const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
 const Sandbox = lazy(() => import('./pages/sandbox'));
@@ -108,6 +109,9 @@ function App() {
                   />
                   <TrackedRoute exact path={Routes.JordanTool}
                     render={(props: any) => <JordanTool {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.AlbaniaStory}
+                    render={(props: any) => <AlbaniaStory {...props} />}
                   />
                   {/* If none of the above routes are found show the 404 page */}
                   <TrackedRoute component={PageNotFound} />
