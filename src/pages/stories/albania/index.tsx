@@ -32,16 +32,23 @@ const AlbaniaStory = () => {
   const firstSection = useRef<HTMLParagraphElement | null>(null);
   const secondSection = useRef<HTMLParagraphElement | null>(null);
   const thirdSection = useRef<HTMLParagraphElement | null>(null);
+  const fourthSection = useRef<HTMLParagraphElement | null>(null);
+  const fifthSection = useRef<HTMLParagraphElement | null>(null);
 
   const {section} = useScrollingSections({refs: [
     firstSection,
     secondSection,
     thirdSection,
+    fourthSection,
+    fifthSection,
   ]});
 
   const prevSection = usePrevious(section);
 
-  const lineChartData = getLineChartData({
+  const {
+    lineChartData, minX, maxX, minY, maxY,
+    leftAxis, animateAxis,
+  } = getLineChartData({
     section, prevSection: prevSection === undefined || prevSection === null ? null : prevSection,
   });
 
@@ -60,17 +67,24 @@ const AlbaniaStory = () => {
         <StoryHeading>Taking Stock of the Growth Process prior to COVID-19</StoryHeading>
         <div style={{position: 'relative'}}>
           <StickyContainer>
-
             <DataViz
               id={'albania-story-line-chart'}
               vizType={VizType.LineChart}
               data={lineChartData}
-              axisLabels={{left: 'Year on Year Percent Change in GDP per capita'}}
-              axisMinMax={{
-                minY: -5,
-                maxY: 8,
-                minX: 2010,
-                maxX: 2019,
+              axisLabels={{left: leftAxis}}
+              axisMinMax={{minY, maxY, minX, maxX}}
+              animateAxis={animateAxis}
+              formatAxis={{
+                x: (n: number) => {
+                  if (n - Math.ceil(n) === 0) {
+                    return n.toString();
+                  } else {
+                    return '';
+                  }
+                },
+              }}
+              tickCount={{
+                x: maxX - minX,
               }}
             />
           </StickyContainer>
@@ -97,15 +111,23 @@ const AlbaniaStory = () => {
               </p>
             </StickyText>
           </StorySectionContainer>
-          <p>
-            Growth since 2013 has been broad-based with job creation that has been inclusive. Although the bulk of growth has come from service activities, all sectors of the economy have expanded. This differs greatly from growth prior to the global financial crisis, which depended heavily on remittances and an unsustainable construction boom. Rates of employment and labor force participation have been on the rise since 2014, and the unemployment rate had been on a steady decline since 2015 until just recently.
-          </p>
-          <p>
-            Labor market outcomes have been improving for all combinations of gender and age groups.
-          </p>
-          <p>
-            More people are getting jobs; more jobs are in the formal sector; and more people are working inlarge firms. A recent analysis of the first two years of the new Income and Living Conditions Survey, shows that relative poverty declined between 2017 and 2018. As incomes are rising, the relative poverty income threshold rose significantly (by 11%) and yet the number of Albanians below the threshold declined, showing that the benefits of growth are being largely shared. The survey also shows declining inequality for all age groups.
-          </p>
+          <StorySectionContainer>
+            <StickyText>
+              <p ref={fourthSection}>
+                Growth since 2013 has been broad-based with job creation that has been inclusive. Although the bulk of growth has come from service activities, all sectors of the economy have expanded. This differs greatly from growth prior to the global financial crisis, which depended heavily on remittances and an unsustainable construction boom. Rates of employment and labor force participation have been on the rise since 2014, and the unemployment rate had been on a steady decline since 2015 until just recently.
+              </p>
+            </StickyText>
+          </StorySectionContainer>
+          <StorySectionContainer>
+            <StickyText>
+              <p ref={fifthSection}>
+                Labor market outcomes have been improving for all combinations of gender and age groups.
+              </p>
+              <p>
+                More people are getting jobs; more jobs are in the formal sector; and more people are working inlarge firms. A recent analysis of the first two years of the new Income and Living Conditions Survey, shows that relative poverty declined between 2017 and 2018. As incomes are rising, the relative poverty income threshold rose significantly (by 11%) and yet the number of Albanians below the threshold declined, showing that the benefits of growth are being largely shared. The survey also shows declining inequality for all age groups.
+              </p>
+            </StickyText>
+          </StorySectionContainer>
         </TextBlock>
       </StoriesGrid>
       <StoriesGrid>

@@ -177,6 +177,21 @@ type Props = BaseProps & (
       xAxis?: boolean;
       yAxis?: boolean;
     }
+    formatAxis?: {
+      x?: (n: number) => string;
+      y?: (n: number) => string;
+    }
+    tickCount?: {
+      x?: number;
+      y?: number;
+    }
+    animateAxis?: {
+      animationDuration: number,
+      startMinX: number,
+      startMaxX: number,
+      startMinY: number,
+      startMaxY: number,
+    };
   }
 );
 
@@ -251,6 +266,9 @@ const DataViz = (props: Props) => {
           axisLabels: props.axisLabels,
           axisMinMax: props.axisMinMax,
           showGridLines: props.showGridLines,
+          formatAxis: props.formatAxis,
+          tickCount: props.tickCount,
+          animateAxis: props.animateAxis,
         });
       }
     }

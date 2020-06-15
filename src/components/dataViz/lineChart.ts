@@ -26,6 +26,7 @@ export interface Datum {
   coords: Coords[];
   animationDuration?: number;
   animationDirection?: AnimationDirection;
+  animationStartIndex?: number;
   label?: string;
   labelColor?: string;
   showLabelLine?: boolean;
@@ -59,7 +60,7 @@ const ranges = [
 const formatNumber = (n: number) => {
   for (const range of ranges) {
     if (n >= range.divider) {
-      return (n / range.divider).toString() + range.suffix + ' ft';
+      return (n / range.divider).toString() + range.suffix;
     }
   }
   return n.toString();
@@ -77,16 +78,31 @@ interface Input {
     minY?: number,
     maxY?: number,
   };
+  animateAxis?: {
+    animationDuration: number,
+    startMinX: number,
+    startMaxX: number,
+    startMinY: number,
+    startMaxY: number,
+  };
   showGridLines?: {
     xAxis?: boolean;
     yAxis?: boolean;
+  };
+  formatAxis?: {
+    x?: (n: number) => string;
+    y?: (n: number) => string;
+  };
+  tickCount?: {
+    x?: number;
+    y?: number;
   };
 }
 
 export default (input: Input) => {
   const {
     svg, size, axisLabels, tooltip, axisMinMax,
-    showGridLines,
+    showGridLines, formatAxis, tickCount, animateAxis,
   } = input;
 
   const data: InternalDatum[] = input.data;
@@ -158,7 +174,11 @@ export default (input: Input) => {
         .text(({label}) => label ? label : '')
         .attr('opacity', '0')
         .transition() // Call Transition Method
-        .delay(d => d.animationDuration ? d.animationDuration : 0) // Set Delay timing (ms)
+        .delay(d => {
+          const axisDelay = animateAxis ? animateAxis.animationDuration : 0;
+          const lineDelay = d.animationDuration ? d.animationDuration : 0;
+          return axisDelay + lineDelay;
+        })
         .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
         .ease(d3.easeLinear) // Set Easing option
         .attr('opacity', d => d.showLabelLine ? '1' : '0');
@@ -193,8 +213,8 @@ export default (input: Input) => {
   // Set Properties of Dash Array and Dash Offset and initiate Transition
   paths.each(function(d) {
       d.totalLength = this.getTotalLength();
-      if (d.labelDataIndex !== undefined) {
-        const adjustedCoords = d.coords.filter((_c, i) => i <= (d.labelDataIndex as number));
+      if (d.animationStartIndex !== undefined) {
+        const adjustedCoords = d.coords.filter((_c, i) => i <= (d.animationStartIndex as number));
         const shortenedLine = valueline(adjustedCoords as any as [[number, number]]);
         const shortPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         shortPath.setAttribute('d', shortenedLine ? shortenedLine : '');
@@ -204,15 +224,14 @@ export default (input: Input) => {
     .attr('stroke-dasharray', d => d.totalLength ? d.totalLength : 0)
     .attr('stroke-dashoffset', d => {
       const multiplier = d.animationStartPercentAsDecimal !== undefined ? d.animationStartPercentAsDecimal : 1;
-      // const multiplier = 1;
       return d.totalLength && d.animationDirection !== AnimationDirection.Backward ? d.totalLength * multiplier : 0;
     })
     .transition() // Call Transition Method
+    .delay(animateAxis ? animateAxis.animationDuration : 0)
     .duration(d => d.animationDuration ? d.animationDuration : 0) // Set Duration timing (ms)
     .ease(d3.easeLinear) // Set Easing option
     .attr('stroke-dashoffset', d => {
       const multiplier = d.animationStartPercentAsDecimal !== undefined ? d.animationStartPercentAsDecimal : 1;
-      // const multiplier = 1;
       return d.totalLength && d.animationDirection === AnimationDirection.Backward ? d.totalLength * multiplier : 0;
     }); // Set final value of dash-offset for transition
 
@@ -248,26 +267,61 @@ export default (input: Input) => {
         .text(({label}) => label ? label : '')
         .attr('opacity', '0')
         .transition() // Call Transition Method
-        .delay(d => d.animationDuration ? d.animationDuration : 0) // Set Delay timing (ms)
+        .delay(d => {
+          const axisDelay = animateAxis ? animateAxis.animationDuration : 0;
+          const lineDelay = d.animationDuration ? d.animationDuration : 0;
+          return axisDelay + lineDelay;
+        }) // Set Delay timing (ms)
         .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
         .ease(d3.easeLinear) // Set Easing option
         .attr('opacity', '1');
 
+  const formatX = formatAxis && formatAxis.x ? formatAxis.x : formatNumber;
+  const formatY = formatAxis && formatAxis.y ? formatAxis.y : formatNumber;
+  let xDomain = d3.axisBottom(x);
+  let yDomain = d3.axisLeft(y);
+  if (animateAxis !== undefined) {
+    const {
+      startMaxX, startMinX, startMinY, startMaxY,
+    } = animateAxis;
+    const startX = d3.scaleLinear().range([0, width]);
+    const startY = d3.scaleLinear().range([height, 0]);
+    // Scale the range of the data
+    startX.domain([startMinX, startMaxX]);
+    startY.domain([startMinY, startMaxY]);
+
+    xDomain = d3.axisBottom(startX);
+    yDomain = d3.axisLeft(startY);
+  }
   // Add the x Axis
   g.append('g')
+      .attr('class', 'myXaxis')
       .attr('transform', 'translate(' + margin.left + ',' + height + ')')
-      .call(d3.axisBottom(x));
+      .call(xDomain.tickFormat(formatX).ticks(tickCount && tickCount.x ? tickCount.x : 10));
 
   // Add the y Axis
   g.append('g')
-      .call(d3.axisLeft(y).tickFormat(formatNumber))
-      .attr('transform', 'translate(' + margin.left + ', 0)');
+      .attr('class', 'myYaxis')
+      .attr('transform', 'translate(' + margin.left + ', 0)')
+      .call(yDomain.tickFormat(formatY).ticks(tickCount && tickCount.y ? tickCount.y : 10));
+
+  if (animateAxis !== undefined) {
+    (g.selectAll('.myYaxis')
+      .transition()
+      .duration(animateAxis.animationDuration) as any)
+      .call(d3.axisLeft(y).tickFormat(formatY).ticks(tickCount && tickCount.y ? tickCount.y : 10));
+
+    (g.selectAll('.myXaxis')
+      .transition()
+      .duration(animateAxis.animationDuration) as any)
+      .call(d3.axisBottom(x).tickFormat(formatX).ticks(tickCount && tickCount.x ? tickCount.x : 10));
+  }
 
   // gridlines in x axis function
-  const makeGridlinesX: any = () => d3.axisBottom(x).ticks(10);
+  const makeGridlinesX: any = () => d3.axisBottom(x).ticks(tickCount && tickCount.x ? tickCount.x : 10);
 
   // gridlines in y axis function
-  const makeGridlinesY: any = () => d3.axisLeft(y).ticks(10);
+  const makeGridlinesY: any = () => d3.axisLeft(y).ticks(tickCount && tickCount.y ? tickCount.y : 10);
 
   // add the X gridlines
   if (showGridLines && showGridLines.xAxis) {
