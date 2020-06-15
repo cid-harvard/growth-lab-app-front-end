@@ -79,7 +79,6 @@ export default ({section, prevSection}: Input) => {
           width: 3,
           animationDirection: direction,
           labelDataIndex: 3,
-          animationStartPercentAsDecimal: 0.612,
         },
       ];
     }
@@ -94,7 +93,6 @@ export default ({section, prevSection}: Input) => {
           labelColor: 'purple',
           showLabelLine: true,
           width: 3,
-          animationStartPercentAsDecimal: 0.612,
         },
       ];
     } else {

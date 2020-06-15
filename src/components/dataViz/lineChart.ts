@@ -25,7 +25,6 @@ export enum AnimationDirection {
 export interface Datum {
   coords: Coords[];
   animationDuration?: number;
-  animationStartPercentAsDecimal?: number;
   animationDirection?: AnimationDirection;
   label?: string;
   labelColor?: string;
@@ -36,7 +35,11 @@ export interface Datum {
   color?: string;
   width?: number;
   tooltipContent?: string;
+}
+
+interface InternalDatum extends Datum {
   totalLength?: number;
+  animationStartPercentAsDecimal?: number;
 }
 
 interface Dimensions {
@@ -82,9 +85,11 @@ interface Input {
 
 export default (input: Input) => {
   const {
-    svg, data, size, axisLabels, tooltip, axisMinMax,
+    svg, size, axisLabels, tooltip, axisMinMax,
     showGridLines,
   } = input;
+
+  const data: InternalDatum[] = input.data;
 
   const margin = {top: 30, right: 30, bottom: 30, left: 35};
   const width = size.width - margin.left - margin.right;
@@ -188,10 +193,18 @@ export default (input: Input) => {
   // Set Properties of Dash Array and Dash Offset and initiate Transition
   paths.each(function(d) {
       d.totalLength = this.getTotalLength();
+      if (d.labelDataIndex !== undefined) {
+        const adjustedCoords = d.coords.filter((_c, i) => i <= (d.labelDataIndex as number));
+        const shortenedLine = valueline(adjustedCoords as any as [[number, number]]);
+        const shortPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        shortPath.setAttribute('d', shortenedLine ? shortenedLine : '');
+        d.animationStartPercentAsDecimal = 1 - (shortPath.getTotalLength() / d.totalLength);
+      }
     })
     .attr('stroke-dasharray', d => d.totalLength ? d.totalLength : 0)
     .attr('stroke-dashoffset', d => {
       const multiplier = d.animationStartPercentAsDecimal !== undefined ? d.animationStartPercentAsDecimal : 1;
+      // const multiplier = 1;
       return d.totalLength && d.animationDirection !== AnimationDirection.Backward ? d.totalLength * multiplier : 0;
     })
     .transition() // Call Transition Method
@@ -199,6 +212,7 @@ export default (input: Input) => {
     .ease(d3.easeLinear) // Set Easing option
     .attr('stroke-dashoffset', d => {
       const multiplier = d.animationStartPercentAsDecimal !== undefined ? d.animationStartPercentAsDecimal : 1;
+      // const multiplier = 1;
       return d.totalLength && d.animationDirection === AnimationDirection.Backward ? d.totalLength * multiplier : 0;
     }); // Set final value of dash-offset for transition
 

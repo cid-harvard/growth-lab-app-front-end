@@ -72,7 +72,6 @@ const data: Datum[] = [
       {x: 2016, y: 7},
     ],
     animationDuration: 500,
-    animationStartPercentAsDecimal: 0.3,
     label: 'Salmon Hatchery',
     showLabelLine: true,
     labelDataIndex: 9,
