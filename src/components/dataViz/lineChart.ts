@@ -84,6 +84,8 @@ interface Input {
     startMaxX: number,
     startMinY: number,
     startMaxY: number,
+    startLeftLabel?: string;
+    startBottomLabel?: string;
   };
   showGridLines?: {
     xAxis?: boolean;
