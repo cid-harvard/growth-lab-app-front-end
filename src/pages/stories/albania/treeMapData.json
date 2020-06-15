@@ -1,0 +1,195 @@
+{
+ "id": "albania-export-growth-2013-2017",
+ "name": "albania-export-growth-2013-2017",
+ "children": [
+  {
+   "id": "Beverages",
+   "name": "Beverages",
+   "fill": "#537DAA",
+   "children": [
+      {
+        "id": "Beverages",
+        "name": "Beverages",
+        "tooltipContent": "Beverages",
+        "size": 0.5
+      }
+    ]
+   },
+  {
+   "id": "Chemicals",
+   "name": "Chemicals",
+   "fill": "#A1CBE7",
+   "children": [
+      {
+        "id": "Chemicals1",
+        "name": "Chemicals 1",
+        "tooltipContent": "Chemicals1",
+        "size": 2
+      },
+      {
+        "id": "Chemicals2",
+        "name": "Chemicals 2",
+        "tooltipContent": "Chemicals2",
+        "size": 2
+      },
+      {
+        "id": "Chemicals3",
+        "name": "Chemicals 3",
+        "tooltipContent": "Chemicals3",
+        "size": 1
+      },
+      {
+        "id": "Chemicals4",
+        "name": "Chemicals 4",
+        "tooltipContent": "Chemicals4",
+        "size": 0.5
+      },
+      {
+        "id": "Chemicals5",
+        "name": "Chemicals 5",
+        "tooltipContent": "Chemicals5",
+        "size": 1
+      }
+    ]
+   },
+  {
+   "id": "CrudeMaterials",
+   "name": "CrudeMaterials",
+   "fill": "#F08D34",
+   "children": [
+      {
+        "id": "CrudeMaterials",
+        "name": "Crude Materials",
+        "tooltipContent": "CrudeMaterials",
+        "size": 1
+      }
+    ]
+   },
+  {
+   "id": "Food",
+   "name": "Food",
+   "fill": "#F5BD7D",
+   "children": [
+      {
+        "id": "Fish",
+        "name": "Fish",
+        "tooltipContent": "Fish",
+        "size": 8
+      },
+      {
+        "id": "Poultry",
+        "name": "Poultry",
+        "tooltipContent": "Poultry",
+        "size": 8
+      }
+    ]
+   },
+  {
+   "id": "MachineryandVehicles",
+   "name": "Machinery and Vehicles",
+   "fill": "#8CD17D",
+   "children": [
+      {
+        "id": "Road",
+        "name": "Road",
+        "tooltipContent": "Road",
+        "size": 5
+      },
+      {
+        "id": "Cars",
+        "name": "Cars",
+        "tooltipContent": "Cars",
+        "size": 4
+      },
+      {
+        "id": "Trucks",
+        "name": "Trucks",
+        "tooltipContent": "Trucks",
+        "size": 3
+      },
+      {
+        "id": "Tires",
+        "name": "Tires",
+        "tooltipContent": "Tires",
+        "size": 1
+      },
+      {
+        "id": "Other",
+        "name": "Other",
+        "tooltipContent": "Other",
+        "size": 0.5
+      }
+    ]
+   },
+  {
+   "id": "Material Manufacturers",
+   "name": "Material Manufacturers",
+   "fill": "#B69930",
+   "children": [
+      {
+        "id": "Leather",
+        "name": "Leather",
+        "tooltipContent": "Leather",
+        "size": 16
+      },
+      {
+        "id": "Cotton",
+        "name": "Cotton",
+        "tooltipContent": "Cotton",
+        "size": 4
+      },
+      {
+        "id": "Wool",
+        "name": "Wool",
+        "tooltipContent": "Wool",
+        "size": 4
+      }
+    ]
+   },
+  {
+   "id": "Unspecified",
+   "name": "Unspecified",
+   "fill": "#86BCB6",
+   "children": [
+      {
+        "id": "SpecialTransactions",
+        "name": "Special Transactions, commodity not classified according to class",
+        "tooltipContent": "Special Transactions, commodity not classified according to class",
+        "size": 28
+      }
+    ]
+   },
+  {
+   "id": "Services",
+   "name": "Services",
+   "fill": "#499894",
+   "children": [
+      {
+        "id": "ICT",
+        "name": "ICT",
+        "tooltipContent": "ICT",
+        "size": 61
+      },
+      {
+        "id": "TravelandTourism",
+        "name": "Travel and Tourism",
+        "tooltipContent": "TravelandTourism",
+        "size": 60
+      }
+    ]
+   },
+  {
+   "id": "VegetableOils",
+   "name": "VegetableOils",
+   "fill": "#E56F72",
+   "children": [
+      {
+        "id": "OliveOil",
+        "name": "Olive Oil",
+        "tooltipContent": "OliveOil",
+        "size": 0.4
+      }
+    ]
+   }
+ ]
+}

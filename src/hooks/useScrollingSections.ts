@@ -11,7 +11,7 @@ export default ({refs}: Options) => {
     const windowHeight = window.innerHeight;
     const handleScroll = () => {
       const sectionTops = refs.map(node => node && node.current ? node.current.getBoundingClientRect().top + window.scrollY : 0);
-      const windowPosition = window.scrollY + (windowHeight * 0.5);
+      const windowPosition = window.scrollY + (windowHeight * 0.65);
       const currentSection = sectionTops.findIndex((n, i) => windowPosition > n &&
           (i === sectionTops.length - 1 || windowPosition < sectionTops[i + 1]));
       const newSection = currentSection === -1 ? null : currentSection;

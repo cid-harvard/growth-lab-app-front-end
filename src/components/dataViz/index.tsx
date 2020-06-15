@@ -10,6 +10,7 @@ import createClusterBarChart, {Datum as ClusterBarChartDatum} from './clusterBar
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import creatLineChart, {Datum as LineChartDatum} from './lineChart';
+import createTreeMap, {RootDatum} from './treeMap';
 import {
   baseColor,
   secondaryFont,
@@ -110,6 +111,7 @@ export enum VizType {
   RadarChart = 'RadarChart',
   GeoMap = 'GeoMap',
   LineChart = 'LineChart',
+  TreeMap = 'TreeMap',
   Error = 'Error',
 }
 
@@ -192,6 +194,9 @@ type Props = BaseProps & (
       startMinY: number,
       startMaxY: number,
     };
+  } | {
+    vizType: VizType.TreeMap;
+    data: RootDatum;
   }
 );
 
@@ -269,6 +274,12 @@ const DataViz = (props: Props) => {
           formatAxis: props.formatAxis,
           tickCount: props.tickCount,
           animateAxis: props.animateAxis,
+        });
+      } else if (props.vizType === VizType.TreeMap) {
+        createTreeMap({
+          svg, tooltip, data: props.data, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
         });
       }
     }

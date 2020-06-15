@@ -319,7 +319,8 @@ export default ({section, prevSection}: Input) => {
         animationDuration: 600,
       };
     }
-  } else {
+  } else if (section && section > 3) {
+    const animate = section === 4 && direction === AnimationDirection.Forward ? true : false;
     minMaxAxis = {...unemploymentData.axisValues};
     leftAxis = '';
     lineChartData = [
@@ -361,13 +362,13 @@ export default ({section, prevSection}: Input) => {
         width: 3,
       },
     ];
-    animateAxis = {
+    animateAxis = animate ? {
       startMinX: laborForceData.axisValues.minX,
       startMaxX: laborForceData.axisValues.maxX,
       startMinY: laborForceData.axisValues.minY,
       startMaxY: laborForceData.axisValues.maxY,
       animationDuration: 600,
-    };
+    } : undefined;
   }
   return {lineChartData, ...minMaxAxis, leftAxis, animateAxis};
 };
