@@ -10,7 +10,7 @@
       {
         "id": "Beverages",
         "name": "Beverages",
-        "tooltipContent": "Beverages",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Beverages:</strong>  0.5%",
         "size": 0.5
       }
     ]
@@ -23,31 +23,31 @@
       {
         "id": "Chemicals1",
         "name": "Chemicals 1",
-        "tooltipContent": "Chemicals1",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Chemicals 1:</strong>  2%",
         "size": 2
       },
       {
         "id": "Chemicals2",
         "name": "Chemicals 2",
-        "tooltipContent": "Chemicals2",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Chemicals 2:</strong>  2%",
         "size": 2
       },
       {
         "id": "Chemicals3",
         "name": "Chemicals 3",
-        "tooltipContent": "Chemicals3",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Chemicals 3:</strong>  1%",
         "size": 1
       },
       {
         "id": "Chemicals4",
         "name": "Chemicals 4",
-        "tooltipContent": "Chemicals4",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Chemicals 4:</strong>  0.5%",
         "size": 0.5
       },
       {
         "id": "Chemicals5",
         "name": "Chemicals 5",
-        "tooltipContent": "Chemicals5",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Chemicals 5:</strong>  1%",
         "size": 1
       }
     ]
@@ -60,7 +60,7 @@
       {
         "id": "CrudeMaterials",
         "name": "Crude Materials",
-        "tooltipContent": "CrudeMaterials",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Crude Materials:</strong>  1%",
         "size": 1
       }
     ]
@@ -73,13 +73,13 @@
       {
         "id": "Fish",
         "name": "Fish",
-        "tooltipContent": "Fish",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Fish:</strong>  8%",
         "size": 8
       },
       {
         "id": "Poultry",
         "name": "Poultry",
-        "tooltipContent": "Poultry",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Poultry:</strong>  8%",
         "size": 8
       }
     ]
@@ -92,56 +92,56 @@
       {
         "id": "Road",
         "name": "Road",
-        "tooltipContent": "Road",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Road:</strong>  5%",
         "size": 5
       },
       {
         "id": "Cars",
         "name": "Cars",
-        "tooltipContent": "Cars",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Cars:</strong>  4%",
         "size": 4
       },
       {
         "id": "Trucks",
         "name": "Trucks",
-        "tooltipContent": "Trucks",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Trucks:</strong>  3%",
         "size": 3
       },
       {
         "id": "Tires",
         "name": "Tires",
-        "tooltipContent": "Tires",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Tires:</strong>  1%",
         "size": 1
       },
       {
         "id": "Other",
         "name": "Other",
-        "tooltipContent": "Other",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Other:</strong>  0.5%",
         "size": 0.5
       }
     ]
    },
   {
-   "id": "Material Manufacturers",
-   "name": "Material Manufacturers",
+   "id": "MaterialManufacturers",
+   "name": "MaterialManufacturers",
    "fill": "#B69930",
    "children": [
       {
         "id": "Leather",
-        "name": "Leather",
-        "tooltipContent": "Leather",
+        "name": "Leather, leather manufacturers, nes, and dressed furskins",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Leather, leather manufacturers, nes, and dressed furskins:</strong>  16%",
         "size": 16
       },
       {
         "id": "Cotton",
         "name": "Cotton",
-        "tooltipContent": "Cotton",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Cotton:</strong>  4%",
         "size": 4
       },
       {
         "id": "Wool",
         "name": "Wool",
-        "tooltipContent": "Wool",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Wool:</strong>  4%",
         "size": 4
       }
     ]
@@ -154,7 +154,7 @@
       {
         "id": "SpecialTransactions",
         "name": "Special Transactions, commodity not classified according to class",
-        "tooltipContent": "Special Transactions, commodity not classified according to class",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Special Transactions, commodity not classified according to class:</strong>  28%",
         "size": 28
       }
     ]
@@ -167,13 +167,13 @@
       {
         "id": "ICT",
         "name": "ICT",
-        "tooltipContent": "ICT",
+        "tooltipContent": "<strong style='margin-right: 12px;'>ICT:</strong>  61%",
         "size": 61
       },
       {
         "id": "TravelandTourism",
         "name": "Travel and Tourism",
-        "tooltipContent": "TravelandTourism",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Travel and Tourism:</strong>  60%",
         "size": 60
       }
     ]
@@ -186,7 +186,7 @@
       {
         "id": "OliveOil",
         "name": "Olive Oil",
-        "tooltipContent": "OliveOil",
+        "tooltipContent": "<strong style='margin-right: 12px;'>Olive Oil:</strong>  0.4%",
         "size": 0.4
       }
     ]

@@ -27,7 +27,7 @@ interface Input {
 }
 
 export default (input: Input) => {
-  const { svg, size, data} = input;
+  const { svg, size, data, tooltip} = input;
 
   const margin = {top: 30, right: 30, bottom: 30, left: 30};
   const width = size.width - margin.left - margin.right;
@@ -57,7 +57,25 @@ export default (input: Input) => {
   const cell = svg.selectAll('g')
     .data(root.leaves())
     .enter().append('g')
-      .attr('transform', (d: any) => 'translate(' + d.x0 + ',' + d.y0 + ')');
+      .attr('transform', (d: any) => 'translate(' + d.x0 + ',' + d.y0 + ')')
+      .on('mousemove', (d: any) => {
+          tooltip
+            .style('position', 'fixed')
+            .style('left', d3.event.clientX + 'px')
+            .style('top', d3.event.clientY + 'px')
+            .style('display', 'flex')
+            .style('align-items', 'center')
+            .html(`<div style="
+              display: inline-block;
+              background-color: ${d.parent.data.fill};
+              width: 12px;
+              height: 12px;
+              margin-right: 12px;
+              flex-shrink: 0;
+            "></div>` +
+                d.data.tooltipContent);
+        })
+      .on('mouseout', () => tooltip.style('display', 'none'));
 
   cell.append('rect')
       .attr('id', (d: any) => d.data.id)
