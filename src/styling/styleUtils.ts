@@ -216,7 +216,7 @@ export const StorySectionContainer = styled.div`
 export const StickyContainer = styled.div`
   position: sticky;
   top: 0;
-  height: 80vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

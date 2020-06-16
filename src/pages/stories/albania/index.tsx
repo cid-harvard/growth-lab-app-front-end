@@ -21,15 +21,21 @@ import DataViz, {VizType} from '../../../components/dataViz';
 import {RootDatum} from '../../../components/dataViz/treeMap';
 import getLineChartData from './getLineChartData';
 import raw from 'raw.macro';
+import Map from './Map';
 
 const treeMapData: RootDatum = JSON.parse(raw('./treeMapData.json'));
 
 const Root = styled(FullWidthContent)`
-
 `;
 
 const StickyText = styled(StickyContainer)`
   top: 10vh;
+`;
+
+const MapContainer = styled.div`
+  width: 100%;
+  height: 60vh;
+  transition: opacity 0.6s ease;
 `;
 
 const AlbaniaStory = () => {
@@ -39,6 +45,9 @@ const AlbaniaStory = () => {
   const fourthSection = useRef<HTMLParagraphElement | null>(null);
   const fifthSection = useRef<HTMLParagraphElement | null>(null);
   const sixthSection = useRef<HTMLParagraphElement | null>(null);
+  const seventhSection = useRef<HTMLParagraphElement | null>(null);
+  const eightSection = useRef<HTMLParagraphElement | null>(null);
+  const ninthSection = useRef<HTMLParagraphElement | null>(null);
 
   const {section} = useScrollingSections({refs: [
     firstSection,
@@ -47,6 +56,9 @@ const AlbaniaStory = () => {
     fourthSection,
     fifthSection,
     sixthSection,
+    seventhSection,
+    eightSection,
+    ninthSection,
   ]});
 
   const prevSection = usePrevious(section);
@@ -110,6 +122,16 @@ const AlbaniaStory = () => {
         <div style={{position: 'relative'}}>
           <StickyContainer>
             {dataViz}
+            <MapContainer style={{
+              opacity: section && section >= 6 ? '1' : '0',
+              position: section && section >= 6 ? 'relative' : 'absolute',
+              top: section && section >= 6 ? 0 : -10000,
+              left: section && section >= 6 ? 0 : -10000,
+            }}>
+              <Map
+                section={section}
+              />
+            </MapContainer>
           </StickyContainer>
         </div>
         <TextBlock>
@@ -157,21 +179,33 @@ const AlbaniaStory = () => {
                   The overall share of employment in agriculture has fallen as the economy has modernized, while paid jobs in agriculture have increased. But while the transformation in agriculture has been noteworthy, the bulk of job growth, output growth, and export growth have come from three segments of the economy in particular: manufacturing, tourism, and business process outsourcing (BPO). More than half of export growth over 2013-17 has come from what is classified in international data as information and communications technologies (ICT) and travel and tourism. Unfortunately, the latter category is now being hard hit by the COVID-19 pandemic.
                 </p>
               </StickyText>
-            </StorySectionContainer>
-            <p>
-              Most new job opportunities have emerged in and around cities, where a service-driven economy tends to aggregate. As a result, urbanization has coincided with growth as people have moved into Tirana, Durres, and Vlora and out of all other prefectures.
-            </p>
-            <div>Color Scale</div>
-            <p>
-              Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës, Fier, and Gjirokastër — with many regions growing in absolute terms even as they have declined in population.
-            </p>
-            <div>Color Scale</div>
-            <p>
-              Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës, Fier, and Gjirokastër — with many regions growing in absolute terms even as they have declined in population. Source: INSTATDespite achieving broad-based growth under difficult conditions, many Albanians still feel left behind. The economic expansion has delivered jobs, but wage growth has not always kept pace. While there are signs of stronger wage growth in the last few years, real wages have stagnated over much of the growth acceleration, with the exception of employees in larger firms. In particular, manufacturing jobs such as those in the fason industry (i.e. garments, textiles, and footwear) pay lower wages than the rest of the economy. On the whole, diversification of the manufacturing sector leaves much to be desired. Given that emigration is a much faster way to converge one’s own income than waiting three decades for Albanian incomes to catch up, many Albanians still desire to leave.
-            </p>
-            <p>
-              An annual survey by Gallup shows that more than half of Albanians would like to move permanently to another country — a rate that has actually increased since 2013. Gallup surveys also show that Albanians’ assessment of their local job market has continued to improve in the same period, although a slight majority is consistently dissatisfied with the standard of living and40% of the sample see it getting worse over time.
-            </p>
+          </StorySectionContainer>
+          <StorySectionContainer>
+            <StickyText>
+              <p ref={seventhSection}>
+                Most new job opportunities have emerged in and around cities, where a service-driven economy tends to aggregate. As a result, urbanization has coincided with growth as people have moved into Tirana, Durres, and Vlora and out of all other prefectures.
+              </p>
+              <div>Color Scale</div>
+            </StickyText>
+          </StorySectionContainer>
+          <StorySectionContainer>
+            <StickyText>
+              <p ref={eightSection}>
+                Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës, Fier, and Gjirokastër — with many regions growing in absolute terms even as they have declined in population.
+              </p>
+              <div>Color Scale</div>
+            </StickyText>
+          </StorySectionContainer>
+          <StorySectionContainer>
+            <StickyText>
+              <p ref={ninthSection}>
+                Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës, Fier, and Gjirokastër — with many regions growing in absolute terms even as they have declined in population. Source: INSTATDespite achieving broad-based growth under difficult conditions, many Albanians still feel left behind. The economic expansion has delivered jobs, but wage growth has not always kept pace. While there are signs of stronger wage growth in the last few years, real wages have stagnated over much of the growth acceleration, with the exception of employees in larger firms. In particular, manufacturing jobs such as those in the fason industry (i.e. garments, textiles, and footwear) pay lower wages than the rest of the economy. On the whole, diversification of the manufacturing sector leaves much to be desired. Given that emigration is a much faster way to converge one’s own income than waiting three decades for Albanian incomes to catch up, many Albanians still desire to leave.
+              </p>
+              <p>
+                An annual survey by Gallup shows that more than half of Albanians would like to move permanently to another country — a rate that has actually increased since 2013. Gallup surveys also show that Albanians’ assessment of their local job market has continued to improve in the same period, although a slight majority is consistently dissatisfied with the standard of living and40% of the sample see it getting worse over time.
+              </p>
+            </StickyText>
+          </StorySectionContainer>
         </TextBlock>
       </StoriesGrid>
     </Root>
