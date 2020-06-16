@@ -13,6 +13,7 @@ const Mapbox = ReactMapboxGl({
   dragPan: false,
   dragRotate: false,
   doubleClickZoom: false,
+  attributionControl: false,
 });
 
 type Latitude = number;

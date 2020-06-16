@@ -24,6 +24,10 @@ const MapSettingsComponent = (props: Props) => {
     }
     if (allowPan === true) {
       map.dragPan.enable();
+      map.dragRotate.enable();
+    }
+    if (allowZoom === false && allowPan === false) {
+      map.getCanvas().style.cursor = 'default';
     }
     setSettings(true);
   }
