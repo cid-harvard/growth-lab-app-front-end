@@ -11,6 +11,7 @@ import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import creatLineChart, {Datum as LineChartDatum} from './lineChart';
 import createTreeMap, {RootDatum} from './treeMap';
+import createStackChart, {Datum as StackChartDatum, Config as StackChartConfig} from './stackChart';
 import {
   baseColor,
   secondaryFont,
@@ -112,6 +113,7 @@ export enum VizType {
   GeoMap = 'GeoMap',
   LineChart = 'LineChart',
   TreeMap = 'TreeMap',
+  StackChart = 'StackChart',
   Error = 'Error',
 }
 
@@ -197,6 +199,11 @@ type Props = BaseProps & (
   } | {
     vizType: VizType.TreeMap;
     data: RootDatum;
+  } | {
+    vizType: VizType.StackChart;
+    config: StackChartConfig;
+    data: StackChartDatum[];
+    enableBrushZoom?: boolean;
   }
 );
 
@@ -280,6 +287,13 @@ const DataViz = (props: Props) => {
           svg, tooltip, data: props.data, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
+        });
+      } else if (props.vizType === VizType.StackChart) {
+        createStackChart({
+          svg, tooltip, data: props.data, config: props.config, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+          enableBrushZoom: props.enableBrushZoom,
         });
       }
     }

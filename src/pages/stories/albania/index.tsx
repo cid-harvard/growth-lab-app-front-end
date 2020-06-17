@@ -26,6 +26,7 @@ import GrowthProjectionsMap from './GrowthProjectionsMap';
 import RoadTravelMap from './RoadTravelMap';
 import FlightRoutesMap from './FlightRoutesMap';
 import StandardFooter from '../../../components/text/StandardFooter';
+import {stackData, stackConfig} from './stackChartData';
 
 const treeMapData: RootDatum = JSON.parse(raw('./treeMapData.json'));
 
@@ -161,6 +162,15 @@ const AlbaniaStory = () => {
     dataViz = null;
   }
 
+  const stackChart = section && section > 9 && section < 12 ? (
+    <DataViz
+      id={'albania-story-stack-chart'}
+      vizType={VizType.StackChart}
+      config={stackConfig}
+      data={stackData}
+    />
+  ) : null;
+
   return (
     <Root>
       <CoverPhoto />
@@ -273,7 +283,9 @@ const AlbaniaStory = () => {
           <p ref={section_11}>
             In other words, Albania’s growth is expected to converge to this pace over time. In 2019, a combination of a poor year of hydropower production and the phasing out of major energy-investments resulted in a slowdown in growth to under 2.5% during the first half of the year, but growth rebounded to closer to 3% for 2019 overall. Recently, growth has been tied closely to Albania’s high rate of incoming foreign direct investment (FDI). Albania’s FDI has been high as a share of GDP in recent years but also highly focused in the energy sector, and much of this energy-related investment, which is expected to slow moving forward. Moreover, outside the early stages of physical construction, job creation in this highly capital-intensive sector is typically meager.
           </p>
-          <h3>STACK CHART</h3>
+          <InlineVizContainer>
+            {stackChart}
+          </InlineVizContainer>
           <p ref={section_12}>
             Despite the recent growth acceleration, Albania’s Economic Complexity Index (a measure of the economies capabilities to produce diversified goods and services) remains the lowest in the region.
           </p>
