@@ -15,3 +15,30 @@ export const formatNumber = (n: number) => {
   }
   return n.toString();
 };
+
+export function adaptLabelFontSize(d: any) {
+  // var xPadding, diameter, labelAvailableWidth, labelWidth;
+
+  const xPadding = 8;
+  const diameter = 2 * d.r;
+  const labelAvailableWidth = diameter - xPadding;
+
+  // @ts-ignore
+  const labelWidth = this.getComputedTextLength();
+
+  // There is enough space for the label so leave it as is.
+  if (labelWidth < labelAvailableWidth) {
+    return null;
+  }
+
+  /*
+   * The meaning of the ratio between labelAvailableWidth and labelWidth equaling 1 is that
+   * the label is taking up exactly its available space.
+   * With the result as `1em` the font remains the same.
+   *
+   * The meaning of the ratio between labelAvailableWidth and labelWidth equaling 0.5 is that
+   * the label is taking up twice its available space.
+   * With the result as `0.5em` the font will change to half its original size.
+   */
+  return (labelAvailableWidth / labelWidth) + 'em';
+}

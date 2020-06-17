@@ -12,6 +12,7 @@ import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
 import creatLineChart, {Datum as LineChartDatum} from './lineChart';
 import createTreeMap, {RootDatum} from './treeMap';
 import createStackChart, {Datum as StackChartDatum, Config as StackChartConfig} from './stackChart';
+import createClusterChart, {Datum as ClusterChartDatum} from './clusterChart';
 import {
   baseColor,
   secondaryFont,
@@ -114,6 +115,7 @@ export enum VizType {
   LineChart = 'LineChart',
   TreeMap = 'TreeMap',
   StackChart = 'StackChart',
+  ClusterChart = 'ClusterChart',
   Error = 'Error',
 }
 
@@ -204,6 +206,10 @@ type Props = BaseProps & (
     config: StackChartConfig;
     data: StackChartDatum[];
     enableBrushZoom?: boolean;
+  } | {
+    vizType: VizType.ClusterChart;
+    data: ClusterChartDatum[];
+    hideLabels?: boolean;
   }
 );
 
@@ -294,6 +300,13 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           enableBrushZoom: props.enableBrushZoom,
+        });
+      } else if (props.vizType === VizType.ClusterChart) {
+        createClusterChart({
+          svg, tooltip, data: props.data, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+          hideLabels: props.hideLabels,
         });
       }
     }
