@@ -19,7 +19,6 @@ import useScrollingSections from '../../../hooks/useScrollingSections';
 import usePrevious from '../../../hooks/usePrevious';
 import DataViz, {VizType} from '../../../components/dataViz';
 import getLineChartData from './getLineChartData';
-import raw from 'raw.macro';
 import PrimaryMap from './PrimaryMap';
 import GrowthProjectionsMap from './GrowthProjectionsMap';
 import RoadTravelMap from './RoadTravelMap';

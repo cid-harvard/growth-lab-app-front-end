@@ -55,7 +55,6 @@ interface TreeMapData {
       label: string;
       tooltipContent: string;
       size: number;
-      animationDuration: number | undefined;
     }[]
   }[];
 }
@@ -82,7 +81,6 @@ rawData.forEach(({sitc_name, sitc_code, percent_of_total, sectory_id}) => {
       label: sitc_name,
       size: parseFloat(percent_of_total.toFixed(2)),
       tooltipContent: `<strong style='margin-right: 12px;'>${sitc_name}:</strong>  ${percent_of_total.toFixed(2)}%`,
-      animationDuration: percent_of_total > 2 ? 750 : undefined,
     });
   }
 });

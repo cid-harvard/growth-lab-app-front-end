@@ -12,7 +12,6 @@ interface LeafDatum {
   label: string;
   tooltipContent: string;
   size: number;
-  animationDuration?: number;
 }
 
 interface Dimensions {
@@ -82,11 +81,6 @@ export default (input: Input) => {
       .attr('id', (d: any) => d.data.id)
       .attr('finalwidth', (d: any) => d.x1 - d.x0)
       .attr('finalheight', (d: any) => d.y1 - d.y0)
-      .attr('width', (d: any) => d.data.animationDuration ? 0 : d.x1 - d.x0)
-      .attr('height', (d: any) => d.data.animationDuration ? 0 : d.y1 - d.y0)
-      .transition()
-      .delay(100)
-      .duration((d: any) => d.data.animationDuration ? d.data.animationDuration : 0)
       .attr('width', (d: any) => d.x1 - d.x0)
       .attr('height', (d: any) => d.y1 - d.y0)
       .attr('fill', (d: any) =>  d.parent.data.fill);
@@ -103,6 +97,12 @@ export default (input: Input) => {
       .attr('y', 16)
       .text((d: any) => d.data.label + ' - ' + d.data.size + '%')
       .call(wrap);
+
+  cell
+      .style('transform', (d: any) => `translate(${d.x0}px, ${d.y0}px) scale(0)`)
+      .transition()
+      .duration(500)
+      .style('transform', (d: any) => `translate(${d.x0}px, ${d.y0}px) scale(1)`);
 
   function wrap(text: any) {
     text.each(function() {
