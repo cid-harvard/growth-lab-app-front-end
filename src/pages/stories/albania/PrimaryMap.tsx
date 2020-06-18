@@ -36,7 +36,7 @@ const gdpEuropeColorScale = scaleLinear<string>()
                     .domain([2000, 49000, 100000])
                     .range(['#face55', '#f97502', '#b63d21']);
 
-const worldData = JSON.parse(raw('../../../components/dataViz/assets/world-geojson.json'));
+export const worldData = JSON.parse(raw('../../../components/dataViz/assets/world-geojson.json'));
 const europeGdpData = JSON.parse(raw('./data/europe_gdp.json'));
 const euGdpFeatures: any[] = [];
 worldData.features.forEach((f: any) => {
