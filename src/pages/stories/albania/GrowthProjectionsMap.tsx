@@ -1,5 +1,5 @@
 import DefaultMap from '../../../components/mapbox';
-import React from 'react';
+import React, {useState} from 'react';
 import { euBounds, worldData } from './PrimaryMap';
 import raw from 'raw.macro';
 import { scaleQuantile } from 'd3-scale';
@@ -24,7 +24,7 @@ export const getGrowthRateColorScale = <T extends {growth: number}>(data: T[]) =
 const colorScale = getGrowthRateColorScale(growthProjectionsData);
 
 const growthProjectionsFeatures: any[] = [];
-const albaniaFeature: any[] = [];
+
 worldData.features.forEach((f: any) => {
   const targetCountry =
     growthProjectionsData.find(({abbr}: {abbr: string}) => abbr === f.properties.iso_alpha3);
@@ -33,14 +33,45 @@ worldData.features.forEach((f: any) => {
       ...f.properties, fill: colorScale(targetCountry.growth),
     }});
   }
-  if (f.properties.iso_alpha3 === 'ALB') {
-   albaniaFeature.push(f);
-  }
 });
+
 const growthProjectionsGeoJson = {...worldData, features: growthProjectionsFeatures};
-const albaniaHighlightGeoJson = {...worldData, features: albaniaFeature};
+
+const getHighlightedGeoJson = (code: string) => {
+  const targetFeature = worldData.features.find((f: any) => f.properties.iso_alpha3 === code);
+  if (targetFeature) {
+   return {...worldData, features: [targetFeature]};
+  } else {
+    return null;
+  }
+};
 
 const MapboxMap = () => {
+  const defaultHighlighted = getHighlightedGeoJson('ALB');
+  const [highlightedGeoJson, setHighlightedGeoJson] = useState<any | null>(defaultHighlighted);
+
+  const onMouseEnter = (e: any) => {
+    if (e && e.features && e.features[0] && e.features[0].properties && e.features[0].properties.iso_alpha3) {
+      setHighlightedGeoJson(getHighlightedGeoJson(e.features[0].properties.iso_alpha3));
+    } else {
+      setHighlightedGeoJson(defaultHighlighted);
+    }
+  };
+  const onMouseLeave = () => {
+    setHighlightedGeoJson(defaultHighlighted);
+  };
+
+  const highlighted = highlightedGeoJson ? (
+    <GeoJSONLayer
+      data={highlightedGeoJson}
+      linePaint={{
+        'line-color': '#2F6BC2',
+        'line-width': 2.5,
+      }}
+      lineOnMouseLeave={onMouseLeave}
+    />
+  ) : <></>;
+
   return (
     <DefaultMap
       allowPan={false}
@@ -54,14 +85,10 @@ const MapboxMap = () => {
             'fill-color': ['get', 'fill'],
             'fill-outline-color': '#999',
           }}
+          fillOnMouseEnter={onMouseEnter}
+          fillOnMouseLeave={onMouseLeave}
         />
-        <GeoJSONLayer
-          data={albaniaHighlightGeoJson}
-          linePaint={{
-            'line-color': '#2F6BC2',
-            'line-width': 2.5,
-          }}
-        />
+        {highlighted}
       </>
     </DefaultMap>
   );
