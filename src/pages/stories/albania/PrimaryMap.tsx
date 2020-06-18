@@ -32,6 +32,24 @@ albaniaMapData.features.forEach((f: any) => {
 const popultaionChangeGeoJson = {...albaniaMapData, features: popultaionChangeFeatures};
 const gdpGrowthGeoJson = {...albaniaMapData, features: gdpGrowthFeatures};
 
+const gdpEuropeColorScale = scaleLinear<string>()
+                    .domain([2000, 49000, 100000])
+                    .range(['#face55', '#f97502', '#b63d21']);
+
+const worldData = JSON.parse(raw('../../../components/dataViz/assets/world-geojson.json'));
+const europeGdpData = JSON.parse(raw('./data/europe_gdp.json'));
+const euGdpFeatures: any[] = [];
+worldData.features.forEach((f: any) => {
+  const targetCountry =
+    europeGdpData.find(({country_code: c}: {country_code: string}) => c === f.properties.iso_alpha3);
+  if (targetCountry) {
+    euGdpFeatures.push({...f, properties: {
+      ...f.properties, fill: gdpEuropeColorScale(targetCountry.gdp_2018),
+    }});
+  }
+});
+const euGeoJson = {...worldData, features: euGdpFeatures};
+
 export const albaniaBounds: [Coordinate, Coordinate] = [[18.5394, 42.8236], [21.4508, 39.4277]];
 export const euBounds: [Coordinate, Coordinate] = [[-30.7617, 75.8021], [48.8672, 32.6949]];
 
@@ -45,7 +63,7 @@ const MapboxMap = (props: Props) => {
   let data: any;
   if (section && section >= 8) {
     fitBounds = euBounds;
-    data = [];
+    data = euGeoJson;
   } else {
     fitBounds = albaniaBounds;
     if (section && section <= 6) {
