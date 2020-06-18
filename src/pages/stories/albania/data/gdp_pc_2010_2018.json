@@ -1,0 +1,3824 @@
+[
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": 1992.297666,
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": 19930.38728,
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": 3223.808994,
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": "..",
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": 19143.12411,
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": "..",
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": "..",
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": "..",
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": "..",
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": "..",
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": "..",
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": 21605.37108,
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1980,
+    "value": 11183.46655,
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1980,
+    "value": 0.092213073,
+    "GDPpc_change": ""
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": 2064.989606,
+    "GDPpc_change": 3.648648547
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": 19920.41009,
+    "GDPpc_change": -0.050060228
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": 3370.529191,
+    "GDPpc_change": 4.551144229
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": 18677.47507,
+    "GDPpc_change": -2.432461026
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": 21871.1629,
+    "GDPpc_change": 1.230211788
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1981,
+    "value": 11024.00213,
+    "GDPpc_change": -1.425894353
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1981,
+    "value": 0.094416086,
+    "GDPpc_change": 2.389046428
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": 2081.42362,
+    "GDPpc_change": 0.795840071
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": 20059.73819,
+    "GDPpc_change": 0.699423855
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": 3439.028259,
+    "GDPpc_change": 2.032294165
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": 18352.43985,
+    "GDPpc_change": -1.7402525
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": 21760.1964,
+    "GDPpc_change": -0.507364413
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1982,
+    "value": 10895.73405,
+    "GDPpc_change": -1.163534603
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1982,
+    "value": 0.095652796,
+    "GDPpc_change": 1.309850199
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": 2060.25966,
+    "GDPpc_change": -1.016802172
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": 20379.33777,
+    "GDPpc_change": 1.593239076
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": 3548.132149,
+    "GDPpc_change": 3.172520881
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": 18049.18374,
+    "GDPpc_change": -1.652402124
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": 22200.42534,
+    "GDPpc_change": 2.023092652
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1983,
+    "value": 10798.65794,
+    "GDPpc_change": -0.890955191
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1983,
+    "value": 0.092802711,
+    "GDPpc_change": -2.979614463
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": 1992.116629,
+    "GDPpc_change": -3.307497203
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": 20833.45028,
+    "GDPpc_change": 2.228298654
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": 3660.068883,
+    "GDPpc_change": 3.154807367
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": 18320.58419,
+    "GDPpc_change": 1.503671618
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": 23047.81716,
+    "GDPpc_change": 3.817007156
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1984,
+    "value": 10990.32654,
+    "GDPpc_change": 1.774929762
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1984,
+    "value": 0.086434069,
+    "GDPpc_change": -6.862559954
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": 1986.327631,
+    "GDPpc_change": -0.290595348
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": 21326.88971,
+    "GDPpc_change": 2.368495961
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": 3758.340027,
+    "GDPpc_change": 2.684953395
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": 18707.56897,
+    "GDPpc_change": 2.112294985
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": 23731.42563,
+    "GDPpc_change": 2.966044287
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1985,
+    "value": 11232.9545,
+    "GDPpc_change": 2.207650169
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1985,
+    "value": 0.083700308,
+    "GDPpc_change": -3.162828734
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": 2058.126533,
+    "GDPpc_change": 3.614655544
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": 21835.83118,
+    "GDPpc_change": 2.386383915
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": 3917.514795,
+    "GDPpc_change": 4.235241269
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": 18742.31605,
+    "GDPpc_change": 0.185738071
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": 24263.2143,
+    "GDPpc_change": 2.240862719
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1986,
+    "value": 11329.91542,
+    "GDPpc_change": 0.863182726
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1986,
+    "value": 0.084824974,
+    "GDPpc_change": 1.343682739
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": 2001.538418,
+    "GDPpc_change": -2.74949638
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": 22412.88011,
+    "GDPpc_change": 2.642669883
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": 4148.593812,
+    "GDPpc_change": 5.898612494
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": 18257.80403,
+    "GDPpc_change": -2.585123546
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": 24931.65858,
+    "GDPpc_change": 2.754970027
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1987,
+    "value": 11203.19892,
+    "GDPpc_change": -1.118424096
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1987,
+    "value": 0.080280997,
+    "GDPpc_change": -5.356885808
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": 1936.23778,
+    "GDPpc_change": -3.262522334
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": 23326.85999,
+    "GDPpc_change": 4.077922484
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": 4597.475432,
+    "GDPpc_change": 10.82009085
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": 18971.64349,
+    "GDPpc_change": 3.909777247
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": 25887.28792,
+    "GDPpc_change": 3.832995467
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1988,
+    "value": 11784.55946,
+    "GDPpc_change": 5.189237
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1988,
+    "value": 0.074794926,
+    "GDPpc_change": -6.833586731
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": 2070.295474,
+    "GDPpc_change": 6.923617284
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": 24115.47635,
+    "GDPpc_change": 3.380722322
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": 4498.55198,
+    "GDPpc_change": -2.151690705
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": 19590.06777,
+    "GDPpc_change": 3.259729608
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": 26665.88331,
+    "GDPpc_change": 3.007636005
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1989,
+    "value": 12044.30988,
+    "GDPpc_change": 2.204158883
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1989,
+    "value": 0.077638361,
+    "GDPpc_change": 3.801641733
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 1838.672777,
+    "GDPpc_change": -11.1879053
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 24752.73252,
+    "GDPpc_change": 2.642519527
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 4162.815704,
+    "GDPpc_change": -7.463207655
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 19383.93464,
+    "GDPpc_change": -1.052232898
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 3853.897863,
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 15526.03802,
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 27259.7063,
+    "GDPpc_change": 2.226901617
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1990,
+    "value": 10731.67156,
+    "GDPpc_change": -10.8984104
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1990,
+    "value": 0.067450205,
+    "GDPpc_change": -13.12257997
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 1331.809147,
+    "GDPpc_change": -27.56682084
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 25067.81017,
+    "GDPpc_change": 1.272900448
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 3849.186301,
+    "GDPpc_change": -7.534068891
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 19746.38213,
+    "GDPpc_change": 1.869834456
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 3621.390887,
+    "GDPpc_change": -6.033034211
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 14135.23402,
+    "GDPpc_change": -8.957880977
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 27399.41257,
+    "GDPpc_change": 0.512501005
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1991,
+    "value": 10338.04833,
+    "GDPpc_change": -3.667864994
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1991,
+    "value": 0.048607215,
+    "GDPpc_change": -27.9361488
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 1243.609404,
+    "GDPpc_change": -6.622551214
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 25250.047,
+    "GDPpc_change": 0.726975481
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 3607.793674,
+    "GDPpc_change": -6.271263804
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 19733.2904,
+    "GDPpc_change": -0.066299356
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 3391.539296,
+    "GDPpc_change": -6.347052789
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 13382.54508,
+    "GDPpc_change": -5.324913133
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 7704.678104,
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 27707.28194,
+    "GDPpc_change": 1.123634949
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1992,
+    "value": 9563.969312,
+    "GDPpc_change": -7.487670747
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1992,
+    "value": 0.044883847,
+    "GDPpc_change": -7.66011444
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 1370.830016,
+    "GDPpc_change": 10.22994936
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 25114.81254,
+    "GDPpc_change": -0.535581013
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 3582.856116,
+    "GDPpc_change": -0.691213532
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 19303.66698,
+    "GDPpc_change": -2.177150448
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 3145.541061,
+    "GDPpc_change": -7.253291602
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 13795.90333,
+    "GDPpc_change": 3.088786517
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 7821.256905,
+    "GDPpc_change": 1.513091132
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 27796.32515,
+    "GDPpc_change": 0.321371126
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1993,
+    "value": 9529.844879,
+    "GDPpc_change": -0.35680199
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1993,
+    "value": 0.049316951,
+    "GDPpc_change": 9.876836935
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 1493.790201,
+    "GDPpc_change": 8.969761653
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 25748.21093,
+    "GDPpc_change": 2.522011198
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 3660.401977,
+    "GDPpc_change": 2.164358774
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 19591.39952,
+    "GDPpc_change": 1.490558977
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 3093.862791,
+    "GDPpc_change": -1.642905588
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 14547.69948,
+    "GDPpc_change": 5.449415908
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 8273.93922,
+    "GDPpc_change": 5.787846123
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 701.4750988,
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 28415.84073,
+    "GDPpc_change": 2.228767931
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1994,
+    "value": 8311.463015,
+    "GDPpc_change": -12.78490762
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1994,
+    "value": 0.052568925,
+    "GDPpc_change": 6.594028137
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 1703.286747,
+    "GDPpc_change": 14.02449593
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 26392.53028,
+    "GDPpc_change": 2.50238495
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 3781.903492,
+    "GDPpc_change": 3.319348969
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 8568.434198,
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 19909.5296,
+    "GDPpc_change": 1.62382517
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 3056.98515,
+    "GDPpc_change": -1.19196109
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 15141.93168,
+    "GDPpc_change": 4.084715914
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 8731.836882,
+    "GDPpc_change": 5.534215929
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 871.1662887,
+    "GDPpc_change": 24.19062205
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 28958.07062,
+    "GDPpc_change": 1.908195833
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1995,
+    "value": 8580.255327,
+    "GDPpc_change": 3.233995161
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1995,
+    "value": 0.058819069,
+    "GDPpc_change": 11.88942655
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 1869.871255,
+    "GDPpc_change": 9.780179886
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 26864.80043,
+    "GDPpc_change": 1.789408369
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 3828.246422,
+    "GDPpc_change": 1.22538637
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 9193.509665,
+    "GDPpc_change": 7.295095615
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 20389.31802,
+    "GDPpc_change": 2.409843097
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 3083.587747,
+    "GDPpc_change": 0.870223302
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 15636.70358,
+    "GDPpc_change": 3.267561327
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 9290.189582,
+    "GDPpc_change": 6.394447207
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 1674.395171,
+    "GDPpc_change": 92.20155705
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 29621.74064,
+    "GDPpc_change": 2.291830955
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1996,
+    "value": 9013.70717,
+    "GDPpc_change": 5.051735957
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1996,
+    "value": 0.063124962,
+    "GDPpc_change": 7.320573756
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 1676.131932,
+    "GDPpc_change": -10.36110498
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 27590.95124,
+    "GDPpc_change": 2.702982354
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 3809.686513,
+    "GDPpc_change": -0.484814883
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 9862.336009,
+    "GDPpc_change": 7.274983851
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 21198.79064,
+    "GDPpc_change": 3.970081885
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 3112.105269,
+    "GDPpc_change": 0.924816283
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 16448.42572,
+    "GDPpc_change": 5.191133381
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 9822.558913,
+    "GDPpc_change": 5.730446366
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 5014.106991,
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 2267.290594,
+    "GDPpc_change": 35.40952775
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 30414.02964,
+    "GDPpc_change": 2.674687519
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1997,
+    "value": 8941.912582,
+    "GDPpc_change": -0.796504558
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1997,
+    "value": 0.055110485,
+    "GDPpc_change": -12.69620859
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 1835.651965,
+    "GDPpc_change": 9.51715258
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 28405.81845,
+    "GDPpc_change": 2.953385683
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 4078.689306,
+    "GDPpc_change": 7.061021737
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 10066.05495,
+    "GDPpc_change": 2.065625616
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 21902.73877,
+    "GDPpc_change": 3.320699478
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 3197.333287,
+    "GDPpc_change": 2.73859689
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 17024.92406,
+    "GDPpc_change": 3.504884587
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 10209.23423,
+    "GDPpc_change": 3.936604754
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 5275.88104,
+    "GDPpc_change": 5.220751161
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 2622.204171,
+    "GDPpc_change": 15.65364305
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 31052.29685,
+    "GDPpc_change": 2.098594661
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1998,
+    "value": 9297.132478,
+    "GDPpc_change": 3.972527044
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1998,
+    "value": 0.059114853,
+    "GDPpc_change": 7.26607251
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 2085.432,
+    "GDPpc_change": 13.60715645
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 29212.03616,
+    "GDPpc_change": 2.838213299
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 3756.750853,
+    "GDPpc_change": -7.893184039
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 10026.96417,
+    "GDPpc_change": -0.388342544
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 22489.31596,
+    "GDPpc_change": 2.678099725
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 3315.735917,
+    "GDPpc_change": 3.7031682
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 17920.00156,
+    "GDPpc_change": 5.257453719
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 10188.01847,
+    "GDPpc_change": -0.207809565
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 4793.049602,
+    "GDPpc_change": -9.151674098
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": "..",
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 2867.013022,
+    "GDPpc_change": 9.335995055
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 31827.03006,
+    "GDPpc_change": 2.494930472
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 1999,
+    "value": 9419.606195,
+    "GDPpc_change": 1.317327873
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 1999,
+    "value": 0.065523927,
+    "GDPpc_change": 10.8417323
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 2244.631092,
+    "GDPpc_change": 7.633866403
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 30288.81075,
+    "GDPpc_change": 3.686064807
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 3955.275802,
+    "GDPpc_change": 5.284485354
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 10458.365,
+    "GDPpc_change": 4.302407182
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 23275.4443,
+    "GDPpc_change": 3.495563601
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 3448.812931,
+    "GDPpc_change": 4.013498588
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 18523.16642,
+    "GDPpc_change": 3.365875016
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 10320.82699,
+    "GDPpc_change": 1.303575594
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 4950.219416,
+    "GDPpc_change": 3.279119285
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 1915.320297,
+    "GDPpc_change": "#VALUE!"
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 3018.391611,
+    "GDPpc_change": 5.28001049
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 32872.45828,
+    "GDPpc_change": 3.284718097
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2000,
+    "value": 8873.980308,
+    "GDPpc_change": -5.792449026
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2000,
+    "value": 0.068283031,
+    "GDPpc_change": 4.21083427
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 2453.631476,
+    "GDPpc_change": 9.311123961
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 30935.41449,
+    "GDPpc_change": 2.134794079
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 4186.920419,
+    "GDPpc_change": 5.856598353
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 11232.37483,
+    "GDPpc_change": 7.400868421
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 24111.41745,
+    "GDPpc_change": 3.591652806
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 3329.89967,
+    "GDPpc_change": -3.447947544
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 19088.88693,
+    "GDPpc_change": 3.05412421
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 10676.16553,
+    "GDPpc_change": 3.442926965
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 4984.567572,
+    "GDPpc_change": 0.693871395
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 2430.307471,
+    "GDPpc_change": 26.88778342
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 3147.562546,
+    "GDPpc_change": 4.279462441
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 33096.76117,
+    "GDPpc_change": 0.682342927
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2001,
+    "value": 9243.122491,
+    "GDPpc_change": 4.159826486
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2001,
+    "value": 0.074135093,
+    "GDPpc_change": 8.570302184
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 2572.728837,
+    "GDPpc_change": 4.853922135
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 31256.81903,
+    "GDPpc_change": 1.0389534
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 4532.853869,
+    "GDPpc_change": 8.262240877
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 11800.05502,
+    "GDPpc_change": 5.053964026
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 24965.59402,
+    "GDPpc_change": 3.542622777
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 3369.598581,
+    "GDPpc_change": 1.192195412
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 19733.5987,
+    "GDPpc_change": 3.377419401
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 11161.65778,
+    "GDPpc_change": 4.547440287
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 5059.155162,
+    "GDPpc_change": 1.496370321
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 2411.633474,
+    "GDPpc_change": -0.768380016
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 3310.967058,
+    "GDPpc_change": 5.19146196
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 33364.25013,
+    "GDPpc_change": 0.808202811
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2002,
+    "value": 9593.901518,
+    "GDPpc_change": 3.79502735
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2002,
+    "value": 0.077110345,
+    "GDPpc_change": 4.013283851
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 2725.179233,
+    "GDPpc_change": 5.925630153
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 31536.20298,
+    "GDPpc_change": 0.893833618
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 4804.484362,
+    "GDPpc_change": 5.9924829
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 12462.06864,
+    "GDPpc_change": 5.610258825
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 26349.27732,
+    "GDPpc_change": 5.542360824
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 3436.946226,
+    "GDPpc_change": 1.998684525
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 20305.51731,
+    "GDPpc_change": 2.89819724
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 11783.20003,
+    "GDPpc_change": 5.568547823
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 5164.102981,
+    "GDPpc_change": 2.074413928
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 2554.118223,
+    "GDPpc_change": 5.908225728
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 3440.855799,
+    "GDPpc_change": 3.922985
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 33803.80863,
+    "GDPpc_change": 1.317453556
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2003,
+    "value": 10033.39677,
+    "GDPpc_change": 4.580985623
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2003,
+    "value": 0.08061752,
+    "GDPpc_change": 4.548255445
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 2887.378653,
+    "GDPpc_change": 5.951880823
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 32217.66298,
+    "GDPpc_change": 2.160881561
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 5152.414008,
+    "GDPpc_change": 7.241768715
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 12976.91672,
+    "GDPpc_change": 4.131321101
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 27614.40593,
+    "GDPpc_change": 4.801378778
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 3591.269812,
+    "GDPpc_change": 4.490136757
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 21177.1023,
+    "GDPpc_change": 4.292355477
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 12407.74723,
+    "GDPpc_change": 5.300319122
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 5383.120679,
+    "GDPpc_change": 4.241156669
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 2619.057693,
+    "GDPpc_change": 2.542539707
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 3648.78677,
+    "GDPpc_change": 6.043001588
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 34641.03061,
+    "GDPpc_change": 2.476709046
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2004,
+    "value": 10507.86902,
+    "GDPpc_change": 4.728929393
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2004,
+    "value": 0.083351407,
+    "GDPpc_change": 3.391182065
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 3062.682698,
+    "GDPpc_change": 6.071390912
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 32769.31823,
+    "GDPpc_change": 1.712275823
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 5561.163843,
+    "GDPpc_change": 7.933171408
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 13519.32714,
+    "GDPpc_change": 4.179809724
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 27698.51062,
+    "GDPpc_change": 0.304568156
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 3755.024757,
+    "GDPpc_change": 4.559806245
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 21943.3616,
+    "GDPpc_change": 3.618338776
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 13228.27197,
+    "GDPpc_change": 6.613003283
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 5599.877517,
+    "GDPpc_change": 4.026601866
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 2775.186195,
+    "GDPpc_change": 5.961247148
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 3967.195052,
+    "GDPpc_change": 8.726415158
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 35368.96224,
+    "GDPpc_change": 2.101356735
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2005,
+    "value": 10894.21319,
+    "GDPpc_change": 3.676712869
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2005,
+    "value": 0.086592382,
+    "GDPpc_change": 3.888326564
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 3263.911108,
+    "GDPpc_change": 6.570331606
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 33753.04577,
+    "GDPpc_change": 3.00197743
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 5988.770951,
+    "GDPpc_change": 7.689165792
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 14192.0973,
+    "GDPpc_change": 4.976358262
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 29176.39286,
+    "GDPpc_change": 5.335601824
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 3942.452375,
+    "GDPpc_change": 4.991381662
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 23130.38394,
+    "GDPpc_change": 5.409482666
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 14351.11276,
+    "GDPpc_change": 8.488189504
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 6072.034297,
+    "GDPpc_change": 8.431555487
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 2876.952967,
+    "GDPpc_change": 3.667025005
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 4182.005415,
+    "GDPpc_change": 5.414666045
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 36194.07121,
+    "GDPpc_change": 2.332861683
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2006,
+    "value": 11545.80032,
+    "GDPpc_change": 5.981038908
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2006,
+    "value": 0.09017806,
+    "GDPpc_change": 4.140869173
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 3485.332441,
+    "GDPpc_change": 6.783926591
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 34646.73145,
+    "GDPpc_change": 2.647718627
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 6476.054203,
+    "GDPpc_change": 8.136615286
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 14942.77232,
+    "GDPpc_change": 5.289387542
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 30054.88939,
+    "GDPpc_change": 3.01098405
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 4193.00227,
+    "GDPpc_change": 6.355178745
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 24606.93296,
+    "GDPpc_change": 6.383590592
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 15900.98897,
+    "GDPpc_change": 10.79969361
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 6476.594865,
+    "GDPpc_change": 6.662685811
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 3061.876219,
+    "GDPpc_change": 6.427746788
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 4429.989879,
+    "GDPpc_change": 5.929797779
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 36898.60987,
+    "GDPpc_change": 1.94655819
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2007,
+    "value": 12238.12234,
+    "GDPpc_change": 5.996310387
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2007,
+    "value": 0.094457012,
+    "GDPpc_change": 4.745004135
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 3775.592182,
+    "GDPpc_change": 8.328035999
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 34693.97997,
+    "GDPpc_change": 0.136372219
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 6914.398435,
+    "GDPpc_change": 6.768693063
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 15207.50161,
+    "GDPpc_change": 1.771620945
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 29874.74344,
+    "GDPpc_change": -0.599389824
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 4418.406699,
+    "GDPpc_change": 5.375728757
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 25430.34965,
+    "GDPpc_change": 3.346279253
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 16773.06107,
+    "GDPpc_change": 5.484389109
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 6932.072031,
+    "GDPpc_change": 7.032664172
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 3117.647744,
+    "GDPpc_change": 1.821482029
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 4680.98616,
+    "GDPpc_change": 5.665843216
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 36709.00518,
+    "GDPpc_change": -0.513853195
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2008,
+    "value": 12594.35187,
+    "GDPpc_change": 2.910818505
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2008,
+    "value": 0.102851934,
+    "GDPpc_change": 8.887558196
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 3928.461732,
+    "GDPpc_change": 4.048889359
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 33097.13502,
+    "GDPpc_change": -4.602657151
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 6709.527315,
+    "GDPpc_change": -2.962963764
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 14103.1102,
+    "GDPpc_change": -7.26214889
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 28514.81009,
+    "GDPpc_change": -4.55211725
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 4398.889003,
+    "GDPpc_change": -0.44173607
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 23299.20484,
+    "GDPpc_change": -8.380320513
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 15836.88345,
+    "GDPpc_change": -5.581435756
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 6516.357518,
+    "GDPpc_change": -5.996973359
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 3203.957029,
+    "GDPpc_change": 2.768410407
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 4562.708523,
+    "GDPpc_change": -2.526767514
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 35190.44141,
+    "GDPpc_change": -4.136760899
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2009,
+    "value": 11905.04977,
+    "GDPpc_change": -5.473104964
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2009,
+    "value": 0.111634341,
+    "GDPpc_change": 8.53888345
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 4094.362119,
+    "GDPpc_change": 4.223036876
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 33740.64637,
+    "GDPpc_change": 1.944311354
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 6843.26695,
+    "GDPpc_change": 1.993279538
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 13923.63705,
+    "GDPpc_change": -1.272578477
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 26917.75898,
+    "GDPpc_change": -5.600777661
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 4542.899717,
+    "GDPpc_change": 3.273797407
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 23509.54339,
+    "GDPpc_change": 0.902771384
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 16727.29133,
+    "GDPpc_change": 5.622368091
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 6682.281158,
+    "GDPpc_change": 2.546263599
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 3283.483451,
+    "GDPpc_change": 2.482131366
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 4635.517779,
+    "GDPpc_change": 1.595746394
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 35985.89123,
+    "GDPpc_change": 2.260414444
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2010,
+    "value": 11896.18665,
+    "GDPpc_change": -0.074448478
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2010,
+    "value": 0.113776871,
+    "GDPpc_change": 1.919239661
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 4209.886951,
+    "GDPpc_change": 2.821558737
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 34364.9414,
+    "GDPpc_change": 1.850275844
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 7019.174046,
+    "GDPpc_change": 2.57051343
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 13928.50225,
+    "GDPpc_change": 0.034942025
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 24495.71114,
+    "GDPpc_change": -8.997954993
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 4645.281601,
+    "GDPpc_change": 2.253668163
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 23662.83139,
+    "GDPpc_change": 0.652024557
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 17184.26397,
+    "GDPpc_change": 2.731898641
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 6890.773296,
+    "GDPpc_change": 3.120074323
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 3397.88592,
+    "GDPpc_change": 3.484179851
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 4734.214922,
+    "GDPpc_change": 2.129150353
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 36460.44827,
+    "GDPpc_change": 1.318730834
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2011,
+    "value": 11773.18206,
+    "GDPpc_change": -1.033983315
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2011,
+    "value": 0.115464487,
+    "GDPpc_change": 1.483267596
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 4276.62018,
+    "GDPpc_change": 1.585154888
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 34145.77399,
+    "GDPpc_change": -0.637764532
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 7062.134977,
+    "GDPpc_change": 0.612051095
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 13658.5077,
+    "GDPpc_change": -1.938432057
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 22830.52678,
+    "GDPpc_change": -6.79786087
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 4620.110106,
+    "GDPpc_change": -0.541872334
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 22989.93027,
+    "GDPpc_change": -2.843704993
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 17480.27118,
+    "GDPpc_change": 1.722548067
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 6697.446474,
+    "GDPpc_change": -2.805589651
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 3465.8745,
+    "GDPpc_change": 2.000908265
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 4774.385281,
+    "GDPpc_change": 0.848511513
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 36696.50421,
+    "GDPpc_change": 0.647430153
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2012,
+    "value": 11508.79859,
+    "GDPpc_change": -2.245641607
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2012,
+    "value": 0.116540261,
+    "GDPpc_change": 0.931692675
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 4327.392449,
+    "GDPpc_change": 1.187205469
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 34134.7028,
+    "GDPpc_change": -0.032423325
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 7136.845978,
+    "GDPpc_change": 1.057909556
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 13621.47249,
+    "GDPpc_change": -0.271151238
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 22251.25728,
+    "GDPpc_change": -2.537258553
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 4751.137985,
+    "GDPpc_change": 2.8360337
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 22722.43739,
+    "GDPpc_change": -1.163521933
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 17578.63682,
+    "GDPpc_change": 0.562723799
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 6928.374412,
+    "GDPpc_change": 3.44799976
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 3548.004763,
+    "GDPpc_change": 2.369683692
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 4972.661219,
+    "GDPpc_change": 4.152910293
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 37003.86704,
+    "GDPpc_change": 0.837580689
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2013,
+    "value": 11501.20315,
+    "GDPpc_change": -0.065996774
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2013,
+    "value": 0.11694433,
+    "GDPpc_change": 0.346720713
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 4413.309627,
+    "GDPpc_change": 1.985426089
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 34619.2151,
+    "GDPpc_change": 1.419412684
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 7309.415115,
+    "GDPpc_change": 2.41800282
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 13662.86566,
+    "GDPpc_change": 0.303881743
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 22565.68048,
+    "GDPpc_change": 1.4130581
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 4919.5399,
+    "GDPpc_change": 3.544454304
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 23328.47507,
+    "GDPpc_change": 2.667133249
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 18044.95695,
+    "GDPpc_change": 2.652766168
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 7045.115953,
+    "GDPpc_change": 1.684977361
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 3595.923942,
+    "GDPpc_change": 1.350595116
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 5117.140156,
+    "GDPpc_change": 2.905465111
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 37511.1948,
+    "GDPpc_change": 1.371012813
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2014,
+    "value": 11732.12369,
+    "GDPpc_change": 2.007794658
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2014,
+    "value": 0.117653134,
+    "GDPpc_change": 0.606103519
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 4524.386108,
+    "GDPpc_change": 2.516852212
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 35327.82512,
+    "GDPpc_change": 2.046869123
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 7611.550878,
+    "GDPpc_change": 4.133514899
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 14111.66496,
+    "GDPpc_change": 3.284810941
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 22615.39458,
+    "GDPpc_change": 0.220308447
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 5105.402235,
+    "GDPpc_change": 3.778043048
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 23826.13165,
+    "GDPpc_change": 2.133258045
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 18897.10289,
+    "GDPpc_change": 4.722349491
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 7279.88909,
+    "GDPpc_change": 3.332424034
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 3784.736548,
+    "GDPpc_change": 5.250739703
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 5356.300064,
+    "GDPpc_change": 4.673702515
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 38172.81938,
+    "GDPpc_change": 1.763805656
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2015,
+    "value": 12065.35254,
+    "GDPpc_change": 2.840311437
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2015,
+    "value": 0.118523761,
+    "GDPpc_change": 0.739994492
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 4681.840039,
+    "GDPpc_change": 3.480117005
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 35942.39791,
+    "GDPpc_change": 1.739628148
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 7966.882009,
+    "GDPpc_change": 4.668314467
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 14705.59203,
+    "GDPpc_change": 4.208766779
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 22666.28623,
+    "GDPpc_change": 0.225031002
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 5247.250784,
+    "GDPpc_change": 2.778401047
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 24551.93404,
+    "GDPpc_change": 3.046245196
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 19273.51203,
+    "GDPpc_change": 1.991888106
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 7492.863436,
+    "GDPpc_change": 2.925516359
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 3907.557147,
+    "GDPpc_change": 3.245155854
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 5595.09967,
+    "GDPpc_change": 4.458294041
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 38588.80236,
+    "GDPpc_change": 1.089736089
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2016,
+    "value": 12378.55304,
+    "GDPpc_change": 2.595866943
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2016,
+    "value": 0.121326389,
+    "GDPpc_change": 2.364612876
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 4865.209546,
+    "GDPpc_change": 3.916611971
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 36806.05918,
+    "GDPpc_change": 2.402903859
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 8331.152273,
+    "GDPpc_change": 4.572306501
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 15350.42622,
+    "GDPpc_change": 4.384959085
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 23052.98623,
+    "GDPpc_change": 1.706058064
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 5256.711049,
+    "GDPpc_change": 0.180289922
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 25721.85744,
+    "GDPpc_change": 4.765096737
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 19828.7732,
+    "GDPpc_change": 2.880954772
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 7845.379224,
+    "GDPpc_change": 4.704687214
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 4040.436287,
+    "GDPpc_change": 3.400568043
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 5773.373097,
+    "GDPpc_change": 3.186242188
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 39313.84823,
+    "GDPpc_change": 1.878902229
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2017,
+    "value": 12800.12167,
+    "GDPpc_change": 3.405637368
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2017,
+    "value": 0.123753073,
+    "GDPpc_change": 2.000129269
+  },
+  {
+    "country_name": "Albania",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 5079.40112,
+    "GDPpc_change": 4.40251487
+  },
+  {
+    "country_name": "European Union",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 37472.85707,
+    "GDPpc_change": 1.811652504
+  },
+  {
+    "country_name": "Bulgaria",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 8651.094801,
+    "GDPpc_change": 3.840315458
+  },
+  {
+    "country_name": "Croatia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 15889.60391,
+    "GDPpc_change": 3.512460717
+  },
+  {
+    "country_name": "Greece",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 23558.08397,
+    "GDPpc_change": 2.191029524
+  },
+  {
+    "country_name": "North Macedonia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 5394.288478,
+    "GDPpc_change": 2.617176945
+  },
+  {
+    "country_name": "Slovenia",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 26768.39264,
+    "GDPpc_change": 4.068661066
+  },
+  {
+    "country_name": "Slovak Republic",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 20599.14684,
+    "GDPpc_change": 3.885130152
+  },
+  {
+    "country_name": "Montenegro",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 8244.127509,
+    "GDPpc_change": 5.082587772
+  },
+  {
+    "country_name": "Kosovo",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 4161.323853,
+    "GDPpc_change": 2.991943369
+  },
+  {
+    "country_name": "Bosnia and Herzegovina",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 6032.246199,
+    "GDPpc_change": 4.483914305
+  },
+  {
+    "country_name": "OECD members",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 39973.50669,
+    "GDPpc_change": 1.677928988
+  },
+  {
+    "country_name": "Balkan Average",
+    "series_name": "GDP per capita (constant 2010 US$)",
+    "year": 2018,
+    "value": 13255.36758,
+    "GDPpc_change": 3.556574858
+  },
+  {
+    "country_name": "Alb Share of oECD",
+    "series_name": "Alb Share of OECD",
+    "year": 2018,
+    "value": 0.12706919,
+    "GDPpc_change": 2.6796237
+  }
+]

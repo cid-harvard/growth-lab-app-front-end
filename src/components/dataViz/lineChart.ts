@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-interface Coords {
+export interface Coords {
   x: number;
   y: number;
 }

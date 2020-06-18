@@ -1,132 +1,154 @@
-import {Datum, AnimationDirection, LabelAnchor, LabelPosition} from '../../../components/dataViz/lineChart';
+import {Datum, AnimationDirection, LabelAnchor, LabelPosition, Coords} from '../../../components/dataViz/lineChart';
+import raw from 'raw.macro';
 
-interface Input {
-  section: number | null;
-  prevSection: number | null;
+interface Axis {
+  axisValues: {
+    minY:number,
+    maxY:number,
+    minX:number,
+    maxX:number,
+  };
 }
 
-const gdpData = {
+interface GDPData extends Axis {
+  albaniaData2010_2013: Coords[];
+  albaniaData2014_2018: Coords[];
+  euData2010_2018: Coords[];
+}
+
+const gdpData: GDPData = {
   axisValues: {
     minY: -5,
     maxY: 8,
     minX: 2010,
     maxX: 2019,
   },
-  albaniaData2010_2013: [
-    {x: 2010, y: 4},
-    {x: 2011, y: 3.5},
-    {x: 2012, y: 2},
-    {x: 2013, y: 0.75},
-  ],
-  albaniaData2014_2018: [
-    {x: 2014, y: 0.9},
-    {x: 2015, y: 1.4},
-    {x: 2016, y: 2.1},
-    {x: 2017, y: 2.3},
-    {x: 2018, y: 3.7},
-  ],
-  euData2010_2018: [
-    {x: 2010, y: 2},
-    {x: 2011, y: 2},
-    {x: 2012, y: 0.5},
-    {x: 2013, y: 0.3},
-    {x: 2014, y: 0.5},
-    {x: 2015, y: 1},
-    {x: 2016, y: 0.9},
-    {x: 2017, y: 1.75},
-    {x: 2018, y: 0.98},
-  ],
+  albaniaData2010_2013: [],
+  albaniaData2014_2018: [],
+  euData2010_2018: [],
 };
 
-const laborForceData = {
+enum Country {
+  Albania = 'Albania',
+  EuropeanUnion = 'European Union',
+  Bulgaria = 'Bulgaria',
+  Croatia = 'Croatia',
+  Greece = 'Greece',
+  NorthMacedonia = 'North Macedonia',
+  Slovenia = 'Slovenia',
+  SlovakRepublic = 'Slovak Republic',
+  Montenegro = 'Montenegro',
+  Kosovo = 'Kosovo',
+  BosniaAndHerzegovina = 'Bosnia and Herzegovina',
+  OECDmembers = 'OECD members',
+  BalkanAverage = 'Balkan Average',
+  AlbShareOfoECD = 'Alb Share of oECD',
+}
+
+interface RawGDP_PC_Data {
+  GDPpc_change: number;
+  country_name: Country;
+  series_name: string;
+  value: number;
+  year: number;
+}
+const gdpRawData: RawGDP_PC_Data[] = JSON.parse(raw('./data/gdp_pc_2010_2018.json'));
+gdpRawData.forEach(({country_name, GDPpc_change, year}) => {
+  if (country_name === Country.Albania) {
+    if (year >= 2010 && year <= 2013) {
+      gdpData.albaniaData2010_2013.push({x: year, y: GDPpc_change});
+    } else if (year >= 2014 && year <= 2018) {
+      gdpData.albaniaData2014_2018.push({x: year, y: GDPpc_change});
+    }
+  } else if (country_name === Country.EuropeanUnion) {
+    if (year >= 2010 && year <= 2018) {
+      gdpData.euData2010_2018.push({x: year, y: GDPpc_change});
+    }
+  }
+});
+
+interface LaborForceData extends Axis {
+  lfpRateData: Coords[];
+  employRateData: Coords[];
+  unemployRateData: Coords[];
+}
+
+const laborForceData: LaborForceData = {
   axisValues: {
     minY: 0,
     maxY: 100,
     minX: 2014,
     maxX: 2020,
   },
-  lfpRateData: [
-    {x: 2014, y: 62},
-    {x: 2015, y: 64},
-    {x: 2016, y: 65},
-    {x: 2017, y: 67},
-    {x: 2018, y: 69},
-    {x: 2019, y: 70},
-  ],
-  employRateData: [
-    {x: 2014, y: 52},
-    {x: 2015, y: 53},
-    {x: 2016, y: 55},
-    {x: 2017, y: 58},
-    {x: 2018, y: 60},
-    {x: 2019, y: 62},
-  ],
-  unemployRateData: [
-    {x: 2014, y: 19},
-    {x: 2015, y: 19},
-    {x: 2016, y: 18},
-    {x: 2017, y: 15},
-    {x: 2018, y: 12},
-    {x: 2019, y: 10},
-  ],
+  lfpRateData: [],
+  employRateData: [],
+  unemployRateData: [],
 };
 
-const unemploymentData = {
+interface UnemploymentData extends Axis {
+  unemploymentMale15_24Data: Coords[];
+  unemploymentMale25_54Data: Coords[];
+  unemploymentMale55_64Data: Coords[];
+  unemploymentFemale15_24Data: Coords[];
+  unemploymentFemale25_54Data: Coords[];
+  unemploymentFemale55_64Data: Coords[];
+}
+
+const unemploymentData: UnemploymentData = {
   axisValues: {
     minY: 0,
     maxY: 50,
     minX: 2014,
     maxX: 2020,
   },
-  group1Data: [
-    {x: 2014, y: 48},
-    {x: 2015, y: 40},
-    {x: 2016, y: 42},
-    {x: 2017, y: 38},
-    {x: 2018, y: 34},
-    {x: 2019, y: 30},
-  ],
-  group2Data: [
-    {x: 2014, y: 35},
-    {x: 2015, y: 42},
-    {x: 2016, y: 33},
-    {x: 2017, y: 32},
-    {x: 2018, y: 31},
-    {x: 2019, y: 30},
-  ],
-  group3Data: [
-    {x: 2014, y: 16},
-    {x: 2015, y: 15},
-    {x: 2016, y: 14},
-    {x: 2017, y: 13},
-    {x: 2018, y: 12},
-    {x: 2019, y: 12},
-  ],
-  group4Data: [
-    {x: 2014, y: 16},
-    {x: 2015, y: 17},
-    {x: 2016, y: 15},
-    {x: 2017, y: 14},
-    {x: 2018, y: 13},
-    {x: 2019, y: 12},
-  ],
-  group5Data: [
-    {x: 2014, y: 12},
-    {x: 2015, y: 11},
-    {x: 2016, y: 11.5},
-    {x: 2017, y: 11},
-    {x: 2018, y: 10},
-    {x: 2019, y: 10},
-  ],
-  group6Data: [
-    {x: 2014, y: 8},
-    {x: 2015, y: 10},
-    {x: 2016, y: 7.5},
-    {x: 2017, y: 8},
-    {x: 2018, y: 8},
-    {x: 2019, y: 9},
-  ],
+  unemploymentMale15_24Data: [],
+  unemploymentMale25_54Data: [],
+  unemploymentMale55_64Data: [],
+  unemploymentFemale15_24Data: [],
+  unemploymentFemale25_54Data: [],
+  unemploymentFemale55_64Data: [],
 };
+
+enum MeasureType {
+  EmploymentRate = 'Employment rate',
+  LFPRate = 'LFP rate',
+  UnemploymentRate = 'Unemployment rate',
+  UnemploymentMale15_24 = 'Unemployment (male, 15-24)',
+  UnemploymentMale25_54 = 'Unemployment (male, 25-54)',
+  UnemploymentMale55_64 = 'Unemployment (male, 55-64)',
+  UnemploymentFemale15_24 = 'Unemployment (female, 15-24)',
+  UnemploymentFemale25_54 = 'Unemployment (female, 25-54)',
+  UnemploymentFemale55_64 = 'Unemployment (female, 55-64)',
+}
+
+interface RawEmploymentData {
+  year: number;
+  measure_type: MeasureType;
+  rate: number;
+}
+const employmentRawData: RawEmploymentData[] = JSON.parse(raw('./data/employment_data_2014_2019.json'));
+employmentRawData.forEach(({year, measure_type, rate}) => {
+  if (measure_type === MeasureType.EmploymentRate) {
+    laborForceData.employRateData.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.LFPRate) {
+    laborForceData.lfpRateData.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.UnemploymentRate) {
+    laborForceData.unemployRateData.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.UnemploymentMale15_24) {
+    unemploymentData.unemploymentMale15_24Data.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.UnemploymentMale25_54) {
+    unemploymentData.unemploymentMale25_54Data.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.UnemploymentMale55_64) {
+    unemploymentData.unemploymentMale55_64Data.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.UnemploymentFemale15_24) {
+    unemploymentData.unemploymentFemale15_24Data.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.UnemploymentFemale25_54) {
+    unemploymentData.unemploymentFemale25_54Data.push({x: year, y: rate});
+  } else if (measure_type === MeasureType.UnemploymentFemale55_64) {
+    unemploymentData.unemploymentFemale55_64Data.push({x: year, y: rate});
+  }
+});
+
 
 interface MinMaxAxis {
   minY: number;
@@ -141,6 +163,11 @@ interface AnimateAxis {
   startMaxX: number;
   startMinY: number;
   startMaxY: number;
+}
+
+interface Input {
+  section: number | null;
+  prevSection: number | null;
 }
 
 export default ({section, prevSection}: Input) => {
@@ -325,40 +352,49 @@ export default ({section, prevSection}: Input) => {
     leftAxis = '';
     lineChartData = [
       {
-        coords: [...unemploymentData.group1Data],
+        coords: [...unemploymentData.unemploymentMale15_24Data],
         animationDuration: 600,
-        label: 'Group 1',
+        label: 'Male, 15-24',
         color: 'purple',
+        labelColor: 'purple',
         width: 3,
+        labelPosition: LabelPosition.Bottom,
       },{
-        coords: [...unemploymentData.group2Data],
+        coords: [...unemploymentData.unemploymentMale25_54Data],
         animationDuration: 600,
-        label: 'Group 2',
+        label: 'Male, 25-54',
         color: 'teal',
+        labelColor: 'teal',
         width: 3,
+        labelPosition: LabelPosition.Top,
       },{
-        coords: [...unemploymentData.group3Data],
+        coords: [...unemploymentData.unemploymentMale55_64Data],
         animationDuration: 600,
-        label: 'Group 3',
+        label: 'Male, 55-64',
         color: 'green',
+        labelColor: 'green',
         width: 3,
+        labelPosition: LabelPosition.Bottom,
       },{
-        coords: [...unemploymentData.group4Data],
+        coords: [...unemploymentData.unemploymentFemale15_24Data],
         animationDuration: 600,
-        label: 'Group 4',
+        label: 'Female, 15-24',
         color: 'salmon',
+        labelColor: 'salmon',
         width: 3,
       },{
-        coords: [...unemploymentData.group5Data],
+        coords: [...unemploymentData.unemploymentFemale25_54Data],
         animationDuration: 600,
-        label: 'Group 5',
-        color: 'majenta',
+        label: 'Female, 25-54',
+        color: 'red',
+        labelColor: 'red',
         width: 3,
       },{
-        coords: [...unemploymentData.group6Data],
+        coords: [...unemploymentData.unemploymentFemale55_64Data],
         animationDuration: 600,
-        label: 'Group 6',
-        color: 'yellow',
+        label: 'Female, 55-64',
+        color: 'orange',
+        labelColor: 'orange',
         width: 3,
       },
     ];
