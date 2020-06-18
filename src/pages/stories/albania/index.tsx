@@ -18,7 +18,6 @@ import styled from 'styled-components/macro';
 import useScrollingSections from '../../../hooks/useScrollingSections';
 import usePrevious from '../../../hooks/usePrevious';
 import DataViz, {VizType} from '../../../components/dataViz';
-import {RootDatum} from '../../../components/dataViz/treeMap';
 import getLineChartData from './getLineChartData';
 import raw from 'raw.macro';
 import PrimaryMap from './PrimaryMap';
@@ -28,8 +27,7 @@ import FlightRoutesMap from './FlightRoutesMap';
 import StandardFooter from '../../../components/text/StandardFooter';
 import {stackData, stackConfig} from './stackChartData';
 import ClusterChart from './clusterChart';
-
-const treeMapData: RootDatum = JSON.parse(raw('./treeMapData.json'));
+import treemapData from './treemapData';
 
 const Root = styled(FullWidthContent)`
 `;
@@ -156,7 +154,7 @@ const AlbaniaStory = () => {
       <DataViz
         id={'albania-story-tree-map'}
         vizType={VizType.TreeMap}
-        data={treeMapData}
+        data={treemapData}
       />
     );
   } else {

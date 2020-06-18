@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 export interface RootDatum {
   id: string;
   label: string;
-  fill: string;
+  fill?: string;
   children: (LeafDatum | RootDatum)[];
 }
 
@@ -12,6 +12,7 @@ interface LeafDatum {
   label: string;
   tooltipContent: string;
   size: number;
+  animationDuration?: number;
 }
 
 interface Dimensions {
@@ -81,10 +82,11 @@ export default (input: Input) => {
       .attr('id', (d: any) => d.data.id)
       .attr('finalwidth', (d: any) => d.x1 - d.x0)
       .attr('finalheight', (d: any) => d.y1 - d.y0)
-      .attr('width', '0')
-      .attr('height', '0')
+      .attr('width', (d: any) => d.data.animationDuration ? 0 : d.x1 - d.x0)
+      .attr('height', (d: any) => d.data.animationDuration ? 0 : d.y1 - d.y0)
       .transition()
-      .duration(750)
+      .delay(100)
+      .duration((d: any) => d.data.animationDuration ? d.data.animationDuration : 0)
       .attr('width', (d: any) => d.x1 - d.x0)
       .attr('height', (d: any) => d.y1 - d.y0)
       .attr('fill', (d: any) =>  d.parent.data.fill);
@@ -96,10 +98,10 @@ export default (input: Input) => {
 
   cell.append('text')
       .attr('clip-path', (d: any) => 'url(#clip-' + d.data.id + ')')
-      .attr('font-size', '0.65rem')
+      .attr('font-size', '0.75rem')
       .attr('x', 8)
       .attr('y', 16)
-      .text((d: any) => d.data.name + ' - ' + d.data.size + '%')
+      .text((d: any) => d.data.label + ' - ' + d.data.size + '%')
       .call(wrap);
 
   function wrap(text: any) {
