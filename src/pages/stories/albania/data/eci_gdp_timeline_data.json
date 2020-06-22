@@ -1,0 +1,1256 @@
+[
+  {
+    "location_name_short_en": "Albania",
+    "year": 2000,
+    "hs_eci": -0.05137958,
+    "value": 20.11528595
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2001,
+    "hs_eci": -0.07227057,
+    "value": 21.33341803
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2002,
+    "hs_eci": -0.06972577,
+    "value": 20.94560691
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2003,
+    "hs_eci": -0.07182532,
+    "value": 20.84740122
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2004,
+    "hs_eci": -0.10721533,
+    "value": 22.21757431
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2005,
+    "hs_eci": -0.13171205,
+    "value": 23.01298514
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2006,
+    "hs_eci": -0.2995345,
+    "value": 25.20960484
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2007,
+    "hs_eci": -0.2074308,
+    "value": 28.24787244
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2008,
+    "hs_eci": 0.3334706,
+    "value": 25.30241718
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2009,
+    "hs_eci": 0.5710202,
+    "value": 25.24071639
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2010,
+    "hs_eci": -0.53349847,
+    "value": 27.97942296
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2011,
+    "hs_eci": -0.37870398,
+    "value": 29.24153534
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2012,
+    "hs_eci": -0.34316143,
+    "value": 28.93748744
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2013,
+    "hs_eci": -0.50315547,
+    "value": 28.91632189
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2014,
+    "hs_eci": -0.5040585,
+    "value": 28.21300894
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2015,
+    "hs_eci": -0.49898663,
+    "value": 27.26739958
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2016,
+    "hs_eci": -0.5018349,
+    "value": 28.97789662
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2017,
+    "hs_eci": -0.3522358,
+    "value": 31.55664614
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2000,
+    "hs_eci": 0.39274135,
+    "value": 36.47440901
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2001,
+    "hs_eci": 0.4135935,
+    "value": 35.14877565
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2002,
+    "hs_eci": 0.38943976,
+    "value": 33.90857298
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2003,
+    "hs_eci": 0.41105863,
+    "value": 34.68329084
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2004,
+    "hs_eci": 0.354481,
+    "value": 41.27215896
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2005,
+    "hs_eci": 0.37667087,
+    "value": 42.86338985
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2006,
+    "hs_eci": 0.46192393,
+    "value": 47.32154433
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2007,
+    "hs_eci": 0.431868,
+    "value": 52.38024707
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2008,
+    "hs_eci": 0.458162,
+    "value": 52.54336762
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2009,
+    "hs_eci": 0.41351873,
+    "value": 42.33201207
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2010,
+    "hs_eci": 0.5350863,
+    "value": 50.17887879
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2011,
+    "hs_eci": 0.4966535,
+    "value": 59.06908208
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2012,
+    "hs_eci": 0.55598396,
+    "value": 60.79919162
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2013,
+    "hs_eci": 0.5492927,
+    "value": 64.87813637
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2014,
+    "hs_eci": 0.5714413,
+    "value": 64.90496203
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2015,
+    "hs_eci": 0.51605076,
+    "value": 64.53804225
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2016,
+    "hs_eci": 0.5655865,
+    "value": 64.72580474
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2017,
+    "hs_eci": 0.5630154,
+    "value": 68.14647302
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2000,
+    "hs_eci": 0.26054758,
+    "value": 28.69084267
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2001,
+    "hs_eci": 0.25503966,
+    "value": 28.39251174
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2002,
+    "hs_eci": 0.26486647,
+    "value": 24.34785182
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2003,
+    "hs_eci": 0.24218029,
+    "value": 30.28986625
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2004,
+    "hs_eci": 0.40967163,
+    "value": 27.81109309
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2005,
+    "hs_eci": 0.29176575,
+    "value": 31.63112051
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2006,
+    "hs_eci": 0.41145495,
+    "value": 35.02181135
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2007,
+    "hs_eci": 0.48267138,
+    "value": 27.10155319
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2008,
+    "hs_eci": 0.514801,
+    "value": 26.84806772
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2009,
+    "hs_eci": 0.5796467,
+    "value": 25.00937959
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2010,
+    "hs_eci": 0.494627,
+    "value": 29.69554093
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2011,
+    "hs_eci": 0.44280413,
+    "value": 32.03597295
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2012,
+    "hs_eci": 0.50812376,
+    "value": 32.35054272
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2013,
+    "hs_eci": 0.47099483,
+    "value": 33.74304869
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2014,
+    "hs_eci": 0.53248626,
+    "value": 33.98014015
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2015,
+    "hs_eci": 0.4497004,
+    "value": 34.87107233
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2016,
+    "hs_eci": 0.47574922,
+    "value": 35.64628152
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2017,
+    "hs_eci": 0.48752865,
+    "value": 40.07650758
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2000,
+    "hs_eci": 0.29582468,
+    "value": 23.71838091
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2001,
+    "hs_eci": 0.38844702,
+    "value": 22.78874432
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2002,
+    "hs_eci": 0.32966688,
+    "value": 20.11285445
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2003,
+    "hs_eci": 0.39723498,
+    "value": 18.54458304
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2004,
+    "hs_eci": 0.42933014,
+    "value": 20.70811457
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2005,
+    "hs_eci": 0.35928807,
+    "value": 21.31223043
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2006,
+    "hs_eci": 0.32369784,
+    "value": 21.17400879
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2007,
+    "hs_eci": 0.34556437,
+    "value": 22.52026976
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2008,
+    "hs_eci": 0.3136012,
+    "value": 23.36156912
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2009,
+    "hs_eci": 0.28539938,
+    "value": 18.9821867
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2010,
+    "hs_eci": 0.22722761,
+    "value": 22.10220512
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2011,
+    "hs_eci": 0.18891957,
+    "value": 25.53541593
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2012,
+    "hs_eci": 0.247182,
+    "value": 28.68399402
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2013,
+    "hs_eci": 0.23497954,
+    "value": 30.35342851
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2014,
+    "hs_eci": 0.25667244,
+    "value": 32.37304071
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2015,
+    "hs_eci": 0.20502634,
+    "value": 31.55327071
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2016,
+    "hs_eci": 0.19809645,
+    "value": 30.06374593
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2017,
+    "hs_eci": 0.1922421,
+    "value": 32.99039638
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2000,
+    "hs_eci": 0.6383449,
+    "value": 35.24854659
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2001,
+    "hs_eci": 0.58334374,
+    "value": 37.23692724
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2002,
+    "hs_eci": 0.5586148,
+    "value": 36.21010085
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2003,
+    "hs_eci": 0.5999174,
+    "value": 35.88752449
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2004,
+    "hs_eci": 0.7187668,
+    "value": 36.89868889
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2005,
+    "hs_eci": 0.71392417,
+    "value": 36.72882496
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2006,
+    "hs_eci": 0.7819343,
+    "value": 37.91581237
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2007,
+    "hs_eci": 0.7936695,
+    "value": 37.82730891
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2008,
+    "hs_eci": 0.9073708,
+    "value": 36.40120761
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2009,
+    "hs_eci": 0.8422005,
+    "value": 32.66397759
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2010,
+    "hs_eci": 0.8361079,
+    "value": 36.17738597
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2011,
+    "hs_eci": 0.9021534,
+    "value": 38.8644502
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2012,
+    "hs_eci": 0.8825331,
+    "value": 39.52516933
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2013,
+    "hs_eci": 0.89377755,
+    "value": 40.43457743
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2014,
+    "hs_eci": 0.79574436,
+    "value": 43.30053347
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2015,
+    "hs_eci": 0.7910468,
+    "value": 46.37974943
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2016,
+    "hs_eci": 0.9172515,
+    "value": 47.63331698
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2017,
+    "hs_eci": 0.87609774,
+    "value": 50.0289963
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2000,
+    "hs_eci": 0.10146524,
+    "value": 32.94684009
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2001,
+    "hs_eci": 0.02130433,
+    "value": 29.19851184
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2002,
+    "hs_eci": -0.041589905,
+    "value": 26.30123636
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2003,
+    "hs_eci": 0.030917255,
+    "value": 27.65636747
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2004,
+    "hs_eci": -0.04118148,
+    "value": 30.70416616
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2005,
+    "hs_eci": -0.07675996,
+    "value": 34.80760066
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2006,
+    "hs_eci": -0.1467865,
+    "value": 37.7914825
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2007,
+    "hs_eci": -0.16133432,
+    "value": 44.11688197
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2008,
+    "hs_eci": -0.032052774,
+    "value": 43.22446914
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2009,
+    "hs_eci": -0.07915056,
+    "value": 32.80554336
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2010,
+    "hs_eci": -0.09972117,
+    "value": 39.78975339
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2011,
+    "hs_eci": -0.11746709,
+    "value": 47.12442857
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2012,
+    "hs_eci": -0.030202582,
+    "value": 45.37446727
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2013,
+    "hs_eci": -0.060439542,
+    "value": 43.39647453
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2014,
+    "hs_eci": -0.03345871,
+    "value": 47.66285529
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2015,
+    "hs_eci": 0.017506419,
+    "value": 48.73799991
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2016,
+    "hs_eci": 0.10069227,
+    "value": 50.66384216
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2017,
+    "hs_eci": 0.13944459,
+    "value": 55.40009731
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2000,
+    "hs_eci": 0.37066355,
+    "value": 21.58888431
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2001,
+    "hs_eci": 0.3366668,
+    "value": 22.10596347
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2002,
+    "hs_eci": 0.29725704,
+    "value": 24.01302936
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2003,
+    "hs_eci": 0.4143154,
+    "value": 24.21273505
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2004,
+    "hs_eci": 0.3621325,
+    "value": 25.74393627
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2005,
+    "hs_eci": 0.38195142,
+    "value": 24.53522061
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2006,
+    "hs_eci": 0.548696,
+    "value": 24.7712265
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2007,
+    "hs_eci": 0.7662989,
+    "value": 24.71082905
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2008,
+    "hs_eci": 0.80032676,
+    "value": 26.15534462
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2009,
+    "hs_eci": 0.8135841,
+    "value": 26.02361223
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2010,
+    "hs_eci": 0.7424275,
+    "value": 32.39866956
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2011,
+    "hs_eci": 0.78124595,
+    "value": 37.03158259
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2012,
+    "hs_eci": 0.6963169,
+    "value": 37.4089526
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2013,
+    "hs_eci": 0.77252835,
+    "value": 39.87312171
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2014,
+    "hs_eci": 0.84754825,
+    "value": 41.16417518
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2015,
+    "hs_eci": 0.9486817,
+    "value": 41.01801911
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2016,
+    "hs_eci": 0.99809635,
+    "value": 41.18558624
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2017,
+    "hs_eci": 1.0809457,
+    "value": 41.4700878
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2000,
+    "hs_eci": "",
+    "value": 9.853248664
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2001,
+    "hs_eci": "",
+    "value": 22.4434273
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2002,
+    "hs_eci": "",
+    "value": 20.64520256
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2003,
+    "hs_eci": "",
+    "value": 21.96246394
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2004,
+    "hs_eci": "",
+    "value": 24.21941754
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2005,
+    "hs_eci": "",
+    "value": 27.96497848
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2006,
+    "hs_eci": 0.60578966,
+    "value": 29.44194466
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2007,
+    "hs_eci": 0.6135075,
+    "value": 27.28982477
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2008,
+    "hs_eci": 0.6619085,
+    "value": 28.44314007
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2009,
+    "hs_eci": 0.5684108,
+    "value": 26.34777847
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2010,
+    "hs_eci": 0.5611337,
+    "value": 32.25561225
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2011,
+    "hs_eci": 0.5178702,
+    "value": 33.00182495
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2012,
+    "hs_eci": 0.6026307,
+    "value": 35.84480698
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2013,
+    "hs_eci": 0.55852157,
+    "value": 39.85150491
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2014,
+    "hs_eci": 0.54624826,
+    "value": 42.07752896
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2015,
+    "hs_eci": 0.501777,
+    "value": 45.27360739
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2016,
+    "hs_eci": 0.59167176,
+    "value": 48.6154593
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2017,
+    "hs_eci": 0.65743953,
+    "value": 50.54079108
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2000,
+    "hs_eci": 1.4892288,
+    "value": 50.13517602
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2001,
+    "hs_eci": 1.4863774,
+    "value": 51.74663331
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2002,
+    "hs_eci": 1.5441071,
+    "value": 52.32118898
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2003,
+    "hs_eci": 1.6338305,
+    "value": 51.00359394
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2004,
+    "hs_eci": 1.6366456,
+    "value": 55.0547877
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2005,
+    "hs_eci": 1.5711021,
+    "value": 59.81127016
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2006,
+    "hs_eci": 1.5696768,
+    "value": 64.87021531
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2007,
+    "hs_eci": 1.6431575,
+    "value": 67.89907007
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2008,
+    "hs_eci": 1.5275695,
+    "value": 66.31325414
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2009,
+    "hs_eci": 1.5700516,
+    "value": 57.26428864
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2010,
+    "hs_eci": 1.617457,
+    "value": 64.27482244
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2011,
+    "hs_eci": 1.6628175,
+    "value": 70.24714459
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2012,
+    "hs_eci": 1.5095191,
+    "value": 72.89158921
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2013,
+    "hs_eci": 1.6388041,
+    "value": 74.21647441
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2014,
+    "hs_eci": 1.642268,
+    "value": 76.15174267
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2015,
+    "hs_eci": 1.579896,
+    "value": 77.14867757
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2016,
+    "hs_eci": 1.5740314,
+    "value": 77.97150786
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2017,
+    "hs_eci": 1.5928378,
+    "value": 83.1708095
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2000,
+    "hs_eci": "",
+    "value": 36.81499185
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2000,
+    "hs_eci": "",
+    "value": ""
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2001,
+    "hs_eci": "",
+    "value": 38.42345438
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2001,
+    "hs_eci": "",
+    "value": ""
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2002,
+    "hs_eci": "",
+    "value": 35.35611713
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2002,
+    "hs_eci": "",
+    "value": 5.718210361
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2003,
+    "hs_eci": "",
+    "value": 30.6112462
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2003,
+    "hs_eci": "",
+    "value": 5.612741125
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2004,
+    "hs_eci": "",
+    "value": 42.02204718
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2004,
+    "hs_eci": "",
+    "value": 10.83650855
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2005,
+    "hs_eci": "",
+    "value": 43.54912468
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2005,
+    "hs_eci": "",
+    "value": 11.29859107
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2006,
+    "hs_eci": "",
+    "value": 40.56154301
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2006,
+    "hs_eci": "",
+    "value": 14.39846069
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2007,
+    "hs_eci": "",
+    "value": 43.00302663
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2007,
+    "hs_eci": "",
+    "value": 16.08360771
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2008,
+    "hs_eci": "",
+    "value": 39.51974845
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2008,
+    "hs_eci": "",
+    "value": 15.68213555
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2009,
+    "hs_eci": "",
+    "value": 34.33087777
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2009,
+    "hs_eci": "",
+    "value": 17.07529594
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2010,
+    "hs_eci": "",
+    "value": 37.04440512
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2010,
+    "hs_eci": "",
+    "value": 19.94564245
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2011,
+    "hs_eci": "",
+    "value": 42.34884361
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2011,
+    "hs_eci": "",
+    "value": 23.63052714
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2012,
+    "hs_eci": "",
+    "value": 43.67248294
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2012,
+    "hs_eci": "",
+    "value": 23.25667362
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2013,
+    "hs_eci": "",
+    "value": 41.34234771
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2013,
+    "hs_eci": "",
+    "value": 21.92949108
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2014,
+    "hs_eci": "",
+    "value": 40.1437048
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2014,
+    "hs_eci": "",
+    "value": 22.50204491
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2015,
+    "hs_eci": "",
+    "value": 42.11807213
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2015,
+    "hs_eci": "",
+    "value": 21.93728303
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2016,
+    "hs_eci": "",
+    "value": 40.60065571
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2016,
+    "hs_eci": "",
+    "value": 23.69807613
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2017,
+    "hs_eci": "",
+    "value": 41.0551905
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2017,
+    "hs_eci": "",
+    "value": 26.65009423
+  },
+  {
+    "location_name_short_en": "Albania",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 31.68467136
+  },
+  {
+    "location_name_short_en": "Bulgaria",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 66.94009653
+  },
+  {
+    "location_name_short_en": "Bosnia and Herzegovina",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 40.58718678
+  },
+  {
+    "location_name_short_en": "Greece",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 36.1292312
+  },
+  {
+    "location_name_short_en": "Croatia",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 50.51665011
+  },
+  {
+    "location_name_short_en": "North Macedonia",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 60.34062892
+  },
+  {
+    "location_name_short_en": "Montenegro",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 42.87500027
+  },
+  {
+    "location_name_short_en": "Romania",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 41.6418649
+  },
+  {
+    "location_name_short_en": "Serbia",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 50.77551078
+  },
+  {
+    "location_name_short_en": "Slovenia",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 85.37863135
+  },
+  {
+    "location_name_short_en": "Kosovo",
+    "year": 2018,
+    "hs_eci": "",
+    "value": 26.43209926
+  }
+]

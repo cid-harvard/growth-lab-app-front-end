@@ -27,6 +27,7 @@ import StandardFooter from '../../../components/text/StandardFooter';
 import {stackData, stackConfig} from './stackChartData';
 import ClusterChart from './clusterChart';
 import treemapData from './treemapData';
+import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
 
 const Root = styled(FullWidthContent)`
 `;
@@ -124,6 +125,8 @@ const AlbaniaStory = () => {
     section, prevSection: prevSection === undefined || prevSection === null ? null : prevSection,
   });
 
+  const formatYear = (maxYear: number) => (n: number) => n - Math.ceil(n) === 0 && n <= maxYear ? n.toString() : '';
+
   let dataViz: React.ReactElement<any> | null;
   if (section === null || section < 5) {
     dataViz = (
@@ -134,15 +137,7 @@ const AlbaniaStory = () => {
         axisLabels={{left: leftAxis}}
         axisMinMax={{minY, maxY, minX, maxX}}
         animateAxis={animateAxis}
-        formatAxis={{
-          x: (n: number) => {
-            if (n - Math.ceil(n) === 0) {
-              return n.toString();
-            } else {
-              return '';
-            }
-          },
-        }}
+        formatAxis={{x: formatYear(2019)}}
         tickCount={{
           x: maxX - minX,
         }}
@@ -160,7 +155,7 @@ const AlbaniaStory = () => {
     dataViz = null;
   }
 
-  const stackChart = section && section > 9 && section < 12 ? (
+  const stackChart = section && section > 8 && section < 12 ? (
     <DataViz
       id={'albania-story-stack-chart'}
       vizType={VizType.StackChart}
@@ -169,7 +164,27 @@ const AlbaniaStory = () => {
     />
   ) : null;
 
-  const clusterChart = section && section > 12 && section < 15 ? (
+  const albaniaEciPeers = section && section > 9 && section < 13 ? (
+    <DataViz
+      id={'albania-story-eci-peers-line'}
+      vizType={VizType.LineChart}
+      data={albaniaVsRegionalPeersData.eci}
+      axisMinMax={albaniaVsRegionalPeersData.eciAxis}
+      formatAxis={{x: formatYear(2017)}}
+    />
+  ) : null;
+
+  const albaniaGdpPeers = section && section > 10 && section < 14 ? (
+    <DataViz
+      id={'albania-story-gdp-peers-line'}
+      vizType={VizType.LineChart}
+      data={albaniaVsRegionalPeersData.gdp}
+      axisMinMax={albaniaVsRegionalPeersData.gdpAxis}
+      formatAxis={{x: formatYear(2017)}}
+    />
+  ) : null;
+
+  const clusterChart = section && section > 11 && section < 15 ? (
     <ClusterChart />
   ) : null;
 
@@ -291,11 +306,15 @@ const AlbaniaStory = () => {
           <p ref={section_12}>
             Despite the recent growth acceleration, Albania’s Economic Complexity Index (a measure of the economies capabilities to produce diversified goods and services) remains the lowest in the region.
           </p>
-          <h3>LINE CHART</h3>
+          <InlineVizContainer>
+            {albaniaEciPeers}
+          </InlineVizContainer>
           <p ref={section_13}>
             This also explains why Albania’s economy remains less export-oriented than neighboring countries despite being equally close to the large European market.
           </p>
-          <h3>LINE CHART</h3>
+          <InlineVizContainer>
+            {albaniaGdpPeers}
+          </InlineVizContainer>
           <p>
             These trends imply that pace of sustainable economic growth, and particularly the creation of good jobs, will be limited by the pace at which the Albanian economy absorbs knowhow from abroad to diversify economic activities. While the exact rate of growth may adjust up and down based on temporary causes (the current COVID-19 shock, rainfall and electricity output, natural disasters, etc.), the overall strength and quality of growth will depend on the goods and services that the Albanian economy learns to produce.
           </p>
