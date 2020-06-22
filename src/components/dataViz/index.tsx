@@ -5,7 +5,7 @@ import React, {useContext, useEffect, useRef} from 'react';
 import styled from 'styled-components/macro';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
-import createBarChart, {Datum as BarChartDatum} from './barChart';
+import createBarChart, {Datum as BarChartDatum, LabelPlacement} from './barChart';
 import createClusterBarChart, {Datum as ClusterBarChartDatum} from './clusterBarChart';
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
@@ -151,6 +151,22 @@ type Props = BaseProps & (
     vizType: VizType.BarChart;
     data: BarChartDatum[][];
     axisLabels?: {left?: string, bottom?: string};
+      axisMinMax?: {
+      minY?: number,
+      maxY?: number,
+    };
+    hideAxis?: {
+      left?: boolean;
+      bottom?: boolean;
+    }
+    averageLines?: {
+      value: number,
+      label?: string;
+      labelPlacement?: LabelPlacement;
+      strokeWidth?: number;
+      strokeDasharray?: number;
+      strokeColor?: string;
+    }[]
   } |
   {
     vizType: VizType.ClusterBarChart;
@@ -245,6 +261,9 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
+          axisMinMax: props.axisMinMax,
+          hideAxis: props.hideAxis,
+          averageLines: props.averageLines,
         });
       } else if (props.vizType === VizType.RadarChart) {
         let width: number;

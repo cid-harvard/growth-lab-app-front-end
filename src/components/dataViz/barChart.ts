@@ -16,16 +16,40 @@ interface Dimensions {
   height: number;
 }
 
+export enum LabelPlacement {
+  left = 'left',
+  right = 'right',
+}
+
 interface Input {
   svg: d3.Selection<any, unknown, null, undefined>;
   tooltip: d3.Selection<any, unknown, null, undefined>;
   data: Datum[][];
   size: Dimensions;
   axisLabels?: {left?: string, bottom?: string};
+  axisMinMax?: {
+    minY?: number,
+    maxY?: number,
+  };
+  hideAxis?: {
+    left?: boolean;
+    bottom?: boolean;
+  };
+  averageLines?: {
+    value: number,
+    label?: string;
+    labelPlacement?: LabelPlacement;
+    strokeWidth?: number;
+    strokeDasharray?: number;
+    strokeColor?: string;
+  }[];
 }
 
 export default (input: Input) => {
-  const { svg, data, size, axisLabels, tooltip } = input;
+  const {
+    svg, data, size, axisLabels, tooltip, axisMinMax, hideAxis,
+    averageLines,
+  } = input;
 
   const margin = {
     top: 30, right: 30,
@@ -55,14 +79,26 @@ export default (input: Input) => {
   const allYValues: number[] = [];
   data.forEach(datum => datum.forEach(({y}) => allYValues.push(y)));
 
-  const rawMinY = d3.min(allYValues);
-  const rawMaxY = d3.max(allYValues);
-
   const minScaleBuffer = 0.9;
   const maxScaleBuffer = 1.1;
 
-  const minY = rawMinY ? Math.floor(rawMinY * minScaleBuffer) : 0;
-  const maxY = rawMaxY ? Math.ceil(rawMaxY * maxScaleBuffer) : 0;
+  let minY: number;
+  let maxY: number;
+
+  if (axisMinMax !== undefined && axisMinMax.minY !== undefined) {
+    minY = axisMinMax.minY;
+  } else {
+    const rawMinY = d3.min(allYValues);
+    minY = rawMinY ? Math.floor(rawMinY * minScaleBuffer) : 0;
+  }
+
+  if (axisMinMax !== undefined && axisMinMax.maxY !== undefined) {
+    maxY = axisMinMax.maxY;
+  } else {
+    const rawMaxY = d3.max(allYValues);
+    maxY = rawMaxY ? Math.floor(rawMaxY * maxScaleBuffer) : 0;
+  }
+
   // Scale the range of the data in the domains
   xScale.domain(data && data.length ? data[0].map(function(d) { return d.x; }) : [])
         .rangeRound([0, width])
@@ -95,8 +131,9 @@ export default (input: Input) => {
           }
           tooltip
             .style('display', 'block')
-            .style('left', (d3.event.pageX + 4) + 'px')
-            .style('top', (d3.event.pageY - 4) + 'px');
+            .style('position', 'fixed')
+            .style('left', d3.event.clientX + 'px')
+            .style('top', d3.event.clientY + 'px');
           })
         .on('mouseout', () => {
           tooltip
@@ -104,32 +141,60 @@ export default (input: Input) => {
         });
   });
 
-  // add the x Axis
-  container.append('g')
-      .attr('transform', 'translate(0,' + height + ')')
-      .call(d3.axisBottom(xScale));
-
-  // add the y Axis
-  container.append('g')
-      .call(d3.axisLeft(yScale).tickFormat(formatNumber));
-
   // append X axis label
-  svg
-    .append('text')
-    .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
-      .style('font-family', "'Source Sans Pro',sans-serif")
-      .style('font-size', '0.8rem')
-      .style('text-anchor', 'middle')
-      .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
+  if (!(hideAxis && hideAxis.bottom)) {
+    // add the x Axis
+    container.append('g')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(d3.axisBottom(xScale));
+    svg
+      .append('text')
+      .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
+        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-size', '0.8rem')
+        .style('text-anchor', 'middle')
+        .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
+  }
+  if (!(hideAxis && hideAxis.left)) {
+      // add the y Axis
+    container.append('g')
+      .call(d3.axisLeft(yScale).tickFormat(formatNumber));
+    // append Y axis label
+    svg
+      .append('text')
+        .attr('y', margin.top / 2)
+        .attr('x', margin.right)
+        .attr('dy', '0.75em')
+        .style('font-size', '0.8rem')
+        .style('font-family', "'Source Sans Pro',sans-serif")
+        .text(axisLabels && axisLabels.left ? axisLabels.left : '');
+  }
 
-  // append Y axis label
-  svg
-    .append('text')
-      .attr('y', margin.top / 2)
-      .attr('x', margin.right)
-      .attr('dy', '0.75em')
-      .style('font-size', '0.8rem')
-      .style('font-family', "'Source Sans Pro',sans-serif")
-      .text(axisLabels && axisLabels.left ? axisLabels.left : '');
+  if (averageLines && averageLines.length) {
+    averageLines.forEach(line => {
+      svg
+       .append('line')
+      .attr('x1',margin.left)
+      .attr('x2',size.width - margin.right)
+      .attr('y1', yScale(line.value) + 0.5)
+      .attr('y2', yScale(line.value) + 0.5)
+      .attr('stroke-width', line.strokeWidth ? line.strokeWidth : '1px')
+      .attr('stroke', line.strokeColor ? line.strokeColor : '#333')
+      .attr('stroke-dasharray', line.strokeDasharray ? line.strokeDasharray : 0)
+      .style('pointer-events', 'none');
+
+      if (line.label) {
+        svg.append('text')
+          .attr('x', line.labelPlacement === LabelPlacement.right ? size.width - margin.right : margin.left + 8)
+          .attr('y',yScale(line.value) - 4)
+          .style('text-anchor', line.labelPlacement === LabelPlacement.right ? 'end' : 'start')
+          .style('opacity', 0.8)
+          .style('font-family', "'Source Sans Pro',sans-serif")
+          .style('font-size', '12px')
+          .style('pointer-events', 'none')
+          .text(line.label);
+      }
+    });
+  }
 
 };

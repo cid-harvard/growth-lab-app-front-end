@@ -1,0 +1,100 @@
+[
+  {
+    "x": "Main Constraint (% of Firms)",
+    "Year": 2019,
+    "Avg. Balkans Line": 10.59399,
+    "Alb indicator": 1,
+    "Balkans Line 2": 1.93333,
+    "Percent": 8,
+    "UMIC Lines 2": 6.911765,
+    "UMIC Lines": 10.8145
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Main Constraint (% of Firms)",
+    "Year": 2013,
+    "Avg. Balkans Line": 10.59399,
+    "Alb indicator": 1,
+    "Balkans Line 2": 1.93333,
+    "Percent": 14.2,
+    "UMIC Lines 2": 6.911765,
+    "UMIC Lines": 10.8145
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Main Constraint (% of Firms)",
+    "Year": 2007,
+    "Avg. Balkans Line": 10.59399,
+    "Alb indicator": 1,
+    "Balkans Line 2": 1.93333,
+    "Percent": 27.7,
+    "UMIC Lines 2": 6.911765,
+    "UMIC Lines": 10.8145
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Outages per Month (#)",
+    "Year": 2019,
+    "Avg. Balkans Line": 6.113733906,
+    "Alb indicator": 1,
+    "Balkans Line 2": 0.75555556,
+    "Percent": 1.5,
+    "UMIC Lines 2": 4.697941,
+    "UMIC Lines": 5.922989
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Outages per Month (#)",
+    "Year": 2013,
+    "Avg. Balkans Line": 6.113733906,
+    "Alb indicator": 1,
+    "Balkans Line 2": 0.75555556,
+    "Percent": 4.2,
+    "UMIC Lines 2": 4.697941,
+    "UMIC Lines": 5.922989
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Outages per Month (#)",
+    "Year": 2007,
+    "Avg. Balkans Line": 6.113733906,
+    "Alb indicator": 1,
+    "Balkans Line 2": 0.75555556,
+    "Percent": 33.9,
+    "UMIC Lines 2": 4.697941,
+    "UMIC Lines": 5.922989
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Average Losses (% of Annual Sales)",
+    "Year": 2019,
+    "Avg. Balkans Line": 0,
+    "Alb indicator": 1,
+    "Balkans Line 2": 0.955556,
+    "Percent": 1.9,
+    "UMIC Lines 2": 4.2731913,
+    "UMIC Lines": 0
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Average Losses (% of Annual Sales)",
+    "Year": 2013,
+    "Avg. Balkans Line": 0,
+    "Alb indicator": 1,
+    "Balkans Line 2": 0.955556,
+    "Percent": 5.7,
+    "UMIC Lines 2": 4.2731913,
+    "UMIC Lines": 0
+  },
+  {
+    "Economy": "Albania",
+    "Question": "Average Losses (% of Annual Sales)",
+    "Year": 2007,
+    "Avg. Balkans Line": 0,
+    "Alb indicator": 1,
+    "Balkans Line 2": 0.955556,
+    "Percent": 13.7,
+    "UMIC Lines 2": 4.2731913,
+    "UMIC Lines": 0
+  }
+]

@@ -18,6 +18,7 @@ import styled from 'styled-components/macro';
 import useScrollingSections from '../../../hooks/useScrollingSections';
 import usePrevious from '../../../hooks/usePrevious';
 import DataViz, {VizType} from '../../../components/dataViz';
+import {LabelPlacement} from '../../../components/dataViz/barChart';
 import getLineChartData from './getLineChartData';
 import PrimaryMap from './PrimaryMap';
 import GrowthProjectionsMap from './GrowthProjectionsMap';
@@ -29,6 +30,7 @@ import ClusterChart from './clusterChart';
 import treemapData from './treemapData';
 import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
 import DynamicTable from '../../../components/text/DynamicTable';
+import electricityBarChartData from './barChartData';
 
 const Root = styled(FullWidthContent)`
 `;
@@ -64,6 +66,12 @@ const InlineVizContainer = styled.div`
   max-width: 650px;
   height: 450px;
   margin: 1.75rem auto;
+`;
+
+const BarChartContainer = styled(InlineVizContainer)`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: solid 1px #dfdfdf;
 `;
 
 const TableContainer = styled.div`
@@ -122,6 +130,15 @@ const LargeBracket = styled.div`
     right: 0;
     transform: translate(100%, -50%);
   }
+`;
+
+const BarChart = styled.div`
+  position: relative;
+`;
+
+const CenterBarChart = styled(BarChart)`
+  border-left: solid 1px #dfdfdf;
+  border-right: solid 1px #dfdfdf;
 `;
 
 const AlbaniaStory = () => {
@@ -235,6 +252,73 @@ const AlbaniaStory = () => {
 
   const clusterChart = section && section > 11 && section < 15 ? (
     <ClusterChart />
+  ) : null;
+
+  const electricityBarCharts = section && section > 13 && section < 17 ? (
+    <>
+      <BarChart>
+        <DataViz
+          id={'albania-story-electricity-bar-chart-main-constraints'}
+          vizType={VizType.BarChart}
+          data={[electricityBarChartData.main_constraint.data]}
+          axisMinMax={{minY: 0, maxY: 36}}
+          averageLines={[
+            {
+              value: electricityBarChartData.main_constraint.umic_average_line,
+              label: 'UMIC Average',
+              strokeDasharray: 3,
+              labelPlacement: LabelPlacement.right,
+            },
+            {
+              value: electricityBarChartData.main_constraint.balkans_average_line,
+              label: 'Balkans Average',
+            },
+          ]}
+        />
+      </BarChart>
+      <CenterBarChart>
+        <DataViz
+          id={'albania-story-electricity-bar-chart-outages-month'}
+          vizType={VizType.BarChart}
+          data={[electricityBarChartData.outages_month.data]}
+          axisMinMax={{minY: 0, maxY: 36}}
+          hideAxis={{left: true}}
+          averageLines={[
+            {
+              value: electricityBarChartData.outages_month.umic_average_line,
+              label: 'UMIC Average',
+              strokeDasharray: 3,
+              labelPlacement: LabelPlacement.right,
+            },
+            {
+              value: electricityBarChartData.outages_month.balkans_average_line,
+              label: 'Balkans Average',
+            },
+          ]}
+        />
+      </CenterBarChart>
+      <BarChart>
+        <DataViz
+          id={'albania-story-electricity-bar-chart-average-losses'}
+          vizType={VizType.BarChart}
+          data={[electricityBarChartData.average_losses.data]}
+          axisMinMax={{minY: 0, maxY: 36}}
+          hideAxis={{left: true}}
+          averageLines={[
+            {
+              value: electricityBarChartData.average_losses.umic_average_line,
+              label: 'UMIC Average',
+              strokeDasharray: 3,
+              labelPlacement: LabelPlacement.right,
+            },
+            {
+              value: electricityBarChartData.average_losses.balkans_average_line,
+              label: 'Balkans Average',
+            },
+          ]}
+        />
+      </BarChart>
+    </>
   ) : null;
 
   return (
@@ -460,7 +544,9 @@ const AlbaniaStory = () => {
           <p ref={section_15}>
             Albania’s electricity system has continued to improve in order to deliver electricity reliably and at a low price. Whereas more than a quarter of firms used to report electricity as their biggest constraint, this has fallen to less than 10% of firms, very close to average for upper middle-income countries, as the occurrence of outages and firm losses due to outages have fallen dramatically. Albania still underperforms in comparison to the rest of the Balkan region, which has very low-cost electricity on the whole. Given Albania’s recent success in tendering very low-cost solar generation to complement its predominantly hydropower generation, this is likely to continue to improve.
           </p>
-          <h3>BAR CHART</h3>
+          <BarChartContainer>
+            {electricityBarCharts}
+          </BarChartContainer>
           <p ref={section_16}>
             On the opposite extreme, performance of the court system and reports of “monopoly or unfair competition” have grown as constraints based on a variety of firm surveys. Although measures of government effectiveness have improved markedly across surveys and bribery has reduced among most interactions with government (with the exception of tax collection), judicial reforms appear to have traded off an old problem of corrupt judges for a new problem of too few judges. While the process is a critical step forward, it is resulting in businesses that rely on the court system to settle disputed to face an increased likelihood of delays. In fact, despite positive reforms, Albanian exports have become increasing focused in products that are less intensive in the use of contracts to manage supplier relationships.
           </p>
