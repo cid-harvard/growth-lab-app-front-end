@@ -8,7 +8,6 @@ import { rgba } from 'polished';
 const Root = styled.div`
   display: grid;
   padding-right: 0.5rem;
-  overflow: auto;
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -21,6 +20,7 @@ const Cell = styled.div`
   font-size: 1.1rem;
   padding: 0.45rem;
   background-color: #fff;
+  position: relative;
 `;
 
 const GhostContent = styled.div`
@@ -35,7 +35,7 @@ export interface Column {
 }
 
 export interface Datum {
-  [key: string]: string | number | null;
+  [key: string]: string | number | null | React.ReactNode;
 }
 
 interface Props {
@@ -46,13 +46,19 @@ interface Props {
   hideGridLines?: boolean;
   fontSize?: string;
   verticalGridLines?: boolean;
+  invertHeading?: boolean;
+  showOverflow?: boolean;
 }
 
 const DynamicTable = (props: Props) => {
-  const {columns, data, color, stickFirstCol, hideGridLines, fontSize, verticalGridLines} = props;
+  const {
+    columns, data, color, stickFirstCol, hideGridLines, fontSize, verticalGridLines,
+    invertHeading, showOverflow,
+  } = props;
   const rootStyle: React.CSSProperties = {
     gridTemplateColumns: `repeat(${columns.length}, auto)`,
     gridTemplateRows: `repeat(${data.length + 1}, auto)`,
+    overflow: showOverflow ? undefined : 'auto',
   };
   const tableHeader = columns.map(({label}, i) => {
     let borderRight: string | undefined;
@@ -64,7 +70,9 @@ const DynamicTable = (props: Props) => {
       borderRight = undefined;
     }
     const style: React.CSSProperties = {
-      color, fontSize,
+      color: invertHeading ? '#fff' : color,
+      backgroundColor: !invertHeading ? undefined : color,
+      fontSize,
       textTransform: !color ? 'uppercase' : undefined,
       position: stickFirstCol && i === 0 ? 'sticky' : undefined,
       left: stickFirstCol && i === 0 ? '0' : undefined,

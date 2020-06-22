@@ -28,6 +28,7 @@ import {stackData, stackConfig} from './stackChartData';
 import ClusterChart from './clusterChart';
 import treemapData from './treemapData';
 import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
+import DynamicTable from '../../../components/text/DynamicTable';
 
 const Root = styled(FullWidthContent)`
 `;
@@ -65,6 +66,12 @@ const InlineVizContainer = styled.div`
   margin: 1.75rem auto;
 `;
 
+const TableContainer = styled.div`
+  max-width: 650px;
+  padding: 0 50px;
+  margin: 2.75rem auto;
+`;
+
 const StickyText = styled(StickyContainer)`
   top: 10vh;
 `;
@@ -73,6 +80,48 @@ const MapContainer = styled.div`
   width: 100%;
   height: 60vh;
   transition: opacity 0.6s ease;
+`;
+
+const tableColor = '#1f4b79';
+
+const BracketBase = styled.div`
+  width: 8px;
+  height: 50%;
+  position: absolute;
+  border-left: 4px solid ${tableColor};
+`;
+
+const BottomBracket = styled(BracketBase)`
+  transform: translate(calc(-100% - 16px), -50%);
+  border-bottom: 4px solid ${tableColor};
+`;
+
+const TopBracket = styled(BracketBase)`
+  transform: translate(calc(-100% - 16px), 50%);
+  border-top: 4px solid ${tableColor};
+`;
+
+const LargeBracket = styled.div`
+  width: 18px;
+  height: 150%;
+  position: absolute;
+  transform: translate(calc(-200% - 10px), 50%);
+  border-left: 4px solid ${tableColor};
+  border-bottom: 4px solid ${tableColor};
+  border-top: 4px solid ${tableColor};
+  border-top-left-radius: 400px;
+  border-bottom-left-radius: 400px;
+
+  &:after {
+    content: '►';
+    display: block;
+    font-size: 19px;
+    color: ${tableColor};
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(100%, -50%);
+  }
 `;
 
 const AlbaniaStory = () => {
@@ -331,14 +380,83 @@ const AlbaniaStory = () => {
           <p>
             The next phase of the Albanian miracle will require more co-evolution of state functions and delivery to meet the changing needs of the private sector, including actions that accelerate knowhow acquisition from abroad. In 2017, the Growth Lab published a comprehensive growth diagnostic for the Albanian economy and found the following breakdown of constraints to growth.
           </p>
-          <h3>TABLE</h3>
+          <TableContainer>
+            <DynamicTable
+              columns={[
+                {label: 'Most Binding Constraints', key: 'most_binding'},
+                {label: 'Lesser Constraints', key: 'lesser_constraints'},
+              ]}
+              data={[
+                {
+                  most_binding: (
+                    <>
+                      <LargeBracket />
+                      <span style={{fontWeight: 600}}>Slow accumulation</span>
+                    </>
+                  ),
+                  lesser_constraints: 'Access to finance',
+                },
+                {
+                  most_binding: (
+                    <>
+                      <TopBracket />
+                      Rule of law weaknesses and perceptions
+                    </>
+                  ),
+                  lesser_constraints: 'Tax policy & tax administration',
+                },
+                {
+                  most_binding: (
+                    <>
+                      <BottomBracket />
+                      Access to land (for some industries)
+                    </>
+                  ),
+                  lesser_constraints: 'Electricity system',
+                },
+                {
+                  most_binding: '',
+                  lesser_constraints: 'Transportation infrastructure',
+                },
+                {
+                  most_binding: '',
+                  lesser_constraints: 'Education system',
+                },
+                {
+                  most_binding: '',
+                  lesser_constraints: 'Macroeconomic system',
+                },
+              ]}
+              color={tableColor}
+              invertHeading={true}
+              showOverflow={true}
+            />
+          </TableContainer>
           <p>
             The diagnostic found that the Albanian economy was in a “low-knowhow” equilibrium and that the potential sources of knowhow inflows (FDI, diaspora involvement, immigration) were largely limited by specific rule of law issues and, especially, the outward perception of rule of law issues in the country. Since this report was written, the productive knowhow constraint has been relaxing gradually — perhaps most clearly evidenced by widespread increases in relevant variables in the 2019 edition of the World Bank Enterprise Survey against the last survey in 2013 — which has coincided with the gradual growth acceleration. However, despite general clear improvement in many rule of law issues, which is reflected both in firm surveys and in progress toward Albanian accession into the European Union, perceptions of poor rule of law continue to slow knowhow acquisition.
           </p>
           <p>
             The following changes are noteworthy since the diagnostic was completed in 2017, which impact Albania’s comparative advantages and disadvantages as a destination for global business investment in search of efficiency and access to the European market.
           </p>
-          <h3>TABLE</h3>
+          <TableContainer>
+            <DynamicTable
+              columns={[
+                {label: 'Positive Change', key: 'positive_change'},
+                {label: 'Mixed or Negative Change', key: 'mixed_or_negative_change'},
+              ]}
+              data={[
+                {positive_change: 'Productive knowhow (gradual)', mixed_or_negative_change: 'Access to land'},
+                {positive_change: 'Rule of law (in general)', mixed_or_negative_change: 'Road transport'},
+                {positive_change: 'Access to finance', mixed_or_negative_change: 'Court system'},
+                {positive_change: 'Electricity system', mixed_or_negative_change: 'Text policy and tax administration'},
+                {positive_change: 'Education system', mixed_or_negative_change: ''},
+                {positive_change: 'Macroeconomic stability', mixed_or_negative_change: ''},
+              ]}
+              color={tableColor}
+              invertHeading={true}
+              showOverflow={true}
+            />
+          </TableContainer>
           <p ref={section_15}>
             Albania’s electricity system has continued to improve in order to deliver electricity reliably and at a low price. Whereas more than a quarter of firms used to report electricity as their biggest constraint, this has fallen to less than 10% of firms, very close to average for upper middle-income countries, as the occurrence of outages and firm losses due to outages have fallen dramatically. Albania still underperforms in comparison to the rest of the Balkan region, which has very low-cost electricity on the whole. Given Albania’s recent success in tendering very low-cost solar generation to complement its predominantly hydropower generation, this is likely to continue to improve.
           </p>
