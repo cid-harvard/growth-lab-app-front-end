@@ -1,0 +1,2162 @@
+[
+  {
+    "quarter": 2014,
+    "category": "Agriculture, forestry and fishing",
+    "value": 3.65
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Agriculture, forestry and fishing",
+    "value": 3
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Agriculture, forestry and fishing",
+    "value": 2.35
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Agriculture, forestry and fishing",
+    "value": 1.7
+  },
+  {
+    "quarter": 2015,
+    "category": "Agriculture, forestry and fishing",
+    "value": 1.67
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Agriculture, forestry and fishing",
+    "value": 3.87
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Agriculture, forestry and fishing",
+    "value": 3.85
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Agriculture, forestry and fishing",
+    "value": 5.22
+  },
+  {
+    "quarter": 2016,
+    "category": "Agriculture, forestry and fishing",
+    "value": 4.8
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Agriculture, forestry and fishing",
+    "value": 4.99
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Agriculture, forestry and fishing",
+    "value": 4.86
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Agriculture, forestry and fishing",
+    "value": 4.73
+  },
+  {
+    "quarter": 2017,
+    "category": "Agriculture, forestry and fishing",
+    "value": 4.64
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Agriculture, forestry and fishing",
+    "value": 5.81
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10.02
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Agriculture, forestry and fishing",
+    "value": 9.81
+  },
+  {
+    "quarter": 2018,
+    "category": "Agriculture, forestry and fishing",
+    "value": 9.9
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10.04
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10.13
+  },
+  {
+    "quarter": 2019,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10.09
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10.24
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10.3
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Agriculture, forestry and fishing",
+    "value": 10.4
+  },
+  {
+    "quarter": 2014,
+    "category": "Mining and quarrying",
+    "value": 721.41
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Mining and quarrying",
+    "value": 718.99
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Mining and quarrying",
+    "value": 677.18
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Mining and quarrying",
+    "value": 642.92
+  },
+  {
+    "quarter": 2015,
+    "category": "Mining and quarrying",
+    "value": 632.3
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Mining and quarrying",
+    "value": 613.7
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Mining and quarrying",
+    "value": 601.49
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Mining and quarrying",
+    "value": 635.05
+  },
+  {
+    "quarter": 2016,
+    "category": "Mining and quarrying",
+    "value": 659.83
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Mining and quarrying",
+    "value": 659.96
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Mining and quarrying",
+    "value": 681.67
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Mining and quarrying",
+    "value": 651.83
+  },
+  {
+    "quarter": 2017,
+    "category": "Mining and quarrying",
+    "value": 712.65
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Mining and quarrying",
+    "value": 758.09
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Mining and quarrying",
+    "value": 790.47
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Mining and quarrying",
+    "value": 865
+  },
+  {
+    "quarter": 2018,
+    "category": "Mining and quarrying",
+    "value": 900.22
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Mining and quarrying",
+    "value": 947.03
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Mining and quarrying",
+    "value": 1002.23
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Mining and quarrying",
+    "value": 1071.74
+  },
+  {
+    "quarter": 2019,
+    "category": "Mining and quarrying",
+    "value": 1111.34
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Mining and quarrying",
+    "value": 1128.79
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Mining and quarrying",
+    "value": 1165.24
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Mining and quarrying",
+    "value": 1228.56
+  },
+  {
+    "quarter": 2014,
+    "category": "Manufacturing",
+    "value": 563.93
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Manufacturing",
+    "value": 549.33
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Manufacturing",
+    "value": 558.59
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Manufacturing",
+    "value": 555.23
+  },
+  {
+    "quarter": 2015,
+    "category": "Manufacturing",
+    "value": 551.49
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Manufacturing",
+    "value": 555.83
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Manufacturing",
+    "value": 549.72
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Manufacturing",
+    "value": 574.27
+  },
+  {
+    "quarter": 2016,
+    "category": "Manufacturing",
+    "value": 577.73
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Manufacturing",
+    "value": 582.3
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Manufacturing",
+    "value": 593.1
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Manufacturing",
+    "value": 607.22
+  },
+  {
+    "quarter": 2017,
+    "category": "Manufacturing",
+    "value": 593.21
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Manufacturing",
+    "value": 598.03
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Manufacturing",
+    "value": 594.29
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Manufacturing",
+    "value": 591.14
+  },
+  {
+    "quarter": 2018,
+    "category": "Manufacturing",
+    "value": 600.15
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Manufacturing",
+    "value": 628.1
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Manufacturing",
+    "value": 634.28
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Manufacturing",
+    "value": 653.17
+  },
+  {
+    "quarter": 2019,
+    "category": "Manufacturing",
+    "value": 658.27
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Manufacturing",
+    "value": 674.24
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Manufacturing",
+    "value": 687.4
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Manufacturing",
+    "value": 704.96
+  },
+  {
+    "quarter": 2014,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 12.54
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 13.06
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 29.66
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 400.25
+  },
+  {
+    "quarter": 2015,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 439.41
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 487.36
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 604.12
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 625.59
+  },
+  {
+    "quarter": 2016,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 656.77
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 793.73
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 959.95
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1106.39
+  },
+  {
+    "quarter": 2017,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1166.04
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1258.21
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1430.04
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1509.6
+  },
+  {
+    "quarter": 2018,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1711.13
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1847.85
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 1929.59
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 2054.76
+  },
+  {
+    "quarter": 2019,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 2162.21
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 2268.44
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 2341.76
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Electricity, gas, steam and air conditioning supply",
+    "value": 2417.31
+  },
+  {
+    "quarter": 2014,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.71
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.74
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.77
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.59
+  },
+  {
+    "quarter": 2015,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.61
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.59
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.34
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.08
+  },
+  {
+    "quarter": 2016,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.33
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.77
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.72
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.69
+  },
+  {
+    "quarter": 2017,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.61
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.54
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.44
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.36
+  },
+  {
+    "quarter": 2018,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.06
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.29
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 2.58
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.01
+  },
+  {
+    "quarter": 2019,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.04
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.33
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.61
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Water supply, sewerage, waste management and remediation activities",
+    "value": 3.88
+  },
+  {
+    "quarter": 2014,
+    "category": "Construction",
+    "value": 138.58
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Construction",
+    "value": 128.37
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Construction",
+    "value": 123.11
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Construction",
+    "value": 119.96
+  },
+  {
+    "quarter": 2015,
+    "category": "Construction",
+    "value": 121.12
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Construction",
+    "value": 122.72
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Construction",
+    "value": 124.65
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Construction",
+    "value": 83.67
+  },
+  {
+    "quarter": 2016,
+    "category": "Construction",
+    "value": 98.16
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Construction",
+    "value": 101.78
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Construction",
+    "value": 100.15
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Construction",
+    "value": 96.84
+  },
+  {
+    "quarter": 2017,
+    "category": "Construction",
+    "value": 100.47
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Construction",
+    "value": 107.91
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Construction",
+    "value": 115.69
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Construction",
+    "value": 117.84
+  },
+  {
+    "quarter": 2018,
+    "category": "Construction",
+    "value": 118.71
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Construction",
+    "value": 132.14
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Construction",
+    "value": 139.55
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Construction",
+    "value": 144.2
+  },
+  {
+    "quarter": 2019,
+    "category": "Construction",
+    "value": 153.7
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Construction",
+    "value": 178.12
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Construction",
+    "value": 206.28
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Construction",
+    "value": 217.81
+  },
+  {
+    "quarter": 2014,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 173.99
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 181.55
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 193.56
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 191.06
+  },
+  {
+    "quarter": 2015,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 217.05
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 221.07
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 224.68
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 235.88
+  },
+  {
+    "quarter": 2016,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 252.85
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 254.31
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 258.85
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 266.65
+  },
+  {
+    "quarter": 2017,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 269.39
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 257.12
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 261.31
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 263.5
+  },
+  {
+    "quarter": 2018,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 270.4
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 284.38
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 298.79
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 305.08
+  },
+  {
+    "quarter": 2019,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 316.6
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 327.82
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 323.25
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Wholesale and retail trade; repair of motor vehicles, motorcycles",
+    "value": 336.78
+  },
+  {
+    "quarter": 2014,
+    "category": "Transportation and accommodation",
+    "value": 153.29
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Transportation and accommodation",
+    "value": 144.79
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Transportation and accommodation",
+    "value": 142.29
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Transportation and accommodation",
+    "value": 152.35
+  },
+  {
+    "quarter": 2015,
+    "category": "Transportation and accommodation",
+    "value": 167.04
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Transportation and accommodation",
+    "value": 166.4
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Transportation and accommodation",
+    "value": 166.38
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Transportation and accommodation",
+    "value": 158.13
+  },
+  {
+    "quarter": 2016,
+    "category": "Transportation and accommodation",
+    "value": 159.96
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Transportation and accommodation",
+    "value": 160.31
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Transportation and accommodation",
+    "value": 160.51
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Transportation and accommodation",
+    "value": 163.97
+  },
+  {
+    "quarter": 2017,
+    "category": "Transportation and accommodation",
+    "value": 165.48
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Transportation and accommodation",
+    "value": 162.01
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Transportation and accommodation",
+    "value": 140.53
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Transportation and accommodation",
+    "value": 126.73
+  },
+  {
+    "quarter": 2018,
+    "category": "Transportation and accommodation",
+    "value": 94.14
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Transportation and accommodation",
+    "value": 95.34
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Transportation and accommodation",
+    "value": 105.84
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Transportation and accommodation",
+    "value": 103.82
+  },
+  {
+    "quarter": 2019,
+    "category": "Transportation and accommodation",
+    "value": 106.8
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Transportation and accommodation",
+    "value": 115.32
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Transportation and accommodation",
+    "value": 122.52
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Transportation and accommodation",
+    "value": 129.86
+  },
+  {
+    "quarter": 2014,
+    "category": "Information and communication",
+    "value": 1135.99
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Information and communication",
+    "value": 1148.13
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Information and communication",
+    "value": 1170.76
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Information and communication",
+    "value": 1178.68
+  },
+  {
+    "quarter": 2015,
+    "category": "Information and communication",
+    "value": 1159.41
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Information and communication",
+    "value": 1170.5
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Information and communication",
+    "value": 1184.54
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Information and communication",
+    "value": 1217.12
+  },
+  {
+    "quarter": 2016,
+    "category": "Information and communication",
+    "value": 1207.1
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Information and communication",
+    "value": 1219.42
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Information and communication",
+    "value": 1210.95
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Information and communication",
+    "value": 1214.56
+  },
+  {
+    "quarter": 2017,
+    "category": "Information and communication",
+    "value": 1184.7
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Information and communication",
+    "value": 1218.09
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Information and communication",
+    "value": 1192.76
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Information and communication",
+    "value": 1169.53
+  },
+  {
+    "quarter": 2018,
+    "category": "Information and communication",
+    "value": 1155.03
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Information and communication",
+    "value": 1121.2
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Information and communication",
+    "value": 1121.2
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Information and communication",
+    "value": 1108.31
+  },
+  {
+    "quarter": 2019,
+    "category": "Information and communication",
+    "value": 1096.76
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Information and communication",
+    "value": 1107.5
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Information and communication",
+    "value": 1124.81
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Information and communication",
+    "value": 1115.41
+  },
+  {
+    "quarter": 2014,
+    "category": "Financial and insurance activities",
+    "value": 725.44
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Financial and insurance activities",
+    "value": 722.14
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Financial and insurance activities",
+    "value": 755.12
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Financial and insurance activities",
+    "value": 771.78
+  },
+  {
+    "quarter": 2015,
+    "category": "Financial and insurance activities",
+    "value": 817.3
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Financial and insurance activities",
+    "value": 822.23
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Financial and insurance activities",
+    "value": 845.11
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Financial and insurance activities",
+    "value": 857.31
+  },
+  {
+    "quarter": 2016,
+    "category": "Financial and insurance activities",
+    "value": 837.72
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Financial and insurance activities",
+    "value": 867.23
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Financial and insurance activities",
+    "value": 901.33
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Financial and insurance activities",
+    "value": 936.56
+  },
+  {
+    "quarter": 2017,
+    "category": "Financial and insurance activities",
+    "value": 948.46
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Financial and insurance activities",
+    "value": 956.6
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Financial and insurance activities",
+    "value": 982.41
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Financial and insurance activities",
+    "value": 1006.17
+  },
+  {
+    "quarter": 2018,
+    "category": "Financial and insurance activities",
+    "value": 1023.24
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Financial and insurance activities",
+    "value": 1086.46
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Financial and insurance activities",
+    "value": 1077.8
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Financial and insurance activities",
+    "value": 1079.76
+  },
+  {
+    "quarter": 2019,
+    "category": "Financial and insurance activities",
+    "value": 992.47
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Financial and insurance activities",
+    "value": 1038.55
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Financial and insurance activities",
+    "value": 1061.27
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Financial and insurance activities",
+    "value": 1084.31
+  },
+  {
+    "quarter": 2014,
+    "category": "Real estate activities",
+    "value": 75.66
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Real estate activities",
+    "value": 90.72
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Real estate activities",
+    "value": 100.34
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Real estate activities",
+    "value": 125.69
+  },
+  {
+    "quarter": 2015,
+    "category": "Real estate activities",
+    "value": 129.84
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Real estate activities",
+    "value": 133.94
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Real estate activities",
+    "value": 137.61
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Real estate activities",
+    "value": 150.98
+  },
+  {
+    "quarter": 2016,
+    "category": "Real estate activities",
+    "value": 150.83
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Real estate activities",
+    "value": 156.87
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Real estate activities",
+    "value": 162.37
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Real estate activities",
+    "value": 173.85
+  },
+  {
+    "quarter": 2017,
+    "category": "Real estate activities",
+    "value": 191.53
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Real estate activities",
+    "value": 208.94
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Real estate activities",
+    "value": 228.63
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Real estate activities",
+    "value": 252.99
+  },
+  {
+    "quarter": 2018,
+    "category": "Real estate activities",
+    "value": 288.22
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Real estate activities",
+    "value": 317.1
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Real estate activities",
+    "value": 346.74
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Real estate activities",
+    "value": 393.63
+  },
+  {
+    "quarter": 2019,
+    "category": "Real estate activities",
+    "value": 415.8
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Real estate activities",
+    "value": 448.81
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Real estate activities",
+    "value": 480.3
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Real estate activities",
+    "value": 506.35
+  },
+  {
+    "quarter": 2014,
+    "category": "Professional, scientific and technical activities",
+    "value": 235
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Professional, scientific and technical activities",
+    "value": 242.29
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Professional, scientific and technical activities",
+    "value": 254.56
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Professional, scientific and technical activities",
+    "value": 258.77
+  },
+  {
+    "quarter": 2015,
+    "category": "Professional, scientific and technical activities",
+    "value": 272.97
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Professional, scientific and technical activities",
+    "value": 271.15
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Professional, scientific and technical activities",
+    "value": 259.07
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Professional, scientific and technical activities",
+    "value": 244.13
+  },
+  {
+    "quarter": 2016,
+    "category": "Professional, scientific and technical activities",
+    "value": 256.3
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Professional, scientific and technical activities",
+    "value": 262.23
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Professional, scientific and technical activities",
+    "value": 262.75
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Professional, scientific and technical activities",
+    "value": 264.35
+  },
+  {
+    "quarter": 2017,
+    "category": "Professional, scientific and technical activities",
+    "value": 257.83
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Professional, scientific and technical activities",
+    "value": 288.55
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Professional, scientific and technical activities",
+    "value": 286.7
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Professional, scientific and technical activities",
+    "value": 319.81
+  },
+  {
+    "quarter": 2018,
+    "category": "Professional, scientific and technical activities",
+    "value": 348.15
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Professional, scientific and technical activities",
+    "value": 367.85
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Professional, scientific and technical activities",
+    "value": 376.07
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Professional, scientific and technical activities",
+    "value": 425.68
+  },
+  {
+    "quarter": 2019,
+    "category": "Professional, scientific and technical activities",
+    "value": 433.53
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Professional, scientific and technical activities",
+    "value": 455.99
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Professional, scientific and technical activities",
+    "value": 473.13
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Professional, scientific and technical activities",
+    "value": 501.28
+  },
+  {
+    "quarter": 2014,
+    "category": "Administrative and support service activities",
+    "value": 21.53
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Administrative and support service activities",
+    "value": 24.19
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Administrative and support service activities",
+    "value": 25.13
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Administrative and support service activities",
+    "value": 28.01
+  },
+  {
+    "quarter": 2015,
+    "category": "Administrative and support service activities",
+    "value": 30.1
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Administrative and support service activities",
+    "value": 29.71
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Administrative and support service activities",
+    "value": 33.55
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Administrative and support service activities",
+    "value": 29.23
+  },
+  {
+    "quarter": 2016,
+    "category": "Administrative and support service activities",
+    "value": 30.65
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Administrative and support service activities",
+    "value": 31.25
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Administrative and support service activities",
+    "value": 32.96
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Administrative and support service activities",
+    "value": 36.15
+  },
+  {
+    "quarter": 2017,
+    "category": "Administrative and support service activities",
+    "value": 43.04
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Administrative and support service activities",
+    "value": 55.28
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Administrative and support service activities",
+    "value": 58.87
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Administrative and support service activities",
+    "value": 63.54
+  },
+  {
+    "quarter": 2018,
+    "category": "Administrative and support service activities",
+    "value": 95.29
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Administrative and support service activities",
+    "value": 98.97
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Administrative and support service activities",
+    "value": 105.73
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Administrative and support service activities",
+    "value": 106.65
+  },
+  {
+    "quarter": 2019,
+    "category": "Administrative and support service activities",
+    "value": 112.86
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Administrative and support service activities",
+    "value": 123.15
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Administrative and support service activities",
+    "value": 126.13
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Administrative and support service activities",
+    "value": 128.65
+  },
+  {
+    "quarter": 2014,
+    "category": "Education",
+    "value": 13.01
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Education",
+    "value": 14.16
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Education",
+    "value": 15.98
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Education",
+    "value": 13.49
+  },
+  {
+    "quarter": 2015,
+    "category": "Education",
+    "value": 13.29
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Education",
+    "value": 12.61
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Education",
+    "value": 12.78
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Education",
+    "value": 14.51
+  },
+  {
+    "quarter": 2016,
+    "category": "Education",
+    "value": 12.69
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Education",
+    "value": 15.22
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Education",
+    "value": 15.06
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Education",
+    "value": 15.07
+  },
+  {
+    "quarter": 2017,
+    "category": "Education",
+    "value": 15.3
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Education",
+    "value": 15.85
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Education",
+    "value": 16.04
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Education",
+    "value": 15.73
+  },
+  {
+    "quarter": 2018,
+    "category": "Education",
+    "value": 15.93
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Education",
+    "value": 15.73
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Education",
+    "value": 15.76
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Education",
+    "value": 16.9
+  },
+  {
+    "quarter": 2019,
+    "category": "Education",
+    "value": 17.17
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Education",
+    "value": 17.83
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Education",
+    "value": 18.49
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Education",
+    "value": 18.94
+  },
+  {
+    "quarter": 2014,
+    "category": "Human health and social work activities",
+    "value": 31.69
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Human health and social work activities",
+    "value": 37.47
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Human health and social work activities",
+    "value": 35.94
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Human health and social work activities",
+    "value": 36.69
+  },
+  {
+    "quarter": 2015,
+    "category": "Human health and social work activities",
+    "value": 33.56
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Human health and social work activities",
+    "value": 34.92
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Human health and social work activities",
+    "value": 33.98
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Human health and social work activities",
+    "value": 34.91
+  },
+  {
+    "quarter": 2016,
+    "category": "Human health and social work activities",
+    "value": 36.7
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Human health and social work activities",
+    "value": 36.04
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Human health and social work activities",
+    "value": 35.02
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Human health and social work activities",
+    "value": 34.59
+  },
+  {
+    "quarter": 2017,
+    "category": "Human health and social work activities",
+    "value": 33.24
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Human health and social work activities",
+    "value": 32.66
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Human health and social work activities",
+    "value": 31.29
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Human health and social work activities",
+    "value": 30.34
+  },
+  {
+    "quarter": 2018,
+    "category": "Human health and social work activities",
+    "value": 23.37
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Human health and social work activities",
+    "value": 25.98
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Human health and social work activities",
+    "value": 26.08
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Human health and social work activities",
+    "value": 23.31
+  },
+  {
+    "quarter": 2019,
+    "category": "Human health and social work activities",
+    "value": 19.7
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Human health and social work activities",
+    "value": 20.29
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Human health and social work activities",
+    "value": 21.27
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Human health and social work activities",
+    "value": 22.01
+  },
+  {
+    "quarter": 2014,
+    "category": "Arts, entertainment and recreation",
+    "value": 21.94
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Arts, entertainment and recreation",
+    "value": 26.09
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Arts, entertainment and recreation",
+    "value": 28.35
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Arts, entertainment and recreation",
+    "value": 30.15
+  },
+  {
+    "quarter": 2015,
+    "category": "Arts, entertainment and recreation",
+    "value": 30.84
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Arts, entertainment and recreation",
+    "value": 27.65
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Arts, entertainment and recreation",
+    "value": 29.78
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Arts, entertainment and recreation",
+    "value": 26.99
+  },
+  {
+    "quarter": 2016,
+    "category": "Arts, entertainment and recreation",
+    "value": 28.91
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Arts, entertainment and recreation",
+    "value": 27.02
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Arts, entertainment and recreation",
+    "value": 30.02
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Arts, entertainment and recreation",
+    "value": 28.25
+  },
+  {
+    "quarter": 2017,
+    "category": "Arts, entertainment and recreation",
+    "value": 36.08
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Arts, entertainment and recreation",
+    "value": 34.64
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Arts, entertainment and recreation",
+    "value": 37.08
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Arts, entertainment and recreation",
+    "value": 36.66
+  },
+  {
+    "quarter": 2018,
+    "category": "Arts, entertainment and recreation",
+    "value": 35.18
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Arts, entertainment and recreation",
+    "value": 30.98
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Arts, entertainment and recreation",
+    "value": 33.75
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Arts, entertainment and recreation",
+    "value": 29.81
+  },
+  {
+    "quarter": 2019,
+    "category": "Arts, entertainment and recreation",
+    "value": 35.02
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Arts, entertainment and recreation",
+    "value": 42.26
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Arts, entertainment and recreation",
+    "value": 56.77
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Arts, entertainment and recreation",
+    "value": 61.76
+  },
+  {
+    "quarter": 2014,
+    "category": "Other service activities",
+    "value": 1.32
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Other service activities",
+    "value": 1.38
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Other service activities",
+    "value": 1.44
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Other service activities",
+    "value": 1.06
+  },
+  {
+    "quarter": 2015,
+    "category": "Other service activities",
+    "value": 1.1
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Other service activities",
+    "value": 1.23
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Other service activities",
+    "value": 1.32
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Other service activities",
+    "value": -9.71
+  },
+  {
+    "quarter": 2016,
+    "category": "Other service activities",
+    "value": -9.94
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Other service activities",
+    "value": -10.41
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Other service activities",
+    "value": -10.75
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Other service activities",
+    "value": -11.28
+  },
+  {
+    "quarter": 2017,
+    "category": "Other service activities",
+    "value": 0.04
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Other service activities",
+    "value": 0.01
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Other service activities",
+    "value": 0.05
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Other service activities",
+    "value": 0.03
+  },
+  {
+    "quarter": 2018,
+    "category": "Other service activities",
+    "value": 0.07
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Other service activities",
+    "value": 0.1
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Other service activities",
+    "value": 0.1
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Other service activities",
+    "value": 0.1
+  },
+  {
+    "quarter": 2019,
+    "category": "Other service activities",
+    "value": 0.26
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Other service activities",
+    "value": 0.33
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Other service activities",
+    "value": 0.39
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Other service activities",
+    "value": 0.45
+  },
+  {
+    "quarter": 2014,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 59.37
+  },
+  {
+    "quarter": 2014.25,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 55.9
+  },
+  {
+    "quarter": 2014.5,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 55.71
+  },
+  {
+    "quarter": 2014.75,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 52.14
+  },
+  {
+    "quarter": 2015,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 55.08
+  },
+  {
+    "quarter": 2015.25,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 58.47
+  },
+  {
+    "quarter": 2015.5,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 64.27
+  },
+  {
+    "quarter": 2015.75,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 95.35
+  },
+  {
+    "quarter": 2016,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 100.01
+  },
+  {
+    "quarter": 2016.25,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 108.19
+  },
+  {
+    "quarter": 2016.5,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 113.9
+  },
+  {
+    "quarter": 2016.75,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 84.84
+  },
+  {
+    "quarter": 2017,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 82.81
+  },
+  {
+    "quarter": 2017.25,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 78.53
+  },
+  {
+    "quarter": 2017.5,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 74.89
+  },
+  {
+    "quarter": 2017.75,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 75.31
+  },
+  {
+    "quarter": 2018,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 76.76
+  },
+  {
+    "quarter": 2018.25,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 79.51
+  },
+  {
+    "quarter": 2018.5,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 71.11
+  },
+  {
+    "quarter": 2018.75,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 72.77
+  },
+  {
+    "quarter": 2019,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 63.67
+  },
+  {
+    "quarter": 2019.25,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 65.07
+  },
+  {
+    "quarter": 2019.5,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 65.36
+  },
+  {
+    "quarter": 2019.75,
+    "category": "Activities of extraterritorial organizations and bodies",
+    "value": 53.22
+  }
+]
