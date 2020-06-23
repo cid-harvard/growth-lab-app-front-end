@@ -69,6 +69,12 @@ const InlineVizContainer = styled.div`
   margin: 1.75rem auto;
 `;
 
+const ClusterChartContainer = styled.div`
+  max-width: 650px;
+  min-height: 700px;
+  margin: 1.75rem auto;
+`;
+
 const BarChartContainer = styled(InlineVizContainer)`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -462,9 +468,9 @@ const AlbaniaStory = () => {
           <p ref={section_14}>
             FDI and diaspora have together aided the accumulation of knowhow of the private sector, but cross-country comparisons suggest that the pace of knowhow introduction from abroad could be much, much faster. The dataset fDi Markets, which tracks cross-border investments announced online, has captured just a few announced projects in Albania in last decade. Notably, in each sector where Albania has received investment, other countries in the region have received significantly more projects from a more diverse set of source countries. Romania stands out especially for the amount of FDI it has received in the areas where investors have shown interest in Albania.
           </p>
-          <InlineVizContainer>
+          <ClusterChartContainer>
             {clusterChart}
-          </InlineVizContainer>
+          </ClusterChartContainer>
           <StoryHeading>The Path to Stronger Growth in the Aftermath of COVID-19</StoryHeading>
           <p>
             The next phase of the Albanian miracle will require more co-evolution of state functions and delivery to meet the changing needs of the private sector, including actions that accelerate knowhow acquisition from abroad. In 2017, the Growth Lab published a comprehensive growth diagnostic for the Albanian economy and found the following breakdown of constraints to growth.

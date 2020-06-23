@@ -31,10 +31,14 @@ interface Input {
   size: Dimensions;
   data: Datum[];
   hideLabels?: boolean;
+  circleSpacing?: number;
 }
 
 export default (input: Input) => {
-  const { svg, size, data, tooltip, hideLabels } = input;
+  const {
+    svg, size, data, tooltip, hideLabels,
+    circleSpacing,
+  } = input;
 
   const srcData: SrcData = data.map(d => ({
     id: d.label, size: d.value, parentId: 'global', ...d,
@@ -53,7 +57,7 @@ export default (input: Input) => {
 
   const layout = d3.pack()
           .size([width - 2, height - 2])
-          .padding(6);
+          .padding(circleSpacing !== undefined ? circleSpacing : 6);
 
   const stratData = d3.stratify()(srcData);
   const root = d3.hierarchy(stratData)

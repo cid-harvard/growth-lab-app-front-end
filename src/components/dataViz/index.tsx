@@ -129,6 +129,7 @@ interface BaseProps {
   enableSVGDownload?: boolean;
   chartTitle?: string;
   chartCaption?: string;
+  height?: number | string;
 }
 
 type Props = BaseProps & (
@@ -228,6 +229,7 @@ type Props = BaseProps & (
     vizType: VizType.ClusterChart;
     data: ClusterChartDatum[];
     hideLabels?: boolean;
+    circleSpacing?: number;
   }| {
     vizType: VizType.BoxAndWhiskersChart;
     data: BoxAndWhiskersChartDatum[];
@@ -331,6 +333,7 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           hideLabels: props.hideLabels,
+          circleSpacing: props.circleSpacing,
         });
       } else if (props.vizType === VizType.BoxAndWhiskersChart) {
         createBoxAndWhiskersChart({
@@ -432,7 +435,7 @@ const DataViz = (props: Props) => {
     ) : null;
     return (
       <Root>
-        <SizingElm ref={sizingNodeRef}>
+        <SizingElm ref={sizingNodeRef} style={{height: props.height}}>
           <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
         </SizingElm>
         {caption}
