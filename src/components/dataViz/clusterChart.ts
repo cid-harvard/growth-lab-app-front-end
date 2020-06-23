@@ -62,12 +62,19 @@ export default (input: Input) => {
   const g = svg.append('g')
             .attr('class', 'main-group');
 
-  const sizeScale = max ? d3.scaleSqrt().range([0, max]) : (v: number) => v;
 
-  const layout = d3.pack()
-          .radius((d: any) => sizeScale(d.value))
-          .size([width, height])
-          .padding(circleSpacing !== undefined ? circleSpacing : 6);
+  let layout: d3.PackLayout<any>;
+  if (max) {
+    const sizeScale = d3.scaleSqrt().range([0, max]);
+    layout = d3.pack()
+              .radius((d: any) => sizeScale(d.value))
+              .size([width, height])
+              .padding(circleSpacing !== undefined ? circleSpacing : 6);
+  } else {
+    layout = d3.pack()
+              .size([width, height])
+              .padding(circleSpacing !== undefined ? circleSpacing : 6);
+  }
 
   const stratData = d3.stratify()(srcData);
   const root = d3.hierarchy(stratData)
