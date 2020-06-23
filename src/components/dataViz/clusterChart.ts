@@ -32,17 +32,24 @@ interface Input {
   data: Datum[];
   hideLabels?: boolean;
   circleSpacing?: number;
+  max?: number;
 }
 
 export default (input: Input) => {
   const {
     svg, size, data, tooltip, hideLabels,
-    circleSpacing,
+    circleSpacing, max,
   } = input;
 
-  const srcData: SrcData = data.map(d => ({
-    id: d.label, size: d.value, parentId: 'global', ...d,
-  }));
+
+  const allValues: number[] = [];
+
+  const srcData: SrcData = data.map(d => {
+    allValues.push(d.value);
+    return {
+      id: d.label, size: d.value, parentId: 'global', ...d,
+    };
+  });
   srcData.unshift({id: 'global'});
 
   const margin = {top: 10, right: 10, bottom: 10, left: 10};
@@ -55,8 +62,11 @@ export default (input: Input) => {
   const g = svg.append('g')
             .attr('class', 'main-group');
 
+  const sizeScale = max ? d3.scaleSqrt().range([0, max]) : (v: number) => v;
+
   const layout = d3.pack()
-          .size([width - 2, height - 2])
+          .radius((d: any) => sizeScale(d.value))
+          .size([width, height])
           .padding(circleSpacing !== undefined ? circleSpacing : 6);
 
   const stratData = d3.stratify()(srcData);
@@ -122,18 +132,6 @@ export default (input: Input) => {
       .style('pointer-events', 'none');
   }
 
-  g.style('transform', () => {
-      let scale: number;
-      if (root && root.children && width > 600) {
-        const lowestPoint = root.children.map((n: any) => n.y - n.r).sort((a, b) => a - b)[0];
-        const highestPoint = root.children.map((n: any) => n.y + n.r).sort((a, b) => b - a)[0];
-        const groupHeight = highestPoint - lowestPoint;
-        const newHeight = height - groupHeight;
-        scale = 1 + (newHeight / height);
-      } else {
-        scale = 1;
-      }
-      return 'scale(' + scale + ') translateY(' + margin.top + 'px)';
-    })
+  g.style('transform', () => max !== undefined ? 'scale(' + max / 100 + ')' : null)
    .style('transform-origin', 'center');
 };

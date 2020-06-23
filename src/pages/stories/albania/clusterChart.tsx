@@ -98,6 +98,7 @@ interface ConfigDatum {
 }
 
 const configData: ConfigDatum[] = [];
+const allRomaniaValues: number[] = [];
 
 rawData.forEach(d => {
   const {
@@ -131,7 +132,12 @@ rawData.forEach(d => {
       }],
     });
   }
+  if (destination_country === DestinationCountries.Romania && industries === Industries.AutomobilesAndTransportation) {
+    allRomaniaValues.push(newDatum.value);
+  }
 });
+
+const max = allRomaniaValues.reduce((a, b) => a + b, 0);
 
 const ClusterChart = () => {
   const rows = sortBy(configData, ['industry']).map(({industry, destinations}) => {
@@ -161,6 +167,7 @@ const ClusterChart = () => {
             data={data}
             hideLabels={true}
             circleSpacing={0}
+            max={max}
           />
         </Cell>
       );

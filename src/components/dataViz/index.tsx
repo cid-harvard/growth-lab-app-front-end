@@ -230,6 +230,7 @@ type Props = BaseProps & (
     data: ClusterChartDatum[];
     hideLabels?: boolean;
     circleSpacing?: number;
+    max?: number;
   }| {
     vizType: VizType.BoxAndWhiskersChart;
     data: BoxAndWhiskersChartDatum[];
@@ -334,6 +335,7 @@ const DataViz = (props: Props) => {
           },
           hideLabels: props.hideLabels,
           circleSpacing: props.circleSpacing,
+          max: props.max,
         });
       } else if (props.vizType === VizType.BoxAndWhiskersChart) {
         createBoxAndWhiskersChart({
