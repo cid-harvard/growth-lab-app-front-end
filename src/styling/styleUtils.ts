@@ -190,8 +190,10 @@ export const FullWidth = styled.div`
 
 export const CoverPhoto = styled.div`
   grid-column: 1 / -1;
-  height: 50vh;
+  height: 60vh;
   background-color: ${tertiaryColor};
+  background-size: cover;
+  background-position: center;
 `;
 
 export const StoryTitle = styled.h1`

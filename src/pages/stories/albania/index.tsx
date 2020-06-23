@@ -32,6 +32,7 @@ import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
 import DynamicTable from '../../../components/text/DynamicTable';
 import electricityBarChartData from './barChartData';
 import BoxAndWhiskersChart from './BoxAndWhiskersChart';
+import CoverPhotoImage from './cover-photo.jpg';
 
 const Root = styled(FullWidthContent)`
 `;
@@ -334,7 +335,9 @@ const AlbaniaStory = () => {
 
   return (
     <Root>
-      <CoverPhoto />
+      <CoverPhoto
+        style={{backgroundImage: `url("${CoverPhotoImage}")`}}
+      />
       <StoriesGrid>
         <FullWidth>
           <StoryTitle>How to Accelerate Economic Growth in Albania</StoryTitle>
