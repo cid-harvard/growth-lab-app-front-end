@@ -13,6 +13,7 @@ import creatLineChart, {Datum as LineChartDatum} from './lineChart';
 import createTreeMap, {RootDatum} from './treeMap';
 import createStackChart, {Datum as StackChartDatum, Config as StackChartConfig} from './stackChart';
 import createClusterChart, {Datum as ClusterChartDatum} from './clusterChart';
+import createBoxAndWhiskersChart, {Datum as BoxAndWhiskersChartDatum} from './boxAndWhiskers';
 import {
   baseColor,
   secondaryFont,
@@ -116,6 +117,7 @@ export enum VizType {
   TreeMap = 'TreeMap',
   StackChart = 'StackChart',
   ClusterChart = 'ClusterChart',
+  BoxAndWhiskersChart = 'BoxAndWhiskersChart',
   Error = 'Error',
 }
 
@@ -226,6 +228,9 @@ type Props = BaseProps & (
     vizType: VizType.ClusterChart;
     data: ClusterChartDatum[];
     hideLabels?: boolean;
+  }| {
+    vizType: VizType.BoxAndWhiskersChart;
+    data: BoxAndWhiskersChartDatum[];
   }
 );
 
@@ -326,6 +331,12 @@ const DataViz = (props: Props) => {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           hideLabels: props.hideLabels,
+        });
+      } else if (props.vizType === VizType.BoxAndWhiskersChart) {
+        createBoxAndWhiskersChart({
+          svg, tooltip, data: props.data, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
         });
       }
     }

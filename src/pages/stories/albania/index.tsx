@@ -31,6 +31,7 @@ import treemapData from './treemapData';
 import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
 import DynamicTable from '../../../components/text/DynamicTable';
 import electricityBarChartData from './barChartData';
+import BoxAndWhiskersChart from './BoxAndWhiskersChart';
 
 const Root = styled(FullWidthContent)`
 `;
@@ -321,6 +322,10 @@ const AlbaniaStory = () => {
     </>
   ) : null;
 
+  const boxAndWhiskersChart = section && section > 14 && section < 18 ? (
+    <BoxAndWhiskersChart />
+  ) : null;
+
   return (
     <Root>
       <CoverPhoto />
@@ -550,7 +555,9 @@ const AlbaniaStory = () => {
           <p ref={section_16}>
             On the opposite extreme, performance of the court system and reports of “monopoly or unfair competition” have grown as constraints based on a variety of firm surveys. Although measures of government effectiveness have improved markedly across surveys and bribery has reduced among most interactions with government (with the exception of tax collection), judicial reforms appear to have traded off an old problem of corrupt judges for a new problem of too few judges. While the process is a critical step forward, it is resulting in businesses that rely on the court system to settle disputed to face an increased likelihood of delays. In fact, despite positive reforms, Albanian exports have become increasing focused in products that are less intensive in the use of contracts to manage supplier relationships.
           </p>
-          <h3>BOX AND WHISKERS PLOT</h3>
+          <InlineVizContainer>
+            {boxAndWhiskersChart}
+          </InlineVizContainer>
           <p ref={section_17}>
             Meanwhile, Albania has had mixed success in improving transportation infrastructure. While several major road projects have been completed that have reduced travel times and improved connectivity — including to the Kosovo border and to large Southern cities — congestion has increased on major roads connecting Tirana to Durres and Shkodër, as road supply improvements have not kept pace with increasing demand.
           </p>
