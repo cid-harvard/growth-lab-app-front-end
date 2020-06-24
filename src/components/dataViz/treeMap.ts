@@ -24,12 +24,13 @@ interface Input {
   tooltip: d3.Selection<any, unknown, null, undefined>;
   size: Dimensions;
   data: RootDatum;
+  labelFont?: string;
 }
 
 export default (input: Input) => {
-  const { svg, size, data, tooltip} = input;
+  const { svg, size, data, tooltip, labelFont} = input;
 
-  const margin = {top: 30, right: 30, bottom: 30, left: 30};
+  const margin = {top: 0, right: 0, bottom: 0, left: 0};
   const width = size.width - margin.left - margin.right;
   const height = size.height - margin.bottom - margin.top;
 
@@ -92,6 +93,7 @@ export default (input: Input) => {
 
   cell.append('text')
       .attr('clip-path', (d: any) => 'url(#clip-' + d.data.id + ')')
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .attr('font-size', '0.75rem')
       .attr('x', 8)
       .attr('y', 16)

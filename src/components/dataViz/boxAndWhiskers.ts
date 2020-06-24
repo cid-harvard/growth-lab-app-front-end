@@ -19,12 +19,13 @@ interface Input {
   data: Datum[];
   tooltip: d3.Selection<any, unknown, null, undefined>;
   size: Dimensions;
+  labelFont?: string;
 }
 
 export default (input: Input) => {
-  const { svg, data, size} = input;
+  const { svg, data, size, labelFont} = input;
 
-  const margin = {top: 30, right: 30, bottom: 30, left: 30};
+  const margin = {top: 30, right: 20, bottom: 30, left: 40};
   const width = size.width - margin.left - margin.right;
   const height = size.height - margin.bottom - margin.top;
 
@@ -66,6 +67,7 @@ const sumstat = d3.nest() // nest function allows to group the calculation per l
 
   group.append('g')
     .attr('transform', 'translate(0,' + height + ')')
+    .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
     .call(d3.axisBottom(x));
 
   const [minY, maxY] = d3.extent(allMinMaxValues) as [number, number];
@@ -75,7 +77,9 @@ const sumstat = d3.nest() // nest function allows to group the calculation per l
     .domain([minY * 1.15,maxY * 1.15])
     .range([height, 0]);
 
-  group.append('g').call(d3.axisLeft(y));
+  group.append('g')
+    .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
+    .call(d3.axisLeft(y));
 
   // Show the main vertical line
   group

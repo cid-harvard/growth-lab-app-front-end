@@ -13,6 +13,7 @@ import {
   StickyContainer,
   StorySectionContainer,
   primaryFont,
+  secondaryFont,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import styled from 'styled-components/macro';
@@ -240,6 +241,7 @@ const AlbaniaStory = () => {
           x: maxX - minX,
         }}
         rootStyles={{margin: 0}}
+        labelFont={secondaryFont}
       />
     );
   } else if (section < 6) {
@@ -250,6 +252,7 @@ const AlbaniaStory = () => {
         vizType={VizType.TreeMap}
         data={treemapData}
         rootStyles={{margin: 0}}
+        labelFont={secondaryFont}
       />
     );
   } else {
@@ -271,6 +274,7 @@ const AlbaniaStory = () => {
       vizType={VizType.StackChart}
       config={stackConfig}
       data={stackData}
+      labelFont={secondaryFont}
     />
   ) : null;
 
@@ -281,6 +285,7 @@ const AlbaniaStory = () => {
       data={albaniaVsRegionalPeersData.eci}
       axisMinMax={albaniaVsRegionalPeersData.eciAxis}
       formatAxis={{x: formatYear(2017)}}
+      labelFont={secondaryFont}
     />
   ) : null;
 
@@ -291,6 +296,7 @@ const AlbaniaStory = () => {
       data={albaniaVsRegionalPeersData.gdp}
       axisMinMax={albaniaVsRegionalPeersData.gdpAxis}
       formatAxis={{x: formatYear(2017)}}
+      labelFont={secondaryFont}
     />
   ) : null;
 
@@ -318,6 +324,7 @@ const AlbaniaStory = () => {
               label: 'Balkans Average',
             },
           ]}
+          labelFont={secondaryFont}
         />
       </BarChart>
       <CenterBarChart>
@@ -339,6 +346,7 @@ const AlbaniaStory = () => {
               label: 'Balkans Average',
             },
           ]}
+          labelFont={secondaryFont}
         />
       </CenterBarChart>
       <BarChart>
@@ -360,6 +368,7 @@ const AlbaniaStory = () => {
               label: 'Balkans Average',
             },
           ]}
+          labelFont={secondaryFont}
         />
       </BarChart>
     </>

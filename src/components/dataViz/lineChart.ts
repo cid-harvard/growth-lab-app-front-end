@@ -99,12 +99,14 @@ interface Input {
     x?: number;
     y?: number;
   };
+  labelFont?: string;
 }
 
 export default (input: Input) => {
   const {
     svg, size, axisLabels, tooltip, axisMinMax,
     showGridLines, formatAxis, tickCount, animateAxis,
+    labelFont,
   } = input;
 
   const data: InternalDatum[] = input.data;
@@ -265,7 +267,7 @@ export default (input: Input) => {
           const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
           return x(coords[targetCood].x);
         })
-        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
         .text(({label}) => label ? label : '')
         .attr('opacity', '0')
         .transition() // Call Transition Method
@@ -299,12 +301,14 @@ export default (input: Input) => {
   g.append('g')
       .attr('class', 'myXaxis')
       .attr('transform', 'translate(' + margin.left + ',' + height + ')')
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .call(xDomain.tickFormat(formatX).ticks(tickCount && tickCount.x ? tickCount.x : 10));
 
   // Add the y Axis
   g.append('g')
       .attr('class', 'myYaxis')
       .attr('transform', 'translate(' + margin.left + ', 0)')
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .call(yDomain.tickFormat(formatY).ticks(tickCount && tickCount.y ? tickCount.y : 10));
 
   if (animateAxis !== undefined) {
@@ -356,7 +360,7 @@ export default (input: Input) => {
     .append('text')
     .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + margin.top})`)
       .style('text-anchor', 'middle')
-      .style('font-family', "'Source Sans Pro',sans-serif")
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
 
   // append Y axis label
@@ -367,7 +371,7 @@ export default (input: Input) => {
       .attr('x', 0 - (height / 2 + margin.top))
       .attr('dy', '0.75em')
       .style('text-anchor', 'middle')
-      .style('font-family', "'Source Sans Pro',sans-serif")
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .text(axisLabels && axisLabels.left ? axisLabels.left : '');
 
   g.style('transform', 'scale(0.95) translateY(' + margin.top + 'px)')

@@ -43,12 +43,13 @@ interface Input {
     strokeDasharray?: number;
     strokeColor?: string;
   }[];
+  labelFont?: string;
 }
 
 export default (input: Input) => {
   const {
     svg, data, size, axisLabels, tooltip, axisMinMax, hideAxis,
-    averageLines,
+    averageLines, labelFont,
   } = input;
 
   const margin = {
@@ -146,11 +147,12 @@ export default (input: Input) => {
     // add the x Axis
     container.append('g')
         .attr('transform', 'translate(0,' + height + ')')
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
         .call(d3.axisBottom(xScale));
     svg
       .append('text')
       .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
-        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
         .style('font-size', '0.8rem')
         .style('text-anchor', 'middle')
         .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
@@ -158,6 +160,7 @@ export default (input: Input) => {
   if (!(hideAxis && hideAxis.left)) {
       // add the y Axis
     container.append('g')
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .call(d3.axisLeft(yScale).tickFormat(formatNumber));
     // append Y axis label
     svg
@@ -166,7 +169,7 @@ export default (input: Input) => {
         .attr('x', margin.right)
         .attr('dy', '0.75em')
         .style('font-size', '0.8rem')
-        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
         .text(axisLabels && axisLabels.left ? axisLabels.left : '');
   }
 
@@ -184,12 +187,13 @@ export default (input: Input) => {
       .style('pointer-events', 'none');
 
       if (line.label) {
+
         svg.append('text')
           .attr('x', line.labelPlacement === LabelPlacement.right ? size.width - margin.right : margin.left + 8)
           .attr('y',yScale(line.value) - 4)
           .style('text-anchor', line.labelPlacement === LabelPlacement.right ? 'end' : 'start')
           .style('opacity', 0.8)
-          .style('font-family', "'Source Sans Pro',sans-serif")
+          .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
           .style('font-size', '12px')
           .style('pointer-events', 'none')
           .text(line.label);

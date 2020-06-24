@@ -2,6 +2,7 @@ import React from 'react';
 import DataViz, {VizType} from '../../../components/dataViz';
 import {Datum} from '../../../components/dataViz/boxAndWhiskers';
 import raw from 'raw.macro';
+import {secondaryFont} from '../../../styling/styleUtils';
 
 const albania = 'ALB';
 
@@ -62,6 +63,7 @@ const BoxAndWhisketChart = () => {
       id={'albania-story-box-and-whiskers-chart'}
       vizType={VizType.BoxAndWhiskersChart}
       data={data}
+      labelFont={secondaryFont}
     />
   );
 };

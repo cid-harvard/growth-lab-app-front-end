@@ -27,10 +27,11 @@ interface Input {
   config: Config;
   data: Datum[];
   enableBrushZoom?: boolean;
+  labelFont?: string;
 }
 
 export default (input: Input) => {
-  const { svg, size, data, config, tooltip, enableBrushZoom } = input;
+  const { svg, size, data, config, tooltip, enableBrushZoom, labelFont } = input;
 
   const margin = {top: 30, right: 30, bottom: 30, left: 30};
   const width = size.width - margin.left - margin.right;
@@ -157,9 +158,11 @@ export default (input: Input) => {
   }
 
   const xAxis = g.append('g')
+    .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
     .attr('transform', 'translate(0,' + height + ')')
     .call(d3.axisBottom(xScale).ticks(5).tickFormat(y => y.toString()));
   g.append('g')
+    .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
     .call(d3.axisLeft(yScale).tickFormat(formatNumber));
 
   let idleTimeout: number | null;

@@ -33,12 +33,13 @@ interface Input {
   hideLabels?: boolean;
   circleSpacing?: number;
   max?: number;
+  labelFont?: string;
 }
 
 export default (input: Input) => {
   const {
     svg, size, data, tooltip, hideLabels,
-    circleSpacing, max,
+    circleSpacing, max, labelFont,
   } = input;
 
 
@@ -122,6 +123,7 @@ export default (input: Input) => {
       .append('text')
       .attr('x', (d: any) => d.x)
       .attr('y', (d: any) => d.y)
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .text(d => {
         if (d.data.id) {
           return d.data.id;

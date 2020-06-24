@@ -131,6 +131,7 @@ interface BaseProps {
   chartCaption?: string;
   rootStyles?: React.CSSProperties;
   height?: number | string;
+  labelFont?: string;
 }
 
 type Props = BaseProps & (
@@ -255,7 +256,7 @@ const DataViz = (props: Props) => {
       const tooltip = select(tooltipNodeRef.current);
       if (props.vizType === VizType.ScatterPlot) {
         createScatterPlot({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
@@ -266,7 +267,7 @@ const DataViz = (props: Props) => {
         });
       } else if (props.vizType === VizType.BarChart) {
         createBarChart({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
@@ -285,7 +286,7 @@ const DataViz = (props: Props) => {
           height = sizingNode.clientWidth;
         }
         createRadarChart({
-          svg, tooltip, data: props.data, options: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, options: {
             width, height,
             color: scaleOrdinal().range([props.color.start, props.color.end]),
             maxValue: props.maxValue,
@@ -299,14 +300,14 @@ const DataViz = (props: Props) => {
         });
       } else if (props.vizType === VizType.ClusterBarChart) {
         createClusterBarChart({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
         });
       } else if (props.vizType === VizType.LineChart) {
         creatLineChart({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
@@ -318,20 +319,20 @@ const DataViz = (props: Props) => {
         });
       } else if (props.vizType === VizType.TreeMap) {
         createTreeMap({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
         });
       } else if (props.vizType === VizType.StackChart) {
         createStackChart({
-          svg, tooltip, data: props.data, config: props.config, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, config: props.config, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           enableBrushZoom: props.enableBrushZoom,
         });
       } else if (props.vizType === VizType.ClusterChart) {
         createClusterChart({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           hideLabels: props.hideLabels,
@@ -340,7 +341,7 @@ const DataViz = (props: Props) => {
         });
       } else if (props.vizType === VizType.BoxAndWhiskersChart) {
         createBoxAndWhiskersChart({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
         });

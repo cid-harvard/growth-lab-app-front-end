@@ -21,10 +21,11 @@ interface Input {
   data: Datum[];
   size: Dimensions;
   axisLabels?: {left?: string, bottom?: string};
+  labelFont?: string;
 }
 
 export default (input: Input) => {
-  const { svg, size, axisLabels, data, tooltip } = input;
+  const { svg, size, axisLabels, data, tooltip, labelFont } = input;
 
   const margin = {
     top: 30, right: 30,
@@ -129,5 +130,6 @@ export default (input: Input) => {
       .attr('dy', '0.75em')
     .attr('fill', '#000')
     .attr('text-anchor', 'start')
+    .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
     .text(axisLabels && axisLabels.left ? axisLabels.left : '');
 };
