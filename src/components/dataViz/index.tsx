@@ -129,6 +129,7 @@ interface BaseProps {
   enableSVGDownload?: boolean;
   chartTitle?: string;
   chartCaption?: string;
+  rootStyles?: React.CSSProperties;
   height?: number | string;
 }
 
@@ -238,7 +239,7 @@ type Props = BaseProps & (
 );
 
 const DataViz = (props: Props) => {
-  const { id, enablePNGDownload, enableSVGDownload, jsonToDownload } = props;
+  const { id, enablePNGDownload, enableSVGDownload, jsonToDownload, rootStyles } = props;
   const sizingNodeRef = useRef<HTMLDivElement | null>(null);
   const svgNodeRef = useRef<any>(null);
   const tooltipNodeRef = useRef<any>(null);
@@ -436,7 +437,7 @@ const DataViz = (props: Props) => {
       <Caption>{props.chartCaption}</Caption>
     ) : null;
     return (
-      <Root>
+      <Root style={rootStyles}>
         <SizingElm ref={sizingNodeRef} style={{height: props.height}}>
           <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
         </SizingElm>

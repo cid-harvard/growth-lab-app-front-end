@@ -190,7 +190,7 @@ export const FullWidth = styled.div`
 
 export const CoverPhoto = styled.div`
   grid-column: 1 / -1;
-  height: 60vh;
+  height: 40vh;
   background-color: ${tertiaryColor};
   background-size: cover;
   background-position: center;
@@ -199,13 +199,17 @@ export const CoverPhoto = styled.div`
 export const StoryTitle = styled.h1`
   text-align: center;
   margin: 2rem 0 3rem;
-  font-size: 1.85rem;
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  letter-spacing: 1px;
+  text-align: center;
 `;
 
 export const StoryHeading = styled.h2`
   grid-column: 1 / -1;
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: 1.75rem;
+  text-align: center;
 `;
 
 
