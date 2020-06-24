@@ -45,7 +45,7 @@ enum Country {
   SlovakRepublic = 'Slovak Republic',
   Montenegro = 'Montenegro',
   Kosovo = 'Kosovo',
-  BosniaAndHerzegovina = 'Bosnia and Herzegovina',
+  BosniaAndHerzegovina = 'Bosnia & Herzegovina',
   OECDmembers = 'OECD members',
   BalkanAverage = 'Balkan Average',
   AlbShareOfoECD = 'Alb Share of oECD',

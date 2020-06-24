@@ -79,7 +79,7 @@ rawData.forEach(({location_name_short_en, year, hs_eci, value: gdp_value}) => {
       } else {
         let labelPosition: LabelPosition | undefined;
         if (location_name_short_en === 'Croatia' ||
-            location_name_short_en === 'Bosnia and Herzegovina' ||
+            location_name_short_en === 'Bosnia & Herzegovina' ||
             location_name_short_en === 'Albania') {
           labelPosition = LabelPosition.Bottom;
         } else if (location_name_short_en === 'Romania') {

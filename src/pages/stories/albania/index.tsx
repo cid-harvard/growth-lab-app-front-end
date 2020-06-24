@@ -499,7 +499,6 @@ const AlbaniaStory = () => {
                 <p ref={section_6}>
                   Most new job opportunities have emerged in and around cities, where a service-driven economy tends to aggregate. As a result, urbanization has coincided with growth as people have moved into Tirana, Durres, and Vlora and out of all other prefectures.
                 </p>
-                <div>Color Scale</div>
               </StickyText>
             </StorySectionContainer>
             <StorySectionContainer>
