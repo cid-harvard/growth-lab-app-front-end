@@ -41,10 +41,15 @@ const metaTitle = 'How to Accelerate Economic Growth in Albania | Harvard Growth
 const metaDescription = 'This brief analysis takes stock of Albania’s economic growth prior to the COVID-19 crisis and what the strengths and weaknesses of the pre-COVID economy imply for recovery and the possibility of accelerating long-term and inclusive growth in the years to come. Albania is a place where much has been achieved to expand opportunity and well-being as growth has gradually accelerated since 2013-14, but where much remains to be done to continue this acceleration once the immediate crisis of COVID-19 has passed.';
 
 const Root = styled(FullWidthContent)`
-  font-family: 'Source Serif Pro', serif;
   padding-bottom: 8rem;
   color: #333;
   background-color: #f9f9f3;
+
+  h1,
+  h2,
+  p {
+    font-family: 'Source Serif Pro', serif;
+  }
 
   p {
     font-size: 1.25rem;

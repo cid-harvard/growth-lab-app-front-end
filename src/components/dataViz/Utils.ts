@@ -1,3 +1,48 @@
+export const defaultPaletteColors = [
+  '#003f5c',
+  '#2f4b7c',
+  '#665191',
+  '#a05195',
+  '#d45087',
+  '#f95d6a',
+  '#ff7c43',
+  '#ffa600',
+  '#ffa600',
+  '#c1ab00',
+  '#86a927',
+  '#4fa049',
+  '#019463',
+  '#008575',
+  '#00747a',
+  '#166273',
+];
+
+export const defaultDivergentColors = [
+  '#00876c',
+  '#8cbcac',
+  '#f1f1f1',
+  '#ec9c9d',
+  '#d43d51',
+];
+
+export const defaultCoolChloropleth = [
+  '#004c6d',
+  '#326988',
+  '#5487a5',
+  '#76a6c2',
+  '#98c7e0',
+  '#bbe8ff',
+];
+
+export const defaultHotChloropleth = [
+  '#ff7b00',
+  '#fd9936',
+  '#fcb45e',
+  '#fbcc88',
+  '#fce2b4',
+  '#fff6e2',
+];
+
 const ranges = [
   { divider: 1e18 , suffix: 'E' },
   { divider: 1e15 , suffix: 'P' },

@@ -239,47 +239,6 @@ export default (input: Input) => {
       return d.totalLength && d.animationDirection === AnimationDirection.Backward ? d.totalLength * multiplier : 0;
     }); // Set final value of dash-offset for transition
 
-  // Add the labels
-  g.selectAll('.labels')
-      .data(data)
-      .enter()
-        .append('text')
-        .attr('transform', d => {
-          if (d.labelPosition === LabelPosition.Top) {
-            return `translate(${margin.left + 8} -8)`;
-          } else if (d.labelPosition === LabelPosition.Bottom) {
-            return `translate(${margin.left + 8} 10)`;
-          } else if (d.labelPosition === LabelPosition.Center) {
-            return `translate(${margin.left + 8} 2)`;
-          } else {
-            return `translate(${margin.left + 8} 2)`;
-          }
-        })
-        .attr('text-anchor', d => d.labelAnchor ? d.labelAnchor : LabelAnchor.Left)
-        .attr('class', 'line-label')
-        .attr('fill', ({labelColor}) => labelColor ? labelColor : 'gray')
-        .attr('font-size', '0.7rem')
-        .attr('y', ({coords, labelDataIndex}) => {
-          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
-          return y(coords[targetCood].y);
-        })
-        .attr('x', ({coords, labelDataIndex}) => {
-          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
-          return x(coords[targetCood].x);
-        })
-        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
-        .text(({label}) => label ? label : '')
-        .attr('opacity', '0')
-        .transition() // Call Transition Method
-        .delay(d => {
-          const axisDelay = animateAxis ? animateAxis.animationDuration : 0;
-          const lineDelay = d.animationDuration ? d.animationDuration : 0;
-          return axisDelay + lineDelay;
-        }) // Set Delay timing (ms)
-        .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
-        .ease(d3.easeLinear) // Set Easing option
-        .attr('opacity', '1');
-
   const formatX = formatAxis && formatAxis.x ? formatAxis.x : formatNumber;
   const formatY = formatAxis && formatAxis.y ? formatAxis.y : formatNumber;
   let xDomain = d3.axisBottom(x);
@@ -376,6 +335,122 @@ export default (input: Input) => {
 
   g.style('transform', 'scale(0.95) translateY(' + margin.top + 'px)')
    .style('transform-origin', 'center');
+
+   // add the dots
+  data.forEach((datum) => {
+    const {
+      coords, color, label,
+      animationDuration, animationDirection, animationStartIndex,
+    } = datum;
+    if (animationDirection === AnimationDirection.Backward) {
+      coords.reverse();
+    }
+    const fill = color ? color : 'gray';
+    g.selectAll('.circles')
+        .data(coords)
+        .enter()
+          .append('circle')
+          .on('mousemove', (coord) => {
+              if (label && label.length) {
+                tooltip.html(`
+                  <div style="
+                    display: inline-block;
+                    background-color: ${fill};
+                    width: 12px;
+                    height: 12px;
+                    margin-right: 12px;
+                    flex-shrink: 0;
+                  "></div>
+                  <div>
+                    <strong>${label}</strong>
+                    <br />
+                    ${coord.x} - ${parseFloat(coord.y.toFixed(2))}
+                  </div>
+                `);
+                tooltip
+                  .style('position', 'fixed')
+                  .style('left', d3.event.clientX + 'px')
+                  .style('top', d3.event.clientY + 'px')
+                  .style('display', 'flex')
+                  .style('align-items', 'center');
+              }
+            })
+            .on('mouseout', () => {
+              tooltip
+                  .style('display', 'none');
+            })
+          .attr('cx', (coord) => x(coord.x))
+          .attr('cy', (coord) => y(coord.y))
+          .attr('r', 4)
+          .style('fill', fill)
+          .style('stroke', 'transparent')
+          .style('stroke-width', 25)
+          .attr('transform', 'translate(' + margin.left + ', 0)')
+          .style('opacity', (_d, i) =>
+            animationDirection === AnimationDirection.Backward ||
+            (animationStartIndex !== undefined && i <= (animationStartIndex))
+              ? 1 : 0,
+          )
+          .transition() // Call Transition Method
+          .delay((_d, i) => {
+            const axisDelay = animateAxis ? animateAxis.animationDuration : 0;
+            if (animationDuration && i !== 0) {
+              return animationDuration * (i / coords.length) + axisDelay;
+            } else {
+              return axisDelay;
+            }
+          })
+          .duration(animationDuration ? 100 : 0) // Set Duration timing (ms)
+          .style('opacity', (_coord, i) => {
+            if (animationDirection === AnimationDirection.Backward) {
+              return animationStartIndex !== undefined && i >= (coords.length - 1) - animationStartIndex ? 1 : 0;
+            } else {
+              return 1;
+            }
+          });
+  });
+
+  // Add the labels
+  g.selectAll('.labels')
+      .data(data)
+      .enter()
+        .append('text')
+        .attr('transform', d => {
+          if (d.labelPosition === LabelPosition.Top) {
+            return `translate(${margin.left + 8} -8)`;
+          } else if (d.labelPosition === LabelPosition.Bottom) {
+            return `translate(${margin.left + 8} 11)`;
+          } else if (d.labelPosition === LabelPosition.Center) {
+            return `translate(${margin.left + 8} 2)`;
+          } else {
+            return `translate(${margin.left + 8} 2)`;
+          }
+        })
+        .attr('text-anchor', d => d.labelAnchor ? d.labelAnchor : LabelAnchor.Left)
+        .attr('class', 'line-label')
+        .attr('fill', ({labelColor}) => labelColor ? labelColor : '#333')
+        .attr('font-size', '0.7rem')
+        .attr('y', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return y(coords[targetCood].y);
+        })
+        .attr('x', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return x(coords[targetCood].x);
+        })
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
+        .text(({label}) => label ? label : '')
+        .attr('opacity', '0')
+        .transition() // Call Transition Method
+        .delay(d => {
+          const axisDelay = animateAxis ? animateAxis.animationDuration : 0;
+          const lineDelay = d.animationDuration ? d.animationDuration : 0;
+          return axisDelay + lineDelay;
+        }) // Set Delay timing (ms)
+        .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
+        .ease(d3.easeLinear) // Set Easing option
+        .attr('opacity', '1');
+
 
 };
 
