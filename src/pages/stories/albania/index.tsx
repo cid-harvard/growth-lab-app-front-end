@@ -14,12 +14,14 @@ import {
   StorySectionContainer,
   primaryFont,
   secondaryFont,
+  VizSource,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
-import styled from 'styled-components/macro';
+import styled, {keyframes} from 'styled-components/macro';
 import useScrollingSections from '../../../hooks/useScrollingSections';
 import usePrevious from '../../../hooks/usePrevious';
 import DataViz, {VizType} from '../../../components/dataViz';
+import HorizontalLegend from '../../../components/dataViz/HorizontalLegend';
 import {LabelPlacement} from '../../../components/dataViz/barChart';
 import getLineChartData from './getLineChartData';
 import PrimaryMap from './PrimaryMap';
@@ -29,7 +31,7 @@ import FlightRoutesMap from './FlightRoutesMap';
 import StandardFooter from '../../../components/text/StandardFooter';
 import {stackData, stackConfig} from './stackChartData';
 import ClusterChart from './clusterChart';
-import treemapData from './treemapData';
+import treemapData, {sectors} from './treemapData';
 import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
 import DynamicTable from '../../../components/text/DynamicTable';
 import electricityBarChartData from './barChartData';
@@ -41,7 +43,7 @@ const metaTitle = 'How to Accelerate Economic Growth in Albania | Harvard Growth
 const metaDescription = 'This brief analysis takes stock of Albania’s economic growth prior to the COVID-19 crisis and what the strengths and weaknesses of the pre-COVID economy imply for recovery and the possibility of accelerating long-term and inclusive growth in the years to come. Albania is a place where much has been achieved to expand opportunity and well-being as growth has gradually accelerated since 2013-14, but where much remains to be done to continue this acceleration once the immediate crisis of COVID-19 has passed.';
 
 const Root = styled(FullWidthContent)`
-  padding-bottom: 8rem;
+  padding: 0 1.25rem 8rem;
   color: #333;
   background-color: #f9f9f3;
 
@@ -177,6 +179,15 @@ const CenterBarChart = styled(BarChart)`
   border-right: solid 1px #dfdfdf;
 `;
 
+const fadein = keyframes`{
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}`;
+
+const FadeInContainer = styled.div`
+  animation: ${fadein} 750ms;
+`;
+
 const AlbaniaStory = () => {
   const section_0 = useRef<HTMLParagraphElement | null>(null);
   const section_1 = useRef<HTMLParagraphElement | null>(null);
@@ -223,6 +234,7 @@ const AlbaniaStory = () => {
   const {
     lineChartData, minX, maxX, minY, maxY,
     leftAxis, animateAxis, lineChartTitle,
+    vizSource,
   } = getLineChartData({
     section, prevSection: prevSection === undefined || prevSection === null ? null : prevSection,
   });
@@ -234,31 +246,42 @@ const AlbaniaStory = () => {
   if (section === null || section < 5) {
     vizTitle = lineChartTitle;
     dataViz = (
-      <DataViz
-        id={'albania-story-line-chart'}
-        vizType={VizType.LineChart}
-        data={lineChartData}
-        axisLabels={{left: leftAxis}}
-        axisMinMax={{minY, maxY, minX, maxX}}
-        animateAxis={animateAxis}
-        formatAxis={{x: formatYear(2019)}}
-        tickCount={{
-          x: maxX - minX,
-        }}
-        rootStyles={{margin: 0}}
-        labelFont={secondaryFont}
-      />
+      <>
+        <DataViz
+          id={'albania-story-line-chart'}
+          vizType={VizType.LineChart}
+          data={lineChartData}
+          axisLabels={{left: leftAxis}}
+          axisMinMax={{minY, maxY, minX, maxX}}
+          animateAxis={animateAxis}
+          formatAxis={{x: formatYear(2019)}}
+          tickCount={{
+            x: maxX - minX,
+          }}
+          rootStyles={{margin: 0}}
+          labelFont={secondaryFont}
+        />
+        <FadeInContainer><VizSource>Source: <em>{vizSource}</em></VizSource></FadeInContainer>
+      </>
     );
   } else if (section < 6) {
     vizTitle = 'Main Drivers of Export Growth in Albania, 2013-2017';
     dataViz = (
-      <DataViz
-        id={'albania-story-tree-map'}
-        vizType={VizType.TreeMap}
-        data={treemapData}
-        rootStyles={{margin: 0}}
-        labelFont={secondaryFont}
-      />
+      <>
+        <DataViz
+          id={'albania-story-tree-map'}
+          vizType={VizType.TreeMap}
+          data={treemapData}
+          rootStyles={{margin: 0}}
+          labelFont={secondaryFont}
+        />
+        <FadeInContainer><VizSource>Source: <em>Atlas of Economic Complexity</em></VizSource></FadeInContainer>
+        <FadeInContainer>
+          <HorizontalLegend
+            legendList={sectors.map(({fill, name}) => ({label: name, fill, stroke: undefined}))}
+          />
+        </FadeInContainer>
+      </>
     );
   } else {
     dataViz = null;
@@ -392,10 +415,10 @@ const AlbaniaStory = () => {
         <meta property='og:description' content={metaDescription} />
         <link href='https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&display=swap' rel='stylesheet' />
       </Helmet>
-      <Root>
         <CoverPhoto
           style={{backgroundImage: `url("${CoverPhotoImage}")`}}
         />
+      <Root>
         <StoriesGrid>
           <Heading>
             <FullWidth>

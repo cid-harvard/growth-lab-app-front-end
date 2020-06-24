@@ -14,7 +14,7 @@ enum Category {
   Services = 'Services',
 }
 
-const sectors: {name: Category, id: number, fill: string}[] = [
+export const sectors: {name: Category, id: number, fill: string}[] = [
   {id: 0,  fill: '#F5BD7D', name: Category.Food},
   {id: 1,  fill: '#537DAA', name: Category.Beverages},
   {id: 2,  fill: '#F08D34', name: Category.CrudeMaterials},

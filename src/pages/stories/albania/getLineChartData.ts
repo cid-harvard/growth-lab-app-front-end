@@ -201,6 +201,7 @@ export default ({section, prevSection}: Input) => {
   let leftAxis: string = 'Year on Year Percent Change in GDP per capita';
   let direction: AnimationDirection;
   let lineChartTitle: string = 'Albania’s Change in GDP per capita, 2010-2018';
+  let vizSource: string = 'World Development Indicators';
   if (section === null && prevSection !== null) {
     direction = AnimationDirection.Backward;
   } else if (section !== null && prevSection === null) {
@@ -325,7 +326,8 @@ export default ({section, prevSection}: Input) => {
   } else if (section === 3) {
     lineChartTitle = 'Labor Force Indicators, 2014-2019';
     minMaxAxis = {...laborForceData.axisValues};
-    leftAxis = '';
+    leftAxis = 'Percent';
+    vizSource = 'INSTAT';
     lineChartData = [
       {
         coords: [...laborForceData.lfpRateData],
@@ -366,9 +368,10 @@ export default ({section, prevSection}: Input) => {
     }
   } else if (section && section > 3) {
     lineChartTitle = 'Unemployment Rates by Group, 2014-2019';
+    leftAxis = 'Percent';
     const animate = section === 4 && direction === AnimationDirection.Forward ? true : false;
     minMaxAxis = {...unemploymentData.axisValues};
-    leftAxis = '';
+    vizSource = 'INSTAT';
     lineChartData = [
       {
         coords: [...unemploymentData.unemploymentMale15_24Data],
@@ -425,5 +428,5 @@ export default ({section, prevSection}: Input) => {
       animationDuration: 600,
     } : undefined;
   }
-  return {lineChartData, ...minMaxAxis, leftAxis, animateAxis, lineChartTitle};
+  return {lineChartData, ...minMaxAxis, leftAxis, animateAxis, lineChartTitle, vizSource};
 };

@@ -20,6 +20,8 @@ import Loading from './components/general/Loading';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 import ReactGA from 'react-ga';
+import { overlayPortalContainerId } from './Utils';
+import styled from 'styled-components/macro';
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {debug: false});
@@ -36,6 +38,12 @@ const TrackedRoute = (props: any) => {
   );
 };
 
+const overlayPortalZIndex = 3000;
+
+const OverlayPortal = styled.div`
+  position: relative;
+  z-index: ${overlayPortalZIndex};
+`;
 
 const LandingPage = lazy(() => import('./pages/landingPage'));
 const AboutPage = lazy(() => import('./pages/landingPage/About'));
@@ -117,6 +125,7 @@ function App() {
                   <TrackedRoute component={PageNotFound} />
                 </Switch>
               </Suspense>
+                <OverlayPortal id={overlayPortalContainerId} />
             </Root>
           </Router>
         </ApolloProvider>

@@ -227,3 +227,11 @@ export const StickyContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
+
+export const VizSource = styled.cite`
+  text-align: center;
+  display: block;
+  margin: 0.75rem 0 1rem;
+  font-size: 0.7rem;
+`;
+

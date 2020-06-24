@@ -405,7 +405,7 @@ export default (input: Input) => {
                   <div>
                     <strong>${label}</strong>
                     <br />
-                    ${coord.x} - ${parseFloat(coord.y.toFixed(2))}
+                    ${coord.x}: ${parseFloat(coord.y.toFixed(2))}
                   </div>
                 `);
                 tooltip
