@@ -14,6 +14,9 @@ interface GDPData extends Axis {
   albaniaData2010_2013: Coords[];
   albaniaData2014_2018: Coords[];
   euData2010_2018: Coords[];
+  albaniaColor: string;
+  euColor: string;
+  labelColor: string;
 }
 
 const gdpData: GDPData = {
@@ -26,6 +29,9 @@ const gdpData: GDPData = {
   albaniaData2010_2013: [],
   albaniaData2014_2018: [],
   euData2010_2018: [],
+  euColor: '#346bbf',
+  albaniaColor: '#c73000',
+  labelColor: '#bc2f8b',
 };
 
 enum Country {
@@ -71,6 +77,9 @@ interface LaborForceData extends Axis {
   lfpRateData: Coords[];
   employRateData: Coords[];
   unemployRateData: Coords[];
+  lfpColor: string;
+  employColor: string;
+  unEmployColor: string;
 }
 
 const laborForceData: LaborForceData = {
@@ -83,6 +92,9 @@ const laborForceData: LaborForceData = {
   lfpRateData: [],
   employRateData: [],
   unemployRateData: [],
+  lfpColor: '#c77700',
+  employColor: '#346bbf',
+  unEmployColor: '#c73000',
 };
 
 interface UnemploymentData extends Axis {
@@ -92,6 +104,12 @@ interface UnemploymentData extends Axis {
   unemploymentFemale15_24Data: Coords[];
   unemploymentFemale25_54Data: Coords[];
   unemploymentFemale55_64Data: Coords[];
+  unemploymentMale15_24Color: string;
+  unemploymentMale25_54Color: string;
+  unemploymentMale55_64Color: string;
+  unemploymentFemale15_24Color: string;
+  unemploymentFemale25_54Color: string;
+  unemploymentFemale55_64Color: string;
 }
 
 const unemploymentData: UnemploymentData = {
@@ -107,6 +125,12 @@ const unemploymentData: UnemploymentData = {
   unemploymentFemale15_24Data: [],
   unemploymentFemale25_54Data: [],
   unemploymentFemale55_64Data: [],
+  unemploymentMale15_24Color: '#985db3',
+  unemploymentMale25_54Color: '#cf6d78',
+  unemploymentMale55_64Color: '#c17c1f',
+  unemploymentFemale15_24Color: '#1f8fbf',
+  unemploymentFemale25_54Color: '#009c65',
+  unemploymentFemale55_64Color: '#e3ba00',
 };
 
 enum MeasureType {
@@ -194,7 +218,7 @@ export default ({section, prevSection}: Input) => {
       {
         coords: [...gdpData.albaniaData2010_2013],
         animationDuration: 300,
-        color: '#c73000',
+        color: gdpData.albaniaColor,
         animationDirection: AnimationDirection.Backward,
       },
     ];
@@ -205,7 +229,7 @@ export default ({section, prevSection}: Input) => {
           coords: [...gdpData.albaniaData2010_2013],
           animationDuration: 300,
           label: 'Albania, 2013',
-          color: '#c73000',
+          color: gdpData.albaniaColor,
           showLabelLine: true,
           width: 3,
         },
@@ -216,7 +240,7 @@ export default ({section, prevSection}: Input) => {
           coords: [...gdpData.albaniaData2010_2013, ...gdpData.albaniaData2014_2018],
           animationDuration: 400,
           label: 'Albania, 2013',
-          color: '#c73000',
+          color: gdpData.albaniaColor,
           showLabelLine: true,
           width: 3,
           animationDirection: direction,
@@ -232,7 +256,7 @@ export default ({section, prevSection}: Input) => {
           coords: [...gdpData.albaniaData2010_2013, ...gdpData.albaniaData2014_2018],
           animationDuration: 400,
           label: 'Albania, 2018',
-          color: '#c73000',
+          color: gdpData.albaniaColor,
           showLabelLine: true,
           animationStartIndex: 3,
           width: 3,
@@ -243,12 +267,12 @@ export default ({section, prevSection}: Input) => {
         {
           coords: [...gdpData.albaniaData2010_2013, ...gdpData.albaniaData2014_2018],
           label: 'Albania, 2018',
-          color: '#c73000',
+          color: gdpData.albaniaColor,
           width: 3,
         }, {
           coords: [...gdpData.euData2010_2018],
           animationDuration: 600,
-          color: '#203f70',
+          color: gdpData.euColor,
           width: 3,
           animationDirection: direction,
         },
@@ -260,13 +284,13 @@ export default ({section, prevSection}: Input) => {
         {
           coords: [...gdpData.albaniaData2010_2013, ...gdpData.albaniaData2014_2018],
           label: 'Albania, 2018',
-          color: '#c73000',
+          color: gdpData.albaniaColor,
           width: 3,
         }, {
           coords: [...gdpData.euData2010_2018],
           animationDuration: 600,
           label: 'European Union',
-          color: '#203f70',
+          color: gdpData.euColor,
           width: 3,
           labelAnchor: LabelAnchor.Middle,
           labelPosition: LabelPosition.Bottom,
@@ -277,14 +301,14 @@ export default ({section, prevSection}: Input) => {
         {
           coords: [...gdpData.albaniaData2010_2013, ...gdpData.albaniaData2014_2018],
           label: 'Albania, 2018',
-          color: '#c73000',
+          color: gdpData.albaniaColor,
           animationDuration: 600,
           width: 3,
         }, {
           coords: [...gdpData.euData2010_2018],
           animationDuration: 600,
           label: 'European Union',
-          color: '#203f70',
+          color: gdpData.euColor,
           width: 3,
           labelAnchor: LabelAnchor.Middle,
           labelPosition: LabelPosition.Bottom,
@@ -307,19 +331,19 @@ export default ({section, prevSection}: Input) => {
         coords: [...laborForceData.lfpRateData],
         animationDuration: 600,
         label: 'LFP Rate',
-        color: '#c73000',
+        color: laborForceData.lfpColor,
         width: 3,
       }, {
         coords: [...laborForceData.employRateData],
         animationDuration: 600,
         label: 'Employment Rate',
-        color: '#96226f',
+        color: laborForceData.employColor,
         width: 3,
       }, {
         coords: [...laborForceData.unemployRateData],
         animationDuration: 600,
         label: 'Unemployment Rate',
-        color: '#203f70',
+        color: laborForceData.unEmployColor,
         width: 3,
       },
     ];
@@ -350,46 +374,46 @@ export default ({section, prevSection}: Input) => {
         coords: [...unemploymentData.unemploymentMale15_24Data],
         animationDuration: 600,
         label: 'Male, 15-24',
-        color: '#9d1d6b',
-        labelColor: '#9d1d6b',
+        color: unemploymentData.unemploymentMale15_24Color,
+        labelColor: unemploymentData.unemploymentMale15_24Color,
         width: 3,
         labelPosition: LabelPosition.Bottom,
       },{
         coords: [...unemploymentData.unemploymentMale25_54Data],
         animationDuration: 600,
         label: 'Male, 25-54',
-        color: '#c00044',
-        labelColor: '#c00044',
+        color: unemploymentData.unemploymentMale25_54Color,
+        labelColor: unemploymentData.unemploymentMale25_54Color,
         width: 3,
         labelPosition: LabelPosition.Top,
       },{
         coords: [...unemploymentData.unemploymentMale55_64Data],
         animationDuration: 600,
         label: 'Male, 55-64',
-        color: '#c73000',
-        labelColor: '#c73000',
+        color: unemploymentData.unemploymentMale55_64Color,
+        labelColor: unemploymentData.unemploymentMale55_64Color,
         width: 3,
         labelPosition: LabelPosition.Bottom,
       },{
         coords: [...unemploymentData.unemploymentFemale15_24Data],
         animationDuration: 600,
         label: 'Female, 15-24',
-        color: '#013c5c',
-        labelColor: '#013c5c',
+        color: unemploymentData.unemploymentFemale15_24Color,
+        labelColor: unemploymentData.unemploymentFemale15_24Color,
         width: 3,
       },{
         coords: [...unemploymentData.unemploymentFemale25_54Data],
         animationDuration: 600,
         label: 'Female, 25-54',
-        color: '#2f3f75',
-        labelColor: '#2f3f75',
+        color: unemploymentData.unemploymentFemale25_54Color,
+        labelColor: unemploymentData.unemploymentFemale25_54Color,
         width: 3,
       },{
         coords: [...unemploymentData.unemploymentFemale55_64Data],
         animationDuration: 600,
         label: 'Female, 55-64',
-        color: '#69367d',
-        labelColor: '#69367d',
+        color: unemploymentData.unemploymentFemale55_64Color,
+        labelColor: unemploymentData.unemploymentFemale55_64Color,
         width: 3,
       },
     ];

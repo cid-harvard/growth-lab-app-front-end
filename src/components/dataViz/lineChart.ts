@@ -239,6 +239,47 @@ export default (input: Input) => {
       return d.totalLength && d.animationDirection === AnimationDirection.Backward ? d.totalLength * multiplier : 0;
     }); // Set final value of dash-offset for transition
 
+  // Add the labels
+  g.selectAll('.labels')
+      .data(data)
+      .enter()
+        .append('text')
+        .attr('transform', d => {
+          if (d.labelPosition === LabelPosition.Top) {
+            return `translate(${margin.left + 8} -8)`;
+          } else if (d.labelPosition === LabelPosition.Bottom) {
+            return `translate(${margin.left + 8} 12)`;
+          } else if (d.labelPosition === LabelPosition.Center) {
+            return `translate(${margin.left + 8} 2)`;
+          } else {
+            return `translate(${margin.left + 8} 2)`;
+          }
+        })
+        .attr('text-anchor', d => d.labelAnchor ? d.labelAnchor : LabelAnchor.Left)
+        .attr('class', 'line-label')
+        .attr('fill', ({labelColor}) => labelColor ? labelColor : 'gray')
+        .attr('font-size', '0.7rem')
+        .attr('y', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return y(coords[targetCood].y);
+        })
+        .attr('x', ({coords, labelDataIndex}) => {
+          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
+          return x(coords[targetCood].x);
+        })
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
+        .text(({label}) => label ? label : '')
+        .attr('opacity', '0')
+        .transition() // Call Transition Method
+        .delay(d => {
+          const axisDelay = animateAxis ? animateAxis.animationDuration : 0;
+          const lineDelay = d.animationDuration ? d.animationDuration : 0;
+          return axisDelay + lineDelay;
+        }) // Set Delay timing (ms)
+        .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
+        .ease(d3.easeLinear) // Set Easing option
+        .attr('opacity', '1');
+
   const formatX = formatAxis && formatAxis.x ? formatAxis.x : formatNumber;
   const formatY = formatAxis && formatAxis.y ? formatAxis.y : formatNumber;
   let xDomain = d3.axisBottom(x);
@@ -409,48 +450,6 @@ export default (input: Input) => {
             }
           });
   });
-
-  // Add the labels
-  g.selectAll('.labels')
-      .data(data)
-      .enter()
-        .append('text')
-        .attr('transform', d => {
-          if (d.labelPosition === LabelPosition.Top) {
-            return `translate(${margin.left + 8} -8)`;
-          } else if (d.labelPosition === LabelPosition.Bottom) {
-            return `translate(${margin.left + 8} 11)`;
-          } else if (d.labelPosition === LabelPosition.Center) {
-            return `translate(${margin.left + 8} 2)`;
-          } else {
-            return `translate(${margin.left + 8} 2)`;
-          }
-        })
-        .attr('text-anchor', d => d.labelAnchor ? d.labelAnchor : LabelAnchor.Left)
-        .attr('class', 'line-label')
-        .attr('fill', ({labelColor}) => labelColor ? labelColor : '#333')
-        .attr('font-size', '0.7rem')
-        .attr('y', ({coords, labelDataIndex}) => {
-          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
-          return y(coords[targetCood].y);
-        })
-        .attr('x', ({coords, labelDataIndex}) => {
-          const targetCood = labelDataIndex && labelDataIndex < coords.length ? labelDataIndex : coords.length - 1;
-          return x(coords[targetCood].x);
-        })
-        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
-        .text(({label}) => label ? label : '')
-        .attr('opacity', '0')
-        .transition() // Call Transition Method
-        .delay(d => {
-          const axisDelay = animateAxis ? animateAxis.animationDuration : 0;
-          const lineDelay = d.animationDuration ? d.animationDuration : 0;
-          return axisDelay + lineDelay;
-        }) // Set Delay timing (ms)
-        .duration(d => d.animationDuration ? d.animationDuration : 0 ) // Set Duration timing (ms)
-        .ease(d3.easeLinear) // Set Easing option
-        .attr('opacity', '1');
-
 
 };
 
