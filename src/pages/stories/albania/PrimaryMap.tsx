@@ -31,7 +31,7 @@ const cssGradientPopulation = `
     #88d981 23%,
     #3a8860 100%
   )
-`
+`;
 const populationColorScaleTitle = 'Change in population';
 
 const gdpMin = -14.92;
@@ -50,7 +50,7 @@ const cssGradientGdp = `
     #88d981 39.37%,
     #3a8860 100%
   )
-`
+`;
 const gdpColorScaleTitle = 'GDP Growth';
 
 const albaniaHeatMapData = JSON.parse(raw('./data/albania_heatmap_data.json'));
@@ -75,7 +75,7 @@ const popultaionChangeGeoJson = {...albaniaMapData, features: popultaionChangeFe
 const gdpGrowthGeoJson = {...albaniaMapData, features: gdpGrowthFeatures};
 
 const euMin = 2000;
-const euMax = 100000
+const euMax = 100000;
 const gdpEuropeColorScale = scaleLinear<string>()
                     .domain([euMin, 49000, euMax])
                     .range(['#face55', '#f97502', '#b63d21']);
@@ -87,7 +87,7 @@ const cssGradientEu = `
     #f97502 50%,
     #b63d21 100%
   )
-`
+`;
 const euColorScaleTitle = 'GDP per capita';
 
 export const worldData = JSON.parse(raw('../../../components/dataViz/assets/world-geojson.json'));

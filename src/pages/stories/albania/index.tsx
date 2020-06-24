@@ -6,7 +6,6 @@ import {
   StoriesGrid,
 } from '../../../styling/Grid';
 import {
-  CoverPhoto,
   FullWidth,
   StoryTitle,
   StoryHeading,
@@ -37,7 +36,9 @@ import DynamicTable from '../../../components/text/DynamicTable';
 import electricityBarChartData from './barChartData';
 import BoxAndWhiskersChart from './BoxAndWhiskersChart';
 import CoverPhotoImage from './cover-photo.png';
+import CoverPhotoImageLowRes from './cover-photo-low-res.jpg';
 import Helmet from 'react-helmet';
+import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
 
 const metaTitle = 'How to Accelerate Economic Growth in Albania | Harvard Growth Lab';
 const metaDescription = 'This brief analysis takes stock of Albania’s economic growth prior to the COVID-19 crisis and what the strengths and weaknesses of the pre-COVID economy imply for recovery and the possibility of accelerating long-term and inclusive growth in the years to come. Albania is a place where much has been achieved to expand opportunity and well-being as growth has gradually accelerated since 2013-14, but where much remains to be done to continue this acceleration once the immediate crisis of COVID-19 has passed.';
@@ -415,8 +416,9 @@ const AlbaniaStory = () => {
         <meta property='og:description' content={metaDescription} />
         <link href='https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&display=swap' rel='stylesheet' />
       </Helmet>
-        <CoverPhoto
-          style={{backgroundImage: `url("${CoverPhotoImage}")`}}
+        <SmartCoverPhoto
+          highResSrc={CoverPhotoImage}
+          lowResSrc={CoverPhotoImageLowRes}
         />
       <Root>
         <StoriesGrid>

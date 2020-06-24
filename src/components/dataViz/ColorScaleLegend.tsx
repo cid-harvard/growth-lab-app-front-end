@@ -53,7 +53,7 @@ type Props = BaseProps & ({
   maxColor?: undefined;
   minColor?: undefined;
   gradientString: string;
-})
+});
 
 const Legend = (props: Props) => {
   const { maxLabel, minLabel, title } = props;
@@ -67,7 +67,7 @@ const Legend = (props: Props) => {
     <ColorScaleBarCustom
       style={{background: props.gradientString}}
     />
-  )
+  );
 
   return (
     <Root>
