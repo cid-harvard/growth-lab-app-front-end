@@ -71,31 +71,63 @@ enum SourceCountries {
   Iceland = 'Iceland',
 }
 
+export const countries = [
+  { fill: '#59a14f', country: 'Germany' },
+  { fill: '#4e79a7', country: 'United States' },
+  { fill: '#86bcb6', country: 'Italy' },
+  { fill: '#8cd17d', country: 'France' },
+  { fill: '#e15759', country: 'United Kingdom' },
+  { fill: '#a0cbe8', country: 'China' },
+  { fill: '#f28e2b', country: 'Japan' },
+  { fill: '#79706e', country: 'Turkey' },
+  { fill: '#ff9d9a', country: 'Spain' },
+  { fill: '#b6992d', country: 'Switzerland' },
+  { fill: '#ffc3c2', country: 'Bulgaria' },
+  { fill: '#ed999a', country: 'Ethiopia' },
+  { fill: '#c3ac9e', country: 'Iceland' },
+  { fill: '#ffbe7d', country: 'India' },
+  { fill: '#9ac694', country: 'Kazakhstan' },
+  { fill: '#f7ba7e', country: 'North Macedonia' },
+  { fill: '#f1ce63', country: 'Norway' },
+  { fill: '#bab0ac', country: 'Other' },
+  { fill: '#e5c9de', country: 'Romania' },
+  { fill: '#fabfd2', country: 'Serbia' },
+  { fill: '#d3c17f', country: 'Slovenia' },
+  { fill: '#d7b5a6', country: 'Tunisia' },
+  { fill: '#499894', country: 'UAE' },
+];
+
 const countryToColor = (country: SourceCountries) => {
-  if (country === SourceCountries.China) { return '#EC7063'; }
-  else if (country === SourceCountries.Germany) { return '#9B59B6'; }
-  else if (country === SourceCountries.Bulgaria) { return '#5499C7'; }
-  else if (country === SourceCountries.Other) { return '#1ABC9C'; }
-  else if (country === SourceCountries.Turkey) { return '#16A085'; }
-  else if (country === SourceCountries.Japan) { return '#229954'; }
-  else if (country === SourceCountries.UnitedKingdom) { return '#D4AC0D'; }
-  else if (country === SourceCountries.NorthMacedonia) { return '#F39C12'; }
-  else if (country === SourceCountries.UnitedStates) { return '#E67E22'; }
-  else if (country === SourceCountries.Italy) { return '#D35400'; }
-  else if (country === SourceCountries.Norway) { return '#5D6D7E'; }
-  else if (country === SourceCountries.France) { return '#7B241C'; }
-  else if (country === SourceCountries.Slovenia) { return '#512E5F'; }
-  else if (country === SourceCountries.Spain) { return '#154360'; }
-  else if (country === SourceCountries.India) { return '#117864'; }
-  else if (country === SourceCountries.Serbia) { return '#196F3D'; }
-  else if (country === SourceCountries.Switzerland) { return '#E59866'; }
-  else if (country === SourceCountries.UAE) { return '#C39BD3'; }
-  else if (country === SourceCountries.Kazakhstan) { return '#A2D9CE'; }
-  else if (country === SourceCountries.Romania) { return '#784212'; }
-  else if (country === SourceCountries.Tunisia) { return '#2ECC71'; }
-  else if (country === SourceCountries.Ethiopia) { return '#F1948A'; }
-  else if (country === SourceCountries.Iceland) { return '#784212'; }
-  else { return '#FDEBD0'; }
+  const target = countries.find(c => c.country === country);
+  if (target && target.fill) {
+    return target.fill;
+  } else {
+    return '#FDEBD0';
+  }
+  // if (country === SourceCountries.China) { return '#EC7063'; }
+  // else if (country === SourceCountries.Germany) { return '#9B59B6'; }
+  // else if (country === SourceCountries.Bulgaria) { return '#5499C7'; }
+  // else if (country === SourceCountries.Other) { return '#1ABC9C'; }
+  // else if (country === SourceCountries.Turkey) { return '#16A085'; }
+  // else if (country === SourceCountries.Japan) { return '#229954'; }
+  // else if (country === SourceCountries.UnitedKingdom) { return '#D4AC0D'; }
+  // else if (country === SourceCountries.NorthMacedonia) { return '#F39C12'; }
+  // else if (country === SourceCountries.UnitedStates) { return '#E67E22'; }
+  // else if (country === SourceCountries.Italy) { return '#D35400'; }
+  // else if (country === SourceCountries.Norway) { return '#5D6D7E'; }
+  // else if (country === SourceCountries.France) { return '#7B241C'; }
+  // else if (country === SourceCountries.Slovenia) { return '#512E5F'; }
+  // else if (country === SourceCountries.Spain) { return '#154360'; }
+  // else if (country === SourceCountries.India) { return '#117864'; }
+  // else if (country === SourceCountries.Serbia) { return '#196F3D'; }
+  // else if (country === SourceCountries.Switzerland) { return '#E59866'; }
+  // else if (country === SourceCountries.UAE) { return '#C39BD3'; }
+  // else if (country === SourceCountries.Kazakhstan) { return '#A2D9CE'; }
+  // else if (country === SourceCountries.Romania) { return '#784212'; }
+  // else if (country === SourceCountries.Tunisia) { return '#2ECC71'; }
+  // else if (country === SourceCountries.Ethiopia) { return '#F1948A'; }
+  // else if (country === SourceCountries.Iceland) { return '#784212'; }
+  // else { return '#FDEBD0'; }
 };
 
 interface RawDatum {

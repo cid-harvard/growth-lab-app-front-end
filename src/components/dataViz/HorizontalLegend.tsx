@@ -39,24 +39,27 @@ interface LegendDatum {
 
 interface Props {
   legendList: LegendDatum[];
+  rootStyles?: React.CSSProperties;
+  itemStyles?: React.CSSProperties;
+  labelStyles?: React.CSSProperties;
 }
 
-const Legend = ({legendList}: Props) => {
+const Legend = ({legendList, rootStyles, itemStyles, labelStyles}: Props) => {
 
   const legendItems = legendList.map(({label, fill, stroke}) => (
-      <LegendItem key={label + fill + stroke}  title={label}>
+      <LegendItem key={label + fill + stroke}  title={label} style={itemStyles}>
         <LegendBlock
           style={{
             backgroundColor: fill,
             borderColor: stroke,
           }}
         />
-        <Label>{label}</Label>
+        <Label style={labelStyles}>{label}</Label>
       </LegendItem>
   ));
 
   return (
-    <Root>
+    <Root style={rootStyles}>
       {legendItems}
     </Root>
   );

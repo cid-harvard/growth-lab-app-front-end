@@ -29,7 +29,7 @@ import RoadTravelMap from './RoadTravelMap';
 import FlightRoutesMap from './FlightRoutesMap';
 import StandardFooter from '../../../components/text/StandardFooter';
 import {stackData, stackConfig, industries} from './stackChartData';
-import ClusterChart from './clusterChart';
+import ClusterChart, {countries} from './clusterChart';
 import treemapData, {sectors} from './treemapData';
 import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
 import DynamicTable from '../../../components/text/DynamicTable';
@@ -123,8 +123,11 @@ const ClusterChartContainer = styled.div`
 `;
 
 const BarChartContainer = styled(InlineVizContainer)`
+  min-height: 475px;
+  height: auto;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 450px;
   border: solid 1px #dfdfdf;
 `;
 
@@ -188,9 +191,24 @@ const LargeBracket = styled.div`
 
 const BarChart = styled.div`
   position: relative;
+  grid-row: 2;
 `;
 
 const CenterBarChart = styled(BarChart)`
+  border-left: solid 1px #dfdfdf;
+  border-right: solid 1px #dfdfdf;
+`;
+
+const BarChartTitle = styled.h4`
+  margin: 0;
+  padding: 0.5rem 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 400;
+  grid-row: 1;
+`;
+
+const CenterTitle = styled(BarChartTitle)`
   border-left: solid 1px #dfdfdf;
   border-right: solid 1px #dfdfdf;
 `;
@@ -350,6 +368,7 @@ const AlbaniaStory = () => {
 
   const electricityBarCharts = section && section > 13 && section < 17 ? (
     <>
+      <BarChartTitle>Main Constraint (% of Firms)</BarChartTitle>
       <BarChart>
         <DataViz
           id={'albania-story-electricity-bar-chart-main-constraints'}
@@ -371,6 +390,7 @@ const AlbaniaStory = () => {
           labelFont={secondaryFont}
         />
       </BarChart>
+      <CenterTitle>Outages per Month (#)</CenterTitle>
       <CenterBarChart>
         <DataViz
           id={'albania-story-electricity-bar-chart-outages-month'}
@@ -393,6 +413,7 @@ const AlbaniaStory = () => {
           labelFont={secondaryFont}
         />
       </CenterBarChart>
+      <BarChartTitle>Average Losses (% of Annual Sales)</BarChartTitle>
       <BarChart>
         <DataViz
           id={'albania-story-electricity-bar-chart-average-losses'}
@@ -620,6 +641,15 @@ const AlbaniaStory = () => {
             <ClusterChartContainer>
               {clusterChart}
             </ClusterChartContainer>
+            <LegendContainer>
+              <VizSource>
+                Source: <em>fDi Markets</em>
+                <br />Note: Each circle represents a company. Circles are sized by number of announced investments and colored by country of origin of the company
+              </VizSource>
+              <HorizontalLegend
+                legendList={countries.map(({fill, country}) => ({label: country, fill, stroke: undefined}))}
+              />
+            </LegendContainer>
             <StoryHeading>The Path to Stronger Growth in the Aftermath of COVID-19</StoryHeading>
             <p>
               The next phase of the Albanian miracle will require more co-evolution of state functions and delivery to meet the changing needs of the private sector, including actions that accelerate knowhow acquisition from abroad. In 2017, the Growth Lab published a comprehensive growth diagnostic for the Albanian economy and found the following breakdown of constraints to growth.
@@ -708,6 +738,9 @@ const AlbaniaStory = () => {
             <BarChartContainer>
               {electricityBarCharts}
             </BarChartContainer>
+            <LegendContainer>
+              <VizSource>Source: <em>World Bank Enterprise Surveys</em></VizSource>
+            </LegendContainer>
             <p ref={section_16}>
               On the opposite extreme, performance of the court system and reports of “monopoly or unfair competition” have grown as constraints based on a variety of firm surveys. Although measures of government effectiveness have improved markedly across surveys and bribery has reduced among most interactions with government (with the exception of tax collection), judicial reforms appear to have traded off an old problem of corrupt judges for a new problem of too few judges. While the process is a critical step forward, it is resulting in businesses that rely on the court system to settle disputed to face an increased likelihood of delays. In fact, despite positive reforms, Albanian exports have become increasing focused in products that are less intensive in the use of contracts to manage supplier relationships.
             </p>
@@ -715,6 +748,20 @@ const AlbaniaStory = () => {
             <InlineVizContainer>
               {boxAndWhiskersChart}
             </InlineVizContainer>
+            <LegendContainer>
+              <VizSource>Source: <em>Atlas of Economic Complexity; Nunn, “Relationship-Specificity, Incomplete Contracts and the Pattern of Trade” (2007)</em>
+                <br />
+                Note: The index reports the country coefficients from a regression of the export share of products on the input-intensity of products, as well as country and product dummies.
+              </VizSource>
+              <HorizontalLegend
+                legendList={[
+                  {label: 'Albania', fill: 'red', stroke: undefined},
+                  {label: 'Peers', fill: '#2874A6', stroke: undefined},
+                ]}
+                rootStyles={{justifyContent: 'center'}}
+                itemStyles={{width: 'auto', padding: '0.75rem'}}
+              />
+            </LegendContainer>
             <p ref={section_17}>
               Meanwhile, Albania has had mixed success in improving transportation infrastructure. While several major road projects have been completed that have reduced travel times and improved connectivity — including to the Kosovo border and to large Southern cities — congestion has increased on major roads connecting Tirana to Durres and Shkodër, as road supply improvements have not kept pace with increasing demand.
             </p>

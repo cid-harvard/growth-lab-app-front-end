@@ -23,7 +23,7 @@ interface Input {
 }
 
 export default (input: Input) => {
-  const { svg, data, size, labelFont} = input;
+  const { svg, data, size, labelFont, tooltip} = input;
 
   const margin = {top: 30, right: 20, bottom: 30, left: 40};
   const width = size.width - margin.left - margin.right;
@@ -122,6 +122,31 @@ const sumstat = d3.nest() // nest function allows to group the calculation per l
       .style('width', 80)
       .style('stroke', '#555');
 
+  // Show the max line
+  group
+    .selectAll('maxLines')
+    .data(sumstat)
+    .enter()
+    .append('line')
+      .attr('x1', d => (x(d.key) as number) - boxWidth / 2)
+      .attr('x2', d => (x(d.key) as number) + boxWidth / 2)
+      .attr('y1', d => y((d.value as any as {max: number}).max))
+      .attr('y2', d => y((d.value as any as {max: number}).max))
+      .style('width', 80)
+      .style('stroke', '#555');
+  // Show the min line
+  group
+    .selectAll('minLines')
+    .data(sumstat)
+    .enter()
+    .append('line')
+      .attr('x1', d => (x(d.key) as number) - boxWidth / 2)
+      .attr('x2', d => (x(d.key) as number) + boxWidth / 2)
+      .attr('y1', d => y((d.value as any as {min: number}).min))
+      .attr('y2', d => y((d.value as any as {min: number}).min))
+      .style('width', 80)
+      .style('stroke', '#555');
+
   group
     .selectAll('indPoints')
     .data(data.filter(d => d.plotPoint && !d.primaryPoint))
@@ -130,7 +155,17 @@ const sumstat = d3.nest() // nest function allows to group the calculation per l
       .attr('cx', d => x(d.category) as number)
       .attr('cy', d => y(d.value) as number)
       .attr('r', 4)
-      .style('fill', d => d.fill ? d.fill : '#2874A6');
+      .style('fill', d => d.fill ? d.fill : '#2874A6')
+      .on('mousemove', d => {
+          tooltip
+            .style('position', 'fixed')
+            .style('left', d3.event.clientX + 'px')
+            .style('top', d3.event.clientY + 'px')
+            .style('display', 'flex')
+            .style('align-items', 'center')
+            .html(`<strong>${d.label}, ${d.category}</strong>: ${parseFloat(d.value.toFixed(2))}`);
+      })
+      .on('mouseout', () => tooltip.style('display', 'none'));
   group
     .selectAll('primaryPoints')
     .data(data.filter(d => d.plotPoint && d.primaryPoint))
@@ -139,6 +174,16 @@ const sumstat = d3.nest() // nest function allows to group the calculation per l
       .attr('cx', d => x(d.category) as number)
       .attr('cy', d => y(d.value) as number)
       .attr('r', 7)
-      .style('fill', d => d.fill ? d.fill : 'red');
+      .style('fill', d => d.fill ? d.fill : 'red')
+      .on('mousemove', d => {
+          tooltip
+            .style('position', 'fixed')
+            .style('left', d3.event.clientX + 'px')
+            .style('top', d3.event.clientY + 'px')
+            .style('display', 'flex')
+            .style('align-items', 'center')
+            .html(`<strong>${d.label}, ${d.category}</strong>: ${d.value}`);
+      })
+      .on('mouseout', () => tooltip.style('display', 'none'));
 
 };
