@@ -14,6 +14,7 @@ import {
   primaryFont,
   secondaryFont,
   VizSource,
+  Authors,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import styled, {keyframes} from 'styled-components/macro';
@@ -72,7 +73,7 @@ const Root = styled(FullWidthContent)`
   }
 
   a {
-    color: #2160bd;
+    color: #4790b4;
   }
 `;
 
@@ -465,6 +466,10 @@ const AlbaniaStory = () => {
           <Heading>
             <FullWidth>
               <StoryTitle>How to Accelerate Economic Growth in Albania</StoryTitle>
+              <Authors>
+                By Tim O'Brien
+                <br />Design and Visualizations by Kyle Soeltz &amp; Nil Tuzcu
+              </Authors>
               <p>
                 This brief analysis takes stock of Albania’s economic growth prior to the COVID-19 crisis and what the strengths and weaknesses of the pre-COVID economy imply for recovery and the possibility of accelerating long-term and inclusive growth in the years to come. Albania is a place where much has been achieved to expand opportunity and well-being as growth has gradually accelerated since 2013-14, but where much remains to be done to continue this acceleration once the immediate crisis of COVID-19 has passed.
               </p>
@@ -494,7 +499,7 @@ const AlbaniaStory = () => {
             <StorySectionContainer>
               <StickyText>
                 <p ref={section_0}>
-                  Looking back on the last decade, the Albanian economy achieved an extraordinary turnaround. Itis not a stretch to call it an Albanian Miracle. Things looked bleak back in 2013 as annual per capita income growth had decelerated over the previous five years to reach a low of 1.0%.
+                  Looking back on the last decade, the Albanian economy achieved an extraordinary turnaround. It is not a stretch to call it an <a href='https://www.project-syndicate.org/commentary/albanian-economic-miracle-innovative-policymaking-by-ricardo-hausmann-2018-09?barrier=accesspaylog' target='_blank' rel='noopener noreferrer'>Albanian Miracle</a>. Things looked bleak back in 2013 as annual per capita income growth had decelerated over the previous five years to reach a low of 1.0%.
                 </p>
               </StickyText>
             </StorySectionContainer>
@@ -525,7 +530,7 @@ const AlbaniaStory = () => {
                   Labor market outcomes have been improving for all combinations of gender and age groups.
                 </p>
                 <p>
-                  More people are getting jobs; more jobs are in the formal sector; and more people are working inlarge firms. A recent analysis of the first two years of the new Income and Living Conditions Survey, shows that relative poverty declined between 2017 and 2018. As incomes are rising, the relative poverty income threshold rose significantly (by 11%) and yet the number of Albanians below the threshold declined, showing that the benefits of growth are being largely shared. The survey also shows declining inequality for all age groups.
+                  More people are getting jobs; more jobs are in the formal sector; and more people are working in large firms. A <a href='http://www.instat.gov.al/media/6544/income-and-living-conditions-in-albania-2017-2018.pdf' target='_blank' rel='noopener noreferrer'>recent analysis</a> of the first two years of the new Income and Living Conditions Survey, shows that relative poverty declined between 2017 and 2018. As incomes are rising, the relative poverty income threshold rose significantly (by 11%) and yet the number of Albanians below the threshold declined, showing that the benefits of growth are being largely shared. The survey also shows declining inequality for all age groups.
                 </p>
               </StickyText>
             </StorySectionContainer>
@@ -554,18 +559,18 @@ const AlbaniaStory = () => {
             <StorySectionContainer>
               <StickyText>
                 <p ref={section_8}>
-                  Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës, Fier, and Gjirokastër — with many regions growing in absolute terms even as they have declined in population. Source: INSTATDespite achieving broad-based growth under difficult conditions, many Albanians still feel left behind. The economic expansion has delivered jobs, but wage growth has not always kept pace. While there are signs of stronger wage growth in the last few years, real wages have stagnated over much of the growth acceleration, with the exception of employees in larger firms. In particular, manufacturing jobs such as those in the fason industry (i.e. garments, textiles, and footwear) pay lower wages than the rest of the economy. On the whole, diversification of the manufacturing sector leaves much to be desired. Given that emigration is a much faster way to converge one’s own income than waiting three decades for Albanian incomes to catch up, many Albanians still desire to leave.
+                  Despite achieving broad-based growth under difficult conditions, many Albanians still feel left behind. The economic expansion has delivered jobs, but wage growth has not always kept pace. While there are signs of stronger wage growth in the last few years, real wages have stagnated over much of the growth acceleration, with the exception of employees in larger firms. In particular, manufacturing jobs such as those in the <em>fason</em> industry (i.e. garments, textiles, and footwear) pay lower wages than the rest of the economy. On the whole, diversification of the manufacturing sector leaves much to be desired. Given that emigration is a much faster way to converge one’s own income than waiting three decades for Albanian incomes to catch up, many Albanians still desire to leave.
                 </p>
                 <p>
-                  An annual survey by Gallup shows that more than half of Albanians would like to move permanently to another country — a rate that has actually increased since 2013. Gallup surveys also show that Albanians’ assessment of their local job market has continued to improve in the same period, although a slight majority is consistently dissatisfied with the standard of living and40% of the sample see it getting worse over time.
+                  An annual <a href='https://news.gallup.com/poll/245255/750-million-worldwide-migrate.aspx' target='_blank' rel='noopener noreferrer'>survey by Gallup</a> shows that more than half of Albanians would like to move permanently to another country — a rate that has actually increased since 2013. Gallup surveys also show that Albanians’ assessment of their local job market has continued to improve in the same period, although a slight majority is consistently dissatisfied with the standard of living and 40% of the sample see it getting worse over time.
                 </p>
               </StickyText>
             </StorySectionContainer>
           </TextBlock>
           <SingleColumnNarrative>
-            <StoryHeading>Taking Stock of the Growth Process prior to COVID-19</StoryHeading>
+            <StoryHeading>What Constrains Further Acceleration after COVID-19?</StoryHeading>
             <p ref={section_10}>
-              Based on our Atlas of Economic Complexity, Albania’s anticipated steady state economic growth rate for the next 10 years based on the embedded capabilities of the economy is around 3.3%.
+              Based on our <a href='https://atlas.cid.harvard.edu/countries/4' target='_blank' rel='noopener noreferrer'>Atlas of Economic Complexity</a>, Albania’s anticipated steady state economic growth rate for the next 10 years based on the embedded capabilities of the economy is around 3.3%.
             </p>
             <h3>Growth Projections, 2017-2027</h3>
             <InlineVizContainer>
@@ -633,13 +638,13 @@ const AlbaniaStory = () => {
               <VizSource>Source: <em>Atlas of Economic Complexity</em></VizSource>
             </LegendContainer>
             <p>
-              These trends imply that pace of sustainable economic growth, and particularly the creation of good jobs, will be limited by the pace at which the Albanian economy absorbs knowhow from abroad to diversify economic activities. While the exact rate of growth may adjust up and down based on temporary causes (the current COVID-19 shock, rainfall and electricity output, natural disasters, etc.), the overall strength and quality of growth will depend on the goods and services that the Albanian economy learns to produce.
+              These trends imply that the pace of sustainable economic growth, and particularly the creation of good jobs, will be limited by the pace at which the Albanian economy absorbs knowhow from abroad to diversify economic activities. While the exact rate of growth may adjust up and down based on temporary causes (the current COVID-19 shock, rainfall and electricity output, natural disasters, etc.), the overall strength and quality of growth will depend on the goods and services that the Albanian economy learns to produce.
             </p>
             <p>
-              As shown in past growth diagnostic research for Albania, diversification of economic activities to date has taken place primarily through especially through non-energy FDI, diaspora involvement, and circular migration. As companies enter Albania from other countries and individuals return to Albania after time spent abroad, they tend to expand the Albanian economy’s ability to capitalize on latent comparative advantages. Over the period since 2013, FDI has been dominated in scale by the energy sector, but smaller investments by foreign companies have had outsized impacts in their introduction of entire industries, and many jobs, that have changed the structure of the economy. These new industries include BPO, seafood production, and aggregation of fruits and vegetable production for export. Meanwhile, the Albanian diaspora and returning migrants have introduced new products, business practices and market knowhow across sectors, most dramatically in tourism and agriculture.
+              As shown in <a href='https://growthlab.cid.harvard.edu/files/growthlab/files/alb_growth_diagnostic_report.pdf' target='_blank' rel='noopener noreferrer'>past growth diagnostic research for Albania</a>, diversification of economic activities to date has taken place primarily through especially through non-energy FDI, diaspora involvement, and circular migration. As companies enter Albania from other countries and individuals return to Albania after time spent abroad, they tend to expand the Albanian economy’s ability to capitalize on latent comparative advantages. Over the period since 2013, FDI has been dominated in scale by the energy sector, but smaller investments by foreign companies have had outsized impacts in their introduction of entire industries, and many jobs, that have changed the structure of the economy. These new industries include BPO, seafood production, and aggregation of fruits and vegetable production for export. Meanwhile, the Albanian diaspora and returning migrants have introduced new products, business practices and market knowhow across sectors, most dramatically in tourism and agriculture.
             </p>
             <p ref={section_14}>
-              FDI and diaspora have together aided the accumulation of knowhow of the private sector, but cross-country comparisons suggest that the pace of knowhow introduction from abroad could be much, much faster. The dataset fDi Markets, which tracks cross-border investments announced online, has captured just a few announced projects in Albania in last decade. Notably, in each sector where Albania has received investment, other countries in the region have received significantly more projects from a more diverse set of source countries. Romania stands out especially for the amount of FDI it has received in the areas where investors have shown interest in Albania.
+              FDI and diaspora have together aided the accumulation of knowhow of the private sector, but cross-country comparisons suggest that the pace of knowhow introduction from abroad could be much, much faster. The dataset fDi Markets, which tracks cross-border investments announced online, has captured just a few announced projects in Albania in the last decade. Notably, in each sector where Albania has received investment, other countries in the region have received significantly more projects from a more diverse set of source countries. Romania stands out especially for the amount of FDI it has received in the areas where investors have shown interest in Albania.
             </p>
             <h3>Investments vs. Regional Peers, 2000-2019</h3>
             <ClusterChartContainer>
@@ -656,7 +661,7 @@ const AlbaniaStory = () => {
             </LegendContainer>
             <StoryHeading>The Path to Stronger Growth in the Aftermath of COVID-19</StoryHeading>
             <p>
-              The next phase of the Albanian miracle will require more co-evolution of state functions and delivery to meet the changing needs of the private sector, including actions that accelerate knowhow acquisition from abroad. In 2017, the Growth Lab published a comprehensive growth diagnostic for the Albanian economy and found the following breakdown of constraints to growth.
+              The next phase of the Albanian miracle will require more co-evolution of state functions and delivery to meet the changing needs of the private sector, including actions that accelerate knowhow acquisition from abroad. In 2017, the Growth Lab published a <a href='https://growthlab.cid.harvard.edu/files/growthlab/files/alb_growth_diagnostic_report.pdf' target='_blank' rel='noopener noreferrer'>comprehensive growth diagnostic</a> for the Albanian economy and found the following breakdown of constraints to growth.
             </p>
             <TableContainer>
               <DynamicTable
@@ -711,7 +716,7 @@ const AlbaniaStory = () => {
               />
             </TableContainer>
             <p>
-              The diagnostic found that the Albanian economy was in a “low-knowhow” equilibrium and that the potential sources of knowhow inflows (FDI, diaspora involvement, immigration) were largely limited by specific rule of law issues and, especially, the outward perception of rule of law issues in the country. Since this report was written, the productive knowhow constraint has been relaxing gradually — perhaps most clearly evidenced by widespread increases in relevant variables in the 2019 edition of the World Bank Enterprise Survey against the last survey in 2013 — which has coincided with the gradual growth acceleration. However, despite general clear improvement in many rule of law issues, which is reflected both in firm surveys and in progress toward Albanian accession into the European Union, perceptions of poor rule of law continue to slow knowhow acquisition.
+              The diagnostic found that the Albanian economy was in a “low-knowhow” equilibrium and that the potential sources of knowhow inflows (FDI, diaspora involvement, immigration) were largely limited by specific rule of law issues and, especially, the outward perception of rule of law issues in the country. Since this report was written, the productive knowhow constraint has been relaxing gradually — perhaps most clearly evidenced by widespread increases in relevant variables in the 2019 edition of the World Bank Enterprise Survey against the last survey in 2013 — which has coincided with the gradual growth acceleration. However, despite general clear improvement in many rule of law issues, which is reflected both in firm surveys and in <a href='https://ec.europa.eu/neighbourhood-enlargement/countries/detailed-country-information/albania_en' target='_blank' rel='noopener noreferrer'>progress toward Albanian accession into the European Union</a>, perceptions of poor rule of law continue to slow knowhow acquisition.
             </p>
             <p>
               The following changes are noteworthy since the diagnostic was completed in 2017, which impact Albania’s comparative advantages and disadvantages as a destination for global business investment in search of efficiency and access to the European market.
@@ -736,7 +741,7 @@ const AlbaniaStory = () => {
               />
             </TableContainer>
             <p ref={section_15}>
-              Albania’s electricity system has continued to improve in order to deliver electricity reliably and at a low price. Whereas more than a quarter of firms used to report electricity as their biggest constraint, this has fallen to less than 10% of firms, very close to average for upper middle-income countries, as the occurrence of outages and firm losses due to outages have fallen dramatically. Albania still underperforms in comparison to the rest of the Balkan region, which has very low-cost electricity on the whole. Given Albania’s recent success in tendering very low-cost solar generation to complement its predominantly hydropower generation, this is likely to continue to improve.
+              Albania’s electricity system has continued to improve in order to deliver electricity reliably and at a low price. Whereas more than a quarter of firms used to report electricity as their biggest constraint, this has fallen to less than 10% of firms, very close to average for upper middle-income countries, as the occurrence of outages and firm losses due to outages have fallen dramatically. Albania still underperforms in comparison to the rest of the Balkan region, which has very low-cost electricity on the whole. Given Albania’s <a href='https://af.reuters.com/article/commoditiesNews/idAFL8N2D944U' target='_blank' rel='noopener noreferrer'>recent success in tendering very low-cost solar generation</a> to complement its predominantly hydropower generation, this is likely to continue to improve.
             </p>
             <h3>Responses to Electricity Questions in World Bank Enterprise Surveys</h3>
             <BarChartContainer>
@@ -746,7 +751,7 @@ const AlbaniaStory = () => {
               <VizSource>Source: <em>World Bank Enterprise Surveys</em></VizSource>
             </LegendContainer>
             <p ref={section_16}>
-              On the opposite extreme, performance of the court system and reports of “monopoly or unfair competition” have grown as constraints based on a variety of firm surveys. Although measures of government effectiveness have improved markedly across surveys and bribery has reduced among most interactions with government (with the exception of tax collection), judicial reforms appear to have traded off an old problem of corrupt judges for a new problem of too few judges. While the process is a critical step forward, it is resulting in businesses that rely on the court system to settle disputed to face an increased likelihood of delays. In fact, despite positive reforms, Albanian exports have become increasing focused in products that are less intensive in the use of contracts to manage supplier relationships.
+              On the opposite extreme, performance of the court system and reports of “monopoly or unfair competition” have grown as constraints based on a variety of firm surveys. Although measures of government effectiveness have improved markedly across surveys and bribery has reduced among most interactions with government (with the exception of tax collection), judicial reforms appear to have traded off an old problem of corrupt judges for a new problem of too few judges. While the process is a critical step forward, it is resulting in businesses that rely on the court system to settle disputes to face an increased likelihood of delays. In fact, despite positive reforms, Albanian exports have become increasing focused in products that are less intensive in the use of contracts to manage supplier relationships.
             </p>
             <h3>Albania - Contract Intensity of Exports</h3>
             <InlineVizContainer>
@@ -812,7 +817,7 @@ const AlbaniaStory = () => {
               In order to rebound quickly from COVID-19 and pave the way for faster convergence in income levels with the European Union, the capabilities of the Government of Albania must continue to evolve to meet the demands of a diversifying economy and to attract new FDI to accelerate the growth of productive knowhow. This evolution requires not only continued improvement in macroeconomic management, traditional infrastructure development, and institutional reform to deliver greater rule of law — all of which have improved in recent years. It also requires innovation in the capabilities of government to deliver public goods on which future diversification will rely and the use of proactive and targeted investment promotion to attract global companies to Albania.
             </p>
             <p>
-              While the health impacts of COVID-19 have been impressively contained in Albania, which will allow for a relatively fast opening of the domestic economy, the economic shock of the crisis due to external factors is severe and likely to be prolonged. This makes the present a critical time for innovation in government capabilities. The newly created Albanian Investment Corporation has been designed as an institution to support forward-looking public good development, while new tools for identifying global FDI that can thrive in Albania are now being used to strategize for accelerating knowhow acquisition and growth in a world that has been fundamentally changed by COVID-19.
+              While the health impacts of COVID-19 have been impressively contained in Albania, which will allow for a relatively fast opening of the domestic economy, the economic shock of the crisis due to external factors is severe and likely to be prolonged. This makes the present a critical time for innovation in government capabilities. The newly created <a href='https://albania.growthlab.cid.harvard.edu/blog/case-albanian-investment-corporation' target='_blank' rel='noopener noreferrer'>Albanian Investment Corporation</a> has been designed as an institution to support forward-looking public good development, while <a href='https://growthlab.app/albania-tool' target='_blank' rel='noopener noreferrer'>new tools for identifying global FDI</a> that can thrive in Albania are now being used to strategize for accelerating knowhow acquisition and growth in a world that has been fundamentally changed by COVID-19.
             </p>
           </SingleColumnNarrative>
         </StoriesGrid>

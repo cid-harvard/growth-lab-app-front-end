@@ -20,7 +20,7 @@ const Root = styled.div`
 const Column = styled.div`
   position: relative;
 `;
-const YearTitle = styled.h3`
+const YearTitle = styled.div`
   position: absolute;
   top: 0.5rem;
   margin: auto;

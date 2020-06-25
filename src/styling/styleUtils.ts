@@ -198,7 +198,7 @@ export const CoverPhoto = styled.div`
 
 export const StoryTitle = styled.h1`
   text-align: center;
-  margin: 2rem 0 3rem;
+  margin: 2rem 0 1.5rem;
   font-size: 2.5rem;
   margin-top: 2rem;
   letter-spacing: 1px;
@@ -210,6 +210,16 @@ export const StoryHeading = styled.h2`
   font-weight: 600;
   font-size: 1.75rem;
   text-align: center;
+`;
+
+export const Authors = styled.div`
+  font-family: ${secondaryFont};
+  letter-spacing: -0.8px;
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
 `;
 
 
