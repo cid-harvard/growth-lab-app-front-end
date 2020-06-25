@@ -6,6 +6,9 @@ import {
   Layer,
 } from 'react-mapbox-gl';
 import styled from 'styled-components/macro';
+import {
+  secondaryFont,
+} from '../../../styling/styleUtils';
 
 const Root = styled.div`
   display: grid;
@@ -14,10 +17,22 @@ const Root = styled.div`
   height: 100%;
 `;
 
+const Column = styled.div`
+  position: relative;
+`;
+const YearTitle = styled.h3`
+  position: absolute;
+  top: 0.5rem;
+  margin: auto;
+  z-index: 10;
+  font-family: ${secondaryFont};
+  font-size: 2rem;
+`;
+
 interface RawDatum {
   year: 2017 | 2019;
   path_id: string;
-  new: number;
+  new: 0 | 1;
   type: 'Origin' | 'Destination';
   code: string;
   airport: string;
@@ -39,7 +54,7 @@ const lines: LineDatum[] = [];
 rawData.forEach(o => {
   if (o.type === 'Origin') {
     const d = rawData.find(dest => dest.path_id === o.path_id && dest.type === 'Destination');
-    if (d && d.lat && d.long && o.lat && o.long) {
+    if (d && d.lat && d.long && o.lat && o.long && !(o.new === 0 && o.year === 2019)) {
       lines.push({
         id: o.path_id,
         origin: o.city,
@@ -68,7 +83,7 @@ const MapboxMap = () => {
         key={'line flight paths ' + id + year}
         coordinates={coordinates}
         properties={{
-          'line-color': year === 2017 ? 'blue' : 'red',
+          'line-color': year === 2017 ? '#346bbf' : '#c73000',
         }}
       />,
     );
@@ -77,7 +92,7 @@ const MapboxMap = () => {
         key={'circle flight paths ' + id + year}
         coordinates={coordinates[1]}
         properties={{
-          'circle-color': year === 2017 ? 'blue' : 'red',
+          'circle-color': year === 2017 ? '#346bbf' : '#c73000',
         }}
       />,
     );
@@ -86,7 +101,8 @@ const MapboxMap = () => {
 
   return (
     <Root>
-      <div>
+      <Column>
+        <YearTitle style={{left: '0.7rem'}}>2017</YearTitle>
         <DefaultMap
           allowPan={false}
           allowZoom={false}
@@ -121,14 +137,46 @@ const MapboxMap = () => {
             </Layer>
           </>
         </DefaultMap>
-      </div>
-      <div>
+      </Column>
+      <Column>
+        <YearTitle style={{right: '0.7rem'}}>2019</YearTitle>
         <DefaultMap
           allowPan={false}
           allowZoom={false}
           fitBounds={euZoomedCoordinates}
         >
           <>
+            <Layer
+             type='line'
+             id={'flight-paths-feature-lines-2017'}
+             key={'flight-paths-feature-lines-2017'}
+             layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+             paint={{
+               'line-color': ['get', 'line-color'],
+               'line-opacity': 0.45,
+               'line-width': 2,
+             }}
+           >
+              {lineFeatures_2017}
+            </Layer>
+            <Layer
+             type='circle'
+             id={'flight-paths-feature-circles-2017'}
+             key={'flight-paths-feature-circles-2017'}
+             paint={{
+                'circle-color': ['get', 'circle-color'],
+                'circle-opacity': 0.45,
+                'circle-radius': {
+                  base: 3,
+                  stops: [
+                    [1, 3],
+                    [10, 3],
+                  ],
+                },
+              }}
+            >
+              {circleFeatures_2017}
+            </Layer>
             <Layer
              type='line'
              id={'flight-paths-feature-lines-2019'}
@@ -157,7 +205,7 @@ const MapboxMap = () => {
             </Layer>
           </>
         </DefaultMap>
-      </div>
+      </Column>
     </Root>
   );
 };

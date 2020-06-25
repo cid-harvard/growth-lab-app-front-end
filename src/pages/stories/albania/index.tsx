@@ -70,6 +70,10 @@ const Root = styled(FullWidthContent)`
   p + h3 {
     margin-top: 3rem;
   }
+
+  a {
+    color: #2160bd;
+  }
 `;
 
 const Heading = styled.div`
@@ -769,6 +773,28 @@ const AlbaniaStory = () => {
             <InlineVizContainer>
               <RoadTravelMap />
             </InlineVizContainer>
+            <LegendContainer>
+              <VizSource>
+                Source: <em> Google Map</em>
+                <br />Note: Color of circles indicates change in travel time: the redder the dot, the higher the increase in travel time while the greener the dot, the higher the decrease in travel time. Assumes 10am weekday departure.
+              </VizSource>
+              <ScaleContainer>
+                <ColorScaleLegend
+                  title={'Minutes'}
+                  minLabel={'-25'}
+                  maxLabel={'+20'}
+                  rootStyles={{marginTop: '1rem'}}
+                  gradientString={`
+                      linear-gradient(
+                        90deg,
+                        forestgreen 0%,
+                        yellow 55%,
+                        red 100%
+                      )
+                    `}
+                />
+              </ScaleContainer>
+            </LegendContainer>
             <p ref={section_18}>
               Due less to infrastructure and more to management changes, Albania has enjoyed a rapid expansion in air travel and connectivity to European cities from its one airport outside of Tirana. This has supported tourism growth, to a point where the need for a second airport is being evaluated. International air travel growth is especially important given Albania’s lack of a rail network to connect to the rest of Europe.
             </p>
@@ -776,6 +802,12 @@ const AlbaniaStory = () => {
             <InlineVizContainer>
               <FlightRoutesMap />
             </InlineVizContainer>
+            <LegendContainer>
+              <VizSource>
+                Source: <em><a href='http://www.flightconnections.com' target='_blank' rel='noopener noreferrer'>www.flightconnections.com</a></em>
+                <br />Note: Blue lines indicate flight paths that existed in 2017. Red lines indicate flight paths that were created between 2017 and 2019.
+              </VizSource>
+            </LegendContainer>
             <p>
               In order to rebound quickly from COVID-19 and pave the way for faster convergence in income levels with the European Union, the capabilities of the Government of Albania must continue to evolve to meet the demands of a diversifying economy and to attract new FDI to accelerate the growth of productive knowhow. This evolution requires not only continued improvement in macroeconomic management, traditional infrastructure development, and institutional reform to deliver greater rule of law — all of which have improved in recent years. It also requires innovation in the capabilities of government to deliver public goods on which future diversification will rely and the use of proactive and targeted investment promotion to attract global companies to Albania.
             </p>

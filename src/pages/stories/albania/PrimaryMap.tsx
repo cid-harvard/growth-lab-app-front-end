@@ -117,6 +117,89 @@ const euGeoJson = {...worldData, features: euGdpFeatures};
 export const albaniaBounds: [Coordinate, Coordinate] = [[18.5394, 42.8236], [21.4508, 39.4277]];
 export const euBounds: [Coordinate, Coordinate] = [[-30.7617, 75.8021], [48.8672, 32.6949]];
 
+const PopulationMapLabels = () => {
+  return (
+    <>
+      <Layer
+         type='line'
+         id='population-map-label-text-lines'
+         layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+         paint={{ 'line-color': '#333', 'line-width': 2, 'line-opacity': 0.4 }}>
+         <Feature coordinates={[[18.5859, 41.42], [19.5, 41.42]]}/>
+         <Feature coordinates={[[18.6, 40.3549], [19.6545, 40.3549]]}/>
+         <Feature coordinates={[[18.7919, 41.1207], [19.6, 41.1207]]}/>
+      </Layer>
+      <Layer
+         type='symbol'
+         id={'population-map-label-text'}
+         key={'population-map-label-text'}
+          layout={{
+            'text-field': ['get', 'text-field'],
+            'text-size': 11,
+            'text-letter-spacing': 0.05,
+            'text-offset': [0, 2],
+            'text-allow-overlap': true,
+          }}
+        >
+          <Feature
+            key={'text label primary map durres'}
+            coordinates={[18.3459, 41.6]}
+            properties={{
+              'text-field': 'Durres',
+            }}
+          />
+          <Feature
+            key={'text label primary map vlora'}
+            coordinates={[18.36, 40.5289]}
+            properties={{
+              'text-field': 'Vlora',
+            }}
+          />
+          <Feature
+            key={'text label primary map tirana'}
+            coordinates={[18.52, 41.2947]}
+            properties={{
+              'text-field': 'Tirana',
+            }}
+          />
+      </Layer>
+    </>
+  );
+};
+const GDPMapLabels = () => {
+  return (
+    <>
+      <Layer
+         type='line'
+         id='gdp-map-label-text-lines'
+         layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+         paint={{ 'line-color': '#333', 'line-width': 2, 'line-opacity': 0.4 }}>
+         <Feature coordinates={[[20.4456, 42.0615], [21.2, 42.0615]]}/>
+      </Layer>
+      <Layer
+         type='symbol'
+         id={'gdp-map-label-text'}
+         key={'gdp-map-label-text'}
+          layout={{
+            'text-field': ['get', 'text-field'],
+            'text-size': 11,
+            'text-letter-spacing': 0.05,
+            'text-offset': [0, 2],
+            'text-allow-overlap': true,
+          }}
+        >
+          <Feature
+            key={'text label primary map kukes'}
+            coordinates={[21.4, 42.23]}
+            properties={{
+              'text-field': 'Kukës',
+            }}
+          />
+      </Layer>
+    </>
+  );
+};
+
 interface Props {
   section: number | null;
 }
@@ -133,6 +216,7 @@ const MapboxMap = (props: Props) => {
   let scaleMin: number;
   let scaleMax: number;
   let source: string;
+  let locationLabels: React.ReactElement<any>;
   if (section && section >= 8) {
     fitBounds = euBounds;
     data = euGeoJson;
@@ -141,6 +225,7 @@ const MapboxMap = (props: Props) => {
     scaleMin = euMin;
     scaleMax = euMax;
     source = 'WDI';
+    locationLabels = <></>;
   } else {
     fitBounds = albaniaBounds;
     source = 'INSTAT';
@@ -150,12 +235,14 @@ const MapboxMap = (props: Props) => {
       scaleTitle = populationColorScaleTitle;
       scaleMin = populationMin;
       scaleMax = populationMax;
+      locationLabels = <PopulationMapLabels />;
     } else {
       data = gdpGrowthGeoJson;
       gradientString = cssGradientGdp;
       scaleTitle = gdpColorScaleTitle;
       scaleMin = gdpMin;
       scaleMax = gdpMax;
+      locationLabels = <GDPMapLabels />;
     }
   }
   const features = data.features.map((point: any) => {
@@ -210,16 +297,19 @@ const MapboxMap = (props: Props) => {
         fitBounds={fitBounds}
         mapCallback={displayTooltip}
       >
-        <Layer
-          type='fill'
-          id={'primary-map-geojson-layer'}
-          paint={{
-            'fill-color': ['get', 'fill'],
-            'fill-outline-color': '#999',
-          }}
-        >
-          {features}
-        </Layer>
+        <>
+          <Layer
+            type='fill'
+            id={'primary-map-geojson-layer'}
+            paint={{
+              'fill-color': ['get', 'fill'],
+              'fill-outline-color': '#999',
+            }}
+          >
+            {features}
+          </Layer>
+          {locationLabels}
+        </>
       </DefaultMap>
       <VizSource>Source: <em>{source}</em></VizSource>
       <ScaleContainer>

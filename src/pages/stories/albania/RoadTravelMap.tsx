@@ -56,7 +56,7 @@ const MapboxMap = () => {
     (
       <Feature
         key={'text travel times tirana'}
-        coordinates={lines[0].coordinates[0]}
+        coordinates={[lines[0].coordinates[0][0] + 0.25, lines[0].coordinates[0][1] + 0.2]}
         properties={{
           'text-field': lines[0].origin,
         }}
