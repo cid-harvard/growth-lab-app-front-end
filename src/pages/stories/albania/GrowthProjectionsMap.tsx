@@ -1,5 +1,5 @@
 import DefaultMap from '../../../components/mapbox';
-import React, {useState} from 'react';
+import React from 'react';
 import { euBounds, worldData } from './PrimaryMap';
 import raw from 'raw.macro';
 import { scaleQuantile } from 'd3-scale';
@@ -33,7 +33,7 @@ worldData.features.forEach((f: any) => {
     growthProjectionsFeatures.push({...f, properties: {
       ...f.properties,
       fill: colorScale(targetCountry.growth),
-      description: `<strong>${f.properties.name}:</strong> ${targetCountry.growth}`,
+      description: `<strong>${f.properties.name}:</strong> ${targetCountry.growth}%`,
       code: f.properties.iso_alpha3,
     }});
   }
@@ -52,8 +52,6 @@ const getHighlightedGeoJson = (code: string) => {
 
 const MapboxMap = () => {
   const defaultHighlighted = getHighlightedGeoJson('ALB');
-  const [highlightedGeoJson, setHighlightedGeoJson] = useState<any | null>(defaultHighlighted);
-
 
   const features = growthProjectionsGeoJson.features.map((point: any) => {
     const description: string = point.properties.description;
@@ -70,16 +68,6 @@ const MapboxMap = () => {
       />
     );
   });
-
-  const highlighted = highlightedGeoJson ? (
-    <GeoJSONLayer
-      data={highlightedGeoJson}
-      linePaint={{
-        'line-color': '#2F6BC2',
-        'line-width': 2.5,
-      }}
-    />
-  ) : <></>;
 
   const displayTooltip = (map: any) => {
     const popup = new mapboxgl.Popup({
@@ -106,40 +94,41 @@ const MapboxMap = () => {
           .setHTML(description)
           .addTo(map);
       }
-      if (e && e.features && e.features[0] && e.features[0].properties && e.features[0].properties.code) {
-          setHighlightedGeoJson(getHighlightedGeoJson(e.features[0].properties.code));
-        } else {
-          setHighlightedGeoJson(defaultHighlighted);
-        }
-      });
-      map.on('mouseleave', 'growth-projections-map-geojson-layer', function() {
-      popup.remove();
-          setHighlightedGeoJson(defaultHighlighted);
-
+    });
+    map.on('mouseleave', 'growth-projections-map-geojson-layer', function() {
+        popup.remove();
     });
   };
 
   return (
-    <DefaultMap
-      allowPan={false}
-      allowZoom={false}
-      fitBounds={euBounds}
-      mapCallback={displayTooltip}
-    >
-      <>
-        <Layer
-          type='fill'
-          id={'growth-projections-map-geojson-layer'}
-          paint={{
-            'fill-color': ['get', 'fill'],
-            'fill-outline-color': '#999',
-          }}
-        >
-          {features}
-        </Layer>
-        {highlighted}
-      </>
-    </DefaultMap>
+    <>
+      <DefaultMap
+        allowPan={false}
+        allowZoom={false}
+        fitBounds={euBounds}
+        mapCallback={displayTooltip}
+      >
+        <>
+          <Layer
+            type='fill'
+            id={'growth-projections-map-geojson-layer'}
+            paint={{
+              'fill-color': ['get', 'fill'],
+              'fill-outline-color': '#999',
+            }}
+          >
+            {features}
+          </Layer>
+          <GeoJSONLayer
+            data={defaultHighlighted}
+            linePaint={{
+              'line-color': '#2F6BC2',
+              'line-width': 2.5,
+            }}
+          />
+        </>
+      </DefaultMap>
+    </>
   );
 };
 

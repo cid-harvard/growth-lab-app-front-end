@@ -235,3 +235,9 @@ export const VizSource = styled.cite`
   font-size: 0.7rem;
 `;
 
+export const VizSourceCompact = styled.cite`
+  text-align: center;
+  display: block;
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.7rem;
+`;

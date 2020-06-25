@@ -42,6 +42,7 @@ interface BaseProps {
   title: string;
   maxLabel: string | number;
   minLabel: string | number;
+  rootStyles?: React.CSSProperties;
 }
 
 
@@ -56,7 +57,7 @@ type Props = BaseProps & ({
 });
 
 const Legend = (props: Props) => {
-  const { maxLabel, minLabel, title } = props;
+  const { maxLabel, minLabel, title, rootStyles } = props;
 
   const gradientBar = props.minColor && props.maxColor ? (
     <ColorScaleBar
@@ -70,7 +71,7 @@ const Legend = (props: Props) => {
   );
 
   return (
-    <Root>
+    <Root style={rootStyles}>
       <LabelContainer>
         <div>{minLabel}</div>
         <div>{maxLabel}</div>

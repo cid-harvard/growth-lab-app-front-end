@@ -6,6 +6,9 @@ import {scaleLinear} from 'd3-scale';
 import ColorScaleLegend from '../../../components/dataViz/ColorScaleLegend';
 import styled from 'styled-components/macro';
 import mapboxgl from 'mapbox-gl';
+import {
+  VizSource,
+} from '../../../styling/styleUtils';
 
 const ScaleContainer = styled.div`
   width: 350px;
@@ -129,6 +132,7 @@ const MapboxMap = (props: Props) => {
   let scaleTitle: string;
   let scaleMin: number;
   let scaleMax: number;
+  let source: string;
   if (section && section >= 8) {
     fitBounds = euBounds;
     data = euGeoJson;
@@ -136,8 +140,10 @@ const MapboxMap = (props: Props) => {
     scaleTitle = euColorScaleTitle;
     scaleMin = euMin;
     scaleMax = euMax;
+    source = 'WDI';
   } else {
     fitBounds = albaniaBounds;
+    source = 'INSTAT';
     if (section && section <= 6) {
       data = popultaionChangeGeoJson;
       gradientString = cssGradientPopulation;
@@ -191,8 +197,8 @@ const MapboxMap = (props: Props) => {
           .setHTML(description)
           .addTo(map);
       }
-      });
-      map.on('mouseleave', 'primary-map-geojson-layer', function() {
+    });
+    map.on('mouseleave', 'primary-map-geojson-layer', function() {
       popup.remove();
     });
   };
@@ -215,12 +221,14 @@ const MapboxMap = (props: Props) => {
           {features}
         </Layer>
       </DefaultMap>
+      <VizSource>Source: <em>{source}</em></VizSource>
       <ScaleContainer>
         <ColorScaleLegend
           title={scaleTitle}
           minLabel={scaleMin}
           maxLabel={scaleMax}
           gradientString={gradientString}
+          rootStyles={{marginTop: '0'}}
         />
       </ScaleContainer>
     </>
@@ -228,11 +236,3 @@ const MapboxMap = (props: Props) => {
 };
 
 export default MapboxMap;
-
-        // <GeoJSONLayer
-        //   data={data}
-        //   fillPaint={{
-        //     'fill-color': ['get', 'fill'],
-        //     'fill-outline-color': '#999',
-        //   }}
-        // />

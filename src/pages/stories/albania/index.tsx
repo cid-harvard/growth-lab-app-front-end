@@ -39,6 +39,7 @@ import CoverPhotoImage from './cover-photo.png';
 import CoverPhotoImageLowRes from './cover-photo-low-res.jpg';
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
+import ColorScaleLegend from '../../../components/dataViz/ColorScaleLegend';
 
 const metaTitle = 'How to Accelerate Economic Growth in Albania | Harvard Growth Lab';
 const metaDescription = 'This brief analysis takes stock of Albania’s economic growth prior to the COVID-19 crisis and what the strengths and weaknesses of the pre-COVID economy imply for recovery and the possibility of accelerating long-term and inclusive growth in the years to come. Albania is a place where much has been achieved to expand opportunity and well-being as growth has gradually accelerated since 2013-14, but where much remains to be done to continue this acceleration once the immediate crisis of COVID-19 has passed.';
@@ -85,6 +86,7 @@ const VizContainer = styled.div`
 
 const SingleColumnNarrative = styled.div`
   grid-column: 1 / -1;
+  margin-top: 5rem;
 
   p,
   h2 {
@@ -99,6 +101,19 @@ const InlineVizContainer = styled.div`
   max-width: 700px;
   height: 450px;
   margin: 1.75rem auto;
+`;
+
+const LegendContainer = styled.div`
+  max-width: 700px;
+  margin: 0 auto 1.75rem;
+`;
+
+const ScaleContainer = styled.div`
+  width: 350px;
+  max-width: 100%;
+  margin: 0 auto;
+  font-size: 0.75rem;
+  text-align: center;
 `;
 
 const ClusterChartContainer = styled.div`
@@ -531,6 +546,31 @@ const AlbaniaStory = () => {
             <InlineVizContainer>
               <GrowthProjectionsMap />
             </InlineVizContainer>
+            <LegendContainer>
+              <VizSource>Source: <em>Atlas of Economic Complexity</em></VizSource>
+              <ScaleContainer>
+                <ColorScaleLegend
+                  title={'Growth percent'}
+                  minLabel={'0.48%'}
+                  maxLabel={'7.61%'}
+                  rootStyles={{marginTop: '1rem'}}
+                  gradientString={`
+                      linear-gradient(
+                        90deg,
+                        #4575b4 0%,
+                        #74add1 12.5%,
+                        #abd9e9 25%,
+                        #e0f3f8 37.5%,
+                        #ffffbf 50%,
+                        #fee090 62.5%,
+                        #fdae61 75%,
+                        #f46d43 87.5%,
+                        #d73027 100%
+                      )
+                    `}
+                />
+              </ScaleContainer>
+            </LegendContainer>
             <p ref={section_11}>
               In other words, Albania’s growth is expected to converge to this pace over time. In 2019, a combination of a poor year of hydropower production and the phasing out of major energy-investments resulted in a slowdown in growth to under 2.5% during the first half of the year, but growth rebounded to closer to 3% for 2019 overall. Recently, growth has been tied closely to Albania’s high rate of incoming foreign direct investment (FDI). Albania’s FDI has been high as a share of GDP in recent years but also highly focused in the energy sector, and much of this energy-related investment, which is expected to slow moving forward. Moreover, outside the early stages of physical construction, job creation in this highly capital-intensive sector is typically meager.
             </p>
