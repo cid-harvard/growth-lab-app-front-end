@@ -28,7 +28,7 @@ import GrowthProjectionsMap from './GrowthProjectionsMap';
 import RoadTravelMap from './RoadTravelMap';
 import FlightRoutesMap from './FlightRoutesMap';
 import StandardFooter from '../../../components/text/StandardFooter';
-import {stackData, stackConfig} from './stackChartData';
+import {stackData, stackConfig, industries} from './stackChartData';
 import ClusterChart from './clusterChart';
 import treemapData, {sectors} from './treemapData';
 import albaniaVsRegionalPeersData from './albaniaVsRegionalPeersData';
@@ -581,6 +581,12 @@ const AlbaniaStory = () => {
             <InlineVizContainer>
               {stackChart}
             </InlineVizContainer>
+            <LegendContainer>
+              <VizSource>Source: <em>Bank of Albania</em></VizSource>
+              <HorizontalLegend
+                legendList={industries.map(({fill, name}) => ({label: name, fill, stroke: undefined}))}
+              />
+            </LegendContainer>
             <p ref={section_12}>
               Despite the recent growth acceleration, Albania’s Economic Complexity Index (a measure of the economies capabilities to produce diversified goods and services) remains the lowest in the region.
             </p>
@@ -588,6 +594,9 @@ const AlbaniaStory = () => {
             <InlineVizContainer>
               {albaniaEciPeers}
             </InlineVizContainer>
+            <LegendContainer>
+              <VizSource>Source: <em>Atlas of Economic Complexity</em></VizSource>
+            </LegendContainer>
             <p ref={section_13}>
               This also explains why Albania’s economy remains less export-oriented than neighboring countries despite being equally close to the large European market.
             </p>
@@ -595,6 +604,9 @@ const AlbaniaStory = () => {
             <InlineVizContainer>
               {albaniaGdpPeers}
             </InlineVizContainer>
+            <LegendContainer>
+              <VizSource>Source: <em>Atlas of Economic Complexity</em></VizSource>
+            </LegendContainer>
             <p>
               These trends imply that pace of sustainable economic growth, and particularly the creation of good jobs, will be limited by the pace at which the Albanian economy absorbs knowhow from abroad to diversify economic activities. While the exact rate of growth may adjust up and down based on temporary causes (the current COVID-19 shock, rainfall and electricity output, natural disasters, etc.), the overall strength and quality of growth will depend on the goods and services that the Albanian economy learns to produce.
             </p>

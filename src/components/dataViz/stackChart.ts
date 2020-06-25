@@ -51,7 +51,7 @@ export default (input: Input) => {
   const color = d3.scaleOrdinal()
     .domain(keys)
     .range(d3.schemeSet2);
-  const stackedData = d3.stack().keys(keys)(data);
+  const stackedData = d3.stack().order(d3.stackOrderDescending).keys(keys)(data);
 
     // set the ranges
   const xScale = d3.scaleLinear()
