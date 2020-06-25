@@ -1,10 +1,11 @@
 import DefaultMap, {Coordinate} from '../../../components/mapbox';
 import React from 'react';
-import { GeoJSONLayer } from 'react-mapbox-gl';
+import { Layer, Feature } from 'react-mapbox-gl';
 import raw from 'raw.macro';
 import {scaleLinear} from 'd3-scale';
 import ColorScaleLegend from '../../../components/dataViz/ColorScaleLegend';
 import styled from 'styled-components/macro';
+import mapboxgl from 'mapbox-gl';
 
 const ScaleContainer = styled.div`
   width: 350px;
@@ -62,11 +63,15 @@ albaniaMapData.features.forEach((f: any) => {
   const targetRegion = albaniaHeatMapData.find(({region: r}: {region: string}) => r === f.properties.ADM1_SQ);
 
   popultaionChangeFeatures.push({...f, properties: {
-    ...f.properties, fill: populationColorScale(targetRegion.change_2013_2017),
+    ...f.properties,
+    fill: populationColorScale(targetRegion.change_2013_2017),
+    description: `<strong>${f.properties.ADM1_SQ}:</strong> ${targetRegion.change_2013_2017}`,
   }});
 
   gdpGrowthFeatures.push({...f, properties: {
-    ...f.properties, fill: gdpColorScale(targetRegion.cumulative_growth_rate),
+    ...f.properties,
+    fill: gdpColorScale(targetRegion.cumulative_growth_rate),
+    description: `<strong>${f.properties.ADM1_SQ}:</strong> ${targetRegion.cumulative_growth_rate}`,
   }});
 
 });
@@ -96,9 +101,11 @@ const euGdpFeatures: any[] = [];
 worldData.features.forEach((f: any) => {
   const targetCountry =
     europeGdpData.find(({country_code: c}: {country_code: string}) => c === f.properties.iso_alpha3);
-  if (targetCountry) {
+  if (targetCountry && targetCountry.gdp_2018) {
     euGdpFeatures.push({...f, properties: {
-      ...f.properties, fill: gdpEuropeColorScale(targetCountry.gdp_2018),
+      ...f.properties,
+      fill: gdpEuropeColorScale(targetCountry.gdp_2018),
+      description: `<strong>${f.properties.name}:</strong> ${parseFloat(parseFloat(targetCountry.gdp_2018).toFixed(2))}`,
     }});
   }
 });
@@ -113,6 +120,9 @@ interface Props {
 
 const MapboxMap = (props: Props) => {
   const {section} = props;
+
+  // const [hovered, setHovered] = useState<string | undefined>(undefined);
+
   let fitBounds: [Coordinate, Coordinate];
   let data: any;
   let gradientString: string;
@@ -142,20 +152,68 @@ const MapboxMap = (props: Props) => {
       scaleMax = gdpMax;
     }
   }
+  const features = data.features.map((point: any) => {
+    const description: string = point.properties.description;
+    return (
+      <Feature
+        coordinates={point.geometry.coordinates}
+        properties={{
+          'description': description,
+          'fill': point.properties.fill,
+        }}
+        key={'' + point.latitude + point.longitude}
+      />
+    );
+  });
+
+  const displayTooltip = (map: any) => {
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
+    map.on('mousemove', 'primary-map-geojson-layer', function(e: any) {
+      const {lng, lat} = e.lngLat;
+      const coordinates: [number, number] = [lng, lat];
+      const description = e.features[0].properties.description;
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+      if (!isNaN(coordinates[0]) && !isNaN(coordinates[1])) {
+        popup
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map);
+      }
+      });
+      map.on('mouseleave', 'primary-map-geojson-layer', function() {
+      popup.remove();
+    });
+  };
   return (
     <>
       <DefaultMap
         allowPan={false}
         allowZoom={false}
         fitBounds={fitBounds}
+        mapCallback={displayTooltip}
       >
-        <GeoJSONLayer
-          data={data}
-          fillPaint={{
+        <Layer
+          type='fill'
+          id={'primary-map-geojson-layer'}
+          paint={{
             'fill-color': ['get', 'fill'],
             'fill-outline-color': '#999',
           }}
-        />
+        >
+          {features}
+        </Layer>
       </DefaultMap>
       <ScaleContainer>
         <ColorScaleLegend
@@ -170,3 +228,11 @@ const MapboxMap = (props: Props) => {
 };
 
 export default MapboxMap;
+
+        // <GeoJSONLayer
+        //   data={data}
+        //   fillPaint={{
+        //     'fill-color': ['get', 'fill'],
+        //     'fill-outline-color': '#999',
+        //   }}
+        // />

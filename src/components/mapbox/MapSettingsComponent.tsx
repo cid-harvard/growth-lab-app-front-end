@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 export interface Settings {
   allowZoom?: boolean;
   allowPan?: boolean;
+  mapCallback?: (map: any) => void;
 }
 
 interface Props extends Settings{
@@ -12,7 +13,7 @@ interface Props extends Settings{
 
 const MapSettingsComponent = (props: Props) => {
   const {
-    map, allowPan, allowZoom,
+    map, allowPan, allowZoom, mapCallback,
   } = props;
 
   const [haveSettingsBeenSet, setSettings] = useState<boolean>(false);
@@ -28,6 +29,9 @@ const MapSettingsComponent = (props: Props) => {
     }
     if (allowZoom === false && allowPan === false) {
       map.getCanvas().style.cursor = 'default';
+    }
+    if (mapCallback !== undefined) {
+      mapCallback(map);
     }
     setSettings(true);
   }
