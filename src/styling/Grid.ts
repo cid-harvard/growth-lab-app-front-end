@@ -112,9 +112,15 @@ export const FullWidthFooterContent = styled.footer`
   margin: 0 auto;
 `;
 
+export const storyMobileWidth = 700; // in px
+
 export const StoriesGrid = styled(FullWidthContentContainer)`
   display: grid;
   grid-template-columns: 8fr 5fr;
   column-gap: 2rem;
   position: relative;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    grid-template-columns: 1fr;
+  }
 `;

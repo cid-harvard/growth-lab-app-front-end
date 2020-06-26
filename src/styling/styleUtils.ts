@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro';
+import {storyMobileWidth} from './Grid';
 
 export const baseColor = '#333333'; // dark gray/black color for text
 export const lightBaseColor = '#7c7c7c'; // light gray color for subtitles and contextual information
@@ -236,6 +237,11 @@ export const StickyContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    position: relative;
+    z-index: 10;
+  }
 `;
 
 export const VizSource = styled.cite`
