@@ -87,6 +87,12 @@ const Heading = styled.div`
   grid-column: 1 / -1;
 `;
 
+const MainNarrativeRoot = styled.div`
+@media(max-width: ${storyMobileWidth}px) {
+  position: relative;
+  z-index: 150;
+}
+`;
 const VizContainer = styled.div`
   position: relative;
   z-index: 100;
@@ -529,7 +535,7 @@ const AlbaniaStory = () => {
               </MapContainer>
             </StickyContainer>
           </VizContainer>
-          <div style={{position: 'relative', zIndex: 150}}>
+          <MainNarrativeRoot>
             <TextBlock>
               <StorySectionContainer>
                 <StickyText>
@@ -619,7 +625,7 @@ const AlbaniaStory = () => {
                 </StickyText>
               </StorySectionContainer>
             </TextBlock>
-          </div>
+          </MainNarrativeRoot>
         </StoriesGrid>
         <StoriesGrid>
           <SingleColumnNarrative>

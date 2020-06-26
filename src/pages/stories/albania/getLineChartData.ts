@@ -21,8 +21,8 @@ interface GDPData extends Axis {
 
 const gdpData: GDPData = {
   axisValues: {
-    minY: -5,
-    maxY: 8,
+    minY: -1,
+    maxY: 5,
     minX: 2010,
     maxX: 2019,
   },
