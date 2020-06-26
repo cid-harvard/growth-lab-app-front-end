@@ -6,6 +6,7 @@ export interface Datum {
   label: string;
   value: number;
   fill: string;
+  tooltipContent?: string;
 }
 
 interface ParentDatum {
@@ -95,6 +96,9 @@ export default (input: Input) => {
     .attr('r', (d: any) => d.r)
     .style('fill', (d: any) => d.data.data.fill)
     .on('mousemove', (d: any) => {
+        const content = d.data.data.tooltipContent
+          ? d.data.data.tooltipContent
+          : `<strong>${d.data.data.name}</strong>: ${d.data.data.value}`;
         tooltip
           .style('position', 'fixed')
           .style('left', d3.event.clientX + 'px')
@@ -108,9 +112,7 @@ export default (input: Input) => {
             margin-right: 12px;
             background-color: ${d.data.data.fill};
             flex-shrink: 0;
-          "></div>
-              <strong>${d.data.data.name}</strong>: ${d.data.data.value}
-
+          "></div>${content}
           `);
       })
     .on('mouseout', () => tooltip.style('display', 'none'));

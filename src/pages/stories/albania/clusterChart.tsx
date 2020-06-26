@@ -161,6 +161,7 @@ rawData.forEach(d => {
     label: parent_company,
     value: percent_of_total_count_of_capital_investment,
     fill: countryToColor(source_country),
+    tooltipContent: `<strong>${source_country}</strong>`,
   };
   const targetIndustryIndex = configData.findIndex(({industry}) => industry === industries);
   if (targetIndustryIndex !== -1) {
