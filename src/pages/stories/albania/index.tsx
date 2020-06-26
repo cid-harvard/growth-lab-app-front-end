@@ -467,7 +467,7 @@ const AlbaniaStory = () => {
             <FullWidth>
               <StoryTitle>How to Accelerate Economic Growth in Albania</StoryTitle>
               <Authors>
-                By Tim O'Brien
+                By Tim O'Brien &amp; Jessie Lu
                 <br />Design and Visualizations by Kyle Soeltz &amp; Nil Tuzcu
               </Authors>
               <p>
@@ -553,7 +553,6 @@ const AlbaniaStory = () => {
                 <p ref={section_7}>
                   Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës, Fier, and Gjirokastër — with many regions growing in absolute terms even as they have declined in population.
                 </p>
-                <div>Color Scale</div>
               </StickyText>
             </StorySectionContainer>
             <StorySectionContainer>
@@ -674,7 +673,7 @@ const AlbaniaStory = () => {
                     most_binding: (
                       <>
                         <LargeBracket />
-                        <span style={{fontWeight: 600}}>Slow accumulation</span>
+                        <span style={{fontWeight: 600}}>Slow accumulation of productive knowhow</span>
                       </>
                     ),
                     lesser_constraints: 'Access to finance',
