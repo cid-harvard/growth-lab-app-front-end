@@ -84,8 +84,8 @@ interface LaborForceData extends Axis {
 
 const laborForceData: LaborForceData = {
   axisValues: {
-    minY: 0,
-    maxY: 100,
+    minY: 5,
+    maxY: 70,
     minX: 2014,
     maxX: 2020,
   },
