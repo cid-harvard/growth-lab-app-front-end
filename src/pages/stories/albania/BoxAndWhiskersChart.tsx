@@ -3,6 +3,7 @@ import DataViz, {VizType} from '../../../components/dataViz';
 import {Datum} from '../../../components/dataViz/boxAndWhiskers';
 import raw from 'raw.macro';
 import {secondaryFont} from '../../../styling/styleUtils';
+import {storyMobileWidth} from '../../../styling/Grid';
 
 const albania = 'ALB';
 
@@ -19,13 +20,34 @@ const peers = [
 ];
 
 const categories = [
-  {key: '1996-1998', targets: [1996, 1997, 1998]},
-  {key: '1999-2001', targets: [1999, 2000, 2001]},
-  {key: '2002-2004', targets: [2002, 2003, 2004]},
-  {key: '2005-2007', targets: [2005, 2006, 2007]},
-  {key: '2008-2010', targets: [2008, 2009, 2010]},
-  {key: '2011-2013', targets: [2011, 2012, 2013]},
-  {key: '2014-2016', targets: [2014, 2015, 2016]},
+  {
+    key: window.innerWidth > storyMobileWidth ? '1996-1998' : '\'96-\'98',
+    targets: [1996, 1997, 1998],
+  },
+  {
+    key: window.innerWidth > storyMobileWidth ? '1999-2001' : '\'99-\'01',
+    targets: [1999, 2000, 2001],
+  },
+  {
+    key: window.innerWidth > storyMobileWidth ? '2002-2004' : '\'02-\'04',
+    targets: [2002, 2003, 2004],
+  },
+  {
+    key: window.innerWidth > storyMobileWidth ? '2005-2007' : '\'05-\'07',
+    targets: [2005, 2006, 2007],
+  },
+  {
+    key: window.innerWidth > storyMobileWidth ? '2008-2010' : '\'08-\'10',
+    targets: [2008, 2009, 2010],
+  },
+  {
+    key: window.innerWidth > storyMobileWidth ? '2011-2013' : '\'11-\'13',
+    targets: [2011, 2012, 2013],
+  },
+  {
+    key: window.innerWidth > storyMobileWidth ? '2014-2016' : '\'14-\'16',
+    targets: [2014, 2015, 2016],
+  },
 ];
 
 interface RawDatum {

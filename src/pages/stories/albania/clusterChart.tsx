@@ -4,6 +4,7 @@ import {Datum} from '../../../components/dataViz/clusterChart';
 import styled from 'styled-components/macro';
 import raw from 'raw.macro';
 import sortBy from 'lodash/sortBy';
+import {storyMobileWidth} from '../../../styling/Grid';
 
 const cellSize = 90; // in px
 
@@ -24,6 +25,15 @@ const Title = styled(Cell)`
   border-bottom: solid 1px #666;
   align-items: flex-end;
   text-align: center;
+`;
+
+const IndustryName = styled.div`
+  @media(max-width: ${storyMobileWidth}px) {
+    max-width: 10vw;
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 enum DestinationCountries {
@@ -104,30 +114,6 @@ const countryToColor = (country: SourceCountries) => {
   } else {
     return '#FDEBD0';
   }
-  // if (country === SourceCountries.China) { return '#EC7063'; }
-  // else if (country === SourceCountries.Germany) { return '#9B59B6'; }
-  // else if (country === SourceCountries.Bulgaria) { return '#5499C7'; }
-  // else if (country === SourceCountries.Other) { return '#1ABC9C'; }
-  // else if (country === SourceCountries.Turkey) { return '#16A085'; }
-  // else if (country === SourceCountries.Japan) { return '#229954'; }
-  // else if (country === SourceCountries.UnitedKingdom) { return '#D4AC0D'; }
-  // else if (country === SourceCountries.NorthMacedonia) { return '#F39C12'; }
-  // else if (country === SourceCountries.UnitedStates) { return '#E67E22'; }
-  // else if (country === SourceCountries.Italy) { return '#D35400'; }
-  // else if (country === SourceCountries.Norway) { return '#5D6D7E'; }
-  // else if (country === SourceCountries.France) { return '#7B241C'; }
-  // else if (country === SourceCountries.Slovenia) { return '#512E5F'; }
-  // else if (country === SourceCountries.Spain) { return '#154360'; }
-  // else if (country === SourceCountries.India) { return '#117864'; }
-  // else if (country === SourceCountries.Serbia) { return '#196F3D'; }
-  // else if (country === SourceCountries.Switzerland) { return '#E59866'; }
-  // else if (country === SourceCountries.UAE) { return '#C39BD3'; }
-  // else if (country === SourceCountries.Kazakhstan) { return '#A2D9CE'; }
-  // else if (country === SourceCountries.Romania) { return '#784212'; }
-  // else if (country === SourceCountries.Tunisia) { return '#2ECC71'; }
-  // else if (country === SourceCountries.Ethiopia) { return '#F1948A'; }
-  // else if (country === SourceCountries.Iceland) { return '#784212'; }
-  // else { return '#FDEBD0'; }
 };
 
 interface RawDatum {
@@ -226,7 +212,7 @@ const ClusterChart = () => {
     });
     return (
       <React.Fragment key={industry}>
-        <Cell>{industry}</Cell>
+        <Cell><IndustryName>{industry}</IndustryName></Cell>
         {columns}
       </React.Fragment>
     );

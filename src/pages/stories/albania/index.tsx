@@ -167,7 +167,7 @@ const StickyText = styled(StickyContainer)`
 const MobileText = styled.div`
   @media (max-width: ${storyMobileWidth}px) {
     position: relative;
-    padding: 45vh 0;
+    padding: 41vh 0;
 
     p {
       background-color: ${backgroundColor};
@@ -308,7 +308,11 @@ const AlbaniaStory = () => {
     section, prevSection: prevSection === undefined || prevSection === null ? null : prevSection,
   });
 
-  const formatYear = (maxYear: number) => (n: number) => n - Math.ceil(n) === 0 && n <= maxYear ? n.toString() : '';
+  // const { windowWidth } = useContext(AppContext);
+  const formatYear = (maxYear: number) => (n: number) => {
+    const year = window.innerWidth > storyMobileWidth ? n.toString() : n.toString().replace('20', '\'');
+    return n - Math.ceil(n) === 0 && n <= maxYear ? year : '';
+  };
 
   let dataViz: React.ReactElement<any> | null;
   let vizTitle: string;
@@ -413,13 +417,13 @@ const AlbaniaStory = () => {
           averageLines={[
             {
               value: electricityBarChartData.main_constraint.umic_average_line,
-              label: 'UMIC Average',
+              label: window.innerWidth > storyMobileWidth ? 'UMIC Average' : 'UMIC Avg.',
               strokeDasharray: 3,
               labelPlacement: LabelPlacement.right,
             },
             {
               value: electricityBarChartData.main_constraint.balkans_average_line,
-              label: 'Balkans Average',
+              label: window.innerWidth > storyMobileWidth ? 'Balkans Average' : 'Balkans Avg.',
             },
           ]}
           labelFont={secondaryFont}
@@ -436,13 +440,13 @@ const AlbaniaStory = () => {
           averageLines={[
             {
               value: electricityBarChartData.outages_month.umic_average_line,
-              label: 'UMIC Average',
+              label: window.innerWidth > storyMobileWidth ? 'UMIC Average' : 'UMIC Avg.',
               strokeDasharray: 3,
               labelPlacement: LabelPlacement.right,
             },
             {
               value: electricityBarChartData.outages_month.balkans_average_line,
-              label: 'Balkans Average',
+              label: window.innerWidth > storyMobileWidth ? 'Balkans Average' : 'Balkans Avg.',
             },
           ]}
           labelFont={secondaryFont}
@@ -459,13 +463,13 @@ const AlbaniaStory = () => {
           averageLines={[
             {
               value: electricityBarChartData.average_losses.umic_average_line,
-              label: 'UMIC Average',
+              label: window.innerWidth > storyMobileWidth ? 'UMIC Average' : 'UMIC Avg.',
               strokeDasharray: 3,
               labelPlacement: LabelPlacement.right,
             },
             {
               value: electricityBarChartData.average_losses.balkans_average_line,
-              label: 'Balkans Average',
+              label: window.innerWidth > storyMobileWidth ? 'Balkans Average' : 'Balkans Avg.',
             },
           ]}
           labelFont={secondaryFont}
