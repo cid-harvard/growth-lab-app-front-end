@@ -38,10 +38,10 @@ const cssGradientPopulation = `
 `;
 const populationColorScaleTitle = 'Change in population over 5 years (number of individuals)';
 
-const gdpMin = -14.92;
-const gdpMax = 26.03;
+const gdpMin = '-6';
+const gdpMax = '+6';
 const gdpColorScale = scaleLinear<string>()
-                    .domain([gdpMin, -7, 0, 1.2, gdpMax])
+                    .domain([-6, -2, 0, 2, 6])
                     .range(['#ce325f', '#f97965', '#dcf7e0', '#88d981', '#3a8860']);
 
 // stops = 0, 7.92, 14.92, 16.12, 40.95
@@ -49,13 +49,13 @@ const cssGradientGdp = `
   linear-gradient(
     90deg,
     #ce325f 0%,
-    #f97965 19.34%,
-    #dcf7e0 36.43%,
-    #88d981 39.37%,
+    #f97965 16.67%,
+    #dcf7e0 50%,
+    #88d981 66.67%,
     #3a8860 100%
   )
 `;
-const gdpColorScaleTitle = 'GDP Growth';
+const gdpColorScaleTitle = 'Annualized Growth Rate (%)';
 
 const albaniaHeatMapData = JSON.parse(raw('./data/albania_heatmap_data.json'));
 const albaniaMapData = JSON.parse(raw('../../albaniaTool/assets/albania-geojson.geojson'));
