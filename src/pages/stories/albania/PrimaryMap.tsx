@@ -18,10 +18,10 @@ const ScaleContainer = styled.div`
   text-align: center;
 `;
 
-const populationMin = -15782;
-const populationMax = 65936;
+const populationMin = '-20,000';
+const populationMax = '+70,000';
 const populationColorScale = scaleLinear<string>()
-                    .domain([populationMin, -7891, 0, 3000, populationMax])
+                    .domain([-15782, -7891, 0, 3000, 65936])
                     .range(['#ce325f', '#f97965', '#dcf7e0', '#88d981', '#3a8860']);
 // TOTAL range = 81718
 // stops = 0, 7891, 15782, 18782, 81718
@@ -36,7 +36,7 @@ const cssGradientPopulation = `
     #3a8860 100%
   )
 `;
-const populationColorScaleTitle = 'Change in population';
+const populationColorScaleTitle = 'Change in population over 5 years (number of individuals)';
 
 const gdpMin = -14.92;
 const gdpMax = 26.03;
@@ -68,7 +68,9 @@ albaniaMapData.features.forEach((f: any) => {
   popultaionChangeFeatures.push({...f, properties: {
     ...f.properties,
     fill: populationColorScale(targetRegion.change_2013_2017),
-    description: `<strong>${f.properties.ADM1_SQ}:</strong> ${targetRegion.change_2013_2017}`,
+    description: `<strong>${f.properties.ADM1_SQ}:</strong> ${
+      targetRegion.change_2013_2017.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }`,
   }});
 
   gdpGrowthFeatures.push({...f, properties: {
@@ -82,10 +84,10 @@ albaniaMapData.features.forEach((f: any) => {
 const popultaionChangeGeoJson = {...albaniaMapData, features: popultaionChangeFeatures};
 const gdpGrowthGeoJson = {...albaniaMapData, features: gdpGrowthFeatures};
 
-const euMin = 2000;
-const euMax = 100000;
+const euMin = '$2,000';
+const euMax = '$100,000';
 const gdpEuropeColorScale = scaleLinear<string>()
-                    .domain([euMin, 49000, euMax])
+                    .domain([2000, 49000, 100000])
                     .range(['#face55', '#f97502', '#b63d21']);
 // stops = 0, 7.92, 14.92, 16.12, 40.95
 const cssGradientEu = `
@@ -96,7 +98,7 @@ const cssGradientEu = `
     #b63d21 100%
   )
 `;
-const euColorScaleTitle = 'GDP per capita';
+const euColorScaleTitle = 'GDP per capita (USD)';
 
 export const worldData = JSON.parse(raw('../../../components/dataViz/assets/world-geojson.json'));
 const europeGdpData = JSON.parse(raw('./data/europe_gdp.json'));
@@ -108,7 +110,9 @@ worldData.features.forEach((f: any) => {
     euGdpFeatures.push({...f, properties: {
       ...f.properties,
       fill: gdpEuropeColorScale(targetCountry.gdp_2018),
-      description: `<strong>${f.properties.name}:</strong> ${parseFloat(parseFloat(targetCountry.gdp_2018).toFixed(2))}`,
+      description: `<strong>${f.properties.name}:</strong> $${
+        Math.round(targetCountry.gdp_2018).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      }`,
     }});
   }
 });
@@ -213,8 +217,8 @@ const MapboxMap = (props: Props) => {
   let data: any;
   let gradientString: string;
   let scaleTitle: string;
-  let scaleMin: number;
-  let scaleMax: number;
+  let scaleMin: number | string;
+  let scaleMax: number | string;
   let source: string;
   let locationLabels: React.ReactElement<any>;
   if (section && section >= 8) {
@@ -224,7 +228,7 @@ const MapboxMap = (props: Props) => {
     scaleTitle = euColorScaleTitle;
     scaleMin = euMin;
     scaleMax = euMax;
-    source = 'WDI';
+    source = 'World Development Indicators';
     locationLabels = <></>;
   } else {
     fitBounds = albaniaBounds;
