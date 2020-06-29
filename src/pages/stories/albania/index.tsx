@@ -1,5 +1,7 @@
 import React, {
   useRef,
+  useEffect,
+  useState,
 } from 'react';
 import {
   FullWidthContent,
@@ -90,7 +92,7 @@ const Heading = styled.div`
 const MainNarrativeRoot = styled.div`
 @media(max-width: ${storyMobileWidth}px) {
   position: relative;
-  z-index: 150;
+  z-index: 150 !important;
 }
 `;
 const VizContainer = styled.div`
@@ -179,6 +181,12 @@ const MobileText = styled.div`
       background-color: ${backgroundColor};
       box-shadow: 0px 0px 15px 5px ${backgroundColor};
     }
+  }
+`;
+
+const FirstParagraph = styled(MobileText)`
+  @media (max-width: ${storyMobileWidth}px) {
+    padding-top: 20vh;
   }
 `;
 
@@ -306,6 +314,15 @@ const AlbaniaStory = () => {
 
   const prevSection = usePrevious(section);
 
+  const [initialVizLoaded, setInitialVizLoaded] = useState<boolean>(false);
+  useEffect(() => {
+    setTimeout(() => {
+      if (section_0 && section_0.current && initialVizLoaded === false) {
+        setInitialVizLoaded(true);
+      }
+    }, 10);
+  });
+
   const {
     lineChartData, minX, maxX, minY, maxY,
     leftAxis, animateAxis, lineChartTitle,
@@ -314,7 +331,6 @@ const AlbaniaStory = () => {
     section, prevSection: prevSection === undefined || prevSection === null ? null : prevSection,
   });
 
-  // const { windowWidth } = useContext(AppContext);
   const formatYear = (maxYear: number) => (n: number) => {
     const year = window.innerWidth > storyMobileWidth ? n.toString() : n.toString().replace('20', '\'');
     return n - Math.ceil(n) === 0 && n <= maxYear ? year : '';
@@ -322,7 +338,31 @@ const AlbaniaStory = () => {
 
   let dataViz: React.ReactElement<any> | null;
   let vizTitle: string;
-  if (section === null || section < 5) {
+  if (initialVizLoaded === false && window.innerWidth < storyMobileWidth) {
+    // This hack is needed to fix an issue with Safari and iOS where
+    // the proper z-index value is ignored until the component
+    // has been reloaded
+    vizTitle = lineChartTitle;
+    dataViz = (
+      <React.Fragment key={'initial-albania-story-line-chart'}>
+        <DataViz
+          id={'initial-albania-story-line-chart'}
+          vizType={VizType.LineChart}
+          data={lineChartData}
+          axisLabels={{left: leftAxis}}
+          axisMinMax={{minY, maxY, minX, maxX}}
+          animateAxis={animateAxis}
+          formatAxis={{x: formatYear(2019)}}
+          tickCount={{
+            x: maxX - minX,
+          }}
+          rootStyles={{margin: 0}}
+          labelFont={secondaryFont}
+        />
+        <FadeInContainer><VizSource>Source: <em>{vizSource}</em></VizSource></FadeInContainer>
+      </React.Fragment>
+    );
+  } else if (section === null || section < 5) {
     vizTitle = lineChartTitle;
     dataViz = (
       <>
@@ -518,7 +558,10 @@ const AlbaniaStory = () => {
         </StoriesGrid>
         <StoriesGrid>
           <StoryHeading>Taking Stock of the Growth Process prior to COVID-19</StoryHeading>
-          <VizContainer>
+          <VizContainer style={{
+            position: window.innerWidth < 700 && section !== null ? 'sticky' : undefined,
+            height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
+          }}>
             <StickyContainer>
               <h3>{vizTitle}</h3>
               {dataViz}
@@ -535,15 +578,15 @@ const AlbaniaStory = () => {
               </MapContainer>
             </StickyContainer>
           </VizContainer>
-          <MainNarrativeRoot>
+          <MainNarrativeRoot ref={section_0}>
             <TextBlock>
               <StorySectionContainer>
                 <StickyText>
-                  <MobileText ref={section_0}>
+                  <FirstParagraph>
                   <p>
                     Looking back on the last decade, the Albanian economy achieved an extraordinary turnaround. It is not a stretch to call it an <a href='https://www.project-syndicate.org/commentary/albanian-economic-miracle-innovative-policymaking-by-ricardo-hausmann-2018-09?barrier=accesspaylog' target='_blank' rel='noopener noreferrer'>Albanian Miracle</a>. Things looked bleak back in 2013 as annual per capita income growth had decelerated over the previous five years to reach a low of 1.0%.
                   </p>
-                  </MobileText>
+                  </FirstParagraph>
                 </StickyText>
               </StorySectionContainer>
               <StorySectionContainer>
