@@ -12,7 +12,7 @@ import {
 import { GeoJSONLayer, Layer, Feature } from 'react-mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 
-const growthProjectionsData = JSON.parse(raw('./data/growth_projections_2017.json'));
+const growthProjectionsData = JSON.parse(raw('./data/growth_projections_2018.json'));
 
 // Color scale for the map:
 export const getGrowthRateColorScale = <T extends {growth: number}>(data: T[]) => {

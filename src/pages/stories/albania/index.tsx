@@ -685,9 +685,9 @@ const AlbaniaStory = () => {
           <SingleColumnNarrative>
             <StoryHeading>What Constrains Further Acceleration after COVID-19?</StoryHeading>
             <p ref={section_10}>
-              Based on our <a href='https://atlas.cid.harvard.edu/countries/4' target='_blank' rel='noopener noreferrer'>Atlas of Economic Complexity</a>, Albania’s anticipated steady state economic growth rate for the next 10 years based on the embedded capabilities of the economy is around 3.3%.
+              Based on our <a href='https://atlas.cid.harvard.edu/countries/4' target='_blank' rel='noopener noreferrer'>Atlas of Economic Complexity</a>, Albania’s anticipated steady state economic growth rate for the next 10 years based on the embedded capabilities of the economy is around 3.4%.
             </p>
-            <h3>Growth Projections, 2017-2027</h3>
+            <h3>Growth Projections, 2018-2028</h3>
             <InlineVizContainer>
               <GrowthProjectionsMap />
             </InlineVizContainer>
@@ -696,8 +696,8 @@ const AlbaniaStory = () => {
               <ScaleContainer>
                 <ColorScaleLegend
                   title={'Annual growth rate (%)'}
-                  minLabel={'0.48%'}
-                  maxLabel={'7.61%'}
+                  minLabel={'-0.04%'}
+                  maxLabel={'7.47%'}
                   rootStyles={{marginTop: '1rem'}}
                   gradientString={`
                       linear-gradient(
