@@ -661,7 +661,7 @@ const AlbaniaStory = () => {
                 <StickyText>
                   <MobileText ref={section_7}>
                   <p>
-                    Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës, Fier, and Gjirokastër — with many regions growing in absolute terms even as they have declined in population.
+                    Incomes per capita have grown in both cities and across rural prefectures — with the exceptions of Kukës and Fier — with many regions growing in absolute terms even as they have declined in population.
                   </p>
                   </MobileText>
                 </StickyText>
@@ -696,8 +696,8 @@ const AlbaniaStory = () => {
               <ScaleContainer>
                 <ColorScaleLegend
                   title={'Annual growth rate (%)'}
-                  minLabel={'-0.04%'}
-                  maxLabel={'7.47%'}
+                  minLabel={'0%'}
+                  maxLabel={'8%'}
                   rootStyles={{marginTop: '1rem'}}
                   gradientString={`
                       linear-gradient(

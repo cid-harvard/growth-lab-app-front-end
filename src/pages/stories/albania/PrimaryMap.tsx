@@ -38,10 +38,10 @@ const cssGradientPopulation = `
 `;
 const populationColorScaleTitle = 'Change in population over 5 years (number of individuals)';
 
-const gdpMin = '-6';
-const gdpMax = '+6';
+const gdpMin = '-3';
+const gdpMax = '+7';
 const gdpColorScale = scaleLinear<string>()
-                    .domain([-6, -2, 0, 2, 6])
+                    .domain([-3, -0.5, 2, 4.3, 6.3])
                     .range(['#ce325f', '#f97965', '#dcf7e0', '#88d981', '#3a8860']);
 
 // stops = 0, 7.92, 14.92, 16.12, 40.95
