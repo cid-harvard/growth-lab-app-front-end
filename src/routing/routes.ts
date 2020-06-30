@@ -4,7 +4,7 @@ export enum Routes {
   Community = '/community',
   Sandbox = '/sandbox/:section/:detail',
   AlbaniaTool = '/albania-tool',
-  AlbaniaStory = '/stories/albania',
+  AlbaniaStory = '/accelerating-growth-in-albania',
   JordanTool = '/jordan-tool',
 }
 
