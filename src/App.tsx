@@ -45,7 +45,7 @@ const OverlayPortal = styled.div`
   z-index: ${overlayPortalZIndex};
 `;
 
-const LandingPage = lazy(() => import('./pages/landingPage/ComingSoon'));
+const LandingPage = lazy(() => import('./pages/landingPage'));
 const AboutPage = lazy(() => import('./pages/landingPage/About'));
 const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
