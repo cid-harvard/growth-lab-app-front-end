@@ -4,7 +4,7 @@ import {
 import styled from 'styled-components/macro';
 import {navHeight} from '../../components/navigation/TopLevelStickyNav';
 
-export const activeLinkColor = '#c2ba4b';
+export const activeLinkColor = '#fc9b81';
 export const backgroundColor = '#e5e6e6';
 
 export const HubContentContainer = styled(FullWidthContent)`

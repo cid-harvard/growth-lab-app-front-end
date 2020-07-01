@@ -81,8 +81,8 @@ function App() {
     };
   }, []);
 
-  const defaultMetaTitle = 'Country Tools - The Growth Lab at Harvard Kennedy School';
-  const defaultMetaDescription = 'Explore the Country Tools from the Growth Lab at Harvard Kennedy School';
+  const defaultMetaTitle = 'Harvard Growth Lab Digital Hub';
+  const defaultMetaDescription = 'Translating Growth Lab research into powerful online tools and interactive storytelling';
 
   return (
     <>
