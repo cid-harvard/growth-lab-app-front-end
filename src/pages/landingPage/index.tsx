@@ -6,7 +6,7 @@ import React, {
 import {
   FullWidthHeader,
 } from '../../styling/Grid';
-import SplashScreen from './SplashScreen2';
+import SplashScreen from './SplashScreen';
 import styled from 'styled-components/macro';
 import TopLevelNav from './TopLevelNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
