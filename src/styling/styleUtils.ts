@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro';
+import {storyMobileWidth} from './Grid';
 
 export const baseColor = '#333333'; // dark gray/black color for text
 export const lightBaseColor = '#7c7c7c'; // light gray color for subtitles and contextual information
@@ -175,4 +176,84 @@ export const Card = styled.div`
     cursor: pointer;
     background-color: ${tertiaryColor};
   }
+`;
+
+export const Code = styled.pre`
+  background-color: ${tertiaryColor};
+  color: #444;
+  padding: 1rem;
+  box-sizing: border-box;
+`;
+
+export const FullWidth = styled.div`
+  grid-column: 1 / -1;
+`;
+
+export const CoverPhoto = styled.div`
+  grid-column: 1 / -1;
+  height: 40vh;
+  background-color: ${tertiaryColor};
+  background-size: cover;
+  background-position: center;
+`;
+
+export const StoryTitle = styled.h1`
+  text-align: center;
+  margin: 2rem 0 1.5rem;
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  letter-spacing: 1px;
+  text-align: center;
+`;
+
+export const StoryHeading = styled.h2`
+  grid-column: 1 / -1;
+  font-weight: 600;
+  font-size: 1.75rem;
+  text-align: center;
+`;
+
+export const Authors = styled.div`
+  font-family: ${secondaryFont};
+  letter-spacing: -0.8px;
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+`;
+
+
+export const StorySectionContainer = styled.div`
+  min-height: 50vh;
+  position: relative;
+  padding-bottom: 10vh;
+`;
+
+export const StickyContainer = styled.div`
+  position: sticky;
+  top: 0;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    position: relative;
+    z-index: 10;
+  }
+`;
+
+export const VizSource = styled.cite`
+  text-align: center;
+  display: block;
+  margin: 0.75rem 0 1rem;
+  font-size: 0.7rem;
+`;
+
+export const VizSourceCompact = styled.cite`
+  text-align: center;
+  display: block;
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.7rem;
 `;

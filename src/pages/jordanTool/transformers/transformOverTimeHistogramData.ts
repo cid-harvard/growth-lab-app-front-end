@@ -3,7 +3,8 @@ import {
   OverTimeTarget,
 } from '../graphql/graphQLTypes';
 import {colorScheme} from '../fetchData';
-import { Datum as BarChartDatum, formatNumber } from '../../../components/dataViz/barChart';
+import { Datum as BarChartDatum } from '../../../components/dataViz/barChart';
+import { formatNumber } from '../../../components/dataViz/Utils';
 import {lightBorderColor} from '../../../styling/styleUtils';
 
 enum OverTimeHistogramXValues {

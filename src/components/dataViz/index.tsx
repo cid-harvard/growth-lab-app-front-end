@@ -5,10 +5,15 @@ import React, {useContext, useEffect, useRef} from 'react';
 import styled from 'styled-components/macro';
 import { AppContext } from '../../App';
 import createScatterPlot, {Datum as ScatterPlotDatum} from './scatterPlot';
-import createBarChart, {Datum as BarChartDatum} from './barChart';
+import createBarChart, {Datum as BarChartDatum, LabelPlacement} from './barChart';
 import createClusterBarChart, {Datum as ClusterBarChartDatum} from './clusterBarChart';
 import createRadarChart, {Datum as RadarChartDatum} from './radarChart';
 import createGeoMap, {GeoJsonCustomProperties} from './geoMap';
+import creatLineChart, {Datum as LineChartDatum} from './lineChart';
+import createTreeMap, {RootDatum} from './treeMap';
+import createStackChart, {Datum as StackChartDatum, Config as StackChartConfig} from './stackChart';
+import createClusterChart, {Datum as ClusterChartDatum} from './clusterChart';
+import createBoxAndWhiskersChart, {Datum as BoxAndWhiskersChartDatum} from './boxAndWhiskers';
 import {
   baseColor,
   secondaryFont,
@@ -108,6 +113,11 @@ export enum VizType {
   ClusterBarChart = 'ClusterBarChart',
   RadarChart = 'RadarChart',
   GeoMap = 'GeoMap',
+  LineChart = 'LineChart',
+  TreeMap = 'TreeMap',
+  StackChart = 'StackChart',
+  ClusterChart = 'ClusterChart',
+  BoxAndWhiskersChart = 'BoxAndWhiskersChart',
   Error = 'Error',
 }
 
@@ -119,6 +129,9 @@ interface BaseProps {
   enableSVGDownload?: boolean;
   chartTitle?: string;
   chartCaption?: string;
+  rootStyles?: React.CSSProperties;
+  height?: number | string;
+  labelFont?: string;
 }
 
 type Props = BaseProps & (
@@ -143,6 +156,22 @@ type Props = BaseProps & (
     vizType: VizType.BarChart;
     data: BarChartDatum[][];
     axisLabels?: {left?: string, bottom?: string};
+      axisMinMax?: {
+      minY?: number,
+      maxY?: number,
+    };
+    hideAxis?: {
+      left?: boolean;
+      bottom?: boolean;
+    }
+    averageLines?: {
+      value: number,
+      label?: string;
+      labelPlacement?: LabelPlacement;
+      strokeWidth?: number;
+      strokeDasharray?: number;
+      strokeColor?: string;
+    }[]
   } |
   {
     vizType: VizType.ClusterBarChart;
@@ -160,11 +189,58 @@ type Props = BaseProps & (
     data: ExtendedFeature<any, GeoJsonCustomProperties>;
     minColor: string;
     maxColor: string;
+  }|
+  {
+    vizType: VizType.LineChart;
+    data: LineChartDatum[];
+    axisLabels?: {left?: string, bottom?: string};
+    axisMinMax?: {
+      minX?: number,
+      maxX?: number,
+      minY?: number,
+      maxY?: number,
+    };
+    showGridLines?: {
+      xAxis?: boolean;
+      yAxis?: boolean;
+    }
+    formatAxis?: {
+      x?: (n: number) => string;
+      y?: (n: number) => string;
+    }
+    tickCount?: {
+      x?: number;
+      y?: number;
+    }
+    animateAxis?: {
+      animationDuration: number,
+      startMinX: number,
+      startMaxX: number,
+      startMinY: number,
+      startMaxY: number,
+    };
+  } | {
+    vizType: VizType.TreeMap;
+    data: RootDatum;
+  } | {
+    vizType: VizType.StackChart;
+    config: StackChartConfig;
+    data: StackChartDatum[];
+    enableBrushZoom?: boolean;
+  } | {
+    vizType: VizType.ClusterChart;
+    data: ClusterChartDatum[];
+    hideLabels?: boolean;
+    circleSpacing?: number;
+    max?: number;
+  }| {
+    vizType: VizType.BoxAndWhiskersChart;
+    data: BoxAndWhiskersChartDatum[];
   }
 );
 
 const DataViz = (props: Props) => {
-  const { id, enablePNGDownload, enableSVGDownload, jsonToDownload } = props;
+  const { id, enablePNGDownload, enableSVGDownload, jsonToDownload, rootStyles } = props;
   const sizingNodeRef = useRef<HTMLDivElement | null>(null);
   const svgNodeRef = useRef<any>(null);
   const tooltipNodeRef = useRef<any>(null);
@@ -180,7 +256,7 @@ const DataViz = (props: Props) => {
       const tooltip = select(tooltipNodeRef.current);
       if (props.vizType === VizType.ScatterPlot) {
         createScatterPlot({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
@@ -191,10 +267,13 @@ const DataViz = (props: Props) => {
         });
       } else if (props.vizType === VizType.BarChart) {
         createBarChart({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
+          axisMinMax: props.axisMinMax,
+          hideAxis: props.hideAxis,
+          averageLines: props.averageLines,
         });
       } else if (props.vizType === VizType.RadarChart) {
         let width: number;
@@ -207,7 +286,7 @@ const DataViz = (props: Props) => {
           height = sizingNode.clientWidth;
         }
         createRadarChart({
-          svg, tooltip, data: props.data, options: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, options: {
             width, height,
             color: scaleOrdinal().range([props.color.start, props.color.end]),
             maxValue: props.maxValue,
@@ -221,10 +300,50 @@ const DataViz = (props: Props) => {
         });
       } else if (props.vizType === VizType.ClusterBarChart) {
         createClusterBarChart({
-          svg, tooltip, data: props.data, size: {
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
             width: sizingNode.clientWidth, height: sizingNode.clientHeight,
           },
           axisLabels: props.axisLabels,
+        });
+      } else if (props.vizType === VizType.LineChart) {
+        creatLineChart({
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+          axisLabels: props.axisLabels,
+          axisMinMax: props.axisMinMax,
+          showGridLines: props.showGridLines,
+          formatAxis: props.formatAxis,
+          tickCount: props.tickCount,
+          animateAxis: props.animateAxis,
+        });
+      } else if (props.vizType === VizType.TreeMap) {
+        createTreeMap({
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+        });
+      } else if (props.vizType === VizType.StackChart) {
+        createStackChart({
+          svg, tooltip, data: props.data, labelFont: props.labelFont, config: props.config, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+          enableBrushZoom: props.enableBrushZoom,
+        });
+      } else if (props.vizType === VizType.ClusterChart) {
+        createClusterChart({
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
+          hideLabels: props.hideLabels,
+          circleSpacing: props.circleSpacing,
+          max: props.max,
+        });
+      } else if (props.vizType === VizType.BoxAndWhiskersChart) {
+        createBoxAndWhiskersChart({
+          svg, tooltip, data: props.data, labelFont: props.labelFont, size: {
+            width: sizingNode.clientWidth, height: sizingNode.clientHeight,
+          },
         });
       }
     }
@@ -319,8 +438,8 @@ const DataViz = (props: Props) => {
       <Caption>{props.chartCaption}</Caption>
     ) : null;
     return (
-      <Root>
-        <SizingElm ref={sizingNodeRef}>
+      <Root style={rootStyles}>
+        <SizingElm ref={sizingNodeRef} style={{height: props.height}}>
           <svg ref={svgNodeRef} key={id + windowWidth + 'svg'} />
         </SizingElm>
         {caption}

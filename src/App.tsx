@@ -20,6 +20,8 @@ import Loading from './components/general/Loading';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 import ReactGA from 'react-ga';
+import { overlayPortalContainerId } from './Utils';
+import styled from 'styled-components/macro';
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {debug: false});
@@ -36,11 +38,21 @@ const TrackedRoute = (props: any) => {
   );
 };
 
+const overlayPortalZIndex = 3000;
+
+const OverlayPortal = styled.div`
+  position: relative;
+  z-index: ${overlayPortalZIndex};
+`;
 
 const LandingPage = lazy(() => import('./pages/landingPage/ComingSoon'));
+const AboutPage = lazy(() => import('./pages/landingPage/About'));
+const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
+const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
+const Sandbox = lazy(() => import('./pages/sandbox'));
 
 export interface IAppContext {
   windowWidth: number;
@@ -69,8 +81,8 @@ function App() {
     };
   }, []);
 
-  const defaultMetaTitle = 'Country Tools - The Growth Lab at Harvard Kennedy School';
-  const defaultMetaDescription = 'Explore the Country Tools from the Growth Lab at Harvard Kennedy School';
+  const defaultMetaTitle = 'Harvard Growth Lab Digital Hub';
+  const defaultMetaDescription = 'Translating Growth Lab research into powerful online tools and interactive storytelling';
 
   return (
     <>
@@ -91,16 +103,29 @@ function App() {
                   <TrackedRoute exact path={Routes.Landing}
                     render={(props: any) => <LandingPage {...props} />}
                   />
+                  <TrackedRoute exact path={Routes.About}
+                    render={(props: any) => <AboutPage {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.Community}
+                    render={(props: any) => <CommunityPage {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.Sandbox}
+                    render={(props: any) => <Sandbox {...props} />}
+                  />
                   <TrackedRoute exact path={Routes.AlbaniaTool}
                     render={(props: any) => <AlbaniaTool {...props} />}
                   />
                   <TrackedRoute exact path={Routes.JordanTool}
                     render={(props: any) => <JordanTool {...props} />}
                   />
+                  <TrackedRoute exact path={Routes.AlbaniaStory}
+                    render={(props: any) => <AlbaniaStory {...props} />}
+                  />
                   {/* If none of the above routes are found show the 404 page */}
                   <TrackedRoute component={PageNotFound} />
                 </Switch>
               </Suspense>
+                <OverlayPortal id={overlayPortalContainerId} />
             </Root>
           </Router>
         </ApolloProvider>

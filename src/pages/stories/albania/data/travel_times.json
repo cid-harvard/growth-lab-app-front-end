@@ -1,0 +1,182 @@
+[
+  {
+    "Origin": "Tirana",
+    "Destination": "Sarande",
+    "Time": -0.416667,
+    "Path ID": 1,
+    "Path": "Tirana_Sarande",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Dhermi",
+    "Time": 0.3333,
+    "Path ID": 1,
+    "Path": "Tirana_Dhermi",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Vlora",
+    "Time": -0.4166667,
+    "Path ID": 1,
+    "Path": "Tirana_Vlora",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Korce",
+    "Time": -0.0833,
+    "Path ID": 1,
+    "Path": "Tirana_Korce",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Berat",
+    "Time": 0,
+    "Path ID": 1,
+    "Path": "Tirana_Berat",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Durres",
+    "Time": 0.25,
+    "Path ID": 1,
+    "Path": "Tirana_Durres",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Elbasan",
+    "Time": -0.3333,
+    "Path ID": 1,
+    "Path": "Tirana_Elbasan",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Pogradec",
+    "Time": -0.166667,
+    "Path ID": 1,
+    "Path": "Tirana_Pogradec",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Skodra",
+    "Time": 0.25,
+    "Path ID": 1,
+    "Path": "Tirana_Skodra",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Tirana",
+    "Destination": "Kosovo Border",
+    "Time": -0.41666,
+    "Path ID": 1,
+    "Path": "Tirana_Kosovo Border",
+    "Lat": 41.33,
+    "Long": 19.82
+  },
+  {
+    "Origin": "Sarande",
+    "Destination": "Tirana",
+    "Time": -0.416667,
+    "Path ID": 2,
+    "Path": "Tirana_Sarande",
+    "Lat": 39.86,
+    "Long": 20.03
+  },
+  {
+    "Origin": "Dhermi",
+    "Destination": "Tirana",
+    "Time": 0.3333,
+    "Path ID": 2,
+    "Path": "Tirana_Dhermi",
+    "Lat": 40.15,
+    "Long": 19.64
+  },
+  {
+    "Origin": "Vlora",
+    "Destination": "Tirana",
+    "Time": -0.4166667,
+    "Path ID": 2,
+    "Path": "Tirana_Vlora",
+    "Lat": 40.47,
+    "Long": 19.49
+  },
+  {
+    "Origin": "Korce",
+    "Destination": "Tirana",
+    "Time": -0.0833,
+    "Path ID": 2,
+    "Path": "Tirana_Korce",
+    "Lat": 40.61,
+    "Long": 20.78
+  },
+  {
+    "Origin": "Berat",
+    "Destination": "Tirana",
+    "Time": 0,
+    "Path ID": 2,
+    "Path": "Tirana_Berat",
+    "Lat": 40.71,
+    "Long": 19.94
+  },
+  {
+    "Origin": "Durres",
+    "Destination": "Tirana",
+    "Time": 0.25,
+    "Path ID": 2,
+    "Path": "Tirana_Durres",
+    "Lat": 41.32,
+    "Long": 19.46
+  },
+  {
+    "Origin": "Elbesan",
+    "Destination": "Tirana",
+    "Time": -0.3333,
+    "Path ID": 2,
+    "Path": "Tirana_Elbasan",
+    "Lat": 41.11,
+    "Long": 20.09
+  },
+  {
+    "Origin": "Pogradec",
+    "Destination": "Tirana",
+    "Time": -0.166667,
+    "Path ID": 2,
+    "Path": "Tirana_Pogradec",
+    "Lat": 40.9,
+    "Long": 20.66
+  },
+  {
+    "Origin": "Skodra",
+    "Destination": "Tirana",
+    "Time": 0.25,
+    "Path ID": 2,
+    "Path": "Tirana_Skodra",
+    "Lat": 42.07,
+    "Long": 19.5
+  },
+  {
+    "Origin": "Kosovo Border",
+    "Destination": "Tirana",
+    "Time": -0.41666,
+    "Path ID": 2,
+    "Path": "Tirana_Kosovo Border",
+    "Lat": 42.2064,
+    "Long": 20.5497
+  }
+]

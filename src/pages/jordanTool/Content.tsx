@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import { Content } from '../../styling/Grid';
 import StickySubHeading from '../../components/text/StickySubHeading';
-import ExploreNextFooter, {defaultSocialIcons} from '../../components/text/ExploreNextFooter';
+import ExploreNextFooter from '../../components/text/ExploreNextFooter';
 import useFetchData, {colorScheme} from './fetchData';
 import { TreeNode } from 'react-dropdown-tree-select';
 import DataViz, {VizType} from '../../components/dataViz';
@@ -498,7 +498,6 @@ const JordanTool = (props: Props) => {
       <ExploreNextFooter
         title={metaTitle}
         backgroundColor={colorScheme.primary}
-        socialItems={defaultSocialIcons}
         exploreNextLinks={[
           {
             label: 'Country Profile',

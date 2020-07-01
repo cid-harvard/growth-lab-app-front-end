@@ -46,9 +46,10 @@ interface Input {
   tooltip: d3.Selection<any, unknown, null, undefined>;
   data: Datum[][];
   options?: Options;
+  labelFont?: string;
 }
 
-export default ({svg, data, tooltip, options}: Input) => {
+export default ({svg, data, tooltip, options, labelFont}: Input) => {
   // set default config
   const config: Config = {
     radius: 5,
@@ -221,7 +222,7 @@ export default ({svg, data, tooltip, options}: Input) => {
 
   const labels = axis.append('text')
     .style('font-size', '11px')
-    .style('font-family', "'Source Sans Pro',sans-serif")
+    .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
     .attr('text-anchor', 'middle')
     .attr('dy', '1.5em')
     .attr('transform', (_d, i) => {

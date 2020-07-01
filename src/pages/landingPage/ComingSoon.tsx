@@ -39,7 +39,6 @@ const H4 = styled.h4`
   font-weight: 200;
   letter-spacing: 4px;
   margin-top: 1rem;
-
   &::before {
     content: "";
     height: 1px;
@@ -49,7 +48,6 @@ const H4 = styled.h4`
     margin-bottom: 5px;
     margin-right: 10px;
   }
-
   &::after {
     content: "";
     height: 1px;

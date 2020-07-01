@@ -1,0 +1,272 @@
+[
+  {
+    "year": 2014,
+    "measure_type": "Employment rate",
+    "rate": 52.1
+  },
+  {
+    "year": 2015,
+    "measure_type": "Employment rate",
+    "rate": 53.7
+  },
+  {
+    "year": 2016,
+    "measure_type": "Employment rate",
+    "rate": 56.2
+  },
+  {
+    "year": 2017,
+    "measure_type": "Employment rate",
+    "rate": 58.2
+  },
+  {
+    "year": 2018,
+    "measure_type": "Employment rate",
+    "rate": 60
+  },
+  {
+    "year": 2019,
+    "measure_type": "Employment rate",
+    "rate": 61.5
+  },
+  {
+    "year": 2014,
+    "measure_type": "LFP rate",
+    "rate": 63.6
+  },
+  {
+    "year": 2015,
+    "measure_type": "LFP rate",
+    "rate": 65.3
+  },
+  {
+    "year": 2016,
+    "measure_type": "LFP rate",
+    "rate": 65.8
+  },
+  {
+    "year": 2017,
+    "measure_type": "LFP rate",
+    "rate": 67.5
+  },
+  {
+    "year": 2018,
+    "measure_type": "LFP rate",
+    "rate": 68.7
+  },
+  {
+    "year": 2019,
+    "measure_type": "LFP rate",
+    "rate": 69.8
+  },
+  {
+    "year": 2014,
+    "measure_type": "Unemployment rate",
+    "rate": 18
+  },
+  {
+    "year": 2015,
+    "measure_type": "Unemployment rate",
+    "rate": 17.7
+  },
+  {
+    "year": 2016,
+    "measure_type": "Unemployment rate",
+    "rate": 14.5
+  },
+  {
+    "year": 2017,
+    "measure_type": "Unemployment rate",
+    "rate": 13.7
+  },
+  {
+    "year": 2018,
+    "measure_type": "Unemployment rate",
+    "rate": 12.7
+  },
+  {
+    "year": 2019,
+    "measure_type": "Unemployment rate",
+    "rate": 11.8
+  },
+  {
+    "year": 2014,
+    "measure_type": "Unemployment (male, 15-24)",
+    "rate": 47.5
+  },
+  {
+    "year": 2015,
+    "measure_type": "Unemployment (male, 15-24)",
+    "rate": 37.4
+  },
+  {
+    "year": 2016,
+    "measure_type": "Unemployment (male, 15-24)",
+    "rate": 38.4
+  },
+  {
+    "year": 2017,
+    "measure_type": "Unemployment (male, 15-24)",
+    "rate": 30.8
+  },
+  {
+    "year": 2018,
+    "measure_type": "Unemployment (male, 15-24)",
+    "rate": 28.9
+  },
+  {
+    "year": 2019,
+    "measure_type": "Unemployment (male, 15-24)",
+    "rate": 27
+  },
+  {
+    "year": 2014,
+    "measure_type": "Unemployment (male, 25-54)",
+    "rate": 16
+  },
+  {
+    "year": 2015,
+    "measure_type": "Unemployment (male, 25-54)",
+    "rate": 15
+  },
+  {
+    "year": 2016,
+    "measure_type": "Unemployment (male, 25-54)",
+    "rate": 12.3
+  },
+  {
+    "year": 2017,
+    "measure_type": "Unemployment (male, 25-54)",
+    "rate": 12.3
+  },
+  {
+    "year": 2018,
+    "measure_type": "Unemployment (male, 25-54)",
+    "rate": 11
+  },
+  {
+    "year": 2019,
+    "measure_type": "Unemployment (male, 25-54)",
+    "rate": 10.6
+  },
+  {
+    "year": 2014,
+    "measure_type": "Unemployment (male, 55-64)",
+    "rate": 13.6
+  },
+  {
+    "year": 2015,
+    "measure_type": "Unemployment (male, 55-64)",
+    "rate": 12.9
+  },
+  {
+    "year": 2016,
+    "measure_type": "Unemployment (male, 55-64)",
+    "rate": 10.5
+  },
+  {
+    "year": 2017,
+    "measure_type": "Unemployment (male, 55-64)",
+    "rate": 10.3
+  },
+  {
+    "year": 2018,
+    "measure_type": "Unemployment (male, 55-64)",
+    "rate": 8.3
+  },
+  {
+    "year": 2019,
+    "measure_type": "Unemployment (male, 55-64)",
+    "rate": 7.1
+  },
+  {
+    "year": 2014,
+    "measure_type": "Unemployment (female, 15-24)",
+    "rate": 35.6
+  },
+  {
+    "year": 2015,
+    "measure_type": "Unemployment (female, 15-24)",
+    "rate": 40.4
+  },
+  {
+    "year": 2016,
+    "measure_type": "Unemployment (female, 15-24)",
+    "rate": 29.9
+  },
+  {
+    "year": 2017,
+    "measure_type": "Unemployment (female, 15-24)",
+    "rate": 25
+  },
+  {
+    "year": 2018,
+    "measure_type": "Unemployment (female, 15-24)",
+    "rate": 26.3
+  },
+  {
+    "year": 2019,
+    "measure_type": "Unemployment (female, 15-24)",
+    "rate": 27.6
+  },
+  {
+    "year": 2014,
+    "measure_type": "Unemployment (female, 25-54)",
+    "rate": 15.1
+  },
+  {
+    "year": 2015,
+    "measure_type": "Unemployment (female, 25-54)",
+    "rate": 16.4
+  },
+  {
+    "year": 2016,
+    "measure_type": "Unemployment (female, 25-54)",
+    "rate": 13.2
+  },
+  {
+    "year": 2017,
+    "measure_type": "Unemployment (female, 25-54)",
+    "rate": 12.6
+  },
+  {
+    "year": 2018,
+    "measure_type": "Unemployment (female, 25-54)",
+    "rate": 11
+  },
+  {
+    "year": 2019,
+    "measure_type": "Unemployment (female, 25-54)",
+    "rate": 10.1
+  },
+  {
+    "year": 2014,
+    "measure_type": "Unemployment (female, 55-64)",
+    "rate": 7.9
+  },
+  {
+    "year": 2015,
+    "measure_type": "Unemployment (female, 55-64)",
+    "rate": 11.8
+  },
+  {
+    "year": 2016,
+    "measure_type": "Unemployment (female, 55-64)",
+    "rate": 7.2
+  },
+  {
+    "year": 2017,
+    "measure_type": "Unemployment (female, 55-64)",
+    "rate": 9.1
+  },
+  {
+    "year": 2018,
+    "measure_type": "Unemployment (female, 55-64)",
+    "rate": 7.9
+  },
+  {
+    "year": 2019,
+    "measure_type": "Unemployment (female, 55-64)",
+    "rate": 8
+  }
+]

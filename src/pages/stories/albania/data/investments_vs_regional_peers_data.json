@@ -1,0 +1,4174 @@
+[
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "ZTE",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Zollern",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Zlatni Pyasatsi",
+    "source_country": "Bulgaria",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Zijin Mining Group",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Zhejiang Sunflower Light Energy Science & Technology (Sunowe)",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Zhejiang Kangyi Sanitary Ware",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "ZF Friedrichshafen",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Zeincro",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Yura Corporation (Sewon ECS)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 1.00
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Yazaki Group",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Yazaki Group",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Yazaki Group",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Yaylafiliz",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Xiamen King Long Motor Group",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Wuxi Guolian Development Group",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Renewable Energy",
+    "parent_company": "WPD",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Renewable Energy",
+    "parent_company": "WPD",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Woco Industrietechnik (Woco Group)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Wizz Air Holdings",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Wizz Air Holdings",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Wizz Air Holdings",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Witzenmann",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "WindVision",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Wielputz Automotive",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Wavion",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Warehouses De Pauw (WDP)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Warehouses De Pauw (WDP)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Vos Logistics",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Vorwerk & Sohn",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Volvo",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Vodafone",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.78
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "Vodafone",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Communications",
+    "parent_company": "Vodafone",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Vitaminka",
+    "source_country": "North Macedonia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Vindija",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Vimetco",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Vikoil",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Viavi Solutions (JDS Uniphase)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Vescovini Group",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Versilfungo",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Verbeek Boomkwerkerijen",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "VelaTel Global Communications (ChinaTel)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Communications",
+    "parent_company": "VelaTel Global Communications (ChinaTel)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Van Hool",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "US Steel",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Universal Food",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "United Parcel Services (UPS)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Unitcargo",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Unitcargo",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Unilever",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "UBQ",
+    "source_country": "Norway",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Tyras",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Turk Telekom (Turk Telekom)",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "TRW Automotive",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Trelleborg",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Transporte Werfring (Werfring Group)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Transmec Group",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "TP-Link Technologies",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Total",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Tosmur Group",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "TNT Express",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Tisza Automotive",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "The Renco Group",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "The Arntz Optibelt Group (Optibelt)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Terwa Holding",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "TERNA",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Terminal Holding",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Telia Company (Teliasonera)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Telenor",
+    "source_country": "Norway",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Communications",
+    "parent_company": "Telenor",
+    "source_country": "Norway",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Telekom Slovenije",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Telekom Austria",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "Telekom Austria",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Telefonica",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "Tele2",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Teknotes Technological Plants",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Teklas",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Techint",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Tatravagonka",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Tata Group",
+    "source_country": "India",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Takata",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "T-2",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Synexus Clinical Research",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Swisslion-Takovo",
+    "source_country": "Serbia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Sutas Sut Urunleri",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Sutas Sut Urunleri",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Sumitomo Group",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Metals & Mining",
+    "parent_company": "Sultan Corporation",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Streit Groupe",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Stratum Energy",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Steag",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Metals & Mining",
+    "parent_company": "Starco Europe",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Stanzwerk Wetter",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Stanzwerk",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Stada Arzneimittel",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Stada Arzneimittel",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "SSAB",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Spinelli Euro Freight",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Soylemez",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Soprol",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "Sony",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Sonic Technology Solutions",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "SonderJansen",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Sonaca",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Metals & Mining",
+    "parent_company": "Solway Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Metals & Mining",
+    "parent_company": "Solvay",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Societe Nationale des Chemins de Fer Francais (SNCF)",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Smithfield Foods",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "SmartWay Logistics BV",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Smart Energy Group",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "SL Consult",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Sky Petroleum",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Site5",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Sigit",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Siemens",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Siemens",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Siemens",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Shin Heung Electronics",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Serinus Energy",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "SECI Societa Esercizi Commerciali Industriali",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Sealynx Automotive Holding",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "SD Hirsch Automotive",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Scooterson",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Schwarz Beteiligungs (Schwarz Gruppe)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Schlumberger",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Schaeffler Group",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Schachermayer",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Scarborough Group",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Santen Pharmaceutical",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Sanofi-Aventis",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Samsung",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Saint Jean Industries",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "SafeRoad",
+    "source_country": "Norway",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "SABMiller",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "S-Tech Energie",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Ryanair",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Ryanair",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "RWE",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "RWE",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "RWE",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Russian Railways (Russkiye Zheleznye Dorogi) (RZD)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Russian Railways (Russkiye Zheleznye Dorogi) (RZD)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Russia Today (RT)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Russia Today (RT)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Royal Mail",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Rossiya Segodnya",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Romania Farm Invest A/S",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Roki Holdings",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Rohde & Schwarz",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Rochling Group (Roechling Group)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Robert Bosch",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Robert Bosch",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.67
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Rios Renovables (Rios Renewables)",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Rio Tinto Group",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Rigoni di Asiago",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "RFV Regionalis Fejlesztesi (Regional Development Company)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Communications",
+    "parent_company": "Retell",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Reservoir Capital Corporation",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Renewable Energy",
+    "parent_company": "Reservoir Capital Corporation",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Renovatio Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Renovalia Energy",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Renault",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 1.34
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Remondis (Rethmann)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Red Bull",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Rauch",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Ramoil Management",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Ralu Logistika",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Raben",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Qingdao Rongxing",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Qatar Airways",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "PVB Group (Petrolvilla)",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Protek Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Promocions Inversolar65",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Prima Energy",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "PRA International",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Portsmouth Aviation",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Polycontact",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Pirelli",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Pipe Metallurgical Company (TMK)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Phoenix Pharmahandel (Phoenix Group)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "PharmaS",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Pharma Vision",
+    "source_country": "Bulgaria",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Pfizer",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Petrol",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Petrol",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Pet Centar",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Perutnina Ptuj",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "PepsiCo",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "PepsiCo",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "PepsiAmericas Inc",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Penske",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Renewable Energy",
+    "parent_company": "PCC  SE",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Parco Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Panalpina World Transport",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Pall-Ex Group",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Pakedge Device & Software",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "OT Logistics",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Orange (France Telecom)",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.78
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "OMV",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "OMV",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.67
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Oetker Gruppe",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Oetker Gruppe",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "OEBB Holding (OEBB)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "odelo (Schefenacker)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Novo Nordisk",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Novares (Mecaplast)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Novares (Mecaplast)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Novares (Mecaplast)",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Novae Groupe",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Norma Group",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Metals & Mining",
+    "parent_company": "Nord Group SpA",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Nokia",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Nissan",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Nippon Telegraph & Telephone (NTT)",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Nippon Express",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Nidec",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Nexans",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "NewDev Projects",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Nestle",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Nestle",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Renewable Energy",
+    "parent_company": "NeSa Energy",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Neele Logistics",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Narlidere Kooperatifi",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Nagel-Group",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "N2WS (N2W Software)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Multienergy",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Mulk Holdings",
+    "source_country": "UAE",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Move One",
+    "source_country": "UAE",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Mototrading",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Renewable Energy",
+    "parent_company": "Mosen",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Montana Tech Components",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Monsanto",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Monometal",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Mondragon Corporacion Cooperativa (MCC)",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Molson Coors Brewing",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Food & Agriculture",
+    "parent_company": "Molson Coors Brewing",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "MOL",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Mobilicom",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Mitsui & Co",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Renewable Energy",
+    "parent_company": "Mitsubishi Corporation",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Mitan Holding",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Minth Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Mineco",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Milsped",
+    "source_country": "Serbia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "MGI Coutier",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Metinvest Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Metes",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Mei Ta Industrial",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Meggle",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Meggle",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Mechel Steel",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Maurice Ward",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Maspex Wadowice Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Marubeni",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Martifer",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Martifer",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Marquardt",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Marquardt",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Mark IV Industries",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Manufactura Moderna de Metales(MMM)",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Mamminger Konserven",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Malhotra Cables",
+    "source_country": "India",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Maintaler Express Logistik",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Mainfreight",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Magontec",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Magna International",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Mackprang Group",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "M247",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Luvata",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Lukoil",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Lukoil",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Lufthansa",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Loko Trans",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Logwin AG (Thiel Logistik)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Logwin AG (Thiel Logistik)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Logwin AG (Thiel Logistik)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Linea Verde",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Limagrain",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Lightway Solar",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "Level 3 Communications",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Lesaffre",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Les Laboratoires Hery (ATM Group)",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Leipnik-Lundenburger Invest Beteiligungs AG (LLI)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Lear",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Le Belier",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Laird PLC",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Lagermax",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Lagermax",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Lagermax",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "La Poste",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "La Lorraine",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "La Linea Verde",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "La Fonte Ardennaise",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "KWS SAAT",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "KWS SAAT",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Kuehne + Nagel International",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Kuehne + Nagel International",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Kromberg & Schubert",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Kromberg & Schubert",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Kromberg & Schubert",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Krka dd Novo Mesto (Krka)",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Kostas A. Zaharia (KAZ)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Metals & Mining",
+    "parent_company": "Konstantinovsky Plant of Metallurgical Equipment",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Koninklijke Cooperatie Cosun",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Konig Ludwig International",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Kolektor",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Metals & Mining",
+    "parent_company": "Koenig Metall",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "KLG Europe Holding",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "King Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Key Safety Systems",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Key Safety Systems",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Keswick Enterprises",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Kelloggs",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Kelag",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "KazMunayGas (KazMunaiGaz)",
+    "source_country": "Kazakhstan",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Kathrein-Werke",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Karamolegos Bakery Industry",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Kapsch Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Communications",
+    "parent_company": "Kapsch Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Kaishan Holding Group",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "JUB",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Joyson",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "JOIN! Aviation Group (JOIN! Regional Airlines)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Johnson Matthey",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Johnson Electric",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "JKX Oil & Gas",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Jerich International",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "JCL Logistics",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Ivicom Consulting",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "ITS Balkan",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Itimat",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Invesco",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Intersnack",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Inter Cars",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "in-tech Automotive Engineering",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Immo Industry Group (IIG)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "IG Bauerhin",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "IEL",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "IBM",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Iberdrola",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Hyosung",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Hunt Consolidated",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Huf Huelsbeck & Fuerst (Huf Hulsbeck & Furst)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Huettemann Group",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Huawei Technologies",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.67
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Host Virtual",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Hospira",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Horizon Food Kft",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Honold Logistik Gruppe",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Hirschmann Automotive",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Hidroelectrica",
+    "source_country": "Romania",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Metals & Mining",
+    "parent_company": "HHD Holding",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Heraeus",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Henschel",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Hellenic Telecommunications Organization (OTE)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Hellenic Petroleum",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Hella KGaA Hueck & Co",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Heineken",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Heineken",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Harsco Corporation",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Harma Fruit",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "H&L (Handling & Lager)",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "H.Essers",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Gulf Pharmaceutical Industries (Julphar)",
+    "source_country": "UAE",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Guenthart (Gunthart)",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "GTS Central Europe Holdings",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "GTS Central Europe Holdings",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Gruppo Industriale Tosoni",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Grupo Antolin",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Gruenewald International",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Groupe PSA (PSA Peugeot-Citroen)",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Groupe Elloumi",
+    "source_country": "Tunisia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Global Wind Power",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Global Crossing",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "GLM Group",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "GlaxoSmithKline (GSK)",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "GlaxoSmithKline (GSK)",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Gestamp Group",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "General Motors (GM)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Gebrueder Weiss (Gebruder Weiss) (GW)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Gebrueder Weiss (Gebruder Weiss) (GW)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Gebrueder Weiss (Gebruder Weiss) (GW)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Gebrueder Weiss (Gebruder Weiss) (GW)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Gazprom",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Gazprom",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.78
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Gazprom",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Gascom",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Galenika",
+    "source_country": "Serbia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Fujikura",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "FrieslandCampina",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Freja Riv, Bygg & Sanering",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Fox Marble Holdings",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Ford",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "First Pacific",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Fintel Energia Group",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Filasa International",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Fiat Chrysler Automobiles (Fiat)",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "FGF Finanziaria Generale Felsinea",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Ferrero",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Fercam",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Fercam",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Fencs",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Feka Automotive",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Federal Mogul",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Federal Express (FedEx)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Farmers' Ethanol",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Farmalakt",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Faist Group",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "F&P Holdings",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Ewals Cargo Care Holding",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Eurowind Energy",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Europam",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Renewable Energy",
+    "parent_company": "Eurohold Bulgaria",
+    "source_country": "Bulgaria",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "EuroGroup Spa",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Eurocom Holdings",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Renewable Energy",
+    "parent_company": "Eurocom Holdings",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Euro Sun Mining",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Etihad Airways",
+    "source_country": "UAE",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Eti Gida Sanayi ve Ticaret",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Ethiopian Airlines",
+    "source_country": "Ethiopia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Essentium Group",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Espe Sunparc",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Espe",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Ericsson",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "Ericsson",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Eolnumancia",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Renewable Energy",
+    "parent_company": "Enso Hydro",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Eni SpA (Eni)",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Engie (GDF SUEZ) (Gaz de France)",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Energy Financing Team (EFT)",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Energtek",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Energie Steiermark Ag",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Enel",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.67
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Enel",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "EMS Fehn Group",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "EMS Chartering",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "ELS Euro Logistik Service",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Elma Electronic",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Electricite de France (EDF)",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Electrawinds",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Electrawinds",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Electra de Carbayin",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Ekotechnik Czech",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Ekol Logistics",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Eczacibasi",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Eberspaecher",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Eaton",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "E.On",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "E.On",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Dytech - Dynamic Fluid Technologies",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Duvenbeck",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Dunkermotoren",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Metals & Mining",
+    "parent_company": "Duferco Farrell",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "DSV",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "DSV",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Draexlmaier",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.89
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Draexlmaier",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Draexlmaier",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "DPH Holdings (Delphi)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "DPH Holdings (Delphi)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Don Don",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Food & Agriculture",
+    "parent_company": "Don Don",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Domoinvest",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Dogu Pres",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "DMD Dis Ticaret",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Deutsche Telekom",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "Deutsche Telekom",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Communications",
+    "parent_company": "Deutsche Telekom",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Deutsche Post",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Deutsche Bahn",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Deutsche Bahn",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Deutsche Bahn",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Deutsche Bahn",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Food & Agriculture",
+    "parent_company": "Destila",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Dermapharm",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Metals & Mining",
+    "parent_company": "Dempo Group",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "De Vierschaar",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "DCH International",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Danone",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Daimler AG",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Daiichi Sankyo Company",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Dachser",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Credo Invest",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "Cortizo Group",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Metals & Mining",
+    "parent_company": "Cortizo Group",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Core Group (CG)",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Cooper-Standard Holdings",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Cooper-Standard Holdings",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "ContourGlobal",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Continental Wind Partners (CWP)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Continental Wind Partners (CWP)",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Continental",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.89
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Colt Group (Colt Technology Services) (Colt Telecom Group)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Coca-Cola Hellenic Bottling (CCHBC)",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Coca-Cola Hellenic Bottling (CCHBC)",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "CMA CGM",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "CloudFlare",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "CloudFlare",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "CJR Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Cie Automotive",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "China Three Gorges Corporation",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Renewable Energy",
+    "parent_company": "China North Industries Group (NORINCO)",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "China Huadian Corporation",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "China Guodian Corporation",
+    "source_country": "China",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Chemie Tech DMCC (Chemie Tech Group)",
+    "source_country": "UAE",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Chaudhary Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "CEZ Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "CEZ Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "CEVA Group",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Metals & Mining",
+    "parent_company": "CeraMetal",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Ceragon Networks Limited",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Caussade Semences",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Carmeuse Holding (LVI Holding)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Carlsberg",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Carlsberg",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Carlsberg",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Cargomind Group",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "cargo-partner",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "cargo-partner",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Cargill",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Carbotech",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "CAP-CON Automotive Technologies",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Campagnolo",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Calearo Group",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Cagatay Kablo",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "C Steinweg",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "C Steinweg",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "C Steinweg",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "C H Robinson Worldwide",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Bulgarian Pharmaceutical Group (BPG)",
+    "source_country": "Bulgaria",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Building Energy",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "BTG Internationale Spedition (BTG Gruppe)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Bourque Logistics",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Boral Aluminyum",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Renewable Energy",
+    "parent_company": "Bontkom",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Bonta Italiane",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Bombardier",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Renewable Energy",
+    "parent_company": "Bluenergy",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Communications",
+    "parent_company": "Bloomberg",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Blg Logistics Group Ag & Co Kg",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Bissi Holding",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "BioDue",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Bige Holding Invest",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Bausch Health (Valeant Pharmaceuticals)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Battistero",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Ball",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "B+C Tonnies (TonniesFleisch)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Ayvaz",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Oil & Gas & Coal",
+    "parent_company": "Axpo",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Avvashya Group",
+    "source_country": "India",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Auxiliar de la Industria Mecanica (Auxim)",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Autoliv",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Renewable Energy",
+    "parent_company": "Audax Renovables (Fersa Energias Renovables)",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Atlantic Grupa",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Astellas Pharma",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Astellas Pharma",
+    "source_country": "Japan",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Aryzta (IAWS Group)",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Archer Daniels Midland",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Archer Daniels Midland",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Metals & Mining",
+    "parent_company": "ArcelorMittal",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.56
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Metals & Mining",
+    "parent_company": "ArcelorMittal",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Aquawell",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Aptiv",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Antibiotice",
+    "source_country": "Romania",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Antibiotice",
+    "source_country": "Romania",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Antibiotice",
+    "source_country": "Romania",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Anthura",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Andreae-Noris Zahn AG (ANZAG)",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Communications",
+    "parent_company": "Anadolu Ajansi (Anatolian Agency)",
+    "source_country": "Turkey",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Amphenol",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Ameropa",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "AmerisourceBergen",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Communications",
+    "parent_company": "America Movil",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Communications",
+    "parent_company": "America Movil",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Alvogen",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Alvarion",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Metals & Mining",
+    "parent_company": "Alumil Aluminium Industry (Alumil Mylonas)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Allergan (Actavis)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Montenegro",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Allergan (Actavis)",
+    "source_country": "Iceland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Allergan (Actavis)",
+    "source_country": "Switzerland",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Alldra",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Pharmaceuticals",
+    "parent_company": "Alkaloid",
+    "source_country": "North Macedonia",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Renewable Energy",
+    "parent_company": "Alerion Clean Power",
+    "source_country": "Italy",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "Alcatel-Lucent",
+    "source_country": "France",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Albon Engineering & Manufacturing",
+    "source_country": "United Kingdom",
+    "percent_of_total_count_of_capital_investment": 0.22
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Food & Agriculture",
+    "parent_company": "Al Dahra Agricultural Company",
+    "source_country": "UAE",
+    "percent_of_total_count_of_capital_investment": 0.33
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Aktienbrauerei Kaufbeuren",
+    "source_country": "Germany",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Airbus Group (European Aeronautic Defence and Space Company) (EADS)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.45
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Airbus Group (European Aeronautic Defence and Space Company) (EADS)",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Food & Agriculture",
+    "parent_company": "Agrokor",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Agility",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Serbia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Aeroflot - Russian Airlines JSC",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Albania",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "Adria Airways",
+    "source_country": "Slovenia",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Croatia",
+    "industries": "Renewable Energy",
+    "parent_company": "Acciona",
+    "source_country": "Spain",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "North Macedonia",
+    "industries": "Automobiles & Transportation",
+    "parent_company": "A2B Express Logistika",
+    "source_country": "Other",
+    "percent_of_total_count_of_capital_investment": 0.11
+  },
+  {
+    "destination_country": "Romania",
+    "industries": "Communications",
+    "parent_company": "8x8 Inc",
+    "source_country": "United States",
+    "percent_of_total_count_of_capital_investment": 0.22
+  }
+]

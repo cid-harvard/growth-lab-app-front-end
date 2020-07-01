@@ -31,29 +31,53 @@ const ColorScaleBar = styled.div<ColorScaleBarProps>`
   );
 `;
 
-interface Props {
-  maxColor: string;
-  minColor: string;
+const ColorScaleBarCustom = styled.div`
+  height: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+`;
+
+interface BaseProps {
   title: string;
   maxLabel: string | number;
   minLabel: string | number;
+  rootStyles?: React.CSSProperties;
 }
 
-const Legend = (props: Props) => {
-  const { minColor, maxColor, maxLabel, minLabel, title } = props;
 
+type Props = BaseProps & ({
+  maxColor: string;
+  minColor: string;
+  gradientString?: undefined;
+} | {
+  maxColor?: undefined;
+  minColor?: undefined;
+  gradientString: string;
+});
+
+const Legend = (props: Props) => {
+  const { maxLabel, minLabel, title, rootStyles } = props;
+
+  const gradientBar = props.minColor && props.maxColor ? (
+    <ColorScaleBar
+      minColor={props.minColor}
+      maxColor={props.maxColor}
+    />
+  ) : (
+    <ColorScaleBarCustom
+      style={{background: props.gradientString}}
+    />
+  );
 
   return (
-    <Root>
+    <Root style={rootStyles}>
       <LabelContainer>
         <div>{minLabel}</div>
         <div>{maxLabel}</div>
       </LabelContainer>
-      <ColorScaleBar
-        minColor={minColor}
-        maxColor={maxColor}
-      />
-      <p>{title}</p>
+      {gradientBar}
+      <div>{title}</div>
     </Root>
   );
 };

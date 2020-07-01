@@ -32,12 +32,13 @@ interface Input {
   showAverageLines?: boolean;
   averageLineText?: {left?: string, bottom?: string};
   quadrantLabels?: {I?: string, II?: string, III?: string, IV?: string};
+  labelFont?: string;
 }
 
 export default (input: Input) => {
   const {
     svg, tooltip, data, size, axisLabels, axisMinMax, showAverageLines,
-    averageLineText, quadrantLabels,
+    averageLineText, quadrantLabels, labelFont,
   } = input;
 
   const margin = {top: 30, right: 30, bottom: 60, left: 60};
@@ -140,7 +141,7 @@ export default (input: Input) => {
         .attr('x',xScale(minX) + 4)
         .attr('y',yScale(maxY / 2) + 12)
         .style('opacity', 0.8)
-        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
         .style('font-size', '12px')
         .style('pointer-events', 'none')
         .text(averageLineText.left);
@@ -150,7 +151,7 @@ export default (input: Input) => {
         .attr('x',xScale(maxX / 2) + 4)
         .attr('y',yScale(minY) - 6)
         .style('opacity', 0.8)
-        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
         .style('font-size', '12px')
         .style('pointer-events', 'none')
         .text(averageLineText.bottom);
@@ -162,7 +163,7 @@ export default (input: Input) => {
     const label = container.append('text')
         .style('text-anchor', textAnchor)
         .style('opacity', 0.8)
-        .style('font-family', "'Source Sans Pro',sans-serif")
+        .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
         .style('font-size', '12px')
         .style('pointer-events', 'none')
         .style('dominant-baseline', 'bottom')
@@ -292,7 +293,7 @@ export default (input: Input) => {
     .append('text')
     .attr('transform', `translate(${width / 2 + margin.left}, ${height + margin.bottom + (margin.top / 2)})`)
       .style('text-anchor', 'middle')
-      .style('font-family', "'Source Sans Pro',sans-serif")
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .text(axisLabels && axisLabels.bottom ? axisLabels.bottom : '');
 
   // append Y axis label
@@ -303,7 +304,7 @@ export default (input: Input) => {
       .attr('x', 0 - (height / 2 + margin.top))
       .attr('dy', '0.75em')
       .style('text-anchor', 'middle')
-      .style('font-family', "'Source Sans Pro',sans-serif")
+      .style('font-family', labelFont ? labelFont : "'Source Sans Pro',sans-serif")
       .text(axisLabels && axisLabels.left ? axisLabels.left : '');
 
 };

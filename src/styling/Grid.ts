@@ -79,6 +79,16 @@ export const ContentFull = styled.main`
   grid-column: ${gridLines.contentStart} / ${gridLines.navEnd};
 `;
 
+export const FullWidthContent = styled.main`
+  grid-row: ${gridLines.contentTop} / ${gridLines.contentBottom};
+  grid-column: ${gridLines.pageLeft} / ${gridLines.pageRight};
+`;
+
+export const FullWidthContentContainer = styled.div`
+  max-width: ${contentMaxWidth + navMaxWidth}px;
+  margin: 0 auto;
+`;
+
 export const NavContainer = styled.nav`
   grid-row: ${gridLines.contentTop} / ${gridLines.contentBottom};
   grid-column: ${gridLines.navStart} / ${gridLines.navEnd};
@@ -102,3 +112,15 @@ export const FullWidthFooterContent = styled.footer`
   margin: 0 auto;
 `;
 
+export const storyMobileWidth = 700; // in px
+
+export const StoriesGrid = styled(FullWidthContentContainer)`
+  display: grid;
+  grid-template-columns: 8fr 5fr;
+  column-gap: 2rem;
+  position: relative;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    grid-template-columns: 1fr;
+  }
+`;
