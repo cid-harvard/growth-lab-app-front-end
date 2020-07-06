@@ -27,6 +27,10 @@ const Root = styled.div`
   padding: 2rem 1rem 0rem 2rem;
   box-sizing: border-box;
   font-family: ${secondaryFont};
+
+  @media (max-width: 700px) {
+    min-width: 0;
+  }
 `;
 
 const CalloutBase = styled.div`
