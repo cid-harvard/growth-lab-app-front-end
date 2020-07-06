@@ -2,15 +2,21 @@ import React, {useState, useRef, useContext} from 'react';
 import {AppContext} from '../../../App';
 import {
   lightBorderColor,
+  secondaryFont,
 } from '../../../styling/styleUtils';
 import styled from 'styled-components/macro';
 import {
-  // ProjectCategory,
-  // Announcement,
-  // Status,
   CardSize,
   ProjectDatum,
 } from '../useData';
+import {
+  activeLinkColor,
+  backgroundColor,
+} from '../Utils';
+import {rgba, darken} from 'polished';
+
+const darkBlue = '#2f383f';
+const deepBlue = '#96c4c5';
 
 const Root = styled.div`
   min-width: 350px;
@@ -20,6 +26,7 @@ const Root = styled.div`
   position: relative;
   padding: 2rem 1rem 0rem 2rem;
   box-sizing: border-box;
+  font-family: ${secondaryFont};
 `;
 
 const CalloutBase = styled.div`
@@ -32,9 +39,9 @@ const CalloutBase = styled.div`
 `;
 
 const Category = styled(CalloutBase)`
-  background-color: teal;
-  padding-left: 0.5rem;
+  padding-left: 0.35rem;
   box-sizing: border-box;
+  background-image: url("${require('../images/pattern.svg')}");
 `;
 
 const CategoryText = styled.h2`
@@ -43,12 +50,18 @@ const CategoryText = styled.h2`
   writing-mode: vertical-lr;
   text-orientation: mixed;
   transform: rotate(-180deg);
+  text-transform: uppercase;
+  padding: 0.3rem 0.1rem;
+  background-color: ${backgroundColor};
+  color: ${activeLinkColor};
 `;
 
 const Content = styled.a`
   display: block;
-  background-color: salmon;
   border: solid 1px ${lightBorderColor};
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   width: 100%;
   height: 100%;
@@ -56,6 +69,7 @@ const Content = styled.a`
   align-items: center;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
 
   &:hover {
     cursor: none;
@@ -70,27 +84,67 @@ const AnnouncementBadge = styled(CalloutBase)`
 
 const AnnouncementText = styled.h3`
   margin: 1px 0 0;
-  padding: 0;
-  font-size: 1rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: ${backgroundColor};
+  background-color: ${activeLinkColor};
   text-transform: uppercase;
-  background-color: red;
 `;
 
 const Title = styled.h1`
+  background-color: ${rgba(darken(0.45, activeLinkColor), 0.3)};
+  color: #fff;
+  padding: 2rem 1.25rem;
+  text-transform: uppercase;
+  font-weight: 400;
 `;
 
-const MetaDataContainer = styled.div``;
-const MetaTitleContainer = styled.h1``;
-const MetaDetail = styled.h2``;
+const MetaDataContainer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 2rem;
+  background-image: linear-gradient(to bottom, ${rgba(darkBlue, 0.85)}, ${rgba(deepBlue, 0.85)});
+  transition: transform 0.2s ease;
+`;
+const MetaTitleContainer = styled.h1`
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-bottom: 1.75rem;
+`;
+const MetaDetail = styled.h2`
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0 0 0.4rem;
+`;
 
 const Cursor = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   background-color: #fff;
   border-radius: 400px;
   position: absolute;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-transform: uppercase;
+  background-image: url("${require('../images/pattern.svg')}");
+  background-size: 200%;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: ${darken(0.25, deepBlue)};
 `;
 
 interface Props {
@@ -132,7 +186,7 @@ const HubCard = ({project}: Props) => {
     flexGrow, width,
   };
 
-  const announcement = project.announcement && !mouseCoords ? (
+  const announcement = project.announcement && (!mouseCoords || windowWidth < 900) ? (
     <AnnouncementBadge>
       <div>
         <AnnouncementText>
@@ -142,7 +196,7 @@ const HubCard = ({project}: Props) => {
     </AnnouncementBadge>
   ) : null;
 
-  const title = project.card_size === CardSize.Large ? (
+  const title = project.card_size === CardSize.Large && !(mouseCoords !== undefined || windowWidth < 900) ? (
     <Title>{project.project_name}</Title>
   ) : null;
 
@@ -157,19 +211,13 @@ const HubCard = ({project}: Props) => {
         top: mouseCoords.y,
       }}
     >
-      Click to view project
+      Click to<br />view project
     </Cursor>
   ) : null;
 
-  const metaData = mouseCoords !== undefined || windowWidth < 900 ? (
-    <>
-      <MetaDataContainer>
-        <MetaTitleContainer>{project.project_name}</MetaTitleContainer>
-        <MetaDetail>Category: {project.project_category}</MetaDetail>
-        {status}
-      </MetaDataContainer>
-    </>
-  ) : <>{title}</>;
+  const metaDataStyle: React.CSSProperties = {
+    transform: mouseCoords !== undefined || windowWidth < 900 ? 'translate(0)' : 'translate(-100%, 0)',
+  };
   return (
     <Root style={style}>
       <Category>
@@ -182,8 +230,14 @@ const HubCard = ({project}: Props) => {
         ref={contentRef}
         onMouseMove={onMouseMove}
         onMouseLeave={() => setMouseCoords(undefined)}
+        style={{backgroundImage: `url("${require('../images/' + project.card_image)}")`}}
       >
-        {metaData}
+        {title}
+        <MetaDataContainer style={metaDataStyle}>
+          <MetaTitleContainer>{project.project_name}</MetaTitleContainer>
+          <MetaDetail>Category: {project.project_category}</MetaDetail>
+          {status}
+        </MetaDataContainer>
         {cursor}
       </Content>
       {announcement}

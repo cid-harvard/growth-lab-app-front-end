@@ -8,7 +8,7 @@
     "card_size": "Large",
     "announcement": "Updated Data",
     "ordering": 1,
-    "card_image": "",
+    "card_image": "atlas-explore-card-background.jpg",
     "status": "Active"
   },
   {
@@ -20,7 +20,7 @@
     "card_size": "Large",
     "announcement": "Updated Data",
     "ordering": 4,
-    "card_image": "",
+    "card_image": "atlas-explore-card-background.jpg",
     "status": "Active"
   },
   {
@@ -56,7 +56,7 @@
     "card_size": "Medium",
     "announcement": "New",
     "ordering": 2,
-    "card_image": "",
+    "card_image": "cover-photo.png",
     "status": "Complete"
   },
   {
@@ -140,7 +140,7 @@
     "card_size": "Medium",
     "announcement": "None",
     "ordering": 6,
-    "card_image": "",
+    "card_image": "image.jpg",
     "status": "Archived"
   },
   {
@@ -200,7 +200,7 @@
     "card_size": "Small",
     "announcement": "None",
     "ordering": 3,
-    "card_image": "",
+    "card_image": "image.jpg",
     "status": ""
   },
   {
@@ -236,7 +236,7 @@
     "card_size": "Small",
     "announcement": "None",
     "ordering": 5,
-    "card_image": "",
+    "card_image": "cover-photo.png",
     "status": "Complete"
   },
   {
