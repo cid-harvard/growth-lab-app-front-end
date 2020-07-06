@@ -30,6 +30,7 @@ const Root = styled.div`
 
   @media (max-width: 700px) {
     min-width: 0;
+    width: 100%;
   }
 `;
 
@@ -40,6 +41,11 @@ const CalloutBase = styled.div`
   top: 0;
   left: 0;
   padding-top: 2rem;
+
+  @media (max-width: 700px) {
+    min-width: 0;
+    width: 80%;
+  }
 `;
 
 const Category = styled(CalloutBase)`
