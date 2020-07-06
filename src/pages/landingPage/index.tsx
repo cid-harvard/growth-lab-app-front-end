@@ -25,16 +25,13 @@ import ListView from './hubViews/ListView';
 import SearchView from './hubViews/SearchView';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
+import useData from './useData';
 
 const SplashScreenContainer = styled.div`
   width: 100%;
   height: 100vh;
   position: relative;
   overflow: hidden;
-`;
-
-const PlaceholderSpace = styled.div`
-  height: 2000px;
 `;
 
 const sampleKeywords = [
@@ -102,10 +99,12 @@ const LandingPage = () => {
     smooth: false,
   });
 
+  const {data} = useData();
+
   let contentView: React.ReactElement<any> | null;
   if (activeView === View.grid) {
     contentView = (
-      <GridView />
+      <GridView data={data} />
     );
   } else if (activeView === View.list) {
     contentView = (
@@ -152,7 +151,6 @@ const LandingPage = () => {
           </NavColumn>
           <ContentColumn>
             {contentView}
-            <PlaceholderSpace/>
           </ContentColumn>
         </Grid>
       </HubContentContainer>
