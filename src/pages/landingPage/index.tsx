@@ -108,7 +108,7 @@ const LandingPage = () => {
     );
   } else if (activeView === View.list) {
     contentView = (
-      <ListView />
+      <ListView data={data} />
     );
   } else if (activeView === View.search) {
     const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';

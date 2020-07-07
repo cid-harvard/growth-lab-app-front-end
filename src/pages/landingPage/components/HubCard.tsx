@@ -12,11 +12,11 @@ import {
 import {
   activeLinkColor,
   backgroundColor,
+  darkBlue,
+  deepBlue,
 } from '../Utils';
 import {rgba, darken} from 'polished';
 
-const darkBlue = '#2f383f';
-const deepBlue = '#96c4c5';
 
 const Root = styled.div`
   min-width: 350px;
