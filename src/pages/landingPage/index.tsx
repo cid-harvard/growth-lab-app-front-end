@@ -51,15 +51,22 @@ const sampleKeywords = [
 const sampleCategories = [
   'Atlas Projects',
   'Country Dashboards',
-  'Research Tools',
-  'Prototypes / Codes',
+  'Visual Stories',
+  'Prototypes / Experiments',
+  'Presentations',
+  'Software Packages',
 ];
+
+const sampleDataKeywords = ['UN Comtrade', 'IMF', 'WDI'];
+const sampleStatus = ['Active', 'Archived', 'Complete'];
 
 // examples: /?query=albania%20tool&keywords=usa,jordan,albania&categories=usa,jordan,albania#hub
 export interface QueryString {
   query?: string;
   keywords?: string[];
   categories?: string[];
+  dataKeywords?: string[];
+  status?: string[];
 }
 
 const LandingPage = () => {
@@ -74,8 +81,11 @@ const LandingPage = () => {
   const defaultActiveView = parsedQuery !== undefined && (
                               (parsedQuery.query !== undefined && parsedQuery.query.length) ||
                               (parsedQuery.keywords !== undefined && parsedQuery.keywords.length) ||
-                              (parsedQuery.categories !== undefined && parsedQuery.categories.length)
-                            ) ? View.search : View.grid;
+                              (parsedQuery.categories !== undefined && parsedQuery.categories.length) ||
+                              (parsedQuery.dataKeywords !== undefined && parsedQuery.dataKeywords.length) ||
+                              (parsedQuery.status !== undefined && parsedQuery.status.length)
+                            ) ? View.search : View.search;
+                            // ) ? View.search : View.grid;
   const [activeView, setActiveView] = useState<View>(defaultActiveView);
 
   useEffect(()=>{
@@ -114,6 +124,8 @@ const LandingPage = () => {
     const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
     const initialSelectedKeywords = parsedQuery && parsedQuery.keywords !== undefined ? parsedQuery.keywords : [];
     const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined ? parsedQuery.categories : [];
+    const initialSelectedDataKeywords = parsedQuery && parsedQuery.dataKeywords !== undefined ? parsedQuery.dataKeywords : [];
+    const initialSelectedStatus = parsedQuery && parsedQuery.status !== undefined ? parsedQuery.status : [];
     contentView = (
       <SearchView
         initialQuery={initialQuery}
@@ -121,6 +133,11 @@ const LandingPage = () => {
         initialSelectedKeywords={initialSelectedKeywords}
         categories={sampleCategories}
         initialSelectedCategories={initialSelectedCategories}
+        dataKeywords={sampleDataKeywords}
+        initialSelectedDataKeywords={initialSelectedDataKeywords}
+        status={sampleStatus}
+        initialSelectedStatus={initialSelectedStatus}
+        data={data}
       />
     );
   } else {

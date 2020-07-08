@@ -6,12 +6,18 @@ import {QueryString} from '../';
 import styled from 'styled-components/macro';
 import {
   Label,
-  baseColor,
-  lightBaseColor,
-  lightBorderColor,
   secondaryFont,
 } from '../../../styling/styleUtils';
-import {activeLinkColor} from '../Utils';
+import {deepBlue} from '../Utils';
+import {darken} from 'polished';
+import GridView from './GridView';
+import {
+  ProjectDatum,
+} from '../useData';
+
+const Root = styled.div`
+  margin: 0 0 4rem 3.25rem;
+`;
 
 const KeywordsGrid = styled.div`
   margin-top: 1rem;
@@ -27,7 +33,7 @@ const KeywordsGrid = styled.div`
 
 const CheckboxTitle = styled.h3`
   font-family: ${secondaryFont};
-  color: ${activeLinkColor};
+  color: ${darken(0.25, deepBlue)};
   text-transform: uppercase;
   grid-column: 1 / -1;
 `;
@@ -47,29 +53,48 @@ const CategoryContainer = styled.div`
   text-transform: uppercase;
 `;
 
-interface CheckboxLabelProps {
-  checked: boolean;
-  primaryColor: string;
-  size: number; // in rem
-}
-
-const CheckboxLabel = styled(Label)<CheckboxLabelProps>`
-  display: flex;
+const CheckboxLabel = styled(Label)`
   cursor: pointer;
 
-  &:before {
-    content: '✔';
-    flex-shrink: 0;
-    width: ${({size}) => size * 0.85}rem;
-    height: ${({size}) => size * 0.85}rem;
-    font-size: ${({size}) => size}rem;
-    color: ${({checked}) => checked ? baseColor : 'rgba(0, 0, 0, 0)'};
-    background-color: ${({checked, primaryColor}) => checked ? primaryColor : lightBorderColor};
-    border: 1px solid ${lightBaseColor};
-    margin-right: 0.6rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  &:hover span {
+    border-bottom: solid 1px #333;
+  }
+
+  input {
+    display: none;
+  }
+`;
+
+const TagContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  align-self: center;
+`;
+const TagLabel = styled(Label)`
+  font-size: 1rem;
+  border-radius: 400px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+
+  &:after {
+    content: '×';
+    line-height: 0;
+    margin-left: 0.4rem;
+    font-size: 1.4rem;
+    display: block;
+    color: ${darken(0.25, deepBlue)};
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${deepBlue};
+
+    &:after {
+      color: #333;
+    }
   }
 
   input {
@@ -90,10 +115,18 @@ interface Props {
   initialSelectedKeywords: string[];
   categories: string[];
   initialSelectedCategories: string[];
+  dataKeywords: string[];
+  initialSelectedDataKeywords: string[];
+  status: string[];
+  initialSelectedStatus: string[];
+  data: undefined | {projects: ProjectDatum[]};
 }
 
 const SearchView = (props: Props) => {
-  const {initialQuery, initialSelectedKeywords, initialSelectedCategories} = props;
+  const {
+    initialQuery, initialSelectedKeywords, initialSelectedCategories,
+    initialSelectedDataKeywords, initialSelectedStatus, data,
+  } = props;
   const history = useHistory();
 
   const keywordCheckboxes: CheckboxProps[] = props.keywords.map(keyword => {
@@ -104,29 +137,51 @@ const SearchView = (props: Props) => {
     const checked = !!initialSelectedCategories.find((value) => value.toLowerCase() === category.toLowerCase());
     return {label: category, value: category.toLowerCase(), checked};
   });
+  const dataKeywordsCheckboxes: CheckboxProps[] = props.dataKeywords.map(dataKeywords => {
+    const checked = !!initialSelectedDataKeywords.find((value) => value.toLowerCase() === dataKeywords.toLowerCase());
+    return {label: dataKeywords, value: dataKeywords.toLowerCase(), checked};
+  });
+  const statusCheckboxes: CheckboxProps[] = props.status.map(s => {
+    const checked = !!initialSelectedStatus.find((value) => value.toLowerCase() === s.toLowerCase());
+    return {label: s, value: s.toLowerCase(), checked};
+  });
 
   const [search, setSearch] = useState<string>(initialQuery);
   const [keywordValues, setKeywordValues] = useState<CheckboxProps[]>(keywordCheckboxes);
   const [categoriesValues, setCategoriesValues] = useState<CheckboxProps[]>(categoriesCheckboxes);
+  const [dataKeywordsValues, setDataKeywordsValues] = useState<CheckboxProps[]>(dataKeywordsCheckboxes);
+  const [statusValues, setStatusValues] = useState<CheckboxProps[]>(statusCheckboxes);
 
-  const setUrl = ({query, keywords, categories}: QueryString) => {
+  const setUrl = ({query, keywords, categories, dataKeywords, status}: QueryString) => {
     const baseUrl = Routes.Landing + '#' + hubId;
-    if ((!query || !query.length) && (!keywords || !keywords.length)  && (!categories || !categories.length)) {
+    if ((!query || !query.length) && (!keywords || !keywords.length)  && (!categories || !categories.length) &&
+        (!dataKeywords || !dataKeywords.length) && (!status || !status.length)
+      ) {
       history.push(baseUrl);
     } else {
-      const queryVar = query && query.length ? 'query=' + query : '';
+      const queryVar = query && query.length ? 'query=' + query + '&' : '';
       let keywordVar = keywords && keywords.length ? 'keywords=' : '';
       if (keywords && keywords.length) {
         keywords.forEach(word => keywordVar = keywordVar + word + ',');
       }
+      keywordVar = keywordVar && keywordVar.length ? keywordVar + '&' : keywordVar;
       let categoriesVar = categories && categories.length ? 'categories=' : '';
       if (categories && categories.length) {
         categories.forEach(word => categoriesVar = categoriesVar + word + ',');
       }
-      const firstSeperator = queryVar && (keywordVar || categoriesVar) ? '&' : '';
-      const secondSeperator = keywordVar && categoriesVar ? '&' : '';
+      categoriesVar = categoriesVar && categoriesVar.length ? categoriesVar + '&' : categoriesVar;
+      let dataKeywordsVar = dataKeywords && dataKeywords.length ? 'dataKeywords=' : '';
+      if (dataKeywords && dataKeywords.length) {
+        dataKeywords.forEach(word => dataKeywordsVar = dataKeywordsVar + word + ',');
+      }
+      dataKeywordsVar = dataKeywords && dataKeywords.length ? dataKeywordsVar + '&' : dataKeywordsVar;
+      let statusVar = status && status.length ? 'status=' : '';
+      if (status && status.length) {
+        status.forEach(word => statusVar = statusVar + word + ',');
+      }
+      statusVar = statusVar && statusVar.length ? statusVar + '&' : statusVar;
       const fullUrl =
-        Routes.Landing + '?' + queryVar + firstSeperator + keywordVar + secondSeperator + categoriesVar + '#' + hubId;
+        Routes.Landing + '?' + queryVar + keywordVar + categoriesVar + dataKeywordsVar + statusVar + '#' + hubId;
       history.push(fullUrl);
     }
   };
@@ -136,9 +191,12 @@ const SearchView = (props: Props) => {
       query: val,
       keywords: keywordValues.filter(({checked}) => checked).map(({value}) => value),
       categories: categoriesValues.filter(({checked}) => checked).map(({value}) => value),
+      dataKeywords: dataKeywordsValues.filter(({checked}) => checked).map(({value}) => value),
+      status: statusValues.filter(({checked}) => checked).map(({value}) => value),
     });
   };
 
+  const selectedKeywordList: React.ReactNode[] = [];
   let keywordList: React.ReactNode | null;
   if (keywordValues && keywordValues.length) {
     keywordList = keywordValues.map((checkbox, i) => {
@@ -157,26 +215,39 @@ const SearchView = (props: Props) => {
           query: search,
           keywords: newKeywordValues.filter((v) => v.checked).map(({value}) => value),
           categories: categoriesValues.filter((v) => v.checked).map(({value}) => value),
+          dataKeywords: dataKeywordsValues.filter((v) => v.checked).map(({value}) => value),
+          status: statusValues.filter((v) => v.checked).map(({value}) => value),
         });
       };
 
-      return (
-        <KeywordContainer key={'checkbox-field-' + checkbox.value + i}>
-          <CheckboxLabel
-            checked={checkbox.checked}
-            primaryColor={activeLinkColor}
-            size={1}
-          >
-            <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-            {checkbox.label}
-          </CheckboxLabel>
-        </KeywordContainer>
-      );
+
+      if (checkbox.checked) {
+        selectedKeywordList.push(
+          <TagContainer key={'checkbox-field-' + checkbox.value + i}>
+            <TagLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </TagLabel>
+          </TagContainer>,
+        );
+        return null;
+      } else {
+        return (
+          <KeywordContainer key={'checkbox-field-' + checkbox.value + i}>
+            <CheckboxLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </CheckboxLabel>
+          </KeywordContainer>
+        );
+      }
+
     });
   } else {
     keywordList = null;
   }
 
+  const selectedCategoryList: React.ReactNode[] = [];
   let categoriesList: React.ReactNode | null;
   if (categoriesValues && categoriesValues.length) {
     categoriesList = categoriesValues.map((checkbox, i) => {
@@ -195,82 +266,183 @@ const SearchView = (props: Props) => {
           query: search,
           keywords: keywordValues.filter((v) => v.checked).map(({value}) => value),
           categories: newCategoriesValues.filter((v) => v.checked).map(({value}) => value),
+          dataKeywords: dataKeywordsValues.filter((v) => v.checked).map(({value}) => value),
+          status: statusValues.filter((v) => v.checked).map(({value}) => value),
         });
       };
 
-      return (
-        <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
-          <CheckboxLabel
-            checked={checkbox.checked}
-            primaryColor={activeLinkColor}
-            size={1.2}
-          >
-            <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-            {checkbox.label}
-          </CheckboxLabel>
-        </CategoryContainer>
-      );
+
+      if (checkbox.checked) {
+        selectedCategoryList.push(
+          <TagContainer key={'checkbox-field-' + checkbox.value + i}>
+            <TagLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </TagLabel>
+          </TagContainer>,
+        );
+        return null;
+      } else {
+        return (
+          <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
+            <CheckboxLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </CheckboxLabel>
+          </CategoryContainer>
+        );
+      }
+
     });
   } else {
     categoriesList = null;
   }
 
-  const titleSearchQuery = search ? search : '[anything]';
+  const selectedDataKeywordsList: React.ReactNode[] = [];
+  let dataKeywordsList: React.ReactNode | null;
+  if (dataKeywordsValues && dataKeywordsValues.length) {
+    dataKeywordsList = dataKeywordsValues.map((checkbox, i) => {
 
-  const selectedCategories = categoriesValues.filter(({checked}) => checked);
-  const selectedCategoryList = selectedCategories.length ? selectedCategories.map(({value}) => (
-    <li key={value}>{value}</li>
-  )) : <li>[any category]</li>;
+      const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = e.target.checked;
+        const newDataKeywordsValues = dataKeywordsValues.map((c, j) => {
+          if (i === j) {
+            return {...c, checked};
+          } else {
+            return c;
+          }
+        });
+        setDataKeywordsValues(newDataKeywordsValues);
+        setUrl({
+          query: search,
+          keywords: keywordValues.filter((v) => v.checked).map(({value}) => value),
+          categories: categoriesValues.filter((v) => v.checked).map(({value}) => value),
+          dataKeywords: newDataKeywordsValues.filter((v) => v.checked).map(({value}) => value),
+          status: statusValues.filter((v) => v.checked).map(({value}) => value),
+        });
+      };
 
-  const selectedKeywords = keywordValues.filter(({checked}) => checked);
-  const selectedKeywordList = selectedKeywords.length ? selectedKeywords.map(({value}) => (
-    <li key={value}>{value}</li>
-  )) : <li>[any keywords]</li>;
+
+      if (checkbox.checked) {
+        selectedDataKeywordsList.push(
+          <TagContainer key={'checkbox-field-' + checkbox.value + i}>
+            <TagLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </TagLabel>
+          </TagContainer>,
+        );
+        return null;
+      } else {
+        return (
+          <KeywordContainer key={'checkbox-field-' + checkbox.value + i}>
+            <CheckboxLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </CheckboxLabel>
+          </KeywordContainer>
+        );
+      }
+
+    });
+  } else {
+    dataKeywordsList = null;
+  }
+
+  const selectedStatusList: React.ReactNode[] = [];
+  let statusList: React.ReactNode | null;
+  if (statusValues && statusValues.length) {
+    statusList = statusValues.map((checkbox, i) => {
+
+      const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = e.target.checked;
+        const newStatusValues = statusValues.map((c, j) => {
+          if (i === j) {
+            return {...c, checked};
+          } else {
+            return c;
+          }
+        });
+        setStatusValues(newStatusValues);
+        setUrl({
+          query: search,
+          keywords: keywordValues.filter((v) => v.checked).map(({value}) => value),
+          categories: categoriesValues.filter((v) => v.checked).map(({value}) => value),
+          dataKeywords: dataKeywordsValues.filter((v) => v.checked).map(({value}) => value),
+          status: newStatusValues.filter((v) => v.checked).map(({value}) => value),
+        });
+      };
+
+
+      if (checkbox.checked) {
+        selectedStatusList.push(
+          <TagContainer key={'checkbox-field-' + checkbox.value + i}>
+            <TagLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </TagLabel>
+          </TagContainer>,
+        );
+        return null;
+      } else {
+        return (
+          <KeywordContainer key={'checkbox-field-' + checkbox.value + i}>
+            <CheckboxLabel>
+              <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
+              <span>{checkbox.label}</span>
+            </CheckboxLabel>
+          </KeywordContainer>
+        );
+      }
+
+    });
+  } else {
+    statusList = null;
+  }
 
   return (
     <>
-      <BasicSearch
-        placeholder={'Search More...'}
-        setSearchQuery={setSearchQuery}
-        initialQuery={initialQuery}
-        focusOnMount={true}
-        searchBarStyleOverrides={{
-          backgroundColor: 'transparent',
-          textTransform: 'uppercase',
-          fontFamily: secondaryFont,
-          border: '1px solid #666',
-          outline: 'none',
-          padding: '1rem 8px 1rem 2.5rem',
-        }}
-      />
-      <KeywordsGrid>
-        <div>
-          <CheckboxTitle>Categories</CheckboxTitle>
-          {categoriesList}
-        </div>
-        <CheckboxGrid>
-          <CheckboxTitle>Other Keywords</CheckboxTitle>
-          {keywordList}
-        </CheckboxGrid>
-      </KeywordsGrid>
-      <p style={{marginTop: '2rem'}}>
-        Currently Searching for projects WHERE
-      </p>
-      <p>
-        <strong>title</strong> CONTAINS <strong>{titleSearchQuery}</strong> (case insensitive)
-      </p>
-      <p>
-        AND <strong>category</strong> IS EQUAL TO ANY OF (case insensitive)
-      </p>
-      <ul>
-        {selectedCategoryList}
-      </ul>
-      <p>
-        AND <strong>keywords</strong> INCLUDE ALL OF (case insensitive)
-      </p>
-      <ul>
-        {selectedKeywordList}
-      </ul>
+      <Root>
+        <BasicSearch
+          placeholder={'Search More...'}
+          setSearchQuery={setSearchQuery}
+          initialQuery={initialQuery}
+          focusOnMount={true}
+          searchBarStyleOverrides={{
+            backgroundColor: 'transparent',
+            textTransform: 'uppercase',
+            fontFamily: secondaryFont,
+            border: 'none',
+            outline: 'none',
+            padding: '1rem 0.5rem 1rem 0.5rem',
+            boxShadow: 'none',
+          }}
+          containerStyleOverrides={{
+            border: '1px solid #666',
+          }}
+          additionalContent={(
+            <>
+              {selectedCategoryList}
+              {selectedKeywordList}
+              {selectedDataKeywordsList}
+              {selectedStatusList}
+            </>
+          )}
+        />
+        <KeywordsGrid>
+          <div>
+            <CheckboxTitle>Categories</CheckboxTitle>
+            {categoriesList}
+          </div>
+          <CheckboxGrid>
+            <CheckboxTitle>Keywords</CheckboxTitle>
+            {dataKeywordsList}
+            {statusList}
+            {keywordList}
+          </CheckboxGrid>
+        </KeywordsGrid>
+      </Root>
+      <GridView data={data} />
     </>
   );
 };
