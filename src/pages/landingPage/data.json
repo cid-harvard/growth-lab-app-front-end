@@ -24,15 +24,15 @@
     "status": "Active"
   },
   {
-    "project_name": "Atlas of Economic Complexity Complexity Rankings",
+    "project_name": "Country Complexity Rankings",
     "link": "https://atlas.cid.harvard.edu/rankings",
     "project_category": "Atlas Projects",
     "data": "",
     "keywords": "economic complexity index, product complexity index, growth, Indonesia, Colombia, Jordan, Albania, all countries",
     "card_size": "Medium",
     "announcement": "Updated Data",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 8,
+    "card_image": "cover-photo.png",
     "status": "Active"
   },
   {
@@ -43,8 +43,8 @@
     "keywords": "economic complexity, product space, economic complexity index, product complexity index, trade, growth, industries, Colombia",
     "card_size": "Medium",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 12,
+    "card_image": "cover-photo.png",
     "status": "Archived"
   },
   {
@@ -67,8 +67,8 @@
     "keywords": "economic complexity, product space, Indonesia",
     "card_size": "Medium",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 9,
+    "card_image": "image.jpg",
     "status": "Complete"
   },
   {
@@ -79,8 +79,8 @@
     "keywords": "growth diagnostics, growth, Albania",
     "card_size": "Medium",
     "announcement": "New",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 5,
+    "card_image": "cover-photo.png",
     "status": "Complete"
   },
   {
@@ -89,10 +89,10 @@
     "project_category": "Visual Stories",
     "data": "",
     "keywords": "Needs Frank's feedback",
-    "card_size": "Medium",
+    "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 3,
+    "card_image": "image.jpg",
     "status": "Complete"
   },
   {
@@ -103,8 +103,8 @@
     "keywords": "economic complexity, product complexity index, digital development",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 19,
+    "card_image": "atlas-explore-card-background.jpg",
     "status": "Complete"
   },
   {
@@ -115,8 +115,8 @@
     "keywords": "economic complexity, product complexity index, digital development",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 14,
+    "card_image": "atlas-explore-card-background.jpg",
     "status": "Complete"
   },
   {
@@ -127,8 +127,8 @@
     "keywords": "digital development",
     "card_size": "Medium",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 13,
+    "card_image": "image.jpg",
     "status": "Complete"
   },
   {
@@ -139,7 +139,7 @@
     "keywords": "economic complexity, product space, economic complexity index, product complexity index, trade, growth, all countries, 3D visualization",
     "card_size": "Medium",
     "announcement": "None",
-    "ordering": 6,
+    "ordering": 16,
     "card_image": "image.jpg",
     "status": "Archived"
   },
@@ -151,8 +151,8 @@
     "keywords": "python, open source",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 18,
+    "card_image": "cover-photo.png",
     "status": ""
   },
   {
@@ -163,8 +163,8 @@
     "keywords": "python, open source",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 11,
+    "card_image": "atlas-explore-card-background.jpg",
     "status": ""
   },
   {
@@ -175,8 +175,8 @@
     "keywords": "open source",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 21,
+    "card_image": "cover-photo.png",
     "status": ""
   },
   {
@@ -187,8 +187,8 @@
     "keywords": "python, open source",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 20,
+    "card_image": "cover-photo.png",
     "status": ""
   },
   {
@@ -199,8 +199,8 @@
     "keywords": "economic complexity, python, open source",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": 3,
-    "card_image": "image.jpg",
+    "ordering": 7,
+    "card_image": "atlas-explore-card-background.jpg",
     "status": ""
   },
   {
@@ -211,8 +211,8 @@
     "keywords": "economic complexity, stata, open source",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 17,
+    "card_image": "image.jpg",
     "status": ""
   },
   {
@@ -223,8 +223,8 @@
     "keywords": "python, open source, digital development",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 22,
+    "card_image": "atlas-explore-card-background.jpg",
     "status": "Archived"
   },
   {
@@ -235,7 +235,7 @@
     "keywords": "digital development",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": 5,
+    "ordering": 15,
     "card_image": "cover-photo.png",
     "status": "Complete"
   },
@@ -247,8 +247,8 @@
     "keywords": "digital development",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 10,
+    "card_image": "image.jpg",
     "status": "Complete"
   },
   {
@@ -259,8 +259,8 @@
     "keywords": "economic complexity, digital development",
     "card_size": "Small",
     "announcement": "None",
-    "ordering": "",
-    "card_image": "",
+    "ordering": 6,
+    "card_image": "image.jpg",
     "status": "Active"
   }
 ]
