@@ -34,20 +34,6 @@ const SplashScreenContainer = styled.div`
   overflow: hidden;
 `;
 
-const sampleKeywords = [
-  'Albania',
-  'Jordan',
-  'Indonesia',
-  'Colombia',
-  'International',
-  'FDI',
-  'Growth Diagnostic',
-  'Trade Data',
-  'Open Source',
-  'Python',
-  'Product Space',
-];
-
 const sampleCategories = [
   'Atlas Projects',
   'Country Dashboards',
@@ -126,20 +112,35 @@ const LandingPage = () => {
     const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined ? parsedQuery.categories : [];
     const initialSelectedDataKeywords = parsedQuery && parsedQuery.dataKeywords !== undefined ? parsedQuery.dataKeywords : [];
     const initialSelectedStatus = parsedQuery && parsedQuery.status !== undefined ? parsedQuery.status : [];
-    contentView = (
-      <SearchView
-        initialQuery={initialQuery}
-        keywords={sampleKeywords}
-        initialSelectedKeywords={initialSelectedKeywords}
-        categories={sampleCategories}
-        initialSelectedCategories={initialSelectedCategories}
-        dataKeywords={sampleDataKeywords}
-        initialSelectedDataKeywords={initialSelectedDataKeywords}
-        status={sampleStatus}
-        initialSelectedStatus={initialSelectedStatus}
-        data={data}
-      />
-    );
+
+    const keywords: string[] = [];
+    if (data) {
+      data.projects.forEach(p => {
+        p.keywords.forEach(word => {
+          if (!keywords.includes(word)) {
+            keywords.push(word);
+          }
+        });
+      });
+    }
+    if (data) {
+      contentView = (
+        <SearchView
+          initialQuery={initialQuery}
+          keywords={keywords}
+          initialSelectedKeywords={initialSelectedKeywords}
+          categories={sampleCategories}
+          initialSelectedCategories={initialSelectedCategories}
+          dataKeywords={sampleDataKeywords}
+          initialSelectedDataKeywords={initialSelectedDataKeywords}
+          status={sampleStatus}
+          initialSelectedStatus={initialSelectedStatus}
+          data={data}
+        />
+      );
+    } else {
+      contentView = null;
+    }
   } else {
     console.error('Invalid view type ' + activeView);
     contentView = null;

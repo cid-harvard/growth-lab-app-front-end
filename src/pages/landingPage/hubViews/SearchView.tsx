@@ -22,12 +22,23 @@ const Root = styled.div`
 const KeywordsGrid = styled.div`
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 2rem;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 2.5rem;
+
+  @media (max-width: 950px) {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+  }
 
   @media (max-width: 590px) {
     grid-template-columns: auto;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
+  }
+`;
+
+const CategoriesContainer = styled.div`
+  @media (max-width: 950px) {
+    grid-column: 1 / -1;
   }
 `;
 
@@ -36,21 +47,32 @@ const CheckboxTitle = styled.h3`
   color: ${darken(0.25, deepBlue)};
   text-transform: uppercase;
   grid-column: 1 / -1;
+  max-width: 200px;
+  border-bottom: solid 4px ${darken(0.25, deepBlue)};
 `;
 
 const CheckboxGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   grid-column-gap: 0.75rem;
+
+  @media (max-width: 500px) {
+    grid-template-columns: auto;
+  }
+`;
+
+const KeywordsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const KeywordContainer = styled.div`
   font-size: 0.85rem;
+  margin-right: 0.6rem;
 `;
 
 const CategoryContainer = styled.div`
   margin-bottom: 0.85rem;
-  text-transform: uppercase;
 `;
 
 const CheckboxLabel = styled(Label)`
@@ -74,7 +96,7 @@ const TagContainer = styled.div`
 const TagLabel = styled(Label)`
   font-size: 1rem;
   border-radius: 400px;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.6rem;
   margin-bottom: 0;
   display: flex;
   align-items: center;
@@ -100,6 +122,10 @@ const TagLabel = styled(Label)`
   input {
     display: none;
   }
+`;
+
+const SearchResults = styled.div`
+  min-height: 100vh;
 `;
 
 
@@ -197,9 +223,9 @@ const SearchView = (props: Props) => {
   };
 
   const selectedKeywordList: React.ReactNode[] = [];
-  let keywordList: React.ReactNode | null;
+  const keywordList: React.ReactNode[] = [];
   if (keywordValues && keywordValues.length) {
-    keywordList = keywordValues.map((checkbox, i) => {
+    keywordValues.forEach((checkbox, i) => {
 
       const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const checked = e.target.checked;
@@ -232,25 +258,23 @@ const SearchView = (props: Props) => {
         );
         return null;
       } else {
-        return (
+        keywordList.push(
           <KeywordContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span>{checkbox.label},</span>
             </CheckboxLabel>
-          </KeywordContainer>
+          </KeywordContainer>,
         );
       }
 
     });
-  } else {
-    keywordList = null;
   }
 
   const selectedCategoryList: React.ReactNode[] = [];
-  let categoriesList: React.ReactNode | null;
+  const categoriesList: React.ReactNode[] = [];
   if (categoriesValues && categoriesValues.length) {
-    categoriesList = categoriesValues.map((checkbox, i) => {
+    categoriesValues.forEach((checkbox, i) => {
 
       const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const checked = e.target.checked;
@@ -283,25 +307,23 @@ const SearchView = (props: Props) => {
         );
         return null;
       } else {
-        return (
+        categoriesList.push(
           <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
               <span>{checkbox.label}</span>
             </CheckboxLabel>
-          </CategoryContainer>
+          </CategoryContainer>,
         );
       }
 
     });
-  } else {
-    categoriesList = null;
   }
 
   const selectedDataKeywordsList: React.ReactNode[] = [];
-  let dataKeywordsList: React.ReactNode | null;
+  const dataKeywordsList: React.ReactNode[] = [];
   if (dataKeywordsValues && dataKeywordsValues.length) {
-    dataKeywordsList = dataKeywordsValues.map((checkbox, i) => {
+    dataKeywordsValues.forEach((checkbox, i) => {
 
       const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const checked = e.target.checked;
@@ -334,25 +356,23 @@ const SearchView = (props: Props) => {
         );
         return null;
       } else {
-        return (
-          <KeywordContainer key={'checkbox-field-' + checkbox.value + i}>
+        dataKeywordsList.push(
+          <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
               <span>{checkbox.label}</span>
             </CheckboxLabel>
-          </KeywordContainer>
+          </CategoryContainer>,
         );
       }
 
     });
-  } else {
-    dataKeywordsList = null;
   }
 
   const selectedStatusList: React.ReactNode[] = [];
-  let statusList: React.ReactNode | null;
+  const statusList: React.ReactNode[] = [];
   if (statusValues && statusValues.length) {
-    statusList = statusValues.map((checkbox, i) => {
+    statusValues.forEach((checkbox, i) => {
 
       const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const checked = e.target.checked;
@@ -385,19 +405,17 @@ const SearchView = (props: Props) => {
         );
         return null;
       } else {
-        return (
-          <KeywordContainer key={'checkbox-field-' + checkbox.value + i}>
+        statusList.push(
+          <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
               <span>{checkbox.label}</span>
             </CheckboxLabel>
-          </KeywordContainer>
+          </CategoryContainer>,
         );
       }
 
     });
-  } else {
-    statusList = null;
   }
 
   return (
@@ -430,19 +448,31 @@ const SearchView = (props: Props) => {
           )}
         />
         <KeywordsGrid>
-          <div>
+          <CategoriesContainer>
             <CheckboxTitle>Categories</CheckboxTitle>
-            {categoriesList}
-          </div>
-          <CheckboxGrid>
-            <CheckboxTitle>Keywords</CheckboxTitle>
+            <CheckboxGrid>
+              {categoriesList}
+            </CheckboxGrid>
+          </CategoriesContainer>
+          <div>
+            <CheckboxTitle>Data</CheckboxTitle>
             {dataKeywordsList}
+          </div>
+          <div>
+            <CheckboxTitle>Status</CheckboxTitle>
             {statusList}
-            {keywordList}
-          </CheckboxGrid>
+          </div>
         </KeywordsGrid>
+        <div>
+          <CheckboxTitle>Keywords</CheckboxTitle>
+          <KeywordsContainer>
+            {keywordList}
+          </KeywordsContainer>
+        </div>
       </Root>
-      <GridView data={data} />
+      <SearchResults>
+        <GridView data={data} />
+      </SearchResults>
     </>
   );
 };
