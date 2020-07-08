@@ -70,8 +70,7 @@ const LandingPage = () => {
                               (parsedQuery.categories !== undefined && parsedQuery.categories.length) ||
                               (parsedQuery.dataKeywords !== undefined && parsedQuery.dataKeywords.length) ||
                               (parsedQuery.status !== undefined && parsedQuery.status.length)
-                            ) ? View.search : View.search;
-                            // ) ? View.search : View.grid;
+                            ) ? View.search : View.grid;
   const [activeView, setActiveView] = useState<View>(defaultActiveView);
 
   useEffect(()=>{
