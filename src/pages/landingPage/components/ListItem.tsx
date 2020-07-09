@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
-  ProjectDatum,
-} from '../useData';
+  HubProject,
+} from '../graphql/graphQLTypes';
 import styled from 'styled-components/macro';
 import {
   lightBaseColor,
@@ -11,6 +11,7 @@ import {
   deepBlue,
   listViewMediumWidth,
   listViewSmallWidth,
+  getCategoryString,
 } from '../Utils';
 import {darken, rgba} from 'polished';
 
@@ -92,13 +93,13 @@ const MobileTitle = styled.span`
 `;
 
 interface Props {
-  project: ProjectDatum;
+  project: HubProject;
 }
 
 const ListItem = (props: Props) => {
   const {
     project:{
-      project_name, project_category, status, link,
+      projectName, projectCategory, status, link,
     },
   } = props;
 
@@ -106,7 +107,13 @@ const ListItem = (props: Props) => {
   const onMouseEnter = () => setHovered(true);
   const onMouseLeave = () => setHovered(false);
 
+  if (!link) {
+    return null;
+  }
+
   const linkText = link.replace(/(^\w+:|^)\/\//, '');
+  const category = getCategoryString(projectCategory);
+
   return (
     <>
       <Title
@@ -115,7 +122,7 @@ const ListItem = (props: Props) => {
         onMouseLeave={onMouseLeave}
         style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
       >
-        {project_name}
+        {projectName}
       </Title>
       <Cell
         href={link}
@@ -124,7 +131,7 @@ const ListItem = (props: Props) => {
         style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
       >
         <MobileTitle>Category:</MobileTitle>
-        {project_category}
+        {category}
       </Cell>
       <Cell
         href={link}

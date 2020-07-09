@@ -14,6 +14,7 @@ import {
   activeLinkColor,
   HubContentContainer,
   backgroundColor,
+  getCategoryString,
 } from './Utils';
 import {Grid, NavColumn, ContentColumn} from './Grid';
 import StandardFooter from '../../components/text/StandardFooter';
@@ -25,7 +26,41 @@ import ListView from './hubViews/ListView';
 import SearchView from './hubViews/SearchView';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
-import useData from './useData';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import {HubProject, HubKeyword} from './graphql/graphQLTypes';
+import Loading from '../../components/general/Loading';
+import FullPageError from '../../components/general/FullPageError';
+import orderBy from 'lodash/orderBy';
+
+const GET_ALL_PROJECTS_AND_KEYWORDS = gql`
+  query GetAllIndustries {
+    hubProjectsList {
+      projectName
+      link
+      projectCategory
+      show
+      data
+      keywords
+      cardSize
+      announcement
+      ordering
+      cardImage
+      status
+      id
+    }
+    hubKeywordsList {
+      keyword
+      projects
+    }
+  }
+`;
+
+interface SuccessResponse {
+  hubProjectsList: HubProject[];
+  hubKeywordsList: HubKeyword[];
+}
+
 
 const SplashScreenContainer = styled.div`
   width: 100%;
@@ -33,18 +68,6 @@ const SplashScreenContainer = styled.div`
   position: relative;
   overflow: hidden;
 `;
-
-const sampleCategories = [
-  'Atlas Projects',
-  'Country Dashboards',
-  'Visual Stories',
-  'Prototypes / Experiments',
-  'Presentations',
-  'Software Packages',
-];
-
-const sampleDataKeywords = ['UN Comtrade', 'IMF', 'WDI'];
-const sampleStatus = ['Active', 'Archived', 'Complete'];
 
 // examples: /?query=albania%20tool&keywords=usa,jordan,albania&categories=usa,jordan,albania#hub
 export interface QueryString {
@@ -94,54 +117,79 @@ const LandingPage = () => {
     smooth: false,
   });
 
-  const {data} = useData();
+  const {loading, error, data} = useQuery<SuccessResponse, never>(GET_ALL_PROJECTS_AND_KEYWORDS);
 
   let contentView: React.ReactElement<any> | null;
-  if (activeView === View.grid) {
+  if (loading) {
+    contentView = <Loading />;
+  } else if (error) {
     contentView = (
-      <GridView data={data} />
+      <FullPageError
+        message={error.message}
+      />
     );
-  } else if (activeView === View.list) {
-    contentView = (
-      <ListView data={data} />
-    );
-  } else if (activeView === View.search) {
-    const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
-    const initialSelectedKeywords = parsedQuery && parsedQuery.keywords !== undefined ? parsedQuery.keywords : [];
-    const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined ? parsedQuery.categories : [];
-    const initialSelectedDataKeywords = parsedQuery && parsedQuery.dataKeywords !== undefined ? parsedQuery.dataKeywords : [];
-    const initialSelectedStatus = parsedQuery && parsedQuery.status !== undefined ? parsedQuery.status : [];
-
-    const keywords: string[] = [];
-    if (data) {
-      data.projects.forEach(p => {
-        p.keywords.forEach(word => {
-          if (!keywords.includes(word)) {
-            keywords.push(word);
-          }
-        });
-      });
-    }
-    if (data) {
+  } else if (data !== undefined) {
+    const {hubProjectsList, hubKeywordsList} = data;
+    if (activeView === View.grid) {
       contentView = (
-        <SearchView
-          initialQuery={initialQuery}
-          keywords={keywords}
-          initialSelectedKeywords={initialSelectedKeywords}
-          categories={sampleCategories}
-          initialSelectedCategories={initialSelectedCategories}
-          dataKeywords={sampleDataKeywords}
-          initialSelectedDataKeywords={initialSelectedDataKeywords}
-          status={sampleStatus}
-          initialSelectedStatus={initialSelectedStatus}
-          data={data}
-        />
+        <GridView projects={hubProjectsList} />
       );
+    } else if (activeView === View.list) {
+      contentView = (
+        <ListView projects={hubProjectsList} />
+      );
+    } else if (activeView === View.search) {
+      const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
+      const initialSelectedKeywords = parsedQuery && parsedQuery.keywords !== undefined ? parsedQuery.keywords : [];
+      const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined ? parsedQuery.categories : [];
+      const initialSelectedDataKeywords = parsedQuery && parsedQuery.dataKeywords !== undefined ? parsedQuery.dataKeywords : [];
+      const initialSelectedStatus = parsedQuery && parsedQuery.status !== undefined ? parsedQuery.status : [];
+
+      const sortedKeywords = orderBy(hubKeywordsList, ['projects'], ['desc']);
+      const allCategories: string[] = [];
+      const allStatuses: string[] = [];
+      const allDataKeywords: string[] = [];
+      hubProjectsList.forEach(project => {
+        const {projectCategory, status} = project;
+        const category = getCategoryString(projectCategory);
+        if (!allCategories.find(c => c === category)) {
+          allCategories.push(category);
+        }
+        if (status && !allStatuses.find(s => s === status)) {
+          allStatuses.push(status);
+        }
+        if (project.data && project.data.length) {
+          project.data.forEach(d => {
+            if (!allDataKeywords.find(k => k === d)) {
+              allDataKeywords.push(d);
+            }
+          });
+        }
+      });
+
+      if (data) {
+        contentView = (
+          <SearchView
+            initialQuery={initialQuery}
+            keywords={sortedKeywords}
+            initialSelectedKeywords={initialSelectedKeywords}
+            categories={allCategories}
+            initialSelectedCategories={initialSelectedCategories}
+            dataKeywords={allDataKeywords}
+            initialSelectedDataKeywords={initialSelectedDataKeywords}
+            status={allStatuses}
+            initialSelectedStatus={initialSelectedStatus}
+            projects={hubProjectsList}
+          />
+        );
+      } else {
+        contentView = null;
+      }
     } else {
+      console.error('Invalid view type ' + activeView);
       contentView = null;
     }
   } else {
-    console.error('Invalid view type ' + activeView);
     contentView = null;
   }
 

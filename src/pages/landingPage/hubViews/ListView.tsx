@@ -3,9 +3,9 @@ import sortBy from 'lodash/sortBy';
 import ListItem from '../components/ListItem';
 import styled from 'styled-components/macro';
 import {
-  ProjectDatum,
-  Status,
-} from '../useData';
+  HubProject,
+  ProjectStatuses,
+} from '../graphql/graphQLTypes';
 import {
   deepBlue,
   listViewMediumWidth,
@@ -53,24 +53,24 @@ const TitleCell = styled.div`
 `;
 
 interface Props {
-  data: undefined | {projects: ProjectDatum[]};
+  projects: HubProject[];
 }
 
-const ListView = ({data}: Props) => {
+const ListView = ({projects}: Props) => {
   const activeProjects:    React.ReactElement<any>[] = [];
   const completeProjects:  React.ReactElement<any>[] = [];
   const archivedProjects:  React.ReactElement<any>[] = [];
   const undefinedProjects: React.ReactElement<any>[] = [];
-  const sortedProjects = data ? sortBy(data.projects, ['project_name']) : [];
+  const sortedProjects = sortBy(projects, ['projectName']);
   sortedProjects.forEach(project => {
     const projectElm = (
-      <ListItem project={project} key={project.project_name} />
+      <ListItem project={project} key={project.projectName} />
     );
-    if (project.status === Status.Active) {
+    if (project.status === ProjectStatuses.ACTIVE) {
       activeProjects.push(projectElm);
-    } else if (project.status === Status.Complete) {
+    } else if (project.status === ProjectStatuses.COMPLETE) {
       completeProjects.push(projectElm);
-    } else if (project.status === Status.Archived) {
+    } else if (project.status === ProjectStatuses.ARCHIVED) {
       archivedProjects.push(projectElm);
     } else {
       undefinedProjects.push(projectElm);

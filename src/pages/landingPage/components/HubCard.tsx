@@ -6,14 +6,15 @@ import {
 } from '../../../styling/styleUtils';
 import styled from 'styled-components/macro';
 import {
-  CardSize,
-  ProjectDatum,
-} from '../useData';
+  HubProject,
+  CardSizes,
+} from '../graphql/graphQLTypes';
 import {
   activeLinkColor,
   backgroundColor,
   darkBlue,
   deepBlue,
+  getCategoryString,
 } from '../Utils';
 import {rgba, darken} from 'polished';
 
@@ -157,8 +158,12 @@ const Cursor = styled.div`
   color: ${darken(0.25, deepBlue)};
 `;
 
+const StatusText = styled.span`
+  text-transform: capitalize;
+`;
+
 interface Props {
-  project: ProjectDatum;
+  project: HubProject;
 }
 
 const HubCard = ({project}: Props) => {
@@ -167,6 +172,10 @@ const HubCard = ({project}: Props) => {
   const contentRef = useRef<HTMLAnchorElement | null>(null);
 
   const [mouseCoords, setMouseCoords] = useState<{x: number, y: number} | undefined>(undefined);
+
+  if (!project.link) {
+    return null;
+  }
 
   const onMouseMove = (e: React.MouseEvent) => {
     const node = contentRef.current;
@@ -182,10 +191,10 @@ const HubCard = ({project}: Props) => {
 
   let flexGrow: number;
   let width: string | undefined;
-  if (project.card_size === CardSize.Large) {
+  if (project.cardSize === CardSizes.LARGE) {
     width = '100%';
     flexGrow = 3;
-  } else if (project.card_size === CardSize.Medium) {
+  } else if (project.cardSize === CardSizes.MEDIUM) {
     width = '54%';
     flexGrow = 3;
   } else {
@@ -206,12 +215,12 @@ const HubCard = ({project}: Props) => {
     </AnnouncementBadge>
   ) : null;
 
-  const title = project.card_size === CardSize.Large && !(mouseCoords !== undefined || windowWidth < 900) ? (
-    <Title>{project.project_name}</Title>
+  const title = project.cardSize === CardSizes.LARGE && !(mouseCoords !== undefined || windowWidth < 900) ? (
+    <Title>{project.projectName}</Title>
   ) : null;
 
   const status = project.status ? (
-    <MetaDetail>Status: {project.status}</MetaDetail>
+    <MetaDetail>Status: <StatusText>{project.status.toLowerCase()}</StatusText></MetaDetail>
   ) : null;
 
   const cursor = mouseCoords !== undefined ? (
@@ -228,11 +237,16 @@ const HubCard = ({project}: Props) => {
   const metaDataStyle: React.CSSProperties = {
     transform: mouseCoords !== undefined || windowWidth < 900 ? 'translate(0)' : 'translate(-100%, 0)',
   };
+
+  const cardImage = project.cardImage ? project.cardImage : 'image.jpg';
+
+  const category = getCategoryString(project.projectCategory);
+
   return (
     <Root style={style}>
       <Category>
         <CategoryText>
-          {project.project_category}
+          {category}
         </CategoryText>
       </Category>
       <Content
@@ -240,12 +254,12 @@ const HubCard = ({project}: Props) => {
         ref={contentRef}
         onMouseMove={onMouseMove}
         onMouseLeave={() => setMouseCoords(undefined)}
-        style={{backgroundImage: `url("${require('../images/' + project.card_image)}")`}}
+        style={{backgroundImage: `url("${require('../images/' + cardImage)}")`}}
       >
         {title}
         <MetaDataContainer style={metaDataStyle}>
-          <MetaTitleContainer>{project.project_name}</MetaTitleContainer>
-          <MetaDetail>Category: {project.project_category}</MetaDetail>
+          <MetaTitleContainer>{project.projectName}</MetaTitleContainer>
+          <MetaDetail>Category: {category}</MetaDetail>
           {status}
         </MetaDataContainer>
         {cursor}

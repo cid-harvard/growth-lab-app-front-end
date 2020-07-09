@@ -3,8 +3,8 @@ import sortBy from 'lodash/sortBy';
 import HubCard from '../components/HubCard';
 import styled from 'styled-components/macro';
 import {
-  ProjectDatum,
-} from '../useData';
+  HubProject,
+} from '../graphql/graphQLTypes';
 
 const Root = styled.div`
   display: flex;
@@ -13,14 +13,14 @@ const Root = styled.div`
 `;
 
 interface Props {
-  data: undefined | {projects: ProjectDatum[]};
+  projects: HubProject[];
 }
 
-const GridView = ({data}: Props) => {
-  const sortedProjects = data ? sortBy(data.projects.filter(({ordering}) => ordering), ['ordering']) : [];
+const GridView = ({projects}: Props) => {
+  const sortedProjects = sortBy(projects.filter(({ordering}) => ordering), ['ordering']);
   const cards = sortedProjects.map(project => {
     return (
-      <HubCard project={project} key={project.project_name} />
+      <HubCard project={project} key={project.projectName} />
     );
   });
   return (

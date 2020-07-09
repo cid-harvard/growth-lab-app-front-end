@@ -3,6 +3,9 @@ import {
 } from '../../styling/Grid';
 import styled from 'styled-components/macro';
 import {navHeight} from '../../components/navigation/TopLevelStickyNav';
+import {
+  ProjectCategories,
+} from './graphql/graphQLTypes';
 
 export const activeLinkColor = '#fc9b81';
 export const backgroundColor = '#e5e6e6';
@@ -22,3 +25,21 @@ export const HubContentContainer = styled(FullWidthContent)`
     padding: ${navHeight}rem 0.5rem 0;
   }
 `;
+
+export const getCategoryString = (value: ProjectCategories | null) => {
+  if (value === ProjectCategories.ATLAS_PROJECTS) {
+    return 'Atlas Projects';
+  } else if (value === ProjectCategories.COUNTRY_DASHBOARDS) {
+    return 'Country Dashboards';
+  } else if (value === ProjectCategories.VISUAL_STORIES) {
+    return 'Visual Stories';
+  } else if (value === ProjectCategories.PROTOTYPES_EXPERIMENTS) {
+    return 'Prototypes/Experiments';
+  } else if (value === ProjectCategories.PRESENTATIONS) {
+    return 'Presentations';
+  } else if (value === ProjectCategories.SOFTWARE_PACKAGES) {
+    return 'Software Packages';
+  } else {
+    return '';
+  }
+};

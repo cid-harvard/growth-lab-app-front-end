@@ -12,8 +12,9 @@ import {deepBlue} from '../Utils';
 import {darken} from 'polished';
 import GridView from './GridView';
 import {
-  ProjectDatum,
-} from '../useData';
+  HubProject,
+  HubKeyword,
+} from '../graphql/graphQLTypes';
 
 const Root = styled.div`
   margin: 0 0 4rem 3.25rem;
@@ -137,7 +138,7 @@ interface CheckboxProps {
 
 interface Props {
   initialQuery: string;
-  keywords: string[];
+  keywords: HubKeyword[];
   initialSelectedKeywords: string[];
   categories: string[];
   initialSelectedCategories: string[];
@@ -145,19 +146,20 @@ interface Props {
   initialSelectedDataKeywords: string[];
   status: string[];
   initialSelectedStatus: string[];
-  data: undefined | {projects: ProjectDatum[]};
+  projects: HubProject[];
 }
 
 const SearchView = (props: Props) => {
   const {
     initialQuery, initialSelectedKeywords, initialSelectedCategories,
-    initialSelectedDataKeywords, initialSelectedStatus, data,
+    initialSelectedDataKeywords, initialSelectedStatus, projects,
   } = props;
   const history = useHistory();
 
-  const keywordCheckboxes: CheckboxProps[] = props.keywords.map(keyword => {
+  const keywordCheckboxes: CheckboxProps[] = props.keywords.map(({keyword, projects: count}) => {
     const checked = !!initialSelectedKeywords.find((value) => value.toLowerCase() === keyword.toLowerCase());
-    return {label: keyword, value: keyword.toLowerCase(), checked};
+    const numProjects = count ? count : 0;
+    return {label: keyword + `(${numProjects})`, value: keyword.toLowerCase(), checked};
   });
   const categoriesCheckboxes: CheckboxProps[] = props.categories.map(category => {
     const checked = !!initialSelectedCategories.find((value) => value.toLowerCase() === category.toLowerCase());
@@ -471,7 +473,7 @@ const SearchView = (props: Props) => {
         </div>
       </Root>
       <SearchResults>
-        <GridView data={data} />
+        <GridView projects={projects} />
       </SearchResults>
     </>
   );
