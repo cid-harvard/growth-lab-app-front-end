@@ -43,3 +43,7 @@ export const getCategoryString = (value: ProjectCategories | null) => {
     return '';
   }
 };
+
+export const queryStringToCategory = (value: string) => {
+  return value.toUpperCase() as ProjectCategories;
+};

@@ -14,7 +14,7 @@ import {
   activeLinkColor,
   HubContentContainer,
   backgroundColor,
-  getCategoryString,
+  queryStringToCategory,
 } from './Utils';
 import {Grid, NavColumn, ContentColumn} from './Grid';
 import StandardFooter from '../../components/text/StandardFooter';
@@ -28,7 +28,7 @@ import { useLocation } from 'react-router';
 import queryString from 'query-string';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import {HubProject, HubKeyword} from './graphql/graphQLTypes';
+import {HubProject, HubKeyword, ProjectCategories} from './graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import orderBy from 'lodash/orderBy';
@@ -93,7 +93,8 @@ const LandingPage = () => {
                               (parsedQuery.categories !== undefined && parsedQuery.categories.length) ||
                               (parsedQuery.dataKeywords !== undefined && parsedQuery.dataKeywords.length) ||
                               (parsedQuery.status !== undefined && parsedQuery.status.length)
-                            ) ? View.search : View.grid;
+                            ) ? View.search : View.search;
+                            // ) ? View.search : View.grid;
   const [activeView, setActiveView] = useState<View>(defaultActiveView);
 
   useEffect(()=>{
@@ -141,19 +142,19 @@ const LandingPage = () => {
     } else if (activeView === View.search) {
       const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
       const initialSelectedKeywords = parsedQuery && parsedQuery.keywords !== undefined ? parsedQuery.keywords : [];
-      const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined ? parsedQuery.categories : [];
+      const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined
+        ? parsedQuery.categories.map(queryStringToCategory) : [];
       const initialSelectedDataKeywords = parsedQuery && parsedQuery.dataKeywords !== undefined ? parsedQuery.dataKeywords : [];
       const initialSelectedStatus = parsedQuery && parsedQuery.status !== undefined ? parsedQuery.status : [];
 
       const sortedKeywords = orderBy(hubKeywordsList, ['projects'], ['desc']);
-      const allCategories: string[] = [];
+      const allCategories: ProjectCategories[] = [];
       const allStatuses: string[] = [];
       const allDataKeywords: string[] = [];
       hubProjectsList.forEach(project => {
         const {projectCategory, status} = project;
-        const category = getCategoryString(projectCategory);
-        if (!allCategories.find(c => c === category)) {
-          allCategories.push(category);
+        if (projectCategory && !allCategories.find(c => c === projectCategory)) {
+          allCategories.push(projectCategory);
         }
         if (status && !allStatuses.find(s => s === status)) {
           allStatuses.push(status);

@@ -8,12 +8,13 @@ import {
   Label,
   secondaryFont,
 } from '../../../styling/styleUtils';
-import {deepBlue} from '../Utils';
+import {deepBlue, getCategoryString} from '../Utils';
 import {darken} from 'polished';
 import GridView from './GridView';
 import {
   HubProject,
   HubKeyword,
+  ProjectCategories,
 } from '../graphql/graphQLTypes';
 
 const Root = styled.div`
@@ -140,8 +141,8 @@ interface Props {
   initialQuery: string;
   keywords: HubKeyword[];
   initialSelectedKeywords: string[];
-  categories: string[];
-  initialSelectedCategories: string[];
+  categories: ProjectCategories[];
+  initialSelectedCategories: ProjectCategories[];
   dataKeywords: string[];
   initialSelectedDataKeywords: string[];
   status: string[];
@@ -163,7 +164,7 @@ const SearchView = (props: Props) => {
   });
   const categoriesCheckboxes: CheckboxProps[] = props.categories.map(category => {
     const checked = !!initialSelectedCategories.find((value) => value.toLowerCase() === category.toLowerCase());
-    return {label: category, value: category.toLowerCase(), checked};
+    return {label: getCategoryString(category), value: category.toLowerCase(), checked};
   });
   const dataKeywordsCheckboxes: CheckboxProps[] = props.dataKeywords.map(dataKeywords => {
     const checked = !!initialSelectedDataKeywords.find((value) => value.toLowerCase() === dataKeywords.toLowerCase());
@@ -226,6 +227,7 @@ const SearchView = (props: Props) => {
 
   const selectedKeywordList: React.ReactNode[] = [];
   const keywordList: React.ReactNode[] = [];
+  const selectedKeywordValues: string[] = [];
   if (keywordValues && keywordValues.length) {
     keywordValues.forEach((checkbox, i) => {
 
@@ -250,6 +252,7 @@ const SearchView = (props: Props) => {
 
 
       if (checkbox.checked) {
+        selectedKeywordValues.push(checkbox.value);
         selectedKeywordList.push(
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
@@ -275,6 +278,7 @@ const SearchView = (props: Props) => {
 
   const selectedCategoryList: React.ReactNode[] = [];
   const categoriesList: React.ReactNode[] = [];
+  const selectedCategoriesValues: string[] = [];
   if (categoriesValues && categoriesValues.length) {
     categoriesValues.forEach((checkbox, i) => {
 
@@ -299,6 +303,7 @@ const SearchView = (props: Props) => {
 
 
       if (checkbox.checked) {
+        selectedCategoriesValues.push(checkbox.value);
         selectedCategoryList.push(
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
@@ -324,6 +329,7 @@ const SearchView = (props: Props) => {
 
   const selectedDataKeywordsList: React.ReactNode[] = [];
   const dataKeywordsList: React.ReactNode[] = [];
+  const selectedDataKeywordsValues: string[] = [];
   if (dataKeywordsValues && dataKeywordsValues.length) {
     dataKeywordsValues.forEach((checkbox, i) => {
 
@@ -348,6 +354,7 @@ const SearchView = (props: Props) => {
 
 
       if (checkbox.checked) {
+        selectedDataKeywordsValues.push(checkbox.value);
         selectedDataKeywordsList.push(
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
@@ -373,6 +380,7 @@ const SearchView = (props: Props) => {
 
   const selectedStatusList: React.ReactNode[] = [];
   const statusList: React.ReactNode[] = [];
+  const selectedStatusValues: string[] = [];
   if (statusValues && statusValues.length) {
     statusValues.forEach((checkbox, i) => {
 
@@ -397,6 +405,7 @@ const SearchView = (props: Props) => {
 
 
       if (checkbox.checked) {
+        selectedStatusValues.push(checkbox.value);
         selectedStatusList.push(
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
@@ -419,6 +428,30 @@ const SearchView = (props: Props) => {
 
     });
   }
+
+  const filteredProjects = projects.filter(project => {
+    const {projectName} = project;
+    const projectCategory = project.projectCategory ? project.projectCategory.toLowerCase() : '';
+    const projectStatus = project.status ? project.status.toLowerCase() : '';
+    const projectData = project.data ? project.data.map(d => d.toLowerCase()) : [];
+    const keywords = project.keywords ? project.keywords.map(k => k.toLowerCase()) : [];
+    if (
+        (!selectedCategoriesValues.length || selectedCategoriesValues.includes(projectCategory)) &&
+        (!selectedStatusValues.length || selectedStatusValues.includes(projectStatus)) &&
+        (!selectedKeywordValues.length || selectedKeywordValues.some(k => keywords.includes(k.toLowerCase()))) &&
+        (!selectedDataKeywordsValues.length || selectedDataKeywordsValues.some(k => projectData.includes(k.toLowerCase()))) &&
+        (  projectName.toLowerCase().includes(search.toLowerCase()) ||
+          keywords.find(k => k.toLowerCase().includes(search.toLowerCase())) ||
+          projectData.find(k => k.toLowerCase().includes(search.toLowerCase())) ||
+          projectCategory.includes(search.toLowerCase()) ||
+          projectStatus.includes(search.toLowerCase())
+        )
+       ) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
   return (
     <>
@@ -473,7 +506,7 @@ const SearchView = (props: Props) => {
         </div>
       </Root>
       <SearchResults>
-        <GridView projects={projects} />
+        <GridView projects={filteredProjects} />
       </SearchResults>
     </>
   );
