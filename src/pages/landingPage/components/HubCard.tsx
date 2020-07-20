@@ -1,7 +1,6 @@
 import React, {useState, useRef, useContext} from 'react';
 import {AppContext} from '../../../App';
 import {
-  lightBorderColor,
   secondaryFont,
 } from '../../../styling/styleUtils';
 import styled from 'styled-components/macro';
@@ -18,10 +17,11 @@ import {
 } from '../Utils';
 import {rgba, darken} from 'polished';
 
+const zigZagPattern = require('../images/pattern.svg');
 
 const Root = styled.div`
   min-width: 350px;
-  min-height: 420px;
+  min-height: 380px;
   margin-left: 1.25rem;
   margin-bottom: 2.25rem;
   position: relative;
@@ -52,11 +52,12 @@ const CalloutBase = styled.div`
 const Category = styled(CalloutBase)`
   padding-left: 0.35rem;
   box-sizing: border-box;
-  background-image: url("${require('../images/pattern.svg')}");
+  background-image: url("${zigZagPattern}");
 `;
 
 const CategoryText = styled.h2`
-  font-size: 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 600;
   margin: 0;
   writing-mode: vertical-lr;
   text-orientation: mixed;
@@ -69,7 +70,7 @@ const CategoryText = styled.h2`
 
 const Content = styled.a`
   display: block;
-  border: solid 1px ${lightBorderColor};
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.4);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -87,6 +88,20 @@ const Content = styled.a`
   }
 `;
 
+const ZigZagOverlay = styled.div`
+  background-image: url("${zigZagPattern}");
+  background-size: cover;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+`;
+
 const AnnouncementBadge = styled(CalloutBase)`
   pointer-events: none;
   display: flex;
@@ -94,21 +109,23 @@ const AnnouncementBadge = styled(CalloutBase)`
 `;
 
 const AnnouncementText = styled.h3`
-  margin: 1px 0 0;
+  margin: 0;
   padding: 0.5rem 0.7rem;
-  font-size: 1.2rem;
-  font-weight: 400;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: ${backgroundColor};
   background-color: ${activeLinkColor};
   text-transform: uppercase;
 `;
 
 const Title = styled.h1`
-  background-color: ${rgba(darken(0.45, activeLinkColor), 0.3)};
+  background-color: rgba(173, 138, 132, 0.6);
   color: #fff;
+  font-size: 1.5rem;
   padding: 2rem 1.25rem;
   text-transform: uppercase;
   font-weight: 400;
+  position: relative;
 `;
 
 const MetaDataContainer = styled.div`
@@ -139,8 +156,8 @@ const MetaDetail = styled.h2`
 `;
 
 const Cursor = styled.div`
-  width: 120px;
-  height: 120px;
+  width: 95px;
+  height: 95px;
   background-color: #fff;
   border-radius: 400px;
   position: absolute;
@@ -154,7 +171,7 @@ const Cursor = styled.div`
   background-image: url("${require('../images/pattern.svg')}");
   background-size: 200%;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.7rem;
   color: ${darken(0.25, deepBlue)};
 `;
 
@@ -191,18 +208,22 @@ const HubCard = ({project}: Props) => {
 
   let flexGrow: number;
   let width: string | undefined;
+  let maxWidth: string | undefined;
   if (project.cardSize === CardSizes.LARGE) {
     width = '100%';
+    maxWidth = '100%';
     flexGrow = 3;
   } else if (project.cardSize === CardSizes.MEDIUM) {
     width = '54%';
+    maxWidth = '60%';
     flexGrow = 3;
   } else {
     width = undefined;
+    maxWidth = '50%';
     flexGrow = 1;
   }
   const style: React.CSSProperties = {
-    flexGrow, width,
+    flexGrow, width, maxWidth,
   };
 
   const announcement = project.announcement && (!mouseCoords || windowWidth < 900) ? (
@@ -256,6 +277,7 @@ const HubCard = ({project}: Props) => {
         onMouseLeave={() => setMouseCoords(undefined)}
         style={{backgroundImage: `url("${require('../images/' + cardImage)}")`}}
       >
+        <ZigZagOverlay />
         {title}
         <MetaDataContainer style={metaDataStyle}>
           <MetaTitleContainer>{project.projectName}</MetaTitleContainer>
