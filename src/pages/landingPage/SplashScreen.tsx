@@ -5,6 +5,11 @@ import LogoIMG from './logo.png';
 import {secondaryFont} from '../../styling/styleUtils';
 import { useLocation, useHistory } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
+import {
+  activeLinkColor,
+  linearGradientBackground,
+  backgroundPattern,
+} from './Utils';
 
 const slidein = keyframes`
   from {background-position: top;}
@@ -23,7 +28,7 @@ const Root = styled.div`
     top:0;
     left:0;
     z-index: -3;
-    background-image: linear-gradient(to left, #2f383f, #96c4c5);
+    background-image: ${linearGradientBackground};
     width: 100%;
     height: 100%;
     opacity: 0.9;
@@ -37,7 +42,7 @@ const Root = styled.div`
     height: 100%;
     width: 100%;
     opacity: 0.1;
-    background-image: url(${require('./pattern-background.png')});
+    background-image: url(${backgroundPattern});
     z-index: -2;
     background-size:cover;
     animation: ${slidein} 20s;
@@ -218,7 +223,7 @@ const ColorBlock = styled.div`
   &:after {
     content: '';
     display: block;
-    background-color: #fc9b81;
+    background-color: ${activeLinkColor};
     height: 100%;
     width: 100%;
     z-index: 3;

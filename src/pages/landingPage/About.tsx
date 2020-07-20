@@ -5,7 +5,9 @@ import { scrollToTop } from '../../hooks/useScrollBehavior';
 import {
   activeLinkColor,
   HubContentContainer,
-  backgroundColor } from './Utils';
+  linearGradientBackground,
+  backgroundPattern,
+} from './Utils';
 import {FullWidthContentContainer} from '../../styling/Grid';
 import StandardFooter from '../../components/text/StandardFooter';
 
@@ -19,10 +21,11 @@ const AboutPage = () => {
   return (
     <>
       <TopLevelNav
-        linkColor={'#333'}
+        linkColor={'#fff'}
         activeColor={activeLinkColor}
         showTitle={true}
-        backgroundColor={backgroundColor}
+        backgroundColor={linearGradientBackground}
+        backgroundImage={backgroundPattern}
       />
       <HubContentContainer>
         <FullWidthContentContainer>

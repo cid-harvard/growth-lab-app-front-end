@@ -13,8 +13,9 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import {
   activeLinkColor,
   HubContentContainer,
-  backgroundColor,
   queryStringToCategory,
+  linearGradientBackground,
+  backgroundPattern,
 } from './Utils';
 import {Grid, NavColumn, ContentColumn} from './Grid';
 import StandardFooter from '../../components/text/StandardFooter';
@@ -109,9 +110,10 @@ const LandingPage = () => {
     return () => observer.unobserve(cachedRef);
   }, [containerNodeRef]);
 
-  const linkColor = isNavOverContent ? '#333' : '#fff';
-  const activeColor = isNavOverContent ? activeLinkColor : '#fff';
-  const navBackgroundColor = isNavOverContent ? backgroundColor : 'rgba(255, 255, 255, 0.2)';
+  const linkColor = '#fff';
+  const activeColor = activeLinkColor;
+  const navBackgroundColor = isNavOverContent ? linearGradientBackground : 'rgba(255, 255, 255, 0.2)';
+  const navBackgroundImage = isNavOverContent ? backgroundPattern : undefined;
   useScrollBehavior({
     navAnchors: ['#' + hubId],
     smooth: false,
@@ -200,6 +202,7 @@ const LandingPage = () => {
         showTitle={isNavOverContent}
         activeColor={activeColor}
         backgroundColor={navBackgroundColor}
+        backgroundImage={navBackgroundImage}
       />
       <FullWidthHeader>
         <SplashScreenContainer>

@@ -9,6 +9,8 @@ import {
 
 export const activeLinkColor = '#fc9b81';
 export const backgroundColor = '#e5e6e6';
+export const linearGradientBackground = 'linear-gradient(to left, #2f383f, #96c4c5)';
+export const backgroundPattern = require('./pattern-background.png');
 
 export const darkBlue = '#2f383f';
 export const deepBlue = '#96c4c5';

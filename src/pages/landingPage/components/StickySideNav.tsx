@@ -38,7 +38,7 @@ const StickySideNav = (props: Props) => {
   return (
     <HubStickyNav
       links={links}
-      offsetTop={navHeight * 16} // navHeight (in rems) * base font size
+      offsetTop={(navHeight * 16) + 32} // navHeight (in rems) * base font size
       primaryColor={activeLinkColor}
     />
   );

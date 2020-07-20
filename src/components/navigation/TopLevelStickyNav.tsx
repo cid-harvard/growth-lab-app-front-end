@@ -8,15 +8,41 @@ import {secondaryFont} from '../../styling/styleUtils';
 
 export const navHeight = 3.375; // in rem
 
-const Root = styled.nav`
+const Root = styled.nav<{$backgroundImage?: string}>`
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: 1000;
   width: 100%;
-  pointer-events: none;
-  transition: background-color 0.25s ease;
+  transition: background 0.25s ease;
+
+  &:after {
+    ${({$backgroundImage}) => $backgroundImage ? "content: '';" : ''}
+    display: block;
+    position: absolute;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.1;
+    ${
+      ({$backgroundImage}) => $backgroundImage
+        ? 'background-image: url(' + $backgroundImage + ');' : ''
+    }
+    z-index: -2;
+    background-size:cover;
+  }
+  &:before {
+    ${({$backgroundImage}) => $backgroundImage ? "content: '';" : ''}
+    display: block;
+    position: absolute;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
 `;
 
 const ContentContainer = styled(FullWidthHeaderContent)`
@@ -93,11 +119,13 @@ interface Props {
   linkColor: string;
   activeColor: string;
   backgroundColor: string;
+  backgroundImage?: string;
 }
 
 const TopLevelStickyNav = (props: Props) => {
   const {
     links, linkColor, title, activeColor, backgroundColor,
+    backgroundImage,
   } = props;
 
   const {search, pathname} = useLocation();
@@ -121,7 +149,7 @@ const TopLevelStickyNav = (props: Props) => {
         <Underline
           style={{
             width: active ? '100%' : undefined,
-            backgroundColor: activeColor,
+            background: activeColor,
           }}
         />
       </NavLinkInternal>
@@ -134,7 +162,7 @@ const TopLevelStickyNav = (props: Props) => {
         <Underline
           style={{
             width: active ? '100%' : undefined,
-            backgroundColor: activeColor,
+            background: activeColor,
           }}
         />
       </NavLinkExternal>
@@ -147,9 +175,12 @@ const TopLevelStickyNav = (props: Props) => {
   });
 
   return (
-    <Root style={{backgroundColor}}>
+    <Root
+      style={{background: backgroundColor}}
+      $backgroundImage={backgroundImage}
+    >
       <ContentContainer>
-        <Title>
+        <Title style={{color: linkColor}}>
           {title}
         </Title>
         <NavList>
