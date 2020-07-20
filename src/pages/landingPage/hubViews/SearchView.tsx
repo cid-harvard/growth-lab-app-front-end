@@ -8,8 +8,7 @@ import {
   Label,
   secondaryFont,
 } from '../../../styling/styleUtils';
-import {deepBlue, getCategoryString} from '../Utils';
-import {darken} from 'polished';
+import {deepBlue, getCategoryString, linkBlue} from '../Utils';
 import GridView from './GridView';
 import {
   HubProject,
@@ -46,11 +45,11 @@ const CategoriesContainer = styled.div`
 
 const CheckboxTitle = styled.h3`
   font-family: ${secondaryFont};
-  color: ${darken(0.25, deepBlue)};
+  color: ${linkBlue};
   text-transform: uppercase;
   grid-column: 1 / -1;
-  max-width: 200px;
-  border-bottom: solid 4px ${darken(0.25, deepBlue)};
+  border-bottom: solid 4px ${linkBlue};
+  display: inline-block;
 `;
 
 const CheckboxGrid = styled.div`
@@ -75,6 +74,11 @@ const KeywordContainer = styled.div`
 
 const CategoryContainer = styled.div`
   margin-bottom: 0.85rem;
+  text-transform: uppercase;
+`;
+const AttributeContainer = styled.div`
+  margin-bottom: 0.85rem;
+  text-transform: capitalize;
 `;
 
 const CheckboxLabel = styled(Label)`
@@ -109,7 +113,7 @@ const TagLabel = styled(Label)`
     margin-left: 0.4rem;
     font-size: 1.4rem;
     display: block;
-    color: ${darken(0.25, deepBlue)};
+    color: ${linkBlue};
   }
 
   &:hover {
@@ -366,12 +370,12 @@ const SearchView = (props: Props) => {
         return null;
       } else {
         dataKeywordsList.push(
-          <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
+          <AttributeContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
               <span>{checkbox.label}</span>
             </CheckboxLabel>
-          </CategoryContainer>,
+          </AttributeContainer>,
         );
       }
 
@@ -410,19 +414,21 @@ const SearchView = (props: Props) => {
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span>
+                {checkbox.label.charAt(0).toUpperCase() + checkbox.label.slice(1).toLowerCase()}
+              </span>
             </TagLabel>
           </TagContainer>,
         );
         return null;
       } else {
         statusList.push(
-          <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
+          <AttributeContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span>{checkbox.label.toLowerCase()}</span>
             </CheckboxLabel>
-          </CategoryContainer>,
+          </AttributeContainer>,
         );
       }
 

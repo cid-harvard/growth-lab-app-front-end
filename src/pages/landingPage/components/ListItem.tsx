@@ -20,7 +20,7 @@ const Cell = styled.a`
   text-transform: uppercase;
   padding: 2.5rem 1rem;
   border-bottom: solid 1px ${lightBaseColor};
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-decoration: none;
   color: ${baseColor};
   display: flex;
@@ -65,9 +65,9 @@ const Link = styled(Cell)`
   text-align: left;
   display: grid;
   grid-template-columns: 1fr auto;
+  font-size: 0.875rem;
 
   @media (max-width: ${listViewSmallWidth}px) {
-    font-size: 1rem;
     padding-bottom: 1rem;
     border-bottom: solid 1px ${lightBaseColor};
     grid-template-columns: auto auto;
@@ -80,6 +80,10 @@ const Anchor = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   color: ${lightBaseColor};
+`;
+
+const Arrow = styled(Anchor)`
+  font-size: 1.1rem;
 `;
 
 const MobileTitle = styled.span`
@@ -149,7 +153,7 @@ const ListItem = (props: Props) => {
         style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
       >
         <Anchor>{linkText}</Anchor>
-        <Anchor>↗</Anchor>
+        <Arrow>↗</Arrow>
       </Link>
     </>
   );

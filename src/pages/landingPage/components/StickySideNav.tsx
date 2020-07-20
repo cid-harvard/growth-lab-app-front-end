@@ -2,6 +2,7 @@ import React from 'react';
 import HubStickyNav, {LinkItem} from '../../../components/navigation/HubStickyNav';
 import {activeLinkColor} from '../Utils';
 import {navHeight} from '../../../components/navigation/TopLevelStickyNav';
+import {useHistory} from 'react-router-dom';
 
 export enum View {
   grid,
@@ -16,6 +17,14 @@ interface Props {
 
 const StickySideNav = (props: Props) => {
   const { activeView, setActiveView} = props;
+  const history = useHistory();
+
+  const setSearchView = () => {
+    setActiveView(View.search);
+    if (!history.location.search) {
+      history.push('/?query=Albania&#hub');
+    }
+  };
 
   const links: LinkItem[] = [
     {
@@ -30,7 +39,7 @@ const StickySideNav = (props: Props) => {
     },
     {
       label: 'Search Keywords',
-      onClick: () => setActiveView(View.search),
+      onClick: setSearchView,
       isActive: activeView === View.search,
     },
   ];
