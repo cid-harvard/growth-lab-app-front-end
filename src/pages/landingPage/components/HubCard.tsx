@@ -16,6 +16,7 @@ import {
   getCategoryString,
 } from '../Utils';
 import {rgba, darken} from 'polished';
+import SmartImage from '../../../components/general/SmartImage';
 
 const zigZagPattern = require('../images/pattern.svg');
 
@@ -259,7 +260,12 @@ const HubCard = ({project}: Props) => {
     transform: mouseCoords !== undefined || windowWidth < 900 ? 'translate(0)' : 'translate(-100%, 0)',
   };
 
-  const cardImage = project.cardImage ? project.cardImage : 'image.jpg';
+  const cardImageLo = project.cardImageLo
+    ? require('../images/low-res/' + project.cardImageLo + '.jpg')
+    : require('../images/image.jpg');
+  const cardImageHi = project.cardImageHi
+    ? require('../images/high-res/' + project.cardImageHi + '.jpg')
+    : require('../images/image.jpg');
 
   const category = getCategoryString(project.projectCategory);
 
@@ -275,8 +281,11 @@ const HubCard = ({project}: Props) => {
         ref={contentRef}
         onMouseMove={onMouseMove}
         onMouseLeave={() => setMouseCoords(undefined)}
-        style={{backgroundImage: `url("${require('../images/' + cardImage)}")`}}
       >
+        <SmartImage
+          lowResSrc={cardImageLo}
+          highResSrc={cardImageHi}
+        />
         <ZigZagOverlay />
         {title}
         <MetaDataContainer style={metaDataStyle}>

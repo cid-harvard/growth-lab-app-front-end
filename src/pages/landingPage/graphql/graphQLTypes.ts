@@ -29,8 +29,10 @@ export interface HubProject {
   cardSize: CardSizes | null;
   announcement: string | null;
   ordering: number | null;
-  cardImage: string | null;
+  cardImageHi: string | null;
+  cardImageLo: string | null;
   status: ProjectStatuses | null;
+  localFile: boolean | null;
   id: string;
 }
 

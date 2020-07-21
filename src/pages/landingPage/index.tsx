@@ -46,7 +46,9 @@ const GET_ALL_PROJECTS_AND_KEYWORDS = gql`
       cardSize
       announcement
       ordering
-      cardImage
+      cardImageHi
+      cardImageLo
+      localFile
       status
       id
     }
