@@ -37,7 +37,7 @@ export const getCategoryString = (value: ProjectCategories | null) => {
   } else if (value === ProjectCategories.VISUAL_STORIES) {
     return 'Visual Stories';
   } else if (value === ProjectCategories.PROTOTYPES_EXPERIMENTS) {
-    return 'Prototypes/Experiments';
+    return 'Prototypes&#8203;/&#8203;Experiments';
   } else if (value === ProjectCategories.PRESENTATIONS) {
     return 'Presentations';
   } else if (value === ProjectCategories.SOFTWARE_PACKAGES) {

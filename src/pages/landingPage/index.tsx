@@ -155,19 +155,21 @@ const LandingPage = () => {
       const allStatuses: string[] = [];
       const allDataKeywords: string[] = [];
       hubProjectsList.forEach(project => {
-        const {projectCategory, status} = project;
-        if (projectCategory && !allCategories.find(c => c === projectCategory)) {
-          allCategories.push(projectCategory);
-        }
-        if (status && !allStatuses.find(s => s === status)) {
-          allStatuses.push(status);
-        }
-        if (project.data && project.data.length) {
-          project.data.forEach(d => {
-            if (!allDataKeywords.find(k => k === d)) {
-              allDataKeywords.push(d);
-            }
-          });
+        const {projectCategory, status, show} = project;
+        if (show) {
+          if (projectCategory && !allCategories.find(c => c === projectCategory)) {
+            allCategories.push(projectCategory);
+          }
+          if (status && !allStatuses.find(s => s === status)) {
+            allStatuses.push(status);
+          }
+          if (project.data && project.data.length) {
+            project.data.forEach(d => {
+              if (!allDataKeywords.find(k => k === d)) {
+                allDataKeywords.push(d);
+              }
+            });
+          }
         }
       });
 

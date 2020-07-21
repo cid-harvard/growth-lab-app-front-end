@@ -3,7 +3,7 @@ import {AppContext} from '../../../App';
 import {
   secondaryFont,
 } from '../../../styling/styleUtils';
-import styled from 'styled-components/macro';
+import styled, {StyledComponent} from 'styled-components/macro';
 import {
   HubProject,
   CardSizes,
@@ -21,30 +21,37 @@ import SmartImage from '../../../components/general/SmartImage';
 const zigZagPattern = require('../images/pattern.svg');
 
 const Root = styled.div`
-  min-width: 350px;
+  min-width: 30%;
   min-height: 380px;
-  margin-left: 1.25rem;
+  margin-left: 2.5%;
   margin-bottom: 2.25rem;
   position: relative;
   padding: 2rem 1rem 0rem 2rem;
   box-sizing: border-box;
   font-family: ${secondaryFont};
+  flexGrow: 1;
+  box-sizing: border-box;
+
+  @media (max-width: 900px) {
+    min-width: 300px;
+  }
 
   @media (max-width: 700px) {
-    min-width: 0;
+    min-width: 100%;
     width: 100%;
+    margin-left: 0;
   }
 `;
 
 const CalloutBase = styled.div`
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   position: absolute;
   top: 0;
   left: 0;
   padding-top: 2rem;
 
-  @media (max-width: 700px) {
+  @media (max-width: 1050px) {
     min-width: 0;
     width: 80%;
   }
@@ -129,7 +136,7 @@ const Title = styled.h1`
   position: relative;
 `;
 
-const MetaDataContainer = styled.div`
+const MetaDataContainerBase = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -143,17 +150,38 @@ const MetaDataContainer = styled.div`
   background-image: linear-gradient(to bottom, ${rgba(darkBlue, 0.85)}, ${rgba(deepBlue, 0.85)});
   transition: transform 0.2s ease;
 `;
-const MetaTitleContainer = styled.h1`
+
+const MetaDataContainerSmall = styled(MetaDataContainerBase)`
+  @media (min-width: 701px) {
+    padding: 1rem;
+  }
+`;
+
+
+const MetaTitleContainerBase = styled.h1`
   color: #fff;
   text-transform: uppercase;
   font-weight: 400;
   margin-bottom: 1.75rem;
 `;
-const MetaDetail = styled.h2`
+
+const MetaTitleContainerSmall = styled(MetaTitleContainerBase)`
+  @media (min-width: 701px) {
+    font-size: 1.2rem;
+  }
+`;
+
+const MetaDetailBase = styled.h2`
   color: #fff;
   font-size: 1.2rem;
   font-weight: 400;
   margin: 0 0 0.4rem;
+`;
+
+const MetaDetailSmall = styled(MetaDetailBase)`
+  @media (min-width: 701px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const Cursor = styled.div`
@@ -210,17 +238,29 @@ const HubCard = ({project}: Props) => {
   let flexGrow: number;
   let width: string | undefined;
   let maxWidth: string | undefined;
+  let MetaDataContainer: StyledComponent<any, any>;
+  let MetaTitleContainer: StyledComponent<any, any>;
+  let MetaDetail: StyledComponent<any, any>;
   if (project.cardSize === CardSizes.LARGE) {
+    MetaDataContainer = MetaDataContainerBase;
+    MetaTitleContainer = MetaTitleContainerBase;
+    MetaDetail = MetaDetailBase;
     width = '100%';
     maxWidth = '100%';
-    flexGrow = 3;
+    flexGrow = 1;
   } else if (project.cardSize === CardSizes.MEDIUM) {
-    width = '54%';
-    maxWidth = '60%';
-    flexGrow = 3;
+    MetaDataContainer = MetaDataContainerBase;
+    MetaTitleContainer = MetaTitleContainerBase;
+    MetaDetail = MetaDetailBase;
+    width = '60%';
+    maxWidth = windowWidth > 900 ? '70%' : undefined;
+    flexGrow = 1;
   } else {
-    width = undefined;
-    maxWidth = '50%';
+    MetaDataContainer = MetaDataContainerSmall;
+    MetaTitleContainer = MetaTitleContainerSmall;
+    MetaDetail = MetaDetailSmall;
+    width = '28%';
+    maxWidth = windowWidth > 900 ? '30%' : undefined;
     flexGrow = 1;
   }
   const style: React.CSSProperties = {
@@ -275,9 +315,7 @@ const HubCard = ({project}: Props) => {
   return (
     <Root style={style}>
       <Category>
-        <CategoryText>
-          {category}
-        </CategoryText>
+        <CategoryText dangerouslySetInnerHTML={{__html: category}} />
       </Category>
       <Content
         href={link}
@@ -293,7 +331,7 @@ const HubCard = ({project}: Props) => {
         {title}
         <MetaDataContainer style={metaDataStyle}>
           <MetaTitleContainer>{project.projectName}</MetaTitleContainer>
-          <MetaDetail>Category: {category}</MetaDetail>
+          <MetaDetail>Category: <span dangerouslySetInnerHTML={{__html: category}} /></MetaDetail>
           {status}
         </MetaDataContainer>
         {cursor}

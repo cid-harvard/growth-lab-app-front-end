@@ -139,7 +139,7 @@ const ListItem = (props: Props) => {
         style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
       >
         <MobileTitle>Category:</MobileTitle>
-        {category}
+        <span dangerouslySetInnerHTML={{__html: category}} />
       </Cell>
       <Cell
         href={link}

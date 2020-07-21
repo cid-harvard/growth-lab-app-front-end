@@ -261,7 +261,7 @@ const SearchView = (props: Props) => {
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span dangerouslySetInnerHTML={{__html: checkbox.label}} />
             </TagLabel>
           </TagContainer>,
         );
@@ -312,7 +312,7 @@ const SearchView = (props: Props) => {
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span dangerouslySetInnerHTML={{__html: checkbox.label}} />
             </TagLabel>
           </TagContainer>,
         );
@@ -322,7 +322,7 @@ const SearchView = (props: Props) => {
           <CategoryContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span dangerouslySetInnerHTML={{__html: checkbox.label}} />
             </CheckboxLabel>
           </CategoryContainer>,
         );
@@ -363,7 +363,7 @@ const SearchView = (props: Props) => {
           <TagContainer key={'checkbox-field-' + checkbox.value + i}>
             <TagLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span dangerouslySetInnerHTML={{__html: checkbox.label}} />
             </TagLabel>
           </TagContainer>,
         );
@@ -373,7 +373,7 @@ const SearchView = (props: Props) => {
           <AttributeContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <input type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
-              <span>{checkbox.label}</span>
+              <span dangerouslySetInnerHTML={{__html: checkbox.label}} />
             </CheckboxLabel>
           </AttributeContainer>,
         );
