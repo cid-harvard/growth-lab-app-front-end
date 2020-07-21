@@ -103,19 +103,23 @@ interface Props {
 const ListItem = (props: Props) => {
   const {
     project:{
-      projectName, projectCategory, status, link,
-    },
+      projectName, projectCategory, status,
+    }, project,
   } = props;
 
   const [hovered, setHovered] = useState<boolean>(false);
   const onMouseEnter = () => setHovered(true);
   const onMouseLeave = () => setHovered(false);
 
-  if (!link) {
+  if (!project.link || !project.show) {
     return null;
   }
 
-  const linkText = link.replace(/(^\w+:|^)\/\//, '');
+  const link = project.localFile
+    ? require('../internalContent/' + project.link) : project.link;
+
+  const linkText = project.localFile
+   ? 'growthlab.app' + link : link.replace(/(^\w+:|^)\/\//, '');
   const category = getCategoryString(projectCategory);
 
   return (

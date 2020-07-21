@@ -191,7 +191,7 @@ const HubCard = ({project}: Props) => {
 
   const [mouseCoords, setMouseCoords] = useState<{x: number, y: number} | undefined>(undefined);
 
-  if (!project.link) {
+  if (!project.link || !project.show) {
     return null;
   }
 
@@ -269,6 +269,9 @@ const HubCard = ({project}: Props) => {
 
   const category = getCategoryString(project.projectCategory);
 
+  const link = project.localFile
+    ? require('../internalContent/' + project.link) : project.link;
+
   return (
     <Root style={style}>
       <Category>
@@ -277,7 +280,7 @@ const HubCard = ({project}: Props) => {
         </CategoryText>
       </Category>
       <Content
-        href={project.link}
+        href={link}
         ref={contentRef}
         onMouseMove={onMouseMove}
         onMouseLeave={() => setMouseCoords(undefined)}
