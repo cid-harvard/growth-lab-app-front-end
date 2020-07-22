@@ -7,6 +7,7 @@ import styled, {StyledComponent} from 'styled-components/macro';
 import {
   HubProject,
   CardSizes,
+  ProjectCategories,
 } from '../graphql/graphQLTypes';
 import {
   activeLinkColor,
@@ -21,7 +22,7 @@ import SmartImage from '../../../components/general/SmartImage';
 const zigZagPattern = require('../images/pattern.svg');
 
 const Root = styled.div`
-  min-width: 30%;
+  min-width: 28%;
   min-height: 380px;
   margin-left: 2.5%;
   margin-bottom: 2.25rem;
@@ -285,6 +286,19 @@ const HubCard = ({project}: Props) => {
     <MetaDetail>Status: <StatusText>{project.status.toLowerCase()}</StatusText></MetaDetail>
   ) : null;
 
+  let cursorText: string;
+  if (project.projectCategory === ProjectCategories.ATLAS_PROJECTS &&
+      (project.link.toLowerCase().includes('atlas.cid.harvard') ||
+       project.link.toLowerCase().includes('datlascolombia.com'))) {
+    cursorText = 'Explore the Tool';
+  } else if (project.link.toLowerCase().endsWith('.pdf')) {
+    cursorText = 'Open PDF';
+  } else if (project.projectCategory === ProjectCategories.SOFTWARE_PACKAGES) {
+    cursorText = 'View Source Code';
+  } else {
+    cursorText = 'View Project';
+  }
+
   const cursor = mouseCoords !== undefined ? (
     <Cursor
       style={{
@@ -292,7 +306,7 @@ const HubCard = ({project}: Props) => {
         top: mouseCoords.y,
       }}
     >
-      Click to<br />view project
+      {cursorText}
     </Cursor>
   ) : null;
 

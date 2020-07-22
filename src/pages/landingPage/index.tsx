@@ -150,7 +150,7 @@ const LandingPage = () => {
       const initialSelectedDataKeywords = parsedQuery && parsedQuery.dataKeywords !== undefined ? parsedQuery.dataKeywords : [];
       const initialSelectedStatus = parsedQuery && parsedQuery.status !== undefined ? parsedQuery.status : [];
 
-      const sortedKeywords = orderBy(hubKeywordsList, ['projects'], ['desc']);
+      const sortedKeywords = orderBy(hubKeywordsList, ({keyword}) => keyword.toLowerCase(), ['asc']);
       const allCategories: ProjectCategories[] = [];
       const allStatuses: string[] = [];
       const allDataKeywords: string[] = [];

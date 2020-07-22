@@ -164,6 +164,7 @@ const Title = styled.h1`
   color: rgba(0, 0, 0, 0);
   svg {
     position: relative;
+    left: 1%;
     width: 91.67%;
     letter-spacing: 2px;
     animation: stroke-offset 1s linear;
