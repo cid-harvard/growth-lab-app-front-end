@@ -12,9 +12,6 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
   - [Grid Layout and Style Utilities](#styleutilites)
   - [Components](#components)
     - [DataViz](#datavizcomponent)
-    - [LegendList](#legendlistcomponent)
-    - [HowToReadDots](#howtoreaddotscomponent)
-    - [ColorScaleLegend](#colorlegendcomponent)
     - [Loading](#loadingcomponent)
     - [FullPageError](#fullpageerrorcomponent)
     - [BasicSearch](#basicsearchcomponent)
@@ -149,203 +146,7 @@ Components are more complete and complex pieces that can be used to build out a 
 
 #### DataViz
 
-The data viz component, located at `src/components/dataViz` is the catch-all for any data visualizations. Below are the different props the DataViz component can take in.
-
-- **id**: string
-
-   A unique id for the visualization. Make sure that this is unique not only for this page, but across all pages as it will be used for Google Analytics Event tracking. Consider prefixing all your ids with a unique, page specific identifier.
-
-- **jsonToDownload** *(optional)*: object[]
-
-   An array of objects. Each object in the array should be the same shape. If this is provided it will show the "Download Data" button under the visualization and allow the user to download the data in CSV format.
-
-- **enablePNGDownload** *(optional)*: boolean
-  
-   Set this to `true` to enable the "Download PNG" button and functionality.
-
-- **enableSVGDownload** *(optional)*: boolean
-
-   Set this to `true` to enable the "Download SVG" button and functionality.
-
-- **chartTitle** *(optional)*: string
-
-   The optional chart title is used only if one of the above download features is enabled. The chart title replaces the generic text used for the file name if the user downloads an image or csv.
-
-- **vizType**: VizType
-
-   VizType is an enum also exported from `src/components/dataViz`. Depending on the type, there are a number of additional props required, shown below. It can be of the following types -
-
-   ```tsx
-   enum VizType {
-      ScatterPlot = 'ScatterPlot',
-      BarChart = 'BarChart',
-      ClusterBarChart = 'ClusterBarChart',
-      RadarChart = 'RadarChart',
-      GeoMap = 'GeoMap',
-    }
-   ```
-   - **VizType.ScatterPlot**
-
-      **data**: ScatterPlotDatum[];
-
-         ScatterPlotDatum takes the following values:
-
-         - label: string;
-         - x: number;
-         - y: number;
-         - fill *(optional)*: string;
-         - radius*(optional)*: number;
-         - tooltipContent *(optional)*: string;
-         - tooltipContentOnly *(optional)*: boolean;
-         - highlighted *(optional)*: boolean;
-
-      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
-
-      **axisMinMax** *(optional)*: {
-
-         **minX** *(optional)*: number,
-
-         **maxX** *(optional)*: number,
-
-         **minY** *(optional)*: number,
-
-         **maxY** *(optional)*: number,
-
-      };
-
-      **showAverageLines** *(optional)*: boolean;
-
-      **averageLineText** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
-
-
-   - **VizType.BarChart**
-
-      **data**: Array<BarChartDatum[]>;
-
-         BarChartDatum takes the following values:
-
-         - x: string;
-         - y: number;
-         - fill *(optional)*: string;
-         - stroke *(optional)*: string;
-         - tooltipContent *(optional)*: string;
-         - tooltipContentOnly *(optional)*: boolean;
-
-         The data it takes is an array of BarChartDatum arrays. Each array will render ontop of the previous one.
-
-      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
-
-      **quadrantLabels** *(optional)*: {**I** *(optional)*: string, **II** *(optional)*: string, **III** *(optional)*: string, **IV** *(optional)*: string};
-
-         Use the new line escape character, `\n`, to indicate when the label text should break to a new line.
-
-   - **VizType.RadarChart**
-
-      **data**: RadarChartDatum[];
-
-         RadarChartDatum takes the following values:
-
-         - label: string;
-         - value: number;
-
-         To include multi-line labels, include a newline character, \n, to indicate a new line.
-
-      **maxValue**: number;
-
-         Radar charts require a max value at which to compare each individual datums values against.
-
-      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
-
-         Use the new line escape character, `\n`, to indicate when the label text should break to a new line.
-
-   - **VizType.GeoMap**
-
-      **data**: ExtendedFeature<any, GeoJsonCustomProperties>;
-
-         ExtendedFeature is a standard GeoJson object but it requires the following values to be appended within the `.features` data:
-
-         - percent: number; *(Number between 0 and 100)*
-         - tooltipContent *(optional)*: string;
-
-      **minColor**: string;
-
-      **maxColor**: string;
-
-
-   - **VizType.ClusterBarChart**
-
-      **data**: ClusterBarChartDatum[];
-
-         ClusterBarChartDatum takes the following values:
-
-         - groupName: string;
-         - x: string;
-         - y: number;
-         - fill?: string;
-         - tooltipContent?: string;
-         - tooltipContentOnly *(optional)*: boolean;
-
-         Each x value will create a cluster of every groupName that has a matching x value.
-
-      **axisLabels** *(optional)*: {**left** *(optional)*: string, **bottom** *(optional)*: string};
-
-Example of the DataViz component -
-
-```tsx
-<DataViz
-  id={'time-is-money-scatterplot'}
-  vizType={VizType.ScatterPlot}
-  data={scatterplotData}
-  axisLabels={{bottom: 'Time', left: 'Dollars'}}
-  enablePNGDownload={true}
-  enableSVGDownload={true}
-  chartTitle={'Time is Money'}
-  jsonToDownload={rawData}
-/>
-```
-
-<a name="legendlistcomponent"/>
-
-#### LegendList
-
-The Legend component, located at `src/components/dataViz/Legend` is for displaying a basic color block based legend. The Legend component only takes a single prop -
-
-- **legendList**: LegendDatum[]
-
-   Each LegendDatum will be rendered as a separate block. It has the following properties -
-
-   - **label**: string;
-   - **fill**: string | undefined;
-   - **stroke**: string | undefined;
-
-<a name="howtoreaddotscomponent"/>
-
-#### HowToReadDots
-
-The HowToReadDots component, located at `src/components/dataViz/HowToReadDots` is for displaying a basic color circle based legend. The HowToReadDots component takes two props -
-
-- **items**: LegendItem[]
-
-   Each LegendItem will be rendered as a separate dot. It has the following properties -
-
-   - **label**: string;
-   - **color**: string;
-
-- **highlighted** *(Optional)*: LegendItem
-
-   Optionally add a highlighted value to distinguish it from the other values.
-
-<a name="colorlegendcomponent"/>
-
-#### ColorScaleLegend
-
-The ColorScaleLegend component, located at `src/components/dataViz/ColorScaleLegend` is for displaying a color range scale. The ColorScaleLegend component takes the following props -
-
-- **maxColor**: string;
-- **minColor**: string;
-- **title**: string;
-- **maxLabel**: string | number;
-- **minLabel**: string | number;
+All data visualizations are built using the open-source npm module [react-fast-charts](https://www.npmjs.com/package/react-fast-charts), also created by the Harvard Growth Lab.
 
 <a name="loadingcomponent"/>
 
@@ -365,16 +166,14 @@ The FullPageError component, located at `src/components/general/FullPageError` i
 
 The BasicSearch component, located at `src/components/form/BasicSearch` is a generic search bar. It takes the following props:
 
-- **placeholder**: string;
-- **setSearchQuery**: (value: string) => void;
+- **placeholder**: `string`
+- **setSearchQuery**: `(value: string) => void` A callback function for when the value of the search bar changes. Use this to get the value of the search bar and set it as state.
+- **initialQuery**: `string`
+- **focusOnMount**: `boolean`
+- **containerStyleOverrides** *(optional)*: `React.CSSProperties` Optional CSS properties that will be applied directly to the root `label` element.
+- **searchBarStyleOverrides** *(optional)*: `React.CSSProperties` Optional CSS properties that will be applied directly to the `input` element.
+- **additionalContent** *(optional)*: `React.ReactNode` Additional content that will appear to the left of the search input. Useful for adding tags or other search related content.
 
-   A callback function for when the value of the search bar changes. Use this to get the value of the search bar and set it as state.
-
-- **initialQuery**: string;
-- **focusOnMount**: boolean;
-- **searchBarStyleOverrides** *(optional)*: React.CSSProperties;
-
-   Optional CSS properties that will be applied directly to the `input` element.
 
 <a name="multitiersearchcomponent"/>
 
@@ -382,21 +181,10 @@ The BasicSearch component, located at `src/components/form/BasicSearch` is a gen
 
 The MultiTierSearch component, located at `src/components/navigation/MultiTierSearch` is a multi-hierarchy search/dropdown component. It takes hierarchal data and allows the user to search through and select child elements. Note that at this time, this component only supports selecting the lowest level child element, but it does support an unlimited number of tiers between them. It takes the following props:
 
-- **searchLabelText**: string;
-
-   The label text that appears above the dropdown.
-
-- **data**: TreeNode[];
-
-   The dataset. See the structure of a TreeNode below.
-
-- **initialSelectedValue** *(optional)*: TreeNode;
-
-   The initially selected TreeNode, if desired.
-
-- **onChange** *(optional)*: (val: TreeNode) => void;
-
-   Callback function for when a TreeNode is selected.
+- **searchLabelText**: `string` The label text that appears above the dropdown.
+- **data**: `TreeNode[]` The dataset. See the structure of a TreeNode below.
+- **initialSelectedValue** *(optional)*: `TreeNode` The initially selected TreeNode, if desired.
+- **onChange** *(optional)*: `(val: TreeNode) => void` Callback function for when a TreeNode is selected.
 
 **TreeNode** - The MultiTierSearch component uses [react-dropdown-tree-select](https://www.npmjs.com/package/react-dropdown-tree-select). The TreeNode format follows their structure, with some required settings in order to make it work correctly for our use cases. A basic example is below -
 
@@ -433,34 +221,17 @@ In the above example, we have three levels of hierarchy. Every element must have
 
 The StickySideNav component, found at `src/components/navigation/StickySideNav`, sticks to the side of the screen and automatically collapses into an expandable menu on small screen sizes. It takes the following props - 
 
-- **id**: string;
-  
-  Make sure that this is unique not only for this page, but across all pages as it will be used for Google Analytics Event tracking. Consider prefixing all your ids with a unique, page specific identifier.
-
-- **links**: NavItem[];
-
-   A NavItem takes the following properties -
-
-   - **label**: string;
-   - **target**: string;
-   - **internalLink** *(optional)*: boolean;
-
-      Set true to specify if this is linking to an anchor on this page.
-
-   - **scrollBuffer** *(optional)*: number;
-
-     Set an optional pixel value buffer for when to consider this section selected, if an internal link.
-
-- **backgroundColor**: string;
-- **hoverColor**: string;
-- **borderColor**: string;
-- **onHeightChange** *(optional)*: (height: number) => void;
-
-   Optional callback function returning the height of nav whenever it changes.
-
-- **marginTop** *(optional)*: string;
-
-   Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
+- **id**: `string` Make sure that this is unique not only for this page, but across all pages as it will be used for Google Analytics Event tracking. Consider prefixing all your ids with a unique, page specific identifier.
+- **links**: `NavItem[]`
+    - **label**: `string`
+    - **target**: `string`
+    - **internalLink** *(optional)*: `boolean` Set true to specify if this is linking to an anchor on this page.
+    - **scrollBuffer** *(optional)*: `number` Set an optional pixel value buffer for when to consider this section selected, if an internal link.
+- **backgroundColor**: `string`
+- **hoverColor**: `string`
+- **borderColor**: `string`
+- **onHeightChange** *(optional)*: `(height: number) => void` Optional callback function returning the height of nav whenever it changes.
+- **marginTop** *(optional)*: `string` Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
 
 <a name="toplevelstickynav"/>
 
@@ -468,25 +239,16 @@ The StickySideNav component, found at `src/components/navigation/StickySideNav`,
 
 The TopLevelStickyNav component, found at `src/components/navigation/TopLevelStickyNav`, sticks to the top right of the screen. It takes the following props - 
 
-- **id**: string;
-- **title**: string;
-- **links**: NavItem[];
-   
-   A NavItem takes the following properties -
-
-   - **label**: string;
-   - **target**: string;
-   - **internalLink** *(optional)*: boolean;
-
-      Set true to specify if this is linking to an anchor on this page.
-
-   - **active**: boolean;
-   
-      Set true to denote this link to have 'active' styles.
-
-- **linkColor**: string;
-- **activeColor**: string;
-- **backgroundColor**: string;
+- **id**: `string`
+- **title**: `string`
+- **links**: `NavItem[]`
+    - **label**: `string`
+    - **target**: `string`
+    - **internalLink** *(optional)*: `boolean` Set true to specify if this is linking to an anchor on this page.
+    - **active**: `boolean` Set true to denote this link to have 'active' styles.
+- **linkColor**: `string`
+- **activeColor**: `string`
+- **backgroundColor**: `string`
 
 <a name="hubstickynav"/>
 
@@ -494,25 +256,12 @@ The TopLevelStickyNav component, found at `src/components/navigation/TopLevelSti
 
 The HubStickyNav component, found at `src/components/navigation/HubStickyNav`, sticks to the top left of its container. It takes the following props - 
 
-- **links**: NavItem[];
-   
-   A NavItem takes the following properties -
-
-   - **label**: string;
-   - **onClick**: () => void;
-
-      Callback function for when the link is clicked.
-
-   - **isActive**: boolean;
-   
-      Set true to denote this link to have 'active' styles.
-
-
-- **offsetTop** *(optional)*: string;
-
-   Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
-
-- **primaryColor**: string;
+- **links**: `NavItem[]`   
+   - **label**: `string`
+   - **onClick**: `() => void` Callback function for when the link is clicked.
+   - **isActive**: `boolean` Set true to denote this link to have 'active' styles.
+- **offsetTop** *(optional)*: `string` Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
+- **primaryColor**: `string`
 
 <a name="dynamictablecomponent"/>
 
@@ -520,41 +269,15 @@ The HubStickyNav component, found at `src/components/navigation/HubStickyNav`, s
 
 The DynamicTable component, found at `src/components/text/DynamicTable`, quickly creates a styled component from any dataset. It takes the following props - 
 
-- **columns**: Column[];
-
-   Each Column object defines a different column in the table. It takes the following properties -
-
-   - **label**: string;
-
-      This is what the column title will show when it is rendered.
-
-   - **key**: string;
-
-      This is the associated key name for the table's dataset.
-
-- **data**: Datum[];
-
-   Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
-
-- **color** *(Optional)*: string[];
-
-   Color code for styling the table. Will render with bolder labels and lines if no color is given.
-
-- **stickFirstCol** *(Optional)*: boolean;
-
-   Will make the first column stick if content overflows horizontally.
-
-- **verticalGridLines** *(Optional)*: boolean;
-
-   Will add vertical grid lines to the table.
-
-- **hideGridLines** *(Optional)*: boolean;
-
-   Will hide the grid lines of the table.
-
-- **fontSize** *(Optional)*: boolean;
-
-   Will override the default font-size of all of the text in the table.
+- **columns**: `Column[]` Each Column object defines a different column in the table. It takes the following properties -
+   - **label**: `string` This is what the column title will show when it is rendered.
+   - **key**: `string` This is the associated key name for the table's dataset.
+- **data**: `Datum[]` Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
+- **color** *(Optional)*: `string[]` Color code for styling the table. Will render with bolder labels and lines if no color is given.
+- **stickFirstCol** *(Optional)*: `boolean` Will make the first column stick if content overflows horizontally.
+- **verticalGridLines** *(Optional)*: `boolean` Will add vertical grid lines to the table.
+- **hideGridLines** *(Optional)*: `boolean` Will hide the grid lines of the table.
+- **fontSize** *(Optional)*: `boolean` Will override the default font-size of all of the text in the table.
 
 <a name="standardfooter"/>
 
@@ -562,9 +285,9 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 
 The StandardFooter component, found at `src/components/text/StandardFooter`, creates a standard Growth Lab footer with little customization. It takes the following optional prop - 
 
-- **socialItems** *(optional)*: {target: string, type: SocialType}[];
-
-   Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons. SocialType can be one of the following -
+- **socialItems** *(optional)*: `object[]`
+    - **target**: `string`
+    - **type**: `SocialType` Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons. SocialType can be one of the following -
 
    ```tsx
     enum SocialType {
@@ -582,35 +305,15 @@ The StandardFooter component, found at `src/components/text/StandardFooter`, cre
 
 The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter`, creates a footer with social icon links, attributions, links to explore next, and the Growth Lab logo. It takes the following props - 
 
-- **title**: string;
-
-   The title of the page for Google Analytics event tracking. This should match the page title found in the header.
-
-- **attributions**: string[];
-
-   An array of strings for the attributions. Each string will appear on a new line at the top of the footer.
-
-- **socialItems** *(optional)*: {target: string, type: SocialType}[];
-
-   Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons. SocialType can be one of the following -
-
-   ```tsx
-    enum SocialType {
-      facebook = 'facebook',
-      twitter = 'twitter',
-      linkedin = 'linkedin',
-      youtube = 'youtube',
-      applepodcast = 'applepodcast',
-    }
-   ```
-
-- **exploreNextLinks**: {label: string, target: string}[];
-
-   Each explore next item will render a button that links out to its target. It will open in a new tab.
-
-- **backgroundColor**: string;
-
-   Color code for styling the table.
+- **title**: `string` The title of the page for Google Analytics event tracking. This should match the page title found in the header.
+- **attributions**: `string[]` An array of strings for the attributions. Each string will appear on a new line at the top of the footer.
+- **socialItems** *(optional)*: `object[]`
+    - **target**: `string`
+    - **type**: `SocialType` Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons.
+- **exploreNextLinks**: `object[]` Each explore next item will render a button that links out to its target. It will open in a new tab.
+    - **label**: `string`
+    - **target**: `string`
+- **backgroundColor**: `string`
 
 <a name="inlinetogglecomponent"/>
 
@@ -618,25 +321,11 @@ The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter
 
 The InlineToggle component, located at `src/components/text/InlineToggle` is a search/dropdown component running on the same core library as the [MultiTierSearch](#multitiersearchcomponent) found above. The main difference is that it appears as inline text instead of as a search box, and it should only take a single level of children instead of multiple tiers. It takes the following props -
 
-- **data**: TreeNode[];
-
-   TreeNode data has a much simpler structure compared to the MultiTierSearch component. It should like the following -
-
-   ```tsx
-   interface TreeNode {
-     label: string,
-     value: string,
-   }
-  ```
-
-- **colorClassName** *(optional)*: string;
-
-   Optional classname for setting the color. Additional rules will have to be added to `src/components/text/inlineDropdownStyles.scss` in order to properly display your custom color.
-
-- **onChange** *(optional)*: (val: TreeNode) => void;
-
-   Optional callback function for when a TreeNode is selected.
-
+- **data**: `TreeNode[]` TreeNode data has a much simpler structure compared to the MultiTierSearch component. It should like the following -
+    - **label**: `string`
+    - **value**: `string`
+- **colorClassName** *(optional)*: `string` Optional classname for setting the color. Additional rules will have to be added to `src/components/text/inlineDropdownStyles.scss` in order to properly display your custom color.
+- **onChange** *(optional)*: `(val: TreeNode) => void` Optional callback function for when a TreeNode is selected.
 
 <a name="stickysubheadingcomponent"/>
 
@@ -644,11 +333,9 @@ The InlineToggle component, located at `src/components/text/InlineToggle` is a s
 
 The StickySubHeading component, located at `src/components/StickySubHeading` is a heading element that will stick to the top of the page as the user scrolls. It takes in the following props -
 
-- **title**: string;
-- **highlightColor**: string;
-- **onHeightChange** *(optional)*: (height: number) => void;
-
-   Optional callback function returning the height of component whenever it changes.
+- **title**: `string`
+- **highlightColor**: `string`
+- **onHeightChange** *(optional)*: `(height: number) => void` Optional callback function returning the height of component whenever it changes.
 
 <a name="gradientheadercomponent"/>
 
@@ -656,11 +343,9 @@ The StickySubHeading component, located at `src/components/StickySubHeading` is 
 
 The GradientHeader component, located at `src/components/headers/GradientHeader` is a full, top level header element meant for the top of a page. It optionally can have the [MultiTierSearch](#multitiersearchcomponent) embeded in it. It takes in the following props -
 
-- **title**: string;
-- **primaryColor**: string;
-- **gradient**: string;
-
-   The gradient will be applied to the css `background` propery. And should follow (standared css gradient syntax)[https://cssgradient.io/]. For example -
+- **title**: `string`
+- **primaryColor**: `string`
+- **gradient**: `string` The gradient will be applied to the css `background` propery. And should follow (standared css gradient syntax)[https://cssgradient.io/]. For example -
 
    ```tsx
     gradient={`linear-gradient(
@@ -671,34 +356,18 @@ The GradientHeader component, located at `src/components/headers/GradientHeader`
     }
    ```
 
-- **textColor**: string;
-- **linkColor**: string;
-- **imageSrc** *(optional)*: string;
-  
-   Optional URL to the image that will appear on the left hand side of the header.
-
-- **imageProps** *(optional)*: ImageProps;
-
-   Optional custom dimensions for the image.
-
-   - imgWidth *(optional)*: string;
-   - imgHeight *(optional)*: string;
-
+- **textColor**: `string`
+- **linkColor**: `string`
+- **imageSrc** *(optional)*: `string` Optional URL to the image that will appear on the left hand side of the header.
+- **imageProps** *(optional)*: `ImageProps`
+    - **imgWidth** *(optional)*: `string`
+    - **imgHeight** *(optional)*: `string`
 - **links** *(optional)*: LinkDatum[];
-
-   Optional list for links underneath the title.
-
-    - label: string;
-    - target: string;
-    - internal *(optional)*: boolean;
-
-    Internal defaults to false. Internal means it should scroll to an anchor on the page instead of opening a url in a new tab.
-
-- **hasSearch**: boolean;
-
-   If true, you must also pass all the same props to GradientHeader as you would [MultiTierSearch](#multitiersearchcomponent).
-
-- **introText** *(optional)*: string;
+    - **label**: `string`
+    - **target**: `string`
+    - **internal** *(optional)*: `boolean` Internal defaults to false. Internal means it should scroll to an anchor on the page instead of opening a url in a new tab.
+- **hasSearch**: `boolean` If true, you must also pass all the same props to GradientHeader as you would [MultiTierSearch](#multitiersearchcomponent).
+- **introText** *(optional)*: `string`
 
 <a name="textblockcomponent"/>
 
@@ -706,13 +375,8 @@ The GradientHeader component, located at `src/components/headers/GradientHeader`
 
 The TextBlock component, located at `src/components/text/TextBlock` is a generic, formatted container for other simple components. It takes the following props -
 
-- **children**: React.ReactNode;
-
-   Any React Element, string, null, or array of any of those types, to be output inside of the TextBlock.
-
-- **align** *(optional)*: Alignment;
-
-   Optional vertical alignment of the content in the container relative to the height of the TextBlock siblings.
+- **children**: `React.ReactNode` Any React Element, string, null, or array of any of those types, to be output inside of the TextBlock.
+- **align** *(optional)*: `Alignment` Optional vertical alignment of the content in the container relative to the height of the TextBlock siblings.
 
    ```tsx
     enum Alignment {
@@ -728,12 +392,10 @@ The TextBlock component, located at `src/components/text/TextBlock` is a generic
 
 The PasswordProtectedComponent component, located at `src/components/tools/PasswordProtectedComponent` is a generic component that password protects any child components. It takes only four props -
   
-- **title**: string;
-- **buttonColor**: string;
-- **children**: React.ReactNode;
-- **onPasswordSubmit**: (value: string) => void;
-
-   Callback function for when the user submits the password.
+- **title**: `string`
+- **buttonColor**: `string`
+- **children**: `React.ReactNode`
+- **onPasswordSubmit**: `(value: string) => void` Callback function for when the user submits the password.
 
 <a name="passwordprotectedpage"/>
 
@@ -741,11 +403,9 @@ The PasswordProtectedComponent component, located at `src/components/tools/Passw
 
 Sim PasswordProtectedPage component, located at `src/components/tools/PasswordProtectedPage` is a generic component that fills its entire container and provides a callback function for when the user submits the password. Useful for protecting an entire page. It takes only three props -
   
-- **title**: string;
-- **buttonColor**: string;
-- **onPasswordSubmit**: (value: string) => void;
-
-   Callback function for when the user submits the password.
+- **title**: `string`
+- **buttonColor**: `string`
+- **onPasswordSubmit**: `(value: string) => void` Callback function for when the user submits the password.
  
 <a name="querytablebuildercomponent"/>
 
@@ -753,47 +413,21 @@ Sim PasswordProtectedPage component, located at `src/components/tools/PasswordPr
 
 The QueryTableBuilder component, located at `src/components/tools/QueryTableBuilder` is a customizable table query building component. It can take a number of different parameters to suit a large array of needs. It takes the following props -
 
-- **primaryColor**: string;
-
-   The color of the buttons and title found within the table.
-
-- **onUpdateClick**: (data: CallbackData) => void;
-
-   Callback function for when a user clicks the "Update" button.
-
-- **selectFields** *(optional)*: SelectBoxProps[];
-
-   Each selectFields item in the array creates a [MultiTierSearch](#multitiersearchcomponent) and can take the following values -
-
-       - id: string;
-       - label: string;
-       - data: SelectData[];
-
-          Where SelectData extends a [TreeNode](#multitiersearchcomponent) with the optional `parentValue: string | null` field, in which the value of the selected node in the optionally dependent field (see below) is specified.
-
-       - dependentOn?: string;
-
-          Optional value relating to the `id` of another selectField in which this selectField is dependent on. Use the optional `parentValue` in the SelectData mentioned above to set up the relationship between dependent values within the datasets.
-
-       - required?: boolean;
-
-- **itemName**: string;
-- **columns**: Column[];
-
-   columns use the same format as those in the [DynamicTable](#dynamictablecomponent) component.
-
-- **tableData**: Datum[];
-
-   tableData uses the same format as the data prop in the [DynamicTable](#dynamictablecomponent) component.
-
-- **disabled** *(optional)*: boolean;
-
-   If true, the buttons will be disabled and the table will render with 10 blank rows based on the column data.
-
-- **queryLength**: number;
-- **queryToDownload**: object[];
-- **filename**: string;
-
+- **primaryColor**: `string` The color of the buttons and title found within the table.
+- **onUpdateClick**: `(data: CallbackData) => void` Callback function for when a user clicks the "Update" button.
+- **selectFields** *(optional)*: `SelectBoxProps[]` Each selectFields item in the array creates a [MultiTierSearch](#multitiersearchcomponent) and can take the following values -
+    - **id**: `string`
+    - **label**: `string`
+    - **data**: `SelectData[]` Where SelectData extends a [TreeNode](#multitiersearchcomponent) with the optional `parentValue: string | null` field, in which the value of the selected node in the optionally dependent field (see below) is specified.
+    - **dependentOn** *(optional)*: `string` Optional value relating to the `id` of another selectField in which this selectField is dependent on. Use the optional `parentValue` in the SelectData mentioned above to set up the relationship between dependent values within the datasets.
+    - **required** *(optional)*: `boolean`
+- **itemName**: `string`
+- **columns**: `Column[]` columns use the same format as those in the [DynamicTable](#dynamictablecomponent) component.
+- **tableData**:`Datum[]` tableData uses the same format as the data prop in the [DynamicTable](#dynamictablecomponent) component.
+- **disabled** *(optional)*: `boolean` If true, the buttons will be disabled and the table will render with 10 blank rows based on the column data.
+- **queryLength**: `number`
+- **queryToDownload**: `object[]`
+- **filename**: `string`
 
 <a name="customhooks"/>
 
@@ -807,17 +441,9 @@ Located in `src/hooks/useScrollBehavior`. The useScrollBehavior hook enables a p
 
 useScrollBehavior takes an optional object as an input with the following options -
 
-- **bufferTop** *(optional)*: number;
-
-   The amount of space above an element at which it is considered to be scrolled to. Defaults to 0 if none is specified.
-
-- **navAnchors** *(optional)*: string[];
-
-   A list of strings designating the ids for each element the hook should watch for scrolling. The ids should be written with the `#`, for example - `#overview`.
-
-- **smooth** *(optional)*: boolean[];
-
-   Specifies if the scroll should animate smoothly to the anchor or jump directly to it.
+- **bufferTop** *(optional)*: `number` The amount of space above an element at which it is considered to be scrolled to. Defaults to 0 if none is specified.
+- **navAnchors** *(optional)*: `string[]` A list of strings designating the ids for each element the hook should watch for scrolling. The ids should be written with the `#`, for example - `#overview`.
+- **smooth** *(optional)*: `boolean` Specifies if the scroll should animate smoothly to the anchor or jump directly to it.
 
 <a name="queryingdatagraphql"/>
 
