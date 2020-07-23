@@ -11,13 +11,16 @@ import {
 } from '../../styling/styleUtils';
 import StickySubHeading from '../../components/text/StickySubHeading';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
-import DataViz, {VizType} from '../../components/dataViz';
+import DataViz, {
+  VizType,
+  Legend,
+  HowToReadDots,
+} from 'react-fast-charts';
 import TextBlock from '../../components/text/TextBlock';
 import GradientHeader from '../../components/text/headers/GradientHeader';
 import Helmet from 'react-helmet';
 import { TreeNode } from 'react-dropdown-tree-select';
 import { colorScheme } from './Utils';
-import Legend from '../../components/dataViz/Legend';
 import DynamicTable from '../../components/text/DynamicTable';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import { useHistory } from 'react-router';
@@ -30,7 +33,6 @@ import {
   CSVDatum as ScatterPlotCSVDatum,
   NaceIdEnhancedScatterPlotDatum,
 } from './transformers/transformScatterplotData';
-import HowToReadDots from '../../components/dataViz/HowToReadDots';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {

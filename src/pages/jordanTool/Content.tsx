@@ -6,7 +6,12 @@ import StickySubHeading from '../../components/text/StickySubHeading';
 import ExploreNextFooter from '../../components/text/ExploreNextFooter';
 import useFetchData, {colorScheme} from './fetchData';
 import { TreeNode } from 'react-dropdown-tree-select';
-import DataViz, {VizType} from '../../components/dataViz';
+import DataViz, {
+  VizType,
+  Legend,
+  HowToReadDots,
+  ColorScaleLegend,
+} from 'react-fast-charts';
 import {
   TwoColumnSection,
   SectionHeader,
@@ -19,9 +24,6 @@ import {
   InlineTwoColumnSection,
   lightBorderColor,
 } from '../../styling/styleUtils';
-import Legend from '../../components/dataViz/Legend';
-import HowToReadDots from '../../components/dataViz/HowToReadDots';
-import ColorScaleLegend from '../../components/dataViz/ColorScaleLegend';
 import DynamicTable from '../../components/text/DynamicTable';
 import TextBlock, {Alignment} from '../../components/text/TextBlock';
 import BlowoutValue from '../../components/text/BlowoutValue';

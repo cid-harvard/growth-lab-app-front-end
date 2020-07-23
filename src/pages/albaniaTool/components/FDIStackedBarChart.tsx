@@ -1,5 +1,5 @@
 import React from 'react';
-import DataViz, {VizType} from '../../../components/dataViz';
+import DataViz, {VizType} from 'react-fast-charts';
 import {
     FDIMarketOvertimeConnection,
 } from '../graphql/graphQLTypes';

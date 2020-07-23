@@ -7,7 +7,7 @@ import {
 import { colorScheme } from '../Utils';
 import TextBlock from '../../../components/text/TextBlock';
 import { TreeNode } from 'react-dropdown-tree-select';
-import Legend from '../../../components/dataViz/Legend';
+import {Legend} from 'react-fast-charts';
 import transformFDITop10List from '../transformers/transformFDITop10List';
 import {
   FDIMarketConnection,

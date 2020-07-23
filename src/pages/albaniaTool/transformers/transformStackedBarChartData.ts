@@ -1,4 +1,4 @@
-import { Datum as BarChartDatum } from '../../../components/dataViz/barChart';
+import { BarChartDatum } from 'react-fast-charts';
 import {
     FDIMarketOvertimeDestination,
     FDIMarketOvertime,

@@ -1,4 +1,4 @@
-import {Datum, AnimationDirection, LabelAnchor, LabelPosition, Coords} from '../../../components/dataViz/lineChart';
+import {LineChartDatum, AnimationDirection, LabelAnchor, LabelPosition, Coords} from 'react-fast-charts';
 import raw from 'raw.macro';
 
 interface Axis {
@@ -195,7 +195,7 @@ interface Input {
 }
 
 export default ({section, prevSection}: Input) => {
-  let lineChartData: Datum[] = [];
+  let lineChartData: LineChartDatum[] = [];
   let minMaxAxis: MinMaxAxis = gdpData.axisValues;
   let animateAxis: AnimateAxis | undefined;
   let leftAxis: string = 'Year on Year Percent Change in GDP per capita';

@@ -2,7 +2,7 @@ import {
   JordanIndustry,
 } from '../graphql/graphQLTypes';
 import {rgba} from 'polished';
-import { Datum as ScatterPlotDatum } from '../../../components/dataViz/scatterPlot';
+import { ScatterPlotDatum } from 'react-fast-charts';
 import { TreeNode } from 'react-dropdown-tree-select';
 
 

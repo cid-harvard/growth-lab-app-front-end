@@ -3,7 +3,7 @@ import React from 'react';
 import { Layer, Feature } from 'react-mapbox-gl';
 import raw from 'raw.macro';
 import {scaleLinear} from 'd3-scale';
-import ColorScaleLegend from '../../../components/dataViz/ColorScaleLegend';
+import {ColorScaleLegend} from 'react-fast-charts';
 import styled from 'styled-components/macro';
 import mapboxgl from 'mapbox-gl';
 import {
@@ -100,7 +100,7 @@ const cssGradientEu = `
 `;
 const euColorScaleTitle = 'GDP per capita (USD)';
 
-export const worldData = JSON.parse(raw('../../../components/dataViz/assets/world-geojson.json'));
+export const worldData = JSON.parse(raw('../../../assets/world-geojson.json'));
 const europeGdpData = JSON.parse(raw('./data/europe_gdp.json'));
 const euGdpFeatures: any[] = [];
 worldData.features.forEach((f: any) => {

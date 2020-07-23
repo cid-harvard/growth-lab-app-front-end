@@ -3,7 +3,7 @@ import {
   WageHistogramFacet,
 } from '../graphql/graphQLTypes';
 import {colorScheme} from '../fetchData';
-import { Datum as BarChartDatum } from '../../../components/dataViz/barChart';
+import { BarChartDatum } from 'react-fast-charts';
 import {lightBorderColor} from '../../../styling/styleUtils';
 
 enum WageHistogramXValues {

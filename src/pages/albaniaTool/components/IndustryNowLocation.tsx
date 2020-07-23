@@ -1,5 +1,5 @@
 import React from 'react';
-import DataViz, {VizType} from '../../../components/dataViz';
+import DataViz, {VizType} from 'react-fast-charts';
 import raw from 'raw.macro';
 import {lighten} from 'polished';
 import { colorScheme } from '../Utils';
@@ -7,7 +7,7 @@ import {
     IndustryNowLocation as IndustryNowLocationNode,
 } from '../graphql/graphQLTypes';
 import TextBlock from '../../../components/text/TextBlock';
-import ColorScaleLegend from '../../../components/dataViz/ColorScaleLegend';
+import {ColorScaleLegend} from 'react-fast-charts';
 import {min, max} from 'd3-array';
 
 const albaniaMapData = JSON.parse(raw('../assets/albania-geojson.geojson'));
