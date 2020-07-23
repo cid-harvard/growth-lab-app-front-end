@@ -7,36 +7,50 @@ View the site live at https://growthlab.app/
 License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ## Table of Contents
-  - [Getting Started](#gettingstarted)
-  - [Building a Page](#buildingapage)
-  - [Grid Layout and Style Utilities](#styleutilites)
-  - [Components](#components)
-    - [DataViz](#datavizcomponent)
-    - [Loading](#loadingcomponent)
-    - [FullPageError](#fullpageerrorcomponent)
-    - [BasicSearch](#basicsearchcomponent)
-    - [MultiTierSearch](#multitiersearchcomponent)
-    - [StickySideNav](#stickysidenavecomponent)
-    - [TopLevelStickyNav](#toplevelstickynav)
-    - [HubStickyNav](#hubstickynav)
-    - [DynamicTable](#dynamictablecomponent)
-    - [StandardFooter](#standardfooter)
-    - [ExploreNextFooter](#explorenextfootercomponent)
-    - [InlineToggle](#inlinetogglecomponent)
-    - [StickySubHeading](#stickysubheadingcomponent)
-    - [GradientHeader](#gradientheadercomponent)
-    - [TextBlock](#textblockcomponent)
-    -[PasswordProtectedComponent](#passwordprotectedcomponent)
-    -[PasswordProtectedPage](#passwordprotectedpage)
-    - [QueryTableBuilder](#querytablebuildercomponent)
-  - [Custom Hooks](#customhooks)
-    - [useScrollBehavior](#usescrollbehaviorhook)
-  - [Querying Data with GraphQL](#queryingdatagraphql)
-  - [Using Google Analytics](#googleanalytics)
-    - [Setting Up GA For Your Page](#settingupgoogleanalytics)
-    - [Triggering GA Events](#triggergoogleanalyticsevents)
-  - [Guidelines For Creating New Components](#componentguidelines)
-    - [Style Guide](#styleguide)
+- [Getting Started](#gettingstarted)
+- [Building a Page](#buildingapage)
+- [Grid Layout and Style Utilities](#styleutilites)
+- [Components](#components)
+    - [Strucutural Components](#strucuturalcomponents)
+      - [StandardFooter](#standardfooter)
+      - [ExploreNextFooter](#explorenextfootercomponent)
+      - [StickySubHeading](#stickysubheadingcomponent)
+      - [GradientHeader](#gradientheadercomponent)
+      - [SmartCoverPhoto](#smartcoverphotocomponent)
+      - [PasswordProtectedPage](#passwordprotectedpage)
+    - [Navigation Components](#navigationcomponents)
+      - [StickySideNav](#stickysidenavecomponent)
+      - [TopLevelStickyNav](#toplevelstickynav)
+      - [HubStickyNav](#hubstickynav)
+    - [Form Components](#formcomponents)
+      - [BasicSearch](#basicsearchcomponent)
+      - [MultiTierSearch](#multitiersearchcomponent)
+      - [InlineToggle](#inlinetogglecomponent)
+    - [Utility Components](#utilitycomponents)
+      - [Loading](#loadingcomponent)
+      - [FullPageError](#fullpageerrorcomponent)
+      - [SmartImage](#smartimagecomponent)
+      - [TextBlock](#textblockcomponent)
+      - [Tooltip](#tooltipcomponent)
+      - [PasswordProtectedComponent](#passwordprotectedcomponent)
+    - [Visualization Components](#visualizationcomponents)
+      - [DataViz](#datavizcomponent)
+      - [DynamicTable](#dynamictablecomponent)
+      - [BlowoutValue](#mapboxcomponent)
+      - [Map](#mapboxcomponent)
+      - [QueryTableBuilder](#querytablebuildercomponent)
+- [Custom Hooks](#customhooks)
+  - [useScrollBehavior](#usescrollbehaviorhook)
+  - [scrollToAnchor](#scrolltoanchor)
+  - [scrollToTop](#scrolltotop)
+  - [useScrollingSections](#usescrollingsectionshook)
+  - [usePrevious](#useprevioushook)
+- [Querying Data with GraphQL](#queryingdatagraphql)
+- [Using Google Analytics](#googleanalytics)
+  - [Setting Up GA For Your Page](#settingupgoogleanalytics)
+  - [Triggering GA Events](#triggergoogleanalyticsevents)
+- [Guidelines For Creating New Components](#componentguidelines)
+  - [Style Guide](#styleguide)
 
 <a name="gettingstarted"/>
 
@@ -141,79 +155,111 @@ Style utilities exports everything from global variables like colors and fonts, 
 ## Components
 
 Components are more complete and complex pieces that can be used to build out a page. They include data visualizations, headers, search components, and more. If you add a new component or modify an existing one, please update the documentation.
+<a name="strucuturalcomponents"/>
 
-<a name="datavizcomponent"/>
+### Strucutural Components
 
-#### DataViz
+<a name="standardfooter"/>
 
-All data visualizations are built using the open-source npm module [react-fast-charts](https://www.npmjs.com/package/react-fast-charts), also created by the Harvard Growth Lab.
+#### StandardFooter
 
-<a name="loadingcomponent"/>
+The StandardFooter component, found at `src/components/text/StandardFooter`, creates a standard Growth Lab footer with little customization. It takes the following optional prop - 
 
-#### Loading
+- **socialItems** *(optional)*: `object[]`
+    - **target**: `string`
+    - **type**: `SocialType` Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons. SocialType can be one of the following -
 
-The Loading component, located at `src/components/general/Loading` is a generic loader that fills the space of its parent component. It does not take any props and is designed to be able to be placed anywhere.
+   ```tsx
+    enum SocialType {
+      facebook = 'facebook',
+      twitter = 'twitter',
+      linkedin = 'linkedin',
+      youtube = 'youtube',
+      applepodcast = 'applepodcast',
+    }
+   ```
 
-<a name="fullpageerrorcomponent"/>
+<a name="explorenextfootercomponent"/>
 
-#### FullPageError
+#### ExploreNextFooter
 
-The FullPageError component, located at `src/components/general/FullPageError` is a generic error message that fills the space of its parent component. It takes a single props - `message: string` - that will output the error message underneath a generic `There was an error retrieving the data. Please refresh the page or contact the Growth Lab if this continues` message.
+The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter`, creates a footer with social icon links, attributions, links to explore next, and the Growth Lab logo. It takes the following props - 
 
-<a name="basicsearchcomponent"/>
+- **title**: `string` The title of the page for Google Analytics event tracking. This should match the page title found in the header.
+- **attributions**: `string[]` An array of strings for the attributions. Each string will appear on a new line at the top of the footer.
+- **socialItems** *(optional)*: `object[]`
+    - **target**: `string`
+    - **type**: `SocialType` Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons.
+- **exploreNextLinks**: `object[]` Each explore next item will render a button that links out to its target. It will open in a new tab.
+    - **label**: `string`
+    - **target**: `string`
+- **backgroundColor**: `string`
 
-#### BasicSearch
+<a name="stickysubheadingcomponent"/>
 
-The BasicSearch component, located at `src/components/form/BasicSearch` is a generic search bar. It takes the following props:
+#### StickySubHeading
 
-- **placeholder**: `string`
-- **setSearchQuery**: `(value: string) => void` A callback function for when the value of the search bar changes. Use this to get the value of the search bar and set it as state.
-- **initialQuery**: `string`
-- **focusOnMount**: `boolean`
-- **containerStyleOverrides** *(optional)*: `React.CSSProperties` Optional CSS properties that will be applied directly to the root `label` element.
-- **searchBarStyleOverrides** *(optional)*: `React.CSSProperties` Optional CSS properties that will be applied directly to the `input` element.
-- **additionalContent** *(optional)*: `React.ReactNode` Additional content that will appear to the left of the search input. Useful for adding tags or other search related content.
+The StickySubHeading component, located at `src/components/StickySubHeading` is a heading element that will stick to the top of the page as the user scrolls. It takes in the following props -
+
+- **title**: `string`
+- **highlightColor**: `string`
+- **onHeightChange** *(optional)*: `(height: number) => void` Optional callback function returning the height of component whenever it changes.
+
+<a name="gradientheadercomponent"/>
+
+#### GradientHeader
+
+The GradientHeader component, located at `src/components/headers/GradientHeader` is a full, top level header element meant for the top of a page. It optionally can have the [MultiTierSearch](#multitiersearchcomponent) embeded in it. It takes in the following props -
+
+- **title**: `string`
+- **primaryColor**: `string`
+- **gradient**: `string` The gradient will be applied to the css `background` propery. And should follow (standared css gradient syntax)[https://cssgradient.io/]. For example -
+
+   ```tsx
+    gradient={`linear-gradient(
+        0deg,
+        rgba(224, 176, 78, 0.3) 0%,
+        #54A3C6 100%
+      )'
+    }
+   ```
+
+- **textColor**: `string`
+- **linkColor**: `string`
+- **imageSrc** *(optional)*: `string` Optional URL to the image that will appear on the left hand side of the header.
+- **imageProps** *(optional)*: `ImageProps`
+    - **imgWidth** *(optional)*: `string`
+    - **imgHeight** *(optional)*: `string`
+- **links** *(optional)*: LinkDatum[];
+    - **label**: `string`
+    - **target**: `string`
+    - **internal** *(optional)*: `boolean` Internal defaults to false. Internal means it should scroll to an anchor on the page instead of opening a url in a new tab.
+- **hasSearch**: `boolean` If true, you must also pass all the same props to GradientHeader as you would [MultiTierSearch](#multitiersearchcomponent).
+- **introText** *(optional)*: `string`
 
 
-<a name="multitiersearchcomponent"/>
+<a name="smartcoverphotocomponent"/>
 
-#### MultiTierSearch
+#### SmartCoverPhoto
 
-The MultiTierSearch component, located at `src/components/navigation/MultiTierSearch` is a multi-hierarchy search/dropdown component. It takes hierarchal data and allows the user to search through and select child elements. Note that at this time, this component only supports selecting the lowest level child element, but it does support an unlimited number of tiers between them. It takes the following props:
+The SmartCoverPhoto component, located at `src/components/general/SmartCoverPhoto` is a component that will load a low res image and swap with a high res version once it has been fully loaded. It takes two props -
 
-- **searchLabelText**: `string` The label text that appears above the dropdown.
-- **data**: `TreeNode[]` The dataset. See the structure of a TreeNode below.
-- **initialSelectedValue** *(optional)*: `TreeNode` The initially selected TreeNode, if desired.
-- **onChange** *(optional)*: `(val: TreeNode) => void` Callback function for when a TreeNode is selected.
+- **lowResSrc**: `string`
+- **highResSrc**: `string`
 
-**TreeNode** - The MultiTierSearch component uses [react-dropdown-tree-select](https://www.npmjs.com/package/react-dropdown-tree-select). The TreeNode format follows their structure, with some required settings in order to make it work correctly for our use cases. A basic example is below -
+<a name="passwordprotectedpage"/>
 
-```tsx
-const data = [
-  label: 'Top Level Parent',
-  value: 'A',
-  className: 'no-select-parent',
-  disabled: true,
-  children: [
-    label: 'Second Level Parent',
-    value: 'A1',
-    className: 'no-select-parent',
-    disabled: true,
-    children: [
-      label: 'Child Item 1',
-      value: 'A1.1',
-      disabled: false,
-    ],
-    children: [
-      label: 'Child Item 2',
-      value: 'A1.2',
-      disabled: false,
-    ],
-  ],
-]
-```
+#### PasswordProtectedPage
 
-In the above example, we have three levels of hierarchy. Every element must have a `label` - which is what will be output in the dropdown and compared against when searching - as well as a `value` - which works as the elements unique id. Additionally, all elements that contain `children` must include `className: 'no-select-parent'` and have `disabled: true`. Then all child elements that can be selected must have `disabled: false` to counteract inheritance from the parent.
+Sim PasswordProtectedPage component, located at `src/components/tools/PasswordProtectedPage` is a generic component that fills its entire container and provides a callback function for when the user submits the password. Useful for protecting an entire page. It takes only three props -
+  
+- **title**: `string`
+- **buttonColor**: `string`
+- **onPasswordSubmit**: `(value: string) => void` Callback function for when the user submits the password.
+
+<a name="navigationcomponents"/>
+
+### Navigation Components
 
 <a name="stickysidenavecomponent"/>
 
@@ -263,57 +309,63 @@ The HubStickyNav component, found at `src/components/navigation/HubStickyNav`, s
 - **offsetTop** *(optional)*: `string` Optional CSS value (in px, rem, or other unit) to specify the `top` value of when the nav becomes sticky.
 - **primaryColor**: `string`
 
-<a name="dynamictablecomponent"/>
+<a name="formcomponents"/>
 
-#### DynamicTable
+### Form Components
 
-The DynamicTable component, found at `src/components/text/DynamicTable`, quickly creates a styled component from any dataset. It takes the following props - 
+<a name="basicsearchcomponent"/>
 
-- **columns**: `Column[]` Each Column object defines a different column in the table. It takes the following properties -
-   - **label**: `string` This is what the column title will show when it is rendered.
-   - **key**: `string` This is the associated key name for the table's dataset.
-- **data**: `Datum[]` Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
-- **color** *(Optional)*: `string[]` Color code for styling the table. Will render with bolder labels and lines if no color is given.
-- **stickFirstCol** *(Optional)*: `boolean` Will make the first column stick if content overflows horizontally.
-- **verticalGridLines** *(Optional)*: `boolean` Will add vertical grid lines to the table.
-- **hideGridLines** *(Optional)*: `boolean` Will hide the grid lines of the table.
-- **fontSize** *(Optional)*: `boolean` Will override the default font-size of all of the text in the table.
+#### BasicSearch
 
-<a name="standardfooter"/>
+The BasicSearch component, located at `src/components/form/BasicSearch` is a generic search bar. It takes the following props:
 
-#### StandardFooter
+- **placeholder**: `string`
+- **setSearchQuery**: `(value: string) => void` A callback function for when the value of the search bar changes. Use this to get the value of the search bar and set it as state.
+- **initialQuery**: `string`
+- **focusOnMount**: `boolean`
+- **containerStyleOverrides** *(optional)*: `React.CSSProperties` Optional CSS properties that will be applied directly to the root `label` element.
+- **searchBarStyleOverrides** *(optional)*: `React.CSSProperties` Optional CSS properties that will be applied directly to the `input` element.
+- **additionalContent** *(optional)*: `React.ReactNode` Additional content that will appear to the left of the search input. Useful for adding tags or other search related content.
 
-The StandardFooter component, found at `src/components/text/StandardFooter`, creates a standard Growth Lab footer with little customization. It takes the following optional prop - 
+<a name="multitiersearchcomponent"/>
 
-- **socialItems** *(optional)*: `object[]`
-    - **target**: `string`
-    - **type**: `SocialType` Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons. SocialType can be one of the following -
+#### MultiTierSearch
 
-   ```tsx
-    enum SocialType {
-      facebook = 'facebook',
-      twitter = 'twitter',
-      linkedin = 'linkedin',
-      youtube = 'youtube',
-      applepodcast = 'applepodcast',
-    }
-   ```
+The MultiTierSearch component, located at `src/components/navigation/MultiTierSearch` is a multi-hierarchy search/dropdown component. It takes hierarchal data and allows the user to search through and select child elements. Note that at this time, this component only supports selecting the lowest level child element, but it does support an unlimited number of tiers between them. It takes the following props:
 
-<a name="explorenextfootercomponent"/>
+- **searchLabelText**: `string` The label text that appears above the dropdown.
+- **data**: `TreeNode[]` The dataset. See the structure of a TreeNode below.
+- **initialSelectedValue** *(optional)*: `TreeNode` The initially selected TreeNode, if desired.
+- **onChange** *(optional)*: `(val: TreeNode) => void` Callback function for when a TreeNode is selected.
 
-#### ExploreNextFooter
+**TreeNode** - The MultiTierSearch component uses [react-dropdown-tree-select](https://www.npmjs.com/package/react-dropdown-tree-select). The TreeNode format follows their structure, with some required settings in order to make it work correctly for our use cases. A basic example is below -
 
-The ExploreNextFooter component, found at `src/components/text/ExploreNextFooter`, creates a footer with social icon links, attributions, links to explore next, and the Growth Lab logo. It takes the following props - 
+```tsx
+const data = [
+  label: 'Top Level Parent',
+  value: 'A',
+  className: 'no-select-parent',
+  disabled: true,
+  children: [
+    label: 'Second Level Parent',
+    value: 'A1',
+    className: 'no-select-parent',
+    disabled: true,
+    children: [
+      label: 'Child Item 1',
+      value: 'A1.1',
+      disabled: false,
+    ],
+    children: [
+      label: 'Child Item 2',
+      value: 'A1.2',
+      disabled: false,
+    ],
+  ],
+]
+```
 
-- **title**: `string` The title of the page for Google Analytics event tracking. This should match the page title found in the header.
-- **attributions**: `string[]` An array of strings for the attributions. Each string will appear on a new line at the top of the footer.
-- **socialItems** *(optional)*: `object[]`
-    - **target**: `string`
-    - **type**: `SocialType` Each social item will render an icon link based on the SocialType. If left blank, it will show the default social icons.
-- **exploreNextLinks**: `object[]` Each explore next item will render a button that links out to its target. It will open in a new tab.
-    - **label**: `string`
-    - **target**: `string`
-- **backgroundColor**: `string`
+In the above example, we have three levels of hierarchy. Every element must have a `label` - which is what will be output in the dropdown and compared against when searching - as well as a `value` - which works as the elements unique id. Additionally, all elements that contain `children` must include `className: 'no-select-parent'` and have `disabled: true`. Then all child elements that can be selected must have `disabled: false` to counteract inheritance from the parent.
 
 <a name="inlinetogglecomponent"/>
 
@@ -327,47 +379,30 @@ The InlineToggle component, located at `src/components/text/InlineToggle` is a s
 - **colorClassName** *(optional)*: `string` Optional classname for setting the color. Additional rules will have to be added to `src/components/text/inlineDropdownStyles.scss` in order to properly display your custom color.
 - **onChange** *(optional)*: `(val: TreeNode) => void` Optional callback function for when a TreeNode is selected.
 
-<a name="stickysubheadingcomponent"/>
+<a name="utilitycomponents"/>
 
-#### StickySubHeading
+### Utility Components
 
-The StickySubHeading component, located at `src/components/StickySubHeading` is a heading element that will stick to the top of the page as the user scrolls. It takes in the following props -
+<a name="loadingcomponent"/>
 
-- **title**: `string`
-- **highlightColor**: `string`
-- **onHeightChange** *(optional)*: `(height: number) => void` Optional callback function returning the height of component whenever it changes.
+#### Loading
 
-<a name="gradientheadercomponent"/>
+The Loading component, located at `src/components/general/Loading` is a generic loader that fills the space of its parent component. It does not take any props and is designed to be able to be placed anywhere.
 
-#### GradientHeader
+<a name="fullpageerrorcomponent"/>
 
-The GradientHeader component, located at `src/components/headers/GradientHeader` is a full, top level header element meant for the top of a page. It optionally can have the [MultiTierSearch](#multitiersearchcomponent) embeded in it. It takes in the following props -
+#### FullPageError
 
-- **title**: `string`
-- **primaryColor**: `string`
-- **gradient**: `string` The gradient will be applied to the css `background` propery. And should follow (standared css gradient syntax)[https://cssgradient.io/]. For example -
+The FullPageError component, located at `src/components/general/FullPageError` is a generic error message that fills the space of its parent component. It takes a single props - `message: string` - that will output the error message underneath a generic `There was an error retrieving the data. Please refresh the page or contact the Growth Lab if this continues` message.
 
-   ```tsx
-    gradient={`linear-gradient(
-        0deg,
-        rgba(224, 176, 78, 0.3) 0%,
-        #54A3C6 100%
-      )'
-    }
-   ```
+<a name="smartimagecomponent"/>
 
-- **textColor**: `string`
-- **linkColor**: `string`
-- **imageSrc** *(optional)*: `string` Optional URL to the image that will appear on the left hand side of the header.
-- **imageProps** *(optional)*: `ImageProps`
-    - **imgWidth** *(optional)*: `string`
-    - **imgHeight** *(optional)*: `string`
-- **links** *(optional)*: LinkDatum[];
-    - **label**: `string`
-    - **target**: `string`
-    - **internal** *(optional)*: `boolean` Internal defaults to false. Internal means it should scroll to an anchor on the page instead of opening a url in a new tab.
-- **hasSearch**: `boolean` If true, you must also pass all the same props to GradientHeader as you would [MultiTierSearch](#multitiersearchcomponent).
-- **introText** *(optional)*: `string`
+#### SmartImage  
+
+The SmartImage component, located at `src/components/general/SmartImage` is a component that will load a low res image and swap with a high res version once it has been fully loaded. It takes two props -
+
+- **lowResSrc**: `string`
+- **highResSrc**: `string`
 
 <a name="textblockcomponent"/>
 
@@ -385,7 +420,17 @@ The TextBlock component, located at `src/components/text/TextBlock` is a generic
       Center = 'center',
     }
    ```
- 
+
+<a name="tooltipcomponent"/>
+
+#### Tooltip
+
+The Tooltip component, located at `src/components/general/SmartImage` is a component that will place an hover tooltip to any other component or can be placed on its own and render an `i` icon -
+
+- **explanation**: `React.ReactNode`
+- **children** *(optional)*: `React.ReactNode`
+- **cursor** *(optional)*: `string`
+
 <a name="passwordprotectedcomponent"/>
 
 #### PasswordProtectedComponent
@@ -397,15 +442,57 @@ The PasswordProtectedComponent component, located at `src/components/tools/Passw
 - **children**: `React.ReactNode`
 - **onPasswordSubmit**: `(value: string) => void` Callback function for when the user submits the password.
 
-<a name="passwordprotectedpage"/>
+<a name="visualizationcomponents"/>
 
-#### PasswordProtectedPage
+### Visualization Components
 
-Sim PasswordProtectedPage component, located at `src/components/tools/PasswordProtectedPage` is a generic component that fills its entire container and provides a callback function for when the user submits the password. Useful for protecting an entire page. It takes only three props -
-  
-- **title**: `string`
-- **buttonColor**: `string`
-- **onPasswordSubmit**: `(value: string) => void` Callback function for when the user submits the password.
+<a name="datavizcomponent"/>
+
+#### DataViz
+
+All data visualizations are built using the open-source npm module [react-fast-charts](https://www.npmjs.com/package/react-fast-charts), also created by the Harvard Growth Lab.
+
+<a name="dynamictablecomponent"/>
+
+#### DynamicTable
+
+The DynamicTable component, found at `src/components/text/DynamicTable`, quickly creates a styled component from any dataset. It takes the following props - 
+
+- **columns**: `Column[]` Each Column object defines a different column in the table. It takes the following properties -
+   - **label**: `string` This is what the column title will show when it is rendered.
+   - **key**: `string` This is the associated key name for the table's dataset.
+- **data**: `Datum[]` Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
+- **color** *(Optional)*: `string[]` Color code for styling the table. Will render with bolder labels and lines if no color is given.
+- **stickFirstCol** *(Optional)*: `boolean` Will make the first column stick if content overflows horizontally.
+- **verticalGridLines** *(Optional)*: `boolean` Will add vertical grid lines to the table.
+- **hideGridLines** *(Optional)*: `boolean` Will hide the grid lines of the table.
+- **fontSize** *(Optional)*: `boolean` Will override the default font-size of all of the text in the table.
+- **showOverflow** *(optional)*: `boolean`
+
+<a name="mapboxcomponent"/>
+
+#### BlowoutValue
+
+The BlowoutValue component, located at `src/components/text/BlowoutValue` is a component that will place a large value with a small description underneath it -
+
+- **color**: `string`
+- **value**: `string | null`
+- **description**: `string | null`
+
+<a name="mapboxcomponent"/>
+
+#### Map
+
+The Map component, located at `src/components/mapbox` is a component that works as a wrapper for any Mapbox content. See [react-mapbox-gl](https://github.com/alex3165/react-mapbox-gl) for further documentation on the children and settings props that can be used with this component -
+
+- **children** *(optional)*: `React.ReactElement<any>`
+- **center** *(optional)*: `Coordinate` where Coordinate = `[Longitude, Latitude]`, and both Latitude and Longitude are of type `number`
+- **zoom** *(optional)*: `[number]`
+- **maxBounds** *(optional)*: `[Coordinate, Coordinate]`
+- **fitBounds** *(optional)*: `[Coordinate, Coordinate]`
+- **allowZoom** *(optional)*: `boolean`
+- **allowPan** *(optional)*: `boolean`
+- **mapCallback** *(optional)*: `(map: any) => void`
  
 <a name="querytablebuildercomponent"/>
 
@@ -445,15 +532,62 @@ useScrollBehavior takes an optional object as an input with the following option
 - **navAnchors** *(optional)*: `string[]` A list of strings designating the ids for each element the hook should watch for scrolling. The ids should be written with the `#`, for example - `#overview`.
 - **smooth** *(optional)*: `boolean` Specifies if the scroll should animate smoothly to the anchor or jump directly to it.
 
+<a name="scrolltoanchor"/>
+
+#### scrollToAnchor
+
+scrollToAnchor is a utility function exported from `src/hooks/useScrollBehavior` that scrolls to a specific anchor on a page when called. It takes a single object as input with the following values -
+
+- **anchor**: `string | null`
+- **bufferTop** *(optional)*: `number`
+- **smooth** *(optional)*: `boolean`
+
+<a name="scrolltotop"/>
+
+#### scrollToTop
+
+scrollToTop is a utility function exported from `src/hooks/useScrollBehavior` that scrolls to the top of the page when called. It takes an optional object with the value `smooth` set to `boolean | undefined`.
+
+<a name="usescrollingsectionshook"/>
+
+#### useScrollingSections
+
+Located in `src/hooks/useScrollingSections`. The useScrollingSections hook takes an array of ref objects and returns the closest ref to have passed the middle of the screen.
+
+- **refs**: `MutableRefObject<HTMLElement | null>[]`
+
+Example:
+
+```tsx
+  const {section} = useScrollingSections({refs: [
+    section_0,
+    section_1,
+    section_2,
+    section_3,
+  ]});
+```
+
+<a name="useprevioushook"/>
+
+#### usePrevious
+
+Located in `src/hooks/usePrevious`. The usePrevious hook returns the previous value for a given state or prop value, or undefined if no previous value exists.
+
+Example:
+
+```tsx
+  const previousData = usePrevious(data);
+```
+
 <a name="queryingdatagraphql"/>
 
 ## Querying Data with GraphQL
 
-The Country Dashboards utilize GraphQL to make calls for the exact data that is needed for each page and component. The GraphQL endpoint connection has already been setup, and individual pages can query it using `gql` from `graphql-tag` and the `useQuery` hook, exported from `@apollo/react-hooks`.
+The Growth Lab App utilize GraphQL to make calls for the exact data that is needed for each page and component. The GraphQL endpoint connection has already been setup, and individual pages can query it using `gql` from `graphql-tag` and the `useQuery` hook, exported from `@apollo/react-hooks`.
 
-The different queries available to Country Dashboards can be viewed here - https://hgl-app-staging.cid-labs.com/graphql
+The different queries available to Growth Lab App can be viewed here - https://hgl-app-staging.cid-labs.com/graphql
 
-When new queries are added to the GraphQL endpoint, make sure to add the type definitions for their return values. For each project, create a folder within it's pages directory called `graphql` and add a file called `graphQLTypes.ts`. The folder structure should look something like this - `/src/pages/yourProjectFolder/graphql/graphQLTypes.ts`. Within there you can keep all of the relevant types for the return values for your project's GraphQL queries. Keeping the types consistent helps keep the Country Dashboards project easier to develop and less prone to bugs as it continues to expand.
+When new queries are added to the GraphQL endpoint, make sure to add the type definitions for their return values. For each project, create a folder within it's pages directory called `graphql` and add a file called `graphQLTypes.ts`. The folder structure should look something like this - `/src/pages/yourProjectFolder/graphql/graphQLTypes.ts`. Within there you can keep all of the relevant types for the return values for your project's GraphQL queries. Keeping the types consistent helps keep the Growth Lab App project easier to develop and less prone to bugs as it continues to expand.
 
 For more information on using GraphQL, see the official GraphQL documentation here - https://graphql.org/learn/ 
 
