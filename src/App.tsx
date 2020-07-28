@@ -23,8 +23,6 @@ import ReactGA from 'react-ga';
 import { overlayPortalContainerId } from './Utils';
 import styled from 'styled-components/macro';
 
-import JordanTool from './pages/jordanTool';
-
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {debug: false});
 }
@@ -52,7 +50,7 @@ const AboutPage = lazy(() => import('./pages/landingPage/About'));
 const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
 const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
-// const JordanTool = lazy(() => import('./pages/jordanTool'));
+const JordanTool = lazy(() => import('./pages/jordanTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
 
 export interface IAppContext {
