@@ -128,7 +128,7 @@ const AnnouncementText = styled.h3`
 `;
 
 const Title = styled.h1`
-  background-color: rgba(173, 138, 132, 0.6);
+  background-color: rgba(183, 149, 145, 0.8);
   color: #fff;
   font-size: 1.5rem;
   padding: 2rem 1.25rem;
