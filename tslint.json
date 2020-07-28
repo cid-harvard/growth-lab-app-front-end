@@ -30,7 +30,8 @@
   "rulesDirectory": [],
   "linterOptions": {
     "exclude": [
-      "src/serviceWorker.ts"
+      "src/serviceWorker.ts",
+      "prerender-metadata.js"
     ]
   }
 }

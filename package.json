@@ -45,7 +45,6 @@
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
-    "react-snap": "^1.23.0",
     "styled-components": "^5.0.1",
     "tslint": "^6.0.0",
     "typescript": "^3.7.5"
@@ -53,7 +52,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "react-snap",
+    "postbuild": "node prerender-metadata.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:fix": "tslint --project tsconfig.json --config tslint.json --fix",
@@ -61,14 +60,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "reactSnap": {
-    "skipThirdPartyRequests": true,
-    "include": [
-      "/albania-tool",
-      "/jordan-tool",
-      "/accelerating-growth-in-albania"
-    ]
   },
   "browserslist": {
     "production": [

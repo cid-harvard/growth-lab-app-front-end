@@ -1,7 +1,7 @@
 import React, {
   Suspense,
   createContext,
-  // lazy,
+  lazy,
   useState,
   useEffect,
 } from 'react';
@@ -22,16 +22,6 @@ import ApolloClient from 'apollo-boost';
 import ReactGA from 'react-ga';
 import { overlayPortalContainerId } from './Utils';
 import styled from 'styled-components/macro';
-
-
-import LandingPage from './pages/landingPage';
-import AboutPage from './pages/landingPage/About';
-import CommunityPage from './pages/landingPage/Community';
-import AlbaniaTool from './pages/albaniaTool';
-import AlbaniaStory from './pages/stories/albania';
-import JordanTool from './pages/jordanTool';
-import PageNotFound from './pages/pageNotFound';
-
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {debug: false});
@@ -55,13 +45,13 @@ const OverlayPortal = styled.div`
   z-index: ${overlayPortalZIndex};
 `;
 
-// const LandingPage = lazy(() => import('./pages/landingPage'));
-// const AboutPage = lazy(() => import('./pages/landingPage/About'));
-// const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
-// const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
-// const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
-// const JordanTool = lazy(() => import('./pages/jordanTool'));
-// const PageNotFound = lazy(() => import('./pages/pageNotFound'));
+const LandingPage = lazy(() => import('./pages/landingPage'));
+const AboutPage = lazy(() => import('./pages/landingPage/About'));
+const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
+const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
+const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
+const JordanTool = lazy(() => import('./pages/jordanTool'));
+const PageNotFound = lazy(() => import('./pages/pageNotFound'));
 
 export interface IAppContext {
   windowWidth: number;
