@@ -62,6 +62,14 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "reactSnap": {
+    "skipThirdPartyRequests": true,
+    "include": [
+      "/albania-tool",
+      "/jordan-tool",
+      "/accelerating-growth-in-albania"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
