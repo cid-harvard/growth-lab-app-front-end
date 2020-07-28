@@ -10,16 +10,23 @@ import {
 } from './Utils';
 import {FullWidthContentContainer} from '../../styling/Grid';
 import StandardFooter from '../../components/text/StandardFooter';
+import Helmet from 'react-helmet';
 
 const PlaceholderSpace = styled.div`
   height: 2000px;
 `;
+
+const metaTitle = 'Community | Harvard Growth Lab Digital Hub';
 
 const AboutPage = () => {
   useEffect(() => scrollToTop({smooth: false}), []);
 
   return (
     <>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta property='og:title' content={metaTitle} />
+      </Helmet>
       <TopLevelNav
         linkColor={'#fff'}
         activeColor={activeLinkColor}

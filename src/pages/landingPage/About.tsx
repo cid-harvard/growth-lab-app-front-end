@@ -12,6 +12,7 @@ import {
 import {FullWidthContentContainer} from '../../styling/Grid';
 import {secondaryFont} from '../../styling/styleUtils';
 import StandardFooter from '../../components/text/StandardFooter';
+import Helmet from 'react-helmet';
 
 const zigZagPattern = require('./images/pattern.svg');
 
@@ -98,11 +99,17 @@ const Content = styled.p`
   }
 `;
 
+const metaTitle = 'About | Harvard Growth Lab Digital Hub';
+
 const AboutPage = () => {
   useEffect(() => scrollToTop({smooth: false}), []);
 
   return (
     <>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta property='og:title' content={metaTitle} />
+      </Helmet>
       <TopLevelNav
         linkColor={'#fff'}
         activeColor={activeLinkColor}
