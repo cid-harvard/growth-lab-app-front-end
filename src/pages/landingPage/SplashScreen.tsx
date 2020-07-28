@@ -452,7 +452,7 @@ export default () => {
             target={'_blank'}
             rel={'noopener noreferrer'}
           >
-            Visit Growth Lab Page
+            Growth Lab Home Page
             <Arrow>
               ↗
             </Arrow>
