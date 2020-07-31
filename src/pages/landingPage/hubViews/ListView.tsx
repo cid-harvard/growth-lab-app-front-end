@@ -4,7 +4,7 @@ import ListItem from '../components/ListItem';
 import styled from 'styled-components/macro';
 import {
   HubProject,
-  ProjectStatuses,
+  ProjectCategories,
 } from '../graphql/graphQLTypes';
 import {
   deepBlue,
@@ -57,21 +57,30 @@ interface Props {
 }
 
 const ListView = ({projects}: Props) => {
-  const activeProjects:    React.ReactElement<any>[] = [];
-  const completeProjects:  React.ReactElement<any>[] = [];
-  const archivedProjects:  React.ReactElement<any>[] = [];
+  const atlasProjects:    React.ReactElement<any>[] = [];
+  const countryDashboards:  React.ReactElement<any>[] = [];
+  const visualStories:  React.ReactElement<any>[] = [];
+  const softwarePackages: React.ReactElement<any>[] = [];
+  const presentations: React.ReactElement<any>[] = [];
+  const prototypes: React.ReactElement<any>[] = [];
   const undefinedProjects: React.ReactElement<any>[] = [];
   const sortedProjects = sortBy(projects, ['projectName']);
   sortedProjects.forEach(project => {
     const projectElm = (
       <ListItem project={project} key={project.projectName} />
     );
-    if (project.status === ProjectStatuses.ACTIVE) {
-      activeProjects.push(projectElm);
-    } else if (project.status === ProjectStatuses.COMPLETE) {
-      completeProjects.push(projectElm);
-    } else if (project.status === ProjectStatuses.ARCHIVED) {
-      archivedProjects.push(projectElm);
+    if (project.projectCategory === ProjectCategories.ATLAS_PROJECTS) {
+      atlasProjects.push(projectElm);
+    } else if (project.projectCategory === ProjectCategories.COUNTRY_DASHBOARDS) {
+      countryDashboards.push(projectElm);
+    } else if (project.projectCategory === ProjectCategories.VISUAL_STORIES) {
+      visualStories.push(projectElm);
+    } else if (project.projectCategory === ProjectCategories.SOFTWARE_PACKAGES) {
+      softwarePackages.push(projectElm);
+    } else if (project.projectCategory === ProjectCategories.PRESENTATIONS) {
+      presentations.push(projectElm);
+    } else if (project.projectCategory === ProjectCategories.PROTOTYPES_EXPERIMENTS) {
+      prototypes.push(projectElm);
     } else {
       undefinedProjects.push(projectElm);
     }
@@ -82,9 +91,12 @@ const ListView = ({projects}: Props) => {
       <TitleCell>Project Category</TitleCell>
       <TitleCell>Status</TitleCell>
       <TitleCell>Link</TitleCell>
-      {activeProjects}
-      {completeProjects}
-      {archivedProjects}
+      {atlasProjects}
+      {countryDashboards}
+      {visualStories}
+      {softwarePackages}
+      {presentations}
+      {prototypes}
       {undefinedProjects}
     </Root>
   );
