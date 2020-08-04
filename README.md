@@ -46,6 +46,7 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
   - [useScrollingSections](#usescrollingsectionshook)
   - [usePrevious](#useprevioushook)
 - [Querying Data with GraphQL](#queryingdatagraphql)
+- [Custom Metadata](#custommetadata)
 - [Using Google Analytics](#googleanalytics)
   - [Setting Up GA For Your Page](#settingupgoogleanalytics)
   - [Triggering GA Events](#triggergoogleanalyticsevents)
@@ -94,15 +95,33 @@ All of the pages along with their uniquely associated content and functions shou
     export default YourNewDataVizDashboard;
    ```
 
-3. Now that you have a basic skeleton page ready, navigate to `src/routing/routes.ts` and add a new route for your page, like so:
+3. Now that you have a basic skeleton page ready, navigate to `src/metadata.js` and add a new route for your page, like so:
 
    ```tsx
-    export enum Routes {
+    const Routes = {
       Landing = '/',
       /* Add your new route at the end of the list of existing routes */
       YourNewDataVizDashboard = '/your-new-data-viz-dashboard',
     }
    ```
+
+   You will also want to add a metadata entry in that same file like so (see [Custom Metadata](#custommetadata) for more information):
+
+   ```tsx
+
+   const metadata = [
+    ...
+    {
+      url: Routes.YourNewDataVizDashboard,
+      title: 'Name of Your Page | ' + defaultTitle,
+      description: 'A description',
+      og_image: defaultOgImage,
+      favicon: defaultFavicon,
+    },
+  ];
+
+   ```
+
 4. Once you have the route defined, you will want to add it to `src/App.tsx`. There are two locations within `App.tsx` that will have to be updated. The first is near the top, where you will have to import it with `lazy` the way the other pages are being imported:
 
    ```tsx
@@ -125,16 +144,6 @@ All of the pages along with their uniquely associated content and functions shou
       {/* If none of the above routes are found show the 404 page */}
       <TrackedRoute component={PageNotFound} />
     </Switch>
-   ```
-
-5. Finally you will need to also add the route to `/config/nginx.conf`. This will specify the routes location for when the page is pushed to the server. Without this step, your page will work locally but it will not work on the staging or production servers. To add it, scroll to the bottom of the file where you see `# Country-specific URLs` and add your url to the end of the list. The url *must match* the one added in `src/routing/routes.ts`. For example:
-
-
-   ```conf
-        # Country-specific URLs
-        rewrite ^/albania-tool                      /index.html;
-        rewrite ^/jordan-tool                       /index.html;
-        rewrite ^/your-new-data-viz-dashboard       /index.html;
    ```
 
 5. With that, your new page should now be running and visible at the route you specified. To build out the page further, use the style utilities and components specified below. You can also create new components, but make sure to follow our [Guidelines For Creating New Components](#componentguidelines).
@@ -590,6 +599,19 @@ The different queries available to Growth Lab App can be viewed here - https://h
 When new queries are added to the GraphQL endpoint, make sure to add the type definitions for their return values. For each project, create a folder within it's pages directory called `graphql` and add a file called `graphQLTypes.ts`. The folder structure should look something like this - `/src/pages/yourProjectFolder/graphql/graphQLTypes.ts`. Within there you can keep all of the relevant types for the return values for your project's GraphQL queries. Keeping the types consistent helps keep the Growth Lab App project easier to develop and less prone to bugs as it continues to expand.
 
 For more information on using GraphQL, see the official GraphQL documentation here - https://graphql.org/learn/ 
+
+<a name="custommetadata"/>
+
+## Custom Metadata
+
+In order to allow for proper social media sharing and Google search result displaying, when the production build is created (with `npm run build`, which is run automatically when pushed to the `develop` or `master` branches) there is second script, `prerender-metadata.js`, that is run. This creates separate html pages for every defined route in the Growth Lab app, adding in page specific meta data like titles, descriptions, OG images, and favicons. To set the metadata for a page, you can do so in `src/metadata.js`. The file is a standard JavaScript file instead of a Typescript file as it needs to be able to be read by Node seperate from any development or production environments. 
+
+Every metadata entry should have the following values:
+- **url**: The url should be identical to one that is specified in the `Routes` object, defined at the top of this same file
+- **title**: The meta title for this page
+- **description**: The meta description for this page
+- **og_image**: The og:image. The actual image file should be added to `public/og-images` and the string value of this field should be just the filename and extension. For example, if the target file is located at `public/og-images/image.png`, then the value of this field should be `image.png`
+- **favicon**: The name and folder location of the favicon
 
 <a name="googleanalytics"/>
 
