@@ -1,5 +1,5 @@
 console.log('Begin prerender of HTML pages');
-const {metadata} = require('./src/metaData');
+const {metadata} = require('./src/metadata');
 
 const fs = require('fs');
 const path = require('path');
