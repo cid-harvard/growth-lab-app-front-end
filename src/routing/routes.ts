@@ -1,12 +1,6 @@
-export enum Routes {
-  Landing = '/',
-  About = '/about',
-  Community = '/community',
-  Sandbox = '/sandbox/:section/:detail',
-  AlbaniaTool = '/albania-tool',
-  AlbaniaStory = '/accelerating-growth-in-albania',
-  JordanTool = '/jordan-tool',
-}
+import meta from '../metadata';
+
+export const Routes = meta.Routes;
 
 export const hubId = 'hub';
 
