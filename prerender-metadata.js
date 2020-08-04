@@ -13,10 +13,12 @@ fs.readFile(indexFilePath, 'utf8', function(err, data) {
     return console.error(err);
   }
 
-  metadata.forEach(({url, title, description}) => {
+  metadata.forEach(({url, title, description, og_image, favicon}) => {
     let result = data;
     result = result.replace(/\$OG_TITLE/g, title);
     result = result.replace(/\$OG_DESCRIPTION/g, description);
+    result = result.replace(/\$OG_IMAGE/g, '/og-images/' + og_image);
+    result = result.replace(/\/favicon\.svg/g, favicon);
     let filename = url.substring(1).replace(/\//g, '-');
     if (filename.length) {
       filename = filename + '.html';
@@ -34,10 +36,9 @@ fs.readFile(indexFilePath, 'utf8', function(err, data) {
 
 });
 
-const nginxTemplatePath = path.resolve(__dirname, './', 'config', 'nginx_template.conf');
 const nginxFilePath = path.resolve(__dirname, './', 'config', 'nginx.conf');
 // read in the nginx.conf file
-fs.readFile(nginxTemplatePath, 'utf8', function(err, data) {
+fs.readFile(nginxFilePath, 'utf8', function(err, data) {
   console.log('Read in nginx.conf');
   if (err) {
     return console.error(err);
@@ -52,7 +53,7 @@ fs.readFile(nginxTemplatePath, 'utf8', function(err, data) {
     } else {
       filename = 'index.html';
     }
-    urls = urls + `\n        rewrite ^${url}                            /${filename}`;
+    urls = urls + `        rewrite ^${url}                            /${filename}\n`;
     console.log(`Add nginx rule: rewrite ^${url} -> /${filename}`);
   })
   result = result.replace(/\#{%URLS%}/g, urls);
