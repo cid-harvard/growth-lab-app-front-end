@@ -53,7 +53,7 @@ fs.readFile(nginxFilePath, 'utf8', function(err, data) {
     } else {
       filename = 'index.html';
     }
-    urls = urls + `        rewrite ^${url}                            /${filename}\n`;
+    urls = urls + `        rewrite ^${url}                            /${filename};\n`;
     console.log(`Add nginx rule: rewrite ^${url} -> /${filename}`);
   })
   result = result.replace(/\#{%URLS%}/g, urls);
