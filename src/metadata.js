@@ -5,6 +5,7 @@ const Routes = {
   AlbaniaTool: '/albania-tool',
   AlbaniaStory: '/accelerating-growth-in-albania',
   JordanTool: '/jordan-tool',
+  JordanOverview: '/jordan-project-overview',
 }
 
 const defaultTitle = 'The Growth Lab at Harvard Kennedy School';
@@ -52,12 +53,35 @@ const metadata = [
     url: Routes.JordanTool,
     title: 'A Roadmap for Export Diversification: Jordan’s Complexity Profile | ' + defaultTitle,
     description: 'This tool displays the results of the complexity analysis developed for Jordan by the Growth Lab at Harvard University.',
-    og_image: defaultOgImage,
+    og_image: 'jordan-tool-background.png',
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.JordanOverview,
+    title: 'A Roadmap for Export Diversification: Jordan’s Complexity Profile | ' + defaultTitle,
+    description: 'This tool displays the results of the complexity analysis developed for Jordan by the Growth Lab at Harvard University.',
+    og_image: 'jordan-tool-background.png',
     favicon: defaultFavicon,
   },
 ];
 
+const get = (route) => {
+  const data = metadata.find(({url}) => url === route);
+  if (data && data.length) {
+    return data;
+  } else {
+    return {
+      url: route,
+      title: 'Harvard Growth Lab Digital Hub | ' + defaultTitle ,
+      description: defaultDescription,
+      og_image: defaultOgImage,
+      favicon: defaultFavicon,
+    }
+  }
+}
+
 module.exports = {
   metadata,
   Routes,
+  get,
 };
