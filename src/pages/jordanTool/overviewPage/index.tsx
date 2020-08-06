@@ -96,7 +96,7 @@ const JordanOverviewPage = () => {
                 The tool provides a roadmap for identifying the economic activities with the highest potential to diversify Jordan’s export basket and drive growth, while supporting higher wages.
               </Content>
               <Content>
-                The methodology used to identify and prioritize high potential industries is summarized <a href='http://cid-harvard.github.io/jordan/Summary.pdf'>here</a>. This tool can be used in combination with the Growth Lab’s <a href='https://atlas.cid.harvard.edu/explore?country=4&product=undefined&year=2017&productClass=HS&target=Product&partner=undefined&startYear=undefined'>Atlas of Economic Complexity</a> to explore the country’s global trade patterns in detail.
+                The methodology used to identify and prioritize high potential industries is summarized <a href='http://cid-harvard.github.io/jordan/Summary.pdf'>here</a>. This tool can be used in combination with the Growth Lab’s <a href='https://atlas.cid.harvard.edu/explore?country=113'>Atlas of Economic Complexity</a> to explore the country’s global trade patterns in detail.
               </Content>
               <Content>
                 Due to data usage requirements, the tool is accessible only by Growth Lab and counterparts at the Government of Jordan.
