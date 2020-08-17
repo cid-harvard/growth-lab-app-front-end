@@ -10,6 +10,7 @@ import {
   linearGradientBackground,
   backgroundPattern,
 } from './Utils';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 const slidein = keyframes`
   from {background-position: top;}
@@ -419,6 +420,7 @@ export default () => {
       <Grid>
         <LogoCell
           href={'https://growthlab.cid.harvard.edu/'}
+          onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'logo' )}
           target={'_blank'}
           rel={'noopener noreferrer'}
         >
@@ -449,6 +451,7 @@ export default () => {
         <GrowthLabButtonCell>
           <GrowthLabButton
             href={'https://growthlab.cid.harvard.edu/'}
+            onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'button' )}
             target={'_blank'}
             rel={'noopener noreferrer'}
           >
