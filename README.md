@@ -1,4 +1,4 @@
-## The Growth Lab App
+# The Growth Lab App
 
 ## by the Growth Lab at Harvard's Center for International Development
 
