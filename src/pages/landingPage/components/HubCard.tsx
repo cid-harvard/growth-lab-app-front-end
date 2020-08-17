@@ -313,13 +313,25 @@ const HubCard = ({project}: Props) => {
   const metaDataStyle: React.CSSProperties = {
     transform: mouseCoords !== undefined || windowWidth < 900 ? 'translate(0)' : 'translate(-100%, 0)',
   };
+  let cardImageLo: string;
+  let cardImageHi: string;
+  try {
+    cardImageLo = project.cardImageLo
+      ? require('../images/low-res/' + project.cardImageLo + '.jpg')
+      : require('../images/image.jpg');
+  } catch (e) {
+    console.error(e);
+    cardImageLo = '';
+  }
+  try {
+    cardImageHi = project.cardImageHi
+      ? require('../images/high-res/' + project.cardImageHi + '.jpg')
+      : require('../images/image.jpg');
+  } catch (e) {
+    console.error(e);
+    cardImageHi = '';
 
-  const cardImageLo = project.cardImageLo
-    ? require('../images/low-res/' + project.cardImageLo + '.jpg')
-    : require('../images/image.jpg');
-  const cardImageHi = project.cardImageHi
-    ? require('../images/high-res/' + project.cardImageHi + '.jpg')
-    : require('../images/image.jpg');
+  }
 
   const category = getCategoryString(project.projectCategory);
 
