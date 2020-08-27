@@ -94,12 +94,28 @@ const SubtitleCell = styled.div`
   grid-column: 2;
   grid-row: 3;
   position: relative;
-  transform: translate(0, -25%);
+  padding-left: 5%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 0;
+    height: 120%;
+    border-left: solid 2px #fff;
+  }
 
   @media(max-width: ${mobileWidth}px) {
     grid-column: 1 / -1;
     grid-row: 4;
-    transform: translate(-1rem, 10%);
+    padding-left: 0;
+
+    &:before {
+      border-left: none;
+    }
   }
 `;
 
@@ -140,6 +156,7 @@ const TitleRoot = styled.div`
   width: 100%;
   margin-left: 10%;
   max-width: 90%;
+  margin-bottom: 3rem;
 
   @media(max-width: ${mediumWidth}px) {
     margin-left: 0;
@@ -215,7 +232,7 @@ const slidingblock = keyframes`
 const ColorBlock = styled.div`
   position: absolute;
   height: 31.6%;
-  width: 63.33%;
+  width: 46.33%;
   bottom: -4.4%;
   left: 0;
   z-index: 3;
@@ -243,21 +260,8 @@ const Subtitle = styled.h2`
   opacity: 1;
   z-index: 4;
 
-  svg {
-    .cls-subtitle-1 {
-      fill: none;
-      stroke: #fff;
-      stroke-miterlimit: 10;
-      stroke-width: 3px;
-    }
-
-    .cls-subtitle-2 {
-      fill: #fff;
-    }
-  }
-
   @media(max-width: ${mediumWidth}px) {
-    max-width: 90%;
+    max-width: 96%;
   }
 
   @media(max-width: ${mobileWidth}px) {
@@ -265,14 +269,6 @@ const Subtitle = styled.h2`
     grid-row: 3;
     max-width: 100%;
     transform: translate(-0.1rem, 10%);
-
-    svg {
-      .cls-subtitle-1 {
-        fill: none;
-        stroke: none;
-        stroke-width: 0px;
-      }
-    }
   }
 `;
 
