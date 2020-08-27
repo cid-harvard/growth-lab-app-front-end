@@ -3,6 +3,7 @@ import HubStickyNav, {LinkItem} from '../../../components/navigation/HubStickyNa
 import {activeLinkColor} from '../Utils';
 import {navHeight} from '../../../components/navigation/TopLevelStickyNav';
 import {useHistory} from 'react-router-dom';
+import {rgba} from 'polished';
 
 export enum View {
   grid,
@@ -48,7 +49,7 @@ const StickySideNav = (props: Props) => {
     <HubStickyNav
       links={links}
       offsetTop={(navHeight * 16) + 32} // navHeight (in rems) * base font size
-      primaryColor={activeLinkColor}
+      primaryColor={rgba(activeLinkColor, 0.8)}
     />
   );
 };

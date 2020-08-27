@@ -7,7 +7,7 @@ import { useLocation, useHistory } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 import {
   activeLinkColor,
-  linearGradientBackground,
+  backgroundGray,
   backgroundPattern,
 } from './Utils';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
@@ -29,7 +29,7 @@ const Root = styled.div`
     top:0;
     left:0;
     z-index: -3;
-    background-image: ${linearGradientBackground};
+    background-color: ${backgroundGray};
     width: 100%;
     height: 100%;
     opacity: 0.9;
@@ -42,7 +42,6 @@ const Root = styled.div`
     left:0;
     height: 100%;
     width: 100%;
-    opacity: 0.1;
     background-image: url(${backgroundPattern});
     z-index: -2;
     background-size:cover;
@@ -291,17 +290,17 @@ const Logo = styled.img`
 const GrowthLabButton = styled.a`
   font-family: ${secondaryFont};
   padding: 8px 16px;
-  color: #749599;
+  color: ${backgroundGray};
   background-color: white;
-  font-size: 1.5vw;
+  font-size: 14px;
   border-radius: 16px;
   text-decoration: none;
   display: inline-block;
   position: relative;
   z-index: 3;
 
-  @media(max-width: 1000px) {
-    font-size: 1rem;
+  &:hover {
+    color: ${activeLinkColor};
   }
 
   @media(max-width: ${mobileWidth}px) {
@@ -313,6 +312,7 @@ const Arrow = styled.span`
   font-size: 1.2em;
   margin-left: 0.5em;
   line-height: 0;
+  color: ${activeLinkColor};
 `;
 
 const SocialLink = styled.a`
@@ -433,7 +433,7 @@ export default () => {
               <div
                 dangerouslySetInnerHTML={{__html: raw('./title.svg')}}
               />
-              Harvard Growth Lab Digital Hub
+              Harvard Growth Lab Viz Hub
             </Title>
             <TitleIcon
               dangerouslySetInnerHTML={{__html: raw('./titleIcon.svg')}}
@@ -445,7 +445,7 @@ export default () => {
             <div
               dangerouslySetInnerHTML={{__html: raw('./subtitle.svg')}}
             />
-            Translating Growth Lab research into powerful online tools and interactive storytelling
+            Translating Growth Lab research into powerful visualization tools and interactive storytelling
           </Subtitle>
         </SubtitleCell>
         <GrowthLabButtonCell>
@@ -508,7 +508,7 @@ export default () => {
             <Scroll />
             <Scroll2 />
             <Scroll3 />
-            <ScrollText>Digital Hub</ScrollText>
+            <ScrollText>Viz Hub</ScrollText>
           </ScrollArrow>
         </ScrollCell>
       </Grid>

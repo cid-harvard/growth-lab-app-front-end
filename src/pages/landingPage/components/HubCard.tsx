@@ -12,8 +12,7 @@ import {
 import {
   activeLinkColor,
   backgroundColor,
-  darkBlue,
-  deepBlue,
+  backgroundGray,
   getCategoryString,
 } from '../Utils';
 import {rgba, darken} from 'polished';
@@ -123,12 +122,12 @@ const AnnouncementText = styled.h3`
   font-size: 0.875rem;
   font-weight: 600;
   color: ${backgroundColor};
-  background-color: ${activeLinkColor};
+  background-color: ${rgba(activeLinkColor, 0.9)};
   text-transform: uppercase;
 `;
 
 const Title = styled.h1`
-  background-color: rgba(183, 149, 145, 0.8);
+  background-color: rgba(153, 103, 110, 0.8);
   color: #fff;
   font-size: 1.5rem;
   padding: 2rem 1.25rem;
@@ -148,7 +147,7 @@ const MetaDataContainerBase = styled.div`
   overflow: hidden;
   box-sizing: border-box;
   padding: 2rem;
-  background-image: linear-gradient(to bottom, ${rgba(darkBlue, 0.85)}, ${rgba(deepBlue, 0.85)});
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), ${rgba(backgroundGray, 0.85)});
   transition: transform 0.2s ease;
 `;
 
@@ -202,7 +201,7 @@ const Cursor = styled.div`
   background-size: 200%;
   font-weight: 600;
   font-size: 0.7rem;
-  color: ${darken(0.25, deepBlue)};
+  color: ${darken(0.25, activeLinkColor)};
 `;
 
 const StatusText = styled.span`

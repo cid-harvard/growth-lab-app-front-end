@@ -7,7 +7,7 @@ import {
   ProjectCategories,
 } from '../graphql/graphQLTypes';
 import {
-  deepBlue,
+  backgroundGray,
   listViewMediumWidth,
   listViewSmallWidth,
 } from '../Utils';
@@ -15,7 +15,6 @@ import {
   lightBaseColor,
   secondaryFont,
 } from '../../../styling/styleUtils';
-import {darken} from 'polished';
 
 const Root = styled.div`
   display: grid;
@@ -31,7 +30,7 @@ const Root = styled.div`
 `;
 
 const TitleCell = styled.div`
-  color: ${darken(0.25, deepBlue)};
+  color: ${backgroundGray};
   border-bottom: solid 1px ${lightBaseColor};
   text-align: center;
   padding: 1rem;

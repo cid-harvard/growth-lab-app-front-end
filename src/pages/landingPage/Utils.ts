@@ -7,17 +7,14 @@ import {navHeight} from '../../components/navigation/TopLevelStickyNav';
 import {
   ProjectCategories,
 } from './graphql/graphQLTypes';
-
+import {lighten} from 'polished';
 import {secondaryFont} from '../../styling/styleUtils';
 
-export const activeLinkColor = '#fc9b81';
+export const activeLinkColor = '#ed3f4b';
 export const backgroundColor = '#fff';
-export const linearGradientBackground = 'linear-gradient(to left, #2f383f, #96c4c5)';
-export const backgroundPattern = require('./pattern-background.png');
-
-export const darkBlue = '#2f383f';
-export const deepBlue = '#96c4c5';
-export const linkBlue = 'rgb(101, 168, 170)';
+export const backgroundGray = '#8791a3';
+export const navBackgroundColor = lighten(0.1, backgroundGray);
+export const backgroundPattern = require('./images/background-pattern.svg');
 
 export const listViewMediumWidth = 1000; // in px
 export const listViewSmallWidth = 750; // in px
@@ -110,7 +107,7 @@ export const ZigZagContent = styled.div`
 
 export const Title = styled.h1`
   font-weight: 600;
-  color: ${linkBlue};
+  color: ${backgroundGray};
   text-transform: uppercase;
   margin-bottom: 3rem;
   display: flex;
@@ -122,7 +119,7 @@ export const Title = styled.h1`
     margin-left: 0.75rem;
     flex-grow: 1;
     height: 4px;
-    background-image: ${linearGradientBackground};
+    background-color: ${navBackgroundColor};
   }
 `;
 
@@ -130,11 +127,11 @@ export const Content = styled.p`
   line-height: 1.7;
 
   a {
-    color: ${linkBlue};
+    color: ${activeLinkColor};
     text-decoration: none;
 
     &:hover {
-      border-bottom: solid 1px ${linkBlue};
+      border-bottom: solid 1px ${activeLinkColor};
     }
   }
 `;

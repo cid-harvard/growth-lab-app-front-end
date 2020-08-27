@@ -25,7 +25,6 @@ const Root = styled.nav<{$backgroundImage?: string}>`
     left:0;
     height: 100%;
     width: 100%;
-    opacity: 0.1;
     ${
       ({$backgroundImage}) => $backgroundImage
         ? 'background-image: url(' + $backgroundImage + ');' : ''

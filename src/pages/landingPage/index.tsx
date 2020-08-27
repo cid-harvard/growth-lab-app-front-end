@@ -14,7 +14,7 @@ import {
   activeLinkColor,
   HubContentContainer,
   queryStringToCategory,
-  linearGradientBackground,
+  navBackgroundColor as baseNavBackgroundColor,
   backgroundPattern,
 } from './Utils';
 import {Grid, NavColumn, ContentColumn} from './Grid';
@@ -114,7 +114,7 @@ const LandingPage = () => {
 
   const linkColor = '#fff';
   const activeColor = activeLinkColor;
-  const navBackgroundColor = isNavOverContent ? linearGradientBackground : 'rgba(255, 255, 255, 0.2)';
+  const navBackgroundColor = isNavOverContent ? baseNavBackgroundColor : 'rgba(255, 255, 255, 0.2)';
   const navBackgroundImage = isNavOverContent ? backgroundPattern : undefined;
   useScrollBehavior({
     navAnchors: ['#' + hubId],

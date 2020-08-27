@@ -5,7 +5,7 @@ import { scrollToTop } from '../../hooks/useScrollBehavior';
 import {
   activeLinkColor,
   HubContentContainer,
-  linearGradientBackground,
+  navBackgroundColor,
   backgroundPattern,
 } from './Utils';
 import {FullWidthContentContainer} from '../../styling/Grid';
@@ -31,7 +31,7 @@ const AboutPage = () => {
         linkColor={'#fff'}
         activeColor={activeLinkColor}
         showTitle={true}
-        backgroundColor={linearGradientBackground}
+        backgroundColor={navBackgroundColor}
         backgroundImage={backgroundPattern}
       />
       <HubContentContainer>

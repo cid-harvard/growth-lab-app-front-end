@@ -4,7 +4,7 @@ import { scrollToTop } from '../../hooks/useScrollBehavior';
 import {
   activeLinkColor,
   HubContentContainer,
-  linearGradientBackground,
+  navBackgroundColor,
   backgroundPattern,
   Root,
   ZigZagContentCard,
@@ -30,7 +30,7 @@ const AboutPage = () => {
         linkColor={'#fff'}
         activeColor={activeLinkColor}
         showTitle={true}
-        backgroundColor={linearGradientBackground}
+        backgroundColor={navBackgroundColor}
         backgroundImage={backgroundPattern}
       />
       <HubContentContainer>

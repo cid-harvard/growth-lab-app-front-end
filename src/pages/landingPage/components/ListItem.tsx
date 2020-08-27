@@ -8,12 +8,12 @@ import {
   baseColor,
 } from '../../../styling/styleUtils';
 import {
-  deepBlue,
   listViewMediumWidth,
   listViewSmallWidth,
   getCategoryString,
+  backgroundGray,
 } from '../Utils';
-import {darken, rgba} from 'polished';
+import {rgba} from 'polished';
 
 const Cell = styled.a`
   text-align: center;
@@ -47,7 +47,7 @@ const Title = styled(Cell)`
   justify-content: flex-start;
   font-size: 1rem;
   font-weight: 600;
-  color: ${darken(0.15, deepBlue)};
+  color: ${backgroundGray};
 
   @media (max-width: ${listViewMediumWidth}px) {
     font-size: 0.9rem;
@@ -128,7 +128,7 @@ const ListItem = (props: Props) => {
         href={link}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
+        style={{backgroundColor: hovered ? rgba(backgroundGray, 0.15) : undefined}}
       >
         {projectName}
       </Title>
@@ -136,7 +136,7 @@ const ListItem = (props: Props) => {
         href={link}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
+        style={{backgroundColor: hovered ? rgba(backgroundGray, 0.15) : undefined}}
       >
         <MobileTitle>Category:</MobileTitle>
         <span dangerouslySetInnerHTML={{__html: category}} />
@@ -145,7 +145,7 @@ const ListItem = (props: Props) => {
         href={link}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
+        style={{backgroundColor: hovered ? rgba(backgroundGray, 0.15) : undefined}}
       >
         <MobileTitle>Status:</MobileTitle>
         {status}
@@ -154,7 +154,7 @@ const ListItem = (props: Props) => {
         href={link}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        style={{backgroundColor: hovered ? rgba(deepBlue, 0.15) : undefined}}
+        style={{backgroundColor: hovered ? rgba(backgroundGray, 0.15) : undefined}}
       >
         <Anchor>{linkText}</Anchor>
         <Arrow>↗</Arrow>

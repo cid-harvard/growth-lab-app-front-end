@@ -8,13 +8,14 @@ import {
   Label,
   secondaryFont,
 } from '../../../styling/styleUtils';
-import {deepBlue, getCategoryString, linkBlue} from '../Utils';
+import {getCategoryString, backgroundGray} from '../Utils';
 import GridView from './GridView';
 import {
   HubProject,
   HubKeyword,
   ProjectCategories,
 } from '../graphql/graphQLTypes';
+import {rgba} from 'polished';
 
 const Root = styled.div`
   margin: 0 0 4rem 3.25rem;
@@ -45,10 +46,10 @@ const CategoriesContainer = styled.div`
 
 const CheckboxTitle = styled.h3`
   font-family: ${secondaryFont};
-  color: ${linkBlue};
+  color: ${backgroundGray};
   text-transform: uppercase;
   grid-column: 1 / -1;
-  border-bottom: solid 4px ${linkBlue};
+  border-bottom: solid 4px ${backgroundGray};
   display: inline-block;
 `;
 
@@ -113,12 +114,12 @@ const TagLabel = styled(Label)`
     margin-left: 0.4rem;
     font-size: 1.4rem;
     display: block;
-    color: ${linkBlue};
+    color: ${backgroundGray};
   }
 
   &:hover {
     cursor: pointer;
-    background-color: ${deepBlue};
+    background-color: ${rgba(backgroundGray, 0.3)};
 
     &:after {
       color: #333;
