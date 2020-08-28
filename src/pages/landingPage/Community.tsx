@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import styled from 'styled-components/macro';
 import TopLevelNav from './TopLevelNav';
 import { scrollToTop } from '../../hooks/useScrollBehavior';
 import {
@@ -7,18 +6,18 @@ import {
   HubContentContainer,
   navBackgroundColor,
   backgroundPattern,
+  Root,
+  ZigZagContentCard,
+  ZigZagContent,
+  Title,
+  Content,
 } from './Utils';
-import {FullWidthContentContainer} from '../../styling/Grid';
 import StandardFooter from '../../components/text/StandardFooter';
 import Helmet from 'react-helmet';
 
-const PlaceholderSpace = styled.div`
-  height: 2000px;
-`;
-
 const metaTitle = 'Community | Harvard Growth Lab Digital Hub';
 
-const AboutPage = () => {
+const CommunityPage = () => {
   useEffect(() => scrollToTop({smooth: false}), []);
 
   return (
@@ -35,14 +34,47 @@ const AboutPage = () => {
         backgroundImage={backgroundPattern}
       />
       <HubContentContainer>
-        <FullWidthContentContainer>
-          <h2>Community</h2>
-          <PlaceholderSpace/>
-        </FullWidthContentContainer>
+        <Root>
+          <ZigZagContentCard>
+            <ZigZagContent>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </ZigZagContent>
+          </ZigZagContentCard>
+          <Title>Community</Title>
+          <Content>
+            <a href='/community'>Harvard's Growth Lab</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </Content>
+        </Root>
       </HubContentContainer>
       <StandardFooter />
     </>
   );
 };
 
-export default AboutPage;
+export default CommunityPage;
