@@ -37,38 +37,24 @@ const CommunityPage = () => {
         <Root>
           <ZigZagContentCard>
             <ZigZagContent>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              Interdisciplinary collaboration is the engine of our work.  Get in touch to share your related projects, proposals and prototypes!
             </ZigZagContent>
           </ZigZagContentCard>
           <Title>Community</Title>
           <Content>
-            <a href='/community'>Harvard's Growth Lab</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            The Viz Hub is a portfolio of visualization tools and supporting software packages, powered by <a href='https://growthlab.cid.harvard.edu/'>Harvard’s Growth Lab’s</a> research.
+          </Content>
+
+          <Content>
+            All projects found on the Viz Hub are built in-house by the Growth Lab’s Digital Development &amp; Design Team, an interdisciplinary group that connects economic and policy research with best practices from information design, software development, data science, product management and digital humanities.  We believe that easy-to-use software can be a vital channel to effectively interpret and analyze complex concepts.
+          </Content>
+
+          <Content>
+            Our tools are used by a global community of policymakers, scholars, investors, and journalists as important resources for understanding a country’s economic structure.  To promote information sharing and collaborative problem-solving, the majority of our software platforms and packages are free, public goods, available through open source licensing.
+          </Content>
+
+          <Content>
+            Are you looking to collaborate on complementary projects?  Do you have ideas or critique to share?  We welcome all interest and inquiries and invite you to <a href='mailto:cidatlas@hks.harvard.edu'>drop us a line</a> or find us on <a href='https://github.com/cid-harvard'>Github</a> and <a href='https://twitter.com/HarvardGrwthLab'>Twitter</a>.
           </Content>
         </Root>
       </HubContentContainer>

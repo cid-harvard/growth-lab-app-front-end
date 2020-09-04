@@ -61,7 +61,7 @@ export const ZigZagContentCard = styled.div`
   position: relative;
   z-index: 10;
   padding: 3rem 1rem 1rem 3rem;
-  margin-bottom: 4rem;
+  margin-bottom: 8rem;
 
   &:before {
     content: '';
