@@ -11,7 +11,9 @@ import {
   secondaryFont,
 } from '../../styling/styleUtils';
 import LogoIMG from '../landingPage/logo.png';
+import raw from 'raw.macro';
 
+const arrowSVG = raw('../landingPage/images/arrow.svg');
 
 const slidein = keyframes`
   from {background-position: top;}
@@ -78,6 +80,22 @@ const GrowthLabButton = styled(Link)`
   }
 `;
 
+const Arrow = styled.span`
+  width: 0.5rem;
+  height: 0.5rem;
+  display: inline-block;
+  margin-left: 0.75em;
+
+  svg {
+    width: 100%;
+    height: 100%;
+
+    polygon {
+      fill: ${activeLinkColor};
+    }
+  }
+`;
+
 const Logo = styled.img`
   width: 100%;
   max-width: 200px;
@@ -100,6 +118,9 @@ const PageNotFound = () => {
       <div>
         <GrowthLabButton to={Routes.Landing}>
           Go to the Growth Lab Viz Hub Home Page
+          <Arrow
+            dangerouslySetInnerHTML={{__html: arrowSVG}}
+          />
         </GrowthLabButton>
       </div>
     </Root>

@@ -12,6 +12,8 @@ import {
 } from './Utils';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
+const arrowSVG = raw('./images/arrow.svg');
+
 const slidein = keyframes`
   from {background-position: top;}
   to {background-position: -200px 0px}
@@ -305,10 +307,19 @@ const GrowthLabButton = styled.a`
 `;
 
 const Arrow = styled.span`
-  font-size: 1.2em;
-  margin-left: 0.5em;
-  line-height: 0;
-  color: ${activeLinkColor};
+  width: 0.5rem;
+  height: 0.5rem;
+  display: inline-block;
+  margin-left: 0.75em;
+
+  svg {
+    width: 100%;
+    height: 100%;
+
+    polygon {
+      fill: ${activeLinkColor};
+    }
+  }
 `;
 
 const SocialLink = styled.a`
@@ -452,9 +463,9 @@ export default () => {
             rel={'noopener noreferrer'}
           >
             Growth Lab Home Page
-            <Arrow>
-              ↗
-            </Arrow>
+            <Arrow
+              dangerouslySetInnerHTML={{__html: arrowSVG}}
+            />
           </GrowthLabButton>
         </GrowthLabButtonCell>
         <SocialCell>
