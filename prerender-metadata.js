@@ -35,37 +35,3 @@ fs.readFile(indexFilePath, 'utf8', function(err, data) {
   })
 
 });
-
-const nginxTemplatePath = path.resolve(__dirname, './', 'config', 'nginx_template.conf');
-const nginxFilePath = path.resolve(__dirname, './', 'config', 'nginx.conf');
-// read in the nginx.conf file
-fs.readFile(nginxTemplatePath, 'utf8', function(err, data) {
-  console.log('Read in nginx.conf');
-  if (err) {
-    return console.error(err);
-  }
-
-  let result = data;
-  let urls = '';
-  metadata.forEach(({url}) => {
-    if (url !== '/') {
-      let filename = url.substring(1).replace(/\//g, '-');
-      if (filename.length) {
-        filename = filename + '.html';
-      } else {
-        filename = 'index.html';
-      }
-      urls = urls + `        rewrite ^${url}                            /${filename};\n`;
-      console.log(`Add nginx rule: rewrite ^${url} -> /${filename}`);
-    }
-  })
-  result = result.replace(/\#{%URLS%}/g, urls);
-  fs.writeFile(nginxFilePath, result, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Saved nginx.conf');
-    }
-  });
-
-});
