@@ -65,8 +65,8 @@ export const ZigZagContentCard = styled.div`
 
   &:before {
     content: '';
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
     position: absolute;
     top: 0;
     left: 0;

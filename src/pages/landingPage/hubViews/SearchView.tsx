@@ -464,7 +464,7 @@ const SearchView = (props: Props) => {
     <>
       <Root>
         <BasicSearch
-          placeholder={'Search More...'}
+          placeholder={'Type or select keywords...'}
           setSearchQuery={setSearchQuery}
           initialQuery={initialQuery}
           focusOnMount={true}
