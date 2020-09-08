@@ -120,12 +120,10 @@ const JordanToolEntry = () => {
         }
       });
       return (
-        <>
-          <Content
-            industryList={industryData}
-            rawIndustryList={jordanIndustryList}
-          />
-        </>
+        <Content
+          industryList={industryData}
+          rawIndustryList={jordanIndustryList}
+        />
       );
     } else {
       return null;

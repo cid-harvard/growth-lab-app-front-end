@@ -1,4 +1,4 @@
-import {Datum, Config} from '../../../components/dataViz/stackChart';
+import {StackChartConfig, StackChartDatum} from 'react-fast-charts';
 import raw from 'raw.macro';
 
 enum Category {
@@ -45,12 +45,12 @@ export const industries: {name: Category, id: number, fill: string}[] = [
 
 const rawData = JSON.parse(raw('./data/fdi_stack_chart_data.json'));
 
-const config: Config = {
+const config: StackChartConfig = {
   primaryKey: 'quarter',
   groups: [],
 };
 
-const transformedData: Datum[] = [];
+const transformedData: StackChartDatum[] = [];
 
 rawData.forEach((d: any) => {
   const targetIndex = transformedData.findIndex(t => t.quarter === d.quarter);

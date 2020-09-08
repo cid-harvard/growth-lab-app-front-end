@@ -8,11 +8,13 @@ interface Props {
   linkColor: string;
   activeColor: string;
   backgroundColor: string;
+  backgroundImage: string | undefined;
 }
 
 const TopLevelNav = (props: Props) => {
   const {
     linkColor, showTitle, activeColor, backgroundColor,
+    backgroundImage,
   } = props;
 
   const {pathname, hash} = useLocation();
@@ -36,6 +38,7 @@ const TopLevelNav = (props: Props) => {
       linkColor={linkColor}
       activeColor={activeColor}
       backgroundColor={backgroundColor}
+      backgroundImage={backgroundImage}
       title={title}
     />
   );

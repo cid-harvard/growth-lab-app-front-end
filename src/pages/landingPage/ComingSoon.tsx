@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import styled from 'styled-components/macro';
 import LogoIMG from './logo.png';
-import BackgroundIMG from './image.jpg';
+import BackgroundIMG from './images/image.jpg';
 
 const Blur = styled.div`
   width: 100%;

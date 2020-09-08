@@ -36,6 +36,8 @@
   "exclude": [
     "build",
     "node_modules",
+    "prerender-metadata.js",
+    "src/metadata.js",
     "src/serviceWorker.ts"
   ]
 }

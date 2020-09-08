@@ -1,6 +1,5 @@
 import React from 'react';
-import DataViz, {VizType} from '../../../components/dataViz';
-import {Datum} from '../../../components/dataViz/boxAndWhiskers';
+import DataViz, {VizType, BoxAndWhiskersChartDatum} from 'react-fast-charts';
 import raw from 'raw.macro';
 import {secondaryFont} from '../../../styling/styleUtils';
 import {storyMobileWidth} from '../../../styling/Grid';
@@ -58,7 +57,7 @@ interface RawDatum {
 
 const rawData: RawDatum[] = JSON.parse(raw('./data/contract_intensity_data.json'));
 
-const data: Datum[] = [];
+const data: BoxAndWhiskersChartDatum[] = [];
 
 rawData.forEach(({ISO, year, contract_mean}) => {
   const yearRange = categories.find(({targets}) => targets.includes(year));

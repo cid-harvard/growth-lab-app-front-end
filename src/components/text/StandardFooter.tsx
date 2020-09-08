@@ -14,6 +14,7 @@ import LinkedinIconSVG from './assets/linkedin.svg';
 import YouTubeIconSVG from './assets/youtube.svg';
 import ApplePodcastSVG from './assets/applepodcast.svg';
 import {Routes, hubId} from '../../routing/routes';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 export const Root = styled(FullWidthFooter)`
   color: #333;
@@ -224,6 +225,7 @@ const ExploreNextFooter = (props: Props) => {
     return (
       <SocialLink
         href={target}
+        onClick={() => triggerGoogleAnalyticsEvent('FOOTER SOCIAL ICONS', 'click -' + type)}
         target='_blank'
         rel='noopener noreferrer'
         key={target + type}

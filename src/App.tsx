@@ -45,14 +45,14 @@ const OverlayPortal = styled.div`
   z-index: ${overlayPortalZIndex};
 `;
 
-const LandingPage = lazy(() => import('./pages/landingPage/ComingSoon'));
+const LandingPage = lazy(() => import('./pages/landingPage'));
 const AboutPage = lazy(() => import('./pages/landingPage/About'));
 const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
 const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
+const JordanOverview = lazy(() => import('./pages/jordanTool/overviewPage'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
-const Sandbox = lazy(() => import('./pages/sandbox'));
 
 export interface IAppContext {
   windowWidth: number;
@@ -109,14 +109,14 @@ function App() {
                   <TrackedRoute exact path={Routes.Community}
                     render={(props: any) => <CommunityPage {...props} />}
                   />
-                  <TrackedRoute exact path={Routes.Sandbox}
-                    render={(props: any) => <Sandbox {...props} />}
-                  />
                   <TrackedRoute exact path={Routes.AlbaniaTool}
                     render={(props: any) => <AlbaniaTool {...props} />}
                   />
                   <TrackedRoute exact path={Routes.JordanTool}
                     render={(props: any) => <JordanTool {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.JordanOverview}
+                    render={(props: any) => <JordanOverview {...props} />}
                   />
                   <TrackedRoute exact path={Routes.AlbaniaStory}
                     render={(props: any) => <AlbaniaStory {...props} />}

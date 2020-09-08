@@ -3,8 +3,7 @@ import {
   OverTimeTarget,
 } from '../graphql/graphQLTypes';
 import {colorScheme} from '../fetchData';
-import { Datum as BarChartDatum } from '../../../components/dataViz/barChart';
-import { formatNumber } from '../../../components/dataViz/Utils';
+import { formatNumber, BarChartDatum } from 'react-fast-charts';
 import {lightBorderColor} from '../../../styling/styleUtils';
 
 enum OverTimeHistogramXValues {

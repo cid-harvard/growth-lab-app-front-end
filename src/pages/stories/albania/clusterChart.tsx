@@ -1,6 +1,5 @@
 import React from 'react';
-import DataViz, {VizType} from '../../../components/dataViz';
-import {Datum} from '../../../components/dataViz/clusterChart';
+import DataViz, {VizType, ClusterChartDatum} from 'react-fast-charts';
 import styled from 'styled-components/macro';
 import raw from 'raw.macro';
 import sortBy from 'lodash/sortBy';
@@ -130,7 +129,7 @@ interface ConfigDatum {
   industry: Industries;
   destinations: {
     country: DestinationCountries;
-    data: Datum[];
+    data: ClusterChartDatum[];
   }[];
 }
 

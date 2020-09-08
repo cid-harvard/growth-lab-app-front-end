@@ -1,4 +1,4 @@
-import {Datum, LabelPosition} from '../../../components/dataViz/lineChart';
+import {LineChartDatum, LabelPosition} from 'react-fast-charts';
 import raw from 'raw.macro';
 
 interface Axis {
@@ -45,8 +45,8 @@ interface RawDatum {
 
 const rawData: RawDatum[] = JSON.parse(raw('./data/eci_gdp_timeline_data.json'));
 
-const eci: Datum[] = [];
-const gdp: Datum[] = [];
+const eci: LineChartDatum[] = [];
+const gdp: LineChartDatum[] = [];
 
 let eciColorCount = 0;
 let gdpColorCount = 0;

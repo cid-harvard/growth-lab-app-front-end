@@ -5,6 +5,14 @@ import LogoIMG from './logo.png';
 import {secondaryFont} from '../../styling/styleUtils';
 import { useLocation, useHistory } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
+import {
+  activeLinkColor,
+  backgroundGray,
+  backgroundPattern,
+} from './Utils';
+import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
+
+const arrowSVG = raw('./images/arrow.svg');
 
 const slidein = keyframes`
   from {background-position: top;}
@@ -23,7 +31,7 @@ const Root = styled.div`
     top:0;
     left:0;
     z-index: -3;
-    background-image: linear-gradient(to left, #2f383f, #96c4c5);
+    background-color: ${backgroundGray};
     width: 100%;
     height: 100%;
     opacity: 0.9;
@@ -36,8 +44,7 @@ const Root = styled.div`
     left:0;
     height: 100%;
     width: 100%;
-    opacity: 0.1;
-    background-image: url(${require('./pattern-background.png')});
+    background-image: url(${backgroundPattern});
     z-index: -2;
     background-size:cover;
     animation: ${slidein} 20s;
@@ -47,28 +54,38 @@ const Root = styled.div`
   }
 `;
 
+const mediumWidth = 1380; // in px
 const mobileWidth = 750; // in px
 
 const Grid = styled.div`
   height: 100%;
   display: grid;
-  grid-template-rows: auto auto auto auto 1fr auto;
+  grid-template-rows: auto 1fr auto auto 2fr auto auto auto;
   grid-template-columns: 1fr 1fr;
-  max-width: 1200px;
+  max-width: 100%;
   padding: 1.5rem 2rem 0.5rem;
   margin: auto;
   box-sizing: border-box;
+
+  @media(max-width: ${mobileWidth}px) {
+    grid-template-rows: auto 0 auto auto 2fr auto auto auto;
+  }
 `;
 
 const LogoCell = styled.a`
   grid-column: 1;
   grid-row: 1;
   display: block;
+  padding-left: 10%;
+
+  @media(max-width: ${mediumWidth}px) {
+    padding-left: 0;
+  }
 `;
 
 const TitleCell = styled.div`
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 3;
   position: relative;
 
   @media(max-width: ${mobileWidth}px) {
@@ -77,30 +94,60 @@ const TitleCell = styled.div`
 `;
 const SubtitleCell = styled.div`
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 3;
   position: relative;
-  transform: translate(0, -25%);
+  padding-left: 5%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 0;
+    height: 120%;
+    border-left: solid 2px #fff;
+  }
 
   @media(max-width: ${mobileWidth}px) {
     grid-column: 1 / -1;
-    grid-row: 3;
-    transform: translate(-1rem, 10%);
+    grid-row: 4;
+    padding-left: 0;
+
+    &:before {
+      border-left: none;
+    }
   }
 `;
 
 const GrowthLabButtonCell = styled.div`
   grid-column: 1 / -1;
   grid-row: 4;
+  padding-left: 5%;
+
+  @media(max-width: ${mediumWidth}px) {
+    padding-left: 0;
+  }
+
+  @media(max-width: ${mobileWidth}px) {
+    grid-row: 5;
+  }
 `;
 const SocialCell = styled.div`
   grid-column: 1 / -1;
-  grid-row: 5;
+  grid-row: 7;
   display: flex;
   align-items: flex-end;
+  padding-left: 5%;
+
+  @media(max-width: ${mediumWidth}px) {
+    padding-left: 0;
+  }
 `;
 const ScrollCell = styled.div`
   grid-column: 1 / -1;
-  grid-row: 6;
+  grid-row: 8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,7 +156,14 @@ const ScrollCell = styled.div`
 const TitleRoot = styled.div`
   position: relative;
   width: 100%;
-  max-width: 600px;
+  margin-left: 10%;
+  max-width: 90%;
+  margin-bottom: 3rem;
+
+  @media(max-width: ${mediumWidth}px) {
+    margin-left: 0;
+    max-width: 100%;
+  }
 
   @media(max-width: ${mobileWidth}px) {
     &:after {
@@ -129,6 +183,7 @@ const Title = styled.h1`
   color: rgba(0, 0, 0, 0);
   svg {
     position: relative;
+    left: 1%;
     width: 91.67%;
     letter-spacing: 2px;
     animation: stroke-offset 1s linear;
@@ -164,11 +219,11 @@ const TitleIcon = styled.div`
 
 const slidingblock = keyframes`
   0% {
-    margin-left: -380px;
+    margin-left: -100%;
   }
 
   50%{
-    margin-left: -380px;
+    margin-left: -100%;
   }
 
   100% {
@@ -179,7 +234,7 @@ const slidingblock = keyframes`
 const ColorBlock = styled.div`
   position: absolute;
   height: 31.6%;
-  width: 63.33%;
+  width: 46.33%;
   bottom: -4.4%;
   left: 0;
   z-index: 3;
@@ -188,7 +243,7 @@ const ColorBlock = styled.div`
   &:after {
     content: '';
     display: block;
-    background-color: #fc9b81;
+    background-color: ${activeLinkColor};
     height: 100%;
     width: 100%;
     z-index: 3;
@@ -203,69 +258,84 @@ const Subtitle = styled.h2`
   color: rgba(0, 0, 0, 0);
 
   width: 100%;
-  max-width: 480px;
+  max-width: 75%;
   opacity: 1;
   z-index: 4;
 
-  svg {
-    .cls-subtitle-1 {
-      fill: none;
-      stroke: #fff;
-      stroke-miterlimit: 10;
-      stroke-width: 3px;
-    }
-
-    .cls-subtitle-2 {
-      fill: #fff;
-    }
+  @media(max-width: ${mediumWidth}px) {
+    max-width: 96%;
   }
 
   @media(max-width: ${mobileWidth}px) {
     grid-column: 1 / -1;
     grid-row: 3;
+    max-width: 100%;
     transform: translate(-0.1rem, 10%);
-
-    svg {
-      .cls-subtitle-1 {
-        fill: none;
-        stroke: none;
-        stroke-width: 0px;
-      }
-    }
   }
 `;
 
 const Logo = styled.img`
-  width: 100%;
-  max-width: 230px;
+  width: 17vw;
+  max-width: 500px;
   margin: 2rem 0;
+
+  @media(max-width: ${mediumWidth}px) {
+    width: 100%;
+    max-width: 230px;
+  }
 `;
 
 const GrowthLabButton = styled.a`
   font-family: ${secondaryFont};
   padding: 8px 16px;
-  color: #749599;
+  color: ${backgroundGray};
   background-color: white;
-  font-size: 0.875;
+  font-size: 14px;
   border-radius: 16px;
   text-decoration: none;
   display: inline-block;
   position: relative;
   z-index: 3;
 
+  &:hover {
+    color: ${activeLinkColor};
+  }
+
   @media(max-width: ${mobileWidth}px) {
     margin-top: 3rem;
   }
 `;
 
+const Arrow = styled.span`
+  width: 0.5rem;
+  height: 0.5rem;
+  display: inline-block;
+  margin-left: 0.75em;
+
+  svg {
+    width: 100%;
+    height: 100%;
+
+    polygon {
+      fill: ${activeLinkColor};
+    }
+  }
+`;
+
 const SocialLink = styled.a`
-  margin-right: 1.25rem;
+  margin-right: 1.5vw;
   font-size: 0;
   color: rgba(0, 0, 0, 0);
   display: flex;
   align-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2vw;
+  height: 2vw;
+
+  @media(max-width: ${mediumWidth}px) {
+    margin-right: 1.25rem;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 `;
 
 const Icon = styled.div`
@@ -307,7 +377,7 @@ const down3 = keyframes`
 `;
 const ScrollArrow = styled.button`
   display: block;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: white;
   font-family: ${secondaryFont};
   cursor: pointer;
@@ -323,9 +393,9 @@ const ScrollBase = styled.span`
   margin: 0 auto;
   width: 0px;
   height: 0px;
-  border-left: 0.5em solid transparent;
-  border-right: 0.5em solid transparent;
-  border-top: 0.7em solid white;
+  border-left: 0.7em solid transparent;
+  border-right: 0.7em solid transparent;
+  border-top: 0.9em solid white;
 `;
 
 const Scroll2 = styled(ScrollBase)`
@@ -357,6 +427,7 @@ export default () => {
       <Grid>
         <LogoCell
           href={'https://growthlab.cid.harvard.edu/'}
+          onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'logo' )}
           target={'_blank'}
           rel={'noopener noreferrer'}
         >
@@ -369,7 +440,7 @@ export default () => {
               <div
                 dangerouslySetInnerHTML={{__html: raw('./title.svg')}}
               />
-              Harvard Growth Lab Digital Hub
+              Harvard Growth Lab Viz Hub
             </Title>
             <TitleIcon
               dangerouslySetInnerHTML={{__html: raw('./titleIcon.svg')}}
@@ -381,16 +452,20 @@ export default () => {
             <div
               dangerouslySetInnerHTML={{__html: raw('./subtitle.svg')}}
             />
-            Translating Growth Lab research into powerful online tools and interactive storytelling
+            Translating Growth Lab research into powerful visualization tools and interactive storytelling
           </Subtitle>
         </SubtitleCell>
         <GrowthLabButtonCell>
           <GrowthLabButton
             href={'https://growthlab.cid.harvard.edu/'}
+            onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'button' )}
             target={'_blank'}
             rel={'noopener noreferrer'}
           >
-            Visit Growth Lab Page
+            Growth Lab Home Page
+            <Arrow
+              dangerouslySetInnerHTML={{__html: arrowSVG}}
+            />
           </GrowthLabButton>
         </GrowthLabButtonCell>
         <SocialCell>
@@ -440,7 +515,7 @@ export default () => {
             <Scroll />
             <Scroll2 />
             <Scroll3 />
-            <ScrollText>Digital Hub</ScrollText>
+            <ScrollText>Viz Hub</ScrollText>
           </ScrollArrow>
         </ScrollCell>
       </Grid>

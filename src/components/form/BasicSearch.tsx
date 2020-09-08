@@ -7,18 +7,21 @@ import {
 } from '../../styling/styleUtils';
 import { AppContext } from '../../App';
 
+const magnifyingGlassSize = 1.5; // in rem
+const magnifyingGlassSpacing = 0.5; // in rem
+
 const SearchContainer = styled.label`
   position: relative;
   display: flex;
+  flex-wrap: wrap;
+  padding-left: ${magnifyingGlassSize + (magnifyingGlassSpacing * 2)}rem;
 `;
-
-const magnifyingGlassSize = 1.5; // in rem
-const magnifyingGlassSpacing = 0.5; // in rem
 
 const SearchIcon = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
+  left: 0;
   width: 30px;
   height: 100%;
   margin: auto ${magnifyingGlassSpacing}rem;
@@ -30,13 +33,14 @@ const SearchIcon = styled.div`
 `;
 
 const SearchBar = styled.input`
-  width: 100%;
-  padding: 8px 8px 8px ${magnifyingGlassSize + (magnifyingGlassSpacing * 2)}rem;
+  padding: 8px;
   box-sizing: border-box;
   border: solid 1px ${lightBorderColor};
   box-shadow: 0px 0px 3px -1px #b5b5b5;
   font-size: 1.2rem;
   font-weight: 300;
+  flex-grow: 1;
+  min-width: 180px;
 
   &::placeholder {
     color: ${lightBaseColor};
@@ -48,11 +52,17 @@ interface Props {
   setSearchQuery: (value: string) => void;
   initialQuery: string;
   focusOnMount: boolean;
+  containerStyleOverrides?: React.CSSProperties;
   searchBarStyleOverrides?: React.CSSProperties;
+  additionalContent?: React.ReactNode;
 }
 
 const StandardSearch = (props: Props) => {
-  const { placeholder, setSearchQuery, initialQuery, focusOnMount, searchBarStyleOverrides } = props;
+  const {
+    placeholder, setSearchQuery, initialQuery, focusOnMount,
+    containerStyleOverrides, searchBarStyleOverrides,
+    additionalContent,
+  } = props;
 
   const searchEl = useRef<HTMLInputElement | null>(null);
   const { windowWidth } = useContext(AppContext);
@@ -76,8 +86,11 @@ const StandardSearch = (props: Props) => {
   }, [searchEl, focusOnMount, windowWidth, initialQuery]);
 
   return (
-    <SearchContainer>
+    <SearchContainer
+      style={containerStyleOverrides}
+    >
       <SearchIcon />
+      {additionalContent}
       <SearchBar
         ref={searchEl}
         type='text'

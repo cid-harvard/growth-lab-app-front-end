@@ -1,6 +1,8 @@
-import { Datum as ScatterPlotDatum } from '../../components/dataViz/scatterPlot';
-import { Datum as RadarChartDatum } from '../../components/dataViz/radarChart';
-import { Datum as BarChartDatum } from '../../components/dataViz/barChart';
+import {
+  ScatterPlotDatum,
+  RadarChartDatum,
+  BarChartDatum,
+} from 'react-fast-charts';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {

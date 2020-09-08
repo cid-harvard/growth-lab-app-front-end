@@ -13,7 +13,9 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import {
   activeLinkColor,
   HubContentContainer,
-  backgroundColor,
+  queryStringToCategory,
+  navBackgroundColor as baseNavBackgroundColor,
+  backgroundPattern,
 } from './Utils';
 import {Grid, NavColumn, ContentColumn} from './Grid';
 import StandardFooter from '../../components/text/StandardFooter';
@@ -25,6 +27,43 @@ import ListView from './hubViews/ListView';
 import SearchView from './hubViews/SearchView';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import {HubProject, HubKeyword, ProjectCategories} from './graphql/graphQLTypes';
+import Loading from '../../components/general/Loading';
+import FullPageError from '../../components/general/FullPageError';
+import orderBy from 'lodash/orderBy';
+
+const GET_ALL_PROJECTS_AND_KEYWORDS = gql`
+  query GetAllIndustries {
+    hubProjectsList {
+      projectName
+      link
+      projectCategory
+      show
+      data
+      keywords
+      cardSize
+      announcement
+      ordering
+      cardImageHi
+      cardImageLo
+      localFile
+      status
+      id
+    }
+    hubKeywordsList {
+      keyword
+      projects
+    }
+  }
+`;
+
+interface SuccessResponse {
+  hubProjectsList: HubProject[];
+  hubKeywordsList: HubKeyword[];
+}
+
 
 const SplashScreenContainer = styled.div`
   width: 100%;
@@ -33,36 +72,13 @@ const SplashScreenContainer = styled.div`
   overflow: hidden;
 `;
 
-const PlaceholderSpace = styled.div`
-  height: 2000px;
-`;
-
-const sampleKeywords = [
-  'Albania',
-  'Jordan',
-  'Indonesia',
-  'Colombia',
-  'International',
-  'FDI',
-  'Growth Diagnostic',
-  'Trade Data',
-  'Open Source',
-  'Python',
-  'Product Space',
-];
-
-const sampleCategories = [
-  'Atlas Projects',
-  'Country Dashboards',
-  'Research Tools',
-  'Prototypes / Codes',
-];
-
 // examples: /?query=albania%20tool&keywords=usa,jordan,albania&categories=usa,jordan,albania#hub
 export interface QueryString {
   query?: string;
   keywords?: string[];
   categories?: string[];
+  dataKeywords?: string[];
+  status?: string[];
 }
 
 const LandingPage = () => {
@@ -77,7 +93,9 @@ const LandingPage = () => {
   const defaultActiveView = parsedQuery !== undefined && (
                               (parsedQuery.query !== undefined && parsedQuery.query.length) ||
                               (parsedQuery.keywords !== undefined && parsedQuery.keywords.length) ||
-                              (parsedQuery.categories !== undefined && parsedQuery.categories.length)
+                              (parsedQuery.categories !== undefined && parsedQuery.categories.length) ||
+                              (parsedQuery.dataKeywords !== undefined && parsedQuery.dataKeywords.length) ||
+                              (parsedQuery.status !== undefined && parsedQuery.status.length)
                             ) ? View.search : View.grid;
   const [activeView, setActiveView] = useState<View>(defaultActiveView);
 
@@ -94,38 +112,90 @@ const LandingPage = () => {
     return () => observer.unobserve(cachedRef);
   }, [containerNodeRef]);
 
-  const linkColor = isNavOverContent ? '#333' : '#fff';
-  const activeColor = isNavOverContent ? activeLinkColor : '#fff';
-  const navBackgroundColor = isNavOverContent ? backgroundColor : 'rgba(255, 255, 255, 0.2)';
+  const linkColor = '#fff';
+  const activeColor = activeLinkColor;
+  const navBackgroundColor = isNavOverContent ? baseNavBackgroundColor : 'rgba(255, 255, 255, 0.2)';
+  const navBackgroundImage = isNavOverContent ? backgroundPattern : undefined;
   useScrollBehavior({
     navAnchors: ['#' + hubId],
     smooth: false,
   });
 
+  const {loading, error, data} = useQuery<SuccessResponse, never>(GET_ALL_PROJECTS_AND_KEYWORDS);
+
   let contentView: React.ReactElement<any> | null;
-  if (activeView === View.grid) {
+  if (loading) {
+    contentView = <Loading />;
+  } else if (error) {
     contentView = (
-      <GridView />
-    );
-  } else if (activeView === View.list) {
-    contentView = (
-      <ListView />
-    );
-  } else if (activeView === View.search) {
-    const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
-    const initialSelectedKeywords = parsedQuery && parsedQuery.keywords !== undefined ? parsedQuery.keywords : [];
-    const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined ? parsedQuery.categories : [];
-    contentView = (
-      <SearchView
-        initialQuery={initialQuery}
-        keywords={sampleKeywords}
-        initialSelectedKeywords={initialSelectedKeywords}
-        categories={sampleCategories}
-        initialSelectedCategories={initialSelectedCategories}
+      <FullPageError
+        message={error.message}
       />
     );
+  } else if (data !== undefined) {
+    const {hubProjectsList, hubKeywordsList} = data;
+    if (activeView === View.grid) {
+      contentView = (
+        <GridView projects={hubProjectsList} />
+      );
+    } else if (activeView === View.list) {
+      contentView = (
+        <ListView projects={hubProjectsList} />
+      );
+    } else if (activeView === View.search) {
+      const initialQuery = parsedQuery && parsedQuery.query !== undefined ? parsedQuery.query : '';
+      const initialSelectedKeywords = parsedQuery && parsedQuery.keywords !== undefined ? parsedQuery.keywords : [];
+      const initialSelectedCategories = parsedQuery && parsedQuery.categories !== undefined
+        ? parsedQuery.categories.map(queryStringToCategory) : [];
+      const initialSelectedDataKeywords = parsedQuery && parsedQuery.dataKeywords !== undefined ? parsedQuery.dataKeywords : [];
+      const initialSelectedStatus = parsedQuery && parsedQuery.status !== undefined ? parsedQuery.status : [];
+
+      const sortedKeywords = orderBy(hubKeywordsList, ({keyword}) => keyword.toLowerCase(), ['asc']);
+      const allCategories: ProjectCategories[] = [];
+      const allStatuses: string[] = [];
+      const allDataKeywords: string[] = [];
+      hubProjectsList.forEach(project => {
+        const {projectCategory, status, show} = project;
+        if (show) {
+          if (projectCategory && !allCategories.find(c => c === projectCategory)) {
+            allCategories.push(projectCategory);
+          }
+          if (status && !allStatuses.find(s => s === status)) {
+            allStatuses.push(status);
+          }
+          if (project.data && project.data.length) {
+            project.data.forEach(d => {
+              if (!allDataKeywords.find(k => k === d)) {
+                allDataKeywords.push(d);
+              }
+            });
+          }
+        }
+      });
+
+      if (data) {
+        contentView = (
+          <SearchView
+            initialQuery={initialQuery}
+            keywords={sortedKeywords}
+            initialSelectedKeywords={initialSelectedKeywords}
+            categories={allCategories}
+            initialSelectedCategories={initialSelectedCategories}
+            dataKeywords={allDataKeywords}
+            initialSelectedDataKeywords={initialSelectedDataKeywords}
+            status={allStatuses}
+            initialSelectedStatus={initialSelectedStatus}
+            projects={hubProjectsList}
+          />
+        );
+      } else {
+        contentView = null;
+      }
+    } else {
+      console.error('Invalid view type ' + activeView);
+      contentView = null;
+    }
   } else {
-    console.error('Invalid view type ' + activeView);
     contentView = null;
   }
 
@@ -136,6 +206,7 @@ const LandingPage = () => {
         showTitle={isNavOverContent}
         activeColor={activeColor}
         backgroundColor={navBackgroundColor}
+        backgroundImage={navBackgroundImage}
       />
       <FullWidthHeader>
         <SplashScreenContainer>
@@ -152,7 +223,6 @@ const LandingPage = () => {
           </NavColumn>
           <ContentColumn>
             {contentView}
-            <PlaceholderSpace/>
           </ContentColumn>
         </Grid>
       </HubContentContainer>

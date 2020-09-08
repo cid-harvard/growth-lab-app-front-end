@@ -6,7 +6,6 @@ import styled from 'styled-components/macro';
 export const Grid = styled(FullWidthContentContainer)`
   display: grid;
   grid-template-columns: 5rem 1fr;
-  grid-column-gap: 2.5rem;
 `;
 
 export const NavColumn = styled.div`

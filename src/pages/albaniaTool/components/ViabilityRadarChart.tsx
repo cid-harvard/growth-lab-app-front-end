@@ -1,6 +1,5 @@
 import React from 'react';
-import { Datum as RadarChartDatum } from '../../../components/dataViz/radarChart';
-import DataViz, {VizType} from '../../../components/dataViz';
+import DataViz, {VizType, RadarChartDatum} from 'react-fast-charts';
 import {
     Factors,
     NACEIndustry,

@@ -1,7 +1,7 @@
 import {
   FactorsConnection,
 } from '../graphql/graphQLTypes';
-import { Datum as RadarChartDatum } from '../../../components/dataViz/radarChart';
+import { RadarChartDatum } from 'react-fast-charts';
 
 export default (factors: FactorsConnection) => {
   const factorsNode = factors.edges !== null && factors.edges[0] ? factors.edges[0].node : null;
