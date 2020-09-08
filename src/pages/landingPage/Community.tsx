@@ -46,7 +46,7 @@ const CommunityPage = () => {
           </Content>
 
           <Content>
-            All projects found on the Viz Hub are built in-house by the Growth Lab’s Digital Development &amp; Design Team, an interdisciplinary group that connects economic and policy research with best practices from information design, software development, data science, product management and digital humanities.  We believe that easy-to-use software can be a vital channel to effectively interpret and analyze complex concepts.
+            All projects found on the Viz Hub are built in-house by the Growth Lab’s Digital Development &amp; Design Team, an interdisciplinary group that connects economic and policy research with best practices from information design, software development, data science, product management, and digital humanities.  We believe that easy-to-use software can be a vital channel to effectively interpret and analyze complex concepts.
           </Content>
 
           <Content>
