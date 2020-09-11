@@ -35,7 +35,7 @@ const ListButton = styled.button<{primaryColor: string, isActive: boolean}>`
     transition: height 0.2s ease;
   }
 
-  &:hover {
+  &:hover, &:focus {
     &:before {
       height: 0.8rem;
       background-color: ${({primaryColor}) => primaryColor};

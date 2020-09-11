@@ -25,15 +25,27 @@ const Image = styled.img`
 interface Props {
   lowResSrc: string;
   highResSrc: string;
+  title?: string;
+  alt?: string;
 }
 
-const SmartImage = ({highResSrc, lowResSrc}: Props) => {
+const SmartImage = ({highResSrc, lowResSrc, title, alt}: Props) => {
   const [highResLoaded, setHighResLoaded] = useState<boolean>(false);
 
   return (
     <Root>
-      <Image src={highResSrc} title={''} onLoad={() => setHighResLoaded(true)} />
-      <Image src={lowResSrc} title={''} style={{opacity: highResLoaded ? 0 : 1}} />
+      <Image
+        src={highResSrc}
+        title={title ? title : ''}
+        alt={alt ? alt : ''}
+        onLoad={() => setHighResLoaded(true)}
+      />
+      <Image
+        src={lowResSrc}
+        title={title ? title : ''}
+        alt={alt ? alt : ''}
+        style={{opacity: highResLoaded ? 0 : 1}}
+      />
     </Root>
   );
 };

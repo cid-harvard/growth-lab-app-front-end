@@ -187,22 +187,27 @@ export const defaultSocialIcons = [
   {
     target: 'https://www.facebook.com/HarvardCID/',
     type: SocialType.facebook,
+    alt: 'facebook',
   },
   {
     target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
     type: SocialType.linkedin,
+    alt: 'linkedin',
   },
   {
     target: 'https://twitter.com/HarvardGrwthLab',
     type: SocialType.twitter,
+    alt: 'twitter',
   },
   {
     target: 'https://www.youtube.com/user/HarvardCID',
     type: SocialType.youtube,
+    alt: 'youtube',
   },
   {
     target: 'https://podcasts.apple.com/us/podcast/growth-lab-podcast-series/id1486218164',
     type: SocialType.applepodcast,
+    alt: 'apple podcast',
   },
 ];
 
@@ -215,13 +220,13 @@ export const socialIcon = {
 };
 
 interface Props {
-  socialItems?: {target: string, type: SocialType}[];
+  socialItems?: {target: string, type: SocialType, alt?: string}[];
 }
 
 const ExploreNextFooter = (props: Props) => {
   const socialItems = props.socialItems === undefined ? defaultSocialIcons : props.socialItems;
 
-  const socialItemsList = socialItems.map(({target, type}) =>{
+  const socialItemsList = socialItems.map(({target, type, alt}) =>{
     return (
       <SocialLink
         href={target}
@@ -230,7 +235,11 @@ const ExploreNextFooter = (props: Props) => {
         rel='noopener noreferrer'
         key={target + type}
       >
-        <Icon src={socialIcon[type]} />
+        <Icon
+          src={socialIcon[type]}
+          title={alt ? alt : ''}
+          alt={alt ? alt : ''}
+        />
       </SocialLink>
     );
   });
@@ -278,7 +287,7 @@ const ExploreNextFooter = (props: Props) => {
               rel='noopener noreferrer'
               color={'#333'}
             >
-              <GitHubIcon src={require('./assets/githubicon.svg')} />
+              <GitHubIcon src={require('./assets/githubicon.svg')} alt='' title='' />
               GitHub Repo
             </GitHubLink>
           </RepoColumn>
