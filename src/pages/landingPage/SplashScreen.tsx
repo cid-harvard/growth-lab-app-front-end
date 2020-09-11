@@ -392,8 +392,12 @@ const ScrollArrow = styled.button`
   outline: none;
   margin: 1rem 0;
 
+  div {
+    border-bottom: 1px solid transparent;
+  }
+
   &:focus div {
-    outline: 1px solid #fff;
+    border-color: #fff;
   }
 `;
 
