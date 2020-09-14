@@ -262,6 +262,12 @@ const Subtitle = styled.h2`
   opacity: 1;
   z-index: 4;
 
+  svg {
+    path {
+      fill: #fff;
+    }
+  }
+
   @media(max-width: ${mediumWidth}px) {
     max-width: 96%;
   }
@@ -385,6 +391,14 @@ const ScrollArrow = styled.button`
   position: relative;
   outline: none;
   margin: 1rem 0;
+
+  div {
+    border-bottom: 1px solid transparent;
+  }
+
+  &:focus div {
+    border-color: #fff;
+  }
 `;
 
 const ScrollBase = styled.span`
@@ -431,7 +445,11 @@ export default () => {
           target={'_blank'}
           rel={'noopener noreferrer'}
         >
-          <Logo src={LogoIMG} />
+          <Logo
+            src={LogoIMG}
+            title={'The Growth Lab at the Center for International Development at Harvard University'}
+            alt={'The Growth Lab at the Center for International Development at Harvard University'}
+          />
         </LogoCell>
         <TitleCell>
           <TitleRoot>
