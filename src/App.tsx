@@ -81,7 +81,7 @@ function App() {
     };
   }, []);
 
-  const defaultMetaTitle = 'Harvard Growth Lab Digital Hub';
+  const defaultMetaTitle = 'Harvard Growth Lab Viz Hub';
   const defaultMetaDescription = 'Translating Growth Lab research into powerful online tools and interactive storytelling';
 
   return (

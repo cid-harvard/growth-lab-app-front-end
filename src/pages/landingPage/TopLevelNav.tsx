@@ -29,7 +29,7 @@ const TopLevelNav = (props: Props) => {
     {label: 'About', target: Routes.About,  active: pathname === Routes.About},
   ];
 
-  const title = showTitle ? 'Growth Lab Digital Hub' : '';
+  const title = showTitle ? 'Growth Lab Viz Hub' : '';
 
   return (
     <TopLevelStickyNav

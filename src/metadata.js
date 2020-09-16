@@ -16,7 +16,7 @@ const defaultFavicon = '/favicon.svg';
 const metadata = [
   {
     url: Routes.Landing,
-    title: 'Harvard Growth Lab Digital Hub | ' + defaultTitle ,
+    title: 'Harvard Growth Lab Viz Hub | ' + defaultTitle ,
     description: defaultDescription,
     og_image: 'growth-lab-hub.jpg',
     favicon: defaultFavicon,
@@ -72,7 +72,7 @@ const get = (route) => {
   } else {
     return {
       url: route,
-      title: 'Harvard Growth Lab Digital Hub | ' + defaultTitle ,
+      title: 'Harvard Growth Lab Viz Hub | ' + defaultTitle ,
       description: defaultDescription,
       og_image: defaultOgImage,
       favicon: defaultFavicon,

@@ -15,7 +15,7 @@ import {
 import StandardFooter from '../../components/text/StandardFooter';
 import Helmet from 'react-helmet';
 
-const metaTitle = 'About | Harvard Growth Lab Digital Hub';
+const metaTitle = 'About | Harvard Growth Lab Viz Hub';
 
 const AboutPage = () => {
   useEffect(() => scrollToTop({smooth: false}), []);
