@@ -12,13 +12,14 @@ import {TreeNode} from 'react-dropdown-tree-select';
 import MultiTierSearch from '../../navigation/MultiTierSearch';
 import GrowthLabLogoImgSrc from './growth-lab.png';
 import {triggerGoogleAnalyticsEvent} from '../../../routing/tracking';
+import DefaultHubHeader from '../../navigation/DefaultHubHeader';
 
 const Root = styled(FullWidthHeader)`
   grid-template-rows: auto auto;
 `;
 
 const GradientContainer = styled.div<{gradient: string}>`
-  padding: 2rem 0 2.5rem;
+  padding: 0 0 2.5rem;
   background: ${({gradient}) => gradient};
 `;
 
@@ -218,6 +219,7 @@ const HeaderWithSearch = (props: Props) => {
   return (
     <Root>
       <GradientContainer gradient={gradient}>
+        <DefaultHubHeader staticPosition={true} />
         <ContentGrid>
           {img}
           <TitleContainer
