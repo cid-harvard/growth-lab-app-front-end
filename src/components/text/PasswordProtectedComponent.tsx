@@ -3,18 +3,9 @@ import styled from 'styled-components/macro';
 import {
   lightBorderColor,
   secondaryFont,
+  PatternBlock,
 } from '../../styling/styleUtils';
 import {lighten} from 'polished';
-
-const Root = styled.div`
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAI0lEQVQYV2NkwAEYYeLeeU3GIPbWSXVnQTRhCXQT4TqIlgAACbAIB9ZyaUoAAAAASUVORK5CYII=) repeat;
-  padding: 1rem 2.5rem;
-  box-sizing: border-box;
-
-  @media(max-width: 900px) {
-    padding: 1rem;
-  }
-`;
 
 const Label = styled.p`
   margin: 0 0 1rem;
@@ -87,7 +78,7 @@ const PasswordProtectedComponent = (props: Props) => {
   };
 
   return (
-    <Root>
+    <PatternBlock>
       <Label>
         <LabelBackground>
           {title}
@@ -109,7 +100,7 @@ const PasswordProtectedComponent = (props: Props) => {
         </form>
       </PasswordContainer>
       {children}
-    </Root>
+    </PatternBlock>
   );
 };
 

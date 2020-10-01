@@ -52,6 +52,7 @@ import IndustryWagesBarChart from './components/IndustryWagesBarChart';
 import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
 import styled from 'styled-components/macro';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
+import FDIBuilderLockedSection from './components/FDIBuilderLockedSection';
 
 const StyledP = styled.p`
   a {
@@ -543,18 +544,20 @@ const AlbaniaToolContent = (props: Props) => {
               ])}}
           />
         </div>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
-            <FDIStackedBarChart
-              selectedIndustry={selectedIndustry}
-              fdiMarketsOvertimeEdges={fdiMarketsOvertimeEdges}
-            />
-          <FDITop10List fdiMarketsEdges={fdiMarketsEdges} />
-        </TwoColumnSection>
-        <div>
-          <SectionHeaderSecondary color={colorScheme.quaternary}>Custom FDI Companies List</SectionHeaderSecondary>
-          <FDIBuilderTable industryName={industryName} fdiMarketsEdges={fdiMarketsEdges} />
-        </div>
+        <FDIBuilderLockedSection>
+          <TwoColumnSection>
+            <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
+              <FDIStackedBarChart
+                selectedIndustry={selectedIndustry}
+                fdiMarketsOvertimeEdges={fdiMarketsOvertimeEdges}
+              />
+            <FDITop10List fdiMarketsEdges={fdiMarketsEdges} />
+          </TwoColumnSection>
+          <div>
+            <SectionHeaderSecondary color={colorScheme.quaternary}>Custom FDI Companies List</SectionHeaderSecondary>
+            <FDIBuilderTable industryName={industryName} fdiMarketsEdges={fdiMarketsEdges} />
+          </div>
+        </FDIBuilderLockedSection>
         <div id={'industry-now'}>
           <SectionHeader>{SubSectionEnum.IndustryNow}</SectionHeader>
         </div>
