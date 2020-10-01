@@ -19,7 +19,7 @@ export default (props: Props) => {
   } else {
     return(
       <PasswordProtectedComponent
-        title={'This section is password protected. Please enter your password to access FDI data.'}
+        title={'This section is password protected. Please enter your password to access this section.'}
         buttonColor={colorScheme.primary}
         onPasswordSubmit={setFdiPasswordValue}
       >
