@@ -257,3 +257,13 @@ export const VizSourceCompact = styled.cite`
   margin: 0.5rem 0 0.25rem;
   font-size: 0.7rem;
 `;
+
+export const PatternBlock = styled.div`
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAI0lEQVQYV2NkwAEYYeLeeU3GIPbWSXVnQTRhCXQT4TqIlgAACbAIB9ZyaUoAAAAASUVORK5CYII=) repeat;
+  padding: 1rem 2.5rem;
+  box-sizing: border-box;
+
+  @media(max-width: 900px) {
+    padding: 1rem;
+  }
+`;

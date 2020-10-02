@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import QueryTableBuilder, {CallbackData} from '../../../components/tools/QueryTableBuilder';
-import noop from 'lodash/noop';
 import { colorScheme } from '../Utils';
-import PasswordProtectedComponent from '../../../components/text/PasswordProtectedComponent';
 import {
   FDIMarketConnection,
   FDIMarketOvertimeDestination,
@@ -13,6 +11,7 @@ import {
 } from '../../../components/text/DynamicTable';
 import { TreeNode } from 'react-dropdown-tree-select';
 import sortBy from 'lodash/sortBy';
+import {PatternBlock} from '../../../styling/styleUtils';
 
 interface Props {
   fdiMarketsEdges: FDIMarketConnection['edges'];
@@ -23,7 +22,6 @@ export default (props: Props) => {
   const {
     fdiMarketsEdges, industryName,
   } = props;
-  const [fdiPasswordValue, setFdiPasswordValue] = useState<string>('');
   const [filterCountry, setFilterCountry] = useState<string | undefined>(undefined);
   const [filterCity, setFilterCity] = useState<string | undefined>(undefined);
 
@@ -73,52 +71,51 @@ export default (props: Props) => {
     }
   };
 
-  let content: React.ReactElement<any>;
-  if (fdiPasswordValue === process.env.REACT_APP_ALBANIA_FDI_PASSWORD) {
-    const filteredEdgeData: FDIMarketConnection['edges'] = [];
-    const flattendDataForCSV: object[] = [];
-    fdiMarketsEdges.forEach(edge => {
-      if (edge && edge.node && edge.node.sourceCountry && edge.node.sourceCity) {
-        if (
-          (filterCountry === undefined || filterCountry === edge.node.sourceCountry) &&
-          (filterCity === undefined || filterCity === edge.node.sourceCity)
-          ) {
-          filteredEdgeData.push(edge);
-          const {
-            parentCompany, sourceCountry, sourceCity,
-            capexBalkans, capexEurope, capexWorld,
-            projectsBalkans, projectsEurope, projectsWorld,
-            avgCapex, avgJobs,
-          } = edge.node;
-          flattendDataForCSV.push({
-            'Parent Company': parentCompany,
-            'Source Country': sourceCountry,
-            'Source City': sourceCity,
-            'Capex Balkans': capexBalkans,
-            'Capex Europe': capexEurope,
-            'Capex World': capexWorld,
-            'Projects Balkans': projectsBalkans,
-            'Projects Europe': projectsEurope,
-            'Projects World': projectsWorld,
-            'Average Capex': avgCapex,
-            'Average Jobs': avgJobs,
-          });
-        }
+  const filteredEdgeData: FDIMarketConnection['edges'] = [];
+  const flattendDataForCSV: object[] = [];
+  fdiMarketsEdges.forEach(edge => {
+    if (edge && edge.node && edge.node.sourceCountry && edge.node.sourceCity) {
+      if (
+        (filterCountry === undefined || filterCountry === edge.node.sourceCountry) &&
+        (filterCity === undefined || filterCity === edge.node.sourceCity)
+        ) {
+        filteredEdgeData.push(edge);
+        const {
+          parentCompany, sourceCountry, sourceCity,
+          capexBalkans, capexEurope, capexWorld,
+          projectsBalkans, projectsEurope, projectsWorld,
+          avgCapex, avgJobs,
+        } = edge.node;
+        flattendDataForCSV.push({
+          'Parent Company': parentCompany,
+          'Source Country': sourceCountry,
+          'Source City': sourceCity,
+          'Capex Balkans': capexBalkans,
+          'Capex Europe': capexEurope,
+          'Capex World': capexWorld,
+          'Projects Balkans': projectsBalkans,
+          'Projects Europe': projectsEurope,
+          'Projects World': projectsWorld,
+          'Average Capex': avgCapex,
+          'Average Jobs': avgJobs,
+        });
       }
-    });
-    const topPreviewData = transformFDITop10List({
-      fdiMarketsEdges: filteredEdgeData, destination: FDIMarketOvertimeDestination.Balkans,
-      showZeroValues: true,
-    });
-    let filename = `Company List for ${industryName}`;
-    if (filterCountry !== undefined) {
-      filename = `${filename} - ${filterCountry}`;
     }
-    if (filterCity !== undefined) {
-      filename = `${filename} - ${filterCity}`;
-    }
-    filename = filename + '.csv';
-    content = (
+  });
+  const topPreviewData = transformFDITop10List({
+    fdiMarketsEdges: filteredEdgeData, destination: FDIMarketOvertimeDestination.Balkans,
+    showZeroValues: true,
+  });
+  let filename = `Company List for ${industryName}`;
+  if (filterCountry !== undefined) {
+    filename = `${filename} - ${filterCountry}`;
+  }
+  if (filterCity !== undefined) {
+    filename = `${filename} - ${filterCity}`;
+  }
+  filename = filename + '.csv';
+  return (
+    <PatternBlock>
       <QueryTableBuilder
         primaryColor={colorScheme.primary}
         onUpdateClick={filterData}
@@ -143,48 +140,11 @@ export default (props: Props) => {
         queryToDownload={flattendDataForCSV}
         filename={filename}
       />
-    );
-  } else {
-    content = (
-      <QueryTableBuilder
-        primaryColor={colorScheme.primary}
-        onUpdateClick={noop}
-        selectFields={[
-          {
-            id: 'country',
-            label: 'Source Country',
-            data: [sortedCountries[0]],
-            required: true,
-          },
-          {
-            id: 'city',
-            label: 'Source City',
-            data: [sortedCities[0]],
-            dependentOn: 'country',
-          },
-        ]}
-        itemName={'companies'}
-        columns={columns}
-        tableData={[]}
-        queryLength={0}
-        disabled={true}
-        queryToDownload={[]}
-        filename={''}
-      />
-    );
-  }
-  return (
-    <PasswordProtectedComponent
-      title={'This section is password protected. Please enter your password to access FDI data.'}
-      buttonColor={colorScheme.primary}
-      onPasswordSubmit={setFdiPasswordValue}
-    >
-      {content}
       <p style={{textAlign: 'center', fontSize: '0.8rem'}}>
         <em>
           Source: fDi Markets Library, a service from The Financial Times Limited (2019). All Rights Reserved.
         </em>
       </p>
-    </PasswordProtectedComponent>
+    </PatternBlock>
   );
 };
