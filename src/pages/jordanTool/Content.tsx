@@ -132,6 +132,7 @@ const JordanTool = (props: Props) => {
             enableSVGDownload={true}
             chartTitle={'Foreign Direct Investment - ' + industryName}
             jsonToDownload={overTimeHistogramCsvData}
+            chartCaption={'Source: fDi Markets Library, a service from The Financial Times Limited (2019). All Rights Reserved.'}
           />
           <InlineTwoColumnSection>
             <TextBlock>
