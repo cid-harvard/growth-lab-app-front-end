@@ -6,6 +6,7 @@ const Routes = {
   AlbaniaStory: '/accelerating-growth-in-albania',
   JordanTool: '/jordan-tool',
   JordanOverview: '/jordan-project-overview',
+  BestOf2020: '/growth-lab-best-data-visualizations-of-2020',
 }
 
 const defaultTitle = 'The Growth Lab at Harvard Kennedy School';
@@ -61,6 +62,13 @@ const metadata = [
     title: 'A Roadmap for Export Diversification: Jordan’s Complexity Profile | ' + defaultTitle,
     description: 'This tool displays the results of the complexity analysis developed for Jordan by the Growth Lab at Harvard University.',
     og_image: 'jordan-tool-background.png',
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.BestOf2020,
+    title: 'The Best Growth Lab Data Visualizations of 2020 | ' + defaultTitle,
+    description: defaultDescription,
+    og_image: defaultOgImage,
     favicon: defaultFavicon,
   },
 ];
