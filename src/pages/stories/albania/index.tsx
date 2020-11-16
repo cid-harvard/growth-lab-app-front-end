@@ -398,6 +398,7 @@ const AlbaniaStory = () => {
           data={treemapData}
           rootStyles={{margin: 0}}
           labelFont={secondaryFont}
+          animateOn={true}
         />
         <FadeInContainer><VizSource>Source: <em>Atlas of Economic Complexity</em></VizSource></FadeInContainer>
         <FadeInContainer>
