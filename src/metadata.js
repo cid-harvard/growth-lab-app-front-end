@@ -6,7 +6,7 @@ const Routes = {
   AlbaniaStory: '/accelerating-growth-in-albania',
   JordanTool: '/jordan-tool',
   JordanOverview: '/jordan-project-overview',
-  BestOf2020: '/growth-lab-best-data-visualizations-of-2020',
+  BestOf2020: '/best-of-2020',
 }
 
 const defaultTitle = 'The Growth Lab at Harvard Kennedy School';
