@@ -46,7 +46,7 @@ import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../components/navigation/DefaultHubHeader';
 import {
-  Root,
+  RootStandard as Root,
   Heading,
   MainNarrativeRoot,
   VizContainer,

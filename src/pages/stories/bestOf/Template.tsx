@@ -2,7 +2,7 @@ import React, {
   MutableRefObject,
 } from 'react';
 import {
-  StoriesGrid,
+  BestOfGrid,
 } from '../../../styling/Grid';
 import {
   FullWidth,
@@ -19,27 +19,39 @@ import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../components/navigation/DefaultHubHeader';
 import {
-  Root,
-  Heading,
+  RootAlternative,
+  HeadingAlternative,
   MainNarrativeRoot,
   VizContainer,
   StickyText,
-  MobileText,
-  FirstParagraph,
+  MobileTextAlternate,
+  FirstParagraphAlternative,
   FadeInContainer,
 } from '../sharedStyling';
+import HashLinkTitle from './HashLinkTitle';
 
 const Image = styled.img`
   width: 100%;
 `;
 
-const DivContainer = styled.div``;
+const DivContainer = styled.div`
+  a {
+    border: none;
+  }
+`;
 
+const FadeInImageContainer = styled(FadeInContainer)`
+  a {
+    border: none;
+  }
+`;
 
-interface SectionDatum {
+export interface SectionDatum {
+  id: string | undefined;
   title: string;
   text: string | React.ReactNode;
   image: string;
+  url: string | undefined;
   ref: MutableRefObject<HTMLElement | null>;
 }
 
@@ -63,26 +75,41 @@ const BestOfTemplate = (props: Props) => {
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
 
   let imageElm: React.ReactElement<any> | null = null;
-  const sectionsElms = sectionsData.map(({title, text, image, ref}, i) => {
-    const Wrapper = i === 0 ? FirstParagraph : MobileText;
+  const sectionsElms = sectionsData.map(({title, text, image, ref, id, url}, i) => {
+    const Wrapper = i === 0 ? FirstParagraphAlternative : MobileTextAlternate;
     const refObject = i === 0 ? undefined : ref as React.RefObject<HTMLDivElement>;
-    if (section === i || section === null) {
-      const ImageContainer = i === 0 ? DivContainer : FadeInContainer;
-      imageElm = (
-        <ImageContainer key={image + i}>
-          <Image src={image} alt='' title='' />
-        </ImageContainer>
-       );
+    if (section === i || (section === null && i === 0)) {
+      const ImageContainer = i === 0 ? DivContainer : FadeInImageContainer;
+      if (url) {
+        imageElm = (
+          <ImageContainer key={image + i}>
+            <a href={url}>
+              <Image src={image} alt='' title='' />
+            </a>
+          </ImageContainer>
+         );
+      } else {
+        imageElm = (
+          <ImageContainer key={image + i}>
+            <Image src={image} alt='' title='' />
+          </ImageContainer>
+         );
+      }
     }
     return (
-      <StorySectionContainer key={'bestof-section-' + title + image + i}>
-        <StickyText>
-          <Wrapper ref={refObject}>
-            <h2>{title}</h2>
-            <div>{text}</div>
-          </Wrapper>
-        </StickyText>
-      </StorySectionContainer>
+      <React.Fragment key={'bestof-section-' + title + image + i}>
+        <div id={id} />
+        <StorySectionContainer>
+          <StickyText>
+            <Wrapper ref={refObject}>
+              <HashLinkTitle id={id}>
+                {title}
+              </HashLinkTitle>
+              <div>{text}</div>
+            </Wrapper>
+          </StickyText>
+        </StorySectionContainer>
+      </React.Fragment>
     );
 
   });
@@ -101,18 +128,18 @@ const BestOfTemplate = (props: Props) => {
         highResSrc={coverPhotoSrc.high}
         lowResSrc={coverPhotoSrc.low}
       />
-      <Root>
-        <StoriesGrid>
-          <Heading>
+      <RootAlternative>
+        <BestOfGrid>
+          <HeadingAlternative>
             <FullWidth>
               <StoryTitle>{pageTitle}</StoryTitle>
               <Authors>{dateLine}</Authors>
               <Authors>{byLine}</Authors>
               <div>{introText}</div>
             </FullWidth>
-          </Heading>
-        </StoriesGrid>
-        <StoriesGrid>
+          </HeadingAlternative>
+        </BestOfGrid>
+        <BestOfGrid>
           <VizContainer style={{
             position: window.innerWidth < 700 && section !== null ? 'sticky' : undefined,
             height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
@@ -128,8 +155,8 @@ const BestOfTemplate = (props: Props) => {
           }>
             <TextBlock>{sectionsElms}</TextBlock>
           </MainNarrativeRoot>
-        </StoriesGrid>
-      </Root>
+        </BestOfGrid>
+      </RootAlternative>
       <StandardFooter />
     </>
   );

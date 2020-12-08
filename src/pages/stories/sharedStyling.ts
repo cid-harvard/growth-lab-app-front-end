@@ -6,11 +6,12 @@ import {
 import {
   StickyContainer,
   primaryFont,
+  secondaryFont,
 } from '../../styling/styleUtils';
 
 export const backgroundColor = '#f9f9f3';
 
-export const Root = styled(FullWidthContent)`
+export const RootStandard = styled(FullWidthContent)`
   padding: 0 1.25rem 8rem;
   color: #333;
   background-color: ${backgroundColor};
@@ -44,11 +45,62 @@ export const Root = styled(FullWidthContent)`
   }
 `;
 
+export const RootAlternative = styled(FullWidthContent)`
+  padding: 0 1.25rem 8rem;
+  color: #333;
+  background-color: #fff;
+
+  h1 {
+    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: 400;
+  }
+
+  h2 {
+    font-family: ${secondaryFont};
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  h3 {
+    color: #333;
+    text-align: center;
+    font-family: ${primaryFont};
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  p + h3 {
+    margin-top: 3rem;
+  }
+
+  a {
+    color: #4790b4;
+    text-decoration: none;
+    border-bottom: solid 1px #4790b4;
+  }
+`;
+
 export const Heading = styled.div`
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   grid-column: 1 / -1;
+`;
+
+export const HeadingAlternative = styled.div`
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  grid-column: 1 / -1;
+
+  p {
+    font-size: 1.15rem;
+  }
 `;
 
 export const MainNarrativeRoot = styled.div`
@@ -106,7 +158,26 @@ export const MobileText = styled.div`
   }
 `;
 
+export const MobileTextAlternate = styled.div`
+  @media (max-width: ${storyMobileWidth}px) {
+    position: relative;
+    padding: 41vh 0;
+
+    h2,
+    p {
+      background-color: #fff;
+      box-shadow: 0px 0px 15px 5px #fff;
+    }
+  }
+`;
+
 export const FirstParagraph = styled(MobileText)`
+  @media (max-width: ${storyMobileWidth}px) {
+    padding-top: 20vh;
+  }
+`;
+
+export const FirstParagraphAlternative = styled(MobileTextAlternate)`
   @media (max-width: ${storyMobileWidth}px) {
     padding-top: 20vh;
   }

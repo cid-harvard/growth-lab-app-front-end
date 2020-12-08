@@ -124,3 +124,14 @@ export const StoriesGrid = styled(FullWidthContentContainer)`
     grid-template-columns: 1fr;
   }
 `;
+
+export const BestOfGrid = styled(FullWidthContentContainer)`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2rem;
+  position: relative;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    grid-template-columns: 1fr;
+  }
+`;
