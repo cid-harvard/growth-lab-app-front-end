@@ -7,6 +7,10 @@ import data from './data.json';
 import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
 import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
+import orderBy from 'lodash/orderBy';
+
+const orderedData = orderBy(data, ['ORDERING'], ['asc']);
+
 
 const BestOf2020 = () =>{
   const section_0 = useRef<HTMLParagraphElement | null>(null);
@@ -62,7 +66,7 @@ const BestOf2020 = () =>{
 
   const metadata = get(Routes.BestOf2020);
 
-  const sectionsData: SectionDatum[] = data.map((d, i) => {
+  const sectionsData: SectionDatum[] = orderedData.map((d, i) => {
     const source = d.DATA_SOURCE && d.DATA_SOURCE.length && d.DATA_SOURCE !== 'WF TO'
       ? <><br /><br /><em>Source: {d.DATA_SOURCE}</em></> : null;
     const url = d.RESEARCH_LINK && d.RESEARCH_LINK && d.RESEARCH_LINK !== 'n/a' && d.RESEARCH_LINK !== 'WF Chuck'
