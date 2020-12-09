@@ -13,36 +13,6 @@ const ListItem = styled.li`
   margin-bottom: 0.25rem;
 `;
 
-// const ListButton = styled.button<{primaryColor: string, isActive: boolean}>`
-//   position: relative;
-//   background-color: transparent;
-//   font-size: 0.85rem;
-//   text-transform: uppercase;
-//   font-family: ${secondaryFont};
-//   padding: 0.25rem 0.25rem;
-//   outline: none;
-
-//   &:before {
-//     content: '';
-//     position: absolute;
-//     z-index: -1;
-//     bottom: 0;
-//     left: 0;
-//     right: 0;
-//     width: 100%;
-//     height: ${({isActive}) => isActive? '0.8rem': '0'};
-//     background-color: ${({primaryColor, isActive}) => isActive? primaryColor: 'transparent'};
-//     transition: height 0.2s ease;
-//   }
-
-//   &:hover, &:focus {
-//     &:before {
-//       height: 0.8rem;
-//       background-color: ${({primaryColor}) => primaryColor};
-//     }
-//   }
-// `;
-
 const ListButton = styled.button<{primaryColor: string, isActive: boolean, $wrap?: boolean}>`
   pointer-events: auto;
   display: flex;

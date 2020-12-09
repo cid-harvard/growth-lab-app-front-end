@@ -9,13 +9,13 @@ import {
   secondaryFont,
 } from '../../../styling/styleUtils';
 import {getCategoryString, backgroundGray} from '../Utils';
-import GridView from './GridView';
 import {
   HubProject,
   HubKeyword,
   ProjectCategories,
 } from '../graphql/graphQLTypes';
 import {rgba} from 'polished';
+import SearchResults from '../components/SearchResults';
 
 const Root = styled.div`
   margin: 0 0 4rem 3.25rem;
@@ -139,11 +139,6 @@ const SelectedCheckbox = styled(CheckboxBase)`
   &:focus + span {
     border-bottom: solid 1px #333;
   }
-`;
-
-
-const SearchResults = styled.div`
-  min-height: 100vh;
 `;
 
 
@@ -523,9 +518,10 @@ const SearchView = (props: Props) => {
           </KeywordsContainer>
         </div>
       </Root>
-      <SearchResults>
-        <GridView projects={filteredProjects} />
-      </SearchResults>
+      <SearchResults
+        projects={filteredProjects}
+        projectsKey={filteredProjects.reduce((key, p) => p.projectName + key, '')}
+      />
     </>
   );
 };
