@@ -20,19 +20,20 @@ const StickySideNav = (props: Props) => {
 
   const links: LinkItem[] = [
     {
-      label: 'Grid',
+      label: 'Gallery View',
       onClick: () => setActiveView(View.grid),
       isActive: activeView === View.grid,
     },
     {
-      label: 'List',
+      label: 'List View',
       onClick: () => setActiveView(View.list),
       isActive: activeView === View.list,
     },
     {
-      label: 'Search Keywords',
+      label: 'Search Projects',
       onClick: () => setActiveView(View.search),
       isActive: activeView === View.search,
+      wrap: true,
     },
   ];
 
