@@ -71,11 +71,13 @@ const BestOf2020 = () =>{
       ? <><br /><br /><em>Source: {d.DATA_SOURCE}</em></> : null;
     const url = d.RESEARCH_LINK && d.RESEARCH_LINK && d.RESEARCH_LINK !== 'n/a' && d.RESEARCH_LINK !== 'WF Chuck'
       ? d.RESEARCH_LINK : undefined;
+      const linkText = d.LINK_TEXT ? d.LINK_TEXT : undefined;
     return ({
       id: d.HASH_ID,
       title: d.TITLE,
       text: (<p>{d.DESCRIPTION}{source}</p>),
       image: d.IMAGE_SRC && d.IMAGE_SRC.length ? require(`./images/${d.IMAGE_SRC}`) : CoverPhotoImageLowRes,
+      linkText,
       url,
       ref: sections[i],
     });

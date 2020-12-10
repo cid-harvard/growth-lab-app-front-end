@@ -267,3 +267,46 @@ export const PatternBlock = styled.div`
     padding: 1rem;
   }
 `;
+
+export const ButtonLink = styled.a`
+  border: 1px solid ${baseColor};
+  color: ${baseColor};
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.4rem 0.6rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+
+  &:hover {
+    color: #fff;
+    background-color: ${baseColor};
+    border-color: ${baseColor};
+  }
+`;
+
+export const CloseButton = styled.button`
+  border: none;
+  background-color: transparent;
+  font-size: 1rem;
+  padding: 0.5rem;
+  color: ${lightBaseColor};
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:after {
+    content: '×';
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const CloseButtonBig = styled(CloseButton)`
+  font-size: 2.5rem;
+  line-height: 0;
+  padding: 2rem;
+`;

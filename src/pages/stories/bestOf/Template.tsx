@@ -10,6 +10,8 @@ import {
   StickyContainer,
   StorySectionContainer,
   Authors,
+  ButtonLink as ButtonLinkBase,
+  baseColor,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import styled from 'styled-components/macro';
@@ -29,10 +31,7 @@ import {
   FadeInContainer,
 } from '../sharedStyling';
 import HashLinkTitle from './HashLinkTitle';
-
-const Image = styled.img`
-  width: 100%;
-`;
+import FullScreenImage from './FullScreenImage';
 
 const DivContainer = styled.div`
   a {
@@ -46,11 +45,24 @@ const FadeInImageContainer = styled(FadeInContainer)`
   }
 `;
 
+const ButtonLink = styled(ButtonLinkBase)`
+  margin-top: 1rem;
+  && { /* needed to override template styling */
+    border-color: ${baseColor};
+    color: ${baseColor};
+
+    &: hover {
+      color: #fff;
+    }
+  }
+`;
+
 export interface SectionDatum {
   id: string | undefined;
   title: string;
   text: string | React.ReactNode;
   image: string;
+  linkText: string | undefined;
   url: string | undefined;
   ref: MutableRefObject<HTMLElement | null>;
 }
@@ -75,26 +87,28 @@ const BestOfTemplate = (props: Props) => {
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
 
   let imageElm: React.ReactElement<any> | null = null;
-  const sectionsElms = sectionsData.map(({title, text, image, ref, id, url}, i) => {
+  const sectionsElms = sectionsData.map(({title, text, image, ref, id, url, linkText}, i) => {
     const Wrapper = i === 0 ? FirstParagraphAlternative : MobileTextAlternate;
     const refObject = i === 0 ? undefined : ref as React.RefObject<HTMLDivElement>;
     if (section === i || (section === null && i === 0)) {
       const ImageContainer = i === 0 ? DivContainer : FadeInImageContainer;
-      if (url) {
-        imageElm = (
-          <ImageContainer key={image + i}>
-            <a href={url}>
-              <Image src={image} alt='' title='' />
-            </a>
-          </ImageContainer>
-         );
-      } else {
-        imageElm = (
-          <ImageContainer key={image + i}>
-            <Image src={image} alt='' title='' />
-          </ImageContainer>
-         );
-      }
+      imageElm = (
+        <ImageContainer key={image + i}>
+          <FullScreenImage src={image} />
+        </ImageContainer>
+       );
+    }
+    let linkButton: React.ReactElement<any> | null;
+    if (url) {
+      linkButton = (
+        <div>
+          <ButtonLink href={url}>
+            {linkText ? linkText : 'Explore the project'}
+          </ButtonLink>
+        </div>
+       );
+    } else {
+       linkButton = null;
     }
     return (
       <React.Fragment key={'bestof-section-' + title + image + i}>
@@ -106,6 +120,7 @@ const BestOfTemplate = (props: Props) => {
                 {title}
               </HashLinkTitle>
               <div>{text}</div>
+              {linkButton}
             </Wrapper>
           </StickyText>
         </StorySectionContainer>
