@@ -2,7 +2,7 @@ import React, {
   MutableRefObject,
 } from 'react';
 import {
-  BestOfGrid,
+  StoriesGrid,
 } from '../../../styling/Grid';
 import {
   FullWidth,
@@ -129,7 +129,7 @@ const BestOfTemplate = (props: Props) => {
         lowResSrc={coverPhotoSrc.low}
       />
       <RootAlternative>
-        <BestOfGrid>
+        <StoriesGrid>
           <HeadingAlternative>
             <FullWidth>
               <StoryTitle>{pageTitle}</StoryTitle>
@@ -138,8 +138,8 @@ const BestOfTemplate = (props: Props) => {
               <div>{introText}</div>
             </FullWidth>
           </HeadingAlternative>
-        </BestOfGrid>
-        <BestOfGrid>
+        </StoriesGrid>
+        <StoriesGrid>
           <VizContainer style={{
             position: window.innerWidth < 700 && section !== null ? 'sticky' : undefined,
             height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
@@ -155,7 +155,7 @@ const BestOfTemplate = (props: Props) => {
           }>
             <TextBlock>{sectionsElms}</TextBlock>
           </MainNarrativeRoot>
-        </BestOfGrid>
+        </StoriesGrid>
       </RootAlternative>
       <StandardFooter />
     </>
