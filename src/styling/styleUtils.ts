@@ -244,6 +244,12 @@ export const StickyContainer = styled.div`
   }
 `;
 
+export const StickyCenteredContainer = styled(StickyContainer)`
+  @media (min-width: ${storyMobileWidth + 1}px) {
+    height: 100vh;
+  }
+`;
+
 export const VizSource = styled.cite`
   text-align: center;
   display: block;

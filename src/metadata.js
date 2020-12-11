@@ -66,8 +66,8 @@ const metadata = [
   },
   {
     url: Routes.BestOf2020,
-    title: 'The Best Growth Lab Data Visualizations of 2020 | ' + defaultTitle,
-    description: defaultDescription,
+    title: '20 Visual Insights from the Growth Lab in 2020 | ' + defaultTitle,
+    description: "2020's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
     og_image: defaultOgImage,
     favicon: defaultFavicon,
   },

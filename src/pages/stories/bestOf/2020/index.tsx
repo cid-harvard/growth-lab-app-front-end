@@ -88,10 +88,10 @@ const BestOf2020 = () =>{
       metaTitle={metadata.title}
       metaDescription={metadata.description}
       coverPhotoSrc={{low: CoverPhotoImageLowRes, high: CoverPhotoImage}}
-      pageTitle={'The Best Growth Lab Data Visualizations of 2020'}
-      dateLine={'December 12, 2020'}
+      pageTitle={'20 Visual Insights from the Growth Lab in 2020'}
+      dateLine={'December 15, 2020'}
       byLine={null}
-      introText={<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>}
+      introText={<p>The Growth Lab has over 50 faculty, fellows, research assistants, and staff working on development challenges in more than a dozen countries worldwide. Our research in 2020 included modeling pandemic-related tradeoffs, mapping the network of global business travel, identifying foreign exchange constraints in Ethiopia, tracking the migration of the Albanian diaspora, and uncovering environmentally friendly diversification opportunities in Peru. Every project, paper, and presentation brought hundreds of charts, graphics, dashboards, and prototypes. We thought it would be worthwhile to share some of our more notable visual insights from this year.</p>}
       sectionsData={sectionsData}
     />
   );

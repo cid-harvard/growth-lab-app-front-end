@@ -7,7 +7,7 @@ import {
 import {
   FullWidth,
   StoryTitle,
-  StickyContainer,
+  StickyCenteredContainer,
   StorySectionContainer,
   Authors,
   ButtonLink as ButtonLinkBase,
@@ -159,9 +159,9 @@ const BestOfTemplate = (props: Props) => {
             position: window.innerWidth < 700 && section !== null ? 'sticky' : undefined,
             height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
           }}>
-            <StickyContainer>
+            <StickyCenteredContainer>
               {imageElm}
-            </StickyContainer>
+            </StickyCenteredContainer>
           </VizContainer>
           <MainNarrativeRoot ref={
             sectionsData.length && sectionsData[0]

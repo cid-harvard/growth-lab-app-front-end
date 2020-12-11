@@ -21,7 +21,7 @@ const scaleIn = keyframes`{
 
 const Image = styled.img`
   max-width: 100%;
-  max-height: 100%;
+  max-height: 80vh;
   cursor: pointer;
 
   &.scale-in {
