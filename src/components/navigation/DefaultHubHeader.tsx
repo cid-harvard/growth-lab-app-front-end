@@ -21,6 +21,7 @@ const Root = styled.div`
 const AppLink = styled(Link)`
   text-decoration: none;
   font-weight: 600;
+  text-shadow: 0 0 2px rgba(0 0 0 / 50%);
 `;
 
 const Icon = styled.img`
