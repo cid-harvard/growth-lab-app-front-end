@@ -8,7 +8,7 @@
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
     "IMAGE COMMENTARY": "",
     "ALT ATTRIBUTE": "",
-    "DESCRIPTION": "For oil economies, where a single export dominates, volatility in the price of that product can have dramatic effects on the relative importance of other exports in the export basket. For applied research in Saudi Arabia, we removed this volatility to study whether the non-oil economy is sufficiently dynamic to buoy oil price dynamics. Saudi Arabia has been remarkably stable in the economic complexity of its non-oil economy and that its 32nd ranking in the index falls below its goal of becoming the 16th largest economy in the world.",
+    "DESCRIPTION": "For oil economies, where a single export dominates, volatility in the price of that product can have dramatic effects on the relative importance of other exports in the export basket. For applied research in Saudi Arabia, we removed this volatility to study whether the non-oil economy is sufficiently dynamic to buoy oil price dynamics. Saudi Arabia has been remarkably stable in the economic complexity of its non-oil economy, and its 32nd ranking in the index falls below its goal of becoming the 16th largest economy in the world.",
     "INCLUDE?": "Yes",
     "IMAGE_SRC": "saudis_non-oil_economic_complexity_index.png",
     "HASH_ID": "saudis_non-oil_economic_complexity_index"
@@ -50,7 +50,7 @@
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
     "IMAGE COMMENTARY": "",
     "ALT ATTRIBUTE": "",
-    "DESCRIPTION": "This graph captures a dispersion of electricity tariffs over time in Jordan for aggregated categories. In 2012, Jordan suddenly lost access to low-priced, piped gas natural supply from Egypt and was forced to switch to higher-priced heavy fuel sources. Although Jordan has taken substantial efforts to diversify its sources of fuel and expand low-cost renewable electricity generation, the transition has had a permanent effect on the average cost of electricity and led to high levels of cross-subsidization in order to keep the price of electricity low for most households.",
+    "DESCRIPTION": "This graph captures a dispersion of electricity tariffs over time in Jordan for aggregated categories. In 2012, Jordan suddenly lost access to low-priced, piped natural gas supply from Egypt and was forced to switch to higher-priced heavy fuel sources. Although Jordan has taken substantial efforts to diversify its sources of fuel and expand low-cost renewable electricity generation, the transition has had a permanent effect on the average cost of electricity and led to high levels of cross-subsidization in order to keep the price of electricity low for most households.",
     "INCLUDE?": "Yes",
     "IMAGE_SRC": "dispersion_of_jordans_electricity_tariffs_over_time.png",
     "HASH_ID": "dispersion_of_jordans_electricity_tariffs_over_time"
@@ -134,7 +134,7 @@
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
     "IMAGE COMMENTARY": "",
     "ALT ATTRIBUTE": "",
-    "DESCRIPTION": "This viz explains hundreds of years of economic growth theory in a three-panel set. Some countries have found success through technology-led growth that changed and expand what they produced (diversification) and to changed how they produced it (increasing complexity), which allowed for the dual benefits of job creation and income growth. Contrast this to oil economy models that may experience episodes of rapid growth, but where these episodes are not sustained due to their dependence on a single, volatile source of growth.",
+    "DESCRIPTION": "This viz explains hundreds of years of economic growth theory in a three-panel set. Some countries have found success through technology-led growth that changed and expand what they produced (diversification) and changed how they produced it (increasing complexity), which allowed for the dual benefits of job creation and income growth. Contrast this to oil economy models that may experience episodes of rapid growth, but where these episodes are not sustained due to their dependence on a single, volatile source of growth.",
     "INCLUDE?": "Yes",
     "IMAGE_SRC": "technology-led_growth_vs._oil-dependent_growth.png",
     "HASH_ID": "technology-led_growth_vs._oil-dependent_growth"
@@ -218,7 +218,7 @@
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
     "IMAGE COMMENTARY": "",
     "ALT ATTRIBUTE": "",
-    "DESCRIPTION": "This graph plots distributions for how far tourists traveled to visit Southern European destination countries in 2018. Tourists arriving in Albania come from much closer in comparison to tourists visiting other peers in Southern Europe. This suggests that Albania's tourism industry might be able to grow by reaching out to markets farther away and raises the question of how Albania can best expand tourism demand. For more on this topic, see the Albania project team’s working paper exploring air transportation and regional economic development here.",
+    "DESCRIPTION": "This graph plots distributions for how far tourists traveled to visit Southern European destination countries in 2018. Tourists arriving in Albania come from much closer in comparison to tourists visiting other peers in Southern Europe. This suggests that Albania's tourism industry might be able to grow by reaching out to markets farther away and raises the question of how Albania can best expand tourism demand. For more on this topic, see the Albania project team’s working paper exploring air transportation and regional economic development below.",
     "INCLUDE?": "Yes",
     "IMAGE_SRC": "albanias_tourists_tend_to_come_from_nearby.png",
     "HASH_ID": "albanias_tourists_tend_to_come_from_nearby"
