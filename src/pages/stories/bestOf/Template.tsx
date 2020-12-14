@@ -33,10 +33,6 @@ import {
 import HashLinkTitle from './HashLinkTitle';
 import FullScreenImage from './FullScreenImage';
 
-const Root = styled(RootAlternative)`
-  border-top: solid 1px #e1e1e1;
-`;
-
 const DivContainer = styled.div`
   a {
     border: none;
@@ -147,7 +143,7 @@ const BestOfTemplate = (props: Props) => {
         highResSrc={coverPhotoSrc.high}
         lowResSrc={coverPhotoSrc.low}
       />
-      <Root>
+      <RootAlternative style={{borderTop: 'solid 1px #e1e1e1'}}>
         <StoriesGrid>
           <HeadingAlternative>
             <FullWidth>
@@ -175,7 +171,7 @@ const BestOfTemplate = (props: Props) => {
             <TextBlock>{sectionsElms}</TextBlock>
           </MainNarrativeRoot>
         </StoriesGrid>
-      </Root>
+      </RootAlternative>
       <StandardFooter />
     </>
   );
