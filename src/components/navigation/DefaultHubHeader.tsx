@@ -61,14 +61,16 @@ interface Props {
   staticPosition?: boolean;
   growthLabLinkColor?: string;
   appLinkColor?: string;
+  backgroundColor?: string;
 }
 
 export default (props: Props) => {
-  const {staticPosition, growthLabLinkColor, appLinkColor} = props;
+  const {staticPosition, growthLabLinkColor, appLinkColor, backgroundColor} = props;
   return (
     <Root style={{
       position: staticPosition ? 'static' : 'absolute',
       marginBottom: staticPosition ? '2rem' : undefined,
+      backgroundColor,
     }}>
       <AppLink
         to={Routes.Landing}

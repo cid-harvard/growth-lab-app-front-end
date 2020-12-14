@@ -138,7 +138,9 @@ const BestOfTemplate = (props: Props) => {
         <meta property='og:description' content={metaDescription} />
         <link href='https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&display=swap' rel='stylesheet' />
       </Helmet>
-      <DefaultHubHeader />
+      <DefaultHubHeader
+        backgroundColor={'rgb(49 89 97 / 60%)'}
+      />
       <SmartCoverPhoto
         highResSrc={coverPhotoSrc.high}
         lowResSrc={coverPhotoSrc.low}
