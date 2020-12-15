@@ -168,8 +168,22 @@
     "HASH_ID": "industry_space"
   },
   {
-    "TITLE": "ALBANIA'S TOURISTS TEND TO COME FROM NEARBY",
+    "TITLE": "SAUDI'S NON-OIL ECONOMIC COMPLEXITY INDEX",
     "ORDERING": 13,
+    "RESEARCH_LINK": "https://atlas.cid.harvard.edu/rankings",
+    "LINK_TEXT": "Explore the Tool",
+    "DATA_SOURCE": "Atlas of Economic Complexity",
+    "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
+    "IMAGE COMMENTARY": "",
+    "ALT ATTRIBUTE": "",
+    "DESCRIPTION": "Oil is a very low complexity product. For economies where oil exports are very large, this may distort the view of the other existing capabilities that the country may have. For research on Saudi Arabia, we calculated the complexity of the country’s exports with and without oil. Given the low complexity and high price volatility of oil, the two time series tell a very different story. Saudi Arabia has been remarkably stable in the economic complexity of its non-oil exports, and its rank as 32nd in the world provides some optimism for its potential future development, as oil becomes less important in its export basket",
+    "INCLUDE?": "Yes",
+    "IMAGE_SRC": "saudis_non-oil_economic_complexity_index.png",
+    "HASH_ID": "saudis_non-oil_economic_complexity_index"
+  },
+  {
+    "TITLE": "ALBANIA'S TOURISTS TEND TO COME FROM NEARBY",
+    "ORDERING": 14,
     "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/files/growthlab/files/2020-06-cid-fellows-wp-127-albania-air-transport.pdf",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "UN World Tourism Organization",
@@ -183,7 +197,7 @@
   },
   {
     "TITLE": "A BINDING FOREIGN EXCHANGE CONSTRAINT IN ETHIOPIA",
-    "ORDERING": 14,
+    "ORDERING": 15,
     "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/applied-research/ethiopia",
     "LINK_TEXT": "Explore the Project",
     "DATA_SOURCE": "Growth Lab construction using WDI",
@@ -197,7 +211,7 @@
   },
   {
     "TITLE": "JORDAN'S ENVISIONED MACROECONOMIC TRAJECTORY",
-    "ORDERING": 15,
+    "ORDERING": 16,
     "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/publications/jordan-elements-growth-strategy",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "IMF Article IV and Program Reports for Jordan",
@@ -211,7 +225,7 @@
   },
   {
     "TITLE": "PROTOTYPING DATA COMPARISON IN A TREEMAP",
-    "ORDERING": 16,
+    "ORDERING": 17,
     "RESEARCH_LINK": "https://cid-harvard.github.io/react-canvas-treemap/#/compare",
     "LINK_TEXT": "Explore the Prototype",
     "DATA_SOURCE": "Growth Lab Digital Development & Design Team",
