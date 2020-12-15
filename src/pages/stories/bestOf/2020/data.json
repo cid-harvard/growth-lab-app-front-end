@@ -154,22 +154,8 @@
     "HASH_ID": "ethiopias_pathways_to_diversification"
   },
   {
-    "TITLE": "VISUALIZING THE INDUSTRY SPACE TO RING TRANSITION",
-    "ORDERING": 12,
-    "RESEARCH_LINK": "https://cid-harvard.github.io/industry-space-prototype/#/u-map-clusters-rings-opacity-lines",
-    "LINK_TEXT": "Explore the Prototype",
-    "DATA_SOURCE": "Growth Lab Digital Development & Design Team",
-    "IMAGE LOCATION": "",
-    "IMAGE COMMENTARY": "",
-    "ALT ATTRIBUTE": "",
-    "DESCRIPTION": "In our 2007 Science paper, we represented the product space as a network. Networks are in principle high dimensional spaces where the location of the nodes is not meaningful but the relationship between nodes is captured by the strength of the links.  In this representation, we explore a different visualization. We analyze the industry space by projecting each industry into a two dimensional space where the Euclidean distances are meaningful. To explore how the two visualizations provide meaningful information, we allow the viewer to toggle between the two representations.  By clicking on an industry node, the visualization transforms itself into an ego network, allowing the user to see what other industries are in the neighborhood of the selected industry, despite the often-misleading Euclidean distance between nodes.",
-    "INCLUDE?": "Yes",
-    "IMAGE_SRC": "industry_space_to_ring_animation.gif",
-    "HASH_ID": "industry_space"
-  },
-  {
     "TITLE": "SAUDI'S NON-OIL ECONOMIC COMPLEXITY INDEX",
-    "ORDERING": 13,
+    "ORDERING": 12,
     "RESEARCH_LINK": "https://atlas.cid.harvard.edu/rankings",
     "LINK_TEXT": "Explore the Tool",
     "DATA_SOURCE": "Atlas of Economic Complexity",
@@ -183,7 +169,7 @@
   },
   {
     "TITLE": "ALBANIA'S TOURISTS TEND TO COME FROM NEARBY",
-    "ORDERING": 14,
+    "ORDERING": 13,
     "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/files/growthlab/files/2020-06-cid-fellows-wp-127-albania-air-transport.pdf",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "UN World Tourism Organization",
@@ -197,7 +183,7 @@
   },
   {
     "TITLE": "A BINDING FOREIGN EXCHANGE CONSTRAINT IN ETHIOPIA",
-    "ORDERING": 15,
+    "ORDERING": 14,
     "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/applied-research/ethiopia",
     "LINK_TEXT": "Explore the Project",
     "DATA_SOURCE": "Growth Lab construction using WDI",
@@ -211,7 +197,7 @@
   },
   {
     "TITLE": "JORDAN'S ENVISIONED MACROECONOMIC TRAJECTORY",
-    "ORDERING": 16,
+    "ORDERING": 15,
     "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/publications/jordan-elements-growth-strategy",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "IMF Article IV and Program Reports for Jordan",
@@ -222,19 +208,5 @@
     "INCLUDE?": "Yes",
     "IMAGE_SRC": "jordans_envisioned_macroeconomic_trajectory.jpg",
     "HASH_ID": "jordans_envisioned_macroeconomic_trajectory"
-  },
-  {
-    "TITLE": "PROTOTYPING DATA COMPARISON IN A TREEMAP",
-    "ORDERING": 17,
-    "RESEARCH_LINK": "https://cid-harvard.github.io/react-canvas-treemap/#/compare",
-    "LINK_TEXT": "Explore the Prototype",
-    "DATA_SOURCE": "Growth Lab Digital Development & Design Team",
-    "IMAGE LOCATION": "",
-    "IMAGE COMMENTARY": "",
-    "ALT ATTRIBUTE": "",
-    "DESCRIPTION": "Treemaps are a neat way to look at the structure of a particular place or industry. But it is hard to compare two places or industries by looking across two tree maps. In this visualization, we compare two cities in a single treemap by changing the opacity with which each city is represented. In this representation, Boston is dark and New York is light. The graph allows us to see which city has a larger industry either in absolute or in proportional terms.  Our study showed that a comparison treemap is better optimized for simpler data to avoid visually overwhelming the user.",
-    "INCLUDE?": "Yes",
-    "IMAGE_SRC": "comparison_treemap.png",
-    "HASH_ID": "comparison_treemap"
   }
 ]
