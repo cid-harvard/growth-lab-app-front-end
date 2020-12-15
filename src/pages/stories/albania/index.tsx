@@ -4,7 +4,6 @@ import React, {
   useState,
 } from 'react';
 import {
-  FullWidthContent,
   StoriesGrid,
   storyMobileWidth,
 } from '../../../styling/Grid';
@@ -12,15 +11,14 @@ import {
   FullWidth,
   StoryTitle,
   StoryHeading,
-  StickyContainer,
   StorySectionContainer,
-  primaryFont,
   secondaryFont,
   VizSource,
   Authors,
+  StickyContainer,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
-import styled, {keyframes} from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import useScrollingSections from '../../../hooks/useScrollingSections';
 import usePrevious from '../../../hooks/usePrevious';
 import DataViz, {
@@ -47,91 +45,20 @@ import CoverPhotoImageLowRes from './cover-photo-low-res.jpg';
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../components/navigation/DefaultHubHeader';
+import {
+  RootStandard as Root,
+  Heading,
+  MainNarrativeRoot,
+  VizContainer,
+  SingleColumnNarrative,
+  StickyText,
+  MobileText,
+  FirstParagraph,
+  FadeInContainer,
+} from '../sharedStyling';
 
 const metaTitle = 'Can Albania’s Economic Turnaround Survive COVID-19? A Growth Diagnostic Update | Harvard Growth Lab';
 const metaDescription = 'This brief analysis takes stock of Albania’s economic growth prior to the COVID-19 crisis and what the strengths and weaknesses of the pre-COVID economy imply for recovery and the possibility of accelerating long-term and inclusive growth in the years to come. Albania is a place where much has been achieved to expand opportunity and well-being as growth has gradually accelerated since 2013-14, but where much remains to be done to continue this acceleration once the immediate crisis of COVID-19 has passed.';
-
-const backgroundColor = '#f9f9f3';
-
-const Root = styled(FullWidthContent)`
-  padding: 0 1.25rem 8rem;
-  color: #333;
-  background-color: ${backgroundColor};
-
-  h1,
-  h2,
-  p {
-    font-family: 'Source Serif Pro', serif;
-  }
-
-  p {
-    font-size: 1.25rem;
-  }
-
-  h3 {
-    color: #333;
-    text-align: center;
-    font-family: ${primaryFont};
-    text-transform: uppercase;
-    font-weight: 400;
-  }
-
-  p + h3 {
-    margin-top: 3rem;
-  }
-
-  a {
-    color: #4790b4;
-    text-decoration: none;
-    border-bottom: solid 1px #4790b4;
-  }
-`;
-
-const Heading = styled.div`
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  grid-column: 1 / -1;
-`;
-
-const MainNarrativeRoot = styled.div`
-@media(max-width: ${storyMobileWidth}px) {
-  position: relative;
-  z-index: 150 !important;
-}
-`;
-const VizContainer = styled.div`
-  position: relative;
-  z-index: 100;
-
-  @media(max-width: ${storyMobileWidth}px) {
-    position: sticky;
-    bottom: 0;
-    top: 0;
-    pointer-events: none;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-
-    > div {
-      transform: scale(0.75);
-    }
-  }
-`;
-
-const SingleColumnNarrative = styled.div`
-  grid-column: 1 / -1;
-  margin-top: 5rem;
-
-  p,
-  h2 {
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-  }
-`;
 
 const InlineVizContainer = styled.div`
   max-width: 700px;
@@ -171,28 +98,6 @@ const TableContainer = styled.div`
   max-width: 650px;
   padding: 0 50px;
   margin: 2.75rem auto;
-`;
-
-const StickyText = styled(StickyContainer)`
-  top: 10vh;
-`;
-
-const MobileText = styled.div`
-  @media (max-width: ${storyMobileWidth}px) {
-    position: relative;
-    padding: 41vh 0;
-
-    p {
-      background-color: ${backgroundColor};
-      box-shadow: 0px 0px 15px 5px ${backgroundColor};
-    }
-  }
-`;
-
-const FirstParagraph = styled(MobileText)`
-  @media (max-width: ${storyMobileWidth}px) {
-    padding-top: 20vh;
-  }
 `;
 
 const MapContainer = styled.div`
@@ -265,15 +170,6 @@ const BarChartTitle = styled.h4`
 const CenterTitle = styled(BarChartTitle)`
   border-left: solid 1px #dfdfdf;
   border-right: solid 1px #dfdfdf;
-`;
-
-const fadein = keyframes`{
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}`;
-
-const FadeInContainer = styled.div`
-  animation: ${fadein} 750ms;
 `;
 
 const AlbaniaStory = () => {
@@ -398,6 +294,7 @@ const AlbaniaStory = () => {
           data={treemapData}
           rootStyles={{margin: 0}}
           labelFont={secondaryFont}
+          animateOn={true}
         />
         <FadeInContainer><VizSource>Source: <em>Atlas of Economic Complexity</em></VizSource></FadeInContainer>
         <FadeInContainer>

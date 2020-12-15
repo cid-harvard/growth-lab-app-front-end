@@ -533,7 +533,7 @@ export default () => {
             <Scroll />
             <Scroll2 />
             <Scroll3 />
-            <ScrollText>Viz Hub</ScrollText>
+            <ScrollText>Explore Our Portfolio</ScrollText>
           </ScrollArrow>
         </ScrollCell>
       </Grid>

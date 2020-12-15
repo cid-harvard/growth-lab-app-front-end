@@ -21,6 +21,7 @@ const Root = styled.div`
 const AppLink = styled(Link)`
   text-decoration: none;
   font-weight: 600;
+  text-shadow: 0 0 2px rgba(0 0 0 / 50%);
 `;
 
 const Icon = styled.img`
@@ -60,14 +61,16 @@ interface Props {
   staticPosition?: boolean;
   growthLabLinkColor?: string;
   appLinkColor?: string;
+  backgroundColor?: string;
 }
 
 export default (props: Props) => {
-  const {staticPosition, growthLabLinkColor, appLinkColor} = props;
+  const {staticPosition, growthLabLinkColor, appLinkColor, backgroundColor} = props;
   return (
     <Root style={{
       position: staticPosition ? 'static' : 'absolute',
       marginBottom: staticPosition ? '2rem' : undefined,
+      backgroundColor,
     }}>
       <AppLink
         to={Routes.Landing}
