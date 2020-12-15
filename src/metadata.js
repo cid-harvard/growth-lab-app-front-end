@@ -66,7 +66,7 @@ const metadata = [
   },
   {
     url: Routes.BestOf2020,
-    title: '20 Visual Insights from the Growth Lab in 2020 | ' + defaultTitle,
+    title: '16 Visual Insights from the Growth Lab in 2020 | ' + defaultTitle,
     description: "2020's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
     og_image: 'best-of-2020-share-image.jpg',
     favicon: defaultFavicon,
@@ -75,7 +75,7 @@ const metadata = [
 
 const get = (route) => {
   const data = metadata.find(({url}) => url === route);
-  if (data && data.length) {
+  if (data) {
     return data;
   } else {
     return {

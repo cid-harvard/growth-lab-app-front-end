@@ -298,7 +298,7 @@ const ExploreNextFooter = (props: Props) => {
       </Container>
       <LicenseAndReadme>
         <div>
-          Harvard Growth Lab’s Country Dashboards are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.
+          Harvard Growth Lab’s digital tools are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.
         </div>
         <div style={{marginTop: '0.4rem'}}>
           Copyright © {new Date().getFullYear()} The President and Fellows of Harvard College
