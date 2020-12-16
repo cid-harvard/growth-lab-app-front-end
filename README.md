@@ -218,6 +218,17 @@ The StickySubHeading component, located at `src/components/StickySubHeading` is 
 - **highlightColor**: `string`
 - **onHeightChange** *(optional)*: `(height: number) => void` Optional callback function returning the height of component whenever it changes.
 
+<a name="stickysubheadingcomponent"/>
+
+#### DefaultHubHeader
+
+The DefaultHubHeader component, located at `src/components/DefaultHubHeader` is a heading element for general pages -
+
+- **staticPosition**: *(optional)*: `boolean`
+- **growthLabLinkColor**: *(optional)*: `string`
+- **appLinkColor**: *(optional)*: `string`
+- **backgroundColor**: *(optional)*: `string`
+
 <a name="gradientheadercomponent"/>
 
 #### GradientHeader
