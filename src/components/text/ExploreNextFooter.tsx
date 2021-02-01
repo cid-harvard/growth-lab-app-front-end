@@ -24,7 +24,9 @@ import {
   SocialType,
   defaultSocialIcons,
   socialIcon,
+  StyledLink,
 } from './StandardFooter';
+import {Routes, hubId} from '../../routing/routes';
 
 const AttributionContainer = styled(Container)`
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAI0lEQVQYV2NkwAEYYeLeeU3GIPbWSXVnQTRhCXQT4TqIlgAACbAIB9ZyaUoAAAAASUVORK5CYII=) repeat;
@@ -142,13 +144,31 @@ const ExploreNextFooter = (props: Props) => {
             </GrowthLabInfo>
           </LogoColumn>
           <RepoColumn>
+            <StyledLink href={Routes.Landing + '#' + hubId}>
+              Hub
+            </StyledLink>
+            <StyledLink href={Routes.Community}>
+              Community
+            </StyledLink>
+            <StyledLink href={Routes.About}>
+              About
+            </StyledLink>
+            <StyledLink href={'https://hksexeced.tfaforms.net/f/subscribe?s=a1n6g000000nJnxAAE'}>
+              Newsletter
+            </StyledLink>
+            <StyledLink
+              href='https://growthlab.cid.harvard.edu/'
+              target='_blank' rel='noopener noreferrer'
+            >
+              Growth Lab
+            </StyledLink>
             <GitHubLink
               href='https://github.com/cid-harvard/growth-lab-app-front-end'
               target='_blank'
               rel='noopener noreferrer'
               color={'#333'}
             >
-              <GitHubIcon src={require('./assets/githubicon.svg')} />
+              <GitHubIcon src={require('./assets/githubicon.svg')} alt='' title='' />
               GitHub Repo
             </GitHubLink>
           </RepoColumn>
@@ -158,7 +178,28 @@ const ExploreNextFooter = (props: Props) => {
         </Content>
       </Container>
       <LicenseAndReadme>
-        Harvard Growth Lab’s digital tools are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.
+        <div>
+          Harvard Growth Lab’s digital tools are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.
+        </div>
+        <div style={{marginTop: '0.4rem'}}>
+          Copyright © {new Date().getFullYear()} The President and Fellows of Harvard College
+          {' | '}
+          <a href='https://gdpr.harvard.edu/eeaprivacydisclosures' target='_blank' rel='noopener noreferrer'>
+            Privacy
+          </a>
+          {' | '}
+          <a href='http://accessibility.harvard.edu/' target='_blank' rel='noopener noreferrer'>
+            Accessibility
+          </a>
+          {' | '}
+          <a href='https://accessibility.huit.harvard.edu/digital-accessibility-policy' target='_blank' rel='noopener noreferrer'>
+            Digital Accessibility
+          </a>
+          {' | '}
+          <a href='http://www.harvard.edu/reporting-copyright-infringements' target='_blank' rel='noopener noreferrer'>
+            Report Copyright
+          </a>
+        </div>
       </LicenseAndReadme>
     </Root>
   );
