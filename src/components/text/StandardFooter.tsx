@@ -144,7 +144,7 @@ export const GitHubIcon = styled.img`
   margin-right: 0.5rem;
 `;
 
-const StyledLink = styled.a`
+export const StyledLink = styled.a`
   color: #333;
   text-decoration: none;
   text-transform: uppercase;
@@ -223,7 +223,7 @@ interface Props {
   socialItems?: {target: string, type: SocialType, alt?: string}[];
 }
 
-const ExploreNextFooter = (props: Props) => {
+const StandardFooter = (props: Props) => {
   const socialItems = props.socialItems === undefined ? defaultSocialIcons : props.socialItems;
 
   const socialItemsList = socialItems.map(({target, type, alt}) =>{
@@ -275,6 +275,9 @@ const ExploreNextFooter = (props: Props) => {
             <StyledLink href={Routes.About}>
               About
             </StyledLink>
+            <StyledLink href={'https://hksexeced.tfaforms.net/f/subscribe?s=a1n6g000000nJnxAAE'}>
+              Newsletter
+            </StyledLink>
             <StyledLink
               href='https://growthlab.cid.harvard.edu/'
               target='_blank' rel='noopener noreferrer'
@@ -324,4 +327,4 @@ const ExploreNextFooter = (props: Props) => {
   );
 };
 
-export default ExploreNextFooter;
+export default StandardFooter;
