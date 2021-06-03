@@ -15,7 +15,7 @@ License - [Attribution-NonCommercial-ShareAlike 4.0 International](https://creat
 - [Building a Page](#buildingapage)
 - [Grid Layout and Style Utilities](#styleutilites)
 - [Components](#components)
-    - [Strucutural Components](#strucuturalcomponents)
+    - [Structural Components](#structuralcomponents)
       - [StandardFooter](#standardfooter)
       - [ExploreNextFooter](#explorenextfootercomponent)
       - [StickySubHeading](#stickysubheadingcomponent)
@@ -168,9 +168,9 @@ Style utilities exports everything from global variables like colors and fonts, 
 ## Components
 
 Components are more complete and complex pieces that can be used to build out a page. They include data visualizations, headers, search components, and more. If you add a new component or modify an existing one, please update the documentation.
-<a name="strucuturalcomponents"/>
+<a name="structuralcomponents"/>
 
-### Strucutural Components
+### Structural Components
 
 <a name="standardfooter"/>
 
