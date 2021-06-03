@@ -79,6 +79,8 @@ const CategoryContainer = styled.div`
 `;
 const AttributeContainer = styled.div`
   margin-bottom: 0.85rem;
+`;
+const StatusContainer = styled(AttributeContainer)`
   text-transform: capitalize;
 `;
 
@@ -221,7 +223,16 @@ const SearchView = (props: Props) => {
       }
       statusVar = statusVar && statusVar.length ? statusVar + '&' : statusVar;
       const fullUrl =
-        Routes.Landing + '?' + queryVar + keywordVar + categoriesVar + dataKeywordsVar + statusVar + '#' + hubId;
+        Routes.Landing +
+          encodeURI(
+            '?' +
+            queryVar +
+            keywordVar +
+            categoriesVar +
+            dataKeywordsVar +
+            statusVar +
+            '#' + hubId,
+          );
       history.push(fullUrl);
     }
   };
@@ -430,12 +441,12 @@ const SearchView = (props: Props) => {
         return null;
       } else {
         statusList.push(
-          <AttributeContainer key={'checkbox-field-' + checkbox.value + i}>
+          <StatusContainer key={'checkbox-field-' + checkbox.value + i}>
             <CheckboxLabel>
               <UnselectedCheckbox type={'checkbox'} checked={checkbox.checked} onChange={onChange} value={checkbox.value} />
               <span>{checkbox.label.toLowerCase()}</span>
             </CheckboxLabel>
-          </AttributeContainer>,
+          </StatusContainer>,
         );
       }
 
