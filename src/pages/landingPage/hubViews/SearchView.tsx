@@ -201,38 +201,36 @@ const SearchView = (props: Props) => {
       ) {
       history.push(baseUrl);
     } else {
-      const queryVar = query && query.length ? 'query=' + query + '&' : '';
+      const queryVar = query && query.length ? 'query=' + encodeURIComponent(query) + '&' : '';
       let keywordVar = keywords && keywords.length ? 'keywords=' : '';
       if (keywords && keywords.length) {
-        keywords.forEach(word => keywordVar = keywordVar + word + ',');
+        keywords.forEach(word => keywordVar = keywordVar + encodeURIComponent(word) + ',');
       }
       keywordVar = keywordVar && keywordVar.length ? keywordVar + '&' : keywordVar;
       let categoriesVar = categories && categories.length ? 'categories=' : '';
       if (categories && categories.length) {
-        categories.forEach(word => categoriesVar = categoriesVar + word + ',');
+        categories.forEach(word => categoriesVar = categoriesVar + encodeURIComponent(word) + ',');
       }
       categoriesVar = categoriesVar && categoriesVar.length ? categoriesVar + '&' : categoriesVar;
       let dataKeywordsVar = dataKeywords && dataKeywords.length ? 'dataKeywords=' : '';
       if (dataKeywords && dataKeywords.length) {
-        dataKeywords.forEach(word => dataKeywordsVar = dataKeywordsVar + word + ',');
+        dataKeywords.forEach(word => dataKeywordsVar = dataKeywordsVar + encodeURIComponent(word) + ',');
       }
       dataKeywordsVar = dataKeywords && dataKeywords.length ? dataKeywordsVar + '&' : dataKeywordsVar;
       let statusVar = status && status.length ? 'status=' : '';
       if (status && status.length) {
-        status.forEach(word => statusVar = statusVar + word + ',');
+        status.forEach(word => statusVar = statusVar + encodeURIComponent(word) + ',');
       }
       statusVar = statusVar && statusVar.length ? statusVar + '&' : statusVar;
       const fullUrl =
         Routes.Landing +
-          encodeURI(
             '?' +
             queryVar +
             keywordVar +
             categoriesVar +
             dataKeywordsVar +
             statusVar +
-            '#' + hubId,
-          );
+            '#' + hubId;
       history.push(fullUrl);
     }
   };
