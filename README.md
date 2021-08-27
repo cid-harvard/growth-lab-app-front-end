@@ -121,9 +121,8 @@ All of the pages along with their uniquely associated content and functions shou
       description: 'A description',
       og_image: defaultOgImage,
       favicon: defaultFavicon,
-    },
-  ];
-
+    }
+   ]
    ```
 
 4. Once you have the route defined, you will want to add it to `src/App.tsx`. There are two locations within `App.tsx` that will have to be updated. The first is near the top, where you will have to import it with `lazy` the way the other pages are being imported:

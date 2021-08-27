@@ -53,6 +53,7 @@ const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const JordanOverview = lazy(() => import('./pages/jordanTool/overviewPage'));
 const BestOf2020 = lazy(() => import('./pages/stories/bestOf/2020'));
+const NamibiaTool = lazy(() => import('./pages/namibiaTool'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
 
 export interface IAppContext {
@@ -124,6 +125,9 @@ function App() {
                   />
                   <TrackedRoute exact path={Routes.BestOf2020}
                     render={(props: any) => <BestOf2020 {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.NamibiaTool}
+                    render={(props: any) => <NamibiaTool {...props} />}
                   />
                   {/* If none of the above routes are found show the 404 page */}
                   <TrackedRoute component={PageNotFound} />
