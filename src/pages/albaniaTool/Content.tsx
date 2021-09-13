@@ -44,15 +44,11 @@ import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import ViabilityRadarChart from './components/ViabilityRadarChart';
 import AttractivenessRadarChart from './components/AttractivenessRadarChart';
-import FDIStackedBarChart from './components/FDIStackedBarChart';
-import FDIBuilderTable from './components/FDIBuilderTable';
-import FDITop10List from './components/FDITop10List';
 import IndustryNowLocation from './components/IndustryNowLocation';
 import IndustryWagesBarChart from './components/IndustryWagesBarChart';
 import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
 import styled from 'styled-components/macro';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
-import FDIBuilderLockedSection from './components/FDIBuilderLockedSection';
 
 const StyledP = styled.p`
   a {
@@ -87,34 +83,6 @@ const GET_DATA_FOR_NACE_ID = gql`
             rcaText1
             rcaText2
             strategy
-          }
-        }
-      }
-      fdiMarkets {
-        edges {
-          node {
-            parentCompany
-            sourceCountry
-            sourceCity
-            capexWorld
-            capexEurope
-            capexBalkans
-            projectsWorld
-            projectsEurope
-            projectsBalkans
-            avgCapex
-            avgJobs
-          }
-        }
-      }
-      fdiMarketsOvertime {
-        edges {
-          node {
-            destination
-            projects0306
-            projects0710
-            projects1114
-            projects1518
           }
         }
       }
@@ -267,7 +235,6 @@ const AlbaniaToolContent = (props: Props) => {
 
   const links: NavItem[] = [
     {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
-    {label: 'Major FDI Companies', target: '#major-fdi-companies', internalLink: true, scrollBuffer},
     {label: 'Industry Now', target: '#industry-now', internalLink: true, scrollBuffer},
     {label: 'Nearby Industries', target: '#nearby-industries', internalLink: true, scrollBuffer},
   ];
@@ -383,8 +350,6 @@ const AlbaniaToolContent = (props: Props) => {
   } else if (data && data.naceIndustry) {
     const {
       factors: {edges: factorsEdge},
-      fdiMarketsOvertime: {edges: fdiMarketsOvertimeEdges},
-      fdiMarkets: {edges: fdiMarketsEdges},
       industryNowLocation: {edges: industryNowLocationEdges},
       industryNowSchooling: {edges: industryNowSchoolingEdges},
       industryNowOccupation: {edges: industryNowOccupationEdges},
@@ -533,31 +498,6 @@ const AlbaniaToolContent = (props: Props) => {
             />
           </TextBlock>
         </TwoColumnSection>
-        <div id={'major-fdi-companies'}>
-          <SectionHeader>Major FDI Companies</SectionHeader>
-        </div>
-        <div>
-          <p
-            dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.IndustryPotential, [
-                {key: '<<description>>',
-                 value: `<strong style="text-transform: lowercase">${industryName}</strong>`},
-              ])}}
-          />
-        </div>
-        <FDIBuilderLockedSection>
-          <TwoColumnSection>
-            <SectionHeaderSecondary color={colorScheme.quaternary}>FDI Companies</SectionHeaderSecondary>
-              <FDIStackedBarChart
-                selectedIndustry={selectedIndustry}
-                fdiMarketsOvertimeEdges={fdiMarketsOvertimeEdges}
-              />
-            <FDITop10List fdiMarketsEdges={fdiMarketsEdges} />
-          </TwoColumnSection>
-          <div>
-            <SectionHeaderSecondary color={colorScheme.quaternary}>Custom FDI Companies List</SectionHeaderSecondary>
-            <FDIBuilderTable industryName={industryName} fdiMarketsEdges={fdiMarketsEdges} />
-          </div>
-        </FDIBuilderLockedSection>
         <div id={'industry-now'}>
           <SectionHeader>{SubSectionEnum.IndustryNow}</SectionHeader>
         </div>
