@@ -7,7 +7,7 @@ const Routes = {
   JordanTool: '/jordan-tool',
   JordanOverview: '/jordan-project-overview',
   BestOf2020: '/best-of-2020',
-  NamibiaTool: '/namibia-tool',
+  // NamibiaTool: '/namibia-tool',
 }
 
 const defaultTitle = 'The Growth Lab at Harvard Kennedy School';
@@ -72,13 +72,13 @@ const metadata = [
     og_image: 'best-of-2020-share-image.jpg',
     favicon: defaultFavicon,
   },
-  {
-    url: Routes.NamibiaTool,
-    title: 'Namibia’s Industry Targeting Dashboard | ' + defaultTitle,
-    description: 'View data visualizations for Namibia’s industries.',
-    og_image: defaultOgImage,
-    favicon: defaultFavicon,
-  },
+  // {
+  //   url: Routes.NamibiaTool,
+  //   title: 'Namibia’s Industry Targeting Dashboard | ' + defaultTitle,
+  //   description: 'View data visualizations for Namibia’s industries.',
+  //   og_image: defaultOgImage,
+  //   favicon: defaultFavicon,
+  // },
 ];
 
 const get = (route) => {
