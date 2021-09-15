@@ -28,3 +28,5 @@ deploy_key
 staging_key
 prod_key
 deploy_keys
+
+hks-country-tools.pem
