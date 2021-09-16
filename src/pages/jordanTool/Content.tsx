@@ -18,15 +18,11 @@ import {
   SmallParagraph,
   SubSectionHeader,
   ParagraphHeader,
-  HeaderWithLegend,
-  Light,
   SectionHeaderSecondary,
-  InlineTwoColumnSection,
   lightBorderColor,
 } from '../../styling/styleUtils';
 import DynamicTable from '../../components/text/DynamicTable';
-import TextBlock, {Alignment} from '../../components/text/TextBlock';
-import BlowoutValue from '../../components/text/BlowoutValue';
+import TextBlock from '../../components/text/TextBlock';
 import {lighten, rgba} from 'polished';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
@@ -76,7 +72,6 @@ const JordanTool = (props: Props) => {
 
   const links: NavItem[] = [
     {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
-    {label: 'Industry Potential', target: '#industry-potential', internalLink: true, scrollBuffer},
     {label: 'Industry Now', target: '#industry-now', internalLink: true, scrollBuffer},
   ];
   useScrollBehavior({
@@ -99,14 +94,12 @@ const JordanTool = (props: Props) => {
       scatterPlotData, scatterPlotCsvData,
       viabilityData, viabilityCsvData,
       attractivenessData, attractivenessCsvData,
-      globalTopFdiList, regionTopFdiList,
       sectorTableColumns, sectorTableData,
       wagesTableColumns, wagesTableData,
       schoolTableColumns, schoolTableData,
       occupationTableColumns, occupationTableData,
       jordanGeoJson, jordanMapMinVal, jordanMapMaxVal,
       wageHistogramData,
-      overTimeHistogramData, overTimeHistogramCsvData,
       text, control,
     } = data;
     const industryName: string = selectedIndustry ? selectedIndustry.label : '';
@@ -115,77 +108,6 @@ const JordanTool = (props: Props) => {
       color: scatterPlotNode.fill ? scatterPlotNode.fill : '#666',
       label: industryName,
     } : undefined;
-    const globalTopFdiListElms = globalTopFdiList.map(({company, sourceCountry, rank}) => (
-        <li key={rank}>{company},<br /><Light>{sourceCountry}</Light></li>
-      ));
-    const regionTopFdiListElms = regionTopFdiList.map(({company, sourceCountry, rank}) => (
-        <li key={rank}>{company},<br /><Light>{sourceCountry}</Light></li>
-      ));
-    const fdiBarSection = control.fdi ? (
-        <>
-          <DataViz
-            id={'jordan-fdi-bar-chart'}
-            vizType={VizType.BarChart}
-            data={overTimeHistogramData}
-            axisLabels={{left: 'USD'}}
-            enablePNGDownload={true}
-            enableSVGDownload={true}
-            chartTitle={'Foreign Direct Investment - ' + industryName}
-            jsonToDownload={overTimeHistogramCsvData}
-            chartCaption={'Source: fDi Markets Library, a service from The Financial Times Limited (2019). All Rights Reserved.'}
-          />
-          <InlineTwoColumnSection>
-            <TextBlock>
-              <HeaderWithLegend legendColor={colorScheme.lightGray}>
-                <div>
-                  {staticText.industryPotential.globalFdi}
-                </div>
-              </HeaderWithLegend>
-              <ol>
-                {globalTopFdiListElms}
-              </ol>
-            </TextBlock>
-            <TextBlock>
-              <HeaderWithLegend legendColor={colorScheme.primary}>
-                <div>
-                  {staticText.industryPotential.menaFdi}
-                </div>
-              </HeaderWithLegend>
-              <ol>
-                {regionTopFdiListElms}
-              </ol>
-            </TextBlock>
-          </InlineTwoColumnSection>
-        </>
-      ) : (
-        <>
-          <DataViz
-            id={'jordan-company-bar-chart'}
-            vizType={VizType.Error}
-            message={'No Data'}
-          />
-          <TextBlock align={Alignment.Center}>
-            <strong>{selectedIndustry.label}</strong> could not be matched with disaggregated data on Foreign Direct Investments.
-          </TextBlock>
-        </>) ;
-    const womenAndHighSkill = control.women ? (
-      <TwoColumnSection>
-        <BlowoutValue
-          value={text.percentFemale}
-          color={colorScheme.primary}
-          description={text.female}
-        />
-        <BlowoutValue
-          value={text.percentHighSkill}
-          color={colorScheme.primary}
-          description={text.highSkill}
-        />
-      </TwoColumnSection>
-    ) : (
-      <p style={{textAlign: 'center'}}>
-        There is not enough data for female labor and high-skilled labor for <strong>{selectedIndustry.label}</strong>.
-      </p>
-    );
     const industryNow = control.labor ? (
       <>
         <TwoColumnSection>
@@ -431,16 +353,6 @@ const JordanTool = (props: Props) => {
             </SmallParagraph>
           </TextBlock>
         </TwoColumnSection>
-        <TwoColumnSection id={'industry-potential'}>
-          <SectionHeader>{staticText.industryPotential.title}</SectionHeader>
-        </TwoColumnSection>
-        <TwoColumnSection>
-          <SectionHeaderSecondary color={colorScheme.primary}>
-            {staticText.industryPotential.fdiTitle}
-          </SectionHeaderSecondary>
-          {fdiBarSection}
-        </TwoColumnSection>
-        {womenAndHighSkill}
         <TwoColumnSection id={'industry-now'}>
           <SectionHeader>{staticText.industryNow.title}</SectionHeader>
         </TwoColumnSection>
