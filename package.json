@@ -56,7 +56,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:fix": "tslint --project tsconfig.json --config tslint.json --fix",
-    "clean:cache": "rimraf node_modules/.cache"
+    "clean:cache": "rimraf node_modules/.cache",
+    "connect:staging": "ssh -i hks-country-tools.pem ubuntu@hgl-app-staging.cid-labs.com",
+    "connect:production": "ssh -i hks-country-tools.pem ubuntu@growthlab.app",
+    "deploy:staging": "rsync -rq --delete --rsync-path=\"mkdir -p /home/ubuntu/frontend && rsync\" ./build ubuntu@hgl-app-staging.cid-labs.com:/home/ubuntu/frontend",
+    "deploy:production": "rsync -rq --delete --rsync-path=\"mkdir -p /home/ubuntu/frontend && rsync\" ./build ubuntu@growthlab.app:/home/ubuntu/frontend"
   },
   "eslintConfig": {
     "extends": "react-app"
