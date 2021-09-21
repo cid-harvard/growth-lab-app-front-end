@@ -1,4 +1,4 @@
-interface Factor {
+export interface Factor {
   aRelativeDemand: number;
   aResiliency: number;
   aEmploymentGroupsInterest: number;
