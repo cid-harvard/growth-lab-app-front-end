@@ -173,7 +173,7 @@ type Props = BaseProps & (
     hasSearch: true;
     searchLabelText: string;
     data: Datum[];
-    initialSelectedValue?: Datum;
+    selectedValue?: Datum;
     onChange?: (val: Datum) => void;
   }
 );
@@ -212,7 +212,7 @@ const HeaderWithSearch = (props: Props) => {
           topLevelTitle={'Classifications'}
           disallowSelectionLevels={[1]}
           onSelect={props.onChange}
-          selectedValue={props.initialSelectedValue}
+          selectedValue={props.selectedValue}
           showCount={true}
           resultsIdentation={1.75}
           maxResults={500}
