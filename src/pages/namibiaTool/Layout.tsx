@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Helmet from 'react-helmet';
 import GradientHeaderPanelSearch from '../../components/text/headers/GradientHeaderPanelSearch';
 import {rgba} from 'polished';
-import { colorScheme, ProductClass } from './Utils';
+import { colorScheme, ProductClass, extractIdAndClass } from './Utils';
 import OverviewText from './components/OverviewText';
 import { Content } from '../../styling/Grid';
 import useFakeQuery from '../../hooks/useFakeQuery';
@@ -11,8 +11,11 @@ import FullPageError from '../../components/general/FullPageError';
 import StickySideNav, { NavItem } from '../../components/navigation/StickySideNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import ExploreNextFooter from '../../components/text/ExploreNextFooter';
-import ContentWrapper from './Content';
 import {Datum} from 'react-panel-search';
+import { useHistory } from 'react-router';
+import queryString from 'query-string';
+import QueryHS from './QueryHS';
+import QueryNAICS from './QueryNAICS';
 
 interface Props {
   searchData: Datum[];
@@ -25,6 +28,18 @@ const NamibiaToolLayout = (props: Props) => {
   const title='Namibia’s Industry Targeting Dashboard';
   const metaTitle = title + ' | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Namibia’s industries.';
+
+  const {location: {pathname, search, hash}, push} = useHistory();
+  const parsedQuery = queryString.parse(search);
+  const selected = parsedQuery.selected ? parsedQuery.selected : 'HS-1651'; // Default to Data processing, hosting
+
+  const initialSelectedIndustry = searchData.find(({id}) => id === selected);
+
+  const [selectedIndustry, setSelectedIndustry] = useState<Datum>(initialSelectedIndustry as Datum);
+  const updateSelectedIndustry = (val: Datum) => {
+    setSelectedIndustry(val);
+    push(pathname + '?selected=' + val.id + hash);
+  };
 
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
@@ -56,14 +71,33 @@ const NamibiaToolLayout = (props: Props) => {
     );
     nav = null;
   } else if (data) {
-    content = (
-      <ContentWrapper
-        id={'test-id'}
-        name={'Example Product'}
-        productClass={ProductClass.HS}
-        setStickyHeaderHeight={setStickyHeaderHeight}
-      />
-    );
+    const {productClass, id} = extractIdAndClass(selectedIndustry.id as string);
+    if (productClass === ProductClass.HS) {
+      content = (
+        <QueryHS
+          id={id}
+          name={selectedIndustry.title}
+          productClass={ProductClass.HS}
+          setStickyHeaderHeight={setStickyHeaderHeight}
+        />
+      );
+    } else if (productClass === ProductClass.NAICS) {
+      content = (
+        <QueryNAICS
+          id={id}
+          name={selectedIndustry.title}
+          productClass={ProductClass.HS}
+          setStickyHeaderHeight={setStickyHeaderHeight}
+        />
+      );
+    } else {
+
+      content = (
+        <FullPageError
+          message={'Invalid Classification'}
+        />
+      );
+    }
     nav = (
       <StickySideNav
         id={'albania-tool-side-navigation'}
@@ -94,8 +128,8 @@ const NamibiaToolLayout = (props: Props) => {
         hasSearch={true}
         searchLabelText={'To Start Select a Product or Industry:'}
         data={searchData}
-        onChange={undefined}
-        initialSelectedValue={undefined}
+        onChange={updateSelectedIndustry}
+        selectedValue={selectedIndustry}
         imageSrc={undefined}
         imageProps={{
           imgWidth: '110px',
