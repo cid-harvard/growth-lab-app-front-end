@@ -5,6 +5,7 @@ import {
   SectionHeader,
 } from '../../styling/styleUtils';
 import styled from 'styled-components/macro';
+import {Factor} from './graphql/graphQLTypes';
 
 const PlaceholderSpace = styled.div`
   height: 75vh;
@@ -14,19 +15,20 @@ interface Props {
   id: string;
   productClass: ProductClass;
   name: string;
-
+  code: string;
+  factors: Factor;
   setStickyHeaderHeight: (h: number) => void;
 }
 
 const Content = (props: Props) => {
   const {
-    name, setStickyHeaderHeight,
+    name, code, productClass, setStickyHeaderHeight,
   } = props;
 
   return (
     <>
       <StickySubHeading
-        title={name}
+        title={`${name} (${productClass} ${code})`}
         highlightColor={colorScheme.primary}
         onHeightChange={(h) => setStickyHeaderHeight(h)}
       />
