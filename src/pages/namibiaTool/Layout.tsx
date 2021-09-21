@@ -76,8 +76,6 @@ const NamibiaToolLayout = (props: Props) => {
       content = (
         <QueryHS
           id={id}
-          name={selectedIndustry.title}
-          productClass={ProductClass.HS}
           setStickyHeaderHeight={setStickyHeaderHeight}
         />
       );
@@ -85,8 +83,6 @@ const NamibiaToolLayout = (props: Props) => {
       content = (
         <QueryNAICS
           id={id}
-          name={selectedIndustry.title}
-          productClass={ProductClass.HS}
           setStickyHeaderHeight={setStickyHeaderHeight}
         />
       );
