@@ -41,6 +41,7 @@ const Content = (props: Props) => {
       />
       <Overview
         industryName={name}
+        code={code}
         data={scatterPlotData}
         jsonData={scatterPlotJsonData}
         factors={factors}
