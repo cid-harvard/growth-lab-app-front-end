@@ -15,11 +15,13 @@ import {
 } from '../Utils';
 import {rgba} from 'polished';
 import {extent} from 'd3-array';
+import {Factor} from '../graphql/graphQLTypes';
 
 interface Props {
-  industryName: string,
+  industryName: string;
   data: ScatterPlotDatum[];
   jsonData: object[];
+  factors: Factor;
 }
 
 const Overview = (props: Props) => {
@@ -32,11 +34,11 @@ const Overview = (props: Props) => {
   data.forEach(d => {
     allFeasibility.push(d.x);
     allAttractiveness.push(d.y);
-  })
+  });
 
   const [minFeasibility, maxFeasibility] = extent(allFeasibility) as [number, number];
   const [minAttractiveness, maxAttractiveness] = extent(allAttractiveness) as [number, number];
-        
+
   return (
     <>
     <div id={'overview'}>
@@ -76,6 +78,6 @@ const Overview = (props: Props) => {
     </TwoColumnSection>
     </>
   );
-}
+};
 
 export default Overview;
