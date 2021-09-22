@@ -16,7 +16,7 @@ export default (props: Props) => {
     industryName, factors, code,
   } = props;
   if (factors) {
-    let viabilityData: RadarChartDatum[] = [];
+    const viabilityData: RadarChartDatum[] = [];
     const viabilityCsvData: any = { 'Name': industryName, 'Code': code };
     if (factors.fPortPropensity !== null) {
       viabilityData.push({ label: 'Port Propensity', value: parseFloat(factors.fPortPropensity.toFixed(3)) });
@@ -42,7 +42,7 @@ export default (props: Props) => {
     if (viabilityData.length > 2) {
       return (
         <DataViz
-          id={'albania-viability-radar-chart'}
+          id={'namibia-feasibility-radar-chart'}
           vizType={VizType.RadarChart}
           data={[viabilityData]}
           color={{start: colorScheme.quaternary, end: colorScheme.quaternary}}
@@ -56,7 +56,7 @@ export default (props: Props) => {
     } else {
       return (
         <DataViz
-          id={'albania-viability-radar-chart'}
+          id={'namibia-feasibility-radar-chart'}
           vizType={VizType.Error}
           message={'There are not enough data points for this chart'}
         />
