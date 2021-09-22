@@ -38,7 +38,7 @@
     "react-csv": "^2.0.1",
     "react-dom": "^16.13.0",
     "react-dropdown-tree-select": "^2.3.1",
-    "react-fast-charts": "^1.1.51",
+    "react-fast-charts": "^1.2.1",
     "react-ga": "^2.7.0",
     "react-helmet": "^5.2.1",
     "react-mapbox-gl": "^4.8.6",
@@ -61,7 +61,7 @@
     "clean:cache": "rimraf node_modules/.cache",
     "connect:staging": "ssh -i hks-country-tools.pem ubuntu@hgl-app-staging.cid-labs.com",
     "connect:production": "ssh -i hks-country-tools.pem ubuntu@growthlab.app",
-    "deploy:staging": "npm run build && rsync -rq --delete --rsync-path=\"mkdir -p /home/ubuntu/frontend && rsync\" ./build ubuntu@hgl-app-staging.cid-labs.com:/home/ubuntu/frontend",
+    "deploy:staging": "npm run build && rsync -rq --delete --rsync-path=\"mkdir -p /srv/frontend && rsync\" ./build ubuntu@hgl-app-staging.cid-labs.com:/srv/frontend",
     "deploy:production": "npm run build && rsync -rq --delete --rsync-path=\"mkdir -p /home/ubuntu/frontend && rsync\" ./build ubuntu@growthlab.app:/home/ubuntu/frontend"
   },
   "eslintConfig": {
