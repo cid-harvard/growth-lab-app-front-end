@@ -77,7 +77,7 @@ interface SuccessResponse {
         node: {
           attractiveness: Factor['attractiveness'];
           feasibility: Factor['feasibility'];
-        }
+        },
       }[],
     }
   }[];
@@ -86,11 +86,12 @@ interface SuccessResponse {
 interface Props {
   id: string;
   setStickyHeaderHeight: (h: number) => void;
+  onNodeClick: (id: string) => void;
 }
 
 const QueryHS = (props: Props) => {
   const {
-    id, setStickyHeaderHeight,
+    id, setStickyHeaderHeight, onNodeClick,
   } = props;
 
   const {loading, error, data} = useQuery<SuccessResponse, {hsId: number}>(GET_HS_PRODUCT, {
@@ -106,12 +107,12 @@ const QueryHS = (props: Props) => {
       />
     );
   } else if (data) {
-    const scatterPlotJsonData: Array<{
+    const scatterPlotJsonData: {
       Name: string,
       Code: string,
       Feasibility: number,
       Attractiveness: number,
-    }> = [];
+    }[] = [];
     const scatterPlotData = data.scatterPlotData.map(d => {
       const {attractiveness, feasibility} = d.factors.edges[0].node;
       scatterPlotJsonData.push({
@@ -119,7 +120,7 @@ const QueryHS = (props: Props) => {
         Code: 'HS ' + d.code,
         Feasibility: feasibility,
         Attractiveness: attractiveness,
-      })
+      });
       return {
         label: d.name,
         x: feasibility,
@@ -131,7 +132,8 @@ const QueryHS = (props: Props) => {
         `,
         fill: rgba(colorScheme.data, 0.5),
         highlighted: false,
-      }
+        onClick: () => onNodeClick(generateStringId(ProductClass.HS, d.hsId)),
+      };
     });
     scatterPlotData.push({
       label: data.datum.name,
@@ -144,7 +146,8 @@ const QueryHS = (props: Props) => {
       `,
       fill: rgba(colorScheme.data, 0.5),
       highlighted: true,
-    })
+      onClick: () => onNodeClick(generateStringId(ProductClass.HS, data.datum.hsId)),
+    });
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.HS, data.datum.hsId)}

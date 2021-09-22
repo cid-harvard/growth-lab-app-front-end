@@ -29,7 +29,7 @@ interface Props {
 const Content = (props: Props) => {
   const {
     name, code, productClass, setStickyHeaderHeight,
-    scatterPlotData, scatterPlotJsonData,
+    scatterPlotData, scatterPlotJsonData, factors,
   } = props;
 
   return (
@@ -43,6 +43,7 @@ const Content = (props: Props) => {
         industryName={name}
         data={scatterPlotData}
         jsonData={scatterPlotJsonData}
+        factors={factors}
       />
       <div id={'industry-now'}>
         <SectionHeader>Industry Now</SectionHeader>
