@@ -19,6 +19,7 @@ import {rgba} from 'polished';
 import {extent} from 'd3-array';
 import {Factor} from '../graphql/graphQLTypes';
 import FeasibilityRadarChart from './FeasibilityRadarChart';
+import AttractivenessRadarChart from './AttractivenessRadarChart';
 
 interface Props {
   industryName: string;
@@ -105,6 +106,36 @@ const Overview = (props: Props) => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </SmallParagraph>
           <ParagraphHeader color={colorScheme.quaternary}>Input Availability</ParagraphHeader>
+          <SmallParagraph>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </SmallParagraph>
+        </TextBlock>
+      </TwoColumnSection>
+      <TwoColumnSection>
+        <AttractivenessRadarChart
+          industryName={industryName}
+          factors={factors}
+          code={code}
+        />
+        <TextBlock>
+          <SubSectionHeader color={colorScheme.quaternary}>Attractiveness Factors</SubSectionHeader>
+          <ParagraphHeader color={colorScheme.quaternary}>Relative Demand</ParagraphHeader>
+          <SmallParagraph>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </SmallParagraph>
+          <ParagraphHeader color={colorScheme.quaternary}>Resiliency</ParagraphHeader>
+          <SmallParagraph>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </SmallParagraph>
+          <ParagraphHeader color={colorScheme.quaternary}>Employment Groups Interest</ParagraphHeader>
+          <SmallParagraph>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </SmallParagraph>
+          <ParagraphHeader color={colorScheme.quaternary}>FDI</ParagraphHeader>
+          <SmallParagraph>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </SmallParagraph>
+          <ParagraphHeader color={colorScheme.quaternary}>Export Propensity</ParagraphHeader>
           <SmallParagraph>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </SmallParagraph>
