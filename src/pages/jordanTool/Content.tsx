@@ -220,7 +220,8 @@ const JordanTool = (props: Props) => {
             id={'jordan-scatterplot'}
             vizType={VizType.ScatterPlot}
             data={scatterPlotData}
-            axisLabels={{bottom: 'Viability', left: 'Attractiveness'}}
+            axisLabels={{x: 'Viability', y: 'Attractiveness'}}
+            averageLineValue={{x: 5, y: 5}}
             enablePNGDownload={true}
             enableSVGDownload={true}
             chartTitle={'Overview - ' + industryName}
