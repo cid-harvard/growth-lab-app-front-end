@@ -6,6 +6,10 @@ import {
 } from '../../styling/styleUtils';
 import styled from 'styled-components/macro';
 import {Factor} from './graphql/graphQLTypes';
+import Overview from './components/Overview';
+import {
+  ScatterPlotDatum,
+} from 'react-fast-charts';
 
 const PlaceholderSpace = styled.div`
   height: 75vh;
@@ -18,11 +22,14 @@ interface Props {
   code: string;
   factors: Factor;
   setStickyHeaderHeight: (h: number) => void;
+  scatterPlotData: ScatterPlotDatum[];
+  scatterPlotJsonData: object[];
 }
 
 const Content = (props: Props) => {
   const {
     name, code, productClass, setStickyHeaderHeight,
+    scatterPlotData, scatterPlotJsonData,
   } = props;
 
   return (
@@ -32,10 +39,11 @@ const Content = (props: Props) => {
         highlightColor={colorScheme.primary}
         onHeightChange={(h) => setStickyHeaderHeight(h)}
       />
-      <div id={'overview'}>
-        <SectionHeader>Overview</SectionHeader>
-      </div>
-      <PlaceholderSpace />
+      <Overview
+        industryName={name}
+        data={scatterPlotData}
+        jsonData={scatterPlotJsonData}
+      />
       <div id={'industry-now'}>
         <SectionHeader>Industry Now</SectionHeader>
       </div>
