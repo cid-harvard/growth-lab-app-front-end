@@ -40,6 +40,13 @@ const NamibiaToolLayout = (props: Props) => {
     setSelectedIndustry(val);
     push(pathname + '?selected=' + val.id + hash);
   };
+  const onNodeClick = (targetId: string) => {
+    const target = searchData.find(({id}) => id === targetId);
+    if (target) {
+      setSelectedIndustry(target);
+      push(pathname + '?selected=' + target.id + hash);
+    }
+  };
 
   const [navHeight, setNavHeight] = useState<number>(0);
   const [stickyHeaderHeight, setStickyHeaderHeight] = useState<number>(0);
@@ -77,6 +84,7 @@ const NamibiaToolLayout = (props: Props) => {
         <QueryHS
           id={id}
           setStickyHeaderHeight={setStickyHeaderHeight}
+          onNodeClick={onNodeClick}
         />
       );
     } else if (productClass === ProductClass.NAICS) {
@@ -84,6 +92,7 @@ const NamibiaToolLayout = (props: Props) => {
         <QueryNAICS
           id={id}
           setStickyHeaderHeight={setStickyHeaderHeight}
+          onNodeClick={onNodeClick}
         />
       );
     } else {
