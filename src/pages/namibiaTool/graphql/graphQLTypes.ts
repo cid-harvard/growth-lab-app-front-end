@@ -14,6 +14,13 @@ export interface Factor {
   id: string;
 }
 
+export interface Proximity {
+  partnerId: string;
+  proximity: number;
+  rank: number;
+  id: string;
+}
+
 interface BaseProductIndustry {
   name: string;
   code: string;
@@ -24,6 +31,11 @@ interface BaseProductIndustry {
   factors: {
     edges: {
       node: Factor;
+    }[],
+  };
+  proximity: {
+    edges: {
+      node: Proximity;
     }[],
   };
   id: string;

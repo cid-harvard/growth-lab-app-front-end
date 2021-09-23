@@ -16,16 +16,18 @@ import {
 
 const GET_ALL_INDUSTRIES = gql`
   query GetAllIndustries {
-    allHs: namibiaHsList {
+    allHs: namibiaHsList(inTool: false) {
       hsId
       name
       code
+      inTool
       id
     }
-    allNaics: namibiaNaicsList {
+    allNaics: namibiaNaicsList(inTool: false) {
       naicsId
       name
       code
+      inTool
       id
     }
   }
@@ -36,12 +38,14 @@ interface SuccessResponse {
     hsId: HSProduct['hsId'];
     name: HSProduct['name'];
     code: HSProduct['code'];
+    inTool: HSProduct['inTool'];
     id: HSProduct['id'];
   }[];
   allNaics: {
     naicsId: NAICSIndustry['naicsId'];
     name: NAICSIndustry['name'];
     code: NAICSIndustry['code'];
+    inTool: NAICSIndustry['inTool'];
     id: NAICSIndustry['id'];
   }[];
 }
@@ -59,6 +63,7 @@ const NamibiaTool = () => {
   } else if (data !== undefined) {
     const classificationHsParentId = 'CLASSIFICATION-HS';
     const classificationNaicsParentId = 'CLASSIFICATION-NAICS';
+    const allData: Datum[] = [];
     const searchData: Datum[] = [
       {
         id: classificationHsParentId,
@@ -75,7 +80,15 @@ const NamibiaTool = () => {
       },
     ];
     data.allHs.forEach(d => {
-      searchData.push({
+      if (d.inTool) {
+        searchData.push({
+          id: generateStringId(ProductClass.HS, d.hsId),
+          title: `${d.name} (HS ${d.code})`,
+          level: 2,
+          parent_id: classificationHsParentId,
+        });
+      }
+      allData.push({
         id: generateStringId(ProductClass.HS, d.hsId),
         title: `${d.name} (HS ${d.code})`,
         level: 2,
@@ -83,7 +96,15 @@ const NamibiaTool = () => {
       });
     });
     data.allNaics.forEach(d => {
-      searchData.push({
+      if (d.inTool) {
+        searchData.push({
+          id: generateStringId(ProductClass.NAICS, d.naicsId),
+          title: `${d.name} (NAICS ${d.code})`,
+          level: 2,
+          parent_id: classificationNaicsParentId,
+        });
+      }
+      allData.push({
         id: generateStringId(ProductClass.NAICS, d.naicsId),
         title: `${d.name} (NAICS ${d.code})`,
         level: 2,
@@ -93,6 +114,7 @@ const NamibiaTool = () => {
     return (
       <Layout
         searchData={searchData}
+        allData={allData}
       />
     );
   } else {
