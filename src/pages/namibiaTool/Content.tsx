@@ -1,20 +1,13 @@
 import React from 'react';
 import {ProductClass, colorScheme} from './Utils';
 import StickySubHeading from '../../components/text/StickySubHeading';
-import {
-  SectionHeader,
-} from '../../styling/styleUtils';
-import styled from 'styled-components/macro';
 import {Factor} from './graphql/graphQLTypes';
 import Overview from './components/Overview';
+import IndustryNow from './components/IndustryNow';
 import NearbyIndustries, {ProximityDatum} from './components/NearbyIndustries';
 import {
   ScatterPlotDatum,
 } from 'react-fast-charts';
-
-const PlaceholderSpace = styled.div`
-  height: 75vh;
-`;
 
 interface Props {
   id: string;
@@ -49,10 +42,7 @@ const Content = (props: Props) => {
         jsonData={scatterPlotJsonData}
         factors={factors}
       />
-      <div id={'industry-now'}>
-        <SectionHeader>Industry Now</SectionHeader>
-      </div>
-      <PlaceholderSpace />
+      <IndustryNow />
       <NearbyIndustries
         productClass={productClass}
         data={proximityData}
