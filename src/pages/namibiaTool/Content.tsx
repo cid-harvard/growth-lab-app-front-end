@@ -7,6 +7,7 @@ import {
 import styled from 'styled-components/macro';
 import {Factor} from './graphql/graphQLTypes';
 import Overview from './components/Overview';
+import NearbyIndustries, {ProximityDatum} from './components/NearbyIndustries';
 import {
   ScatterPlotDatum,
 } from 'react-fast-charts';
@@ -24,12 +25,14 @@ interface Props {
   setStickyHeaderHeight: (h: number) => void;
   scatterPlotData: ScatterPlotDatum[];
   scatterPlotJsonData: object[];
+  proximityData: ProximityDatum[];
 }
 
 const Content = (props: Props) => {
   const {
     name, code, productClass, setStickyHeaderHeight,
     scatterPlotData, scatterPlotJsonData, factors,
+    proximityData,
   } = props;
 
   return (
@@ -50,10 +53,10 @@ const Content = (props: Props) => {
         <SectionHeader>Industry Now</SectionHeader>
       </div>
       <PlaceholderSpace />
-      <div id={'nearby-industries'}>
-        <SectionHeader>Nearby Industries</SectionHeader>
-      </div>
-      <PlaceholderSpace />
+      <NearbyIndustries
+        productClass={productClass}
+        data={proximityData}
+      />
     </>
   );
 };

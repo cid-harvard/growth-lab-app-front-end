@@ -19,11 +19,12 @@ import QueryNAICS from './QueryNAICS';
 
 interface Props {
   searchData: Datum[];
+  allData: Datum[];
 }
 
 const NamibiaToolLayout = (props: Props) => {
   const {
-    searchData,
+    searchData, allData,
   } = props;
   const title='Namibia’s Industry Targeting Dashboard';
   const metaTitle = title + ' | The Growth Lab at Harvard Kennedy School';
@@ -85,6 +86,7 @@ const NamibiaToolLayout = (props: Props) => {
           id={id}
           setStickyHeaderHeight={setStickyHeaderHeight}
           onNodeClick={onNodeClick}
+          allData={allData}
         />
       );
     } else if (productClass === ProductClass.NAICS) {
@@ -93,6 +95,7 @@ const NamibiaToolLayout = (props: Props) => {
           id={id}
           setStickyHeaderHeight={setStickyHeaderHeight}
           onNodeClick={onNodeClick}
+          allData={allData}
         />
       );
     } else {
