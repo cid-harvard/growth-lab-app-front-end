@@ -14,6 +14,8 @@ import {
   Factor,
 } from './graphql/graphQLTypes';
 import {rgba} from 'polished';
+import {Datum} from 'react-panel-search';
+import sortBy from 'lodash/sortBy';
 
 const GET_NAICS_PRODUCT = gql`
   query GetNAICSIndustry($naicsId: Int!) {
@@ -37,6 +39,16 @@ const GET_NAICS_PRODUCT = gql`
             fInputAvailability
             attractiveness
             feasibility
+            id
+          }
+        }
+      }
+      proximity {
+        edges {
+          node {
+            partnerId
+            proximity
+            rank
             id
           }
         }
@@ -66,6 +78,7 @@ interface SuccessResponse {
     name: NAICSIndustry['name'],
     code: NAICSIndustry['code'],
     factors: NAICSIndustry['factors'],
+    proximity: NAICSIndustry['proximity'],
   };
   scatterPlotData: {
     naicsId: NAICSIndustry['naicsId'];
@@ -87,11 +100,12 @@ interface Props {
   id: string;
   setStickyHeaderHeight: (h: number) => void;
   onNodeClick: (id: string) => void;
+  allData: Datum[];
 }
 
 const QueryNAICS = (props: Props) => {
   const {
-    id, setStickyHeaderHeight, onNodeClick,
+    id, setStickyHeaderHeight, onNodeClick, allData,
   } = props;
 
   const {loading, error, data} = useQuery<SuccessResponse, {naicsId: number}>(GET_NAICS_PRODUCT, {
@@ -148,6 +162,11 @@ const QueryNAICS = (props: Props) => {
       highlighted: true,
       onClick: () => onNodeClick(generateStringId(ProductClass.NAICS, data.datum.naicsId)),
     });
+    const proximityData = sortBy(data.datum.proximity.edges.map(({node: {partnerId, proximity, rank}}) => {
+      const target = allData.find(d => d.id === generateStringId(ProductClass.NAICS, partnerId));
+      const name = target && target.title ? target.title : '---';
+      return {name, proximity, rank};
+    }), ['rank']);
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.NAICS, data.datum.naicsId)}
@@ -158,6 +177,7 @@ const QueryNAICS = (props: Props) => {
         setStickyHeaderHeight={setStickyHeaderHeight}
         scatterPlotData={scatterPlotData}
         scatterPlotJsonData={scatterPlotJsonData}
+        proximityData={proximityData}
       />
     );
   } else {
