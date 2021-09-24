@@ -53,6 +53,16 @@ const GET_NAICS_PRODUCT = gql`
           }
         }
       }
+      relativeDemand {
+        edges {
+          node {
+            locationCode
+            countryDemandAvg
+            countryDemandPcAvg
+            id
+          }
+        }
+      }
     }
     scatterPlotData: namibiaNaicsList(complexityReport: true) {
       naicsId
@@ -79,6 +89,7 @@ interface SuccessResponse {
     code: NAICSIndustry['code'],
     factors: NAICSIndustry['factors'],
     proximity: NAICSIndustry['proximity'],
+    relativeDemand: NAICSIndustry['relativeDemand'],
   };
   scatterPlotData: {
     naicsId: NAICSIndustry['naicsId'];
@@ -167,6 +178,7 @@ const QueryNAICS = (props: Props) => {
       const name = target && target.title ? target.title : '---';
       return {name, proximity, rank};
     }), ['rank']);
+    const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.NAICS, data.datum.naicsId)}
@@ -178,6 +190,7 @@ const QueryNAICS = (props: Props) => {
         scatterPlotData={scatterPlotData}
         scatterPlotJsonData={scatterPlotJsonData}
         proximityData={proximityData}
+        heatMapData={heatMapData}
       />
     );
   } else {

@@ -8,6 +8,7 @@ import NearbyIndustries, {ProximityDatum} from './components/NearbyIndustries';
 import {
   ScatterPlotDatum,
 } from 'react-fast-charts';
+import {Datum as HeatMapDatum} from './components/GeoMap';
 
 interface Props {
   id: string;
@@ -19,13 +20,14 @@ interface Props {
   scatterPlotData: ScatterPlotDatum[];
   scatterPlotJsonData: object[];
   proximityData: ProximityDatum[];
+  heatMapData: HeatMapDatum[];
 }
 
 const Content = (props: Props) => {
   const {
     name, code, productClass, setStickyHeaderHeight,
     scatterPlotData, scatterPlotJsonData, factors,
-    proximityData,
+    proximityData, heatMapData,
   } = props;
 
   return (
@@ -42,7 +44,9 @@ const Content = (props: Props) => {
         jsonData={scatterPlotJsonData}
         factors={factors}
       />
-      <IndustryNow />
+      <IndustryNow
+        heatMapData={heatMapData}
+      />
       <NearbyIndustries
         productClass={productClass}
         data={proximityData}
