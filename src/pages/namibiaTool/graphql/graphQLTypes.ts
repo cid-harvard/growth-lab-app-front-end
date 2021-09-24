@@ -21,6 +21,13 @@ export interface Proximity {
   id: string;
 }
 
+export interface RelativeDemand {
+  locationCode: string;
+  countryDemandAvg: number;
+  countryDemandPcAvg: number;
+  id: string;
+}
+
 interface BaseProductIndustry {
   name: string;
   code: string;
@@ -36,6 +43,11 @@ interface BaseProductIndustry {
   proximity: {
     edges: {
       node: Proximity;
+    }[],
+  };
+  relativeDemand: {
+    edges: {
+      node: RelativeDemand;
     }[],
   };
   id: string;
