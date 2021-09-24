@@ -53,6 +53,16 @@ const GET_HS_PRODUCT = gql`
           }
         }
       }
+      relativeDemand {
+        edges {
+          node {
+            locationCode
+            countryDemandAvg
+            countryDemandPcAvg
+            id
+          }
+        }
+      }
     }
     scatterPlotData: namibiaHsList(complexityReport: true) {
       hsId
@@ -79,6 +89,7 @@ interface SuccessResponse {
     code: HSProduct['code'],
     factors: HSProduct['factors'],
     proximity: HSProduct['proximity'],
+    relativeDemand: HSProduct['relativeDemand'],
   };
   scatterPlotData: {
     hsId: HSProduct['hsId'];
@@ -167,6 +178,7 @@ const QueryHS = (props: Props) => {
       const name = target && target.title ? target.title : '---';
       return {name, proximity, rank};
     }), ['rank']);
+    const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.HS, data.datum.hsId)}
@@ -178,6 +190,7 @@ const QueryHS = (props: Props) => {
         scatterPlotData={scatterPlotData}
         scatterPlotJsonData={scatterPlotJsonData}
         proximityData={proximityData}
+        heatMapData={heatMapData}
       />
     );
   } else {
