@@ -155,7 +155,7 @@ const QueryNAICS = (props: Props) => {
           <br />
           <strong>Attractiveness:</strong> ${attractiveness.toFixed(2)}
         `,
-        fill: rgba(colorScheme.data, 0.5),
+        fill: d.code === data.datum.code ? rgba(colorScheme.dataSecondary, 0) : rgba(colorScheme.data, 0.5),
         highlighted: false,
         onClick: () => onNodeClick(generateStringId(ProductClass.NAICS, d.naicsId)),
       };
@@ -169,7 +169,7 @@ const QueryNAICS = (props: Props) => {
         <br />
         <strong>Attractiveness:</strong> ${data.datum.factors.edges[0].node.attractiveness.toFixed(2)}
       `,
-      fill: rgba(colorScheme.data, 0.5),
+      fill: rgba(colorScheme.dataSecondary, 0.5),
       highlighted: true,
       onClick: () => onNodeClick(generateStringId(ProductClass.NAICS, data.datum.naicsId)),
     });

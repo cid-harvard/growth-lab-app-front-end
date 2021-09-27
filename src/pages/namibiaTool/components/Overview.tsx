@@ -77,7 +77,7 @@ const Overview = (props: Props) => {
             items={[
               {color: rgba(colorScheme.data, 0.5), label: 'Intensively present in Namibia'},
             ]}
-            highlighted={{color: rgba(colorScheme.data, 0.5), label: industryName}}
+            highlighted={{color: rgba(colorScheme.dataSecondary, 0.5), label: industryName}}
           />
         </TextBlock>
       </TwoColumnSection>
