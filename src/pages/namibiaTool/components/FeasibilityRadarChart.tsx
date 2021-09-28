@@ -19,24 +19,24 @@ export default (props: Props) => {
     const viabilityData: RadarChartDatum[] = [];
     const viabilityCsvData: any = { 'Name': industryName, 'Code': code };
     if (factors.fPortPropensity !== null) {
-      viabilityData.push({ label: 'Port Propensity', value: parseFloat(factors.fPortPropensity.toFixed(3)) });
-      viabilityCsvData['Port Propensity'] = factors.fPortPropensity;
+      viabilityData.push({ label: 'Intensive Use of Strategic Resources', value: parseFloat(factors.fPortPropensity.toFixed(3)) });
+      viabilityCsvData['Intensive Use of Strategic Resources'] = factors.fPortPropensity;
     }
     if (factors.fExistingPresence !== null) {
-      viabilityData.push({ label: 'Existing\nPresence', value: parseFloat(factors.fExistingPresence.toFixed(3)) });
-      viabilityCsvData['Existing Presence'] = factors.fExistingPresence;
+      viabilityData.push({ label: 'Existing\nPresence\nin Namibia', value: parseFloat(factors.fExistingPresence.toFixed(3)) });
+      viabilityCsvData['Existing Presence in Namibia'] = factors.fExistingPresence;
     }
     if (factors.fRemoteness !== null) {
-      viabilityData.push({ label: 'Remoteness ', value: parseFloat(factors.fRemoteness.toFixed(3)) });
-      viabilityCsvData['Remoteness '] = factors.fRemoteness;
+      viabilityData.push({ label: 'Likelihood to Thrive\nin Remote Places ', value: parseFloat(factors.fRemoteness.toFixed(3)) });
+      viabilityCsvData['Likelihood to Thrive in Remote Places '] = factors.fRemoteness;
     }
     if (factors.fScarceFactors !== null) {
-      viabilityData.push({ label: 'Scarce Factors', value: parseFloat(factors.fScarceFactors.toFixed(3)) });
-      viabilityCsvData['Scarce Factors'] = factors.fScarceFactors;
+      viabilityData.push({ label: 'Intensive Use\nof Scarce Inputs', value: parseFloat(factors.fScarceFactors.toFixed(3)) });
+      viabilityCsvData['Intensive Use of Scarce Inputs'] = factors.fScarceFactors;
     }
     if (factors.fInputAvailability !== null) {
-      viabilityData.push({ label: 'Input\nAvailability', value: parseFloat(factors.fInputAvailability.toFixed(3)) });
-      viabilityCsvData['Input Availability'] = factors.fInputAvailability;
+      viabilityData.push({ label: 'Implied\nAvailability\nof Inputs', value: parseFloat(factors.fInputAvailability.toFixed(3)) });
+      viabilityCsvData['Implied Availability of Inputs'] = factors.fInputAvailability;
     }
 
     if (viabilityData.length > 2) {

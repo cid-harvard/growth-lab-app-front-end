@@ -53,8 +53,7 @@ const GroupsOfInterest = ({barData}: Props) => {
         />
         <TextBlock>
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>The graph on the left illustrates the share of workers, based on data from the US, of the three groups of interest for Namibia: women, youth (15-24 years old), and low-skilled workers (those with below tertiary level of education). Products that employ higher shares of these groups are more likley to be attractive in Namibia given the composition and demographics of its labor market.</p>
           </div>
           <Legend
             legendList={[

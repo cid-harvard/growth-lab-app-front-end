@@ -1,3 +1,5 @@
+import {createContext, useContext} from 'react';
+
 export enum ProductClass {
   HS = 'HS',
   NAICS = 'NAICS',
@@ -14,5 +16,8 @@ export const colorScheme = {
 export const generateStringId = (productClass: ProductClass, id: string) => `${productClass}-${id}`;
 export const extractIdAndClass = (stringId: string) => {
   const [productClass, id] = stringId.split('-');
-  return {productClass, id};
+  return {productClass, id} as {productClass: ProductClass, id: string};
 };
+
+export const ProductClassContext = createContext<ProductClass>(ProductClass.HS);
+export const useProductClass = () => useContext(ProductClassContext);

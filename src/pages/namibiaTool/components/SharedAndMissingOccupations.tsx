@@ -21,8 +21,7 @@ const SharedAndMissingOccupations = () => {
         />
         <TextBlock>
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>The table to the left displays the top 10 existing and missing occupations present in Namibia that are associated with the products or other inputs used in the production of the product. Occupations related to this activity are ranked by those that comprise the biggest share of occupations in the activity and the table shows the top 10 for those occupations that exist and those that are missing in Namibia for this product.</p>
           </div>
         </TextBlock>
       </TwoColumnSection>
