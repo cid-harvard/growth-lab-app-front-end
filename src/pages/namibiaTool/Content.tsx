@@ -9,6 +9,7 @@ import {
   ScatterPlotDatum,
 } from 'react-fast-charts';
 import {Datum as HeatMapDatum} from './components/GeoMap';
+import {BarDatum, EmploymentGroup, Region} from './components/GroupsOfInterest';
 
 interface Props {
   id: string;
@@ -30,6 +31,24 @@ const Content = (props: Props) => {
     proximityData, heatMapData,
   } = props;
 
+  const barData: BarDatum[] = [
+    {
+      employmentGroup: EmploymentGroup.women,
+      percent: factors.shareFemale * 100,
+      region: Region.World,
+    },
+    {
+      employmentGroup: EmploymentGroup.youth,
+      percent: factors.shareYouth * 100,
+      region: Region.World,
+    },
+    {
+      employmentGroup: EmploymentGroup.lowSkilled,
+      percent: factors.shareLskill * 100,
+      region: Region.World,
+    },
+  ];
+
   return (
     <>
       <StickySubHeading
@@ -46,6 +65,7 @@ const Content = (props: Props) => {
       />
       <IndustryNow
         heatMapData={heatMapData}
+        barData={barData}
       />
       <NearbyIndustries
         productClass={productClass}

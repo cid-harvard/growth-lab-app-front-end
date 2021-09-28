@@ -11,6 +11,9 @@ export interface Factor {
   fInputAvailability: number;
   attractiveness: number;
   feasibility: number;
+  shareFemale: number;
+  shareYouth: number;
+  shareLskill: number;
   id: string;
 }
 
