@@ -2,7 +2,12 @@ import React, {useState} from 'react';
 import Helmet from 'react-helmet';
 import GradientHeaderPanelSearch from '../../components/text/headers/GradientHeaderPanelSearch';
 import {rgba} from 'polished';
-import { colorScheme, ProductClass, extractIdAndClass } from './Utils';
+import {
+  colorScheme,
+  ProductClass,
+  extractIdAndClass,
+  ProductClassContext,
+} from './Utils';
 import OverviewText from './components/OverviewText';
 import { Content } from '../../styling/Grid';
 import useFakeQuery from '../../hooks/useFakeQuery';
@@ -34,15 +39,16 @@ const NamibiaToolLayout = (props: Props) => {
   const parsedQuery = queryString.parse(search);
   const selected = parsedQuery.selected ? parsedQuery.selected : 'HS-1651'; // Default to Data processing, hosting
 
-  const initialSelectedIndustry = searchData.find(({id}) => id === selected);
+  const initialSelectedIndustry = searchData.find(d => d.id === selected);
 
   const [selectedIndustry, setSelectedIndustry] = useState<Datum>(initialSelectedIndustry as Datum);
+  const {productClass, id} = extractIdAndClass(selectedIndustry.id as string);
   const updateSelectedIndustry = (val: Datum) => {
     setSelectedIndustry(val);
     push(pathname + '?selected=' + val.id + hash);
   };
   const onNodeClick = (targetId: string) => {
-    const target = searchData.find(({id}) => id === targetId);
+    const target = searchData.find(d => d.id === targetId);
     if (target) {
       setSelectedIndustry(target);
       push(pathname + '?selected=' + target.id + hash);
@@ -79,7 +85,6 @@ const NamibiaToolLayout = (props: Props) => {
     );
     nav = null;
   } else if (data) {
-    const {productClass, id} = extractIdAndClass(selectedIndustry.id as string);
     if (productClass === ProductClass.HS) {
       content = (
         <QueryHS
@@ -124,7 +129,7 @@ const NamibiaToolLayout = (props: Props) => {
   }
 
   return (
-    <>
+    <ProductClassContext.Provider value={productClass}>
       <Helmet>
         <title>{metaTitle}</title>
         <meta name='description' content={metaDescription} />
@@ -179,7 +184,7 @@ const NamibiaToolLayout = (props: Props) => {
           'Growth Lab’s Digital Development & Design Team:  Annie White, Brendan Leonard, Nil Tuzcu and Kyle Soeltz.',
         ]}
       />
-    </>
+    </ProductClassContext.Provider>
   );
 };
 

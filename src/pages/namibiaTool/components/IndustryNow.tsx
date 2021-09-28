@@ -17,13 +17,16 @@ const IndustryNow = (props: Props) => {
     <>
       <div id={'industry-now'}>
         <SectionHeader>Industry Now</SectionHeader>
+        <p>
+          This section provides more information on the current presence of {'<<description>>'} in Namibia, including: the demand and market for this product in the region, the occupations that are present and missing in Namibia that are related to the product, and the employment of certain groups of interest within this product. Where data limitations do not allow for a description of this specific product, the information reflects the broader product classification of {'<<parent>>'}.
+        </p>
       </div>
+      <GeoMap
+        heatMapData={heatMapData}
+      />
       <SharedAndMissingOccupations />
       <GroupsOfInterest
         barData={barData}
-      />
-      <GeoMap
-        heatMapData={heatMapData}
       />
     </>
   );

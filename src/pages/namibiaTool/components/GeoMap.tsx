@@ -52,7 +52,7 @@ const GeoMap = ({heatMapData}: Props) => {
 
   return (
     <>
-      <SectionHeaderSecondary color={colorScheme.quaternary}>Relative Demand</SectionHeaderSecondary>
+      <SectionHeaderSecondary color={colorScheme.quaternary}>Demand for the Product</SectionHeaderSecondary>
       <TwoColumnSection>
         <DataViz
           id={'namibia-geo-map'}
@@ -63,15 +63,15 @@ const GeoMap = ({heatMapData}: Props) => {
         />
         <TextBlock>
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>The map to the left shows the relative intensity of imports of this product in the region. Darker colored countries import more per capita of this product and are likely to be attractive market opportunities to export the product from Namibia. Hover over the map to see the imports per capita of the product for each country.
+            </p>
           </div>
           <ColorScaleLegend
-            minLabel={'← Lower'}
-            maxLabel={'Higher →'}
+            minLabel={'← Less'}
+            maxLabel={'More →'}
             minColor={lighten(0.55, colorScheme.quaternary)}
             maxColor={colorScheme.quaternary}
-            title={'Percentage of Relative Demand'}
+            title={'Imports Per Capita'}
           />
         </TextBlock>
       </TwoColumnSection>

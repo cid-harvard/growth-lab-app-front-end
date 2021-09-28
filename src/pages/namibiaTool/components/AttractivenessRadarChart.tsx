@@ -19,20 +19,20 @@ export default (props: Props) => {
     const viabilityData: RadarChartDatum[] = [];
     const viabilityCsvData: any = { 'Name': industryName, 'Code': code };
     if (factors.aRelativeDemand !== null) {
-      viabilityData.push({ label: 'Relative Demand', value: parseFloat(factors.aRelativeDemand.toFixed(3)) });
-      viabilityCsvData['Relative Demand'] = factors.aRelativeDemand;
+      viabilityData.push({ label: 'Relative Demand in the Country and Region', value: parseFloat(factors.aRelativeDemand.toFixed(3)) });
+      viabilityCsvData['Relative Demand in the Country and Region'] = factors.aRelativeDemand;
     }
     if (factors.aResiliency !== null) {
-      viabilityData.push({ label: 'Resiliency', value: parseFloat(factors.aResiliency.toFixed(3)) });
-      viabilityCsvData.Resiliency = factors.aResiliency;
+      viabilityData.push({ label: 'Resilience\nto Shocks', value: parseFloat(factors.aResiliency.toFixed(3)) });
+      viabilityCsvData['Resilience to Shocks'] = factors.aResiliency;
     }
     if (factors.aEmploymentGroupsInterest !== null) {
-      viabilityData.push({ label: 'Employment\nGroups Interest', value: parseFloat(factors.aEmploymentGroupsInterest.toFixed(3)) });
-      viabilityCsvData['Employment Groups Interest'] = factors.aEmploymentGroupsInterest;
+      viabilityData.push({ label: 'Likelihood of\nEmploying Groups\nof Interest', value: parseFloat(factors.aEmploymentGroupsInterest.toFixed(3)) });
+      viabilityCsvData['Likelihood of Employing Groups of Interest'] = factors.aEmploymentGroupsInterest;
     }
     if (factors.aFdi !== null) {
-      viabilityData.push({ label: 'FDI', value: parseFloat(factors.aFdi.toFixed(3)) });
-      viabilityCsvData.FDI = factors.aFdi;
+      viabilityData.push({ label: 'Propensity to\nAttract FDI', value: parseFloat(factors.aFdi.toFixed(3)) });
+      viabilityCsvData['Propensity to Attract FDI'] = factors.aFdi;
     }
     if (factors.aExportPropensity !== null) {
       viabilityData.push({ label: 'Export\nPropensity', value: parseFloat(factors.aExportPropensity.toFixed(3)) });
