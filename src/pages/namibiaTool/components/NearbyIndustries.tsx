@@ -53,8 +53,7 @@ const NearbyIndustries = (props: Props) => {
         {table}
         <TextBlock>
           <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>This table shows the “nearest” 10 products to {'<<description>>'} based on shared knowhow and capabilities and indicates whether or not Namibia currently has a revealed comparative advantage in those products. In order to explore any of these related products, please use the search bar at the top of this page.</p>
           </div>
         </TextBlock>
       </TwoColumnSection>
