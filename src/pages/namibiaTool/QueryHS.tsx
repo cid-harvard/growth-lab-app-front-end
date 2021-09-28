@@ -39,6 +39,9 @@ const GET_HS_PRODUCT = gql`
             fInputAvailability
             attractiveness
             feasibility
+            shareFemale
+            shareYouth
+            shareLskill
             id
           }
         }

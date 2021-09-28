@@ -44,7 +44,7 @@ const GeoMap = ({heatMapData}: Props) => {
       const properties = {
         ...f.properties,
         percent,
-        tooltipContent: `${f.properties.name}: ${percent.toFixed(2)}%`,
+        tooltipContent: `${f.properties.name}: ${percent.toFixed(2)}`,
       };
       return {...f, properties};
     });

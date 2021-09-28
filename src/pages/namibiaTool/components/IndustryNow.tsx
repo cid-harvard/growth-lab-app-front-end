@@ -4,21 +4,24 @@ import {
 } from '../../../styling/styleUtils';
 import GeoMap, {Datum} from './GeoMap';
 import SharedAndMissingOccupations from './SharedAndMissingOccupations';
-import GroupsOfInterest from './GroupsOfInterest';
+import GroupsOfInterest, {BarDatum} from './GroupsOfInterest';
 
 interface Props {
   heatMapData: Datum[];
+  barData: BarDatum[];
 }
 
 const IndustryNow = (props: Props) => {
-  const {heatMapData} = props;
+  const {heatMapData, barData} = props;
   return (
     <>
       <div id={'industry-now'}>
         <SectionHeader>Industry Now</SectionHeader>
       </div>
       <SharedAndMissingOccupations />
-      <GroupsOfInterest />
+      <GroupsOfInterest
+        barData={barData}
+      />
       <GeoMap
         heatMapData={heatMapData}
       />
