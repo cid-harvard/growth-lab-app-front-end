@@ -3,16 +3,17 @@ import {
   SectionHeader,
 } from '../../../styling/styleUtils';
 import GeoMap, {Datum} from './GeoMap';
-import SharedAndMissingOccupations from './SharedAndMissingOccupations';
+import SharedAndMissingOccupations, {MissingSharedDatum} from './SharedAndMissingOccupations';
 import GroupsOfInterest, {BarDatum} from './GroupsOfInterest';
 
 interface Props {
   heatMapData: Datum[];
   barData: BarDatum[];
+  sharedMissingData: MissingSharedDatum[];
 }
 
 const IndustryNow = (props: Props) => {
-  const {heatMapData, barData} = props;
+  const {heatMapData, barData, sharedMissingData} = props;
   return (
     <>
       <div id={'industry-now'}>
@@ -24,7 +25,9 @@ const IndustryNow = (props: Props) => {
       <GeoMap
         heatMapData={heatMapData}
       />
-      <SharedAndMissingOccupations />
+      <SharedAndMissingOccupations
+        data={sharedMissingData}
+      />
       <GroupsOfInterest
         barData={barData}
       />
