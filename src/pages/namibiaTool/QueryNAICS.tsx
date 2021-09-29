@@ -16,6 +16,8 @@ import {
 import {rgba} from 'polished';
 import {Datum} from 'react-panel-search';
 import sortBy from 'lodash/sortBy';
+import partition from 'lodash/partition';
+import {MissingSharedDatum} from './components/SharedAndMissingOccupations';
 
 const GET_NAICS_PRODUCT = gql`
   query GetNAICSIndustry($naicsId: Int!) {
@@ -66,6 +68,16 @@ const GET_NAICS_PRODUCT = gql`
           }
         }
       }
+      occupation {
+        edges {
+          node {
+            occupation
+            isAvailable
+            rank
+            id
+          }
+        }
+      }
     }
     scatterPlotData: namibiaNaicsList(complexityReport: true) {
       naicsId
@@ -93,6 +105,7 @@ interface SuccessResponse {
     factors: NAICSIndustry['factors'],
     proximity: NAICSIndustry['proximity'],
     relativeDemand: NAICSIndustry['relativeDemand'],
+    occupation: NAICSIndustry['occupation'],
   };
   scatterPlotData: {
     naicsId: NAICSIndustry['naicsId'];
@@ -182,6 +195,18 @@ const QueryNAICS = (props: Props) => {
       return {name, proximity, rank};
     }), ['rank']);
     const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
+    const [shared, missing] = partition(data.datum.occupation.edges, ({node}) => node.isAvailable);
+    const sortedShared = sortBy(shared, ['rank']);
+    const sortedMissing = sortBy(missing, ['rank']);
+    const sharedMissingData: MissingSharedDatum[] = [];
+    for(let i = 0; i < 10; i++) {
+      const targetShared = sortedShared[i] ? shared[i].node.occupation : null;
+      const targetMissing = sortedMissing[i] ? missing[i].node.occupation : null;
+      sharedMissingData.push({
+        shared: targetShared,
+        missing: targetMissing,
+      });
+    }
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.NAICS, data.datum.naicsId)}
@@ -194,6 +219,7 @@ const QueryNAICS = (props: Props) => {
         scatterPlotJsonData={scatterPlotJsonData}
         proximityData={proximityData}
         heatMapData={heatMapData}
+        sharedMissingData={sharedMissingData}
       />
     );
   } else {

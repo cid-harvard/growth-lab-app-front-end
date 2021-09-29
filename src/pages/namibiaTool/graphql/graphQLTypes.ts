@@ -31,6 +31,13 @@ export interface RelativeDemand {
   id: string;
 }
 
+export interface Occupation {
+  occupation: string;
+  isAvailable: boolean;
+  rank: number;
+  id: string;
+}
+
 interface BaseProductIndustry {
   name: string;
   code: string;
@@ -51,6 +58,11 @@ interface BaseProductIndustry {
   relativeDemand: {
     edges: {
       node: RelativeDemand;
+    }[],
+  };
+  occupation: {
+    edges: {
+      node: Occupation;
     }[],
   };
   id: string;

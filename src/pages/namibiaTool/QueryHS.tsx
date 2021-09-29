@@ -16,6 +16,8 @@ import {
 import {rgba} from 'polished';
 import {Datum} from 'react-panel-search';
 import sortBy from 'lodash/sortBy';
+import partition from 'lodash/partition';
+import {MissingSharedDatum} from './components/SharedAndMissingOccupations';
 
 const GET_HS_PRODUCT = gql`
   query GetHSProduct($hsId: Int!) {
@@ -66,6 +68,16 @@ const GET_HS_PRODUCT = gql`
           }
         }
       }
+      occupation {
+        edges {
+          node {
+            occupation
+            isAvailable
+            rank
+            id
+          }
+        }
+      }
     }
     scatterPlotData: namibiaHsList(complexityReport: true) {
       hsId
@@ -93,6 +105,7 @@ interface SuccessResponse {
     factors: HSProduct['factors'],
     proximity: HSProduct['proximity'],
     relativeDemand: HSProduct['relativeDemand'],
+    occupation: HSProduct['occupation'],
   };
   scatterPlotData: {
     hsId: HSProduct['hsId'];
@@ -182,6 +195,18 @@ const QueryHS = (props: Props) => {
       return {name, proximity, rank};
     }), ['rank']);
     const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
+    const [shared, missing] = partition(data.datum.occupation.edges, ({node}) => node.isAvailable);
+    const sortedShared = sortBy(shared, ['rank']);
+    const sortedMissing = sortBy(missing, ['rank']);
+    const sharedMissingData: MissingSharedDatum[] = [];
+    for(let i = 0; i < 10; i++) {
+      const targetShared = sortedShared[i] ? shared[i].node.occupation : null;
+      const targetMissing = sortedMissing[i] ? missing[i].node.occupation : null;
+      sharedMissingData.push({
+        shared: targetShared,
+        missing: targetMissing,
+      });
+    }
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.HS, data.datum.hsId)}
@@ -194,6 +219,7 @@ const QueryHS = (props: Props) => {
         scatterPlotJsonData={scatterPlotJsonData}
         proximityData={proximityData}
         heatMapData={heatMapData}
+        sharedMissingData={sharedMissingData}
       />
     );
   } else {
