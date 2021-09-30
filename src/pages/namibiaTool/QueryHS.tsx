@@ -202,10 +202,12 @@ const QueryHS = (props: Props) => {
     for(let i = 0; i < 10; i++) {
       const targetShared = sortedShared[i] ? shared[i].node.occupation : null;
       const targetMissing = sortedMissing[i] ? missing[i].node.occupation : null;
-      sharedMissingData.push({
-        shared: targetShared,
-        missing: targetMissing,
-      });
+      if (targetMissing || targetShared) {
+        sharedMissingData.push({
+          shared: targetShared,
+          missing: targetMissing,
+        });
+      }
     }
     return (
       <ContentWrapper

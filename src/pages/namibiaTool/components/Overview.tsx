@@ -49,29 +49,36 @@ const Overview = (props: Props) => {
 
   const introText = productClass === ProductClass.HS
     ? (
-      <>
-        <p>
-        This section summarizes how strategic a product is for investment promotion based on its viability in Namibia (i.e. how likely the product is to thrive) and its attractiveness for Namibia (i.e. how much Namibia benefits from the product’s presence). The Growth Lab’s economic complexity analysis resulted in a list of products for whichthat Namibia has a high potential to successfully diversify into. These products are those that are viable and attractive in the total basket of goods produced in the world and are likely to help Namibia continue diversifying into new and more complex products.
-        </p>
-
-      </>
+      <p>
+        This section summarizes how strategic a product is for investment promotion based on its feasibility in Namibia (i.e. how likely the product is to thrive) and its attractiveness for Namibia (i.e. how much Namibia benefits from the product’s presence). The Growth Lab’s economic complexity analysis resulted in a list of 97 products for which Namibia has a high potential to successfully diversify into. These products are those that are most viable and attractive in the total basket of goods produced in the world and are likely to help Namibia continue diversifying into new and more complex products. When selecting another product from the full list, it is plotted only with the 97 strategic products identified through the complexity analysis.
+      </p>
     ) : (
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>
+        This section summarizes how strategic an industry is for investment promotion based on its feasibility in Namibia (i.e. how likely the industry is to thrive) and its attractiveness for Namibia (i.e. how much Namibia benefits from the industry’s presence). The Growth Lab’s economic complexity analysis resulted in a list of 97 products for which Namibia has a high potential to successfully diversify into. These industries are those that are most viable and attractive in the total basket of goods produced in the world and are likely to help Namibia continue diversifying into new and more complex industries. When selecting another industry from the full list, it is plotted only with the 97 strategic products identified through the complexity analysis.
+      </p>
     );
 
   const scatterText = productClass === ProductClass.HS
     ? (
       <>
         <p>
-        {'<<description>>'} is a product with {'<<v_text>>'} <strong>viability</strong> in Namibia and {'<<a_text>>'} <strong>attractiveness</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage in this product, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
+          {industryName} is a product with {'<<f_text>>'} <strong>feasibility</strong> in Namibia and {'<<a_text>>'} <strong>attractiveness</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage in this product, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
         </p>
 
         <p>
-        Based on this information, {'<<description>>'} {'<<strategy>>'}. Information is provided below that explains the product’s {'<<v_text>>'} viability and {'<<a_text>>'} attractiveness.
+          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the product’s {'<<f_text>>'} feasibility and {'<<a_text>>'} attractiveness.
         </p>
       </>
     ) : (
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <>
+        <p>
+          {industryName} is an industry with {'<<f_text>>'} <strong>feasibility</strong> in Namibia and {'<<a_text>>'} <strong>attractiveness</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage for the products related to this industry, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this industry in Namibia in comparison to the rest of the world.
+        </p>
+
+        <p>
+          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the industry’s {'<<f_text>>'} feasibility and {'<<a_text>>'} attractiveness.
+        </p>
+      </>
     );
 
   return (
