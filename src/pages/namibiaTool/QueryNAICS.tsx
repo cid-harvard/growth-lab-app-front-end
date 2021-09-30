@@ -128,11 +128,14 @@ interface Props {
   setStickyHeaderHeight: (h: number) => void;
   onNodeClick: (id: string) => void;
   allData: Datum[];
+  averageFeasibility: number;
+  averageAttractiveness: number;
 }
 
 const QueryNAICS = (props: Props) => {
   const {
     id, setStickyHeaderHeight, onNodeClick, allData,
+    averageFeasibility, averageAttractiveness,
   } = props;
 
   const {loading, error, data} = useQuery<SuccessResponse, {naicsId: number}>(GET_NAICS_PRODUCT, {
@@ -222,6 +225,8 @@ const QueryNAICS = (props: Props) => {
         proximityData={proximityData}
         heatMapData={heatMapData}
         sharedMissingData={sharedMissingData}
+        averageFeasibility={averageFeasibility}
+        averageAttractiveness={averageAttractiveness}
       />
     );
   } else {
