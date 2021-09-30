@@ -154,6 +154,11 @@ interface LinkDatum {
   internal?: boolean;
 }
 
+export enum IntroTextPosition {
+  Top = 'Top',
+  Bottom = 'Bottom',
+}
+
 interface BaseProps {
   title: string;
   imageSrc?: string;
@@ -164,6 +169,7 @@ interface BaseProps {
   linkColor: string;
   links?: LinkDatum[];
   introText?: React.ReactNode;
+  introTextPosition?: IntroTextPosition;
 }
 
 type Props = BaseProps & (
@@ -181,7 +187,7 @@ type Props = BaseProps & (
 const HeaderWithSearch = (props: Props) => {
   const {
     title, imageSrc, textColor, primaryColor, links, linkColor,
-    imageProps, introText, gradient,
+    imageProps, introText, gradient, introTextPosition,
   } = props;
 
   const gaEventCategory = 'HEADER: ' + title;
@@ -242,6 +248,18 @@ const HeaderWithSearch = (props: Props) => {
     </FullWidthHeaderContent>
   ) : null;
 
+  const introAndSearch = introTextPosition === IntroTextPosition.Bottom ? (
+    <>
+      {searchBar}
+      {introPara}
+    </>
+  ) : (
+    <>
+      {introPara}
+      {searchBar}
+    </>
+  );
+
   return (
     <Root>
       <GradientContainer gradient={gradient}>
@@ -265,8 +283,7 @@ const HeaderWithSearch = (props: Props) => {
           </GrowthLabLogoContainer>
         </ContentGrid>
       </GradientContainer>
-        {introPara}
-      {searchBar}
+      {introAndSearch}
     </Root>
   );
 };

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Helmet from 'react-helmet';
-import GradientHeaderPanelSearch from '../../components/text/headers/GradientHeaderPanelSearch';
+import GradientHeaderPanelSearch, {IntroTextPosition} from '../../components/text/headers/GradientHeaderPanelSearch';
 import {rgba} from 'polished';
 import {
   colorScheme,
@@ -161,6 +161,7 @@ const NamibiaToolLayout = (props: Props) => {
           {label: 'Country Research', target: 'https://albania.growthlab.cid.harvard.edu/'},
         ]}
         introText={<OverviewText />}
+        introTextPosition={IntroTextPosition.Bottom}
       />
       {nav}
       <Content>
