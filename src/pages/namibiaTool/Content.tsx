@@ -24,6 +24,8 @@ interface Props {
   proximityData: ProximityDatum[];
   heatMapData: HeatMapDatum[];
   sharedMissingData: MissingSharedDatum[];
+  averageFeasibility: number;
+  averageAttractiveness: number;
 }
 
 const Content = (props: Props) => {
@@ -31,6 +33,7 @@ const Content = (props: Props) => {
     name, code, productClass, setStickyHeaderHeight,
     scatterPlotData, scatterPlotJsonData, factors,
     proximityData, heatMapData, sharedMissingData,
+    averageFeasibility, averageAttractiveness,
   } = props;
 
   const barData: BarDatum[] = [
@@ -57,13 +60,15 @@ const Content = (props: Props) => {
         title={`${name} (${productClass} ${code})`}
         highlightColor={colorScheme.primary}
         onHeightChange={(h) => setStickyHeaderHeight(h)}
-      />
+        />
       <Overview
         industryName={name}
         code={code}
         data={scatterPlotData}
         jsonData={scatterPlotJsonData}
         factors={factors}
+        averageFeasibility={averageFeasibility}
+        averageAttractiveness={averageAttractiveness}
       />
       <IndustryNow
         heatMapData={heatMapData}

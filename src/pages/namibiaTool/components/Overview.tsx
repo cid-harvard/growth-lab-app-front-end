@@ -29,11 +29,14 @@ interface Props {
   data: ScatterPlotDatum[];
   jsonData: object[];
   factors: Factor;
+  averageFeasibility: number;
+  averageAttractiveness: number;
 }
 
 const Overview = (props: Props) => {
   const {
     industryName, data, jsonData, code, factors,
+    averageFeasibility, averageAttractiveness,
   } = props;
 
   const allFeasibility: number[] = [];
@@ -58,25 +61,33 @@ const Overview = (props: Props) => {
       </p>
     );
 
+  const feasibilityText = factors.feasibility < averageFeasibility
+    ? 'lower than average feasibility'
+    : 'higher than average feasibility';
+
+  const attractivenessText = factors.attractiveness < averageAttractiveness
+    ? 'lower than average attractiveness'
+    : 'higher than average attractiveness';
+
   const scatterText = productClass === ProductClass.HS
     ? (
       <>
         <p>
-          {industryName} is a product with {'<<f_text>>'} <strong>feasibility</strong> in Namibia and {'<<a_text>>'} <strong>attractiveness</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage in this product, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
+          {industryName} is a product with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage in this product, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
         </p>
 
         <p>
-          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the product’s {'<<f_text>>'} feasibility and {'<<a_text>>'} attractiveness.
+          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the product’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
         </p>
       </>
     ) : (
       <>
         <p>
-          {industryName} is an industry with {'<<f_text>>'} <strong>feasibility</strong> in Namibia and {'<<a_text>>'} <strong>attractiveness</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage for the products related to this industry, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this industry in Namibia in comparison to the rest of the world.
+          {industryName} is an industry with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage for the products related to this industry, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this industry in Namibia in comparison to the rest of the world.
         </p>
 
         <p>
-          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the industry’s {'<<f_text>>'} feasibility and {'<<a_text>>'} attractiveness.
+          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the industry’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
         </p>
       </>
     );
