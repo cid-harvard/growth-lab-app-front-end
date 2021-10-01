@@ -7,6 +7,8 @@ import FullPageError from '../../components/general/FullPageError';
 import {
   HSProduct,
   NAICSIndustry,
+  NamibiaThreshold,
+  ThresholdType,
 } from './graphql/graphQLTypes';
 import {Datum} from 'react-panel-search';
 import {
@@ -30,6 +32,10 @@ const GET_ALL_INDUSTRIES = gql`
       inTool
       id
     }
+    namibiaThresholdList {
+      key
+      value
+    }
   }
 `;
 
@@ -48,6 +54,7 @@ interface SuccessResponse {
     inTool: NAICSIndustry['inTool'];
     id: NAICSIndustry['id'];
   }[];
+  namibiaThresholdList: NamibiaThreshold[];
 }
 
 const NamibiaTool = () => {
@@ -111,14 +118,18 @@ const NamibiaTool = () => {
         parent_id: classificationNaicsParentId,
       });
     });
+    const averageHSAttractiveness = data.namibiaThresholdList.find(d => d.key === ThresholdType.averageHSAttractiveness);
+    const averageHSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.averageHSFeasibility);
+    const averageNAICSAttractiveness = data.namibiaThresholdList.find(d => d.key === ThresholdType.averageNAICSAttractiveness);
+    const averageNAICSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.averageNAICSFeasibility);
     return (
       <Layout
         searchData={searchData}
         allData={allData}
-        averageHSAttractiveness={5}
-        averageHSFeasibility={5}
-        averageNAICSAttractiveness={5}
-        averageNAICSFeasibility={5}
+        averageHSAttractiveness={averageHSAttractiveness ? averageHSAttractiveness.value : 0}
+        averageHSFeasibility={averageHSFeasibility ? averageHSFeasibility.value : 0}
+        averageNAICSAttractiveness={averageNAICSAttractiveness ? averageNAICSAttractiveness.value : 0}
+        averageNAICSFeasibility={averageNAICSFeasibility ? averageNAICSFeasibility.value : 0}
       />
     );
   } else {
