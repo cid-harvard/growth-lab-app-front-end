@@ -4,7 +4,11 @@ import {
   SectionHeaderSecondary,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
-import {colorScheme} from '../Utils';
+import {
+  colorScheme,
+  useProductClass,
+  ProductClass,
+} from '../Utils';
 import DataViz, {
   VizType,
   ColorScaleLegend,
@@ -49,7 +53,8 @@ const GeoMap = ({heatMapData}: Props) => {
       return {...f, properties};
     });
   const data = {...mapSouthernAfrica, features: featuresWithValues};
-
+  const productClass = useProductClass();
+  const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
   return (
     <>
       <SectionHeaderSecondary color={colorScheme.quaternary}>Demand for the Product</SectionHeaderSecondary>
@@ -63,7 +68,7 @@ const GeoMap = ({heatMapData}: Props) => {
         />
         <TextBlock>
           <div>
-            <p>The map to the left shows the relative intensity of imports of this product in the region. Darker colored countries import more per capita of this product and are likely to be attractive market opportunities to export the product from Namibia. Hover over the map to see the imports per capita of the product for each country.
+            <p>The map to the left shows the relative intensity of imports of this {productOrIndustry} in the region. Darker colored countries import more per capita of this {productOrIndustry} and are likely to be attractive market opportunities to export the {productOrIndustry} from Namibia. Hover over the map to see the imports per capita of the {productOrIndustry} for each country.
             </p>
           </div>
           <ColorScaleLegend
