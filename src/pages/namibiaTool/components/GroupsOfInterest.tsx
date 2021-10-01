@@ -4,7 +4,11 @@ import {
   SectionHeaderSecondary,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
-import {colorScheme} from '../Utils';
+import {
+  colorScheme,
+  ProductClass,
+  useProductClass,
+} from '../Utils';
 import DataViz, {
   VizType,
   Legend,
@@ -41,6 +45,8 @@ const GroupsOfInterest = ({barData}: Props) => {
       tooltipContent: `${d.percent.toFixed(2)}% Employment`,
     };
   });
+  const productClass = useProductClass();
+  const productOrIndustryPlural = productClass === ProductClass.HS ? 'Products' : 'Industries';
   return (
     <>
       <SectionHeaderSecondary color={colorScheme.quaternary}>Employment of groups of interest</SectionHeaderSecondary>
@@ -53,7 +59,7 @@ const GroupsOfInterest = ({barData}: Props) => {
         />
         <TextBlock>
           <div>
-            <p>The graph on the left illustrates the share of workers, based on data from the US, of the three groups of interest for Namibia: women, youth (15-24 years old), and low-skilled workers (those with below tertiary level of education). Products that employ higher shares of these groups are more likley to be attractive in Namibia given the composition and demographics of its labor market.</p>
+            <p>The graph on the left illustrates the share of workers, based on data from the US, of the three groups of interest for Namibia: women, youth (15-24 years old), and low-skilled workers (those with below tertiary level of education). {productOrIndustryPlural} that employ higher shares of these groups are more likely to be attractive in Namibia given the composition and demographics of its labor market..</p>
           </div>
           <Legend
             legendList={[
