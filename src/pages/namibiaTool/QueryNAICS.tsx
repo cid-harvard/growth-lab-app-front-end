@@ -200,10 +200,13 @@ const QueryNAICS = (props: Props) => {
       highlighted: true,
       onClick: () => onNodeClick(generateStringId(ProductClass.NAICS, data.datum.naicsId)),
     });
-    const proximityData = sortBy(data.datum.proximity.edges.map(({node: {partnerId, proximity, rank}}) => {
+    const proximityData = sortBy(data.datum.proximity.edges.map(({node: {partnerId, rank, factors}}) => {
       const target = allData.find(d => d.id === generateStringId(ProductClass.NAICS, partnerId));
       const name = target && target.title ? target.title : '---';
-      return {name, proximity, rank};
+      const rca = factors && factors.edges && factors.edges[0] && factors.edges[0].node && factors.edges[0].node.rca
+        ? factors.edges[0].node.rca.toFixed(3)
+        : '0.000';
+      return {name, rank, rca};
     }), ['rank']);
     const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
     const [shared, missing] = partition(data.datum.occupation.edges, ({node}) => node.isAvailable);

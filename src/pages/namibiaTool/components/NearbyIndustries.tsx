@@ -13,8 +13,7 @@ import DataViz, {VizType} from 'react-fast-charts';
 
 export interface ProximityDatum extends Datum {
   name: string;
-  proximity: number;
-  rank: number;
+  rca: string;
 }
 
 interface Props {
@@ -26,9 +25,8 @@ interface Props {
 const NearbyIndustries = (props: Props) => {
   const {industryName, productClass, data} = props;
   const columns: Column[] = [
-    {label: 'Rank', key: 'rank'},
-    {label: productClass === ProductClass.HS ? 'Product' : 'Industry', key: 'name'},
-    {label: 'Proximity', key: 'proximity'},
+    {label: productClass === ProductClass.HS ? 'Product Name' : 'Industry Name', key: 'name'},
+    { label: 'RCA > 1?', key: 'rca'},
   ];
 
   const table = data.length ? (
