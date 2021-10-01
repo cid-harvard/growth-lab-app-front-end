@@ -75,3 +75,15 @@ export interface HSProduct extends BaseProductIndustry {
 export interface NAICSIndustry extends BaseProductIndustry {
   naicsId: string;
 }
+
+export enum ThresholdType {
+  averageHSAttractiveness = 'hs_attractiveness_avg',
+  averageHSFeasibility = 'hs_feasibility_avg',
+  averageNAICSAttractiveness = 'naics_attractiveness_avg',
+  averageNAICSFeasibility = 'naics_feasibility_avg',
+}
+
+export interface NamibiaThreshold {
+  key: ThresholdType;
+  value: number;
+}
