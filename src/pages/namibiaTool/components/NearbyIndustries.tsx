@@ -18,12 +18,13 @@ export interface ProximityDatum extends Datum {
 }
 
 interface Props {
+  industryName: string;
   productClass: ProductClass;
   data: ProximityDatum[];
 }
 
 const NearbyIndustries = (props: Props) => {
-  const {productClass, data} = props;
+  const {industryName, productClass, data} = props;
   const columns: Column[] = [
     {label: 'Rank', key: 'rank'},
     {label: productClass === ProductClass.HS ? 'Product' : 'Industry', key: 'name'},
@@ -43,7 +44,7 @@ const NearbyIndustries = (props: Props) => {
       message={'There are not enough data points for this chart'}
     />
   );
-
+  const productOrIndustryPlural = productClass === ProductClass.HS ? 'products' : 'industries';
   return (
     <>
       <div id={'nearby-industries'}>
@@ -53,7 +54,7 @@ const NearbyIndustries = (props: Props) => {
         {table}
         <TextBlock>
           <div>
-            <p>This table shows the “nearest” 10 products to {'<<description>>'} based on shared knowhow and capabilities and indicates whether or not Namibia currently has a revealed comparative advantage in those products. In order to explore any of these related products, please use the search bar at the top of this page.</p>
+            <p>This table shows the “nearest” 10 {productOrIndustryPlural} to {industryName} based on shared knowhow and capabilities and indicates whether or not Namibia currently has a revealed comparative advantage in those {productOrIndustryPlural}. In order to explore any of these related {productOrIndustryPlural}, please use the search bar at the top of this page.</p>
           </div>
         </TextBlock>
       </TwoColumnSection>
