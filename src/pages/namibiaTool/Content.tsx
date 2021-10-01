@@ -77,6 +77,7 @@ const Content = (props: Props) => {
         industryName={name}
       />
       <NearbyIndustries
+        industryName={name}
         productClass={productClass}
         data={proximityData}
       />
