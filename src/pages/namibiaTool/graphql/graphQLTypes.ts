@@ -14,6 +14,7 @@ export interface Factor {
   shareFemale: number;
   shareYouth: number;
   shareLskill: number;
+  rca: number;
   id: string;
 }
 
@@ -22,6 +23,11 @@ export interface Proximity {
   proximity: number;
   rank: number;
   id: string;
+  factors: {
+    edges: {
+      node: Factor;
+    }[],
+  };
 }
 
 export interface RelativeDemand {

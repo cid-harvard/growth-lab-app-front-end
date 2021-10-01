@@ -45,6 +45,7 @@ const GET_NAICS_PRODUCT = gql`
             shareYouth
             shareLskill
             id
+            rca
           }
         }
       }
@@ -55,6 +56,13 @@ const GET_NAICS_PRODUCT = gql`
             proximity
             rank
             id
+            factors {
+              edges {
+                node {
+                  rca
+                }
+              }
+            }
           }
         }
       }

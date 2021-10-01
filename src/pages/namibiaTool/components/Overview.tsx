@@ -69,25 +69,33 @@ const Overview = (props: Props) => {
     ? 'lower than average attractiveness'
     : 'higher than average attractiveness';
 
+  const rcaText1 = factors.rca < 1
+    ? 'has'
+    : 'doesn’t have';
+
+  const rcaText2 = factors.rca < 1
+    ? 'are'
+    : 'are not';
+
   const scatterText = productClass === ProductClass.HS
     ? (
       <>
         <p>
-          {industryName} is a product with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage in this product, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
+          {industryName} is a product with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {rcaText1} a revealed comparative advantage in this product, meaning that there {rcaText2} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
         </p>
 
         <p>
-          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the product’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
+          Based on this information, {industryName} <strong style={{color:'red'}}>{'<<strategy>>'}</strong>. Information is provided below that explains the product’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
         </p>
       </>
     ) : (
       <>
         <p>
-          {industryName} is an industry with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {'<<rca_text1>>'} a revealed comparative advantage for the products related to this industry, meaning that there {'<<rca_text2>>'} economic entities intensively involved in this industry in Namibia in comparison to the rest of the world.
+          {industryName} is an industry with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {rcaText1} a revealed comparative advantage for the products related to this industry, meaning that there {rcaText2} economic entities intensively involved in this industry in Namibia in comparison to the rest of the world.
         </p>
 
         <p>
-          Based on this information, {industryName} {'<<strategy>>'}. Information is provided below that explains the industry’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
+          Based on this information, {industryName} <strong style={{color:'red'}}>{'<<strategy>>'}</strong>. Information is provided below that explains the industry’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
         </p>
       </>
     );
