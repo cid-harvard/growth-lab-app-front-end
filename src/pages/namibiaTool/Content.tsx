@@ -74,6 +74,7 @@ const Content = (props: Props) => {
         heatMapData={heatMapData}
         barData={barData}
         sharedMissingData={sharedMissingData}
+        industryName={name}
       />
       <NearbyIndustries
         productClass={productClass}
