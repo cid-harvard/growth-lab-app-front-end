@@ -44,6 +44,7 @@ const GET_HS_PRODUCT = gql`
             shareFemale
             shareYouth
             shareLskill
+            rca
             id
           }
         }
@@ -55,6 +56,13 @@ const GET_HS_PRODUCT = gql`
             proximity
             rank
             id
+            factors {
+              edges {
+                node {
+                  rca
+                }
+              }
+            }
           }
         }
       }
