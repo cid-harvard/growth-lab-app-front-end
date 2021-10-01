@@ -7,7 +7,6 @@ import FullPageError from '../../components/general/FullPageError';
 import {
   HSProduct,
   NAICSIndustry,
-  Factor,
 } from './graphql/graphQLTypes';
 import {Datum} from 'react-panel-search';
 import {
@@ -23,15 +22,6 @@ const GET_ALL_INDUSTRIES = gql`
       code
       inTool
       id
-      factors {
-        edges {
-          node {
-            attractiveness
-            feasibility
-            id
-          }
-        }
-      }
     }
     allNaics: namibiaNaicsList(inTool: false) {
       naicsId
@@ -39,15 +29,6 @@ const GET_ALL_INDUSTRIES = gql`
       code
       inTool
       id
-      factors {
-        edges {
-          node {
-            attractiveness
-            feasibility
-            id
-          }
-        }
-      }
     }
   }
 `;
@@ -59,14 +40,6 @@ interface SuccessResponse {
     code: HSProduct['code'];
     inTool: HSProduct['inTool'];
     id: HSProduct['id'];
-    factors: {
-      edges: {
-        node: {
-          attractiveness: Factor['attractiveness'];
-          feasibility: Factor['feasibility'];
-        },
-      }[],
-    }
   }[];
   allNaics: {
     naicsId: NAICSIndustry['naicsId'];
@@ -74,14 +47,6 @@ interface SuccessResponse {
     code: NAICSIndustry['code'];
     inTool: NAICSIndustry['inTool'];
     id: NAICSIndustry['id'];
-    factors: {
-      edges: {
-        node: {
-          attractiveness: Factor['attractiveness'];
-          feasibility: Factor['feasibility'];
-        },
-      }[],
-    }
   }[];
 }
 
@@ -98,10 +63,6 @@ const NamibiaTool = () => {
   } else if (data !== undefined) {
     const classificationHsParentId = 'CLASSIFICATION-HS';
     const classificationNaicsParentId = 'CLASSIFICATION-NAICS';
-    let totalHSFeasibility: number = 0;
-    let totalHSAttractiveness: number = 0;
-    let totalNAICSFeasibility: number = 0;
-    let totalNAICSAttractiveness: number = 0;
     const allData: Datum[] = [];
     const searchData: Datum[] = [
       {
@@ -119,10 +80,6 @@ const NamibiaTool = () => {
       },
     ];
     data.allHs.forEach(d => {
-      if (d.factors && d.factors.edges && d.factors.edges[0] && d.factors.edges[0].node) {
-        totalHSFeasibility += d.factors.edges[0].node.feasibility;
-        totalHSAttractiveness += d.factors.edges[0].node.attractiveness;
-      }
       if (d.inTool) {
         searchData.push({
           id: generateStringId(ProductClass.HS, d.hsId),
@@ -139,10 +96,6 @@ const NamibiaTool = () => {
       });
     });
     data.allNaics.forEach(d => {
-      if (d.factors && d.factors.edges && d.factors.edges[0] && d.factors.edges[0].node) {
-        totalNAICSFeasibility += d.factors.edges[0].node.feasibility;
-        totalNAICSAttractiveness += d.factors.edges[0].node.attractiveness;
-      }
       if (d.inTool) {
         searchData.push({
           id: generateStringId(ProductClass.NAICS, d.naicsId),
@@ -162,10 +115,10 @@ const NamibiaTool = () => {
       <Layout
         searchData={searchData}
         allData={allData}
-        averageHSAttractiveness={totalHSAttractiveness / data.allHs.length}
-        averageHSFeasibility={totalHSFeasibility / data.allHs.length}
-        averageNAICSAttractiveness={totalNAICSAttractiveness / data.allNaics.length}
-        averageNAICSFeasibility={totalNAICSFeasibility / data.allNaics.length}
+        averageHSAttractiveness={5}
+        averageHSFeasibility={5}
+        averageNAICSAttractiveness={5}
+        averageNAICSFeasibility={5}
       />
     );
   } else {
