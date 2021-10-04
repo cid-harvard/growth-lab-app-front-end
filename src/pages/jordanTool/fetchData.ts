@@ -54,26 +54,6 @@ const GET_JORDAN_INDUSTRY_DATA = gql`
           }
         }
       }
-      globalTopFdi {
-        edges {
-          node {
-            rank
-            company
-            sourceCountry
-            capitalInvestment
-          }
-        }
-      }
-      regionTopFdi {
-        edges {
-          node {
-            rank
-            company
-            sourceCountry
-            capitalInvestment
-          }
-        }
-      }
       nationality {
         edges {
           node {
@@ -177,8 +157,6 @@ interface SuccessResponse {
     description: JordanIndustry['description'];
     keywords: JordanIndustry['keywords'];
     factors: JordanIndustry['factors'];
-    globalTopFdi: JordanIndustry['globalTopFdi'];
-    regionTopFdi: JordanIndustry['regionTopFdi'];
     nationality: JordanIndustry['nationality'];
     schooling: JordanIndustry['schooling'];
     occupation: JordanIndustry['occupation'];

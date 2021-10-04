@@ -390,7 +390,7 @@ const AlbaniaToolContent = (props: Props) => {
             id={'albania-scatterplot'}
             vizType={VizType.ScatterPlot}
             data={updateScatterPlotData(scatterPlotData, selectedIndustry, updateSelectedIndustry)}
-            axisLabels={{bottom: 'Viability', left: 'Attractiveness'}}
+            axisLabels={{x: 'Viability', y: 'Attractiveness'}}
             axisMinMax={{
               minX: 0,
               maxX: 10,
@@ -399,8 +399,8 @@ const AlbaniaToolContent = (props: Props) => {
             }}
             showAverageLines={true}
             averageLineText={{
-              left: 'Avg. Attractiveness: 5',
-              bottom: 'Avg. Viability: 5',
+              x: 'Avg. Viability: 5',
+              y: 'Avg. Attractiveness: 5',
             }}
             enablePNGDownload={true}
             enableSVGDownload={true}
