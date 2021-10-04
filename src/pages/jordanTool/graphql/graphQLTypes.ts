@@ -27,20 +27,20 @@ export interface FactorsConnection {
   edges: (FactorsEdge | null)[];
 }
 
-export interface TopFDI {
-  rank: string;
-  company: string | null;
-  sourceCountry: string | null;
-  capitalInvestment: number | null;
-}
+// export interface TopFDI {
+//   rank: string;
+//   company: string | null;
+//   sourceCountry: string | null;
+//   capitalInvestment: number | null;
+// }
 
-export interface TopFDIEdge {
-  node: TopFDI | null;
-}
+// export interface TopFDIEdge {
+//   node: TopFDI | null;
+// }
 
-export interface TopFDIConnection {
-  edges: (TopFDIEdge | null)[];
-}
+// export interface TopFDIConnection {
+//   edges: (TopFDIEdge | null)[];
+// }
 
 export interface Nationality {
   nationality: string;
@@ -197,8 +197,6 @@ export interface JordanIndustry {
   description: string | null;
   keywords: string | null;
   factors: FactorsConnection;
-  globalTopFdi: TopFDIConnection;
-  regionTopFdi: TopFDIConnection;
   nationality: NationalityConnection;
   schooling: SchoolingConnection;
   occupation: OccupationConnection;

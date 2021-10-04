@@ -13,12 +13,10 @@ import {
   JordanIndustry,
   Text,
 } from './graphql/graphQLTypes';
-import sortBy from 'lodash/sortBy';
 import generateScatterPlotData, {
   CSVDatum as ScatterPlotCsvDatum,
 } from './transformers/transformScatterplotData';
 import generateRadarChartData from './transformers/transformRadarChartData';
-import generateFdiListsData, {FdiListDatum} from './transformers/transformFdiListsData';
 import generateIndustryNowTableData from './transformers/transformIndustryNowTableData';
 import generateGeoJsonData from './transformers/transformGeoJsonData';
 import generateWageHistogramData from './transformers/transformWageHistogramData';
@@ -53,26 +51,6 @@ const GET_JORDAN_INDUSTRY_DATA = gql`
             fdiWorld
             fdiRegion
             exportPropensity
-          }
-        }
-      }
-      globalTopFdi {
-        edges {
-          node {
-            rank
-            company
-            sourceCountry
-            capitalInvestment
-          }
-        }
-      }
-      regionTopFdi {
-        edges {
-          node {
-            rank
-            company
-            sourceCountry
-            capitalInvestment
           }
         }
       }
@@ -179,8 +157,6 @@ interface SuccessResponse {
     description: JordanIndustry['description'];
     keywords: JordanIndustry['keywords'];
     factors: JordanIndustry['factors'];
-    globalTopFdi: JordanIndustry['globalTopFdi'];
-    regionTopFdi: JordanIndustry['regionTopFdi'];
     nationality: JordanIndustry['nationality'];
     schooling: JordanIndustry['schooling'];
     occupation: JordanIndustry['occupation'];
@@ -221,9 +197,6 @@ interface ReturnValue {
     viabilityCsvData: object;
     attractivenessData: RadarChartDatum[][];
     attractivenessCsvData: object;
-    fdiBarChartData: BarChartDatum[][];
-    globalTopFdiList: FdiListDatum[];
-    regionTopFdiList: FdiListDatum[];
     wageHistogramData: BarChartDatum[][];
     overTimeHistogramData: BarChartDatum[][];
     overTimeHistogramCsvData: object[];
@@ -252,7 +225,7 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
     const {
       jordanIndustry: {
         industryCode, title, description, keywords,
-        factors, globalTopFdi: {edges: globalTopFdiEdges}, regionTopFdi: {edges: regionTopFdiEdges},
+        factors,
         nationality: {edges: nationalityEdges}, schooling: {edges: schoolingEdges},
         occupation: {edges: occupationEdges}, mapLocation: {edges: mapLocationEdges},
         wageHistogram: {edges: wageHistogramEdges}, overTime: {edges: overTimeHistogramEdges},
@@ -290,11 +263,6 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
       viabilityData, viabilityCsvData,
       attractivenessData, attractivenessCsvData,
     } = generateRadarChartData(factors);
-
-    /*****
-      Transform data for Top FDI Lists (Global and Regional)
-    ******/
-    const {globalTopFdiList, regionTopFdiList} = generateFdiListsData({globalTopFdiEdges, regionTopFdiEdges});
 
     /*****
       Transform data for Industry Now Tables
@@ -346,9 +314,6 @@ export default ({variables: {id}, rawIndustryList, setSelectedIndustry}: Input):
       viabilityCsvData: {...basicCsvDatum, ...viabilityCsvData},
       attractivenessData: [attractivenessData],
       attractivenessCsvData: {...basicCsvDatum, ...attractivenessCsvData},
-      fdiBarChartData: [],
-      globalTopFdiList: sortBy(globalTopFdiList, ['rank']),
-      regionTopFdiList: sortBy(regionTopFdiList, ['rank']),
       wageHistogramData,
       jordanGeoJson: geoJsonWithValues,
       jordanMapMinVal: minValue,
