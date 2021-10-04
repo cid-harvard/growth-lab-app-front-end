@@ -85,7 +85,7 @@ const Overview = (props: Props) => {
         </p>
 
         <p>
-          Based on this information, {industryName} <strong style={{color:'red'}}>{'<<strategy>>'}</strong>. Information is provided below that explains the product’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
+          The following sections on this page explains the product’s {feasibilityText} feasibility and {attractivenessText} attractiveness in more detail.
         </p>
       </>
     ) : (
@@ -95,7 +95,7 @@ const Overview = (props: Props) => {
         </p>
 
         <p>
-          Based on this information, {industryName} <strong style={{color:'red'}}>{'<<strategy>>'}</strong>. Information is provided below that explains the industry’s {feasibilityText} feasibility and {attractivenessText} attractiveness.
+          The following sections on this page explains the industry’s {feasibilityText} feasibility and {attractivenessText} attractiveness in more detail.
         </p>
       </>
     );
