@@ -6,9 +6,10 @@ export enum ProductClass {
 }
 
 export const colorScheme = {
-  primary: '#84a9ac',
-  quaternary: '#4d7082',
-  header: '#204052',
+  primary: '#527777',
+  secondary: '#f1ac88',
+  quaternary: '#527777',
+  header: 'rgb(55,115,118)',
   data: '#327a76',
   dataSecondary: '#8A5396',
 };

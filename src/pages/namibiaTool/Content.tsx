@@ -58,7 +58,7 @@ const Content = (props: Props) => {
     <>
       <StickySubHeading
         title={`${name} (${productClass} ${code})`}
-        highlightColor={colorScheme.primary}
+        highlightColor={colorScheme.secondary}
         onHeightChange={(h) => setStickyHeaderHeight(h)}
         />
       <Overview

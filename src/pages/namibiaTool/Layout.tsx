@@ -165,7 +165,7 @@ const NamibiaToolLayout = (props: Props) => {
           )`
         }
         textColor={'#fff'}
-        linkColor={'#fff'}
+        linkColor={colorScheme.primary}
         links={[
           {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/155'},
           {label: 'Country Research', target: 'https://albania.growthlab.cid.harvard.edu/'},
