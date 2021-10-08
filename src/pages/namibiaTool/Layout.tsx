@@ -21,6 +21,7 @@ import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import QueryHS from './QueryHS';
 import QueryNAICS from './QueryNAICS';
+import NamibiaMapSvg from './assets/namibia-logo.svg';
 
 interface Props {
   searchData: Datum[];
@@ -153,7 +154,7 @@ const NamibiaToolLayout = (props: Props) => {
         data={searchData}
         onChange={updateSelectedIndustry}
         selectedValue={selectedIndustry}
-        imageSrc={undefined}
+        imageSrc={NamibiaMapSvg}
         imageProps={{
           imgWidth: '110px',
         }}
