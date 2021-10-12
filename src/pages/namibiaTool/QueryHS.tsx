@@ -203,9 +203,9 @@ const QueryHS = (props: Props) => {
     const proximityData = sortBy(data.datum.proximity.edges.map(({node: {partnerId, rank, factors}}) => {
       const target = allData.find(d => d.id === generateStringId(ProductClass.HS, partnerId));
       const name = target && target.title ? target.title : '---';
-      const rca = factors && factors.edges && factors.edges[0] && factors.edges[0].node && factors.edges[0].node.rca
-        ? factors.edges[0].node.rca.toFixed(3)
-        : '0.000';
+      const rca = factors && factors.edges && factors.edges[0] && factors.edges[0].node && factors.edges[0].node.rca && factors.edges[0].node.rca >= 1
+        ? 'Yes'
+        : 'No';
       return { name, rank, rca};
     }), ['rank']);
     const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
