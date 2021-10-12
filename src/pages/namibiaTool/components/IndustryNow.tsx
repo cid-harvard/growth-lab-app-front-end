@@ -25,7 +25,7 @@ const IndustryNow = (props: Props) => {
   return (
     <>
       <div id={'industry-now'}>
-        <SectionHeader>Industry Now</SectionHeader>
+        <SectionHeader>Industry Characteristics</SectionHeader>
         <p>
           This section provides more information on the current presence of {industryName} in Namibia, including: the demand and market for this {productOrIndustry} in the region, the occupations that are present and missing in Namibia that are related to the {productOrIndustry}, and the employment of certain groups of interest within this {productOrIndustry}. The images in this section only display information for {productOrIndustryPlural} when data is available.
         </p>
