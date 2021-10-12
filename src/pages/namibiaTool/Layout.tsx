@@ -192,7 +192,7 @@ const NamibiaToolLayout = (props: Props) => {
           },
         ]}
         attributions={[
-          'Growth Lab’s Namibia Research Team:  Andrés Fortunato, Douglas Barrios, Miguel Santos, Nikita Taniparti, Sophia Henn',
+          'Growth Lab’s Namibia Research Team:  Andrés Fortunato, Douglas Barrios, Miguel Santos, Nikita Taniparti, Sophia Henn, Jorge Tudela and Jessie Lu',
           'Growth Lab’s Digital Development & Design Team:  Annie White, Brendan Leonard, Nil Tuzcu and Kyle Soeltz.',
         ]}
       />
