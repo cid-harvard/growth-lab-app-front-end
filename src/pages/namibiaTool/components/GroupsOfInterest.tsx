@@ -15,8 +15,7 @@ import DataViz, {
 } from 'react-fast-charts';
 
 export enum Region {
-  World = 'World',
-  Namibia = 'Namibia',
+  World = 'International Benchmark',
 }
 
 export enum EmploymentGroup {
