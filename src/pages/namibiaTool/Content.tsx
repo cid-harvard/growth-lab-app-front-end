@@ -41,6 +41,11 @@ const Content = (props: Props) => {
 
   const barData: BarDatum[] = [
     {
+      employmentGroup: EmploymentGroup.lowSkilled,
+      percent: factors.shareLskill * 100,
+      region: Region.World,
+    },
+    {
       employmentGroup: EmploymentGroup.women,
       percent: factors.shareFemale * 100,
       region: Region.World,
@@ -48,11 +53,6 @@ const Content = (props: Props) => {
     {
       employmentGroup: EmploymentGroup.youth,
       percent: factors.shareYouth * 100,
-      region: Region.World,
-    },
-    {
-      employmentGroup: EmploymentGroup.lowSkilled,
-      percent: factors.shareLskill * 100,
       region: Region.World,
     },
   ];
