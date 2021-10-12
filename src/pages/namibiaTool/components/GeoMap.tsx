@@ -15,6 +15,7 @@ import DataViz, {
 } from 'react-fast-charts';
 import raw from 'raw.macro';
 import {lighten} from 'polished';
+import {extent} from 'd3-array';
 
 const includedCountries = [
   'NAM',
@@ -53,6 +54,7 @@ const GeoMap = ({heatMapData}: Props) => {
       return {...f, properties};
     });
   const data = {...mapSouthernAfrica, features: featuresWithValues};
+  const [min, max] = extent(heatMapData.map(d => d.countryDemandPcAvg));
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
   return (
@@ -72,8 +74,8 @@ const GeoMap = ({heatMapData}: Props) => {
             </p>
           </div>
           <ColorScaleLegend
-            minLabel={'← Less'}
-            maxLabel={'More →'}
+            minLabel={`$${min ? min : 0}`}
+            maxLabel={`$${max ? max : 0}`}
             minColor={lighten(0.55, colorScheme.quaternary)}
             maxColor={colorScheme.quaternary}
             title={'Imports Per Capita'}
