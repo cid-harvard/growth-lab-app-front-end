@@ -30,12 +30,15 @@ interface Props {
   factors: Factor;
   averageFeasibility: number;
   averageAttractiveness: number;
+  medianFeasibility: number;
+  medianAttractiveness: number;
 }
 
 const Overview = (props: Props) => {
   const {
     industryName, data, jsonData, code, factors,
     averageFeasibility, averageAttractiveness,
+    medianFeasibility, medianAttractiveness,
   } = props;
 
   const productClass = useProductClass();
@@ -71,7 +74,7 @@ const Overview = (props: Props) => {
     ? (
       <>
         <p>
-          {industryName} is a product with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {rcaText1} a revealed comparative advantage in this product, meaning that there {rcaText2} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
+          {industryName} is a product with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {rcaText1} a revealed comparative advantage in this product, medianing that there {rcaText2} economic entities intensively involved in this product in Namibia in comparison to the rest of the world.
         </p>
 
         <p>
@@ -81,7 +84,7 @@ const Overview = (props: Props) => {
     ) : (
       <>
         <p>
-          {industryName} is an industry with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {rcaText1} a revealed comparative advantage for the products related to this industry, meaning that there {rcaText2} economic entities intensively involved in this industry in Namibia in comparison to the rest of the world.
+          {industryName} is an industry with <strong>{feasibilityText}</strong> in Namibia and <strong>{attractivenessText}</strong> for Namibia. International trade data shows that Namibia {rcaText1} a revealed comparative advantage for the products related to this industry, medianing that there {rcaText2} economic entities intensively involved in this industry in Namibia in comparison to the rest of the world.
         </p>
 
         <p>
@@ -111,6 +114,15 @@ const Overview = (props: Props) => {
             maxX: 10,
             minY: 0,
             maxY: 10,
+          }}
+          showAverageLines={true}
+          averageLineText={{
+            x: `Avg. Feasibility: ${medianFeasibility.toFixed(2)}`,
+            y: `Avg. Attractiveness: ${medianAttractiveness.toFixed(2)}`,
+          }}
+          averageLineValue={{
+            x: medianFeasibility,
+            y: medianAttractiveness,
           }}
           enablePNGDownload={true}
           enableSVGDownload={true}

@@ -122,6 +122,10 @@ const NamibiaTool = () => {
     const averageHSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.averageHSFeasibility);
     const averageNAICSAttractiveness = data.namibiaThresholdList.find(d => d.key === ThresholdType.averageNAICSAttractiveness);
     const averageNAICSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.averageNAICSFeasibility);
+    const medianHSAttractiveness = data.namibiaThresholdList.find(d => d.key === ThresholdType.medianHSAttractiveness);
+    const medianHSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.medianHSFeasibility);
+    const medianNAICSAttractiveness = data.namibiaThresholdList.find(d => d.key === ThresholdType.medianNAICSAttractiveness);
+    const medianNAICSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.medianNAICSFeasibility);
     return (
       <Layout
         searchData={searchData}
@@ -130,6 +134,10 @@ const NamibiaTool = () => {
         averageHSFeasibility={averageHSFeasibility ? averageHSFeasibility.value : 0}
         averageNAICSAttractiveness={averageNAICSAttractiveness ? averageNAICSAttractiveness.value : 0}
         averageNAICSFeasibility={averageNAICSFeasibility ? averageNAICSFeasibility.value : 0}
+        medianHSAttractiveness={medianHSAttractiveness ? medianHSAttractiveness.value : 0}
+        medianHSFeasibility={medianHSFeasibility ? medianHSFeasibility.value : 0}
+        medianNAICSAttractiveness={medianNAICSAttractiveness ? medianNAICSAttractiveness.value : 0}
+        medianNAICSFeasibility={medianNAICSFeasibility ? medianNAICSFeasibility.value : 0}
       />
     );
   } else {

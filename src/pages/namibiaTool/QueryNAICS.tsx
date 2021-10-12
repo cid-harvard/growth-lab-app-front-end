@@ -138,12 +138,15 @@ interface Props {
   allData: Datum[];
   averageFeasibility: number;
   averageAttractiveness: number;
+  medianFeasibility: number;
+  medianAttractiveness: number;
 }
 
 const QueryNAICS = (props: Props) => {
   const {
     id, setStickyHeaderHeight, onNodeClick, allData,
     averageFeasibility, averageAttractiveness,
+    medianFeasibility, medianAttractiveness,
   } = props;
 
   const {loading, error, data} = useQuery<SuccessResponse, {naicsId: number}>(GET_NAICS_PRODUCT, {
@@ -238,6 +241,8 @@ const QueryNAICS = (props: Props) => {
         sharedMissingData={sharedMissingData}
         averageFeasibility={averageFeasibility}
         averageAttractiveness={averageAttractiveness}
+        medianFeasibility={medianFeasibility}
+        medianAttractiveness={medianAttractiveness}
       />
     );
   } else {

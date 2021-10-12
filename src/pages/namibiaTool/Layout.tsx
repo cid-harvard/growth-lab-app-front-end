@@ -30,6 +30,10 @@ interface Props {
   averageHSAttractiveness: number;
   averageNAICSFeasibility: number;
   averageNAICSAttractiveness: number;
+  medianHSFeasibility: number;
+  medianHSAttractiveness: number;
+  medianNAICSFeasibility: number;
+  medianNAICSAttractiveness: number;
 }
 
 const NamibiaToolLayout = (props: Props) => {
@@ -37,6 +41,8 @@ const NamibiaToolLayout = (props: Props) => {
     searchData, allData,
     averageHSFeasibility, averageHSAttractiveness,
     averageNAICSFeasibility, averageNAICSAttractiveness,
+    medianHSFeasibility, medianHSAttractiveness,
+    medianNAICSFeasibility, medianNAICSAttractiveness,
   } = props;
   const title='Namibia’s Industry Targeting Dashboard';
   const metaTitle = title + ' | The Growth Lab at Harvard Kennedy School';
@@ -101,6 +107,8 @@ const NamibiaToolLayout = (props: Props) => {
           allData={allData}
           averageFeasibility={averageHSFeasibility}
           averageAttractiveness={averageHSAttractiveness}
+          medianFeasibility={medianHSFeasibility}
+          medianAttractiveness={medianHSAttractiveness}
         />
       );
     } else if (productClass === ProductClass.NAICS) {
@@ -112,6 +120,8 @@ const NamibiaToolLayout = (props: Props) => {
           allData={allData}
           averageFeasibility={averageNAICSFeasibility}
           averageAttractiveness={averageNAICSAttractiveness}
+          medianFeasibility={medianNAICSFeasibility}
+          medianAttractiveness={medianNAICSAttractiveness}
         />
       );
     } else {

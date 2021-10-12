@@ -87,6 +87,10 @@ export enum ThresholdType {
   averageHSFeasibility = 'hs_feasibility_avg',
   averageNAICSAttractiveness = 'naics_attractiveness_avg',
   averageNAICSFeasibility = 'naics_feasibility_avg',
+  medianHSAttractiveness = 'hs_attractiveness_med',
+  medianHSFeasibility = 'hs_feasibility_med',
+  medianNAICSAttractiveness = 'naics_attractiveness_med',
+  medianNAICSFeasibility = 'naics_feasibility_med',
 }
 
 export interface NamibiaThreshold {

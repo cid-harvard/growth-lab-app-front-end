@@ -26,6 +26,8 @@ interface Props {
   sharedMissingData: MissingSharedDatum[];
   averageFeasibility: number;
   averageAttractiveness: number;
+  medianFeasibility: number;
+  medianAttractiveness: number;
 }
 
 const Content = (props: Props) => {
@@ -34,6 +36,7 @@ const Content = (props: Props) => {
     scatterPlotData, scatterPlotJsonData, factors,
     proximityData, heatMapData, sharedMissingData,
     averageFeasibility, averageAttractiveness,
+    medianFeasibility, medianAttractiveness,
   } = props;
 
   const barData: BarDatum[] = [
@@ -69,6 +72,8 @@ const Content = (props: Props) => {
         factors={factors}
         averageFeasibility={averageFeasibility}
         averageAttractiveness={averageAttractiveness}
+        medianFeasibility={medianFeasibility}
+        medianAttractiveness={medianAttractiveness}
       />
       <IndustryNow
         heatMapData={heatMapData}
