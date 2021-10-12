@@ -105,7 +105,7 @@ const Overview = (props: Props) => {
           id={'namibia-scatterplot'}
           vizType={VizType.ScatterPlot}
           data={data}
-          axisLabels={{x: 'Viability', y: 'Attractiveness'}}
+          axisLabels={{ x: 'Feasibility', y: 'Attractiveness'}}
           axisMinMax={{
             minX: 0,
             maxX: 10,
@@ -136,7 +136,7 @@ const Overview = (props: Props) => {
           code={code}
         />
         <TextBlock>
-          <SubSectionHeader color={colorScheme.quaternary}>Viability Factors</SubSectionHeader>
+          <SubSectionHeader color={colorScheme.quaternary}>Feasibility Factors</SubSectionHeader>
           <ParagraphHeader color={colorScheme.quaternary}>Existing Presence in Namibia</ParagraphHeader>
           <SmallParagraph>
             Existing presence measures the extent to which {indefiniteArticle} {productOrIndustry} is produced and exported in Namibia. {upperFirst(indefiniteArticle)} {productOrIndustry} is more likely to thrive in Namibia if it is already produced to some extent in the country. This measure is a combination of two metrics: the revealed comparative advantage (RCA) of {indefiniteArticle} {productOrIndustry} that measures the relative intensity of the {productOrIndustry}’s exports in Namibia compared to the rest of the world, and the average gross export value of this {productOrIndustry} from Namibia in recent years. {upperFirst(productOrIndustryPlural)} with higher values of existing presence have higher feasibility in Namibia. A higher score on the 0-10 scale reflects that the {productOrIndustry} represents a larger share of exports from Namibia than it does from the world.
