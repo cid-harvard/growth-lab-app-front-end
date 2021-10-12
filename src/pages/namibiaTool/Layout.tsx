@@ -44,7 +44,7 @@ const NamibiaToolLayout = (props: Props) => {
 
   const {location: {pathname, search, hash}, push} = useHistory();
   const parsedQuery = queryString.parse(search);
-  const selected = parsedQuery.selected ? parsedQuery.selected : 'HS-1651'; // Default to Data processing, hosting
+  const selected = parsedQuery.selected ? parsedQuery.selected : 'HS-1764'; // Default to MOTOR VEHICLES FOR TRANSPORTING GOODS (HS 8704)
 
   const initialSelectedIndustry = searchData.find(d => d.id === selected);
 
