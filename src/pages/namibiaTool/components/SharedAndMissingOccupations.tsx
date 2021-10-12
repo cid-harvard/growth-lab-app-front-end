@@ -26,8 +26,8 @@ interface Props {
 const SharedAndMissingOccupations = (props: Props) => {
   const {data} = props;
   const columns: Column[] = [
-    {label: 'Existing Occuptions', key: 'shared'},
-    {label: 'Missing Occuptions', key: 'missing'},
+    {label: 'Existing Occupations', key: 'shared'},
+    {label: 'Missing Occupations', key: 'missing'},
   ];
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
