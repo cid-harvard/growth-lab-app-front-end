@@ -18,7 +18,6 @@ import {
   useProductClass,
 } from '../Utils';
 import {rgba} from 'polished';
-import {extent} from 'd3-array';
 import {Factor} from '../graphql/graphQLTypes';
 import FeasibilityRadarChart from './FeasibilityRadarChart';
 import AttractivenessRadarChart from './AttractivenessRadarChart';
@@ -39,15 +38,6 @@ const Overview = (props: Props) => {
     averageFeasibility, averageAttractiveness,
   } = props;
 
-  const allFeasibility: number[] = [];
-  const allAttractiveness: number[] = [];
-  data.forEach(d => {
-    allFeasibility.push(d.x);
-    allAttractiveness.push(d.y);
-  });
-
-  const [minFeasibility, maxFeasibility] = extent(allFeasibility) as [number, number];
-  const [minAttractiveness, maxAttractiveness] = extent(allAttractiveness) as [number, number];
   const productClass = useProductClass();
 
   const introText = productClass === ProductClass.HS
@@ -117,10 +107,10 @@ const Overview = (props: Props) => {
           data={data}
           axisLabels={{x: 'Viability', y: 'Attractiveness'}}
           axisMinMax={{
-            minX: minFeasibility,
-            maxX: maxFeasibility,
-            minY: minAttractiveness,
-            maxY: maxAttractiveness,
+            minX: 0,
+            maxX: 10,
+            minY: 0,
+            maxY: 10,
           }}
           enablePNGDownload={true}
           enableSVGDownload={true}
