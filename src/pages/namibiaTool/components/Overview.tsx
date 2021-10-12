@@ -123,7 +123,7 @@ const Overview = (props: Props) => {
           </div>
           <HowToReadDots
             items={[
-              {color: rgba(colorScheme.data, 0.5), label: 'Intensively present in Namibia'},
+              { color: rgba(colorScheme.data, 0.5), label: `97 priority ${productOrIndustryPlural} identified in complexity report`},
             ]}
             highlighted={{color: rgba(colorScheme.dataSecondary, 0.5), label: industryName}}
           />
