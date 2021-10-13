@@ -27,8 +27,51 @@ const includedCountries = [
   'ZAF',
 ];
 
+const subSaharanAfrica = [
+  'BEN',
+  'BFA',
+  'BDI',
+  'CMR',
+  'CAF',
+  'TCD',
+  'COG',
+  'COD',
+  'CIV',
+  'GNQ',
+  'ERI',
+  'ETH',
+  'GAB',
+  'GMB',
+  'GHA',
+  'GIN',
+  'GNB',
+  'KEN',
+  'LBR',
+  'MDG',
+  'MWI',
+  'MLI',
+  'MRT',
+  'MUS',
+  'MOZ',
+  'NER',
+  'NGA',
+  'RWA',
+  'SEN',
+  'SLE',
+  'SOM',
+  'SDS',
+  'SDN',
+  'TZA',
+  'TGO',
+  'UGA',
+  'ZWE',
+];
+
 const worldMap = JSON.parse(raw('../../../assets/world-geojson.json'));
 const filteredCountries = worldMap.features.filter((f: any) => includedCountries.includes(f.properties.iso_alpha3));
+const filteredSubSaharanCountries = worldMap.features
+  .filter((f: any) => subSaharanAfrica.includes(f.properties.iso_alpha3))
+  .map((f: any) => ({...f, properties: {percent: 0, void: true}}));
 const mapSouthernAfrica = {...worldMap, features: filteredCountries};
 
 export interface Datum {
@@ -53,7 +96,7 @@ const GeoMap = ({heatMapData}: Props) => {
       };
       return {...f, properties};
     });
-  const data = {...mapSouthernAfrica, features: featuresWithValues};
+  const data = { ...mapSouthernAfrica, features: [...filteredSubSaharanCountries, ...featuresWithValues]};
   const [min, max] = extent(heatMapData.map(d => d.countryDemandPcAvg));
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
