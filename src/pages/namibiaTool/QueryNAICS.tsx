@@ -141,6 +141,9 @@ interface Props {
   averageAttractiveness: number;
   medianFeasibility: number;
   medianAttractiveness: number;
+  employmentFemaleAvg: number;
+  employmentLskillAvg: number;
+  employmentYouthAvg: number;
 }
 
 const QueryNAICS = (props: Props) => {
@@ -148,6 +151,7 @@ const QueryNAICS = (props: Props) => {
     id, setStickyHeaderHeight, onNodeClick, allData,
     averageFeasibility, averageAttractiveness,
     medianFeasibility, medianAttractiveness,
+    employmentFemaleAvg, employmentLskillAvg, employmentYouthAvg,
   } = props;
 
   const {loading, error, data} = useQuery<SuccessResponse, {naicsId: number}>(GET_NAICS_PRODUCT, {
@@ -244,6 +248,9 @@ const QueryNAICS = (props: Props) => {
         averageAttractiveness={averageAttractiveness}
         medianFeasibility={medianFeasibility}
         medianAttractiveness={medianAttractiveness}
+        employmentFemaleAvg={employmentFemaleAvg}
+        employmentLskillAvg={employmentLskillAvg}
+        employmentYouthAvg={employmentYouthAvg}
       />
     );
   } else {

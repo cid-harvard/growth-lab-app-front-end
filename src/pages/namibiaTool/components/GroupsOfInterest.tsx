@@ -2,6 +2,7 @@ import React from 'react';
 import {
   TwoColumnSection,
   SectionHeaderSecondary,
+  lightBorderColor,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import {
@@ -16,6 +17,7 @@ import DataViz, {
 
 export enum Region {
   World = 'International Benchmark',
+  Average = 'International Benchmark Average',
 }
 
 export enum EmploymentGroup {
@@ -27,23 +29,45 @@ export enum EmploymentGroup {
 export interface BarDatum {
   employmentGroup: EmploymentGroup;
   percent: number;
-  region: Region;
 }
 
 interface Props {
-  barData: BarDatum[];
+  worldData: BarDatum[];
+  averageData: BarDatum[];
 }
 
-const GroupsOfInterest = ({barData}: Props) => {
-  const data = barData.map(d => {
-    return {
-      x: d.employmentGroup,
-      y: d.percent,
-      fill: d.region === Region.World ? colorScheme.data : colorScheme.dataSecondary,
-      groupName: d.region,
-      tooltipContent: `${d.percent.toFixed(2)}% Employment`,
-    };
-  });
+const GroupsOfInterest = ({worldData, averageData}: Props) => {
+  const data = [
+    averageData.map(d => {
+      const targetWorld = worldData.find(dd => dd.employmentGroup === d.employmentGroup);
+      return {
+        x: d.employmentGroup,
+        y: d.percent,
+        fill: lightBorderColor,
+        tooltipContent: `
+          <small>
+            <strong>International Benchmark</strong>: ${targetWorld ? targetWorld.percent.toFixed(2) : 0}%<br />
+            <strong>International Benchmark Average</strong>: ${d.percent.toFixed(2)}%<br />
+          </small>
+        `,
+      };
+    }),
+    worldData.map(d => {
+      const targetWorldAvg = averageData.find(dd => dd.employmentGroup === d.employmentGroup);
+      return {
+        x: d.employmentGroup,
+        y: d.percent,
+        fill: 'rgba(0, 0, 0, 0)',
+        stroke: colorScheme.quaternary,
+        tooltipContent: `
+        <small>
+          <strong>International Benchmark</strong>: ${d.percent.toFixed(2)}%<br />
+          <strong>International Benchmark Average</strong>: ${targetWorldAvg ? targetWorldAvg.percent.toFixed(2) : 0}%<br />
+        </small>
+        `,
+      };
+    }),
+  ];
   const productClass = useProductClass();
   const productOrIndustryPlural = productClass === ProductClass.HS ? 'Products' : 'Industries';
   return (
@@ -52,7 +76,7 @@ const GroupsOfInterest = ({barData}: Props) => {
       <TwoColumnSection>
         <DataViz
           id={'namibia-employment-of-groups-of-interest'}
-          vizType={VizType.ClusterBarChart}
+          vizType={VizType.BarChart}
           data={data}
           axisLabels={{left: '% of Employment', bottom: 'Group'}}
         />
@@ -64,14 +88,14 @@ const GroupsOfInterest = ({barData}: Props) => {
             legendList={[
               {
                 label: Region.World,
-                fill: colorScheme.data,
+                fill: undefined,
+                stroke: colorScheme.quaternary,
+              },
+              {
+                label: Region.Average,
+                fill: lightBorderColor,
                 stroke: undefined,
               },
-              // {
-              //   label: Region.Namibia,
-              //   fill: colorScheme.dataSecondary,
-              //   stroke: undefined,
-              // },
             ]}
           />
         </TextBlock>

@@ -9,7 +9,7 @@ import {
   ScatterPlotDatum,
 } from 'react-fast-charts';
 import {Datum as HeatMapDatum} from './components/GeoMap';
-import {BarDatum, EmploymentGroup, Region} from './components/GroupsOfInterest';
+import {BarDatum, EmploymentGroup} from './components/GroupsOfInterest';
 import {TableDatum} from './components/SharedAndMissingOccupations';
 
 interface Props {
@@ -29,6 +29,9 @@ interface Props {
   averageAttractiveness: number;
   medianFeasibility: number;
   medianAttractiveness: number;
+  employmentFemaleAvg: number;
+  employmentLskillAvg: number;
+  employmentYouthAvg: number;
 }
 
 const Content = (props: Props) => {
@@ -38,23 +41,36 @@ const Content = (props: Props) => {
     proximityData, heatMapData, sharedData, missingData,
     averageFeasibility, averageAttractiveness,
     medianFeasibility, medianAttractiveness,
+    employmentFemaleAvg, employmentLskillAvg, employmentYouthAvg,
   } = props;
 
-  const barData: BarDatum[] = [
+  const worldData: BarDatum[] = [
     {
       employmentGroup: EmploymentGroup.lowSkilled,
       percent: factors.shareLskill * 100,
-      region: Region.World,
     },
     {
       employmentGroup: EmploymentGroup.women,
       percent: factors.shareFemale * 100,
-      region: Region.World,
     },
     {
       employmentGroup: EmploymentGroup.youth,
       percent: factors.shareYouth * 100,
-      region: Region.World,
+    },
+  ];
+
+  const averageData: BarDatum[] = [
+    {
+      employmentGroup: EmploymentGroup.lowSkilled,
+      percent: employmentLskillAvg * 100,
+    },
+    {
+      employmentGroup: EmploymentGroup.women,
+      percent: employmentFemaleAvg * 100,
+    },
+    {
+      employmentGroup: EmploymentGroup.youth,
+      percent: employmentYouthAvg * 100,
     },
   ];
 
@@ -78,7 +94,8 @@ const Content = (props: Props) => {
       />
       <IndustryNow
         heatMapData={heatMapData}
-        barData={barData}
+        worldData={worldData}
+        averageData={averageData}
         sharedData={sharedData}
         missingData={missingData}
         industryName={name}

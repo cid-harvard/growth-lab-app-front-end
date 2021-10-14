@@ -126,6 +126,10 @@ const NamibiaTool = () => {
     const medianHSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.medianHSFeasibility);
     const medianNAICSAttractiveness = data.namibiaThresholdList.find(d => d.key === ThresholdType.medianNAICSAttractiveness);
     const medianNAICSFeasibility = data.namibiaThresholdList.find(d => d.key === ThresholdType.medianNAICSFeasibility);
+    const employmentFemaleAvg = data.namibiaThresholdList.find(d => d.key === ThresholdType.employmentFemaleAvg);
+    const employmentLskillAvg = data.namibiaThresholdList.find(d => d.key === ThresholdType.employmentLskillAvg);
+    const employmentYouthAvg = data.namibiaThresholdList.find(d => d.key === ThresholdType.employmentYouthAvg);
+
     return (
       <Layout
         searchData={searchData}
@@ -138,6 +142,9 @@ const NamibiaTool = () => {
         medianHSFeasibility={medianHSFeasibility ? medianHSFeasibility.value : 0}
         medianNAICSAttractiveness={medianNAICSAttractiveness ? medianNAICSAttractiveness.value : 0}
         medianNAICSFeasibility={medianNAICSFeasibility ? medianNAICSFeasibility.value : 0}
+        employmentFemaleAvg={employmentFemaleAvg ? employmentFemaleAvg.value : 0}
+        employmentLskillAvg={employmentLskillAvg ? employmentLskillAvg.value : 0}
+        employmentYouthAvg={employmentYouthAvg ? employmentYouthAvg.value : 0}
       />
     );
   } else {

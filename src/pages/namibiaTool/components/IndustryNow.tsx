@@ -13,13 +13,14 @@ import {
 interface Props {
   industryName: string;
   heatMapData: Datum[];
-  barData: BarDatum[];
+  worldData: BarDatum[];
+  averageData: BarDatum[];
   sharedData: TableDatum[];
   missingData: TableDatum[];
 }
 
 const IndustryNow = (props: Props) => {
-  const { heatMapData, barData, sharedData, missingData, industryName } = props;
+  const { heatMapData, worldData, averageData, sharedData, missingData, industryName } = props;
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
   const productOrIndustryPlural = productClass === ProductClass.HS ? 'products' : 'industries';
@@ -39,7 +40,8 @@ const IndustryNow = (props: Props) => {
         missingData={missingData}
       />
       <GroupsOfInterest
-        barData={barData}
+        worldData={worldData}
+        averageData={averageData}
       />
     </>
   );
