@@ -3,7 +3,6 @@ import {
   TwoColumnSection,
   SectionHeaderSecondary,
 } from '../../../styling/styleUtils';
-import TextBlock from '../../../components/text/TextBlock';
 import {
   colorScheme,
   useProductClass,
@@ -14,28 +13,33 @@ import DataViz, {
 } from 'react-fast-charts';
 import DynamicTable, {Column, Datum} from '../../../components/text/DynamicTable';
 
-export interface MissingSharedDatum extends Datum {
-  shared: string | null;
-  missing: string | null;
+export interface TableDatum extends Datum {
+  occupation: string;
+  percent: string;
 }
 
 interface Props {
-  data: MissingSharedDatum[];
+  sharedData: TableDatum[];
+  missingData: TableDatum[];
 }
 
 const SharedAndMissingOccupations = (props: Props) => {
-  const {data} = props;
-  const columns: Column[] = [
-    {label: 'Existing Occupations', key: 'shared'},
-    {label: 'Missing Occupations', key: 'missing'},
+  const {sharedData, missingData} = props;
+  const sharedColumns: Column[] = [
+    { label: 'Existing Occupations', key: 'occupation'},
+    { label: 'Share of Employment', key: 'percent'},
+  ];
+  const missingColumns: Column[] = [
+    { label: 'Missing Occupations', key: 'occupation'},
+    { label: 'Share of Employment', key: 'percent' },
   ];
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
   const productOrIndustryPlural = productClass === ProductClass.HS ? 'products' : 'industries';
-  const table = data.length ? (
+  const sharedTable = sharedData.length ? (
     <DynamicTable
-      columns={columns}
-      data={data}
+      columns={sharedColumns}
+      data={sharedData}
       color={colorScheme.quaternary}
     />
   ) : (
@@ -45,16 +49,26 @@ const SharedAndMissingOccupations = (props: Props) => {
       message={'There are not enough data points for this chart'}
     />
   );
+  const missingTable = missingData.length ? (
+    <DynamicTable
+      columns={missingColumns}
+      data={missingData}
+      color={colorScheme.quaternary}
+    />
+  ) : (
+    <DataViz
+      id={'namibia-missing-missing-table'}
+      vizType={VizType.Error}
+      message={'There are not enough data points for this chart'}
+    />
+  );
   return (
     <>
       <SectionHeaderSecondary color={colorScheme.quaternary}>Shared And Missing Occupations</SectionHeaderSecondary>
+        <p>The tables below display the top 10 existing and missing occupations present in Namibia that are associated with the {productOrIndustryPlural} or other inputs used in the production of the {productOrIndustry}. Occupations related to this activity are ranked by those that comprise the biggest share of occupations in the activity and the tables show the top 10 for those occupations that exist and those that are missing in Namibia for this {productOrIndustry}.</p>
       <TwoColumnSection>
-        {table}
-        <TextBlock>
-          <div>
-            <p>The table to the left displays the top 10 existing and missing occupations present in Namibia that are associated with the {productOrIndustryPlural} or other inputs used in the production of the {productOrIndustry}. Occupations related to this activity are ranked by those that comprise the biggest share of occupations in the activity and the table shows the top 10 for those occupations that exist and those that are missing in Namibia for this {productOrIndustry}.</p>
-          </div>
-        </TextBlock>
+        {sharedTable}
+        {missingTable}
       </TwoColumnSection>
     </>
   );

@@ -41,6 +41,7 @@ export interface Occupation {
   occupation: string;
   isAvailable: boolean;
   rank: number;
+  pctShare: number;
   id: string;
 }
 

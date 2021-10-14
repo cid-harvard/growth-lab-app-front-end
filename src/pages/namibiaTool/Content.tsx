@@ -10,7 +10,7 @@ import {
 } from 'react-fast-charts';
 import {Datum as HeatMapDatum} from './components/GeoMap';
 import {BarDatum, EmploymentGroup, Region} from './components/GroupsOfInterest';
-import {MissingSharedDatum} from './components/SharedAndMissingOccupations';
+import {TableDatum} from './components/SharedAndMissingOccupations';
 
 interface Props {
   id: string;
@@ -23,7 +23,8 @@ interface Props {
   scatterPlotJsonData: object[];
   proximityData: ProximityDatum[];
   heatMapData: HeatMapDatum[];
-  sharedMissingData: MissingSharedDatum[];
+  sharedData: TableDatum[];
+  missingData: TableDatum[];
   averageFeasibility: number;
   averageAttractiveness: number;
   medianFeasibility: number;
@@ -34,7 +35,7 @@ const Content = (props: Props) => {
   const {
     name, code, productClass, setStickyHeaderHeight,
     scatterPlotData, scatterPlotJsonData, factors,
-    proximityData, heatMapData, sharedMissingData,
+    proximityData, heatMapData, sharedData, missingData,
     averageFeasibility, averageAttractiveness,
     medianFeasibility, medianAttractiveness,
   } = props;
@@ -78,7 +79,8 @@ const Content = (props: Props) => {
       <IndustryNow
         heatMapData={heatMapData}
         barData={barData}
-        sharedMissingData={sharedMissingData}
+        sharedData={sharedData}
+        missingData={missingData}
         industryName={name}
       />
       <NearbyIndustries

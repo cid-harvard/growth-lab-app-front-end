@@ -17,7 +17,7 @@ import {rgba} from 'polished';
 import {Datum} from 'react-panel-search';
 import sortBy from 'lodash/sortBy';
 import partition from 'lodash/partition';
-import {MissingSharedDatum} from './components/SharedAndMissingOccupations';
+import {TableDatum} from './components/SharedAndMissingOccupations';
 
 const GET_NAICS_PRODUCT = gql`
   query GetNAICSIndustry($naicsId: Int!) {
@@ -82,6 +82,7 @@ const GET_NAICS_PRODUCT = gql`
             occupation
             isAvailable
             rank
+            pctShare
             id
           }
         }
@@ -212,20 +213,19 @@ const QueryNAICS = (props: Props) => {
       return {name, rank, rca};
     }), ['rank']);
     const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
-    const [shared, missing] = partition(data.datum.occupation.edges, ({node}) => node.isAvailable);
-    const sortedShared = sortBy(shared, ['rank']);
-    const sortedMissing = sortBy(missing, ['rank']);
-    const sharedMissingData: MissingSharedDatum[] = [];
-    for(let i = 0; i < 10; i++) {
-      const targetShared = sortedShared[i] ? shared[i].node.occupation : null;
-      const targetMissing = sortedMissing[i] ? missing[i].node.occupation : null;
-      if (targetMissing || targetShared) {
-        sharedMissingData.push({
-          shared: targetShared,
-          missing: targetMissing,
-        });
-      }
-    }
+    const [shared, missing] = partition(data.datum.occupation.edges, ({ node }) => node.isAvailable);
+    const sharedData: TableDatum[] = sortBy(shared, ['rank']).map(d => {
+      return {
+        occupation: d.node.occupation,
+        percent: d.node.pctShare.toFixed(2) + '%',
+      };
+    });
+    const missingData: TableDatum[] = sortBy(missing, ['rank']).map(d => {
+      return {
+        occupation: d.node.occupation,
+        percent: d.node.pctShare.toFixed(2) + '%',
+      };
+    });
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.NAICS, data.datum.naicsId)}
@@ -238,7 +238,8 @@ const QueryNAICS = (props: Props) => {
         scatterPlotJsonData={scatterPlotJsonData}
         proximityData={proximityData}
         heatMapData={heatMapData}
-        sharedMissingData={sharedMissingData}
+        sharedData={sharedData}
+        missingData={missingData}
         averageFeasibility={averageFeasibility}
         averageAttractiveness={averageAttractiveness}
         medianFeasibility={medianFeasibility}

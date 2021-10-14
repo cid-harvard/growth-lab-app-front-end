@@ -3,7 +3,7 @@ import {
   SectionHeader,
 } from '../../../styling/styleUtils';
 import GeoMap, {Datum} from './GeoMap';
-import SharedAndMissingOccupations, {MissingSharedDatum} from './SharedAndMissingOccupations';
+import SharedAndMissingOccupations, {TableDatum} from './SharedAndMissingOccupations';
 import GroupsOfInterest, {BarDatum} from './GroupsOfInterest';
 import {
   ProductClass,
@@ -14,11 +14,12 @@ interface Props {
   industryName: string;
   heatMapData: Datum[];
   barData: BarDatum[];
-  sharedMissingData: MissingSharedDatum[];
+  sharedData: TableDatum[];
+  missingData: TableDatum[];
 }
 
 const IndustryNow = (props: Props) => {
-  const { heatMapData, barData, sharedMissingData, industryName } = props;
+  const { heatMapData, barData, sharedData, missingData, industryName } = props;
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
   const productOrIndustryPlural = productClass === ProductClass.HS ? 'products' : 'industries';
@@ -34,7 +35,8 @@ const IndustryNow = (props: Props) => {
         heatMapData={heatMapData}
       />
       <SharedAndMissingOccupations
-        data={sharedMissingData}
+        sharedData={sharedData}
+        missingData={missingData}
       />
       <GroupsOfInterest
         barData={barData}
