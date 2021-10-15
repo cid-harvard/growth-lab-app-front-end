@@ -26,6 +26,7 @@ const GET_HS_PRODUCT = gql`
       hsId
       name
       code
+      complexityReport
       factors {
         edges {
           node {
@@ -111,6 +112,7 @@ interface SuccessResponse {
     hsId: HSProduct['hsId'],
     name: HSProduct['name'],
     code: HSProduct['code'],
+    complexityReport: HSProduct['complexityReport'],
     factors: HSProduct['factors'],
     proximity: HSProduct['proximity'],
     relativeDemand: HSProduct['relativeDemand'],
@@ -189,6 +191,8 @@ const QueryHS = (props: Props) => {
           <strong>Feasibility:</strong> ${feasibility.toFixed(2)}
           <br />
           <strong>Attractiveness:</strong> ${attractiveness.toFixed(2)}
+          <br />
+          <strong>Identified High Potential:</strong> Yes
         `,
         fill: d.code === data.datum.code ? rgba(colorScheme.dataSecondary, 0) : rgba(colorScheme.data, 0.5),
         highlighted: false,
@@ -203,6 +207,8 @@ const QueryHS = (props: Props) => {
         <strong>Feasibility:</strong> ${data.datum.factors.edges[0].node.feasibility.toFixed(2)}
         <br />
         <strong>Attractiveness:</strong> ${data.datum.factors.edges[0].node.attractiveness.toFixed(2)}
+        <br />
+        <strong>Identified High Potential:</strong>  ${data.datum.complexityReport ? 'Yes' : 'No'}
       `,
       fill: rgba(colorScheme.dataSecondary, 0.5),
       highlighted: true,
