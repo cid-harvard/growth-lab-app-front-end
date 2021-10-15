@@ -79,7 +79,7 @@ const NamibiaToolLayout = (props: Props) => {
   const links: NavItem[] = [
     {label: 'Overview', target: '#overview', internalLink: true, scrollBuffer},
     { label: 'Industry Characteristics', target: '#industry-now', internalLink: true, scrollBuffer},
-    {label: 'Nearby Industries', target: '#nearby-industries', internalLink: true, scrollBuffer},
+    { label: 'Nearby ' + (productClass === ProductClass.HS ? 'Products' : 'Industries'), target: '#nearby-industries', internalLink: true, scrollBuffer},
   ];
 
   useScrollBehavior({

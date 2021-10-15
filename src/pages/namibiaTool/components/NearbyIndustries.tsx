@@ -46,13 +46,13 @@ const NearbyIndustries = (props: Props) => {
   return (
     <>
       <div id={'nearby-industries'}>
-        <SectionHeader>Nearby Industries</SectionHeader>
+        <SectionHeader>Nearby {productOrIndustryPlural}</SectionHeader>
       </div>
       <TwoColumnSection>
         {table}
         <TextBlock>
           <div>
-            <p>This table shows the “nearest” 10 {productOrIndustryPlural} to {industryName} based on shared knowhow and capabilities and indicates whether or not Namibia currently has a revealed comparative advantage in those {productOrIndustryPlural}. In order to explore any of these related {productOrIndustryPlural}, please use the search bar at the top of this page.</p>
+            <p>This table shows the “nearest” 10 {productOrIndustryPlural} to {industryName} based on shared knowhow and capabilities and indicates whether or not Namibia currently has a revealed comparative advantage in those {productOrIndustryPlural}. This list is ranked by descending order of closeness to {industryName}. In order to explore any of these related {productOrIndustryPlural}, please use the search bar at the top of this page.</p>
           </div>
         </TextBlock>
       </TwoColumnSection>
