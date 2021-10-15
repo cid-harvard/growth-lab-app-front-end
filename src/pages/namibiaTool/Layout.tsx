@@ -188,8 +188,8 @@ const NamibiaToolLayout = (props: Props) => {
         textColor={'#fff'}
         linkColor={colorScheme.primary}
         links={[
-          {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/155'},
-          {label: 'Country Research', target: 'https://albania.growthlab.cid.harvard.edu/'},
+          { label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/155'},
+          { label: 'Country Research', target: 'https://growthlab.cid.harvard.edu/applied-research/namibia'},
         ]}
         introText={<OverviewText />}
         introTextPosition={IntroTextPosition.Bottom}
@@ -208,7 +208,7 @@ const NamibiaToolLayout = (props: Props) => {
           },
           {
             label: 'Country Research',
-            target: 'https://albania.growthlab.cid.harvard.edu/',
+            target: 'https://growthlab.cid.harvard.edu/applied-research/namibia',
           },
         ]}
         attributions={[
