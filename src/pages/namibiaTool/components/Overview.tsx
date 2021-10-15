@@ -37,7 +37,6 @@ interface Props {
 const Overview = (props: Props) => {
   const {
     industryName, data, jsonData, code, factors,
-    averageFeasibility, averageAttractiveness,
     medianFeasibility, medianAttractiveness,
   } = props;
 
@@ -54,13 +53,13 @@ const Overview = (props: Props) => {
       </p>
     );
 
-  const feasibilityText = factors.feasibility < averageFeasibility
-    ? 'lower than average feasibility'
-    : 'higher than average feasibility';
+  const feasibilityText = factors.feasibility < medianFeasibility
+    ? 'lower than the median feasibility'
+    : 'higher than the median feasibility';
 
-  const attractivenessText = factors.attractiveness < averageAttractiveness
-    ? 'lower than average attractiveness'
-    : 'higher than average attractiveness';
+  const attractivenessText = factors.attractiveness < medianAttractiveness
+    ? 'lower than the median attractiveness'
+    : 'higher than the median attractiveness';
 
   const rcaText1 = factors.rca < 1
     ? 'has'
