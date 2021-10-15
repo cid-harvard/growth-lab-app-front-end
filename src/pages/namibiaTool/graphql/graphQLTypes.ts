@@ -32,8 +32,8 @@ export interface Proximity {
 
 export interface RelativeDemand {
   locationCode: string;
-  countryDemandAvg: number;
-  countryDemandPcAvg: number;
+  countryDemandAvg: number; // imports, USD $
+  countryDemandPcAvg: number; // imports per capita, USD $
   id: string;
 }
 

@@ -12,6 +12,7 @@ import {
 import DataViz, {
   VizType,
   ColorScaleLegend,
+  formatNumber,
 } from 'react-fast-charts';
 import raw from 'raw.macro';
 import {lighten} from 'polished';
@@ -77,6 +78,7 @@ const mapSouthernAfrica = {...worldMap, features: filteredCountries};
 export interface Datum {
   locationCode: string;
   countryDemandPcAvg: number;
+  countryDemandAvg: number;
 }
 
 interface Props {
@@ -88,11 +90,18 @@ const GeoMap = ({heatMapData}: Props) => {
   const featuresWithValues = mapSouthernAfrica.features
     .map((f: any) => {
       const target = heatMapData.find(d => d.locationCode === f.properties.iso_alpha3);
-      const percent = target ? target.countryDemandPcAvg : 0;
+      const imports = target ? target.countryDemandAvg : 0;
+      const perCapita = target ? target.countryDemandPcAvg : 0;
       const properties = {
         ...f.properties,
-        percent,
-        tooltipContent: `${f.properties.name}: $${percent} USD`,
+        percent: perCapita,
+        tooltipContent: `
+          <div>
+            <strong>${f.properties.name}:</strong><br />
+            Imports: $${formatNumber(imports)} USD<br />
+            Imports per capita: $${perCapita} USD
+          </div>
+          `,
       };
       return {...f, properties};
     });
