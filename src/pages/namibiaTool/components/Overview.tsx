@@ -117,8 +117,8 @@ const Overview = (props: Props) => {
           }}
           showAverageLines={true}
           averageLineText={{
-            x: `Avg. Feasibility: ${medianFeasibility.toFixed(2)}`,
-            y: `Avg. Attractiveness: ${medianAttractiveness.toFixed(2)}`,
+            x: `Median Feasibility: ${medianFeasibility.toFixed(2)}`,
+            y: `Median Attractiveness: ${medianAttractiveness.toFixed(2)}`,
           }}
           averageLineValue={{
             x: medianFeasibility,
