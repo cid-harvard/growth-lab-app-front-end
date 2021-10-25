@@ -224,18 +224,20 @@ const QueryHS = (props: Props) => {
     }), ['rank']);
     const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
     const [shared, missing] = partition(data.datum.occupation.edges, ({node}) => node.isAvailable);
-    const sharedData: TableDatum[] = sortBy(shared, ['rank']).map(d => {
+    const sharedData: TableDatum[] = sortBy(shared.map(d => {
       return {
         occupation: d.node.occupation,
         percent: d.node.pctShare.toFixed(2) + '%',
+        rank: d.node.rank,
       };
-    });
-    const missingData: TableDatum[] = sortBy(missing, ['rank']).map(d => {
+    }), ['rank']);
+    const missingData: TableDatum[] = sortBy(missing.map(d => {
       return {
         occupation: d.node.occupation,
         percent: d.node.pctShare.toFixed(2) + '%',
+        rank: d.node.rank,
       };
-    });
+    }), ['rank']);
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.HS, data.datum.hsId)}
