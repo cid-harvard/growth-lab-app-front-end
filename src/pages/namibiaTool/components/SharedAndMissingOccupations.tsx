@@ -11,7 +11,7 @@ import {
 import DataViz, {
   VizType,
 } from 'react-fast-charts';
-import DynamicTable, {Column, Datum} from '../../../components/text/DynamicTable';
+import DynamicTable, {Column, Datum, Align} from '../../../components/text/DynamicTable';
 
 export interface TableDatum extends Datum {
   occupation: string;
@@ -27,11 +27,11 @@ const SharedAndMissingOccupations = (props: Props) => {
   const {sharedData, missingData} = props;
   const sharedColumns: Column[] = [
     { label: 'Existing Occupations', key: 'occupation'},
-    { label: 'Share of Employment', key: 'percent'},
+    { label: 'Share of Employment', key: 'percent', align: Align.Center},
   ];
   const missingColumns: Column[] = [
     { label: 'Missing Occupations', key: 'occupation'},
-    { label: 'Share of Employment', key: 'percent' },
+    { label: 'Share of Employment', key: 'percent', align: Align.Center },
   ];
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
