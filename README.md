@@ -484,6 +484,7 @@ The DynamicTable component, found at `src/components/text/DynamicTable`, quickly
 - **columns**: `Column[]` Each Column object defines a different column in the table. It takes the following properties -
    - **label**: `string` This is what the column title will show when it is rendered.
    - **key**: `string` This is the associated key name for the table's dataset.
+   - **align** *(Optional)*: `Align` Optional value for setting alingment. Enum values are `Align.Left | Align.Right | Align.Center`. `string` values can be passed in as well, which translate to `left | right | center`. Default value is `Align.Left`.
 - **data**: `Datum[]` Each Datum object defines a row in the table. It can be any set of data, but each Datum must be the same shape, and the keys should match the `key` values found in the `columns` prop. The value of each key should be `number | string | null`. If the value is `null` it will render a blank square.
 - **color** *(Optional)*: `string[]` Color code for styling the table. Will render with bolder labels and lines if no color is given.
 - **stickFirstCol** *(Optional)*: `boolean` Will make the first column stick if content overflows horizontally.

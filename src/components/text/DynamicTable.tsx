@@ -29,9 +29,29 @@ const GhostContent = styled.div`
   background-color: ${lightBorderColor};
 `;
 
+export enum Align {
+  Left = 'left',
+  Right = 'right',
+  Center = 'center',
+}
+
+const alignToFlexValue = (align: Align) => {
+  switch (align) {
+    case Align.Left:
+      return 'flex-start';
+    case Align.Right:
+      return 'flex-end';
+    case Align.Center:
+      return 'center';
+    default:
+      return 'flex-start';
+  }
+};
+
 export interface Column {
   label: string;
   key: string;
+  align?: Align;
 }
 
 export interface Datum {
@@ -60,7 +80,7 @@ const DynamicTable = (props: Props) => {
     gridTemplateRows: `repeat(${data.length + 1}, auto)`,
     overflow: showOverflow ? undefined : 'auto',
   };
-  const tableHeader = columns.map(({label}, i) => {
+  const tableHeader = columns.map(({label, align}, i) => {
     let borderRight: string | undefined;
     if (stickFirstCol && i === 0) {
       borderRight = `solid 2px ${lightBorderColor}`;
@@ -78,6 +98,7 @@ const DynamicTable = (props: Props) => {
       left: stickFirstCol && i === 0 ? '0' : undefined,
       borderBottom: (hideGridLines || verticalGridLines) ? `solid 2px ${lightBorderColor}` : undefined,
       borderRight,
+      justifyContent: alignToFlexValue(align ? align : Align.Left),
     };
     return <Cell style={style} key={label}>{label}</Cell>;
   });
@@ -102,6 +123,9 @@ const DynamicTable = (props: Props) => {
         borderBottom: hideGridLines ? 'none' : undefined,
         fontSize,
         gridColumn,
+        justifyContent: alignToFlexValue(
+          columns[gridColumn - 1] && columns[gridColumn - 1].align ? columns[gridColumn - 1].align as Align : Align.Left,
+        ),
       };
       if (gridColumn) {
         if (d[key] !== null) {
