@@ -26,12 +26,12 @@ interface Props {
 const SharedAndMissingOccupations = (props: Props) => {
   const {sharedData, missingData} = props;
   const sharedColumns: Column[] = [
-    { label: 'Existing Occupations', key: 'occupation'},
-    { label: 'Share of Employment', key: 'percent', align: Align.Center},
+    { label: 'Relatively Present Occupations', key: 'occupation'},
+    { label: 'Employment Shares', key: 'percent', align: Align.Center},
   ];
   const missingColumns: Column[] = [
-    { label: 'Missing Occupations', key: 'occupation'},
-    { label: 'Share of Employment', key: 'percent', align: Align.Center },
+    { label: 'Relatively Underrepresented Occupations', key: 'occupation'},
+    { label: 'Employment Shares', key: 'percent', align: Align.Center },
   ];
   const productClass = useProductClass();
   const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
@@ -64,8 +64,8 @@ const SharedAndMissingOccupations = (props: Props) => {
   );
   return (
     <>
-      <SectionHeaderSecondary color={colorScheme.quaternary}>Shared And Missing Occupations</SectionHeaderSecondary>
-        <p>The tables below display the top 10 existing and missing occupations present in Namibia that are associated with the {productOrIndustryPlural} or other inputs used in the production of the {productOrIndustry}. Occupations related to this activity are ranked by those that comprise the biggest share of occupations in the activity and the tables show the top 10 for those occupations that exist and those that are missing in Namibia for this {productOrIndustry}.</p>
+      <SectionHeaderSecondary color={colorScheme.quaternary}>Availability of Occupations</SectionHeaderSecondary>
+      <p>The tables below display two lists of occupations: the first table shows the top 10 occupations associated with the production of this {productOrIndustry} that are relatively present in Namibia or are present in the production of {productOrIndustryPlural} that serve as inputs to it; the second table shows the top 10 occupations associated with the production of this {productOrIndustry} that are relatively underrepresented in Namibia or with respect to the production of inputs to the {productOrIndustry}. Each list is ranked by the share of overall employment in that {productOrIndustry} that each occupation represents. Occupations with small shares represent small proportions of overall employment in that {productOrIndustry}.</p>
       <TwoColumnSection>
         {sharedTable}
         {missingTable}

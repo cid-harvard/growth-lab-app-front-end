@@ -69,6 +69,7 @@ const GroupsOfInterest = ({worldData, averageData}: Props) => {
     }),
   ];
   const productClass = useProductClass();
+  const productOrIndustry = productClass === ProductClass.HS ? 'product' : 'industry';
   const productOrIndustryPlural = productClass === ProductClass.HS ? 'Products' : 'Industries';
   return (
     <>
@@ -82,7 +83,7 @@ const GroupsOfInterest = ({worldData, averageData}: Props) => {
         />
         <TextBlock>
           <div>
-            <p>The graph on the left illustrates the share of workers, based on data from the US, of the three groups of interest for Namibia: women, youth (15-24 years old), and low-skilled workers (those with below tertiary level of education). {productOrIndustryPlural} that employ higher shares of these groups are more likely to be attractive in Namibia given the composition and demographics of its labor market..</p>
+            <p>The graph on the left illustrates the share of workers, based on data from the US, of the three groups of interest for Namibia: women, youth (15-24 years old), and low-skilled workers (those with below tertiary level of education). The graph displays the share of workers employed in each category in the {productOrIndustry} chosen, based on the U.S. as an international benchmark. {productOrIndustryPlural} that employ higher shares of these groups are more likely to be attractive in Namibia given the composition and demographics of its labor market. For reference, the graph also shows the average share of workers employed in each category at an aggregate level.</p>
           </div>
           <Legend
             legendList={[
