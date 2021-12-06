@@ -33,6 +33,10 @@ const BestOf2021 = () =>{
   const section_17 = useRef<HTMLParagraphElement | null>(null);
   const section_18 = useRef<HTMLParagraphElement | null>(null);
   const section_19 = useRef<HTMLParagraphElement | null>(null);
+  const section_20 = useRef<HTMLParagraphElement | null>(null);
+  const section_21 = useRef<HTMLParagraphElement | null>(null);
+  const section_22 = useRef<HTMLParagraphElement | null>(null);
+  const section_23 = useRef<HTMLParagraphElement | null>(null);
   const sections = [
     section_0,
     section_1,
@@ -54,6 +58,10 @@ const BestOf2021 = () =>{
     section_17,
     section_18,
     section_19,
+    section_20,
+    section_21,
+    section_22,
+    section_23,
   ];
 
   const location = useLocation();
