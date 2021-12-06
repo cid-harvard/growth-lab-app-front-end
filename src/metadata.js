@@ -7,6 +7,7 @@ const Routes = {
   JordanTool: '/jordan-tool',
   JordanOverview: '/jordan-project-overview',
   BestOf2020: '/best-of-2020',
+  BestOf2021: '/best-of-2021',
   NamibiaTool: '/namibia-tool',
 }
 
@@ -70,6 +71,13 @@ const metadata = [
     title: '15 Visual Insights from the Growth Lab in 2020 | ' + defaultTitle,
     description: "2020's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
     og_image: 'best-of-2020-share-image.jpg',
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.BestOf2021,
+    title: '15 Visual Insights from the Growth Lab in 2021 | ' + defaultTitle,
+    description: "2021's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
+    og_image: 'best-of-2021-share-image.jpg',
     favicon: defaultFavicon,
   },
   {
