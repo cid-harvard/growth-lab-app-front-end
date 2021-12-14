@@ -78,7 +78,7 @@ const BestOf2021 = () =>{
 
   const metadata = get(Routes.BestOf2021);
 
-  const sectionsData: SectionDatum[] = orderedData.map((d, i) => {
+  const sectionsData: SectionDatum[] = orderedData.filter(d => d.INCLUDE_ON_SITE !== 'NO').map((d, i) => {
     const source = d.DATA_SOURCE && d.DATA_SOURCE.length && d.DATA_SOURCE !== 'WF TO'
       ? <><br /><br /><em>Source: {d.DATA_SOURCE}</em></> : null;
     const url = d.RESEARCH_LINK && d.RESEARCH_LINK && d.RESEARCH_LINK !== 'n/a' && d.RESEARCH_LINK !== 'WF Chuck'

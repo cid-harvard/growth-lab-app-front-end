@@ -1,5 +1,8 @@
 [
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Economic Case for Global Equitable Vaccination",
     "DESCRIPTION": "Economic consequences if Advanced Economies (AEs) vaccinated their population but Emerging Markets not? The output losses would be markedly different and AEs would still lose close to 4% of their GDP.",
     "Submitted At": "11/12/2021 18:25:52",
@@ -12,6 +15,9 @@
     "HASH_ID": "economic_case_for_global_equitable_vaccination"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Migration Network of Mexico (2020)",
     "DESCRIPTION": "This is a directed network of migration flows between Mexican states in 2020. The number of people residing in a given state that were born in another one yields the migration flows between the two of them. In turn, we compute the revealed comparative advantage of the migration destinies, that is, if each of the states is receiving from another particular state more than its fair share of immigrants. The size of the arrow indicates the value of the revealed comparative advantage. There is a regional pattern: states usually receive more than their fair share of migrants from nearby states.",
     "Submitted At": "11/19/2021 19:34:56",
@@ -24,8 +30,11 @@
     "HASH_ID": "migration_network_of_mexico"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "South Africa’s Workforce, by Geographical Area, Employment Status and Education (2014)",
-    "DESCRIPTION": "Close to three decades since the end of Apartheid, South Africa still displays some of the worst labor indicators in the world, with the highest unemployment rate and one of the lowest employment rates amongst both emerging and advanced economies. The country’s unparalleled unemployment rate conceals the fact that the country’s labor market is highly segmented, and is composed of insiders and outsiders. South Africa's labor markets are both segmented by education level, as high skill workers face significantly smaller levels of unemployment, but also spatially, as formal private activity is the lowest in the former homelands territory.\nSource: Post-Apartheid Labour Market Survey",
+    "DESCRIPTION": "Close to three decades since the end of Apartheid, South Africa still displays some of the worst labor indicators in the world, with the highest unemployment rate and one of the lowest employment rates amongst both emerging and advanced economies. The country’s unparalleled unemployment rate conceals the fact that the country’s labor market is highly segmented, and is composed of insiders and outsiders. South Africa's labor markets are both segmented by education level, as high skill workers face significantly smaller levels of unemployment, but also spatially, as formal private activity is the lowest in the former homelands territory.",
     "Submitted At": "11/22/2021 17:20:31",
     "Token": "6iqb06b3ql80nl6iqbu84d61jttr9t4w",
     "SHORT LISTING": "",
@@ -36,8 +45,11 @@
     "HASH_ID": "south_africas_workforce_by_geographical_area_employment_status_and_education"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "South Africa’s Non-Employment Rates by Main Place and Former Homeland Borders (2011)",
-    "DESCRIPTION": "Close to three decades after the end of Apartheid, South Africa’s former homeland areas - under-serviced settlements that were self-governing territories during the Apartheid regime - still present some of the worst labor market outcomes in the country. South Africa’s exceptionally high unemployment rate and low employment rate can be largely explained by labor market indicators in areas within the former homelands, where close to a third of the country’s population resides and non-employment rates can be above 90%.\nSource: Census 2011",
+    "DESCRIPTION": "Close to three decades after the end of Apartheid, South Africa’s former homeland areas - under-serviced settlements that were self-governing territories during the Apartheid regime - still present some of the worst labor market outcomes in the country. South Africa’s exceptionally high unemployment rate and low employment rate can be largely explained by labor market indicators in areas within the former homelands, where close to a third of the country’s population resides and non-employment rates can be above 90%.",
     "Submitted At": "11/22/2021 17:22:56",
     "Token": "vcgy2vuhf26hia31vcgy2v6p2sertvpy",
     "SHORT LISTING": "",
@@ -48,8 +60,11 @@
     "HASH_ID": "south_africas_non_employment_rates_by_main_place_and_former_homeland_borders"
   },
   {
+    "INCLUDE_ON_SITE": "FIX",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "South Africa’s Deindustrialization from a Global Perspective",
-    "DESCRIPTION": "Although South Africa was historically the most industrialized country in Africa, the country's economy has significantly deindustrialized in the last two decades, faster than other emerging countries with similar levels of income, both in terms of economic activity and employment. The significant downturn in manufacturing economic activity and employment has further aggravated South Africa’s unemployment challenge, and puts into question whether manufacturing-led job growth in the country is feasible. \nSource: World Bank WDI",
+    "DESCRIPTION": "Although South Africa was historically the most industrialized country in Africa, the country's economy has significantly deindustrialized in the last two decades, faster than other emerging countries with similar levels of income, both in terms of economic activity and employment. The significant downturn in manufacturing economic activity and employment has further aggravated South Africa’s unemployment challenge, and puts into question whether manufacturing-led job growth in the country is feasible.",
     "Submitted At": "11/22/2021 17:25:11",
     "Token": "g7ntl8av12busbgwf3eg7ntlbkiy7bk6",
     "SHORT LISTING": "",
@@ -60,6 +75,9 @@
     "HASH_ID": "south_africas_deindustrialization_on_a_global_perspective"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "South Africa’s National Government Debt Buildup (2008-2020)",
     "DESCRIPTION": "South Africa's debt-to-GDP has risen substantially from 27% of GDP in 2008 to 62% in 2019. The country’s debt buildup in the last decade is largely explained by planned fiscal policy: expected primary balance contributions and automatic debt dynamics. A quarter of the increase can be attributed to forecast errors in unexpected primary balances as well as unexpected growth misses. Finally, a significant share is explained by below-the-line SOE recapitalizations and bailouts.",
     "Submitted At": "11/22/2021 17:27:22",
@@ -72,6 +90,9 @@
     "HASH_ID": "south_africas_national_government_debt_buildup"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "An Agriculture Space in Ethiopia",
     "DESCRIPTION": "This network visualization captures the similarity of agricultural products produced by smallholder farmers in Ethiopia based on co-production at the household level. It is built using data from Ethiopia’s Agriculture Sample Survey, which covers over 20,000 farming households spread across the country. Farm products are close to one another in this space if they require similar capabilities, including climate, soil, water, and infrastructure conditions, as well as related knowhow of farmers. Colors on this visualization reflect natural clustering. The Ethiopia project team is exploring use of this network to understand diversification opportunities within agriculture for various areas of the country, particularly areas where household livelihoods are at risk due to climate change and other pressures.",
     "Submitted At": "11/24/2021 13:41:56",
@@ -79,11 +100,14 @@
     "SHORT LISTING": "",
     "RESEARCH_LINK": "",
     "LINK_TEXT": "",
-    "DATA_SOURCE": "",
+    "DATA_SOURCE": "Ethiopian Agriculture Sample Survey",
     "IMAGE_SRC": "an_agriculture_space_in_ethiopia.png",
     "HASH_ID": "an_agriculture_space_in_ethiopia"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Debt of Vaccination “have nots” is small in comparison to income of vaccination “haves”",
     "DESCRIPTION": "Global vaccination for COVID-19 has proven to be extraordinarily inequitable. Most developed countries now have high vaccination levels whereas least developed countries tend to have very low vaccine access and, as a result, remain very vulnerable to health and economic impacts of new waves and variants of COVID-19. Debt levels have grown for most nations as a result of COVID-19, but debt increasingly constrains fiscal space of developing countries while the pandemic continues to demand greater spending to support resilience and recovery. It is surprising to see how small the total debt of ~70 low-vaccination countries is in comparison to total GDP of ~80 high-vaccination countries. Since total debt of low-vaccination countries amounts to less than 3% of total GDP of high-vaccination countries, it is possible that a relatively small financial expense by wealthy countries to pay down the debt of vulnerable poor countries could support a more equitable global recovery.",
     "Submitted At": "11/24/2021 14:14:17",
@@ -96,6 +120,9 @@
     "HASH_ID": "debt_of_vaccination_have_nots_is_small_in_comparison_to_income_of_vaccination_haves"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Ethiopia “under-exports” a wide range of products to the rest of Africa",
     "DESCRIPTION": "Based on a trade gravity model built by the Growth Lab that includes Product Space density among other predictors of trade, Ethiopia systematically under-exports to the rest of Africa. This graph shows all products (4-digit HS classification) that Ethiopia already exports, with Ethiopia’s actual exports of each product to the rest of Africa on the x-axis and its predicted exports of those products to the rest of Africa based on the gravity model on the y-axis. Products below (to the right of) the 45-degree line are the few products that Ethiopia currently “over-exports” to Africa versus the model, while products above (to the left of) the 45-degree line are many products that Ethiopia currently “under-exports” to Africa versus the model. This model provides an informative starting point for understanding key opportunities that Ethiopia may have to expand exports and attract investment in the context of the new African Continental Free Trade Area.",
     "Submitted At": "11/24/2021 15:28:56",
@@ -108,6 +135,9 @@
     "HASH_ID": "ethiopia_under-exports_a_wide_range_of_products_to_the_rest_of_africa"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Patterns of Ethiopia’s collapsing tax revenue collection",
     "DESCRIPTION": "Ethiopia entered a high growth phase from FY 2002/03 onwards but its total revenue-GDP ratio has declined almost continuously since then. Since FY 2014/15, tax revenues have also continuously declined as a proportion of GDP. This indicates that taxes are not keeping up with GDP-growth which has important implications for the government’s ability to fund development expenditure.",
     "Submitted At": "11/24/2021 15:39:50",
@@ -120,6 +150,9 @@
     "HASH_ID": "patterns_of_ethiopias_collapsing_tax_revenue_collection"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "y-axis label is missing? title should be removed",
     "TITLE": "Decomposing drivers of macroeconomic imbalances in Ethiopia",
     "DESCRIPTION": "The Growth Lab has been building a theoretical model to understand the drivers of inflation and the black market premium in Ethiopia. In line with this effort, the team built a vector autoregression model, which uses sign restrictions derived from the theoretical model as an identification strategy, to conduct a historical decomposition of inflation. This chart aims to attribute deviations of CPI from predicted values to policy, FX, supply and multiplier shocks in a way that is consistent with a theoretical model informed by Ethiopia’s unique economic structure. This chart indicates that shocks to the availability of FX have had a meaningful impact on inflation, but that key drivers of inflation and inflation volatility have shifted over recent years.",
     "Submitted At": "11/24/2021 15:48:26",
@@ -132,6 +165,9 @@
     "HASH_ID": "decomposing_drivers_of_macroeconomic_imbalances_in_ethiopia"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "The evolution of Ethiopia’s growing T-Bill Market",
     "DESCRIPTION": "Ethiopia has been attempting to deepen its market for treasury bills as this could help reduce the need for deficit monetization, which is one of their core macroeconomic challenges and an underlying driver of double-digit inflation. This chart shows that while Ethiopia has been succeeding in mobilizing more savings (as a share of deposits) through treasury bills auctioned at market-determined rates, there has been an over-concentration in 91-day and 182-day bills in recent months, indicating a possible liquidity crunch for these maturities. This is in contrast with longer term (364-day) bills, which have seen total bids remain below the total amount offered, possibly due to investors’ perceived uncertainty.",
     "Submitted At": "11/24/2021 16:15:59",
@@ -139,11 +175,14 @@
     "SHORT LISTING": "",
     "RESEARCH_LINK": "",
     "LINK_TEXT": "",
-    "DATA_SOURCE": "",
+    "DATA_SOURCE": "National Bank of Ethiopia",
     "IMAGE_SRC": "the_evolution_of_ethiopias_growing_t_bill_market.png",
     "HASH_ID": "the_evolution_of_ethiopias_growing_t_bill_market"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "The PCI, the ECI, and long-term economic transformation",
     "DESCRIPTION": "This visualization illustrates a new way that the Product Complexity Index and Economic Complexity Index can be understood.  The left panel depicts the Product Space, in which nodes are industries.  In the middle panel each industry is highlighted by its Product Complexity Index or PCI, with high PCI products in red and low PCI products in blue.  New work shows that the PCIs can be viewed collectively as a special pattern of transformation, with movement from low-PCI products to high-PCI products capturing the mode of transformation that takes an economy the longest span of time to execute.  This comes with a new way of viewing the Economic Complexity Index shown in the right panel: The ECI is a coordinate that conveys how far an economy has moved along this special axis of change",
     "Submitted At": "11/24/2021 16:16:32",
@@ -156,6 +195,9 @@
     "HASH_ID": "the_pci_the_eci_and_long_term_economic_transformation"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Jordan “under-exports” a wide range of products to Israel",
     "DESCRIPTION": "Based on a trade gravity model built by the Growth Lab that includes Product Space density among other predictors of trade, Jordan systematically under-exports Israel. This graph shows all products (4-digit HS classification) that Jordan exports to Israel, with Jordan’s actual exports of each product to Israel on the x-axis and its predicted exports of those products based on the model on the y-axis. Products below (to the right of) the 45-degree line are the few products that Jordan currently “over-exports” to Israel versus the model, while products above (to the left of) the 45-degree line are many products that Jordan currently “under-exports” to Israel versus the model. The overall difference summing across these products of ~100 million USD actual exports versus ~400 million USD predicted exports probably underestimates what export potential would be if trade frictions did not exist between the countries, as many additional products may be viable.",
     "Submitted At": "11/24/2021 16:47:10",
@@ -163,11 +205,14 @@
     "SHORT LISTING": "",
     "RESEARCH_LINK": "",
     "LINK_TEXT": "",
-    "DATA_SOURCE": "",
+    "DATA_SOURCE": "COMTRADE",
     "IMAGE_SRC": "jordan_under_exports_a_wide_range_of_products_to_israel.png",
     "HASH_ID": "jordan_under_exports_a_wide_range_of_products_to_israel"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Jordan’s Export Complexity by Export Destination",
     "DESCRIPTION": "The map shows Jordan’s exports to all countries in 2019, where the value of exports is represented by the size of the circle and the complexity of the products exported is shown by the color of the circle. The composition of what Jordan exports to different trading partners varies significantly. Jordan tends to export its most complex products to nearby markets and its least complex exports to more distant markets. Jordan exports a large volume of higher complexity products to Saudi Arabia and a very large volume of lower complexity products to the United States, with trade to other markets in the EU, China, and India falling somewhere in between. As regional conflicts and low oil prices reduced export potential to the Middle East over the last decade, Jordan’s overall exports have grown to the U.S. market, but these have been primarily focused in low-wage and low-complexity garment products.",
     "Submitted At": "11/24/2021 16:59:22",
@@ -180,6 +225,9 @@
     "HASH_ID": "jordans_export_complexity_by_export_destination"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "y-axis missing?",
     "TITLE": "A year of COVID-19 job losses in Jordan",
     "DESCRIPTION": "This graph uses data published by the Department of Statistics in Jordan to decompose for whom jobs were lost between Q4 2019 and Q4 2020. During the COVID-19 pandemic, job losses were most concentrated among young Jordanians — a group where unemployment was already high prior to the pandemic. Given very low female employment in Jordan, this job loss was actually larger as a proportion of jobs for young Jordanian women (>20% of youth female jobs) than young Jordanian men (<15% of youth male jobs). Job losses were also felt among older working age males, but jobs grew for older working age women. The reasons for this pattern are not entirely clear but the pattern may indicate more resilient growth in labor market opportunities for women with higher levels of education alongside intensifying challenges affecting Jordanian youth.",
     "Submitted At": "11/24/2021 17:17:39",
@@ -192,6 +240,9 @@
     "HASH_ID": "a_year_of_covid-19_job_losses_in_jordan"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "low res, remove title",
     "TITLE": "Employment and Wages of the Services Sectors in Namibia",
     "DESCRIPTION": "This figure was created for the Namibia project to analyze the relationship between median wages and the educational composition of employment in the industries in the tertiary (services) sector. Sectors with higher shares of tertiary workers are actually correlated with higher median wages of its non-tertiary workers. This analysis supported other evidence that jobs in industries with highly skilled workers have positive benefits in the form of higher median wages of workers who are non-tertiary.  Sectors like Finance, Real Estate, and Professional Sciences have both relatively high shares of workers with tertiary skills as well as relatively high median wages for non-tertiary workers.",
     "Submitted At": "11/24/2021 21:11:13",
@@ -204,6 +255,9 @@
     "HASH_ID": "employment_and_wages_of_the_services_sectors_in_namibia"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "low res, remove title",
     "TITLE": "The Role of Experience in Unemployment in Namibia",
     "DESCRIPTION": "In assessing the relationship between unemployment and educational attainment, data from Namibia shows that experience matters a lot - both by itself and in conjunction with educational attainment. Individuals who have between 20-40 years of experience (proxied by the age group of 40-60 years) are less likely to be unemployed at every level of educational attainment, and the drop is steepest for those who have tertiary education. In contrast, young Namibians at all educational levels have a higher chance of being unemployed, but it does not vary as much beyond those with a primary education. Therefore, while educational attainment matters for being employed, it matters even more so in conjunction with experience.",
     "Submitted At": "11/24/2021 21:13:36",
@@ -216,6 +270,9 @@
     "HASH_ID": "the_role_of_experience_in_unemployment_in_namibia"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Opportunities for Kazakhstan to Diversify its Export Basket are Far Away",
     "DESCRIPTION": "This figure maps Kazakhstan's product space opportunities against its regional, global, and OECD peers. Opportunities to diversify are relatively far away from Kazakhstan's current export basket. We compare Kazakhstan to three sets of peers - those in the geographic neighborhood, global peers similar in terms of export basket composition, and OECD peers. The further left the distribution is, the lower the feasibility of new products are. Compared to its peers, Kazakhstan is at a tough starting point to diversify into new products, and most of its new product opportunities demand capabilities that are relatively far away from its current capability set.",
     "Submitted At": "11/24/2021 21:22:24",
@@ -228,6 +285,9 @@
     "HASH_ID": "opportunities_for_kazakhstan_to_diversify_its_export_basket_are_far_away"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Educational Attainment in Post-Soviet Nations",
     "DESCRIPTION": "This figure charts the relationship between GDP and educational attainment for all countries, highlighting Kazakhstan and other former-Soviet peers. For all levels, these countries stand out. Post-Soviet-era policies stressed the importance of educational access, among access to other public goods, and there was a significant policy focus to educate young people and promote higher learning as well. This graph charts data for all countries in the world and highlights former Soviet Union countries in yellow and Kazakhstan in red. At every level, from primary to tertiary education, these countries perform well relative to their real GDP per capita, most notably in primary educational attainment.",
     "Submitted At": "11/24/2021 21:25:47",
@@ -240,6 +300,9 @@
     "HASH_ID": "educational_attainment_in_post_soviet_nations"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Complexity and Concentration of Kazakhstan’s Non-Mineral Exports",
     "DESCRIPTION": "In this graph is a sector-wise breakdown of Kazakhstan's exports. It does not export many products; they are concentrated in metals; within sectors, its exports have lower PCI than global averages. This graph plots the PCI of every product within a sector and sizes the bubbles by the share of global export that the product represents. Moreover, each sector has two lines that indicate the average PCI of the exports of that sector by Kazakhstan and by the whole world. In general, Kazakhstan’s exports have a lower average PCI in each sector than the world average. The shade of blue further represents the RCA of the products that Kazakhstan exports - most of them are concentrated in the metals sector, with a low average PCI. The country also does not seem to export many products that contribute significantly to global trade.",
     "Submitted At": "11/24/2021 21:31:13",
@@ -252,6 +315,9 @@
     "HASH_ID": "complexity_and_concentration_of_kazakhstans_non_mineral_exports"
   },
   {
+    "INCLUDE_ON_SITE": "FIX",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Jordan’s public sector appears large because its private sector is small",
     "DESCRIPTION": "Public sector* employment in Jordan represents 20 percent of total employment. This share is high, above the world median. Yet, Jordan’s employment to population ratio is below regional peers and the world median, at around 33 percent. As such, given total employment levels, the public sector in Jordan  serves as a critical employer in the economy.\n*Note: For the purpose of this figure, public sector is defined as the Civil Service at the Central Government level, government units and local governments.",
     "Submitted At": "11/29/2021 15:11:15",
@@ -264,6 +330,9 @@
     "HASH_ID": "jordans_public_sector_appears_large_because_its_private_sector_is_small"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "Public sector wage premia in Jordan by education and over time",
     "DESCRIPTION": "Public servants in developing countries tend to earn a positive premium compared to similar workers in the private sector. In Jordan, we leverage labor force surveys in years 2008 and 2018 to compare public servants to their observational equivalents in the private sector. We use mincer wage equations to observe the average premium associated with public employment, for Jordanians at specific levels of schooling, holding age, occupations, gender, location constant. We find that, in 2008, public servants without a college degree are associated with a large positive premium compared to identical private sector employees, holding observable traits constant. The observed premium increased between 2008 and 2018 for those with secondary or postsecondary (aka diploma) schooling. On the other hand, in 2008, public servants with bachelor or master degrees were, on average, associated with a negative premium compared to private sector employees at a similar level of schooling, holding age, gender, occupation and location constant. This result turned positive by 2018.",
     "Submitted At": "11/29/2021 15:18:03",
@@ -271,11 +340,14 @@
     "SHORT LISTING": "",
     "RESEARCH_LINK": "",
     "LINK_TEXT": "",
-    "DATA_SOURCE": "",
+    "DATA_SOURCE": "Jordan Department of Statistics, Employment and Unemployment Surveys",
     "IMAGE_SRC": "public_sector_wage_premia_in_jordan_by_education_and_over_time.png",
     "HASH_ID": "public_sector_wage_premia_in_jordan_by_education_and_over_time"
   },
   {
+    "INCLUDE_ON_SITE": "NO",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "needs uploading",
     "TITLE": "COVID-19’s Disparate Impacts on Long-Term Growth",
     "DESCRIPTION": "These graphs capture the disparate nature of the COVID-19 shock on different economies. IMF projections from prior to the pandemic (Oct. 2019) are shown by the dashed red line and most recent projections (Oct. 2021) by the dashed blue line. In the United States, COVID-19 caused a contraction in 2020 but a strong recovery is underway. By 2022, the size of the economy is projected to be larger than what was expected prior to COVID-19. In Europe, the 2020 contraction was sharper and the recovery is slower, but projections nearly converge to the pre-pandemic path. China has seen a small overall disruption from its growth path. But the situation is very different for many developing countries. India, Latin America, and Sub-Saharan Africa are on track for a severe long-term reduction in growth that diverges from their pre-pandemic paths. These projections should be a call to action to fight the pandemic’s impact on global inequality.",
     "Submitted At": "",
@@ -288,27 +360,18 @@
     "HASH_ID": "covid_19s_disparate_impacts_on_long-term_growth"
   },
   {
+    "INCLUDE_ON_SITE": "YES",
+    "ORDER ON SITE": "",
+    "IMAGE COMMENTS": "ok",
     "TITLE": "TITLE",
-    "DESCRIPTION": "This figure divides up the prime-age population in South Africa by the geographic area they live, their employment status, and education level.",
-    "Submitted At": "11/29/2021 22:07:43",
-    "Token": "i2jv6bsnm4yidi2j4av9tud2ba1mu6ym",
-    "SHORT LISTING": "",
-    "RESEARCH_LINK": "",
-    "LINK_TEXT": "",
-    "DATA_SOURCE": "",
-    "IMAGE_SRC": "population_in_south_africa.png",
-    "HASH_ID": "population_in_south_africa"
-  },
-  {
-    "TITLE": "TITLE",
-    "DESCRIPTION": "DESCRIPTION",
+    "DESCRIPTION": "Which industries use similar occupations? Which industries have a higher proportion of \"teleworkable\" jobs? This visualization answers these two questions. First, we show how industries-nodes - proportional to employment in the U.S. and colored according to broad economic sectors - are alike in terms of occupations.  They are linked if they use similar workers. Industry colors indicate their teleworkable propensity: the darker the color, the higher the share of teleworkable occupations in those industries. Interestingly, the cluster of professional, scientific, and technical services mostly coincides with the set of highly teleworkable activities. We use this analysis to study whether countries such as Colombia, could create a vibrant cluster exporting services to developed countries.",
     "Submitted At": "",
     "Token": "",
     "SHORT LISTING": "",
     "RESEARCH_LINK": "",
     "LINK_TEXT": "",
     "DATA_SOURCE": "",
-    "IMAGE_SRC": "columbia_telework.png",
+    "IMAGE_SRC": "columbia_telework.gif",
     "HASH_ID": "columbia_telework"
   }
 ]
