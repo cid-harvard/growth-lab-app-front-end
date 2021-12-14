@@ -55,6 +55,8 @@ const JordanOverview = lazy(() => import('./pages/jordanTool/overviewPage'));
 const BestOf2020 = lazy(() => import('./pages/stories/bestOf/2020'));
 const BestOf2021 = lazy(() => import('./pages/stories/bestOf/2021'));
 const NamibiaTool = lazy(() => import('./pages/namibiaTool'));
+const CustomProductSpaceTool = lazy(() => import('./pages/iframeTools/CreateYourProductSpace'));
+const CustomIndustrySpaceTool = lazy(() => import('./pages/iframeTools/CreateYourIndustrySpace'));
 const PageNotFound = lazy(() => import('./pages/pageNotFound'));
 
 export interface IAppContext {
@@ -132,6 +134,12 @@ function App() {
                   />
                   <TrackedRoute exact path={Routes.NamibiaTool}
                     render={(props: any) => <NamibiaTool {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.CustomProductSpace}
+                    render={(props: any) => <CustomProductSpaceTool {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.CustomIndustrySpace}
+                    render={(props: any) => <CustomIndustrySpaceTool {...props} />}
                   />
                   {/* If none of the above routes are found show the 404 page */}
                   <TrackedRoute component={PageNotFound} />

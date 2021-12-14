@@ -9,6 +9,8 @@ const Routes = {
   BestOf2020: '/best-of-2020',
   BestOf2021: '/best-of-2021',
   NamibiaTool: '/namibia-tool',
+  CustomProductSpace: '/custom-product-space',
+  CustomIndustrySpace: '/custom-industry-space',
 }
 
 const defaultTitle = 'The Growth Lab at Harvard Kennedy School';
