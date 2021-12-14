@@ -9,7 +9,7 @@ import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
 import orderBy from 'lodash/orderBy';
 
-const orderedData = orderBy(data, ['ORDERING'], ['asc']);
+const orderedData = orderBy(data, ['ORDERING_ON_SITE'], ['asc']);
 
 
 const BestOf2021 = () =>{
@@ -26,19 +26,6 @@ const BestOf2021 = () =>{
   const section_10 = useRef<HTMLParagraphElement | null>(null);
   const section_11 = useRef<HTMLParagraphElement | null>(null);
   const section_12 = useRef<HTMLParagraphElement | null>(null);
-  const section_13 = useRef<HTMLParagraphElement | null>(null);
-  const section_14 = useRef<HTMLParagraphElement | null>(null);
-  const section_15 = useRef<HTMLParagraphElement | null>(null);
-  const section_16 = useRef<HTMLParagraphElement | null>(null);
-  const section_17 = useRef<HTMLParagraphElement | null>(null);
-  const section_18 = useRef<HTMLParagraphElement | null>(null);
-  const section_19 = useRef<HTMLParagraphElement | null>(null);
-  const section_20 = useRef<HTMLParagraphElement | null>(null);
-  const section_21 = useRef<HTMLParagraphElement | null>(null);
-  const section_22 = useRef<HTMLParagraphElement | null>(null);
-  const section_23 = useRef<HTMLParagraphElement | null>(null);
-  const section_24 = useRef<HTMLParagraphElement | null>(null);
-  const section_25 = useRef<HTMLParagraphElement | null>(null);
   const sections = [
     section_0,
     section_1,
@@ -53,19 +40,6 @@ const BestOf2021 = () =>{
     section_10,
     section_11,
     section_12,
-    section_13,
-    section_14,
-    section_15,
-    section_16,
-    section_17,
-    section_18,
-    section_19,
-    section_20,
-    section_21,
-    section_22,
-    section_23,
-    section_24,
-    section_25,
   ];
 
   const location = useLocation();
@@ -100,10 +74,10 @@ const BestOf2021 = () =>{
       metaTitle={metadata.title}
       metaDescription={metadata.description}
       coverPhotoSrc={{low: CoverPhotoImageLowRes, high: CoverPhotoImage}}
-      pageTitle={'15 Visual Insights from the Growth Lab in 2021'}
+      pageTitle={'13 Visual Insights from the Growth Lab in 2021'}
       dateLine={'December 15, 2021'}
       byLine={null}
-      introText={<p>The Growth Lab has over 50 faculty, fellows, research assistants, and staff working on development challenges in more than a dozen countries worldwide. Our research in 2021 included modeling pandemic-related tradeoffs, mapping the network of global business travel, identifying foreign exchange constraints in Ethiopia, tracking the migration of the Albanian diaspora, and uncovering environmentally friendly diversification opportunities in Peru. Every project, paper, and presentation brought hundreds of charts, graphics, dashboards, and prototypes. We thought it would be worthwhile to share some of our more notable visual insights from this year.</p>}
+      introText={<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>}
       sectionsData={sectionsData}
     />
   );

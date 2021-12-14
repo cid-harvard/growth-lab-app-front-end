@@ -77,7 +77,7 @@ const metadata = [
   },
   {
     url: Routes.BestOf2021,
-    title: '15 Visual Insights from the Growth Lab in 2021 | ' + defaultTitle,
+    title: '13 Visual Insights from the Growth Lab in 2021 | ' + defaultTitle,
     description: "2021's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
     og_image: 'best-of-2021-share-image.jpg',
     favicon: defaultFavicon,
