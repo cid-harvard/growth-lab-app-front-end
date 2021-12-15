@@ -55,7 +55,7 @@ const BestOf2021 = () =>{
   const sectionsData: SectionDatum[] = orderedData.filter(d => d.INCLUDE_ON_SITE !== 'NO').map((d, i) => {
     const source = d.DATA_SOURCE && d.DATA_SOURCE.length && d.DATA_SOURCE !== 'WF TO'
       ? <><br /><br /><em>Source: {d.DATA_SOURCE}</em></> : null;
-    const url = d.RESEARCH_LINK && d.RESEARCH_LINK && d.RESEARCH_LINK !== 'n/a' && d.RESEARCH_LINK !== 'WF Chuck'
+    const url = d.RESEARCH_LINK && d.RESEARCH_LINK && d.RESEARCH_LINK.toLowerCase() !== 'n/a' && d.RESEARCH_LINK !== 'WF Chuck'
       ? d.RESEARCH_LINK : undefined;
       const linkText = d.LINK_TEXT ? d.LINK_TEXT : undefined;
     return ({
@@ -74,10 +74,10 @@ const BestOf2021 = () =>{
       metaTitle={metadata.title}
       metaDescription={metadata.description}
       coverPhotoSrc={{low: CoverPhotoImageLowRes, high: CoverPhotoImage}}
-      pageTitle={'13 Visual Insights from the Growth Lab in 2021'}
+      pageTitle={'Visual Insights from the Growth Lab\'s 2021 Research'}
       dateLine={'December 15, 2021'}
       byLine={null}
-      introText={<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>}
+      introText={<p>The Growth Lab has over 50 faculty, fellows, research assistants, and staff working on development challenges in more than a dozen countries worldwide. Across its multi-disciplinary team, the Growth Lab conducts academic research on the nature of growth as economies build new capabilities, engages in place-based applied research to understand local context-specific growth problems, teaches cutting-edge frameworks to empower current and future policymakers, and builds tools to provide high-definition information for public use. Here are some visual highlights from the Growth Lab’s research in 2021.</p>}
       sectionsData={sectionsData}
     />
   );
