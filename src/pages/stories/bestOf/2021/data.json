@@ -101,8 +101,8 @@
     "DESCRIPTION": "Which industries use similar occupations? Which industries have a higher proportion of \"teleworkable\" jobs? This visualization answers these two questions. First, we show how industries-nodes — proportional to employment in the U.S. and colored according to broad economic sectors — are alike in terms of occupations.  They are linked if they use similar workers. Industry colors indicate their teleworkable propensity: the darker the color, the higher the share of teleworkable occupations in those industries. Interestingly, the cluster of professional, scientific, and technical services mostly coincides with the set of highly teleworkable activities. We use this analysis to study whether countries such as Colombia and Jordan, could create a vibrant cluster exporting services to developed countries through telework.",
     "Submitted At": "",
     "Token": "",
-    "RESEARCH_LINK": "",
-    "LINK_TEXT": "",
+    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/publications/new-avenues-colombia%E2%80%99s-internationalization-trade-tasks",
+    "LINK_TEXT": "Read the Research",
     "DATA_SOURCE": "",
     "IMAGE_SRC": "columbia_telework.gif",
     "HASH_ID": "columbia_telework"
