@@ -55,7 +55,7 @@ export default {
  },
  industryNow: {
    title: 'Industry Now',
-   sectorDemographics: 'Sector Semographics',
+   sectorDemographics: 'Sector Demographics',
    locationOfWorkers: 'Location of Workers',
    schoolingDistribution: 'Schooling Distribution',
    industryWages: 'Industry Wages',
