@@ -62,23 +62,23 @@ const AboutPage = () => {
           </Content>
 
           <Content>
-            <a href='https://growthlab.cid.harvard.edu/people/annie-white'>Annie White</a> Senior Software Product Manager<br />
-            Annie oversees the strategy and creation of all Viz Hub projects, from research to design, development, and launch. Prior to her work at the Growth Lab, Annie was a Director of Digital Product at Sustainalytics, an ESG research and consulting firm.  She is interested in the application of software tools to positively impact economic development, equity, and the public interest.
+            <a target="_blank" href='https://growthlab.cid.harvard.edu/people/annie-white'>Annie White</a> Senior Software Product Manager<br />
+            Annie oversees the strategy and creation of all Viz Hub projects, from research to design, development, and launch. Prior to her work at the Growth Lab, Annie was a Director of Digital Product at Sustainalytics, an ESG research and consulting firm. She is interested in the application of software tools to positively impact economic development, equity, and the public interest.
           </Content>
 
           <Content>
-            <a href='https://bleonard.io/'>Brendan Leonard</a> Back-End and Data Developer<br />
-            Brendan leads the implementation of back-end technologies and data analysis for Viz Hub projects. With a particular interest in the relationship between technology and democratic systems, he is also working toward a master’s degree in government studies.
+            <a target="_blank" href='https://bleonard.dev/'>Brendan Leonard</a> Back-End and Data Developer<br />
+            Brendan leads the implementation of back-end technologies and data analysis for Viz Hub projects, including management of the cloud-based server and database infrastructure. With a particular interest in the relationship between technology and democratic systems, he holds a master's degree in government studies and a bachelor's in economics.
           </Content>
 
           <Content>
-            <a href='http://www.niltuzcu.net/'>Nil Tuzcu</a> UX/UI &amp; Data Visualization Designer<br />
-            Nil leads the design vision of Viz Hub projects, encompassing data visualization design, prototype development,  and user research.  Previously, Nil worked as a research fellow at MIT’s Department of Urban Studies and as a research associate at Harvard Graduate School of Design. She holds a master’s degree from Cornell University and was a SPURS Fellow at MIT (2014-2015).
+            <a target="_blank" href='http://www.niltuzcu.net/'>Nil Tuzcu</a> UX/UI &amp; Data Visualization Designer<br />
+            Nil leads the design vision of Viz Hub projects, encompassing data visualization design, prototype development, and user research.  Previously, Nil worked as a research fellow at MIT’s Department of Urban Studies and as a research associate at Harvard Graduate School of Design. She holds a master’s degree from Cornell University and was a SPURS Fellow at MIT (2014-2015).
           </Content>
 
           <Content>
-            <a href='https://soeltz.com/'>Kyle Soeltz</a> Front-End Web Developer<br />
-            Kyle leads the implementation of front-end technologies for every user interface and data visualization across Viz Hub projects.  Prior to his work at the Growth Lab, Kyle led the front-end development at an education technology startup and spent six months hiking the Pacific Crest Trail, raising money and awareness for mental health research.
+            <a target="_blank" href='https://www.fluidencodings.com/'>Steven Geofrey</a> Front-End Developer<br />
+            Steven leads the implementation of front-end technologies for user interfaces and data visualizations across Viz Hub projects. Prior to joining the Growth Lab, Steven was an Assistant Teaching Professor/Designer in Residence for the Center for Design at Northeastern University.
           </Content>
         </Root>
       </HubContentContainer>
