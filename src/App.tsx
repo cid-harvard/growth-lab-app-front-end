@@ -19,18 +19,23 @@ import './styling/fonts/fonts.css';
 import Loading from './components/general/Loading';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import { overlayPortalContainerId } from './Utils';
 import styled from 'styled-components/macro';
 
-if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
-  ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID, {debug: false});
+if (process.env.REACT_APP_GOOGLE_ANALYTICS_GA4_ID) {
+
+  ReactGA.initialize([
+    {
+      trackingId: process.env.REACT_APP_GOOGLE_ANALYTICS_GA4_ID,
+    }
+  ]);
+
 }
 const TrackedRoute = (props: any) => {
   useEffect(() => {
     const page = props.location.pathname + window.location.search;
-    ReactGA.set({page});
-    ReactGA.pageview(page);
+    ReactGA.send({hitType: "pageview", page: page});
   }, [props.location.pathname]);
 
   return (
