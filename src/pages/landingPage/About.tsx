@@ -62,7 +62,7 @@ const AboutPage = () => {
           </Content>
 
           <Content>
-            <a target="_blank" href='https://growthlab.cid.harvard.edu/people/annie-white'>Annie White</a> Senior Software Product Manager<br />
+            <a target="_blank" href='https://growthlab.cid.harvard.edu/people/annie-white'>Annie White</a> Director, Digital Tools<br />
             Annie oversees the strategy and creation of all Viz Hub projects, from research to design, development, and launch. Prior to her work at the Growth Lab, Annie was a Director of Digital Product at Sustainalytics, an ESG research and consulting firm. She is interested in the application of software tools to positively impact economic development, equity, and the public interest.
           </Content>
 
