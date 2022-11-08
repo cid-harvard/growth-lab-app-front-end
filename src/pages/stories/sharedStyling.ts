@@ -104,6 +104,8 @@ export const HeadingAlternative = styled.div`
 `;
 
 export const MainNarrativeRoot = styled.div`
+position: relative;
+
 @media(max-width: ${storyMobileWidth}px) {
   position: relative;
   z-index: 150 !important;
@@ -145,6 +147,7 @@ export const SingleColumnNarrative = styled.div`
 export const StickyText = styled(StickyContainer)`
   top: 10vh;
 `;
+
 
 export const MobileText = styled.div`
   @media (max-width: ${storyMobileWidth}px) {

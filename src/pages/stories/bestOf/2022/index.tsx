@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import BestOfTemplate, {SectionDatum} from '../Template';
+import BestOfTemplate, {SectionDatum} from './Template';
 import CoverPhotoImage from './cover-photo.png';
 import CoverPhotoImageLowRes from './cover-photo-low-res.jpg';
 import {get, Routes} from '../../../../metadata';
@@ -8,6 +8,9 @@ import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
 import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
 import orderBy from 'lodash/orderBy';
+
+
+
 
 const orderedData = orderBy(data, ['ORDERING_ON_SITE'], ['asc']);
 
