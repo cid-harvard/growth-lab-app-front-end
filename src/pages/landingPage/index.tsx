@@ -134,6 +134,7 @@ const LandingPage = () => {
     );
   } else if (data !== undefined) {
     const {hubProjectsList, hubKeywordsList} = data;
+
     if (activeView === View.grid) {
       contentView = (
         <GridView projects={hubProjectsList} />
