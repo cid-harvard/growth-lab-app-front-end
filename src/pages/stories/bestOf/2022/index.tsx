@@ -51,7 +51,7 @@ const BestOf2022 = () =>{
     const anchor = location && location.hash ? location.hash : null;
     const bufferTop = window.innerWidth > storyMobileWidth ? -window.innerHeight * 0.75 : -window.innerHeight * 1.6;
     scrollToAnchor({anchor, bufferTop});
-  }, [location]);
+  }, [location.pathname]);
 
   const metadata = get(Routes.BestOf2022);
 

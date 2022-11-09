@@ -20,6 +20,8 @@ import StandardFooter from '../../../../components/text/StandardFooter';
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../../components/navigation/DefaultHubHeader';
+import ShareButtonIcon from '../../../../assets/share.svg';
+
 import {
   RootAlternative,
   HeadingAlternative,
@@ -67,6 +69,7 @@ const FadeInImageContainer = styled(FadeInContainer)`
 const ButtonLink = styled(ButtonLinkBase)`
   margin-top: 1rem;
   && { /* needed to override template styling */
+    display: inline-block;
     border-color: ${baseColor};
     color: ${baseColor};
 
@@ -76,10 +79,27 @@ const ButtonLink = styled(ButtonLinkBase)`
   }
 `;
 
+const ShareButton = styled(ButtonLinkBase)`
+  margin-top: 1rem;
+  display: inline-block;
+  float: right;
+
+  && { /* needed to override template styling */
+    border: none;
+    color: ${baseColor};
+    display: inline-block;
+    text-transform: unset;
+
+    &: hover {
+      color: #fff;
+    }
+  }
+`;
+
 
 const StickyText = styled(StickyContainer)`
-  background-color: #f2f2f2;
-  padding: 20px;
+  background-color: rgba(0,0,0,0.1);
+  padding: 1.5rem;
 `
 
 export const StorySectionContainer = styled.div`
@@ -107,6 +127,42 @@ const StickyFadeOut = styled.div`
   background: linear-gradient(0deg, rgba(242,242,242,1), rgba(242,242,242,0));
   content: '';
   z-index: 100;
+`;
+
+const InlineExploreButtonDiv = styled.div`
+  display: inline-block;
+  float: left;
+`;
+
+const InlineShareButtonDiv = styled.div`
+  display: inline-block;
+  float: right;
+
+`;
+
+const ShareButtonIconElement = styled.div`
+  display: inline-block;
+  width: 16px;
+  margin-right: 5px;
+  vertical-align: middle;
+
+
+  & img {
+    width: 100%;
+  }
+
+  && {
+    &: hover {
+      stroke: white;
+
+      & svg {
+        stroke: white;
+        fill: white;
+      }
+    }
+  
+  }
+  
 `;
 
 export interface SectionDatum {
@@ -137,6 +193,7 @@ const BestOfTemplate = (props: Props) => {
   } = props;
 
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
+  // const {location: {hash}} = useHistory();
 
   let imageElm: React.ReactElement<any> | null = null;
   const sectionsElms = sectionsData.map(({title, text, image, ref, id, url, linkText}, i) => {
@@ -149,19 +206,35 @@ const BestOfTemplate = (props: Props) => {
           <FullScreenImage src={image} />
         </ImageContainer>
        );
+
+       window.location.hash = `#${id}`;
     }
     let linkButton: React.ReactElement<any> | null;
     if (url) {
       linkButton = (
-        <div>
+        <InlineExploreButtonDiv>
           <ButtonLink href={url}>
             {linkText ? linkText : 'Explore the project'}
           </ButtonLink>
-        </div>
+        </InlineExploreButtonDiv>
        );
     } else {
        linkButton = null;
     }
+
+    let shareButton: React.ReactElement<any> | null;
+
+      shareButton = (
+        <InlineShareButtonDiv>
+          <ShareButton href={id}>
+            <ShareButtonIconElement>
+              <img src={ShareButtonIcon} />
+            </ShareButtonIconElement> 
+            Share
+          </ShareButton>
+        </InlineShareButtonDiv>
+       );
+
     return (
       <React.Fragment key={'bestof-section-' + title + image + i}>
         <div id={id} />
@@ -173,6 +246,7 @@ const BestOfTemplate = (props: Props) => {
               </HashLinkTitle>
               <div>{text}</div>
               {linkButton}
+              {shareButton}
             </Wrapper>
           </StickyText>
         </StorySectionContainer>
