@@ -165,6 +165,13 @@ const ShareButtonIconElement = styled.div`
   
 `;
 
+const LineDivider = styled.div`
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px solid #000000;
+  margin: 10px 0px;
+`;
+
 export interface SectionDatum {
   id: string | undefined;
   title: string;
@@ -245,6 +252,7 @@ const BestOfTemplate = (props: Props) => {
                 {title}
               </HashLinkTitle>
               <div>{text}</div>
+              <LineDivider />
               {linkButton}
               {shareButton}
             </Wrapper>
