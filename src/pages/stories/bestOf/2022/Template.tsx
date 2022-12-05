@@ -218,7 +218,11 @@ const BestOfTemplate = (props: Props) => {
         </ImageContainer>
        );
 
-       window.location.hash = `#${id}`;
+    }
+    if(section === i) {
+      window.location.hash = `#${id}`;
+    } else if(section === null) {
+      window.location.hash = '';
     }
     let linkButton: React.ReactElement<any> | null;
     if (url) {
