@@ -13,6 +13,8 @@ import {
   ButtonLink as ButtonLinkBase,
   baseColor,
 } from '../../../../styling/styleUtils';
+import Share from '../../../../components/share';
+
 import TextBlock from '../../../../components/text/TextBlock';
 import styled from 'styled-components/macro';
 import useScrollingSections from '../../../../hooks/useScrollingSections';
@@ -20,7 +22,7 @@ import StandardFooter from '../../../../components/text/StandardFooter';
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../../components/navigation/DefaultHubHeader';
-import ShareButtonIcon from '../../../../assets/share.svg';
+// import ShareButtonIcon from '../../../../assets/share.svg';
 
 import {
   RootAlternative,
@@ -79,22 +81,22 @@ const ButtonLink = styled(ButtonLinkBase)`
   }
 `;
 
-const ShareButton = styled(ButtonLinkBase)`
-  margin-top: 1rem;
-  display: inline-block;
-  float: right;
+// const ShareButton = styled(ButtonLinkBase)`
+//   margin-top: 1rem;
+//   display: inline-block;
+//   float: right;
 
-  && { /* needed to override template styling */
-    border: none;
-    color: ${baseColor};
-    display: inline-block;
-    text-transform: unset;
+//   && { /* needed to override template styling */
+//     border: none;
+//     color: ${baseColor};
+//     display: inline-block;
+//     text-transform: unset;
 
-    &: hover {
-      color: #fff;
-    }
-  }
-`;
+//     &: hover {
+//       color: #fff;
+//     }
+//   }
+// `;
 
 
 const StickyText = styled(StickyContainer)`
@@ -107,27 +109,27 @@ export const StorySectionContainer = styled.div`
   position: relative;
 `;
 
-const StickyFadeIn = styled.div`
-  position: sticky;
-  top: 0;
-  width: auto;
-  margin: 0px 20px;
-  height: 100px;
-  background: linear-gradient(180deg, rgba(242,242,242,1), rgba(242,242,242,0));
-  content: '';
-  z-index: 100;
-`;
+// const StickyFadeIn = styled.div`
+//   position: sticky;
+//   top: 0;
+//   width: auto;
+//   margin: 0px 20px;
+//   height: 100px;
+//   background: linear-gradient(180deg, rgba(242,242,242,1), rgba(242,242,242,0));
+//   content: '';
+//   z-index: 100;
+// `;
 
-const StickyFadeOut = styled.div`
-  position: sticky;
-  bottom: 0;
-  width: auto;
-  margin: 0px 20px;
-  height: 100px;
-  background: linear-gradient(0deg, rgba(242,242,242,1), rgba(242,242,242,0));
-  content: '';
-  z-index: 100;
-`;
+// const StickyFadeOut = styled.div`
+//   position: sticky;
+//   bottom: 0;
+//   width: auto;
+//   margin: 0px 20px;
+//   height: 100px;
+//   background: linear-gradient(0deg, rgba(242,242,242,1), rgba(242,242,242,0));
+//   content: '';
+//   z-index: 100;
+// `;
 
 const InlineExploreButtonDiv = styled.div`
   display: inline-block;
@@ -137,33 +139,35 @@ const InlineExploreButtonDiv = styled.div`
 const InlineShareButtonDiv = styled.div`
   display: inline-block;
   float: right;
+  margin-top: 1rem;
+  padding: 0.4rem 0.6rem;
 
 `;
 
-const ShareButtonIconElement = styled.div`
-  display: inline-block;
-  width: 16px;
-  margin-right: 5px;
-  vertical-align: middle;
+// const ShareButtonIconElement = styled.div`
+//   display: inline-block;
+//   width: 16px;
+//   margin-right: 5px;
+//   vertical-align: middle;
 
 
-  & img {
-    width: 100%;
-  }
+//   & img {
+//     width: 100%;
+//   }
 
-  && {
-    &: hover {
-      stroke: white;
+//   && {
+//     &: hover {
+//       stroke: white;
 
-      & svg {
-        stroke: white;
-        fill: white;
-      }
-    }
+//       & svg {
+//         stroke: white;
+//         fill: white;
+//       }
+//     }
   
-  }
+//   }
   
-`;
+// `;
 
 const LineDivider = styled.div`
   width: 100%;
@@ -233,12 +237,18 @@ const BestOfTemplate = (props: Props) => {
 
       shareButton = (
         <InlineShareButtonDiv>
-          <ShareButton href={id}>
+              <Share useTitle={title}/>
+          {/* <ShareButton>
+            <ShareButtonIconElement>
+              <Share useTitle={title}/>
+            </ShareButtonIconElement>
+          </ShareButton> */}
+          {/* <ShareButton href={id}>
             <ShareButtonIconElement>
               <img src={ShareButtonIcon} />
             </ShareButtonIconElement> 
             Share
-          </ShareButton>
+          </ShareButton> */}
         </InlineShareButtonDiv>
        );
 
@@ -304,9 +314,9 @@ const BestOfTemplate = (props: Props) => {
               ? sectionsData[0].ref as React.RefObject<HTMLDivElement>
               : undefined
           }>
-            <StickyFadeIn />
+            {/* <StickyFadeIn /> */}
             <TextBlock>{sectionsElms}</TextBlock>
-            <StickyFadeOut />
+            {/* <StickyFadeOut /> */}
           </MainNarrativeRoot>
         </StoriesGrid>
       </RootAlternative>

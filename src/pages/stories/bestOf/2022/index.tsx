@@ -3,17 +3,17 @@ import BestOfTemplate, {SectionDatum} from './Template';
 import CoverPhotoImage from './cover-photo.png';
 import CoverPhotoImageLowRes from './cover-photo-low-res.jpg';
 import {get, Routes} from '../../../../metadata';
-import data from './data.json';
+import data from './data2022.json';
 import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
 import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
-import orderBy from 'lodash/orderBy';
+// import orderBy from 'lodash/orderBy';
 
 
 
-
-const orderedData = orderBy(data, ['ORDERING_ON_SITE'], ['asc']);
-
+// TO DO: Determine entry ordering
+// const orderedData = orderBy(data, ['order'], ['asc']);
+const orderedData = data;
 
 const BestOf2022 = () =>{
   const section_0 = useRef<HTMLParagraphElement | null>(null);
@@ -29,6 +29,11 @@ const BestOf2022 = () =>{
   const section_10 = useRef<HTMLParagraphElement | null>(null);
   const section_11 = useRef<HTMLParagraphElement | null>(null);
   const section_12 = useRef<HTMLParagraphElement | null>(null);
+  const section_13 = useRef<HTMLParagraphElement | null>(null);
+  const section_14 = useRef<HTMLParagraphElement | null>(null);
+  const section_15 = useRef<HTMLParagraphElement | null>(null);
+  const section_16 = useRef<HTMLParagraphElement | null>(null);
+  const section_17 = useRef<HTMLParagraphElement | null>(null);
   const sections = [
     section_0,
     section_1,
@@ -43,6 +48,11 @@ const BestOf2022 = () =>{
     section_10,
     section_11,
     section_12,
+    section_13,
+    section_14,
+    section_15,
+    section_16,
+    section_17,
   ];
 
   const location = useLocation();
@@ -55,17 +65,17 @@ const BestOf2022 = () =>{
 
   const metadata = get(Routes.BestOf2022);
 
-  const sectionsData: SectionDatum[] = orderedData.filter(d => d.INCLUDE_ON_SITE !== 'NO').map((d, i) => {
-    const source = d.DATA_SOURCE && d.DATA_SOURCE.length && d.DATA_SOURCE !== 'WF TO'
-      ? <><br /><br /><em>Source: {d.DATA_SOURCE}</em></> : null;
-    const url = d.RESEARCH_LINK && d.RESEARCH_LINK && d.RESEARCH_LINK.toLowerCase() !== 'n/a' && d.RESEARCH_LINK !== 'WF Chuck'
-      ? d.RESEARCH_LINK : undefined;
-      const linkText = d.LINK_TEXT ? d.LINK_TEXT : undefined;
+  const sectionsData: SectionDatum[] = orderedData.map((d, i) => {
+    const source = d.data_source && d.data_source.length 
+      ? <><br /><br /><em>Source: {d.data_source}</em></> : null;
+    const url = d.research_link_url && d.research_link_url.toLowerCase() !== 'n/a'
+      ? d.research_link_url : undefined;
+      const linkText = d.research_link_text ? d.research_link_text : undefined;
     return ({
-      id: d.HASH_ID,
-      title: d.TITLE,
-      text: (<p>{d.DESCRIPTION}{source}</p>),
-      image: d.IMAGE_SRC && d.IMAGE_SRC.length ? require(`./images/${d.IMAGE_SRC}`) : CoverPhotoImageLowRes,
+      id: d.hash_id,
+      title: d.title,
+      text: (<p>{d.description}{source}</p>),
+      image: d.image && d.image.length ? require(`./images/${d.image}`) : CoverPhotoImageLowRes,
       linkText,
       url,
       ref: sections[i],
@@ -78,7 +88,7 @@ const BestOf2022 = () =>{
       metaDescription={metadata.description}
       coverPhotoSrc={{low: CoverPhotoImageLowRes, high: CoverPhotoImage}}
       pageTitle={'Visual Insights from the Growth Lab\'s 2022 Research'}
-      dateLine={'December 15, 2021'}
+      dateLine={'December 14, 2022'}
       byLine={null}
       introText={<p>The Growth Lab has over 50 faculty, fellows, research assistants, and staff working on development challenges in more than a dozen countries worldwide. Across its multi-disciplinary team, the Growth Lab conducts academic research on the nature of growth as economies build new capabilities, engages in place-based applied research to understand local context-specific growth problems, teaches cutting-edge frameworks to empower current and future policymakers, and builds tools to provide high-definition information for public use. Here are some visual highlights from the Growth Lab’s research in 2022.</p>}
       sectionsData={sectionsData}
