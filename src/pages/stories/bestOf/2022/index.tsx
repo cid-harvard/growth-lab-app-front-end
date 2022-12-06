@@ -1,9 +1,10 @@
 import React, {useRef, useEffect} from 'react';
 import BestOfTemplate, {SectionDatum} from './Template';
-import CoverPhotoImage from './cover-photo.png';
-import CoverPhotoImageLowRes from './cover-photo-low-res.jpg';
+import CoverPhotoImage from './headermockup-08.png';
+// TO DO: Need to create low-res version of header image
+import CoverPhotoImageLowRes from './headermockup-08.png';
 import {get, Routes} from '../../../../metadata';
-import data from './data2022.json';
+import data from './2022-12-06_data2022.json';
 import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
 import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
@@ -14,6 +15,9 @@ import {storyMobileWidth} from '../../../../styling/Grid';
 // TO DO: Determine entry ordering
 // const orderedData = orderBy(data, ['order'], ['asc']);
 const orderedData = data;
+
+
+
 
 const BestOf2022 = () =>{
   const section_0 = useRef<HTMLParagraphElement | null>(null);
@@ -55,11 +59,13 @@ const BestOf2022 = () =>{
     section_17,
   ];
 
+  const hasBeenRendered = useRef<boolean>(false);
+
   const location = useLocation();
 
   useEffect(() => {
     const anchor = location && location.hash ? location.hash : null;
-    const bufferTop = window.innerWidth > storyMobileWidth ? -window.innerHeight * 0.75 : -window.innerHeight * 1.6;
+    const bufferTop = window.innerWidth > storyMobileWidth ? -window.innerHeight * 0.95 : -window.innerHeight * 1.6;
     scrollToAnchor({anchor, bufferTop});
   }, [location.pathname]);
 
@@ -92,6 +98,7 @@ const BestOf2022 = () =>{
       byLine={null}
       introText={<p>The Growth Lab has over 50 faculty, fellows, research assistants, and staff working on development challenges in more than a dozen countries worldwide. Across its multi-disciplinary team, the Growth Lab conducts academic research on the nature of growth as economies build new capabilities, engages in place-based applied research to understand local context-specific growth problems, teaches cutting-edge frameworks to empower current and future policymakers, and builds tools to provide high-definition information for public use. Here are some visual highlights from the Growth Lab’s research in 2022.</p>}
       sectionsData={sectionsData}
+      hasBeenRendered={hasBeenRendered}
     />
   );
 };

@@ -195,12 +195,13 @@ interface Props {
   byLine: string | React.ReactNode;
   introText: string | React.ReactNode;
   sectionsData: SectionDatum[];
+  hasBeenRendered: MutableRefObject<boolean>;
 }
 
 const BestOfTemplate = (props: Props) => {
   const {
     metaTitle, metaDescription, coverPhotoSrc, sectionsData,
-    pageTitle, dateLine, byLine, introText,
+    pageTitle, dateLine, byLine, introText, hasBeenRendered
   } = props;
 
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
@@ -219,10 +220,13 @@ const BestOfTemplate = (props: Props) => {
        );
 
     }
-    if(section === i) {
-      window.location.hash = `#${id}`;
-    } else if(section === null) {
-      window.location.hash = '';
+
+    if(hasBeenRendered.current === true) {
+      if(section === i) {
+        window.history.pushState("", document.title, window.location.pathname + "#" + id);
+      } else if(section === null && i === 0) {
+        window.history.pushState("", document.title, window.location.pathname);
+      }  
     }
     let linkButton: React.ReactElement<any> | null;
     if (url) {
@@ -256,6 +260,7 @@ const BestOfTemplate = (props: Props) => {
         </InlineShareButtonDiv>
        );
 
+
     return (
       <React.Fragment key={'bestof-section-' + title + image + i}>
         <div id={id} />
@@ -276,6 +281,10 @@ const BestOfTemplate = (props: Props) => {
     );
 
   });
+
+  if(hasBeenRendered.current === false) {
+    hasBeenRendered.current = true;
+  }
 
   return (
     <>
