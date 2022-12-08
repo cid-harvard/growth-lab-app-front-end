@@ -140,7 +140,7 @@ export default (props: Props) => {
 
   let titleForSocial = 'Check out the Growth Lab Viz Hub';
   if(useTitle) {
-    titleForSocial = `Check out '${useTitle}', in Visual Insights from the Growth Lab's 2022 Research`;
+    titleForSocial = `Check out '${useTitle},' in Visual Insights from the Growth Lab's 2022 Research`;
   }
   return (
     <Modal

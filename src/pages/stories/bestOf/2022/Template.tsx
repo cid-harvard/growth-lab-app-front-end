@@ -177,7 +177,7 @@ const LineDivider = styled.div`
 `;
 
 export interface SectionDatum {
-  id: string | undefined;
+  id: string;
   title: string;
   text: string | React.ReactNode;
   image: string;
@@ -198,17 +198,31 @@ interface Props {
   hasBeenRendered: MutableRefObject<boolean>;
 }
 
+
 const BestOfTemplate = (props: Props) => {
   const {
     metaTitle, metaDescription, coverPhotoSrc, sectionsData,
     pageTitle, dateLine, byLine, introText, hasBeenRendered
   } = props;
 
+  /*
+  For some submissions, the link button to explore more
+  should say "Explore the research", rather than "Explore the project".
+
+  The following hash IDs are submissions where the explore more
+  button should say "Explore the research".
+
+  */
+  const linkToResearch = [
+    "better_sanctions_on_russia_needed",
+    "countries_diversify_industries_with_similar_occupational_inputs",
+  ];
+
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
   // const {location: {hash}} = useHistory();
 
   let imageElm: React.ReactElement<any> | null = null;
-  const sectionsElms = sectionsData.map(({title, text, image, ref, id, url, linkText}, i) => {
+  const sectionsElms = sectionsData.map(({title, text, image, ref, id, url}, i) => {
     const Wrapper = i === 0 ? FirstParagraphAlternative : MobileTextAlternate;
     const refObject = i === 0 ? undefined : ref as React.RefObject<HTMLDivElement>;
     if (section === i || (section === null && i === 0)) {
@@ -233,7 +247,7 @@ const BestOfTemplate = (props: Props) => {
       linkButton = (
         <InlineExploreButtonDiv>
           <ButtonLink href={url}>
-            {linkText ? linkText : 'Explore the project'}
+            {linkToResearch.includes(id) ? 'Explore the research' : 'Explore the project'}
           </ButtonLink>
         </InlineExploreButtonDiv>
        );
