@@ -4,7 +4,7 @@ import CoverPhotoImage from './headermockup-08.png';
 // TO DO: Need to create low-res version of header image
 import CoverPhotoImageLowRes from './headermockup-08.png';
 import {get, Routes} from '../../../../metadata';
-import data from './2022-12-09_data2022.json';
+import data from './2022-12-12_data2022.json';
 import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
 import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
