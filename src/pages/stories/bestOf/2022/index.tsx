@@ -93,7 +93,7 @@ const BestOf2022 = () =>{
       metaTitle={metadata.title}
       metaDescription={metadata.description}
       coverPhotoSrc={{low: CoverPhotoImageLowRes, high: CoverPhotoImage}}
-      pageTitle={'Visual Insights from the Growth Lab\'s 2022 Research'}
+      pageTitle={'Visual Insights from the Growth Lab’s 2022 Research'}
       dateLine={'December 14, 2022'}
       byLine={null}
       introText={<p>

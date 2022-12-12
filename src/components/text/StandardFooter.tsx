@@ -7,7 +7,7 @@ import {
   primaryFont,
 } from '../../styling/styleUtils';
 import styled from 'styled-components/macro';
-import GrowthLabLogoPNG from './headers/growth-lab.png';
+import GrowthLabLogoPNG from './headers/growth-lab-new-logo-2022.png';
 import FacebookIconSVG from './assets/facebook.svg';
 import TwitterIconSVG from './assets/twitter.svg';
 import LinkedinIconSVG from './assets/linkedin.svg';

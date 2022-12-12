@@ -96,9 +96,9 @@
     },
     {
       "person responsible": "Alexia",
-      "Status": "Felicia - Asked researchers what data source is; Asked researchers if they can submit higher resolution version, or if we need to recreate it ourselves; asked to show dots next to colored country names. Waiting for responses",
+      "Status": "Felicia - Asked researchers what data source is; Asked researchers if they can submit higher resolution version, or if we need to recreate it ourselves; asked to show dots next to colored country names. Should receive updated version on Monday",
       "signoff": "",
-      "contingencies": "RH: needs legend showing which country is which color",
+      "contingencies": "SG: Remove title from image, add dots for country color legend; add label for red line",
       "Additional comments, e.g., image quality": "Dotted red line is the dollar poverty level",
       "Original visualization image in G Drive": "https://drive.google.com/file/d/1r8Z5KI7S1gr4vc8okrmHrJBtiLfNXWz3/view?usp=share_link",
       "Original Filename in G Drive": "povcal_val.jpg",
@@ -116,7 +116,7 @@
     {
       "person responsible": "FB",
       "Status": "Done",
-      "signoff": "",
+      "signoff": "X SG",
       "contingencies": "",
       "Additional comments, e.g., image quality": "",
       "Original visualization image in G Drive": "https://drive.google.com/file/d/1BtidKiMeb1hiLK1I80Df78cI-Gls0RVb/view?usp=share_link",
@@ -191,7 +191,7 @@
     },
     {
       "person responsible": "FB",
-      "Status": "Done",
+      "Status": "Add legend for shaded polygon areas",
       "signoff": "X SG",
       "contingencies": "Remove black border from around the continent",
       "Additional comments, e.g., image quality": "",
@@ -211,12 +211,12 @@
     {
       "person responsible": "FB",
       "Status": "Done",
-      "signoff": "",
+      "signoff": "X SG",
       "contingencies": "RH: not straightforward to understand, countries can also differ in what they report so it's not obvious if it's a feature of the data or an actual pattern\nwas the visualization portion stretched? The nodes need to be circles\nWhite border to circles to indicate readibility",
       "Additional comments, e.g., image quality": "x",
       "Original visualization image in G Drive": "https://drive.google.com/file/d/1xJKCLhCEGJDbCZaTAa_DWcjA2P6G74xP/view?usp=share_link",
       "Original Filename in G Drive": "nam_port_city_space.png",
-      "Final file for visualization submission after all revisions": "",
+      "Final file for visualization submission after all revisions": "port_city_space.png",
       "hash_id": "port_city_space",
       "order": "",
       "team": "Namibia",
@@ -225,7 +225,7 @@
       "data_source": "Dun & Bradstreet",
       "research_link_url": "",
       "research_link_text": "",
-      "image": "nam_port_city_space.png"
+      "image": "port_city_space.png"
     },
     {
       "person responsible": "FB",
@@ -249,12 +249,12 @@
     {
       "person responsible": "FB",
       "Status": "Done",
-      "signoff": "",
+      "signoff": "X SG",
       "contingencies": "RH: scales need to be synchronized; remove left map (employment to population ratio); add a scatterplot showing spatial correlation of % households doing agriculture and % households experiencing food shortages",
       "Additional comments, e.g., image quality": "",
       "Original visualization image in G Drive": "https://drive.google.com/file/d/15O6B0EPvfN6Q-0vahZV79qFV1jXLT4QK/view?usp=share_link",
       "Original Filename in G Drive": "nam_agri_income_food.png",
-      "Final file for visualization submission after all revisions": "",
+      "Final file for visualization submission after all revisions": "spatial_dimensions_employment_agricultural_activity_namibia.png",
       "hash_id": "spatial_dimensions_employment_agricultural_activity_namibia",
       "order": "",
       "team": "Namibia",
@@ -263,7 +263,7 @@
       "data_source": "Namibia Labor Force Survey (2018), Namibia Household Income and Expenditure Survey (2015-2016)",
       "research_link_url": "https://growthlab.cid.harvard.edu/policy-research/namibia",
       "research_link_text": "",
-      "image": "nam_agri_income_food.png"
+      "image": "spatial_dimensions_employment_agricultural_activity_namibia.png"
     },
     {
       "person responsible": "FB",
@@ -324,7 +324,7 @@
     },
     {
       "person responsible": "Nil",
-      "Status": "Image is in folder; need title and text\nWaiting for reply",
+      "Status": "Image is in folder; Annie will work on title, text, data source, research link\nWaiting for reply",
       "signoff": "",
       "contingencies": "",
       "Additional comments, e.g., image quality": "",
