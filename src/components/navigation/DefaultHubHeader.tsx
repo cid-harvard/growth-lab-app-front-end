@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {Routes} from '../../routing/routes';
 import CloudIconSvgPath from '../../assets/cloud-icon.svg';
 import {activeLinkColor} from '../../pages/landingPage/Utils';
+import GrowthLabWhiteLogo from '../text/headers/GL_logo_white.png';
 
 const Root = styled.div`
   left: 0;
@@ -16,6 +17,7 @@ const Root = styled.div`
   align-items: center;
   text-transform: uppercase;
   box-sizing: border-box;
+  z-index: 100;
 `;
 
 const AppLink = styled(Link)`
@@ -30,7 +32,7 @@ const Icon = styled.img`
   transform: translate(0, 1px);
   margin-right: 0.4rem;
 `;
-const HarvardLine = styled.div``;
+// const HarvardLine = styled.div``;
 const LogoLine = styled.div`
   display: inline-flex;
   align-items: center;
@@ -57,6 +59,15 @@ const GrowthLabLink = styled.a`
   font-weight: 600;
 `;
 
+const GrowthLabLogo = styled.img`
+  max-width: 100%;
+  height: 30px;
+
+  @media (max-width: 920px) {
+    width: 250px;
+  }
+`;
+
 interface Props {
   staticPosition?: boolean;
   growthLabLinkColor?: string;
@@ -76,7 +87,7 @@ export default (props: Props) => {
         to={Routes.Landing}
         style={{color: appLinkColor ? appLinkColor : '#fff'}}
       >
-        <HarvardLine>Harvard Growth Lab</HarvardLine>
+        {/* <HarvardLine>Harvard Growth Lab</HarvardLine> */}
         <LogoLine><Icon src={CloudIconSvgPath} /> Viz Hub</LogoLine>
       </AppLink>
       <GrowthLabLink
@@ -84,7 +95,8 @@ export default (props: Props) => {
         target='_blank'
         style={{color: growthLabLinkColor ? growthLabLinkColor : '#000'}}
       >
-        Harvard Growth Lab
+        {/* Harvard Growth Lab */}
+      <GrowthLabLogo src={GrowthLabWhiteLogo} />
       </GrowthLabLink>
     </Root>
   );

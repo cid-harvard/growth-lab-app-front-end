@@ -310,7 +310,7 @@ const BestOfTemplate = (props: Props) => {
         <link href='https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&display=swap' rel='stylesheet' />
       </Helmet>
       <DefaultHubHeader
-        backgroundColor={'rgb(49 89 97 / 60%)'}
+        backgroundColor={'rgb(75, 75, 75, 0.7)'}
       />
       <SmartCoverPhoto
         highResSrc={coverPhotoSrc.high}
