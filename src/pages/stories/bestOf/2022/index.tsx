@@ -8,16 +8,10 @@ import data from './2022-12-13_data2022.json';
 import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
 import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
-// import orderBy from 'lodash/orderBy';
+import orderBy from 'lodash/orderBy';
 
 
-
-// TO DO: Determine entry ordering
-// const orderedData = orderBy(data, ['order'], ['asc']);
-const orderedData = data;
-
-
-
+const orderedData = orderBy(data, ['order'], ['asc']);
 
 const BestOf2022 = () =>{
   const section_0 = useRef<HTMLParagraphElement | null>(null);
