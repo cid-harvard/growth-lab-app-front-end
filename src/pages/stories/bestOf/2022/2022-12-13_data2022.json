@@ -71,7 +71,7 @@
       "title": "Remote Work Across Commuting Zones (% of Total Employed) in 2019 and 2021",
       "description": "These maps show the share of self-reported remote workers at the commuting zone level for 2019 and 2021 in Wyoming and surrounding states. Before the pandemic, very few people were working remotely across the region. Remote work grew enormously in many areas by 2021, creating significant variation across commuting zones. The commuting zones of Wyoming range between a minimum estimate of 7.1% in Rawlins and a maximum of 10.9% in Laramie. The commuting zones with the highest share of remote workers are Denver (28%) and Fort Collins (21%) in Colorado and Provo (21%), and Salt Lake City (21%) in Utah. All these commuting zones include larger urban agglomerations, which have tended to support more remote work globally.",
       "data_source": "American Community Survey",
-      "research_link_url": "https://growthlab.cid.harvard.edu/",
+      "research_link_url": "https://growthlab.cid.harvard.edu/files/growthlab/files/wyoming-growth-perspective_full-draft_11-9-2022.pdf",
       "research_link_text": "",
       "image": "remote_work_across_commuting_zones_wyoming.png"
     },
@@ -261,7 +261,7 @@
       "title": "Wyoming’s Outmigration by Age Bracket in Context",
       "description": "This figure summarizes patterns of outmigration by age bracket for the U.S. on average in 2000 and 2019, compared to outmigration for Wyoming in both years. Wyoming is an outlier in outmigration in comparison to other states, and we can see that most people leave by the time they reach the age of 40. Since 2000, there has been a noteworthy difference for Wyoming as there is a decline in the outmigration rate of 18–30-year-olds. Individuals in that age range still leave the state at high rates, but Wyoming is no longer an extreme outlier.",
       "data_source": "IPUMS ACS",
-      "research_link_url": "https://growthlab.cid.harvard.edu/",
+      "research_link_url": "https://growthlab.cid.harvard.edu/files/growthlab/files/wyoming-growth-perspective_full-draft_11-9-2022.pdf",
       "research_link_text": "",
       "image": "wyoming_outmigration_by_age_bracket.png"
     },

@@ -216,6 +216,10 @@ const BestOfTemplate = (props: Props) => {
   const linkToResearch = [
     "better_sanctions_on_russia_needed",
     "countries_diversify_industries_with_similar_occupational_inputs",
+    "manufacturing_country_space",
+    "south_africa_income_consumption_deciles",
+    "remote_work_across_commuting_zones_wyoming",
+    "wyoming_outmigration_by_age_bracket"
   ];
 
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
