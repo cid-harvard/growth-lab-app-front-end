@@ -56,7 +56,8 @@ interface Props {
 }
 
 const ListView = ({projects}: Props) => {
-  const atlasProjects:    React.ReactElement<any>[] = [];
+  const atlasProjects: React.ReactElement<any>[] = [];
+  const annualBestOf: React.ReactElement<any>[] = [];
   const countryDashboards:  React.ReactElement<any>[] = [];
   const visualStories:  React.ReactElement<any>[] = [];
   const softwarePackages: React.ReactElement<any>[] = [];
@@ -80,6 +81,8 @@ const ListView = ({projects}: Props) => {
       presentations.push(projectElm);
     } else if (project.projectCategory === ProjectCategories.PROTOTYPES_EXPERIMENTS) {
       prototypes.push(projectElm);
+    } else if (project.projectCategory === ProjectCategories.ANNUAL_BEST_OF) {
+      annualBestOf.push(projectElm);
     } else {
       undefinedProjects.push(projectElm);
     }
