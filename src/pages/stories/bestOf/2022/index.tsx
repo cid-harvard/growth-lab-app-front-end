@@ -1,10 +1,10 @@
 import React, {useRef, useEffect} from 'react';
 import BestOfTemplate, {SectionDatum} from './Template';
-import CoverPhotoImage from './headermockup-08.png';
+import CoverPhotoImage from './header_image.png';
 // TO DO: Need to create low-res version of header image
 import CoverPhotoImageLowRes from './headermockup-08.png';
 import {get, Routes} from '../../../../metadata';
-import data from './2022-12-12_data2022.json';
+import data from './2022-12-13_data2022.json';
 import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
 import { useLocation } from 'react-router';
 import {storyMobileWidth} from '../../../../styling/Grid';
@@ -77,6 +77,7 @@ const BestOf2022 = () =>{
     const url = d.research_link_url && d.research_link_url.toLowerCase() !== 'n/a'
       ? d.research_link_url : undefined;
       const linkText = d.research_link_text ? d.research_link_text : undefined;
+      console.log("im", d.image);
     return ({
       id: d.hash_id,
       title: d.title,
