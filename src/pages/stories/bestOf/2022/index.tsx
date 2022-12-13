@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from 'react';
 import BestOfTemplate, {SectionDatum} from './Template';
 import CoverPhotoImage from './header_image.png';
 // TO DO: Need to create low-res version of header image
-import CoverPhotoImageLowRes from './headermockup-08.png';
+import CoverPhotoImageLowRes from './header_image.png';
 import {get, Routes} from '../../../../metadata';
 import data from './2022-12-13_data2022.json';
 import {scrollToAnchor} from '../../../../hooks/useScrollBehavior';
