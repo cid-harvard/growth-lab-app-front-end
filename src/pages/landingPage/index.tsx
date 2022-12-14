@@ -127,7 +127,7 @@ const LandingPage = () => {
   if (loading) {
     contentView = <Loading />;
   } else if (error) {
-    console.log("error", error);
+
     contentView = (
       <FullPageError
         message={error.message}
@@ -135,8 +135,8 @@ const LandingPage = () => {
     );
   } else if (data !== undefined) {
     const {hubProjectsList, hubKeywordsList} = data;
-    console.log(hubKeywordsList);
 
+    
     if (activeView === View.grid) {
       contentView = (
         <GridView projects={hubProjectsList} />
