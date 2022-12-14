@@ -22,7 +22,7 @@ const scaleIn = keyframes`{
 const Image = styled.img`
   max-width: 100%;
   max-height: 80vh;
-  cursor: pointer;
+  cursor: zoom-in;
 
   &.scale-in {
     animation: ${scaleIn} 150ms;
@@ -38,7 +38,7 @@ const FullScreenImage = ({src}: {src: string}) => {
     width: '100vw',
     height: '100vh',
     backgroundColor: '#fff',
-    padding: '4rem',
+    padding: '4rem'
   } : {};
 
   const closeButton = fullscreen ? <CloseButtonBig /> : null;
@@ -53,6 +53,7 @@ const FullScreenImage = ({src}: {src: string}) => {
         alt=''
         title=''
         className={fullscreen ? 'scale-in' : undefined}
+        style={{cursor: fullscreen ? 'zoom-out' : 'zoom-in'}}
       />
       {closeButton}
     </Root>

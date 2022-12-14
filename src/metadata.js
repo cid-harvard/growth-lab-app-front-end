@@ -8,6 +8,7 @@ const Routes = {
   JordanOverview: '/jordan-project-overview',
   BestOf2020: '/best-of-2020',
   BestOf2021: '/best-of-2021',
+  BestOf2022: '/best-of-2022',
   NamibiaTool: '/namibia-tool',
   CustomProductSpace: '/custom-product-space',
   CustomIndustrySpace: '/custom-industry-space',
@@ -80,6 +81,13 @@ const metadata = [
     title: 'Visual Insights from the Growth Lab\'s 2021 Research | ' + defaultTitle,
     description: "2021's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
     og_image: 'best-of-2021-share-image.jpg',
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.BestOf2022,
+    title: 'Visual Insights from the Growth Lab\'s 2022 Research | ' + defaultTitle,
+    description: "2022's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
+    og_image: 'best-of-2022-share-image.jpg',
     favicon: defaultFavicon,
   },
   {

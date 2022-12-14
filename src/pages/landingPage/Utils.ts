@@ -42,6 +42,8 @@ export const getCategoryString = (value: ProjectCategories | null) => {
     return 'Presentations';
   } else if (value === ProjectCategories.SOFTWARE_PACKAGES) {
     return 'Software Packages';
+  } else if (value === ProjectCategories.ANNUAL_BEST_OF) {
+    return 'Annual Best-Of'
   } else {
     return '';
   }

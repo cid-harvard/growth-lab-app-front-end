@@ -59,6 +59,7 @@ const JordanTool = lazy(() => import('./pages/jordanTool'));
 const JordanOverview = lazy(() => import('./pages/jordanTool/overviewPage'));
 const BestOf2020 = lazy(() => import('./pages/stories/bestOf/2020'));
 const BestOf2021 = lazy(() => import('./pages/stories/bestOf/2021'));
+const BestOf2022 = lazy(() => import('./pages/stories/bestOf/2022'));
 const NamibiaTool = lazy(() => import('./pages/namibiaTool'));
 const CustomProductSpaceTool = lazy(() => import('./pages/iframeTools/CreateYourProductSpace'));
 const CustomIndustrySpaceTool = lazy(() => import('./pages/iframeTools/CreateYourIndustrySpace'));
@@ -136,6 +137,9 @@ function App() {
                   />
                   <TrackedRoute exact path={Routes.BestOf2021}
                     render={(props: any) => <BestOf2021 {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.BestOf2022}
+                    render={(props: any) => <BestOf2022 {...props} />}
                   />
                   <TrackedRoute exact path={Routes.NamibiaTool}
                     render={(props: any) => <NamibiaTool {...props} />}
