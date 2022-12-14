@@ -78,6 +78,11 @@ const ButtonLink = styled(ButtonLinkBase)`
     &: hover {
       color: #fff;
     }
+
+    @media (max-width: ${storyMobileWidth}px) {
+      background-color: #fff;
+      box-shadow: 0px 0px 1px 1px #fff;
+    }
   }
 `;
 
@@ -102,7 +107,11 @@ const ButtonLink = styled(ButtonLinkBase)`
 const StickyText = styled(StickyContainer)`
   background-color: rgba(0,0,0,0.1);
   padding: 1.5rem;
-`
+  
+  @media (max-width: ${storyMobileWidth}px) {
+    background-color: unset;
+  }
+`;
 
 export const StorySectionContainer = styled.div`
   min-height: 50vh;
@@ -134,6 +143,7 @@ export const StorySectionContainer = styled.div`
 const InlineExploreButtonDiv = styled.div`
   display: inline-block;
   float: left;
+
 `;
 
 const InlineShareButtonDiv = styled.div`
@@ -141,7 +151,15 @@ const InlineShareButtonDiv = styled.div`
   float: right;
   margin-top: 1rem;
   padding: 0.4rem 0.6rem;
+  
+  @media (max-width: ${storyMobileWidth}px) {
 
+    * {
+      background-color: #fff;
+      box-shadow: 0px 0px 1px 1px #fff;
+  
+    }
+  }
 `;
 
 // const ShareButtonIconElement = styled.div`

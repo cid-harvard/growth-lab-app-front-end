@@ -64,7 +64,7 @@ const GrowthLabLogo = styled.img`
   height: 30px;
 
   @media (max-width: 920px) {
-    width: 250px;
+    max-width: 250px;
   }
 `;
 

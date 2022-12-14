@@ -174,6 +174,7 @@ export const MobileTextAlternate = styled.div`
   }
 `;
 
+
 export const FirstParagraph = styled(MobileText)`
   @media (max-width: ${storyMobileWidth}px) {
     padding-top: 20vh;

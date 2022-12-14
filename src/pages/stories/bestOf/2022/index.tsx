@@ -91,7 +91,7 @@ const BestOf2022 = () =>{
       dateLine={'December 14, 2022'}
       byLine={null}
       introText={<p>
-        In 2022, the Growth Lab’s research agenda spanned five continents. Our researchers tackled development challenges with a diverse group of countries and regions while also working on pressing issues such as Russia’s invasion of Ukraine, green growth, and the future of work in a post-pandemic world. The work of our multi-disciplinary team takes on many forms including pioneering academic research on the determinants of growth, enabling more sustainable and inclusive growth through place-specific policy engagements, and translating research insights into open-access digital tools. In no particular order, here are our top visual insights of 2022.</p>}
+        In 2022, the Growth Lab’s research agenda spanned five continents. Our researchers tackled development challenges with a diverse group of countries and regions while also working on pressing issues such as Russia’s invasion of Ukraine, green growth, and the future of work in a post-pandemic world. The work of our multi-disciplinary team takes on many forms, including pioneering academic research on the determinants of growth, enabling more sustainable and inclusive growth through place-specific policy engagements, and translating research insights into open-access digital tools. In no particular order, here are our top visual insights of 2022.</p>}
       sectionsData={sectionsData}
       hasBeenRendered={hasBeenRendered}
     />
