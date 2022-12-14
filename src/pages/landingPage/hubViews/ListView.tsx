@@ -94,6 +94,7 @@ const ListView = ({projects}: Props) => {
       <TitleCell>Status</TitleCell>
       <TitleCell>Link</TitleCell>
       {atlasProjects}
+      {annualBestOf}
       {countryDashboards}
       {visualStories}
       {softwarePackages}
