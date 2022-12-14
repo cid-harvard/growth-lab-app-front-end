@@ -8,7 +8,6 @@ import {
   FullWidth,
   StoryTitle,
   StickyCenteredContainer,
-  // StorySectionContainer,
   Authors,
   ButtonLink as ButtonLinkBase,
   baseColor,
@@ -22,7 +21,6 @@ import StandardFooter from '../../../../components/text/StandardFooter';
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../../components/navigation/DefaultHubHeader';
-// import ShareButtonIcon from '../../../../assets/share.svg';
 
 import {
   RootAlternative,
@@ -35,9 +33,6 @@ import {
 } from '../../sharedStyling';
 import HashLinkTitle from '../HashLinkTitle';
 import FullScreenImage from '../FullScreenImage';
-// import {
-//   StickyContainer,
-// } from '../../../../styling/styleUtils';
 import {storyMobileWidth} from '../../../../styling/Grid';
 
 
@@ -86,24 +81,6 @@ const ButtonLink = styled(ButtonLinkBase)`
   }
 `;
 
-// const ShareButton = styled(ButtonLinkBase)`
-//   margin-top: 1rem;
-//   display: inline-block;
-//   float: right;
-
-//   && { /* needed to override template styling */
-//     border: none;
-//     color: ${baseColor};
-//     display: inline-block;
-//     text-transform: unset;
-
-//     &: hover {
-//       color: #fff;
-//     }
-//   }
-// `;
-
-
 const StickyText = styled(StickyContainer)`
   background-color: rgba(0,0,0,0.1);
   padding: 1.5rem;
@@ -117,28 +94,6 @@ export const StorySectionContainer = styled.div`
   min-height: 50vh;
   position: relative;
 `;
-
-// const StickyFadeIn = styled.div`
-//   position: sticky;
-//   top: 0;
-//   width: auto;
-//   margin: 0px 20px;
-//   height: 100px;
-//   background: linear-gradient(180deg, rgba(242,242,242,1), rgba(242,242,242,0));
-//   content: '';
-//   z-index: 100;
-// `;
-
-// const StickyFadeOut = styled.div`
-//   position: sticky;
-//   bottom: 0;
-//   width: auto;
-//   margin: 0px 20px;
-//   height: 100px;
-//   background: linear-gradient(0deg, rgba(242,242,242,1), rgba(242,242,242,0));
-//   content: '';
-//   z-index: 100;
-// `;
 
 const InlineExploreButtonDiv = styled.div`
   display: inline-block;
@@ -162,30 +117,6 @@ const InlineShareButtonDiv = styled.div`
   }
 `;
 
-// const ShareButtonIconElement = styled.div`
-//   display: inline-block;
-//   width: 16px;
-//   margin-right: 5px;
-//   vertical-align: middle;
-
-
-//   & img {
-//     width: 100%;
-//   }
-
-//   && {
-//     &: hover {
-//       stroke: white;
-
-//       & svg {
-//         stroke: white;
-//         fill: white;
-//       }
-//     }
-  
-//   }
-  
-// `;
 
 const LineDivider = styled.div`
   width: 100%;
@@ -241,7 +172,6 @@ const BestOfTemplate = (props: Props) => {
   ];
 
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
-  // const {location: {hash}} = useHistory();
 
   let imageElm: React.ReactElement<any> | null = null;
   const sectionsElms = sectionsData.map(({title, text, image, ref, id, url}, i) => {
@@ -253,7 +183,7 @@ const BestOfTemplate = (props: Props) => {
         <ImageContainer key={image + i}>
           <FullScreenImage src={image} />
         </ImageContainer>
-       );
+      );
 
     }
 
@@ -272,27 +202,16 @@ const BestOfTemplate = (props: Props) => {
             {linkToResearch.includes(id) ? 'Explore the research' : 'Explore the project'}
           </ButtonLink>
         </InlineExploreButtonDiv>
-       );
+      );
     } else {
-       linkButton = null;
+      linkButton = null;
     }
 
     let shareButton: React.ReactElement<any> | null;
 
       shareButton = (
         <InlineShareButtonDiv>
-              <Share useTitle={title}/>
-          {/* <ShareButton>
-            <ShareButtonIconElement>
-              <Share useTitle={title}/>
-            </ShareButtonIconElement>
-          </ShareButton> */}
-          {/* <ShareButton href={id}>
-            <ShareButtonIconElement>
-              <img src={ShareButtonIcon} />
-            </ShareButtonIconElement> 
-            Share
-          </ShareButton> */}
+          <Share useTitle={title}/>
         </InlineShareButtonDiv>
        );
 
@@ -363,9 +282,7 @@ const BestOfTemplate = (props: Props) => {
               ? sectionsData[0].ref as React.RefObject<HTMLDivElement>
               : undefined
           }>
-            {/* <StickyFadeIn /> */}
             <TextBlock>{sectionsElms}</TextBlock>
-            {/* <StickyFadeOut /> */}
           </MainNarrativeRoot>
         </StoriesGrid>
       </RootAlternative>
