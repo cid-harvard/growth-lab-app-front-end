@@ -3,7 +3,7 @@ const {metadata} = require('./src/metadata');
 
 const fs = require('fs');
 const path = require('path');
-const indexFilePath = path.resolve(__dirname, './', 'build', 'index.html');
+const indexFilePath = path.resolve(__dirname, './', 'dist', 'index.html');
 
 // read in the index.html file
 fs.readFile(indexFilePath, 'utf8', function(err, data) {
@@ -25,7 +25,7 @@ fs.readFile(indexFilePath, 'utf8', function(err, data) {
     } else {
       filename = 'index.html';
     }
-    fs.writeFile(path.resolve(__dirname, './', 'build', filename), result, (err) => {
+    fs.writeFile(path.resolve(__dirname, './', 'dist', filename), result, (err) => {
       if (err) {
         console.log(err);
       } else {
