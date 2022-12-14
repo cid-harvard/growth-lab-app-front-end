@@ -87,7 +87,7 @@ const metadata = [
     url: Routes.BestOf2022,
     title: 'Visual Insights from the Growth Lab\'s 2022 Research | ' + defaultTitle,
     description: "2022's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
-    og_image: 'best-of-2022-share-image.jpg',
+    og_image: 'best-of-2022-card-background-lo.jpg',
     favicon: defaultFavicon,
   },
   {
