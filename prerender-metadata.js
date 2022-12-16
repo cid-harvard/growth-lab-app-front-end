@@ -15,10 +15,17 @@ fs.readFile(indexFilePath, 'utf8', function(err, data) {
 
   metadata.forEach(({url, title, description, og_image, favicon}) => {
     let result = data;
+    /* OPEN GRAPH TAGS */
     result = result.replace(/\$OG_TITLE/g, title);
     result = result.replace(/\$OG_DESCRIPTION/g, description);
     result = result.replace(/\$OG_IMAGE/g, '/og-images/' + og_image);
     result = result.replace(/\/favicon\.svg/g, favicon);
+
+    /* TWITTER CARD TAGS */
+    result = result.replace(/\$TWITTER_TITLE/g, title);
+    result = result.replace(/\$TWITTER_DESCRIPTION/g, description);
+    result = result.replace(/\$TWITTER_IMAGE/g, '/og-images/' + og_image);
+
     let filename = url.substring(1).replace(/\//g, '-');
     if (filename.length) {
       filename = filename + '.html';
