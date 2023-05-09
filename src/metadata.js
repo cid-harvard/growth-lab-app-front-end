@@ -12,6 +12,8 @@ const Routes = {
   NamibiaTool: '/namibia-tool',
   CustomProductSpace: '/custom-product-space',
   CustomIndustrySpace: '/custom-industry-space',
+  PortEcosystemsStory: '/port-ecosystems',
+  NamibiaWalvisBay: '/namibia-walvis-bay'
 }
 
 const defaultTitle = 'The Growth Lab at Harvard Kennedy School';
@@ -97,6 +99,21 @@ const metadata = [
     og_image: defaultOgImage,
     favicon: defaultFavicon,
   },
+  {
+    url: Routes.PortEcosystemsStory,
+    title: 'Harboring Opportunity: The Industrial Ecosystems of Port Cities | ' + defaultTitle,
+    description: 'TBD',
+    og_image: defaultOgImage,
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.NamibiaWalvisBay,
+    title: 'Port Resiliency in the Face of Global Shocks: The Case of Walvis Bay in Namibia | ' + defaultTitle,
+    description: 'TBD',
+    og_image: defaultOgImage,
+    favicon: defaultFavicon,
+  },
+
 ];
 
 const get = (route) => {

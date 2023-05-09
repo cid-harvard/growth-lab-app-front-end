@@ -12,7 +12,8 @@ const Root = styled.div`
 const Image = styled.img`
   object-fit: cover;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  height: 0;
   grid-row: 1;
   grid-column: 1;
   transition: opacity 0.25s ease;

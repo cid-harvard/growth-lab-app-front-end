@@ -55,6 +55,8 @@ const AboutPage = lazy(() => import('./pages/landingPage/About'));
 const CommunityPage = lazy(() => import('./pages/landingPage/Community'));
 const AlbaniaTool = lazy(() => import('./pages/albaniaTool'));
 const AlbaniaStory = lazy(() => import('./pages/stories/albania'));
+const NamibiaWalvisBayStory = lazy(() => import('./pages/stories/namibiaWalvisBay'));
+const PortEcosystemsStory = lazy(() => import('./pages/stories/portEcosystems'));
 const JordanTool = lazy(() => import('./pages/jordanTool'));
 const JordanOverview = lazy(() => import('./pages/jordanTool/overviewPage'));
 const BestOf2020 = lazy(() => import('./pages/stories/bestOf/2020'));
@@ -149,6 +151,12 @@ function App() {
                   />
                   <TrackedRoute exact path={Routes.CustomIndustrySpace}
                     render={(props: any) => <CustomIndustrySpaceTool {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.NamibiaWalvisBay}
+                    render={(props: any) => <NamibiaWalvisBayStory {...props} />}
+                  />
+                  <TrackedRoute exact path={Routes.PortEcosystemsStory}
+                    render={(props: any) => <PortEcosystemsStory {...props} />}
                   />
                   {/* If none of the above routes are found show the 404 page */}
                   <TrackedRoute component={PageNotFound} />

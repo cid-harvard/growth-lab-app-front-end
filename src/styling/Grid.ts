@@ -124,3 +124,10 @@ export const StoriesGrid = styled(FullWidthContentContainer)`
     grid-template-columns: 1fr;
   }
 `;
+
+/* Styles for generic 1- or 2-column stories with static images */
+export const StoriesFlexContainer = styled(FullWidthContentContainer)`
+  display: flex;
+  flex-direction: column;
+`;
+
