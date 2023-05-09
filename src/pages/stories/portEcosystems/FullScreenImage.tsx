@@ -43,6 +43,12 @@ const FullScreenImage = ({src, fullSizeSrc}: {src: string, fullSizeSrc?: string 
 
   const closeButton = fullscreen ? <CloseButtonBig /> : null;
 
+  if(fullscreen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+
   return (
     <Root
       style={style}

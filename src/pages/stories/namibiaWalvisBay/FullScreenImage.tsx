@@ -38,10 +38,16 @@ const FullScreenImage = ({src}: {src: string}) => {
     width: '100vw',
     height: '100vh',
     backgroundColor: '#fff',
-    padding: '4rem'
+    padding: '4rem',
   } : {};
 
   const closeButton = fullscreen ? <CloseButtonBig /> : null;
+
+  if(fullscreen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
 
   return (
     <Root

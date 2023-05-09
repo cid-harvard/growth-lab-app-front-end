@@ -29,9 +29,10 @@ import {
   // FadeInContainer,
 } from '../sharedStyling';
 import FullScreenImage from './FullScreenImage';
+import { storyMobileWidth } from '../../../styling/Grid';
 
 const metaTitle = 'Port Resiliency in the Face of Global Shocks: The Case of Walvis Bay in Namibia | Harvard Growth Lab';
-const metaDescription = 'TBD';
+const metaDescription = 'The article explores the economic resilience of ports in the face of global shocks, with particular focus on the port of Walvis Bay, Namibia. Walvis Bay faces challenges in attracting volume due to its relative unconnectedness to population centers in Africa, but it experienced a fourteen-fold increase in containerized cargo volumes during the global commodity super-cycle. This was due to its efficient operations and relative competitiveness. However, containerized traffic plummet at the end of the cycle and volumes have struggled to recover since. The article  discusses the potential opportunities for growth in the future by capitalizing on global developments in clean energy technologies and the closeness to mining operations in the region, whereby Walvis Bay can serve as a regional logistics hub for exports.';
 
 const Root = styled(RootStandard)`
   background-color: unset;
@@ -40,28 +41,119 @@ const Root = styled(RootStandard)`
 const StorySectionContainer = styled(StorySectionContainerBase)`
   display: flex;
   flex-direction: row;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    flex-direction: column;
+  }
 `;
 
 const VizContainer = styled(VizContainerBase)`
   flex: 8 0;
-  min-height: 100vh;
+  min-height: 120vh;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    flex: 1 0;
+    min-height: 40vh;
+  }
+
 `;
 
 
 const StickyCenteredContainer = styled(StickyContainerBase)`
   justify-content: flex-start;
-  padding-top: 2rem;
+  padding-top: 4rem;
   & img {
     width: 100%;
     object-fit: contain;
   }
+
+  @media (max-width: ${storyMobileWidth}px) {
+    padding-top: 0;
+    min-height: unset;
+
+  }
+
+
 `;
 
 const MobileText = styled(MobileTextBase)`
-  padding-top: 2rem;
+  padding-top: 4rem;
   flex: 5 0;
   padding-left: 2rem;
+  @media (max-width: ${storyMobileWidth}px) {
+    padding: 5vh 0;
+    flex: 1 0;
+    z-index: 100;
+  }
+
 `;
+
+const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
+  && {
+
+  border: 1px solid ${({primaryColor}) => primaryColor};
+  color: ${({primaryColor}) => primaryColor};
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.4rem 0.6rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+
+  }
+
+  &&:hover {
+    color: ${({secondaryColor}) => secondaryColor};
+    background-color: ${({primaryColor}) => primaryColor};
+    border-color: ${({primaryColor}) => primaryColor};
+  }
+`;
+
+const ButtonContainer = styled.div`
+  margin-top: 1.2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const ExploreMoreButtons = () => {
+
+  let primaryColor = "#000";
+  let secondaryColor = "#fff";
+
+  return <ButtonContainer>
+        <ButtonLink
+          primaryColor={primaryColor}
+          secondaryColor={secondaryColor}
+          href={"https://atlas.cid.harvard.edu/countries/155"}
+          target={'_blank'}
+          key={"linkout_namibia-country-profile"}
+        >
+        Country Profile
+      </ButtonLink>
+        <ButtonLink
+          primaryColor={primaryColor}
+          secondaryColor={secondaryColor}
+          href={"https://growthlab.app/namibia-tool"}
+          target={'_blank'}
+          key={"linkout_namibia-tool"}
+        >
+        Dashboard
+      </ButtonLink>
+      <ButtonLink
+          primaryColor={primaryColor}
+          secondaryColor={secondaryColor}
+          href={"https://growthlab.cid.harvard.edu/policy-research/namibia"}
+          target={'_blank'}
+          key={"linkout_namibia-research"}
+        >
+        Research
+      </ButtonLink>
+  </ButtonContainer>
+
+}
 
 const NamibiaWalvisBayStory = () => {
   const section_0 = useRef<HTMLParagraphElement | null>(null);
@@ -136,11 +228,12 @@ const NamibiaWalvisBayStory = () => {
             <FullWidth>
               <StoryTitle>Port Resiliency in the Face of Global Shocks: The Case of Walvis Bay in Namibia</StoryTitle>
               <Authors>
-                TBD publish date
+                May 14, 2023
               </Authors>
               <Authors>
-                By TBD
+                By Fernando Garcia, Nikita Taniparti, and Douglas Barrios
               </Authors>
+              <ExploreMoreButtons />
             </FullWidth>
           </Heading>
         </StoriesFlexContainer>
@@ -172,8 +265,6 @@ const NamibiaWalvisBayStory = () => {
                   <VizContainer>
                     <StickyCenteredContainer>
                       <FullScreenImage src={require("./images/Pop_Cities.png")} />
-                        {/* <img src={require("./images/Pop_Cities.png")} alt="" /> */}
-                      {/* </FullScreenImage> */}
                     </StickyCenteredContainer>
                   </VizContainer>
                   <MobileText ref={section_3}>
@@ -238,31 +329,31 @@ const NamibiaWalvisBayStory = () => {
                 </VizContainer>
                   <MobileText ref={section_7}>
                   <p>
-                  Even internationally, Walvis Bay is not directly linked to the main maritime shipping routes - as is the case of South Africa, for example - adding further friction to its connectivity and interaction with global trade dynamics.
+                  Even internationally, Walvis Bay is not directly linked to the main maritime shipping routes — as is the case of South Africa, for example — adding further friction to its connectivity and interaction with global trade dynamics.
                   </p>
                   </MobileText>
               </StorySectionContainer>
               <StorySectionContainer>
-                {/* <VizContainer>
+              <VizContainer>
                 <StickyCenteredContainer>
-                  <img src={"./images/Pop_Cities.png"} alt="" />
+                  <FullScreenImage src={require("./images/namibia-line-chart-1.png")} />
                   </StickyCenteredContainer>
-                </VizContainer> */}
+                </VizContainer>
                   <MobileText ref={section_8}>
                   <p>
                   Despite the odds, Walvis Bay experienced a significant and impressive fourteen-fold increase in containerized cargo between 2000-2012. During the commodity price supercycle of the 2000s, commodities such as oil, metals, and agricultural products surged, providing a boon for many African nations. In response, these countries increased their exports and were able to import more goods for consumption and investment. One beneficiary of this trend was the Walvis Bay Port, which experienced a surge in demand for imported goods in neighboring Angola. This surge in demand was partly driven by the Port of Luanda's reduced competitiveness and the heavily congested ports in South Africa. As a result, major global shipping lines began to rely on Walvis Bay as a transshipment hub. Although very small, its market share in containerized traffic increased five-fold during this period. The port's success continued to grow as its uncongested and efficient operations met the rising demand for commodities in the region.
                   </p>
                   <p>
-                  With an eye toward the future, Walvis Bay embarked on an ambitious port expansion in 2014 to prepare for further volume increases at a time where the utilization rate of the container terminal stood at 95%. The expansion project, completed in 2019, increased the port's capacity from 350 thousand twenty-foot equivalent units (TEUs) - a standard unit of measurement used in the shipping industry to quantify the cargo capacity of a container - to 750 thousand TEUs. This major upgrade sets the stage for even more significant growth and development for Walvis Bay, cementing its status as a key player in the transshipment business. 
+                  With an eye toward the future, Walvis Bay embarked on an ambitious port expansion in 2014 to prepare for further volume increases at a time where the utilization rate of the container terminal stood at 95%. The expansion project, completed in 2019, increased the port's capacity from 350 thousand twenty-foot equivalent units (TEUs) — a standard unit of measurement used in the shipping industry to quantify the cargo capacity of a container — to 750 thousand TEUs. This major upgrade sets the stage for even more significant growth and development for Walvis Bay, cementing its status as a key player in the transshipment business. 
                   </p>
                   </MobileText>
               </StorySectionContainer>
               <StorySectionContainer>
-                {/* <VizContainer>
+                <VizContainer>
                 <StickyCenteredContainer>
-                  <img src={"./images/Pop_Cities.png"} alt="" />
+                  <FullScreenImage src={require("./images/namibia-line-chart-2.png")} />
                   </StickyCenteredContainer>
-                </VizContainer> */}
+                </VizContainer>
                 <MobileText>
                   <p>
                   However, the demand abruptly fell after 2012 due to the crash in global commodity prices. Markets in Namibia, Angola, and South Africa witnessed steep drops in demand and imports. The fallout from this sharp decline was felt acutely at the Port of Walvis Bay, which saw containerized traffic plummet immediately. Today, containerized volumes have not recovered to the level at the height of the boom and stand just below 200 thousand TEUs. Demand fell, curtailing volumes, and the expansion of the port was rendered ineffectual. This double whammy meant that the port’s utilization rate fell from 95% in 2012 to 23%, which heavily impacted the port’s revenue by 2022.
@@ -302,7 +393,7 @@ const NamibiaWalvisBayStory = () => {
                   First, Namibia has demonstrated success at re-exporting mineral products. Between 2015-2020, the main re-exports were unrefined copper and diamonds, primarily to China and Belgium. Zooming in on copper, re-exports increased twelve-fold in value during this time. The cargo originates in Solwezi, Zambia, and is exported through Walvis Bay to reach Belgium. Why Walvis Bay?
                   </p>
                   <p>
-                  Despite Solwezi being closer to Beira, Mozambique, travel time is comparable, and choosing Walvis Bay as the port for exports reduces the number of national borders that must be crossed. Additionally, once turn-around times - the time it takes for a truck to unload its cargo and depart from the port - are factored in, it is faster and cheaper to export through Walvis Bay than to Dar es Salaam, Tanzania, or Durban, South Africa. Finally, Walvis Bay lies along an efficient maritime route to Europe via West Africa.
+                  Despite Solwezi being closer to Beira, Mozambique, travel time is comparable, and choosing Walvis Bay as the port for exports reduces the number of national borders that must be crossed. Additionally, once turn-around times — the time it takes for a truck to unload its cargo and depart from the port — are factored in, it is faster and cheaper to export through Walvis Bay than to Dar es Salaam, Tanzania, or Durban, South Africa. Finally, Walvis Bay lies along an efficient maritime route to Europe via West Africa.
                   </p>
                   </MobileText>
               </StorySectionContainer>
@@ -319,11 +410,11 @@ const NamibiaWalvisBayStory = () => {
                   </MobileText>
               </StorySectionContainer>
               <StorySectionContainer>
-                {/* <VizContainer>
+              <VizContainer>
                 <StickyCenteredContainer>
-                  <img src={"./images/mines.png"} alt="" />
+                  <FullScreenImage src={require("./images/Namibia-vertical-bar-chart.png")} />
                   </StickyCenteredContainer>
-                </VizContainer> */}
+                </VizContainer>
                   <MobileText>
                   <p>
                   Second, the US, EU, and Asia are increasingly investing in green hydrogen as a means of decarbonizing fuel-intensive industries such as steel and cement manufacturing. Given Namibia's abundant and largely untapped potential for solar and wind energy, the country has become an attractive destination for major investments in green hydrogen. The potential for hydrogen to be commercially viable in liquid form for transportation by ship could further drive demand for this renewable energy source. Ports can be crucial in facilitating green hydrogen projects by providing infrastructure and services that support green hydrogen production, storage, transportation, and distribution to key markets in the EU, the US, and Asia. Therefore, as Namibia taps into its renewable energy potential and diversifies into new economic activities to support global decarbonization efforts, the Port of Walvis Bay can play a role in the green hydrogen value-chain by making its spare capacity available, collaborating with government officials, partnering with importing countries and ports, and developing its workforce to handle this potential surge in demand.
@@ -331,11 +422,6 @@ const NamibiaWalvisBayStory = () => {
                   </MobileText>
               </StorySectionContainer>
               <StorySectionContainer>
-                {/* <VizContainer>
-                <StickyCenteredContainer>
-                  <img src={"./images/mines.png"} alt="" />
-                  </StickyCenteredContainer>
-                </VizContainer> */}
                   <MobileText>
                   <p>
                   Ultimately, the Port of Walvis Bay in Namibia depends in part on its connectedness to inland markets and is, therefore, vulnerable to shocks affecting those markets. Nonetheless, it can improve its economic resilience by capitalizing on global developments in clean energy technologies and the closeness to mining operations in the region. While the port may remain a potential hub for transshipment, it has pathways toward developing its own comparative advantages.

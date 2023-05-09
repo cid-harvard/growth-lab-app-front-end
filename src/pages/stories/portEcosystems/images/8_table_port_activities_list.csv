@@ -1,0 +1,40 @@
+naics,naics_desc,naics_chapter
+7225,Restaurants and Other Eating Places,Accommodation and Food Services
+7211,Traveler Accommodation,Accommodation and Food Services
+5613,Employment Services,Administrative and Support and Waste Management and Remediation Services
+5617,Services to Buildings and Dwellings,Administrative and Support and Waste Management and Remediation Services
+5616,Investigation and Security Services,Administrative and Support and Waste Management and Remediation Services
+5615,Travel Arrangement and Reservation Services,Administrative and Support and Waste Management and Remediation Services
+2362,Nonresidential Building Construction,Construction
+2382,Building Equipment Contractors,Construction
+2379,Other Heavy and Civil Engineering Construction,Construction
+2381,"Foundation, Structure, and Building Exterior Contractors",Construction
+6113,"Colleges, Universities, and Professional Schools",Educational Services
+6116,Other Schools and Instruction,Educational Services
+6221,General Medical and Surgical Hospitals,Health Care and Social Assistance
+6211,Offices of Physicians,Health Care and Social Assistance
+6241,Individual and Family Services,Health Care and Social Assistance
+5111,"Newspaper, Periodical, Book, and Directory Publishers",Information
+5191,Other Information Services,Information
+5511,Management of Companies and Enterprises,Management of Companies and Enterprises
+3118,Bakeries and Tortilla Manufacturing,Manufacturing
+3366,Ship and Boat Building,Manufacturing
+8139,"Business, Professional, Labor, Political, and Similar Organizations",Other Services (except Public Administration)
+8121,Personal Care Services,Other Services (except Public Administration)
+5413,"Architectural, Engineering, and Related Services","Professional, Scientific, and Technical Services"
+5419,"Other Professional, Scientific, and Technical Services","Professional, Scientific, and Technical Services"
+5411,Legal Services,"Professional, Scientific, and Technical Services"
+5412,"Accounting, Tax Preparation, Bookkeeping, and Payroll Services","Professional, Scientific, and Technical Services"
+5312,Offices of Real Estate Agents and Brokers,Real Estate and Rental and Leasing
+4451,Grocery Stores,Retail Trade
+4539,Other Miscellaneous Store Retailers,Retail Trade
+4481,Clothing Stores,Retail Trade
+4441,Building Material and Supplies Dealers,Retail Trade
+4889,Other Support Activities for Transportation,Transportation and Warehousing
+4885,Freight Transportation Arrangement,Transportation and Warehousing
+4811,Scheduled Air Transportation,Transportation and Warehousing
+4883,Support Activities for Water Transportation,Transportation and Warehousing
+4842,Specialized Freight Trucking,Transportation and Warehousing
+4244,Grocery and Related Product Merchant Wholesalers,Wholesale Trade
+4243,"Apparel, Piece Goods, and Notions Merchant Wholesalers",Wholesale Trade
+4247,Petroleum and Petroleum Products Merchant Wholesalers,Wholesale Trade

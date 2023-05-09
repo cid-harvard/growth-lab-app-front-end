@@ -13,7 +13,7 @@ import {
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import styled from 'styled-components';
-
+import DynamicTable from './DynamicTable';
 import StandardFooter from '../../../components/text/StandardFooter';
 import CoverPhotoImage from './images/cover-photo1.jpg';
 import CoverPhotoImageLowRes from './images/cover-photo1.jpg'; // NEED LOW-RES
@@ -29,6 +29,7 @@ import {
   // FadeInContainer,
 } from '../sharedStyling';
 import FullScreenImage from './FullScreenImage';
+import { storyMobileWidth } from '../../../styling/Grid';
 
 const Root = styled(RootStandard)`
   background-color: unset;
@@ -37,31 +38,70 @@ const Root = styled(RootStandard)`
 const StorySectionContainer = styled(StorySectionContainerBase)`
   display: flex;
   flex-direction: row;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    flex-direction: column;
+  }
 `;
 
 const VizContainer = styled(VizContainerBase)`
   flex: 8 0;
-  min-height: 100vh;
+  min-height: 120vh;
+  z-index: unset;
+  @media (max-width: ${storyMobileWidth}px) {
+    flex: 1 0;
+    min-height: 40vh;
+  }
+
 `;
 
 
 const StickyCenteredContainer = styled(StickyContainerBase)`
   justify-content: flex-start;
-  padding-top: 2rem;
+  padding-top: 4rem;
   & img {
     width: 100%;
     object-fit: contain;
   }
+
+  @media (max-width: ${storyMobileWidth}px) {
+    padding-top: 0;
+    min-height: unset;
+
+  }
+
+
 `;
 
 const MobileText = styled(MobileTextBase)`
-  padding-top: 2rem;
+  padding-top: 4rem;
   flex: 5 0;
   padding-left: 2rem;
+  @media (max-width: ${storyMobileWidth}px) {
+    z-index: 100;
+    padding: 5vh 0;
+    flex: 1 0;
+  }
+
+`;
+
+const TableContainer = styled.div`
+  max-width: 50%;
+  height: 400px;
+  padding: 0rem 50px;
+  margin: 4rem auto;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    flex: 1 0;
+  }
 `;
 
 const metaTitle = 'Harboring Opportunity: The Industrial Ecosystems of Port Cities | Harvard Growth Lab';
-const metaDescription = 'TBD';
+const metaDescription = 'Commercial ports are crucial to the world economy in driving trade and globalization, but they also play a strong role in shaping their local economies. In this analysis, we investigate the industrial composition of port cities and the types of activities that tend to concentrate more heavily near ports. We assess which of these activities are closely linked to port operations, which of these activities simply occur more frequently in port cities. The analysis suggests ways that these insights can be useful to policymakers seeking to develop and diversify port cities.';
 
 
 
@@ -138,10 +178,10 @@ const PortEcosystemsStory = () => {
             <FullWidth>
               <StoryTitle>Harboring Opportunity: The Industrial Ecosystems of Port Cities</StoryTitle>
               <Authors>
-                TBD publish date
+                May 14, 2023
               </Authors>
               <Authors>
-                By TBD
+                By Sophia Henn, Nikita Taniparti, Douglas Barrios
               </Authors>
             </FullWidth>
           </Heading>
@@ -284,7 +324,7 @@ const PortEcosystemsStory = () => {
               <StorySectionContainer>
                 <VizContainer>
                 <StickyCenteredContainer>
-                  <FullScreenImage src={require("./images/7_prof_services_rca.png")} />
+                  <FullScreenImage src={require("./images/Namibia-horizontal-bar-chart.png")} />
                   </StickyCenteredContainer>
                 </VizContainer>
                 
@@ -296,7 +336,97 @@ const PortEcosystemsStory = () => {
                 
               </StorySectionContainer>
               <StorySectionContainer>
-                {/* TABLE OF DATA HERE */}
+              <TableContainer>
+              <DynamicTable
+                columns={[
+                  {label: 'NAICS Chapter', key: 'naics_chapter'},
+                  {label: 'Description', key: 'naics_desc'},
+                ]}
+                data={[
+                  // {naics_desc: "Restaurants and Other Eating Places", naics_chapter: "Accommodation and Food Services"},
+                  // {naics_desc: "Traveler Accommodation", naics_chapter: "Accommodation and Food Services"},
+                  // {naics_desc: "Employment Services", naics_chapter: "Administrative and Support and Waste Management and Remediation Services"},
+                  // {naics_desc: "Services to Buildings and Dwellings", naics_chapter: "Administrative and Support and Waste Management and Remediation Services"},
+                  // {naics_desc: "Investigation and Security Services", naics_chapter: "Administrative and Support and Waste Management and Remediation Services"},
+                  // {naics_desc: "Travel Arrangement and Reservation Services", naics_chapter: "Administrative and Support and Waste Management and Remediation Services"},
+                  // {naics_desc: "Nonresidential Building Construction", naics_chapter: "Construction"},
+                  // {naics_desc: "Building Equipment Contractors", naics_chapter: "Construction"},
+                  // {naics_desc: "Other Heavy and Civil Engineering Construction", naics_chapter: "Construction"},
+                  // {naics_desc: "Foundation, Structure, and Building Exterior Contractors", naics_chapter: "Construction"},
+                  // {naics_desc: "Colleges, Universities, and Professional Schools", naics_chapter: "Educational Services"},
+                  // {naics_desc: "Other Schools and Instruction", naics_chapter: "Educational Services"},
+                  // {naics_desc: "General Medical and Surgical Hospitals", naics_chapter: "Health Care and Social Assistance"},
+                  // {naics_desc: "Offices of Physicians", naics_chapter: "Health Care and Social Assistance"},
+                  // {naics_desc: "Individual and Family Services", naics_chapter: "Health Care and Social Assistance"},
+                  // {naics_desc: "Newspaper, Periodical, Book, and Directory Publishers", naics_chapter: "Information"},
+                  // {naics_desc: "Other Information Services", naics_chapter: "Information"},
+                  // {naics_desc: "Management of Companies and Enterprises", naics_chapter: "Management of Companies and Enterprises"},
+                  // {naics_desc: "Bakeries and Tortilla Manufacturing", naics_chapter: "Manufacturing"},
+                  // {naics_desc: "Ship and Boat Building", naics_chapter: "Manufacturing"},
+                  // {naics_desc: "Business, Professional, Labor, Political, and Similar Organizations", naics_chapter: "Other Services (except Public Administration)"},
+                  // {naics_desc: "Personal Care Services", naics_chapter: "Other Services (except Public Administration)"},
+                  // {naics_desc: "Architectural, Engineering, and Related Services", naics_chapter: "Professional, Scientific, and Technical Services"},
+                  // {naics_desc: "Other Professional, Scientific, and Technical Services", naics_chapter: "Professional, Scientific, and Technical Services"},
+                  // {naics_desc: "Legal Services", naics_chapter: "Professional, Scientific, and Technical Services"},
+                  // {naics_desc: "Accounting, Tax Preparation, Bookkeeping, and Payroll Services", naics_chapter: "Professional, Scientific, and Technical Services"},
+                  // {naics_desc: "Offices of Real Estate Agents and Brokers", naics_chapter: "Real Estate and Rental and Leasing"},
+                  // {naics_desc: "Grocery Stores", naics_chapter: "Retail Trade"},
+                  // {naics_desc: "Other Miscellaneous Store Retailers", naics_chapter: "Retail Trade"},
+                  // {naics_desc: "Clothing Stores", naics_chapter: "Retail Trade"},
+                  // {naics_desc: "Building Material and Supplies Dealers", naics_chapter: "Retail Trade"},
+                  // {naics_desc: "Other Support Activities for Transportation", naics_chapter: "Transportation and Warehousing"},
+                  // {naics_desc: "Freight Transportation Arrangement", naics_chapter: "Transportation and Warehousing"},
+                  // {naics_desc: "Scheduled Air Transportation", naics_chapter: "Transportation and Warehousing"},
+                  // {naics_desc: "Support Activities for Water Transportation", naics_chapter: "Transportation and Warehousing"},
+                  // {naics_desc: "Specialized Freight Trucking", naics_chapter: "Transportation and Warehousing"},
+                  // {naics_desc: "Grocery and Related Product Merchant Wholesalers", naics_chapter: "Wholesale Trade"},
+                  // {naics_desc: "Apparel, Piece Goods, and Notions Merchant Wholesalers", naics_chapter: "Wholesale Trade"},
+                  // {naics_desc: "Petroleum and Petroleum Products Merchant Wholesalers", naics_chapter: "Wholesale Trade"}
+                  // Original above, modified below
+                  {naics_desc: "Restaurants and Other Eating Places", naics_chapter: "Accommodation and Food Services"},
+                  {naics_desc: "Traveler Accommodation", naics_chapter: ""},
+                  {naics_desc: "Employment Services", naics_chapter: "Administrative and Support and Waste Management and Remediation Services"},
+                  {naics_desc: "Services to Buildings and Dwellings", naics_chapter: ""},
+                  {naics_desc: "Investigation and Security Services", naics_chapter: ""},
+                  {naics_desc: "Travel Arrangement and Reservation Services", naics_chapter: ""},
+                  {naics_desc: "Nonresidential Building Construction", naics_chapter: "Construction"},
+                  {naics_desc: "Building Equipment Contractors", naics_chapter: ""},
+                  {naics_desc: "Other Heavy and Civil Engineering Construction", naics_chapter: ""},
+                  {naics_desc: "Foundation, Structure, and Building Exterior Contractors", naics_chapter: ""},
+                  {naics_desc: "Colleges, Universities, and Professional Schools", naics_chapter: "Educational Services"},
+                  {naics_desc: "Other Schools and Instruction", naics_chapter: ""},
+                  {naics_desc: "General Medical and Surgical Hospitals", naics_chapter: "Health Care and Social Assistance"},
+                  {naics_desc: "Offices of Physicians", naics_chapter: ""},
+                  {naics_desc: "Individual and Family Services", naics_chapter: ""},
+                  {naics_desc: "Newspaper, Periodical, Book, and Directory Publishers", naics_chapter: "Information"},
+                  {naics_desc: "Other Information Services", naics_chapter: ""},
+                  {naics_desc: "Management of Companies and Enterprises", naics_chapter: "Management of Companies and Enterprises"},
+                  {naics_desc: "Bakeries and Tortilla Manufacturing", naics_chapter: "Manufacturing"},
+                  {naics_desc: "Ship and Boat Building", naics_chapter: ""},
+                  {naics_desc: "Business, Professional, Labor, Political, and Similar Organizations", naics_chapter: "Other Services (except Public Administration)"},
+                  {naics_desc: "Personal Care Services", naics_chapter: ""},
+                  {naics_desc: "Architectural, Engineering, and Related Services", naics_chapter: "Professional, Scientific, and Technical Services"},
+                  {naics_desc: "Other Professional, Scientific, and Technical Services", naics_chapter: ""},
+                  {naics_desc: "Legal Services", naics_chapter: ""},
+                  {naics_desc: "Accounting, Tax Preparation, Bookkeeping, and Payroll Services", naics_chapter: ""},
+                  {naics_desc: "Offices of Real Estate Agents and Brokers", naics_chapter: "Real Estate and Rental and Leasing"},
+                  {naics_desc: "Grocery Stores", naics_chapter: "Retail Trade"},
+                  {naics_desc: "Other Miscellaneous Store Retailers", naics_chapter: ""},
+                  {naics_desc: "Clothing Stores", naics_chapter: ""},
+                  {naics_desc: "Building Material and Supplies Dealers", naics_chapter: ""},
+                  {naics_desc: "Other Support Activities for Transportation", naics_chapter: "Transportation and Warehousing"},
+                  {naics_desc: "Freight Transportation Arrangement", naics_chapter: ""},
+                  {naics_desc: "Scheduled Air Transportation", naics_chapter: ""},
+                  {naics_desc: "Support Activities for Water Transportation", naics_chapter: ""},
+                  {naics_desc: "Specialized Freight Trucking", naics_chapter: ""},
+                  {naics_desc: "Grocery and Related Product Merchant Wholesalers", naics_chapter: "Wholesale Trade"},
+                  {naics_desc: "Apparel, Piece Goods, and Notions Merchant Wholesalers", naics_chapter: ""},
+                  {naics_desc: "Petroleum and Petroleum Products Merchant Wholesalers", naics_chapter: ""}
+                ]}
+                color={'#1f4b79'}
+                invertHeading={true}
+              />
+            </TableContainer>
                 
                   <MobileText>
                   <p>

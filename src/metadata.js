@@ -102,14 +102,14 @@ const metadata = [
   {
     url: Routes.PortEcosystemsStory,
     title: 'Harboring Opportunity: The Industrial Ecosystems of Port Cities | ' + defaultTitle,
-    description: 'TBD',
+    description: 'Commercial ports are crucial to the world economy in driving trade and globalization, but they also play a strong role in shaping their local economies. In this analysis, we investigate the industrial composition of port cities and the types of activities that tend to concentrate more heavily near ports. We assess which of these activities are closely linked to port operations, which of these activities simply occur more frequently in port cities. The analysis suggests ways that these insights can be useful to policymakers seeking to develop and diversify port cities.',
     og_image: defaultOgImage,
     favicon: defaultFavicon,
   },
   {
     url: Routes.NamibiaWalvisBay,
     title: 'Port Resiliency in the Face of Global Shocks: The Case of Walvis Bay in Namibia | ' + defaultTitle,
-    description: 'TBD',
+    description: 'The article explores the economic resilience of ports in the face of global shocks, with particular focus on the port of Walvis Bay, Namibia. Walvis Bay faces challenges in attracting volume due to its relative unconnectedness to population centers in Africa, but it experienced a fourteen-fold increase in containerized cargo volumes during the global commodity super-cycle. This was due to its efficient operations and relative competitiveness. However, containerized traffic plummet at the end of the cycle and volumes have struggled to recover since. The article  discusses the potential opportunities for growth in the future by capitalizing on global developments in clean energy technologies and the closeness to mining operations in the region, whereby Walvis Bay can serve as a regional logistics hub for exports.',
     og_image: defaultOgImage,
     favicon: defaultFavicon,
   },
