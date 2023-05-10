@@ -10,6 +10,7 @@ const Root = styled.div`
   width: 100%;
   box-sizing: border-box;
   border-bottom: solid 1px ${lightBorderColor};
+  position: relative;
 `;
 
 const Cell = styled.div`
@@ -35,7 +36,29 @@ const FirstRowContainer = styled.div`
 const BodyRowsContainer = styled.div`
   overflow-y: scroll;
   display: grid;
-  height: 400px;
+  height: 600px;
+  padding-bottom: 2.5rem;
+  background-color: #fff;
+`;
+
+const SeeMoreContainer = styled.div`
+  position: absolute;
+  z-index: 100;
+  bottom: 0;
+  width: 100%;
+  padding: 0.75rem 0 0.75rem;
+  font-style: italic;
+  text-align: center;
+  background-color: #fff;
+
+  &::before {
+    display: block;
+    margin-top: -1.5rem;
+    width: 100%;
+    height: 1.5rem;
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,1));
+    content: '';
+  }
 `;
 
 export enum Align {
@@ -85,8 +108,13 @@ const DynamicTable = (props: Props) => {
     invertHeading, showOverflow,
   } = props;
   const rootStyle: React.CSSProperties = {
-    gridTemplateColumns: `repeat(${columns.length}, auto)`,
+    gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
     gridTemplateRows: `repeat(${data.length + 1}, auto)`,
+    overflow: showOverflow ? undefined : 'auto',
+  };
+  const headerRowStyle: React.CSSProperties = {
+    gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
+    gridTemplateRows: `repeat(1, auto)`,
     overflow: showOverflow ? undefined : 'auto',
   };
   const tableHeader = columns.map(({label, align}, i) => {
@@ -132,10 +160,13 @@ const DynamicTable = (props: Props) => {
         borderBottom: hideGridLines ? 'none' : undefined,
         fontSize,
         gridColumn,
+        borderTop: d.naics_chapter !== "" && gridRow != 2 ? `1px solid #000` : undefined,
+        fontWeight: d.naics_chapter !== "" && gridColumn == 1 ? 700 : undefined,
         justifyContent: alignToFlexValue(
           columns[gridColumn - 1] && columns[gridColumn - 1].align ? columns[gridColumn - 1].align as Align : Align.Left,
         ),
       };
+      
       if (gridColumn) {
         if (d[key] !== null) {
           return (<Cell style={style} key={(d[key] as string | number).toString() + i + key}>{d[key]}</Cell>);
@@ -150,12 +181,13 @@ const DynamicTable = (props: Props) => {
   });
   return (
     <Root>
-      <FirstRowContainer style={rootStyle}>
+      <FirstRowContainer style={headerRowStyle}>
       {tableHeader}
       </FirstRowContainer>
       <BodyRowsContainer style={rootStyle}>
       {rows}
       </BodyRowsContainer>
+      <SeeMoreContainer>↓ Scroll to see more</SeeMoreContainer>
     </Root>
   );
 };
