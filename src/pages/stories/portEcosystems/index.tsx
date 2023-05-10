@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import DynamicTable from './DynamicTable';
 import StandardFooter from '../../../components/text/StandardFooter';
 import CoverPhotoImage from './images/cover-photo1-cropped.jpg';
-import CoverPhotoImageLowRes from './images/cover-photo1-cropped.jpg'; // NEED LOW-RES
+import CoverPhotoImageLowRes from './images/cover-photo1-cropped-lowres.jpg';
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../components/navigation/DefaultHubHeader';

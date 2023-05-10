@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import useScrollingSections from '../../../hooks/useScrollingSections';
 import StandardFooter from '../../../components/text/StandardFooter';
 import CoverPhotoImage from './images/cover-photo2.jpg';
-import CoverPhotoImageLowRes from './images/cover-photo2.jpg'; // NEED LOW-RES
+import CoverPhotoImageLowRes from './images/cover-photo2-lowres.jpg'; 
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../components/navigation/DefaultHubHeader';
