@@ -9,6 +9,7 @@ import {
   StorySectionContainer as StorySectionContainerBase,
   Authors,
   StickyContainer,
+  VizSource
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import styled from 'styled-components';
@@ -38,6 +39,10 @@ const metaDescription = 'The article explores the economic resilience of ports i
 
 const StorySectionContainer = styled(StorySectionContainerBase)`
   min-height: 100vh;
+
+  & p {
+    margin-bottom: 3rem;
+  }
 `;
 
 const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
@@ -70,14 +75,13 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 
-const VizTitle = styled.h4`
-  margin: 0;
-  padding: 0.5rem 0;
-  text-align: left;
+const VizTitle = styled.h3`
+  margin: 0.5rem 0;
+  padding: 0.5rem 0 0;
+  text-align: center;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 400;
   grid-row: 1;
-
 `;
 
 const ExploreMoreButtons = () => {
@@ -152,19 +156,21 @@ const NamibiaWalvisBayStory = () => {
     section_12
   ]});
 
+  // <VizSource>Source: <em>{vizSource}</em></VizSource>
+
   const visualizationsPerSection = [
-    {sectionIndex: 1, sectionRef: section_1, image: "Pop_Cities.png"},
-    {sectionIndex: 2, sectionRef: section_2, image: "Pop_Travel_Time_2.png"},
-    {sectionIndex: 3, sectionRef: section_3, image: "Pop_Travel_Time_3.png"},
-    {sectionIndex: 4, sectionRef: section_4, image: "area_barplot_pop.jpeg"},
-    {sectionIndex: 5, sectionRef: section_5, image: "PC_Railways.png"},
-    {sectionIndex: 6, sectionRef: section_6, image: "shipping_routes_3.png"},
-    {sectionIndex: 7, sectionRef: section_7, image: "namibia-line-chart-1.png"},
-    {sectionIndex: 8, sectionRef: section_8, image: "namibia-line-chart-2.png"},
-    {sectionIndex: 9, sectionRef: section_9, image: "Scatter.png"},
-    {sectionIndex: 10, sectionRef: section_10, image: "TreeMap.png", title: "Re-exports by HS-4 commodity 2015-2020"},
-    {sectionIndex: 11, sectionRef: section_11, image: "mines.png"},
-    {sectionIndex: 12, sectionRef: section_12, image: "Namibia-vertical-bar-chart.png"}
+    {sectionIndex: 1, sectionRef: section_1, image: "Pop_Cities.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
+    {sectionIndex: 2, sectionRef: section_2, image: "Pop_Travel_Time_2.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
+    {sectionIndex: 3, sectionRef: section_3, image: "Pop_Travel_Time_3.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
+    {sectionIndex: 4, sectionRef: section_4, image: "area_barplot_pop.jpeg", title: "Port Connectivity to Population Centers within 16 Hours Travel Time", source: "Own elaboration"},
+    {sectionIndex: 5, sectionRef: section_5, image: "PC_Railways.png", title: "Rail Connectivity in Southern Africa", source: "Own elaboration using OMS"},
+    {sectionIndex: 6, sectionRef: section_6, image: "shipping_routes_3.png", title: "The Walvis Bay Port and Global Shipping Lanes", source: "Benden, P. (2022). Global Shipping Lanes. Zenodo."},
+    {sectionIndex: 7, sectionRef: section_7, image: "namibia-line-chart-1-no-title.png", title: "Container Cargo Handled at the Walvis Bay Port", source: "Namibian Port Authority"},
+    {sectionIndex: 8, sectionRef: section_8, image: "namibia-line-chart-2-no-title.png", title: "Container Cargo Handled at the Walvis Bay Port", source: "Namibian Port Authority"},
+    {sectionIndex: 9, sectionRef: section_9, image: "Scatter.png", title: "GDP vs. Container Traffic Per Capita in 2019", source: "WDI"},
+    {sectionIndex: 10, sectionRef: section_10, image: "nam_reexports_new_withlegend-transparent.svg", title: "Re-exports by HS-4 Commodity 2015-2020", source: "COMTRADE"},
+    {sectionIndex: 11, sectionRef: section_11, image: "mines.png", title: "Mining Projects in Africa by the Type of Mineral", source: "World Bank"},
+    {sectionIndex: 12, sectionRef: section_12, image: "Namibia-vertical-bar-chart.png", source: "EIA and IRENA"}
   ];
 
   useEffect(() => {
@@ -192,6 +198,10 @@ const NamibiaWalvisBayStory = () => {
   </FadeInContainer>
   ) : null;
 
+  const visualizationSource = currentVisualization !== undefined && ('source' in currentVisualization) ? (
+    <FadeInContainer><VizSource>Source: <em>{currentVisualization.source}</em></VizSource></FadeInContainer>
+  ) : null
+
   return (
     <>
       <Helmet>
@@ -212,7 +222,7 @@ const NamibiaWalvisBayStory = () => {
             <FullWidth>
               <StoryTitle>Port Resiliency in the Face of Global Shocks: The Case of Walvis Bay in Namibia</StoryTitle>
               <Authors>
-                May 14, 2023
+                May 18, 2023
               </Authors>
               <Authors>
                 By Fernando Garcia, Nikita Taniparti, and Douglas Barrios
@@ -223,14 +233,11 @@ const NamibiaWalvisBayStory = () => {
         </StoriesGrid>
         <StoriesGrid>
           <SingleColumnNarrative ref={section_0}>
-          <p>
-                  Ports are essential for global trade and economic development, acting as key connectors for the movement of goods and people around the world. Beyond their function as trade facilitators, port cities themselves can serve as significant <a target="_blank" href="https://growthlab.app/port-ecosystems">economic hubs</a>. For instance, in cities such as Singapore, Rotterdam, and Antwerp, while their respective ports only account for a small percentage of global container trade (4.7%, 1.9%, and 0.9%, respectively), they are responsible for a substantial proportion of national employment within a 10-kilometer radius of the port location (28.9%, 6.1%, and 6.4%).
+                  <p>
+                    Ports are critical for global trade, connecting goods and people across the world. Even though some ports may account for a small percentage of global trade, they serve as <a target='_blank' href='https://growthlab.app/port-ecosystems'>economic hubs</a> and are responsible for a significant portion of national employment within their vicinity. However, ports are vulnerable to global shocks that can disrupt their economic performance, making it crucial to maintain their resilience and focus on investing in their operations and handling capacity.
                   </p>
                   <p>
-                  Ports are not immune to globalization and the potential for global shocks to disrupt their economic performance. As global shipping lines continue to consolidate, supply chain disruptions and commodity shocks can have far-reaching effects on ports’ performance, making it imperative for these key nodes to focus on maintaining their resilience.
-                  </p>
-                  <p>
-                  One challenge facing many ports in the African subcontinent is the need to maintain their competitiveness in the face of increasing global competition. To remain economically viable, ports must invest in efficient operations in logistics, transportation, and service-related industries and make significant capital investments in handling capacity to keep up with demand. Failure to do so creates opportunities for other ports while also increasing the volatility of trade flows once trade shocks occur.
+                  African ports face the challenge of staying competitive amid increasing global competition. To remain economically viable, ports must invest in efficient logistics operations, transportation, and service-related industries, and make significant capital investments in handling capacity to keep up with demand. Neglecting to do so creates opportunities for other ports, increases the volatility of trade flows, and puts jobs at risk.
                   </p>
           </SingleColumnNarrative>
         </StoriesGrid>
@@ -240,8 +247,7 @@ const NamibiaWalvisBayStory = () => {
             height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
           }}>
             <StickyContainer>
-              {visualizationTitle}
-              {(section && section >=1 && section <= 9) ? visualizationImage : null}
+              {(section && section >=1 && section <= 9) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
             </StickyContainer>
           </VizContainer>
           <MainNarrativeRoot ref={section_0}>
@@ -287,7 +293,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText ref={section_5}>
                   <p>
-                  Besides roads, railways can connect ports to inland population centers. Even though rail transportation is more time- and cost-effective when traveling long distances, connectivity by rail to Walvis Bay doesn’t compare to regional ports. There are currently no direct connections from Walvis Bay to Botswana, Zambia, or Zimbabwe. At the same time, there are direct rail lines between Zambia and the Democratic Republic of the Congo to the Port of Lobito, Angola.
+                  Besides roads, railways can connect ports to inland population centers. Even though rail transportation is more time- and cost-effective when traveling long distances, connectivity by rail to Walvis Bay doesn’t compare to regional ports. There are currently no direct connections from Walvis Bay to Botswana, Zambia, or Zimbabwe. At the same time, there are direct rail lines between Zambia and the Democratic Republic of the Congo to the Port of Lobito, Angola. 
                   </p>
                   </MobileText>
                   </StickyText>
@@ -305,7 +311,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText ref={section_7}>
                   <p>
-                  Despite the odds, Walvis Bay experienced a significant and impressive fourteen-fold increase in containerized cargo between 2000-2012. During the commodity price supercycle of the 2000s, commodities such as oil, metals, and agricultural products surged, providing a boon for many African nations. In response, these countries increased their exports and were able to import more goods for consumption and investment. One beneficiary of this trend was the Walvis Bay Port, which experienced a surge in demand for imported goods in neighboring Angola. This surge in demand was partly driven by the Port of Luanda's reduced competitiveness and the heavily congested ports in South Africa. As a result, major global shipping lines began to rely on Walvis Bay as a transshipment hub. Although very small, its market share in containerized traffic increased five-fold during this period. The port's success continued to grow as its uncongested and efficient operations met the rising demand for commodities in the region.
+                  Despite the odds, Walvis Bay experienced an impressive fourteen-fold increase in containerized cargo during the commodity price supercycle of the 2000s. Commodities such as oil, metals, and agricultural products surged, providing a boon for many African nations. In response, these countries increased their exports and imported more goods for consumption and investment. Ports in Angola and South Africa were unable to keep up with the surge in demand and one beneficiary of this trend was the Walvis Bay Port. Major global shipping lines began to rely on Walvis Bay as a transshipment hub. The port's success continued to grow as its uncongested and efficient operations met the rising demand in the region.
                   </p>
                   <p>
                   With an eye toward the future, Walvis Bay embarked on an ambitious port expansion in 2014 to prepare for further volume increases at a time where the utilization rate of the container terminal stood at 95%. The expansion project, completed in 2019, increased the port's capacity from 350 thousand twenty-foot equivalent units (TEUs) — a standard unit of measurement used in the shipping industry to quantify the cargo capacity of a container — to 750 thousand TEUs. This major upgrade sets the stage for even more significant growth and development for Walvis Bay, cementing its status as a key player in the transshipment business. 
@@ -351,9 +357,7 @@ const NamibiaWalvisBayStory = () => {
             }}>
 
               <StickyContainer>
-              {visualizationTitle}
-              {(section && section >=10) ? visualizationImage : null}
-
+              {(section && section >=10) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
               </StickyContainer>
             </VizContainer>
             <MainNarrativeRoot>
@@ -362,10 +366,7 @@ const NamibiaWalvisBayStory = () => {
                 <StickyText>
                   <MobileText ref={section_10}>
                   <p>
-                  First, Namibia has demonstrated success at re-exporting mineral products. Between 2015-2020, the main re-exports were unrefined copper and diamonds, primarily to China and Belgium. Zooming in on copper, re-exports increased twelve-fold in value during this time. The cargo originates in Solwezi, Zambia, and is exported through Walvis Bay to reach Belgium. Why Walvis Bay?
-                  </p>
-                  <p>
-                  Despite Solwezi being closer to Beira, Mozambique, travel time is comparable, and choosing Walvis Bay as the port for exports reduces the number of national borders that must be crossed. Additionally, once turn-around times — the time it takes for a truck to unload its cargo and depart from the port — are factored in, it is faster and cheaper to export through Walvis Bay than to Dar es Salaam, Tanzania, or Durban, South Africa. Finally, Walvis Bay lies along an efficient maritime route to Europe via West Africa.
+                  First, Namibia has demonstrated success at re-exporting mineral products. Between 2015-2020, the main re-exports were unrefined copper and diamonds, primarily to China and Belgium. Zooming in on copper, re-exports increased twelve-fold in value during this time. The cargo originates in Solwezi, Zambia, and is exported through Walvis Bay to reach Europe. Why Walvis Bay? Despite Solwezi being closer to Beira, Mozambique, travel time is comparable, choosing Walvis Bay as the port for exports reduces the number of national borders that must be crossed, and once turn-around times are factored in, it is faster and cheaper to export through Walvis Bay. Finally, Walvis Bay lies along an efficient maritime route to Europe via West Africa.
                   </p>
                   </MobileText>
                 </StickyText>
@@ -374,7 +375,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText ref={section_11}>
                   <p>
-                  The re-export of copper from Solwezi, Zambia, stands as a successful example of the potential for Walvis Bay to become a crucial hub for the re-export of critical minerals and raw materials, particularly as the world moves towards cleaner technologies that require these resources for electrification. Building on this success, targeted initiatives can be established to facilitate the re-export of additional copper from the Democratic Republic of Congo (DRC) and cobalt from both Zambia and the DRC. The Walvis Bay Port's strategic location and well-established infrastructure make it well positioned to play a central role in facilitating such exports. As a result, it is imperative that the port continues to foster an environment that is conducive to the movement of these vital resources, thus enabling southern Africa to capitalize on the growing global demand for critical minerals and raw materials.
+                  he re-export of copper from Solwezi, Zambia, stands as a successful example of the potential for Walvis Bay to become a crucial hub for the re-export of critical minerals and raw materials, particularly as the world moves towards cleaner technologies that require these resources for electrification. Building on this success, targeted initiatives can be established to facilitate the re-export of additional copper from the Democratic Republic of Congo (DRC) and cobalt from both Zambia and the DRC. The Walvis Bay Port's strategic location and well-established infrastructure make it well positioned to play a central role in facilitating such exports. 
                   </p>
                   </MobileText>
                   </StickyText>
@@ -383,7 +384,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText ref={section_12}>
                   <p>
-                  Second, the US, EU, and Asia are increasingly investing in green hydrogen as a means of decarbonizing fuel-intensive industries such as steel and cement manufacturing. Given Namibia's abundant and largely untapped potential for solar and wind energy, the country has become an attractive destination for major investments in green hydrogen. The potential for hydrogen to be commercially viable in liquid form for transportation by ship could further drive demand for this renewable energy source. Ports can be crucial in facilitating green hydrogen projects by providing infrastructure and services that support green hydrogen production, storage, transportation, and distribution to key markets in the EU, the US, and Asia. Therefore, as Namibia taps into its renewable energy potential and diversifies into new economic activities to support global decarbonization efforts, the Port of Walvis Bay can play a role in the green hydrogen value-chain by making its spare capacity available, collaborating with government officials, partnering with importing countries and ports, and developing its workforce to handle this potential surge in demand.
+                  Second, the US, EU, and Asia are increasingly investing in green hydrogen as a means of decarbonizing fuel-intensive industries such as steel and cement manufacturing. Given Namibia's abundant and largely untapped potential for solar and wind energy, the country has become an attractive destination for major investments in green hydrogen. Transport and storage costs will play a significant role in the competitiveness of hydrogen. The potential for hydrogen to be commercially viable in liquid form or as ammonia for transportation by ship could further drive demand for this renewable energy source. Ports can be crucial in facilitating green hydrogen projects by providing infrastructure and services that support green hydrogen production, storage, transportation, and distribution to key markets in the EU, the US, and Asia. Therefore, as Namibia taps into its renewable energy potential and diversifies into new economic activities to support global decarbonization efforts, the Port of Walvis Bay can play a role in the green hydrogen value-chain by making its spare capacity available, collaborating with government officials, partnering with importing countries and ports, and developing its workforce to handle this potential surge in demand.
                   </p>
                   </MobileText>
                   </StickyText>

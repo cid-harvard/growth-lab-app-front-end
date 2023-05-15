@@ -36,7 +36,7 @@ const FirstRowContainer = styled.div`
 const BodyRowsContainer = styled.div`
   overflow-y: scroll;
   display: grid;
-  height: 600px;
+  height: 500px;
   padding-bottom: 2.5rem;
   background-color: #fff;
 `;

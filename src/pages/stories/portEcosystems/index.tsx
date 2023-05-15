@@ -11,6 +11,7 @@ import {
   StorySectionContainer as StorySectionContainerBase,
   Authors,
   StickyContainer,
+  VizSource,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import styled from 'styled-components';
@@ -75,6 +76,17 @@ const TableContainer = styled.div`
 const SingleColumnNarrative = styled(SingleColumnNarrativeBase)`
   margin: 5rem 0;
 `;
+
+const VizTitle = styled.h4`
+  margin: 0;
+  padding: 0.5rem 0;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  grid-row: 1;
+
+`;
+
 
 const metaTitle = 'Harboring Opportunity: The Industrial Ecosystems of Port Cities | Harvard Growth Lab';
 const metaDescription = 'Commercial ports are crucial to the world economy in driving trade and globalization, but they also play a strong role in shaping their local economies. In this analysis, we investigate the industrial composition of port cities and the types of activities that tend to concentrate more heavily near ports. We assess which of these activities are closely linked to port operations, which of these activities simply occur more frequently in port cities. The analysis suggests ways that these insights can be useful to policymakers seeking to develop and diversify port cities.';
@@ -201,15 +213,15 @@ const PortEcosystemsStory = () => {
   ]});
 
   const visualizationsPerSection = [
-    {sectionIndex: 1, sectionRef: section_1, image: "1_all_ports_map_v2.svg"},
-    {sectionIndex: 2, sectionRef: section_2, image: "2_recife_map.png"},
-    {sectionIndex: 3, sectionRef: section_3, image: "3_antwerp_map.png"},
-    {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg"},
-    {sectionIndex: 5, sectionRef: section_5, image: "4b_antwerp_treemap_10km_(larger_labels).svg"},
-    {sectionIndex: 6, sectionRef: section_6, image: "5_naics_chapter_world_vs_ports_10km_(larger_tick_labels).svg"},
-    {sectionIndex: 7, sectionRef: section_7, image: "6_prof_services_world_vs_ports_10km_(larger_tick_labels).svg"},
-    {sectionIndex: 8, sectionRef: section_8, image: "Namibia-horizontal-bar-chart.png"},
-    {sectionIndex: 9, sectionRef: section_9, image: "8_ring_reduced.png", imageFullSize: "8_ring_full.png"}
+    {sectionIndex: 1, sectionRef: section_1, image: "1_all_ports_map_v2.svg", source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>"},
+    {sectionIndex: 2, sectionRef: section_2, image: "2_recife_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Recife, Brazil"},
+    {sectionIndex: 3, sectionRef: section_3, image: "3_antwerp_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Antwerp, Belgium"},
+    {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg", source: "Dun & Bradstreet"},
+    {sectionIndex: 5, sectionRef: section_5, image: "4b_antwerp_treemap_10km_(larger_labels).svg", source: "Dun & Bradstreet"},
+    {sectionIndex: 6, sectionRef: section_6, image: "5_naics_chapter_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations"},
+    {sectionIndex: 7, sectionRef: section_7, image: "6_prof_services_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations"},
+    {sectionIndex: 8, sectionRef: section_8, image: "7_prof_services_rca.png", source: "Dun & Bradstreet, own calculations"},
+    {sectionIndex: 9, sectionRef: section_9, image: "8_ring_reduced.png", imageFullSize: "8_ring_full.png", source: "Dun & Bradstreet, own calculations"}
   ];
 
 
@@ -225,6 +237,7 @@ const PortEcosystemsStory = () => {
   }, [section]);
 
   let visualizationImage = null;
+  let visualizationSource = null;
   if(currentVisualization !== undefined) {
     if('imageFullSize' in currentVisualization) {
       // The ring chart has a different full-size image to use when zoomed in
@@ -243,8 +256,30 @@ const PortEcosystemsStory = () => {
 
     }
 
+    if('source' in currentVisualization) {
+
+      if(currentVisualization.sectionIndex == 1) {
+        visualizationSource = <FadeInContainer><VizSource>Source: <em>
+          <a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>
+          </em></VizSource></FadeInContainer>
+
+      } else if(currentVisualization.sectionIndex == 9) {
+        visualizationSource = <FadeInContainer><VizSource><b>Click image to expand.</b> Source: <em>{currentVisualization.source}</em></VizSource></FadeInContainer>
+      } else {
+        visualizationSource = <FadeInContainer><VizSource>Source: <em>{currentVisualization.source}</em></VizSource></FadeInContainer>
+
+      }
+
+    }
+
   }
 
+  const visualizationTitle = currentVisualization && ('title' in currentVisualization) ? 
+  (
+    <FadeInContainer>
+  <VizTitle>{currentVisualization.title}</VizTitle>
+  </FadeInContainer>
+  ) : null;
 
   return (
     <>
@@ -266,7 +301,7 @@ const PortEcosystemsStory = () => {
             <FullWidth>
               <StoryTitle>Harboring Opportunity: The Industrial Ecosystems of Port Cities</StoryTitle>
               <Authors>
-                May 14, 2023
+                May 18, 2023
               </Authors>
               <Authors>
                 By Sophia Henn, Nikita Taniparti, Douglas Barrios
@@ -277,7 +312,8 @@ const PortEcosystemsStory = () => {
         <StoriesGrid>
           <SingleColumnNarrative ref={section_0}>
                   <p>
-                  Commercial ports are complex ecosystems that drive globalization and trade as we know it today. The COVID-19 pandemic and subsequent disruptions to the global supply chain have put a spotlight on the central role ports that play in shaping how we live. The cities where ports are located are particularly vulnerable to shifting market dynamics and the business decisions of shipping lines. While we often think about ports as gateways for transporting goods and materials across cities, countries, and continents, it is also relevant to ask: how do ports play a role in shaping their <em>local</em> economies? To hedge against vulnerabilities, how can port cities capitalize on their productive strengths to develop other industries?
+                  Commercial ports are complex ecosystems that drive globalization and trade as we know it today. The COVID-19 pandemic and subsequent disruptions to the global supply chain have put a spotlight on the central role that ports play in shaping how we live. The <a target='_blank' href='https://growthlab.app/namibia-walvis-bay'>competitiveness of ports</a> is particularly vulnerable to rapidly changing market dynamics and the business decisions of shipping lines. While we often think about ports as gateways for transporting goods and materials across cities, countries, and continents, it is also relevant to ask: how do ports play a role in shaping their <em>local</em> economies? To hedge against vulnerabilities, how can port cities capitalize on their productive strengths to develop other industries?
+
                   </p>
               
                   <p>
@@ -289,7 +325,7 @@ const PortEcosystemsStory = () => {
                   </p>
 
                   <p>
-                  We set out to identify which salient industries constitute this local ecosystem around ports. We analyze industries that are not only present in port cities, but are more heavily concentrated near ports than in the world overall. By better identifying the economic activities that form this ecosystem, we can highlight policies that better target the regional development goals of port cities and better adapt policy measures to respond to local dynamics. For smaller port areas that aspire to diversify their economic activity for new engines of growth and employment, these industries can serve as a starting point as options that leverage the resources of the port.
+                  We set out to identify which industries constitute this local ecosystem around ports. We analyze industries that are not only present in port cities but are more heavily concentrated near ports than in the world overall. By identifying these activities, we can contribute to the understanding of the comparative advantages of port cities and pathways for diversification that utilize their resources.
                   </p>
                 
             </SingleColumnNarrative>
@@ -300,7 +336,7 @@ const PortEcosystemsStory = () => {
               height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
             }}>
               <StickyContainer>
-                {(section && section >=1 && section <= 8) ? visualizationImage : null}
+                {(section && section >=1 && section <= 8) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
               </StickyContainer>
             </VizContainer>
             <MainNarrativeRoot>
@@ -310,7 +346,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                   <MobileText ref={section_1}>
                   <p>
-                  How do we identify this ecosystem? We use global data from Dun & Bradstreet on business establishments to analyze how employment is concentrated across industries in 463 port cities in 49 countries. Our analysis focuses on cities that are not country capitals and have a population greater than 50,000 people. The analysis also does not include dry ports such as freight villages in the United Kingdom or intermodal logistics parks in the United States.
+                  How do we identify this ecosystem? We use global data from Dun & Bradstreet on business establishments to analyze how employment is concentrated across industries in 463 port cities in 49 countries. Our analysis focuses on cities that are not country capitals and have a population greater than 50,000. For a deeper dive on many of these port cities, check out <a target='_blank' href='https://public.tableau.com/app/profile/gl.namibia/viz/IndustrialEcosystemsofPortCities/Dashboard1?publish=yes'>this tool</a>!
                   </p>
                   </MobileText>
                   </StickyText>
@@ -320,7 +356,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                   <MobileText ref={section_2}>
                     <p>
-                    To understand the specific economic activities that happen near each port, we draw geographic buffer zones around the coordinates of each port. We create perimeters of 2, 5, 10, and 15 kilometers and take stock of the establishments registered within each zone. Here’s what those buffer zones look like around the port of Recife in Brazil. Each point represents an establishment from the database.
+                    To understand the specific economic activities that happen near each port, we draw geographic buffer zones around the coordinates of each port. We create perimeters of 2, 5, 10, and 15 kilometers and take stock of the establishments registered within each zone. Here’s what those buffer zones look like around the port of Recife in Brazil. Each point represents an establishment from the data.
                     </p>
                   </MobileText>
                 </StickyText>
@@ -359,7 +395,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                   <MobileText ref={section_6}>
                   <p>
-                  By analyzing the employment composition in all port cities in our dataset, we can identify which industries seem to concentrate more heavily near ports. Here we show some of these sectors. The darker bars indicate each sector’s concentration of employment in the world, while the lighter bars indicate each sector’s concentration of employment within 10 kilometers of ports. When the lighter bars are greater than the darker ones, these industries are counted as intensively more present in ports than in the world overall. However, we can disaggregate these broad sectors into detailed sub-sectors and similarly analyze the relative employment shares in port cities and globally. This illustrates that even when broad economic sectors may have similar shares of employment near ports and in the world overall, the types of activities within each sector can be quite different.
+                  Analyzing the employment composition of all port cities in our dataset reveals which types of industries tend to concentrate more heavily near ports. The darker bars show each sector’s employment share worldwide, while the lighter bars show each sector’s employment share within 10 kilometers of ports. Manufacturing is comparatively less concentrated near ports, while construction and healthcare are comparatively more concentrated near ports. Even when sectors occupy similar shares of employment worldwide and near ports, the specific activities being engaged by establishments can be quite different.
 
                   </p>
                   </MobileText>
@@ -370,7 +406,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                   <MobileText ref={section_7}>
                   <p>
-                  For example, the sector of professional, scientific, and technical services employs a significant and similar share of people within 10 kilometers of ports and in the world overall (8.5% and 8% of employment respectively). Breaking this down into more detailed industries, we find that the activities most present near ports are actually quite different than those most engaged globally. This figure shows a handful of industries classified within the professional services sector. Globally, 33% of employment within the sector is concentrated in computer systems design services, while near ports it occupies just 16% of employment in the sector. Near ports, architecture and engineering services make up the largest industry within this sector and have a concentration that is 1.5 times larger than the global share. These differences are observed across other sectors, too: manufacturing comprises 14% of employment within 10 kilometers of ports but 24% of employment globally. The largest industries by employment near ports are food and transportation equipment manufacturing, while the largest by employment in the world are manufacturing of computer and electronic products, machinery, and fabricated metal products.
+                  For example, the sector of professional, scientific and technical (PST) services employs a significant and similar share of people near ports and worldwide (8.5% and 8% respectively). However, a breakdown of the sector shows that a different mix of activities is underlying these shares. Here are the different activities that make up PST services and the share of the sector’s employment that they occupy near ports and worldwide. We find that computer systems design represents 33% of employment in PST services globally, but just 16% near ports. Meanwhile, legal, architectural, and engineering services are comparatively more concentrated near ports, with shares of the sector’s employment that are 1.5 to 2 times larger than their share globally.
                   </p>
                   </MobileText>
                 </StickyText>
@@ -379,7 +415,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                   <MobileText ref={section_8}>
                   <p>
-                  For each industry, the ratio of its employment share near ports to its employment share globally is the revealed comparative advantage (RCA) of that industry in port cities.  Industries that have higher concentrations of employment near ports than in the world overall (RCA &gt; 1) may have features that make it advantageous or necessary to locate near ports, such as the resources or skills it requires, the types of establishments that consume the industry, the cost of transportation, or other unobserved characteristics. For these reasons, these industries may be strategic diversification options for a city looking to leverage the presence of its port to develop other competitive industries.
+                  For each industry, the ratio of its employment share near ports to its employment share globally can be considered the revealed comparative advantage (RCA) of port cities in engaging in the industry.  Industries that have higher concentrations of employment near ports than in the world overall (RCA &gt; 1) may have features that make them advantageous or necessary to locate near ports, such as the resources or skills they require, the types of establishments that consume them, the cost of transportation, or other unobserved characteristics. For these reasons, these industries may be strategic diversification options for a city looking to leverage the presence of its port to develop other competitive industries.
                   </p>
                   </MobileText>
                 </StickyText>
@@ -391,10 +427,12 @@ const PortEcosystemsStory = () => {
               <TableAndTextFlexContainer>
               <TableContainer>
                 {dataTable}
+                <FadeInContainer><VizSource>Source: <em>Own elaboration</em></VizSource></FadeInContainer>
               </TableContainer>
+
               <TextContainer>
                   <p>
-                  We construct this measure of revealed comparative advantage for all industries using several specifications, including measuring different buffer zones and different ratios of industry presence. We search for industries that have a comparative advantage near ports (RCA &gt; 1) while also being economically significant in terms of employment (at least 1% of employees across all port cities). Moreover, we include a handful of capital-intensive industries that do not comprise a significant share of employment but are demanded relatively more by the industry encompassing port operations. Across these different specifications, we find 39 industries that have significant and concentrated employment near ports compared to the world overall. These industries most often fall within the sectors of transportation and warehousing, construction, trade, professional and support services.
+                  We construct this measure of revealed comparative advantage for all industries using several specifications, including measuring different buffer zones and different ratios of industry presence. We search for industries that have a comparative advantage near ports (RCA &gt; 1) while also being economically significant in terms of employment (at least 1% of employees across all port cities). Moreover, we include a handful of capital-intensive industries that do not comprise a significant share of employment but are demanded relatively more by the industry encompassing port operations. Across these different specifications, we find 39 industries that have significant and more concentrated employment near ports compared to the world overall. These industries most often fall within the sectors of transportation and warehousing, construction, trade, professional and support services.
                   </p>
                   </TextContainer>
             </TableAndTextFlexContainer>
@@ -402,7 +440,7 @@ const PortEcosystemsStory = () => {
         <StoriesGrid>
             <SingleColumnNarrative>
                   <p>
-                  We then ask: which of these industries share the closest latent capabilities with ports and their operations? Within our global dataset, a subset of establishments report that they engage in several different industries, not only one. In this industry classification system, port operations themselves are classified within the broader category of support activities for water transportation, which includes marine cargo handling and navigational services to shipping. To map which of the 39 industries in the list above are more closely linked to port operations, we examine which other industries are most likely to be reported by establishments that also engage in support activities for water transportation.
+                  Finally, we ask: which of these industries share the closest latent capabilities with ports and their operations? Within our global dataset, a subset of establishments report that they engage in several different industries, not only one. In this industry classification system, port operations themselves are classified within the broader category of support activities for water transportation, which includes marine cargo handling and navigational services to shipping. To map which of the industries above are more closely linked to port operations, we examine which other industries are most likely to be reported by establishments that also engage in support activities for water transportation.
                   </p>
                   </SingleColumnNarrative>
           </StoriesGrid>
@@ -412,7 +450,7 @@ const PortEcosystemsStory = () => {
               height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
             }}>
               <StickyContainer>
-              {(section && section == 9) ? visualizationImage : null}
+              {(section && section == 9) ? <>{visualizationImage}{visualizationSource}</> : null}
               </StickyContainer>
             </VizContainer>
             <MainNarrativeRoot>
@@ -421,7 +459,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                   <MobileText ref={section_9}>
                   <p>
-                  This ring chart visualizes industries that are found to be most closely linked to support activities for water transportation. Those closer to the center are more similar to support activities for water transportation in terms of the capabilities needed to engage in them. Industries with a red ring are those that port cities have a strong comparative advantage in (RCA &gt; 1) relative to the rest of the world — they are in the list of 39 industries. For example, we find that other support activities for transportation and freight transport arrangement are most closely associated with support activities for water transportation. Industries that are intensively present in port cities but that are less similar to support activities for water transportation are ship and boat building, wholesalers of various goods, construction and other services. This analysis can help us disentangle which types of activities concentrate more heavily near ports because they might share closer capabilities with port functions and which activities might locate near ports for other reasons. As can be seen as well, some industries most similar to port operations do not necessarily have a comparative advantage in port cities, but are found intensively in many other places around the world.
+                  This ring chart shows the industries linked to support activities for water transportation, with a closer proximity to the center indicating greater similarity in required capabilities. Industries in red are those listed in the table above with a strong comparative advantage near ports. This analysis tells us a few things. Focusing on the center, we find that industries such as warehousing and storage, urban transit systems, and freight transport arrangement share close capabilities with port activities. But, only the latter is comparatively more concentrated near ports; while warehousing and urban transit systems are found near ports, they are also prevalent in non-port cities all around the world. The different proximities of industries with a comparative advantage near ports is also informative: other support activities for transportation and petroleum wholesalers may be more directly related to port functions, while ship and boat building and grocery wholesalers concentrate more heavily near ports but appear less closely linked to their functions. This analysis helps to distinguish activities whose demand might be more influenced by port traffic, and which might be more resilient to changes.
                   </p>
                   </MobileText>
                 </StickyText>
@@ -432,10 +470,7 @@ const PortEcosystemsStory = () => {
           <StoriesGrid>
             <SingleColumnNarrative>
                   <p>
-                  This exercise identified what kinds of activities thrive within local port ecosystems by examining employment data in over 450 ports globally. Though no two port cities are the same, they may share the capabilities for port functions that can be leveraged for the development of a wide range of industries. We find that port cities have a relatively large presence of many industries within transportation and trade. While this may be unsurprising, they also have a comparatively higher presence of healthcare and certain professional and support services that may not be immediately obvious to policymakers. Furthermore, while some of these industries share similar characteristics or features to port functions and water transportation, others may be less similar. Armed with these insights, policymakers formulating investment promotion strategies or industrial policy can make more informed decisions about the types of industries that may thrive in their port city. Ultimately, the success of these industries will also depend on contextual factors that are unique to each city, such as the availability of land, scarcity of resources, existing legislative frameworks, and more. For those seeking to enhance the economic resilience of port cities, these industries serve as a targeted starting point.
-                  </p>
-                  <p>
-                  Alongside this story, we’ve published a tool where you can explore the industrial composition of many of the port cities described here, along with hundreds of others around the world. Check it out <a target="_blank" href="https://public.tableau.com/app/profile/gl.namibia/viz/IndustrialEcosystemsofPortCities/Dashboard1?publish=yes">here</a>!
+                  This exercise identified what kinds of activities thrive within local port ecosystems by examining employment data in over 450 ports globally. Though no two port cities are the same, they share the capabilities for port functions that can be leveraged for the development of a wide range of industries. We find that port cities have a relatively large presence in many industries within transportation and trade. While this may be unsurprising, they also have a comparatively higher presence in healthcare and certain professional and support services that may not be immediately obvious to policymakers. Furthermore, while some of these industries share similar characteristics or features to port functions and water transportation, others may be less similar. Armed with these insights, policymakers formulating investment promotion strategies or industrial policy can make more informed decisions about the types of industries that may thrive in their port city. Ultimately, the success of these industries will also depend on contextual factors that are unique to each city, such as the availability of land, scarcity of resources, existing legislative frameworks, and more. For those seeking to enhance the economic resilience of port cities, these industries serve as a targeted starting point.
                   </p>
               </SingleColumnNarrative>
         </StoriesGrid>
