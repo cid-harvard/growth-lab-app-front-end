@@ -50,6 +50,10 @@ const TableAndTextFlexContainer = styled.div`
   & * {
     box-sizing: border-box;
   }
+
+  @media (max-width: ${storyMobileWidth}px) {
+    flex-direction: column;
+  }
 `;
 
 const TextContainer = styled.div`
