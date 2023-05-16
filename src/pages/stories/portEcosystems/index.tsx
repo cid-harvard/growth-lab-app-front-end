@@ -81,14 +81,13 @@ const SingleColumnNarrative = styled(SingleColumnNarrativeBase)`
   margin: 5rem 0;
 `;
 
-const VizTitle = styled.h4`
-  margin: 0;
-  padding: 0.5rem 0;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 700;
-  grid-row: 1;
-
+const VizTitle = styled.h3`
+margin: 0.5rem 0;
+padding: 0.5rem 0 0;
+text-align: center;
+font-size: 0.8rem;
+font-weight: 400;
+grid-row: 1;
 `;
 
 
@@ -217,15 +216,15 @@ const PortEcosystemsStory = () => {
   ]});
 
   const visualizationsPerSection = [
-    {sectionIndex: 1, sectionRef: section_1, image: "1_all_ports_map_v2.svg", source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>"},
+    {sectionIndex: 1, sectionRef: section_1, image: "1_Global_Ports.png", source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>"},
     {sectionIndex: 2, sectionRef: section_2, image: "2_recife_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Recife, Brazil"},
     {sectionIndex: 3, sectionRef: section_3, image: "3_antwerp_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Antwerp, Belgium"},
-    {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg", source: "Dun & Bradstreet"},
-    {sectionIndex: 5, sectionRef: section_5, image: "4b_antwerp_treemap_10km_(larger_labels).svg", source: "Dun & Bradstreet"},
-    {sectionIndex: 6, sectionRef: section_6, image: "5_naics_chapter_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations"},
-    {sectionIndex: 7, sectionRef: section_7, image: "6_prof_services_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations"},
-    {sectionIndex: 8, sectionRef: section_8, image: "7_prof_services_rca.png", source: "Dun & Bradstreet, own calculations"},
-    {sectionIndex: 9, sectionRef: section_9, image: "8_ring_reduced.png", imageFullSize: "8_ring_full.png", source: "Dun & Bradstreet, own calculations"}
+    {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - 5km of Port"},
+    {sectionIndex: 5, sectionRef: section_5, image: "4b_antwerp_treemap_10km_(larger_labels).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - 10km of Port"},
+    {sectionIndex: 6, sectionRef: section_6, image: "5_naics_chapter_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations", title: "Employment Shares by Sector, World vs. Port Zones"},
+    {sectionIndex: 7, sectionRef: section_7, image: "6_prof_services_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations", title: "Employment Shares in Professional Services by Activity, World vs. Port Zones"},
+    {sectionIndex: 8, sectionRef: section_8, image: "7_prof_services_rca.png", source: "Dun & Bradstreet, own calculations", title: "RCA of Port Cities in Professional Services"},
+    {sectionIndex: 9, sectionRef: section_9, image: "8_ring_reduced.png", imageFullSize: "8_ring_full.png", source: "Dun & Bradstreet, own calculations", title: "Closest Proximity Industries to Support Activities for Water Transportation"}
   ];
 
 
@@ -454,7 +453,7 @@ const PortEcosystemsStory = () => {
               height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
             }}>
               <StickyContainer>
-              {(section && section == 9) ? <>{visualizationImage}{visualizationSource}</> : null}
+              {(section && section == 9) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
               </StickyContainer>
             </VizContainer>
             <MainNarrativeRoot>
