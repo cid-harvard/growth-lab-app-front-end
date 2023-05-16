@@ -2,7 +2,7 @@ import React, {
   useEffect,
   useRef, useState,
 } from 'react';
-import { StoriesGrid } from '../../../styling/Grid';
+import { StoriesGrid, storyMobileWidth } from '../../../styling/Grid';
 import {
   FullWidth,
   StoryTitle,
@@ -25,7 +25,7 @@ import {
   Heading,
   MainNarrativeRoot,
   VizContainer,
-  MobileText,
+  MobileText as MobileTextBase,
   SingleColumnNarrative,
   StickyText,
   FadeInContainer,
@@ -43,6 +43,11 @@ const StorySectionContainer = styled(StorySectionContainerBase)`
   & p {
     margin-bottom: 3rem;
   }
+
+  @media (max-width: ${storyMobileWidth}px) {
+    min-height: 60vh;
+  }
+
 `;
 
 const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
@@ -82,6 +87,13 @@ const VizTitle = styled.h3`
   font-size: 0.8rem;
   font-weight: 400;
   grid-row: 1;
+`;
+
+const MobileText = styled(MobileTextBase)`
+  @media (max-width: ${storyMobileWidth}px) {
+    padding: 20vh 0;
+  }
+
 `;
 
 const ExploreMoreButtons = () => {
@@ -184,22 +196,24 @@ const NamibiaWalvisBayStory = () => {
 
   }, [section]);
 
-  const visualizationImage = currentVisualization !== undefined ? 
+  let useVisualization = currentVisualization === undefined ? visualizationsPerSection[0] : currentVisualization;
+
+  const visualizationImage = useVisualization !== undefined ? 
     (
       <FadeInContainer>
-    <FullScreenImage src={require(`./images/${currentVisualization.image}`)} />
+    <FullScreenImage src={require(`./images/${useVisualization.image}`)} />
     </FadeInContainer>
     ) : null;
 
-  const visualizationTitle = currentVisualization && ('title' in currentVisualization) ? 
+  const visualizationTitle = useVisualization && ('title' in useVisualization) ? 
   (
     <FadeInContainer>
-  <VizTitle>{currentVisualization.title}</VizTitle>
+  <VizTitle>{useVisualization.title}</VizTitle>
   </FadeInContainer>
   ) : null;
 
-  const visualizationSource = currentVisualization !== undefined && ('source' in currentVisualization) ? (
-    <FadeInContainer><VizSource>Source: <em>{currentVisualization.source}</em></VizSource></FadeInContainer>
+  const visualizationSource = useVisualization !== undefined && ('source' in useVisualization) ? (
+    <FadeInContainer><VizSource>Source: <em>{useVisualization.source}</em></VizSource></FadeInContainer>
   ) : null
 
   return (
@@ -247,7 +261,7 @@ const NamibiaWalvisBayStory = () => {
             height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
           }}>
             <StickyContainer>
-              {(section && section >=1 && section <= 9) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
+              {(!section || (section && section >=1 && section <= 9)) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
             </StickyContainer>
           </VizContainer>
           <MainNarrativeRoot ref={section_0}>
@@ -375,7 +389,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText ref={section_11}>
                   <p>
-                  he re-export of copper from Solwezi, Zambia, stands as a successful example of the potential for Walvis Bay to become a crucial hub for the re-export of critical minerals and raw materials, particularly as the world moves towards cleaner technologies that require these resources for electrification. Building on this success, targeted initiatives can be established to facilitate the re-export of additional copper from the Democratic Republic of Congo (DRC) and cobalt from both Zambia and the DRC. The Walvis Bay Port's strategic location and well-established infrastructure make it well positioned to play a central role in facilitating such exports. 
+                  The re-export of copper from Solwezi, Zambia, stands as a successful example of the potential for Walvis Bay to become a crucial hub for the re-export of critical minerals and raw materials, particularly as the world moves towards cleaner technologies that require these resources for electrification. Building on this success, targeted initiatives can be established to facilitate the re-export of additional copper from the Democratic Republic of Congo (DRC) and cobalt from both Zambia and the DRC. The Walvis Bay Port's strategic location and well-established infrastructure make it well positioned to play a central role in facilitating such exports. 
                   </p>
                   </MobileText>
                   </StickyText>

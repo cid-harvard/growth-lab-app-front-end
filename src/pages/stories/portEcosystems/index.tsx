@@ -27,7 +27,7 @@ import {
   Heading,
   MainNarrativeRoot,
   VizContainer,
-  MobileText,
+  MobileText as MobileTextBase,
   SingleColumnNarrative as SingleColumnNarrativeBase,
   StickyText,
   FadeInContainer,
@@ -40,6 +40,10 @@ import useScrollingSections from '../../../hooks/useScrollingSections';
 
 const StorySectionContainer = styled(StorySectionContainerBase)`
   min-height: 100vh;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    min-height: 60vh;
+  }
 `;
 
 const TableAndTextFlexContainer = styled.div`
@@ -89,6 +93,15 @@ font-size: 0.8rem;
 font-weight: 400;
 grid-row: 1;
 `;
+
+const MobileText = styled(MobileTextBase)`
+  @media (max-width: ${storyMobileWidth}px) {
+    padding: 20vh 0;
+  }
+
+`;
+
+
 
 
 const metaTitle = 'Harboring Opportunity: The Industrial Ecosystems of Port Cities | Harvard Growth Lab';
@@ -219,8 +232,8 @@ const PortEcosystemsStory = () => {
     {sectionIndex: 1, sectionRef: section_1, image: "1_Global_Ports.png", source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>"},
     {sectionIndex: 2, sectionRef: section_2, image: "2_recife_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Recife, Brazil"},
     {sectionIndex: 3, sectionRef: section_3, image: "3_antwerp_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Antwerp, Belgium"},
-    {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - 5km of Port"},
-    {sectionIndex: 5, sectionRef: section_5, image: "4b_antwerp_treemap_10km_(larger_labels).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - 10km of Port"},
+    {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - Share of Employment, by Industry, within 5km of Port"},
+    {sectionIndex: 5, sectionRef: section_5, image: "4b_antwerp_treemap_10km_(larger_labels).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - Share of employment, by industry, within 10km of Port"},
     {sectionIndex: 6, sectionRef: section_6, image: "5_naics_chapter_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations", title: "Employment Shares by Sector, World vs. Port Zones"},
     {sectionIndex: 7, sectionRef: section_7, image: "6_prof_services_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations", title: "Employment Shares in Professional Services by Activity, World vs. Port Zones"},
     {sectionIndex: 8, sectionRef: section_8, image: "7_prof_services_rca.png", source: "Dun & Bradstreet, own calculations", title: "RCA of Port Cities in Professional Services"},
@@ -241,35 +254,36 @@ const PortEcosystemsStory = () => {
 
   let visualizationImage = null;
   let visualizationSource = null;
-  if(currentVisualization !== undefined) {
-    if('imageFullSize' in currentVisualization) {
+  let useVisualization = currentVisualization === undefined ? visualizationsPerSection[0] : currentVisualization;
+  if(useVisualization !== undefined) {
+    if('imageFullSize' in useVisualization) {
       // The ring chart has a different full-size image to use when zoomed in
       visualizationImage = (
         <FadeInContainer>
-      <FullScreenImage src={require(`./images/${currentVisualization.image}`)} fullSizeSrc={require(`./images/${currentVisualization.imageFullSize}`)}/>
+      <FullScreenImage src={require(`./images/${useVisualization.image}`)} fullSizeSrc={require(`./images/${useVisualization.imageFullSize}`)}/>
       </FadeInContainer>
       );
 
     } else {
       visualizationImage = (
         <FadeInContainer>
-      <FullScreenImage src={require(`./images/${currentVisualization.image}`)} />
+      <FullScreenImage src={require(`./images/${useVisualization.image}`)} />
       </FadeInContainer>
       );
 
     }
 
-    if('source' in currentVisualization) {
+    if('source' in useVisualization) {
 
-      if(currentVisualization.sectionIndex == 1) {
+      if(useVisualization.sectionIndex == 1) {
         visualizationSource = <FadeInContainer><VizSource>Source: <em>
           <a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>
           </em></VizSource></FadeInContainer>
 
-      } else if(currentVisualization.sectionIndex == 9) {
-        visualizationSource = <FadeInContainer><VizSource><b>Click image to expand.</b> Source: <em>{currentVisualization.source}</em></VizSource></FadeInContainer>
+      } else if(useVisualization.sectionIndex == 9) {
+        visualizationSource = <FadeInContainer><VizSource><b>Click image to expand.</b> Source: <em>{useVisualization.source}</em></VizSource></FadeInContainer>
       } else {
-        visualizationSource = <FadeInContainer><VizSource>Source: <em>{currentVisualization.source}</em></VizSource></FadeInContainer>
+        visualizationSource = <FadeInContainer><VizSource>Source: <em>{useVisualization.source}</em></VizSource></FadeInContainer>
 
       }
 
@@ -277,10 +291,10 @@ const PortEcosystemsStory = () => {
 
   }
 
-  const visualizationTitle = currentVisualization && ('title' in currentVisualization) ? 
+  const visualizationTitle = useVisualization && ('title' in useVisualization) ? 
   (
     <FadeInContainer>
-  <VizTitle>{currentVisualization.title}</VizTitle>
+  <VizTitle>{useVisualization.title}</VizTitle>
   </FadeInContainer>
   ) : null;
 
@@ -313,7 +327,7 @@ const PortEcosystemsStory = () => {
           </Heading>
         </StoriesGrid>
         <StoriesGrid>
-          <SingleColumnNarrative ref={section_0}>
+          <SingleColumnNarrative ref={section_0} style={{marginBottom: 0}}>
                   <p>
                   Commercial ports are complex ecosystems that drive globalization and trade as we know it today. The COVID-19 pandemic and subsequent disruptions to the global supply chain have put a spotlight on the central role that ports play in shaping how we live. The <a target='_blank' href='https://growthlab.app/namibia-walvis-bay'>competitiveness of ports</a> is particularly vulnerable to rapidly changing market dynamics and the business decisions of shipping lines. While we often think about ports as gateways for transporting goods and materials across cities, countries, and continents, it is also relevant to ask: how do ports play a role in shaping their <em>local</em> economies? To hedge against vulnerabilities, how can port cities capitalize on their productive strengths to develop other industries?
 
@@ -339,7 +353,7 @@ const PortEcosystemsStory = () => {
               height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
             }}>
               <StickyContainer>
-                {(section && section >=1 && section <= 8) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
+                {(!section || (section && section >=1 && section <= 8)) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
               </StickyContainer>
             </VizContainer>
             <MainNarrativeRoot>
