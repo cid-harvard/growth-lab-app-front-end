@@ -174,7 +174,7 @@ const NamibiaWalvisBayStory = () => {
     {sectionIndex: 1, sectionRef: section_1, image: "Pop_Cities.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
     {sectionIndex: 2, sectionRef: section_2, image: "Pop_Travel_Time_2.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
     {sectionIndex: 3, sectionRef: section_3, image: "Pop_Travel_Time_3.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
-    {sectionIndex: 4, sectionRef: section_4, image: "area_barplot_pop.jpeg", title: "Port Connectivity to Population Centers within 16 Hours Travel Time", source: "Own elaboration"},
+    {sectionIndex: 4, sectionRef: section_4, image: "area_barplot_pop.png", title: "Port Connectivity to Population Centers within 16 Hours Travel Time", source: "Own elaboration"},
     {sectionIndex: 5, sectionRef: section_5, image: "PC_Railways.png", title: "Rail Connectivity in Southern Africa", source: "Own elaboration using OMS"},
     {sectionIndex: 6, sectionRef: section_6, image: "shipping_routes_3.png", title: "The Walvis Bay Port and Global Shipping Lanes", source: "Benden, P. (2022). Global Shipping Lanes. Zenodo."},
     {sectionIndex: 7, sectionRef: section_7, image: "namibia-line-chart-1-no-title.png", title: "Container Cargo Handled at the Walvis Bay Port", source: "Namibian Port Authority"},
@@ -248,10 +248,7 @@ const NamibiaWalvisBayStory = () => {
         <StoriesGrid>
           <SingleColumnNarrative ref={section_0}>
                   <p>
-                    Ports are critical for global trade, connecting goods and people across the world. Even though some ports may account for a small percentage of global trade, they serve as <a target='_blank' href='https://growthlab.app/port-ecosystems'>economic hubs</a> and are responsible for a significant portion of national employment within their vicinity. However, ports are vulnerable to global shocks that can disrupt their economic performance, making it crucial to maintain their resilience and focus on investing in their operations and handling capacity.
-                  </p>
-                  <p>
-                  African ports face the challenge of staying competitive amid increasing global competition. To remain economically viable, ports must invest in efficient logistics operations, transportation, and service-related industries, and make significant capital investments in handling capacity to keep up with demand. Neglecting to do so creates opportunities for other ports, increases the volatility of trade flows, and puts jobs at risk.
+                    Ports are critical for global trade, connecting goods and people across the world. Even though some ports may account for a small percentage of global trade, they serve as <a target='_blank' href='https://growthlab.app/port-ecosystems'>economic hubs</a> and are responsible for a significant portion of national employment within their vicinity. However, ports are vulnerable to global shocks that can disrupt their economic performance, making it crucial to maintain their resilience.
                   </p>
           </SingleColumnNarrative>
         </StoriesGrid>
@@ -280,7 +277,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText ref={section_2}>
                     <p>
-                    Connectivity between population centers across Africa also varies, with travel times from the nearest port being a key factor. This can be observed by visualizing the time it takes to reach population centers from the nearest port, where driving for 16 hours can lead to vastly different distances depending on the starting point. For instance, ports located in the southern, mid-western, and eastern regions of Africa, such as Walvis Bay in Namibia, Luanda and Lobito in Angola, Durban in South Africa, and Beira in Mozambique, among others, play a crucial role in connecting these regions to population centers. However, the distance and connectivity between these population centers and ports can vary greatly.
+                    Connectivity between population centers across Africa also varies, with travel times from the nearest port being a key factor. This can be observed by visualizing the time it takes to reach population centers from the nearest port, where driving for 16 hours can lead to vastly different distances depending on the starting point. For instance, ports located in the southern, mid-western, and eastern regions of Africa, such as Luanda and Lobito in Angola, Durban in South Africa, and Beira in Mozambique, among others, play a crucial role in connecting these regions to population centers. However, the distance and connectivity between these population centers and ports can vary greatly.
                     </p>
                   </MobileText>
                   </StickyText>
@@ -328,7 +325,7 @@ const NamibiaWalvisBayStory = () => {
                   Despite the odds, Walvis Bay experienced an impressive fourteen-fold increase in containerized cargo during the commodity price supercycle of the 2000s. Commodities such as oil, metals, and agricultural products surged, providing a boon for many African nations. In response, these countries increased their exports and imported more goods for consumption and investment. Ports in Angola and South Africa were unable to keep up with the surge in demand and one beneficiary of this trend was the Walvis Bay Port. Major global shipping lines began to rely on Walvis Bay as a transshipment hub. The port's success continued to grow as its uncongested and efficient operations met the rising demand in the region.
                   </p>
                   <p>
-                  With an eye toward the future, Walvis Bay embarked on an ambitious port expansion in 2014 to prepare for further volume increases at a time where the utilization rate of the container terminal stood at 95%. The expansion project, completed in 2019, increased the port's capacity from 350 thousand twenty-foot equivalent units (TEUs) — a standard unit of measurement used in the shipping industry to quantify the cargo capacity of a container — to 750 thousand TEUs. This major upgrade sets the stage for even more significant growth and development for Walvis Bay, cementing its status as a key player in the transshipment business. 
+                  With an eye toward the future, Walvis Bay embarked on an ambitious port expansion in 2014 to prepare for further volume increases at a time where the utilization rate of the container terminal stood at 95%. The expansion project, completed in 2019, increased the port's capacity from 350 thousand twenty-foot equivalent units (TEUs) — a standard unit of measurement used in the shipping industry to quantify the cargo capacity of a container — to 750 thousand TEUs. This major upgrade looked to cement its status as a key player in the transshipment business. 
                   </p>
                   </MobileText>
                   </StickyText>
@@ -337,7 +334,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                 <MobileText ref={section_8}>
                   <p>
-                  However, the demand abruptly fell after 2012 due to the crash in global commodity prices. Markets in Namibia, Angola, and South Africa witnessed steep drops in demand and imports. The fallout from this sharp decline was felt acutely at the Port of Walvis Bay, which saw containerized traffic plummet immediately. Today, containerized volumes have not recovered to the level at the height of the boom and stand just below 200 thousand TEUs. Demand fell, curtailing volumes, and the expansion of the port was rendered ineffectual. This double whammy meant that the port’s utilization rate fell from 95% in 2012 to 23%, which heavily impacted the port’s revenue by 2022.
+                  However, the demand abruptly fell after 2012 due to the crash in global commodity prices. Markets in Namibia, Angola, and South Africa witnessed steep drops in demand and imports. The fallout from this sharp decline was felt acutely at the Port of Walvis Bay, which saw containerized traffic plummet immediately. Today, containerized volumes have not recovered to the level at the height of the boom and stand just below 200 thousand TEUs. Demand fell, curtailing volumes, and the expansion of the port was rendered ineffectual. This dual impact meant that the port’s utilization rate fell from 95% in 2012 to 23%, which heavily impacted the port’s revenue by 2022.
                   </p>
                   </MobileText>
                   </StickyText>

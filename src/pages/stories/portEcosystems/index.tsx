@@ -229,7 +229,7 @@ const PortEcosystemsStory = () => {
   ]});
 
   const visualizationsPerSection = [
-    {sectionIndex: 1, sectionRef: section_1, image: "1_Global_Ports.png", source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>"},
+    {sectionIndex: 1, sectionRef: section_1, image: "1_Global_Ports.png", source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>", title: "Selected Global Port Cities"},
     {sectionIndex: 2, sectionRef: section_2, image: "2_recife_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Recife, Brazil"},
     {sectionIndex: 3, sectionRef: section_3, image: "3_antwerp_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Antwerp, Belgium"},
     {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - Share of Employment, by Industry, within 5km of Port"},
