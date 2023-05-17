@@ -10,7 +10,7 @@ import {
   StoryTitle,
   StorySectionContainer as StorySectionContainerBase,
   Authors,
-  StickyContainer,
+  StickyContainer as StickyContainerBase,
   VizSource,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
@@ -25,11 +25,11 @@ import DefaultHubHeader from '../../../components/navigation/DefaultHubHeader';
 import {
   RootStandard as Root,
   Heading,
-  MainNarrativeRoot,
-  VizContainer,
+  MainNarrativeRoot as MainNarrativeRootBase,
+  VizContainer as VizContainerBase,
   MobileText as MobileTextBase,
   SingleColumnNarrative as SingleColumnNarrativeBase,
-  StickyText,
+  StickyText as StickyTextBase,
   FadeInContainer,
   // FadeInContainer,
 } from '../sharedStyling';
@@ -43,6 +43,7 @@ const StorySectionContainer = styled(StorySectionContainerBase)`
 
   @media (max-width: ${storyMobileWidth}px) {
     min-height: 60vh;
+    padding-bottom: 0;
   }
 `;
 
@@ -63,6 +64,12 @@ const TableAndTextFlexContainer = styled.div`
 const TextContainer = styled.div`
   flex: 1 0 50%;
   padding: 0rem 50px;
+
+  @media (max-width: ${storyMobileWidth}px) {
+    padding: 0;
+    width: 100%;
+  }
+
 `;
 
 const TableContainer = styled.div`
@@ -97,11 +104,55 @@ grid-row: 1;
 const MobileText = styled(MobileTextBase)`
   @media (max-width: ${storyMobileWidth}px) {
     padding: 20vh 0;
+    z-index: 1000;
   }
 
 `;
 
+const StickyContainer = styled(StickyContainerBase)`
+  @media (max-width: ${storyMobileWidth}px) {
+    padding-top: 10vh;
+    min-height: 60vh !important;
+  }
+`;
 
+const StickyText = styled(StickyTextBase)`
+  @media (max-width: ${storyMobileWidth}px) {
+    min-height: 60vh !important;
+    -webkit-transform: translateZ(1px);
+    transform: translateZ(1px);
+
+  }
+`;
+
+const FirstStickyText = styled(StickyTextBase)`
+  @media (max-width: ${storyMobileWidth}px) {
+    -webkit-transform: translateZ(1px);
+    transform: translateZ(1px);
+
+  }
+`;
+
+const FirstMobileText = styled(MobileText)`
+  @media (max-width: ${storyMobileWidth}px) {
+    padding-top: 0;
+  }
+`;
+
+const MainNarrativeRoot = styled(MainNarrativeRootBase)`
+  @media (max-width: ${storyMobileWidth}px) {
+    position: relative;
+    z-index: 5000;
+  }
+`;
+
+const VizContainer = styled(VizContainerBase)`
+  @media (max-width: ${storyMobileWidth}px) {
+    z-index: 0;
+    -webkit-transform: translateZ(-1px);
+    transform: translateZ(-1px);
+  }
+`;
 
 
 const metaTitle = 'Harboring Opportunity: The Industrial Ecosystems of Port Cities | Harvard Growth Lab';
@@ -240,6 +291,11 @@ const PortEcosystemsStory = () => {
     {sectionIndex: 9, sectionRef: section_9, image: "8_ring_reduced.png", imageFullSize: "8_ring_full.png", source: "Dun & Bradstreet, own calculations", title: "Closest Proximity Industries to Support Activities for Water Transportation"}
   ];
 
+  let ringVisualization = visualizationsPerSection.find((vis: any) => vis.sectionIndex == 9);
+
+  let ringVisualizationImage = <FullScreenImage src={require(`./images/${ringVisualization!.image}`)} fullSizeSrc={require(`./images/${ringVisualization!.imageFullSize}`)}/>;
+  let ringVisualizationSource = <VizSource><b>Click image to expand.</b> Source: <em>{ringVisualization!.source}</em></VizSource>;
+  let ringVisualizationTitle = <VizTitle>{ringVisualization!.title}</VizTitle>;
 
   useEffect(() => {
     if(section) {
@@ -259,16 +315,12 @@ const PortEcosystemsStory = () => {
     if('imageFullSize' in useVisualization) {
       // The ring chart has a different full-size image to use when zoomed in
       visualizationImage = (
-        <FadeInContainer>
       <FullScreenImage src={require(`./images/${useVisualization.image}`)} fullSizeSrc={require(`./images/${useVisualization.imageFullSize}`)}/>
-      </FadeInContainer>
       );
 
     } else {
       visualizationImage = (
-        <FadeInContainer>
       <FullScreenImage src={require(`./images/${useVisualization.image}`)} />
-      </FadeInContainer>
       );
 
     }
@@ -276,14 +328,14 @@ const PortEcosystemsStory = () => {
     if('source' in useVisualization) {
 
       if(useVisualization.sectionIndex == 1) {
-        visualizationSource = <FadeInContainer><VizSource>Source: <em>
+        visualizationSource = <VizSource>Source: <em>
           <a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>
-          </em></VizSource></FadeInContainer>
+          </em></VizSource>
 
       } else if(useVisualization.sectionIndex == 9) {
-        visualizationSource = <FadeInContainer><VizSource><b>Click image to expand.</b> Source: <em>{useVisualization.source}</em></VizSource></FadeInContainer>
+        visualizationSource = <VizSource><b>Click image to expand.</b> Source: <em>{useVisualization.source}</em></VizSource>
       } else {
-        visualizationSource = <FadeInContainer><VizSource>Source: <em>{useVisualization.source}</em></VizSource></FadeInContainer>
+        visualizationSource = <VizSource>Source: <em>{useVisualization.source}</em></VizSource>
 
       }
 
@@ -293,9 +345,9 @@ const PortEcosystemsStory = () => {
 
   const visualizationTitle = useVisualization && ('title' in useVisualization) ? 
   (
-    <FadeInContainer>
+    
   <VizTitle>{useVisualization.title}</VizTitle>
-  </FadeInContainer>
+  
   ) : null;
 
   return (
@@ -356,59 +408,59 @@ const PortEcosystemsStory = () => {
             </VizContainer>
             <MainNarrativeRoot>
               <TextBlock>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_1}>
 
-              <StickyText>
-                  <MobileText ref={section_1}>
+              <FirstStickyText>
+                  <FirstMobileText>
                   <p>
                   How do we identify this ecosystem? We use global data from Dun & Bradstreet on business establishments to analyze how employment is concentrated across industries in 463 port cities in 49 countries. Our analysis focuses on cities that are not country capitals and have a population greater than 50,000. For a deeper dive on many of these port cities, check out <a target='_blank' href='https://public.tableau.com/app/profile/gl.namibia/viz/IndustrialEcosystemsofPortCities/Dashboard1?publish=yes'>this tool</a>!
                   </p>
-                  </MobileText>
-                  </StickyText>
+                  </FirstMobileText>
+                </FirstStickyText>
                 
               </StorySectionContainer>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_2}>
               <StickyText>
-                  <MobileText ref={section_2}>
+                  <MobileText>
                     <p>
                     To understand the specific economic activities that happen near each port, we draw geographic buffer zones around the coordinates of each port. We create perimeters of 2, 5, 10, and 15 kilometers and take stock of the establishments registered within each zone. Here’s what those buffer zones look like around the port of Recife in Brazil. Each point represents an establishment from the data.
                     </p>
                   </MobileText>
                 </StickyText>
               </StorySectionContainer>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_3}>
               <StickyText>
-                  <MobileText ref={section_3}>
+                  <MobileText>
                     <p>
                     By comparison, here’s what those buffer zones look like for the port of Antwerp in Belgium. As we can see, port zones can have very different densities of establishments.
                     </p>
                   </MobileText>
                 </StickyText>
               </StorySectionContainer>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_4}>
 
               <StickyText>
-                    <MobileText ref={section_4}>
+                    <MobileText>
                     <p>
                     What economic activities occur in these zones? In the city of Antwerp, our database records 81,500 employees within 5 kilometers of the port. In this area, employment is most concentrated in transportation and warehousing and in professional, scientific and technical services including architecture and engineering services. 
                     </p>
                     </MobileText>
                   </StickyText>
               </StorySectionContainer>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_5}>
 
               <StickyText>
-                  <MobileText ref={section_5}>
+                  <MobileText>
                   <p>
                   We can zoom out to a larger view of 10 kilometers around the port and observe how the concentration of employment changes across sectors. At this distance, our data records 151,000 total employees, with a lower share of employment in transportation and warehousing and higher share of employment in construction, manufacturing and healthcare compared to the 5 kilometer zone. 
                   </p>
                   </MobileText>
                 </StickyText>
               </StorySectionContainer>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_6}>
 
               <StickyText>
-                  <MobileText ref={section_6}>
+                  <MobileText>
                   <p>
                   Analyzing the employment composition of all port cities in our dataset reveals which types of industries tend to concentrate more heavily near ports. The darker bars show each sector’s employment share worldwide, while the lighter bars show each sector’s employment share within 10 kilometers of ports. Manufacturing is comparatively less concentrated near ports, while construction and healthcare are comparatively more concentrated near ports. Even when sectors occupy similar shares of employment worldwide and near ports, the specific activities being engaged by establishments can be quite different.
 
@@ -416,19 +468,19 @@ const PortEcosystemsStory = () => {
                   </MobileText>
                 </StickyText>
               </StorySectionContainer>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_7}>
 
               <StickyText>
-                  <MobileText ref={section_7}>
+                  <MobileText>
                   <p>
                   For example, the sector of professional, scientific and technical (PST) services employs a significant and similar share of people near ports and worldwide (8.5% and 8% respectively). However, a breakdown of the sector shows that a different mix of activities is underlying these shares. Here are the different activities that make up PST services and the share of the sector’s employment that they occupy near ports and worldwide. We find that computer systems design represents 33% of employment in PST services globally, but just 16% near ports. Meanwhile, legal, architectural, and engineering services are comparatively more concentrated near ports, with shares of the sector’s employment that are 1.5 to 2 times larger than their share globally.
                   </p>
                   </MobileText>
                 </StickyText>
               </StorySectionContainer>
-              <StorySectionContainer>
+              <StorySectionContainer ref={section_8}>
               <StickyText>
-                  <MobileText ref={section_8}>
+                  <MobileText>
                   <p>
                   For each industry, the ratio of its employment share near ports to its employment share globally can be considered the revealed comparative advantage (RCA) of port cities in engaging in the industry.  Industries that have higher concentrations of employment near ports than in the world overall (RCA &gt; 1) may have features that make them advantageous or necessary to locate near ports, such as the resources or skills they require, the types of establishments that consume them, the cost of transportation, or other unobserved characteristics. For these reasons, these industries may be strategic diversification options for a city looking to leverage the presence of its port to develop other competitive industries.
                   </p>
@@ -465,19 +517,19 @@ const PortEcosystemsStory = () => {
               height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,
             }}>
               <StickyContainer>
-              {(section && section == 9) ? <>{visualizationTitle}{visualizationImage}{visualizationSource}</> : null}
+              <>{ringVisualizationTitle}{ringVisualizationImage}{ringVisualizationSource}</>
               </StickyContainer>
             </VizContainer>
             <MainNarrativeRoot>
               <TextBlock>
-              <StorySectionContainer>
-              <StickyText>
-                  <MobileText ref={section_9}>
+              <StorySectionContainer ref={section_9}>
+              <FirstStickyText>
+                  <FirstMobileText>
                   <p>
-                  This ring chart shows the industries linked to support activities for water transportation, with a closer proximity to the center indicating greater similarity in required capabilities. Industries in red are those listed in the table above with a strong comparative advantage near ports. This analysis tells us a few things. Focusing on the center, we find that industries such as warehousing and storage, urban transit systems, and freight transport arrangement share close capabilities with port activities. But, only the latter is comparatively more concentrated near ports; while warehousing and urban transit systems are found near ports, they are also prevalent in non-port cities all around the world. The different proximities of industries with a comparative advantage near ports is also informative: other support activities for transportation and petroleum wholesalers may be more directly related to port functions, while ship and boat building and grocery wholesalers concentrate more heavily near ports but appear less closely linked to their functions. This analysis helps to distinguish activities that are not generally located in port cities but that do share latent productive capabilities with port operations.
+                  This ring chart shows the industries linked to support activities for water transportation, with a closer proximity to the center indicating greater similarity in required capabilities. Industries in red are those listed in the table above with a strong comparative advantage near ports. This analysis tells us a few things. Focusing on the center, we find that industries such as warehousing and storage, urban transit systems, and freight transport arrangement share close capabilities with port activities. But, only the latter is comparatively more concentrated near ports; while warehousing and urban transit systems are found near ports, they are also prevalent in non-port cities all around the world. The different proximities of industries with a comparative advantage near ports is also informative: other support activities for transportation and petroleum wholesalers may be more directly related to port functions, while ship and boat building and grocery wholesalers concentrate more heavily near ports but appear less closely linked to their functions. This analysis helps to distinguish activities that are not generally located more intensively in port cities but that do share latent productive capabilities with port operations.
                   </p>
-                  </MobileText>
-                </StickyText>
+                  </FirstMobileText>
+                </FirstStickyText>
               </StorySectionContainer>
             </TextBlock>
           </MainNarrativeRoot>

@@ -12,6 +12,7 @@ const Root = styled.div`
   transition: all 0.1s ease-in-out;
   box-sizing: border-box;
   max-height: 100vh;
+
 `;
 
 const scaleIn = keyframes`{
@@ -24,8 +25,10 @@ const Image = styled.img`
   max-height: 80vh;
   cursor: zoom-in;
 
+  
   &.scale-in {
     animation: ${scaleIn} 150ms;
+
   }
 `;
 
@@ -38,7 +41,9 @@ const FullScreenImage = ({src, fullSizeSrc}: {src: string, fullSizeSrc?: string 
     width: '100vw',
     height: '100vh',
     backgroundColor: '#fff',
-    padding: '4rem'
+    padding: '4rem',
+    zIndex: 10000,
+    transform: 'translateZ(10px)',
   } : {};
 
   const closeButton = fullscreen ? <CloseButtonBig /> : null;
