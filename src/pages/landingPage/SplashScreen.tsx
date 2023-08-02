@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {keyframes} from 'styled-components/macro';
 import raw from 'raw.macro';
-import LogoIMG from './logo.png';
+import LogoIMG from './GL_logo_white.png';
 import {secondaryFont} from '../../styling/styleUtils';
 import { useLocation, useHistory } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
@@ -283,7 +283,7 @@ const Subtitle = styled.h2`
 const Logo = styled.img`
   width: 17vw;
   max-width: 500px;
-  margin: 2rem 0;
+  margin: 4rem 0 2rem 0;
 
   @media(max-width: ${mediumWidth}px) {
     width: 100%;
