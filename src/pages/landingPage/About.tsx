@@ -67,19 +67,20 @@ const AboutPage = () => {
           </Content>
 
           <Content>
-            <a target="_blank" href='https://bleonard.dev/'>Brendan Leonard</a> Back-End and Data Developer<br />
+            <a target="_blank" href='https://bleonard.dev/'>Brendan Leonard</a> Back-End &amp; Data Developer<br />
             Brendan leads the implementation of back-end technologies and data analysis for Viz Hub projects, including management of the cloud-based server and database infrastructure. With a particular interest in the relationship between technology and democratic systems, he holds a master's degree in government studies and a bachelor's in economics.
           </Content>
 
+          <Content>
+            <a target="_blank" href='https://www.linkedin.com/in/ellie-jackson-6750b539/'>Ellie Jackson</a> Junior Back-End &amp; Data Developer<br />
+            Ellie builds, maintains and optimizes the back-end architecture and infrastructure across the Growth Lab's portfolio of digital tools. She also contributes to the acquisition and analysis of various datasets used across these tools. Ellie has a master's degree in computational analysis and public policy from the University of Chicago’s Harris School.
+          </Content>
+          
           <Content>
             <a target="_blank" href='http://www.niltuzcu.net/'>Nil Tuzcu</a> UX/UI &amp; Data Visualization Designer<br />
             Nil leads the design vision of Viz Hub projects, encompassing data visualization design, prototype development, and user research.  Previously, Nil worked as a research fellow at MIT’s Department of Urban Studies and as a research associate at Harvard Graduate School of Design. She holds a master’s degree from Cornell University and was a SPURS Fellow at MIT (2014-2015).
           </Content>
 
-          <Content>
-            <a target="_blank" href='https://www.fluidencodings.com/'>Steven Geofrey</a> Front-End Developer<br />
-            Steven leads the implementation of front-end technologies for user interfaces and data visualizations across Viz Hub projects. Prior to joining the Growth Lab, Steven was an Assistant Teaching Professor/Designer in Residence for the Center for Design at Northeastern University.
-          </Content>
         </Root>
       </HubContentContainer>
       <StandardFooter />

@@ -9,6 +9,7 @@ import {
 import styled from 'styled-components/macro';
 import GrowthLabLogoPNG from './headers/GL_HKS_logo_transparentback.png';
 import FacebookIconSVG from './assets/facebook.svg';
+import InstagramIconSVG from "./assets/instagram.svg";
 import TwitterIconSVG from './assets/twitter.svg';
 import LinkedinIconSVG from './assets/linkedin.svg';
 import YouTubeIconSVG from './assets/youtube.svg';
@@ -176,6 +177,7 @@ export const LicenseAndReadme = styled.div`
 
 export enum SocialType {
   facebook = 'facebook',
+  instagram = 'instagram',
   twitter = 'twitter',
   linkedin = 'linkedin',
   youtube = 'youtube',
@@ -185,22 +187,28 @@ export enum SocialType {
 
 export const defaultSocialIcons = [
   {
-    target: 'https://www.facebook.com/HarvardCID/',
-    type: SocialType.facebook,
-    alt: 'facebook',
-  },
-  {
-    target: 'https://www.linkedin.com/company/center-for-international-development-harvard-university/',
+    target: 'https://www.linkedin.com/company/harvard-growth-lab/',
     type: SocialType.linkedin,
     alt: 'linkedin',
   },
+  {
+    target: 'https://www.instagram.com/harvardgrowthlab/',
+    type: SocialType.instagram,
+    alt: 'instagram',
+  },
+  {
+    target: 'https://www.facebook.com/harvardgrowthlab/',
+    type: SocialType.facebook,
+    alt: 'facebook',
+  },
+
   {
     target: 'https://twitter.com/HarvardGrwthLab',
     type: SocialType.twitter,
     alt: 'twitter',
   },
   {
-    target: 'https://www.youtube.com/user/HarvardCID',
+    target: 'https://youtube.com/playlist?list=PLVJQsjaKb-4SNl2obPcBFtIbjKoyi4e5z',
     type: SocialType.youtube,
     alt: 'youtube',
   },
@@ -217,6 +225,7 @@ export const socialIcon = {
   linkedin: LinkedinIconSVG,
   youtube: YouTubeIconSVG,
   applepodcast: ApplePodcastSVG,
+  instagram: InstagramIconSVG
 };
 
 interface Props {

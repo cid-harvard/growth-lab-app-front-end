@@ -496,7 +496,7 @@ export default () => {
             <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/twitter.svg')}} />
           </SocialLink>
           <SocialLink
-            href={'https://www.facebook.com/HarvardCID/'}
+            href={'https://www.facebook.com/harvardgrowthlab/'}
             target='_blank'
             rel='noopener noreferrer'
           >
@@ -504,7 +504,15 @@ export default () => {
             <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/facebook.svg')}} />
           </SocialLink>
           <SocialLink
-            href={'https://www.linkedin.com/company/center-for-international-development-harvard-university/'}
+            href={'https://www.instagram.com/harvardgrowthlab/'}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            Instagram
+            <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/instagram.svg')}} />
+          </SocialLink>
+          <SocialLink
+            href={'https://www.linkedin.com/company/harvard-growth-lab/'}
             target='_blank'
             rel='noopener noreferrer'
           >
@@ -512,7 +520,7 @@ export default () => {
             <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/linkedin.svg')}} />
           </SocialLink>
           <SocialLink
-            href={'https://www.youtube.com/user/HarvardCID'}
+            href={'https://youtube.com/playlist?list=PLVJQsjaKb-4SNl2obPcBFtIbjKoyi4e5z'}
             target='_blank'
             rel='noopener noreferrer'
           >
