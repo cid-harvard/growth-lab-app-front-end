@@ -3,7 +3,7 @@ import {
   FullWidthFooterContent,
 } from '../../styling/Grid';
 import styled from 'styled-components/macro';
-import GrowthLabLogoPNG from './headers/growth-lab.png';
+import GrowthLabLogoPNG from "../../assets/growth-lab-new-logo-2022.png"
 import { rgba } from 'polished';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 import {

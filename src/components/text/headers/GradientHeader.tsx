@@ -10,7 +10,6 @@ import {
 import styled from 'styled-components/macro';
 import {TreeNode} from 'react-dropdown-tree-select';
 import MultiTierSearch from '../../navigation/MultiTierSearch';
-import GrowthLabLogoImgSrc from './growth-lab.png';
 import {triggerGoogleAnalyticsEvent} from '../../../routing/tracking';
 import DefaultHubHeader from '../../navigation/DefaultHubHeader';
 
@@ -85,11 +84,6 @@ const Title = styled(StandardH1)`
   @media (max-width: ${smallMediaWidth}px) {
     margin-top: 0;
   }
-`;
-
-const GrowthLabLogoContainer = styled.a`
-  grid-column: 3;
-  grid-row: 1;
 `;
 
 const SearchContainer = styled.div`
@@ -228,15 +222,6 @@ const HeaderWithSearch = (props: Props) => {
             <Title style={{color: textColor}}>{title}</Title>
             {buttons}
           </TitleContainer>
-          <GrowthLabLogoContainer
-            href={'https://growthlab.cid.harvard.edu/'}
-            target={'_blank'}
-          >
-            <Logo
-              src={GrowthLabLogoImgSrc}
-              alt={'The Growth Lab at Harvard\'s Center for International Development'}
-            />
-          </GrowthLabLogoContainer>
         </ContentGrid>
       </GradientContainer>
         {introPara}

@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {Routes} from '../../routing/routes';
 import CloudIconSvgPath from '../../assets/cloud-icon.svg';
 import {activeLinkColor} from '../../pages/landingPage/Utils';
-import GrowthLabWhiteLogo from '../text/headers/GL_logo_white.png';
+import GrowthLabWhiteLogo from '../../assets/GL_logo_white.png'
 
 const Root = styled.div`
   left: 0;
