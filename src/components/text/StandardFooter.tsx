@@ -7,7 +7,7 @@ import {
   primaryFont,
 } from '../../styling/styleUtils';
 import styled from 'styled-components/macro';
-import GrowthLabLogoPNG from './headers/GL_HKS_logo_transparentback.png';
+import GrowthLabLogoPNG from './headers/growth-lab-new-logo-2022.png';
 import FacebookIconSVG from './assets/facebook.svg';
 import InstagramIconSVG from "./assets/instagram.svg";
 import TwitterIconSVG from './assets/twitter.svg';
@@ -84,6 +84,7 @@ export const RepoColumn = styled(ColumnOrRow)`
 export const LogoColumn = styled(CenteredColumn)`
   display: flex;
   align-items: center;
+  justify-content: center;
 
   @media (max-width: ${smallMediaWidth}px) {
     grid-column: 1;
@@ -270,8 +271,8 @@ const StandardFooter = (props: Props) => {
             </a>
             <GrowthLabInfo>
               Center for International Development at Harvard University<br />
-              79 JFK St. | Mailbox 34 | Cambridge, MA 02138<br />
-              617-495-4112 | cid@harvard.edu
+              79 JFK St. | Cambridge, MA 02138<br />
+              growthlab@hks.harvard.edu
             </GrowthLabInfo>
           </LogoColumn>
           <RepoColumn>

@@ -139,8 +139,8 @@ const ExploreNextFooter = (props: Props) => {
             </a>
             <GrowthLabInfo>
               Center for International Development at Harvard University<br />
-              79 JFK St. | Mailbox 34 | Cambridge, MA 02138<br />
-              617-495-4112 | cid@harvard.edu
+              79 JFK St. | Cambridge, MA 02138<br />
+              growthlab@hks.harvard.edu
             </GrowthLabInfo>
           </LogoColumn>
           <RepoColumn>
