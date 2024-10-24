@@ -1,0 +1,30 @@
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app,
+#root {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: "Source Sans Pro", "Source Sans", sans-serif;
+}
+
+.scroll-app {
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+}
+
+
+.appRoot {
+  grid-column: 1 / -1;  
+  grid-row: 1 / -1;
+}

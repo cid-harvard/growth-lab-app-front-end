@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 const Root = styled.div`
   position: absolute;

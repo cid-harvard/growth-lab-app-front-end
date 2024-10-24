@@ -1,7 +1,7 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import HubCard from '../components/HubCard';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {
   HubProject,
 } from '../graphql/graphQLTypes';

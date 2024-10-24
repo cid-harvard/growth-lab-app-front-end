@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, {keyframes} from 'styled-components/macro';
+import styled, {keyframes} from 'styled-components';
 
 const Root = styled.div`
   background-color: #fbfbfb;

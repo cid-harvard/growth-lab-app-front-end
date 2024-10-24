@@ -24,7 +24,7 @@ via=HarvardGrwthLab`;
       // Reference:
       // https://developer.linkedin.com/docs/share-on-linkedin (under "customized URL")
       const baseURL = 'https://www.linkedin.com/shareArticle';
-      // const source = 'https://atlas.cid.harvard.edu/';
+      // const source = 'https://atlas.hks.harvard.edu/';
       const source = encodeURIComponent(url);
       const shareURL =
 `${baseURL}

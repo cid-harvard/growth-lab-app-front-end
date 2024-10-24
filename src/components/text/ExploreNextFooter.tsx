@@ -2,7 +2,7 @@ import React from 'react';
 import {
   FullWidthFooterContent,
 } from '../../styling/Grid';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import GrowthLabLogoPNG from "../../assets/growth-lab-new-logo-2022.png"
 import { rgba } from 'polished';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
@@ -128,7 +128,7 @@ const ExploreNextFooter = (props: Props) => {
         <Content>
           <LogoColumn>
             <a
-              href='https://growthlab.cid.harvard.edu/'
+              href='https://growthlab.hks.harvard.edu/'
               target='_blank'
               rel='noopener noreferrer'
             >
@@ -157,7 +157,7 @@ const ExploreNextFooter = (props: Props) => {
               Newsletter
             </StyledLink>
             <StyledLink
-              href='https://growthlab.cid.harvard.edu/'
+              href='https://growthlab.hks.harvard.edu/'
               target='_blank' rel='noopener noreferrer'
             >
               Growth Lab

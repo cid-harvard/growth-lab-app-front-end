@@ -29,7 +29,7 @@ import useScrollBehavior from '../../hooks/useScrollBehavior';
 import JordanLogoSVG from './jordan-dotted-map.svg';
 import {JordanIndustry} from './graphql/graphQLTypes';
 import queryString from 'query-string';
-import { useHistory } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import staticText from './data/staticText';
@@ -47,7 +47,8 @@ const JordanTool = (props: Props) => {
   const metaDescription = 'This tool displays the results of the complexity analysis developed for Jordan by the Growth Lab at Harvard University.';
 
 
-  const {location: {pathname, search, hash}, push} = useHistory();
+  const navigate = useNavigate();
+  const {pathname, search, hash} = useLocation();
   const parsedQuery = queryString.parse(search);
   const industry = parsedQuery.industry ? parsedQuery.industry : '161'; // default to vegetables and melons
 
@@ -60,7 +61,7 @@ const JordanTool = (props: Props) => {
   const [selectedIndustry, setSelectedIndustry] = useState<TreeNode>(initialSelectedIndustry as TreeNode);
   const updateSelectedIndustry = (val: TreeNode) => {
     setSelectedIndustry(val);
-    push(pathname + '?industry=' + val.value + hash);
+    navigate(pathname + '?industry=' + val.value + hash);
   };
   const {data, loading, error} = useFetchData({variables: {
     id: selectedIndustry ? selectedIndustry.value : '161',
@@ -416,7 +417,7 @@ const JordanTool = (props: Props) => {
         exploreNextLinks={[
           {
             label: 'Country Profile',
-            target: 'https://atlas.cid.harvard.edu/countries/113',
+            target: 'https://atlas.hks.harvard.edu/countries/113',
           },
         ]}
         attributions={[

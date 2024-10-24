@@ -3,7 +3,7 @@ import {AppContext} from '../../../App';
 import {
   secondaryFont,
 } from '../../../styling/styleUtils';
-import styled, {StyledComponent} from 'styled-components/macro';
+import styled from 'styled-components';
 import {
   HubProject,
   CardSizes,
@@ -238,9 +238,9 @@ const HubCard = ({project}: Props) => {
   let flexGrow: number;
   let width: string | undefined;
   let maxWidth: string | undefined;
-  let MetaDataContainer: StyledComponent<any, any>;
-  let MetaTitleContainer: StyledComponent<any, any>;
-  let MetaDetail: StyledComponent<any, any>;
+  let MetaDataContainer: any;
+  let MetaTitleContainer: any;
+  let MetaDetail: any;
   if (project.cardSize === CardSizes.LARGE) {
     MetaDataContainer = MetaDataContainerBase;
     MetaTitleContainer = MetaTitleContainerBase;
@@ -287,7 +287,7 @@ const HubCard = ({project}: Props) => {
 
   let cursorText: string;
   if (project.projectCategory === ProjectCategories.ATLAS_PROJECTS &&
-      (project.link.toLowerCase().includes('atlas.cid.harvard') ||
+      (project.link.toLowerCase().includes('atlas.hks.harvard') ||
        project.link.toLowerCase().includes('datlascolombia.com'))) {
     cursorText = 'Explore the Tool';
   } else if (project.link.toLowerCase().endsWith('.pdf')) {

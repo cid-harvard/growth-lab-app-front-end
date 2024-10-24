@@ -42,7 +42,7 @@ const AboutPage = () => {
           </ZigZagContentCard>
           <Title>About</Title>
           <Content>
-            Led by <a href='https://growthlab.cid.harvard.edu/people/ricardo-hausmann-0'>Ricardo Hausmann</a>, the <a href='https://growthlab.cid.harvard.edu/'>Growth Lab</a> at <a href='https://www.hks.harvard.edu/centers/cid'>Harvard's Center for International Development</a> works to understand the dynamics of growth and to translate those insights into more effective policymaking in developing countries. The Growth Lab places increased economic diversity and complexity at the center of the development story.
+            Led by <a href='https://growthlab.hks.harvard.edu/people/ricardo-hausmann-0'>Ricardo Hausmann</a>, the <a href='https://growthlab.hks.harvard.edu/'>Growth Lab</a> at <a href='https://www.hks.harvard.edu/centers/cid'>Harvard's Center for International Development</a> works to understand the dynamics of growth and to translate those insights into more effective policymaking in developing countries. The Growth Lab places increased economic diversity and complexity at the center of the development story.
           </Content>
           <Content>
             Over the last decade, our portfolio of visualization tools has emerged through the close collaboration between the Growth Lab’s Digital Development &amp; Design team and our research teams.  Our flagship tool, the <a href='https://atlas.cid.harvard.edu/'>Atlas of Economic Complexity</a>, exemplifies this collaboration by beautifully showcasing research, datasets, and pedagogy developed across multidisciplinary teams and countless iterations.  Since its launch in 2013, the Atlas has been complimented by sub-national Atlases, country dashboards, interactive stories, open source software packages, and working prototypes.
@@ -62,7 +62,7 @@ const AboutPage = () => {
           </Content>
 
           <Content>
-            <a target="_blank" href='https://growthlab.cid.harvard.edu/people/annie-white'>Annie White</a> Director, Digital Tools<br />
+            <a target="_blank" href='https://growthlab.hks.harvard.edu/people/annie-white'>Annie White</a> Director, Digital Tools<br />
             Annie oversees the strategy and creation of all Viz Hub projects, from research to design, development, and launch. Prior to her work at the Growth Lab, Annie was a Director of Digital Product at Sustainalytics, an ESG research and consulting firm. She is interested in the application of software tools to positively impact economic development, equity, and the public interest.
           </Content>
 

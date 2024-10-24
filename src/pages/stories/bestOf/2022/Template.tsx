@@ -15,7 +15,7 @@ import {
 import Share from '../../../../components/share';
 
 import TextBlock from '../../../../components/text/TextBlock';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import useScrollingSections from '../../../../hooks/useScrollingSections';
 import StandardFooter from '../../../../components/text/StandardFooter';
 import Helmet from 'react-helmet';

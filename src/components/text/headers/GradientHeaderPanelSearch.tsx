@@ -8,7 +8,7 @@ import {
   FullWidthHeader,
   FullWidthHeaderContent,
 } from '../../../styling/Grid';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import PanelSearch, {Datum} from 'react-panel-search';
 import {triggerGoogleAnalyticsEvent} from '../../../routing/tracking';
 import DefaultHubHeader from '../../navigation/DefaultHubHeader';

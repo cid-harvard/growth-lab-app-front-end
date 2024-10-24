@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styled, {keyframes} from 'styled-components/macro';
+import styled, {keyframes} from 'styled-components';
 import {CloseButtonBig} from '../../../styling/styleUtils';
 
 const Root = styled.div`

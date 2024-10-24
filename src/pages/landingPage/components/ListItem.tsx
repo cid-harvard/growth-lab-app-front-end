@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {
   HubProject,
 } from '../graphql/graphQLTypes';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {
   lightBaseColor,
   baseColor,

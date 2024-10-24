@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, {keyframes} from 'styled-components/macro';
+import styled, {keyframes} from 'styled-components';
 import {Link} from 'react-router-dom';
 import {Routes} from '../../routing/routes';
 import {
@@ -108,7 +108,7 @@ const PageNotFound = () => {
   return (
     <Root>
       <a
-        href='https://growthlab.cid.harvard.edu/'
+        href='https://growthlab.hks.harvard.edu/'
         target='_blank'
         rel='noopener noreferrer'
       >

@@ -2,7 +2,7 @@ import {
     secondaryFont,
     baseColor,
 } from '../../styling/styleUtils';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const breakPointValues = {
     width: {

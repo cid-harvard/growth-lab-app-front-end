@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import debounce from 'lodash/debounce';
 
 interface Options {
@@ -36,7 +36,7 @@ export const scrollToTop = ({smooth}: {smooth?: boolean}) => {
 
 const useScrollBehavior = (options?: Options) => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [triggerScroll, setTriggerScroll] = useState<boolean>(true);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const useScrollBehavior = (options?: Options) => {
         i++;
       }
       if (newAnchor !== location.hash) {
-        history.push(location.pathname + location.search + newAnchor);
+        navigate(location.pathname + location.search + newAnchor);
       }
       if (triggerScroll) {
         setTriggerScroll(false);
@@ -84,7 +84,7 @@ const useScrollBehavior = (options?: Options) => {
     return () => {
       document.removeEventListener('scroll', handleScroll);
     };
-  }, [location, options, triggerScroll, history]);
+  }, [location, options, triggerScroll, navigate]);
 };
 
 export default useScrollBehavior;

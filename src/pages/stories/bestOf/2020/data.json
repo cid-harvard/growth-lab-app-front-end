@@ -2,7 +2,7 @@
   {
     "TITLE": "GLOBAL BUSINESS TRAVEL NETWORK",
     "ORDERING": 1,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/academic-research/business-travel",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/academic-research/business-travel",
     "LINK_TEXT": "Explore the Project",
     "DATA_SOURCE": "",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -30,7 +30,7 @@
   {
     "TITLE": "ETHIOPIA'S FDI IN COMPARISON TO SELECT OTHER COUNTRIES",
     "ORDERING": 3,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/applied-research/ethiopia",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/applied-research/ethiopia",
     "LINK_TEXT": "Explore the Project",
     "DATA_SOURCE": "fDi Markets Library, a service from The Financial Times Limited (2019)",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -58,7 +58,7 @@
   {
     "TITLE": "ENVIRONMENTALLY-FRIENDLY DIVERSIFICATION OPPORTUNITIES IN LORETO",
     "ORDERING": 5,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/applied-research/loreto-peru",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/applied-research/loreto-peru",
     "LINK_TEXT": "Explore the Project",
     "DATA_SOURCE": "Growth Lab Loreto Project Team Analysis",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -86,7 +86,7 @@
   {
     "TITLE": "COMPARING COUNTRY COMPLEXITY OVER TIME",
     "ORDERING": 7,
-    "RESEARCH_LINK": "https://atlas.cid.harvard.edu/rankings",
+    "RESEARCH_LINK": "https://atlas.hks.harvard.edu/rankings",
     "LINK_TEXT": "Explore the Tool",
     "DATA_SOURCE": "Atlas of Economic Complexity",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -100,7 +100,7 @@
   {
     "TITLE": "MODELING RESULTS OF HORRIBLE TRADEOFFS BETWEEN PANDEMIC AND ECONOMIC DEATHS IN POOR COUNTRIES",
     "ORDERING": 8,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/academic-research/growth-lab-research-explores-horrible-trade-offs-pandemic",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/academic-research/growth-lab-research-explores-horrible-trade-offs-pandemic",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -128,7 +128,7 @@
   {
     "TITLE": "THE ALBANIAN DIASPORA CONTINUES TO MIGRATE",
     "ORDERING": 10,
-    "RESEARCH_LINK": "https://albania.growthlab.cid.harvard.edu/blog/diaspora-brain-trust-study-albanian-talent-around-world",
+    "RESEARCH_LINK": "https://albania.growthlab.hks.harvard.edu/blog/diaspora-brain-trust-study-albanian-talent-around-world",
     "LINK_TEXT": "Explore the Project",
     "DATA_SOURCE": "Growth Lab Albania Talent Survey, 2020",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -142,7 +142,7 @@
   {
     "TITLE": "ETHIOPIA'S PATHWAYS TO DIVERSIFICATION",
     "ORDERING": 11,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/publications/pathways-productive-diversification",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/publications/pathways-productive-diversification",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "Atlas of Economic Complexity",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -156,7 +156,7 @@
   {
     "TITLE": "SAUDI'S NON-OIL ECONOMIC COMPLEXITY INDEX",
     "ORDERING": 12,
-    "RESEARCH_LINK": "https://atlas.cid.harvard.edu/rankings",
+    "RESEARCH_LINK": "https://atlas.hks.harvard.edu/rankings",
     "LINK_TEXT": "Explore the Tool",
     "DATA_SOURCE": "Atlas of Economic Complexity",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -170,7 +170,7 @@
   {
     "TITLE": "ALBANIA'S TOURISTS TEND TO COME FROM NEARBY",
     "ORDERING": 13,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/files/growthlab/files/2020-06-cid-fellows-wp-127-albania-air-transport.pdf",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/files/growthlab/files/2020-06-cid-fellows-wp-127-albania-air-transport.pdf",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "UN World Tourism Organization",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -184,7 +184,7 @@
   {
     "TITLE": "A BINDING FOREIGN EXCHANGE CONSTRAINT IN ETHIOPIA",
     "ORDERING": 14,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/applied-research/ethiopia",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/applied-research/ethiopia",
     "LINK_TEXT": "Explore the Project",
     "DATA_SOURCE": "Growth Lab construction using WDI",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",
@@ -198,7 +198,7 @@
   {
     "TITLE": "JORDAN'S ENVISIONED MACROECONOMIC TRAJECTORY",
     "ORDERING": 15,
-    "RESEARCH_LINK": "https://growthlab.cid.harvard.edu/publications/jordan-elements-growth-strategy",
+    "RESEARCH_LINK": "https://growthlab.hks.harvard.edu/publications/jordan-elements-growth-strategy",
     "LINK_TEXT": "Read the Paper",
     "DATA_SOURCE": "IMF Article IV and Program Reports for Jordan",
     "IMAGE LOCATION": "https://drive.google.com/drive/u/1/folders/1Bk4BBkeNWg9YR9yRfOaJbEzOsMENML20",

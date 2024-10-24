@@ -1,6 +1,6 @@
 import React from 'react';
 import DataViz, {VizType, ClusterChartDatum} from 'react-fast-charts';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import raw from 'raw.macro';
 import sortBy from 'lodash/sortBy';
 import {storyMobileWidth} from '../../../styling/Grid';

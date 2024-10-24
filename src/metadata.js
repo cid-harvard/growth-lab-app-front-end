@@ -13,7 +13,8 @@ const Routes = {
   CustomProductSpace: '/custom-product-space',
   CustomIndustrySpace: '/custom-industry-space',
   PortEcosystemsStory: '/port-ecosystems',
-  NamibiaWalvisBay: '/namibia-walvis-bay'
+  NamibiaWalvisBay: '/namibia-walvis-bay',
+  GreenGrowth: '/green-growth',
 }
 
 const defaultTitle = 'The Growth Lab at Harvard Kennedy School';
@@ -113,7 +114,14 @@ const metadata = [
     og_image: 'namibia-walvis-bay-background-lo.jpg',
     favicon: defaultFavicon,
   },
+  {
+    url: Routes.GreenGrowth,
+    title: 'Green Growth | ' + defaultTitle,
+    description: defaultDescription,
+    og_image: 'growth-lab-hub.jpg',
+    favicon: defaultFavicon,
 
+  },
 ];
 
 const get = (route) => {

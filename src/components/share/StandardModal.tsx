@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { createPortal } from 'react-dom';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const overlayPortalContainerId = 'overlayPortalContainerId';
 

@@ -1,1 +1,1 @@
-declare module 'raw.macro';
+// declare module 'raw.macro';

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   Label,
 } from '../../styling/styleUtils';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import DropdownTreeSelect, {TreeNode} from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 import './multiTierDropdownStyles.scss';

@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {storyMobileWidth} from './Grid';
 
 export const baseColor = '#333333'; // dark gray/black color for text

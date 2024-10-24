@@ -6,7 +6,7 @@ import {
 import {
   primaryFont,
 } from '../../styling/styleUtils';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import GrowthLabLogoPNG from "../../assets/growth-lab-new-logo-2022.png"
 import FacebookIconSVG from './assets/facebook.svg';
 import InstagramIconSVG from "./assets/instagram.svg";
@@ -260,7 +260,7 @@ const StandardFooter = (props: Props) => {
         <Content>
           <LogoColumn>
             <a
-              href='https://growthlab.cid.harvard.edu/'
+              href='https://growthlab.hks.harvard.edu/'
               target='_blank'
               rel='noopener noreferrer'
             >
@@ -289,7 +289,7 @@ const StandardFooter = (props: Props) => {
               Newsletter
             </StyledLink>
             <StyledLink
-              href='https://growthlab.cid.harvard.edu/'
+              href='https://growthlab.hks.harvard.edu/'
               target='_blank' rel='noopener noreferrer'
             >
               Growth Lab

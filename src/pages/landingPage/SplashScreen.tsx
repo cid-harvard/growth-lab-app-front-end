@@ -1,9 +1,9 @@
 import React from 'react';
-import styled, {keyframes} from 'styled-components/macro';
+import styled, {keyframes} from 'styled-components';
 import raw from 'raw.macro';
 import LogoIMG from './GL_logo_white.png';
 import {secondaryFont} from '../../styling/styleUtils';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 import {
   activeLinkColor,
@@ -428,11 +428,11 @@ const ScrollText = styled.div`
 
 export default () => {
   const {search, pathname} = useLocation();
-  const {push} = useHistory();
+  const navigate = useNavigate();
 
   const onDigitalHubClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    push(pathname + search + '#hub');
+    navigate(pathname + search + '#hub');
     scrollToAnchor({anchor: '#hub'});
   };
 
@@ -440,7 +440,7 @@ export default () => {
     <Root>
       <Grid>
         <LogoCell
-          href={'https://growthlab.cid.harvard.edu/'}
+          href={'https://growthlab.hks.harvard.edu/'}
           onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'logo' )}
           target={'_blank'}
           rel={'noopener noreferrer'}
@@ -475,7 +475,7 @@ export default () => {
         </SubtitleCell>
         <GrowthLabButtonCell>
           <GrowthLabButton
-            href={'https://growthlab.cid.harvard.edu/'}
+            href={'https://growthlab.hks.harvard.edu/'}
             onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'button' )}
             target={'_blank'}
             rel={'noopener noreferrer'}

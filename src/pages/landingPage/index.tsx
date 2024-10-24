@@ -7,7 +7,7 @@ import {
   FullWidthHeader,
 } from '../../styling/Grid';
 import SplashScreen from './SplashScreen';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import TopLevelNav from './TopLevelNav';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import {

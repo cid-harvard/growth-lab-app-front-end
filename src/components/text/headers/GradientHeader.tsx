@@ -7,7 +7,7 @@ import {
   FullWidthHeader,
   FullWidthHeaderContent,
 } from '../../../styling/Grid';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {TreeNode} from 'react-dropdown-tree-select';
 import MultiTierSearch from '../../navigation/MultiTierSearch';
 import {triggerGoogleAnalyticsEvent} from '../../../routing/tracking';

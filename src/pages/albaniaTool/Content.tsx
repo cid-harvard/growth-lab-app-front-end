@@ -23,7 +23,7 @@ import { TreeNode } from 'react-dropdown-tree-select';
 import { colorScheme } from './Utils';
 import DynamicTable from '../../components/text/DynamicTable';
 import useScrollBehavior from '../../hooks/useScrollBehavior';
-import { useHistory } from 'react-router';
+import { useNavigate,useLocation } from 'react-router';
 import queryString from 'query-string';
 import AlbaniaMapSvg from './assets/albania-logo.svg';
 import ExploreNextFooter from '../../components/text/ExploreNextFooter';
@@ -47,7 +47,7 @@ import AttractivenessRadarChart from './components/AttractivenessRadarChart';
 import IndustryNowLocation from './components/IndustryNowLocation';
 import IndustryWagesBarChart from './components/IndustryWagesBarChart';
 import transformIndustryNowTableData from './transformers/transformIndustryNowTableData';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
 
 const StyledP = styled.p`
@@ -201,8 +201,8 @@ const AlbaniaToolContent = (props: Props) => {
   const title='Albania’s Industry Targeting Dashboard';
   const metaTitle = title + ' | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Albania’s industries.';
-
-  const {location: {pathname, search, hash}, push} = useHistory();
+  const navigate = useNavigate();
+  const {pathname, search, hash} = useLocation();
   const parsedQuery = queryString.parse(search);
   const industry = parsedQuery.industry ? parsedQuery.industry : '484'; // Default to Data processing, hosting
 
@@ -224,7 +224,7 @@ const AlbaniaToolContent = (props: Props) => {
   const [selectedIndustry, setSelectedIndustry] = useState<TreeNode>(initialSelectedIndustry as TreeNode);
   const updateSelectedIndustry = (val: TreeNode) => {
     setSelectedIndustry(val);
-    push(pathname + '?industry=' + val.value + hash);
+    navigate(pathname + '?industry=' + val.value + hash);
   };
 
   const [navHeight, setNavHeight] = useState<number>(0);
@@ -273,7 +273,7 @@ const AlbaniaToolContent = (props: Props) => {
         <>
           <StyledP>
             <a
-              href='https://albania.growthlab.cid.harvard.edu/'
+              href='https://albania.growthlab.hks.harvard.edu/'
               target='_blank'
               rel='noopener noreferrer'
               onClick={() =>
@@ -305,7 +305,7 @@ const AlbaniaToolContent = (props: Props) => {
         <StyledP
           dangerouslySetInnerHTML={{__html: getSubsectionText(SubSectionEnum.Introduction, [
             {key: '<<growth_lab_link>>', value: `<a
-              href='https://albania.growthlab.cid.harvard.edu/'
+              href='https://albania.growthlab.hks.harvard.edu/'
               target='_blank'
               rel='noopener noreferrer'
             >
@@ -635,7 +635,7 @@ const AlbaniaToolContent = (props: Props) => {
         linkColor={'#fff'}
         links={[
           {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
-          {label: 'Country Research', target: 'https://albania.growthlab.cid.harvard.edu/'},
+          {label: 'Country Research', target: 'https://albania.growthlab.hks.harvard.edu/'},
         ]}
         introText={introText}
       />
@@ -658,7 +658,7 @@ const AlbaniaToolContent = (props: Props) => {
           },
           {
             label: 'Country Research',
-            target: 'https://albania.growthlab.cid.harvard.edu/',
+            target: 'https://albania.growthlab.hks.harvard.edu/',
           },
         ]}
         attributions={[

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import {Routes} from '../../routing/routes';
 import CloudIconSvgPath from '../../assets/cloud-icon.svg';
@@ -91,7 +91,7 @@ export default (props: Props) => {
         <LogoLine><Icon src={CloudIconSvgPath} /> Viz Hub</LogoLine>
       </AppLink>
       <GrowthLabLink
-        href='https://growthlab.cid.harvard.edu/'
+        href='https://growthlab.hks.harvard.edu/'
         target='_blank'
         style={{color: growthLabLinkColor ? growthLabLinkColor : '#000'}}
       >

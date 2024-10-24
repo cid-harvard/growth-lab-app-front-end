@@ -3,13 +3,13 @@ import {
   NavContainer,
   gridSmallMediaWidth,
 } from '../../styling/Grid';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {
   baseColor,
   secondaryFont,
 } from '../../styling/styleUtils';
 import { AppContext } from '../../App';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 import BackToTopSVG from './assets/scrolltop.svg';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
@@ -186,7 +186,7 @@ const StickySideNav = (props: Props) => {
 
   const containerNodeRef = useRef<HTMLElement | null>(null);
   const {hash, search, pathname} = useLocation();
-  const {push} = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (containerNodeRef && containerNodeRef.current && props.onHeightChange) {
@@ -213,7 +213,7 @@ const StickySideNav = (props: Props) => {
       triggerGoogleAnalyticsEvent(id, 'click-link', label);
       if (internalLink) {
         e.preventDefault();
-        push(pathname + search + target);
+        navigate(pathname + search + target);
         scrollToAnchor({anchor: target, bufferTop: scrollBuffer});
       }
     };

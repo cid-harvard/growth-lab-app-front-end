@@ -17,7 +17,7 @@ import StickySideNav, { NavItem } from '../../components/navigation/StickySideNa
 import useScrollBehavior from '../../hooks/useScrollBehavior';
 import ExploreNextFooter from '../../components/text/ExploreNextFooter';
 import {Datum} from 'react-panel-search';
-import { useHistory } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import queryString from 'query-string';
 import QueryHS from './QueryHS';
 import QueryNAICS from './QueryNAICS';
@@ -52,7 +52,8 @@ const NamibiaToolLayout = (props: Props) => {
   const metaTitle = title + ' | The Growth Lab at Harvard Kennedy School';
   const metaDescription = 'View data visualizations for Namibia’s industries.';
 
-  const {location: {pathname, search, hash}, push} = useHistory();
+  const navigate = useNavigate();
+  const {pathname, search, hash} = useLocation();
   const parsedQuery = queryString.parse(search);
   const selected = parsedQuery.selected ? parsedQuery.selected : 'HS-1764'; // Default to MOTOR VEHICLES FOR TRANSPORTING GOODS (HS 8704)
 
@@ -62,13 +63,13 @@ const NamibiaToolLayout = (props: Props) => {
   const {productClass, id} = extractIdAndClass(selectedIndustry.id as string);
   const updateSelectedIndustry = (val: Datum) => {
     setSelectedIndustry(val);
-    push(pathname + '?selected=' + val.id + hash);
+    navigate(pathname + '?selected=' + val.id + hash);
   };
   const onNodeClick = (targetId: string) => {
     const target = searchData.find(d => d.id === targetId);
     if (target) {
       setSelectedIndustry(target);
-      push(pathname + '?selected=' + target.id + hash);
+      navigate(pathname + '?selected=' + target.id + hash);
     }
   };
 
@@ -189,7 +190,7 @@ const NamibiaToolLayout = (props: Props) => {
         linkColor={colorScheme.primary}
         links={[
           { label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/155'},
-          { label: 'Country Research', target: 'https://growthlab.cid.harvard.edu/applied-research/namibia'},
+          { label: 'Country Research', target: 'https://growthlab.hks.harvard.edu/applied-research/namibia'},
         ]}
         introText={<OverviewText />}
         introTextPosition={IntroTextPosition.Bottom}
@@ -208,7 +209,7 @@ const NamibiaToolLayout = (props: Props) => {
           },
           {
             label: 'Country Research',
-            target: 'https://growthlab.cid.harvard.edu/applied-research/namibia',
+            target: 'https://growthlab.hks.harvard.edu/applied-research/namibia',
           },
         ]}
         attributions={[

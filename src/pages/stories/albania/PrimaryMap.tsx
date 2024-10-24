@@ -4,7 +4,7 @@ import { Layer, Feature } from 'react-mapbox-gl';
 import raw from 'raw.macro';
 import {scaleLinear} from 'd3-scale';
 import {ColorScaleLegend} from 'react-fast-charts';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import {
   VizSource,

@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components/macro';
-import { useLocation, useHistory } from 'react-router';
+import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 import {FullWidthHeaderContent} from '../../styling/Grid';
@@ -135,13 +135,13 @@ const TopLevelStickyNav = (props: Props) => {
   } = props;
 
   const {search, pathname} = useLocation();
-  const {push} = useHistory();
+  const navigate = useNavigate();
 
   const linkList = links.map(({label, target, internalLink, active}) => {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       if (internalLink) {
         e.preventDefault();
-        push(pathname + search + target);
+        navigate(pathname + search + target);
         scrollToAnchor({anchor: target});
       }
     };

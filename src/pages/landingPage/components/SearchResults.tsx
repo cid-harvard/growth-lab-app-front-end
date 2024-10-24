@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ListView from '../hubViews/ListView';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {
   HubProject,
 } from '../graphql/graphQLTypes';

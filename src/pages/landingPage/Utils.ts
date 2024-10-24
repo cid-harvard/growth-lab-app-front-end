@@ -2,7 +2,7 @@ import {
   FullWidthContent,
   FullWidthContentContainer,
 } from '../../styling/Grid';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {navHeight} from '../../components/navigation/TopLevelStickyNav';
 import {
   ProjectCategories,

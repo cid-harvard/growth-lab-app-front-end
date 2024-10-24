@@ -172,7 +172,7 @@ const ExploreMoreButtons = () => {
       <ButtonLink
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
-          href={"https://growthlab.cid.harvard.edu/policy-research/namibia"}
+          href={"https://growthlab.hks.harvard.edu/policy-research/namibia"}
           target={'_blank'}
           key={"linkout_namibia-research"}
         >

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import BasicSearch from '../../../components/form/BasicSearch';
 import {Routes, hubId} from '../../../routing/routes';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {QueryString} from '../';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {
   Label,
   secondaryFont,
@@ -168,7 +168,7 @@ const SearchView = (props: Props) => {
     initialQuery, initialSelectedKeywords, initialSelectedCategories,
     initialSelectedDataKeywords, initialSelectedStatus, projects,
   } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const keywordCheckboxes: CheckboxProps[] = props.keywords.map(({keyword, projects: count}) => {
     const checked = !!initialSelectedKeywords.find((value) => value.toLowerCase() === keyword.toLowerCase());
@@ -199,7 +199,7 @@ const SearchView = (props: Props) => {
     if ((!query || !query.length) && (!keywords || !keywords.length)  && (!categories || !categories.length) &&
         (!dataKeywords || !dataKeywords.length) && (!status || !status.length)
       ) {
-      history.push(baseUrl);
+      navigate(baseUrl);
     } else {
       const queryVar = query && query.length ? 'query=' + encodeURIComponent(query) + '&' : '';
       let keywordVar = keywords && keywords.length ? 'keywords=' : '';
@@ -231,7 +231,7 @@ const SearchView = (props: Props) => {
             dataKeywordsVar +
             statusVar +
             '#' + hubId;
-      history.push(fullUrl);
+      navigate(fullUrl);
     }
   };
   const setSearchQuery = (val: string) => {

@@ -42,7 +42,7 @@ const CommunityPage = () => {
           </ZigZagContentCard>
           <Title>Community</Title>
           <Content>
-            The Viz Hub is a portfolio of visualization tools and supporting software packages, powered by <a href='https://growthlab.cid.harvard.edu/'>Harvard’s Growth Lab’s</a> research.
+            The Viz Hub is a portfolio of visualization tools and supporting software packages, powered by <a href='https://growthlab.hks.harvard.edu/'>Harvard’s Growth Lab’s</a> research.
           </Content>
 
           <Content>
