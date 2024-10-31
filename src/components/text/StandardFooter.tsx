@@ -16,6 +16,7 @@ import YouTubeIconSVG from './assets/youtube.svg';
 import ApplePodcastSVG from './assets/applepodcast.svg';
 import {Routes, hubId} from '../../routing/routes';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
+import GitHubIconSVG from "./assets/githubicon.svg";
 
 export const Root = styled(FullWidthFooter)`
   color: #333;
@@ -300,7 +301,7 @@ const StandardFooter = (props: Props) => {
               rel='noopener noreferrer'
               color={'#333'}
             >
-              <GitHubIcon src={require('./assets/githubicon.svg')} alt='' title='' />
+              <GitHubIcon src={GitHubIconSVG} alt='' title='' />
               GitHub Repo
             </GitHubLink>
           </RepoColumn>

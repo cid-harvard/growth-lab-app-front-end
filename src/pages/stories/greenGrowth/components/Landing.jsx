@@ -11,15 +11,15 @@ import { styled } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRecoilState } from "recoil";
-import { countrySelectionState } from "./Story";
+import { countrySelectionState } from "./ScollamaStory";
 import { useQuery } from "@apollo/client";
 import { GET_COUNTRIES } from "../queries/countries";
+import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
 
 const GradientBackground = styled(Box)(({ theme }) => ({
   background:
     "linear-gradient( 135deg,#0a78b8 0%, rgba(39, 204, 193, .8) 100%);",
   minHeight: "100vh",
-
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -27,6 +27,7 @@ const GradientBackground = styled(Box)(({ theme }) => ({
   padding: theme.spacing(4),
   boxSizing: "border-box",
   overflow: "auto",
+  position: "relative",
   "&::before": {
     content: '""',
     position: "absolute",
@@ -34,16 +35,16 @@ const GradientBackground = styled(Box)(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundImage: 'url("/img/overlay.png")',
+    backgroundImage: 'url("/overlay.png")',
     backgroundRepeat: "repeat",
     opacity: 0.5,
     pointerEvents: "none",
+    height: "100%",
   },
 }));
 
 const Logo = styled("img")({
   height: "60px",
-  marginBottom: "20px",
 });
 
 const ExploreButton = styled(Button)(({ theme }) => ({
@@ -53,7 +54,6 @@ const ExploreButton = styled(Button)(({ theme }) => ({
   height: "60px",
   minWidth: "unset",
   backgroundColor: "white",
-
   "&:hover": {
     backgroundColor: "#f0f0f0",
   },
@@ -63,7 +63,7 @@ const ExploreButton = styled(Button)(({ theme }) => ({
 }));
 
 const Landing = ({ onExplore }) => {
-  const { data, loading, error } = useQuery(GET_COUNTRIES);
+  const { data } = useQuery(GET_COUNTRIES);
   const [countrySelection, setCountrySelection] = useRecoilState(
     countrySelectionState,
   );
@@ -71,112 +71,124 @@ const Landing = ({ onExplore }) => {
   const countries = data?.ggLocationCountryList || [];
 
   return (
-    <GradientBackground>
-      <Container maxWidth="md">
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb={4}
-        >
-          <Logo src="/img/GL_logo_white.png" alt="Growth Lab" />
-          <Box component="img" src="/path/to/second-logo.png" alt="2nd logo" />
-        </Box>
+    <div>
+      <GradientBackground>
+        <Container maxWidth="md">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={4}
+          >
+            <Logo src={GrowthLabLogoPNG} alt="Growth Lab" />
+          </Box>
 
-        <Typography
-          variant="h3"
-          component="h1"
-          align="center"
-          gutterBottom
-          sx={{ color: "white", fontWeight: "bold" }}
-        >
-          GREEN GROWTH INTELLIGENCE
-        </Typography>
+          <Typography
+            variant="h3"
+            component="h1"
+            align="center"
+            gutterBottom
+            sx={{ color: "white", fontWeight: "bold" }}
+          >
+            GREEN GROWTH INTELLIGENCE
+          </Typography>
 
-        <Typography
-          variant="body1"
-          align="center"
-          paragraph
-          sx={{ color: "white", mb: 4 }}
-        >
-          The world's transition to a lower-carbon economy will radically
-          transform global production. Decarbonization presents a defining
-          opportunity for economic growth, by creating new industries, markets,
-          and paths for economic prosperity. The redesign of the global energy
-          system has resulted in the relocation of economic opportunity to those
-          places that can enter green value chains of the technologies that are
-          driving the energy transition, like critical minerals, solar panels,
-          and electric vehicles.
-        </Typography>
+          <Typography
+            variant="body1"
+            align="left"
+            paragraph
+            sx={{ color: "white", mb: 4, fontSize: "20px" }}
+          >
+            The world's transition to a lower-carbon economy will radically
+            transform global production. Decarbonization presents a defining
+            opportunity for economic growth, by creating new industries,
+            markets, and paths for prosperity. Places have exciting new
+            opportunities to enter green value chains that are driving the
+            energy transition, like critical minerals, solar panels, and
+            electric vehicles.
+          </Typography>
 
-        <Typography
-          variant="body1"
-          align="center"
-          paragraph
-          sx={{ color: "white", mb: 4 }}
-        >
-          [Name of tool] aims to identify opportunities to create winning
-          strategies for green growth: to accelerate the world's decarbonization
-          while creating new paths to economic prosperity. By understanding what
-          a place's capabilities are today, [Name of tool] maps localized
-          opportunities to enter green value chains to chart new paths to
-          prosperity for those who act.
-        </Typography>
+          <Typography
+            variant="body1"
+            align="left"
+            paragraph
+            sx={{ color: "white", mb: 4, fontSize: "20px" }}
+          >
+            This tool identifies opportunities to create winning strategies for
+            green growth: to generate prosperity by helping the world
+            decarbonize. It helps policymakers craft strategies to enter green
+            value chains, by exploring countries' productive capabilities.
+          </Typography>
 
-        <Autocomplete
-          fullWidth
-          options={countries}
-          getOptionLabel={(option) => option.nameEn}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              placeholder="Search for a country"
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: (
-                  <>
-                    <SearchIcon sx={{ color: "white", mr: 1 }} />
-                    {params.InputProps.startAdornment}
-                  </>
-                ),
+          <Box display="flex" justifyContent="center" width="100%">
+            <Autocomplete
+              fullWidth
+              options={countries}
+              getOptionLabel={(option) => option.nameEn}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  placeholder="Search for a country"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <SearchIcon sx={{ color: "white", mr: 1 }} />
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }}
+                />
+              )}
+              value={
+                countries.find(
+                  (country) => country.countryId === countrySelection,
+                ) || null
+              }
+              onChange={(event, newValue) => {
+                setCountrySelection(newValue ? newValue.countryId : null);
+              }}
+              sx={{
+                bgcolor: "rgba(255, 255, 255, 0.2)",
+                "& .MuiOutlinedInput-root": {
+                  color: "white",
+                  "& fieldset": { borderColor: "white" },
+                },
+                "& .MuiInputLabel-root": { color: "white" },
+                "& .MuiAutocomplete-popupIndicator": { color: "white" },
+                "& .MuiAutocomplete-clearIndicator": { color: "white" },
+                maxWidth: "400px",
               }}
             />
-          )}
-          value={
-            countries.find(
-              (country) => country.countryId === countrySelection,
-            ) || null
-          }
-          onChange={(event, newValue) => {
-            setCountrySelection(newValue ? newValue.countryId : null);
-          }}
-          sx={{
-            bgcolor: "rgba(255, 255, 255, 0.2)",
-            "& .MuiOutlinedInput-root": {
-              color: "white",
-              "& fieldset": { borderColor: "white" },
-            },
-            "& .MuiInputLabel-root": { color: "white" },
-            "& .MuiAutocomplete-popupIndicator": { color: "white" },
-            "& .MuiAutocomplete-clearIndicator": { color: "white" },
-          }}
-        />
+          </Box>
 
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <ExploreButton
-            variant="contained"
-            color="primary"
-            onClick={onExplore}
-          >
-            <KeyboardArrowDownIcon fontSize="large" />
-          </ExploreButton>
-          <Typography variant="caption" sx={{ color: "white", mt: 1 }}>
-            EXPLORE
-          </Typography>
-        </Box>
-      </Container>
-    </GradientBackground>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography
+              sx={{ color: "white", mt: 2, fontSize: "24px", fontWeight: 600 }}
+            >
+              EXPLORE
+            </Typography>
+            <ExploreButton
+              variant="contained"
+              color="primary"
+              onClick={onExplore}
+              sx={{ mt: 0 }}
+            >
+              <KeyboardArrowDownIcon fontSize="large" />
+            </ExploreButton>
+          </Box>
+        </Container>
+        <Typography
+          variant="body1"
+          align="center"
+          sx={{ color: "white", mt: 4, fontSize: "18px" }}
+        >
+          The Green Growth Portal is a public good financed in part with the
+          support of the Government of the Republic of Azerbaijan
+        </Typography>
+      </GradientBackground>
+    </div>
   );
 };
 

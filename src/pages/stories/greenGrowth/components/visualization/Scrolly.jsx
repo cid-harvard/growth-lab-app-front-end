@@ -1,92 +1,20 @@
+import React, { useMemo } from "react";
 import { Tooltip, useTooltip } from "@visx/tooltip";
-import ScrollyCanvas from "./ScrollyCanvas";
-import ScrollyText from "./ScrollyText";
-import { useQuery } from "@apollo/client";
-import { useMemo } from "react";
-import { GET_COUNTRIES } from "../../queries/countries";
+import ScrollyCanvas, { formatter } from "./ScrollyCanvas";
+import { Typography, Box } from "@mui/material";
+import { useSupplyChainBubbles } from "./useSupplyChainBubbles";
+import { useScreenSize } from "@visx/responsive";
+import { yearSelectionState } from "../ScollamaStory";
+import { countrySelectionState } from "../ScollamaStory";
+import { useRecoilValue } from "recoil";
 
-const Scrolly = ({
-  step,
-  prevStep,
-  scrollDirection,
-  onStepChange,
-  onScroll,
-  countrySelection,
-  yearSelection,
-}) => {
-  const { data, loading, error } = useQuery(GET_COUNTRIES);
-  
-  const countries = data?.ggLocationCountryList || [];
-  const countryLookup = useMemo(() => {
-    return countries.reduce((acc, country) => {
-      acc[country.iso3Code] = country.name;
-      return acc;
-    }, {});
-  }, [countries]);
+const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
+  const yearSelection = useRecoilValue(yearSelectionState);
+  const countrySelection = useRecoilValue(countrySelectionState);
+  // Get screen dimensions for the overlay
+  const screenSize = useScreenSize({ debounceTime: 150 });
+  const width = useMemo(() => screenSize.width - 160, [screenSize.width]);
 
-  const countryName = useMemo(
-    () => countryLookup[countrySelection] || '',
-    [countryLookup, countrySelection],
-  );
-
-  const views = useMemo(
-    () => ({
-      0: {
-        title: "Green Supply Chains and their Components",
-        base: "bubbles",
-        tooltip: ["title"],
-        modalContent:
-          "Green supply chains include a range of products from critical minerals to final goods. These products require distinct capabilities and complexity. Each circle represents an important input for a green supply chain that is critical for the energy transition.",
-      },
-      1: {
-        title: "Green Supply Chains and their Components",
-        base: "bubbles",
-        tooltip: ["title"],
-      },
-      2: {
-        title: "Comparative Advantage in Green Supply Chains",
-        base: "bubbles",
-        tooltip: ["title", "rca"],
-        fill: "rca",
-        modalContent: `${countryName} has greater competitiveness in some parts of green supply chains than others. ${countryName} is most competitive in components that are fully shaded, moderately competitive for components that are moderately shaded, and least competitive in components that are lightly shaded.`,
-      },
-      3: {
-        title: "Comparative Advantage in Green Supply Chains",
-        base: "bubbles",
-        tooltip: ["title", "rca"],
-        fill: "rca",
-      },
-      4: {
-        title: "Critical Mineral Opportunities Across Supply Chains",
-        base: "bubbles",
-        tooltip: ["title", "rca"],
-        fill: "rca",
-        stroke: "minerals",
-        modalContent:
-          "Critical minerals are an essential driver of the energy transition. They form important inputs across many different energy technologies and supply chains. For the world to succeed in addressing climate change, mineral producers and refiners will need to scale-up production–and quickly, which represents an important green growth opportunity for many countries. This requires not just mineral deposits, but also good mining policy. In this graph, critical minerals appear as circles with a black border across all the energy supply chains. ",
-      },
-      5: {
-        title: "Critical Mineral Opportunities Across Supply Chains",
-
-        base: "bubbles",
-        tooltip: ["title", "rca"],
-        fill: "rca",
-        stroke: "minerals",
-      },
-      6: {
-        title: "Comparative Advantage Across Different Green Supply Chains",
-        base: "bars",
-        tooltip: ["title", "value"],
-        modalContent: `The figure analyzes ${countryName}’s presence in each supply chain (colored bar) versus the production ${countryName} would have if it had average competitiveness in all components of the supply chain (black line). The figure helps to assess the competitiveness of the country in each supply chain and the concentration of that competitiveness in one or several components. `,
-      },
-      7: {
-        title: "Comparative Advantage Across Different Green Supply Chains",
-        base: "bars",
-        tooltip: ["title", "value"],
-      },
-    }),
-    [countryName]
-  );
   const {
     tooltipData,
     tooltipLeft,
@@ -95,43 +23,104 @@ const Scrolly = ({
     showTooltip,
     hideTooltip,
   } = useTooltip();
+  const { currentView, prevBase } = useMemo(() => {
+    const currentView = steps[currentStep];
+    const prevView = steps[prevStep];
+    const prevBase = prevView.base;
+    return { currentView, prevView, prevBase };
+  }, [currentStep, prevStep, steps]);
+  // Get bubble data for highlighting
+  const { childBubbles } = useSupplyChainBubbles({
+    year: yearSelection,
+    countryId: countrySelection,
+    width: width,
+    height: screenSize.height,
+    fill: currentView?.fill,
+    stroke: currentView?.stroke,
+  });
 
-  const handleModalClose = () => {
-    onStepChange(step + 1);
-  };
-  const view = useMemo(() => views[step], [views, step]);
-  const prevBase = useMemo(() => views[prevStep].base, [views, prevStep]);
-  const totalSteps = useMemo(() => Object.keys(views).length, [views]);
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "100vh", position: "relative", paddingTop: "60px" }}>
       <ScrollyCanvas
-        view={view}
-        totalSteps={totalSteps}
+        view={currentView}
+        totalSteps={steps.length}
         prevBase={prevBase}
         showTooltip={showTooltip}
         hideTooltip={hideTooltip}
-        onScroll={onScroll}
         countrySelection={countrySelection}
         yearSelection={yearSelection}
       />
-      {tooltipOpen && (
-        <Tooltip left={tooltipLeft} top={tooltipTop}>
-          {views[step].tooltip.map((key) => (
-            <div key={key}>
-              <strong>{key}:</strong> {tooltipData[key]}
-            </div>
-          ))}
-        </Tooltip>
+
+      {tooltipOpen && tooltipData && currentView.base === "bubbles" && (
+        <svg
+          style={{
+            position: "absolute",
+            top: "12%",
+            left: "0",
+            width,
+            pointerEvents: "none",
+          }}
+          width="100%"
+          height="88%"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          {Array.from(childBubbles.values())
+            .filter(
+              (bubble) =>
+                bubble.data.product.code === tooltipData.data.product.code,
+            )
+            .map((bubble) => (
+              <circle
+                key={`highlight-${bubble.id}`}
+                cx={bubble.x}
+                cy={bubble.y}
+                r={bubble.r}
+                fill="none"
+                stroke="black"
+                strokeWidth={2}
+                strokeOpacity={1}
+              />
+            ))}
+        </svg>
       )}
 
-      <ScrollyText
-        open={views[step].modalContent}
-        onClose={handleModalClose}
-        direction={scrollDirection}
-        onScroll={onScroll}
-      >
-        <p>{views[step].modalContent}</p>
-      </ScrollyText>
+      {/* Existing Tooltip */}
+      {tooltipOpen && (
+        <Tooltip left={tooltipLeft} top={tooltipTop}>
+          <Typography
+            sx={{
+              fontSize: "16px",
+              mb: 1,
+              color: "black",
+            }}
+          >
+            {tooltipData.data.product.nameShortEn} (
+            {tooltipData.data.product.code})
+          </Typography>
+
+          {currentView.tooltip?.length > 0 && (
+            <hr style={{ width: "95%", margin: "10px 0" }} />
+          )}
+
+          <Box sx={{ display: "grid", gap: 1 }}>
+            {currentView.tooltip.map(({ field, title }) => {
+              let value = tooltipData[field] ?? 0;
+              if (field === "value") {
+                value = formatter.format(value);
+              } else {
+                value = Number(value).toFixed(2);
+              }
+              return (
+                <Box key={field}>
+                  <Typography sx={{ color: "black" }}>
+                    {title}: <b>{value}</b>
+                  </Typography>
+                </Box>
+              );
+            })}
+          </Box>
+        </Tooltip>
+      )}
     </div>
   );
 };

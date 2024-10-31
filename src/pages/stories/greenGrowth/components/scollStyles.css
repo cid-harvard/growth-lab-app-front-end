@@ -1,0 +1,41 @@
+.scroll-controlled-container {
+  position: relative;
+}
+
+.sticky-visualization {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 0;
+}
+
+.full-page-visualization {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background-color: #f0f0f0;
+}
+
+.step-content {
+  position: relative;
+  z-index: 1;
+  padding: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  height: 150vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  pointer-events: none;
+}
+
+.step-content-inner {
+  padding: 1rem;
+  background-color: rgba(240, 240, 240);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+  font-size: 20px;
+}

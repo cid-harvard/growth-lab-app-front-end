@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/react-hooks";
 import { index } from "d3";
+import { useMemo } from "react";
 
 export const GG_PRODUCT_LIST_QUERY = gql`
   query ggProductList {
@@ -20,6 +21,9 @@ export const GG_PRODUCT_LIST_QUERY = gql`
 
 export const useProductLookup = () => {
   const { data } = useQuery(GG_PRODUCT_LIST_QUERY);
-  const lookup = index(data?.ggProductList || [], (d) => d.productId);
+  const lookup = useMemo(
+    () => index(data?.ggProductList || [], (d) => d.productId),
+    [data?.ggProductList],
+  );
   return lookup;
 };
