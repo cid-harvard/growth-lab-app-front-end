@@ -16,9 +16,7 @@ export const GG_CPY_LIST_QUERY = gql`
       logtfExportValue
       logtfExpectedExports
       globalMarketShare
-      normalizedCog
       density
-      normalizedPci
       effectiveNumberOfExporters
       marketGrowth
     }

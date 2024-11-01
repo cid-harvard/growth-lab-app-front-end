@@ -28,7 +28,7 @@ import { Close as CloseIcon } from "@mui/icons-material";
 const dimensionObject = {
   "Global Market Share": "globalMarketShare",
   "Complexity Outlook Gain": "normalizedCog",
-  Density: "density",
+  Attractiveness: "attractiveness",
   "Effective Exporters": "effectiveNumberOfExporters",
   "Market Growth": "marketGrowth",
 };
@@ -64,8 +64,7 @@ const CustomPolarAngleAxis = ({
     "Global Market Share": "The share of global exports in this product",
     "Complexity Outlook Gain":
       "How much this product would contribute to future diversification opportunities",
-    Density:
-      "Measures the share of capabilities, skills, and know-how present in a location that is necessary to jumpstart a specific activity.",
+    Attractiveness: "How attractive this product is to the market",
     "Effective Exporters":
       "Number of countries that effectively export this product",
     "Market Growth": "Growth rate of global trade in this product",
@@ -166,7 +165,7 @@ const ProductRadar = () => {
     const dimensions = [
       "Global Market Share",
       "Complexity Outlook Gain",
-      "Density",
+      "Attractiveness",
       "Effective Exporters",
       "Market Growth",
     ];

@@ -175,9 +175,10 @@ const ProductScatter = () => {
           color: getProductColor(item.productId),
           supplyChains: supplyChains.map((sc) => sc.supplyChainId),
           uniqueKey: createUniqueProductKey(item.productId),
+          attractiveness: parseFloat(item.attractiveness),
         };
       })
-      .filter((d) => d.cog && d.density && d.rca < 1);
+      .filter((d) => d.rca < 1);
   }, [currentData, productLookup, supplyChainProductLookup]);
 
   const allSupplyChains = useMemo(() => {
@@ -319,7 +320,7 @@ const ProductScatter = () => {
                 />
                 <YAxis
                   type="number"
-                  dataKey="cog"
+                  dataKey="attractiveness"
                   name="Attractiveness"
                   label={<CustomAxisLabel axis="y" />}
                   tick={{ fontSize: 12 }}
@@ -358,16 +359,15 @@ const ProductScatter = () => {
                           <Box sx={{ display: "grid", gap: 1 }}>
                             <Box>
                               <Typography>
-                                Attractiveness: <b>{props.cog.toFixed(1)}</b>
+                                Attractiveness:{" "}
+                                <b>{props.attractiveness.toFixed(1)}</b>
                               </Typography>
                             </Box>
-
                             <Box>
                               <Typography>
                                 Feasibility: <b>{props.density.toFixed(1)}</b>
                               </Typography>
                             </Box>
-
                             <Box>
                               <Typography>
                                 Supply Chains:{" "}
