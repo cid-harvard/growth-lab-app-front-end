@@ -10,6 +10,7 @@ import ProductRadar from "./visualization/ProductRadar";
 import StandardFooter from "../../../../components/text/StandardFooter";
 import TakeoffPage from "./TakeoffPage";
 import { atom } from "recoil";
+import Attribution from "./Attribution";
 
 export const yearSelectionState = atom({
   key: "yearSelectionState",
@@ -18,7 +19,7 @@ export const yearSelectionState = atom({
 
 export const countrySelectionState = atom({
   key: "countrySelectionState",
-  default: "31",
+  default: 710,
 });
 
 const ScollamaStory = () => {
@@ -33,34 +34,37 @@ const ScollamaStory = () => {
         tooltip: [],
         modalContent:
           "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+        legendHeight: 50,
       },
 
       {
         title: "Comparative Advantage Across Green Value Chains",
         base: "bubbles",
-        tooltip: [{ field: "rca", title: "Relative Comparative Advantage" }],
+        tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
         fill: "rca",
-        modalContent: `${countryName} has varying levels of competitiveness across different parts of green value chains. ${countryName} is strongest in components that are fully shaded, fairly competitive in those with moderate shading, and least competitive in components with light shading.`,
+        modalContent: `Here is ${countryName}'s competitiveness across different green value chains.`,
         legend: "rca",
+        legendHeight: 50,
       },
 
       {
         title: "Critical Mineral Opportunities Across Value Chains",
         base: "bubbles",
-        tooltip: [{ field: "rca", title: "Relative Comparative Advantage" }],
+        tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
         fill: "rca",
         stroke: "minerals",
         modalContent:
-          "Critical minerals power the energy transition, since they form important inputs to many different energy technologies. For the world to address climate change, mineral producers will need to quickly scale-up production, which represents an important green growth opportunity for many countries. This requires mineral deposits and good mining policy. In this graph, critical minerals appear as circles with a black border.",
+          "Critical minerals power the energy transition, since they form important inputs to many different energy technologies. Minerals are circled here with black borders. For the world to decarbonize, mineral producers will need to quickly scale-up production, which represents an important green growth opportunity for many countries. This requires mineral deposits and good mining policy.",
         legend: "minerals",
+        legendHeight: 50,
       },
-
       {
         title: "Competitiveness in Green Value Chains",
         base: "bars",
         tooltip: [{ field: "value", title: "Export Value" }],
-        modalContent: `This figure analyzes ${countryName}'s presence in each value chain (colored bar) versus the production ${countryName} would have if it had average competitiveness in all components of the value chain (black line). The figure helps to assess ${countryName}'s competitiveness in each value chain and the concentration of that competitiveness in one or several components.`,
+        modalContent: `This shows ${countryName}'s actual presence (colored bar) in each green value chain versus the level if ${countryName} had average competitiveness in all value chain components (black line), revealing ${countryName}'s areas of strength and concentration.`,
         legend: "production",
+        legendHeight: 50,
       },
     ],
     [countryName],
@@ -119,6 +123,7 @@ const ScollamaStory = () => {
           <ProductRadar />
         </div>
         <TakeoffPage />
+        <Attribution />
         <StandardFooter />
       </div>
     </div>

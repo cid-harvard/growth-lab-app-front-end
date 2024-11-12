@@ -10,15 +10,15 @@ export const GG_CPY_LIST_QUERY = gql`
       normalizedExportRca
       exportValue
       expectedExports
+      normalizedPci
+      normalizedCog
       feasibility
-      attractiveness
-      id
-      logtfExportValue
-      logtfExpectedExports
-      globalMarketShare
-      density
       effectiveNumberOfExporters
       marketGrowth
+      pciStd
+      cogStd
+      feasibilityStd
+      pciCogFeasibilityComposite
     }
     ggCpyscList(year: $year, countryId: $countryId) {
       year
@@ -26,7 +26,6 @@ export const GG_CPY_LIST_QUERY = gql`
       productId
       supplyChainId
       productRanking
-      id
     }
   }
 `;

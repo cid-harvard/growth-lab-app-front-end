@@ -271,9 +271,9 @@ const StandardFooter = (props: Props) => {
               />
             </a>
             <GrowthLabInfo>
-              Center for International Development at Harvard University<br />
+              Harvard Kennedy School<br />
               79 JFK St. | Cambridge, MA 02138<br />
-              growthlab@hks.harvard.edu
+              <a href="mailto:growthlab@hks.harvard.edu">growthlab@hks.harvard.edu</a>
             </GrowthLabInfo>
           </LogoColumn>
           <RepoColumn>

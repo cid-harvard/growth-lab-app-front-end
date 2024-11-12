@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
-  ReferenceLine,
   ReferenceArea,
 } from "recharts";
 import { useQuery } from "@apollo/react-hooks";
@@ -26,9 +25,9 @@ import {
   Box,
   Paper,
   Tooltip as MuiTooltip,
+  useMediaQuery,
 } from "@mui/material";
 
-// Existing helper functions
 const createUniqueProductKey = (product) => {
   return `${product}`;
 };
@@ -43,13 +42,18 @@ const getProductColor = (product) => {
 };
 
 const CustomAxisLabel = ({ viewBox, value, axis }) => {
+  const isNarrow = useMediaQuery("(max-width:600px)");
+  const isShort = useMediaQuery("(max-height:700px)");
   const { x, y, width, height } = viewBox;
   const isYAxis = axis === "y";
 
   if (isYAxis) {
     return (
       <g>
-        <MuiTooltip title="Complexity Outlook Gain" placement="right">
+        <MuiTooltip
+          title="Measures how valuable a product is based on the capabilities it will help a location develop"
+          placement="right"
+        >
           <text
             x={x}
             y={y + height / 2}
@@ -72,28 +76,32 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
           transform={`rotate(-90, ${x}, ${y + height / 2})`}
         >
           <tspan x={x} dy="1.2em" style={{ fontSize: "14px" }}>
-            (COG, STANDARDIZED)
+            (COG & PCI composite, standardized)
           </tspan>
         </text>
 
-        <text
-          x={x}
-          y={y + height * 0.2}
-          textAnchor="middle"
-          transform={`rotate(-90, ${x}, ${y + height * 0.2})`}
-          style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
-        >
-          MORE ATTRACTIVE →
-        </text>
-        <text
-          x={x}
-          y={y + height * 0.8}
-          textAnchor="middle"
-          transform={`rotate(-90, ${x}, ${y + height * 0.8})`}
-          style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
-        >
-          ← LESS ATTRACTIVE
-        </text>
+        {!isShort && (
+          <>
+            <text
+              x={x}
+              y={y + height * 0.2}
+              textAnchor="middle"
+              transform={`rotate(-90, ${x}, ${y + height * 0.2})`}
+              style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
+            >
+              MORE ATTRACTIVE →
+            </text>
+            <text
+              x={x}
+              y={y + height * 0.8}
+              textAnchor="middle"
+              transform={`rotate(-90, ${x}, ${y + height * 0.8})`}
+              style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
+            >
+              ← LESS ATTRACTIVE
+            </text>
+          </>
+        )}
       </g>
     );
   }
@@ -101,7 +109,7 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
   return (
     <g>
       <MuiTooltip
-        title="Measures the share of capabilities, skills, and know-how present in a location that is necessary to jumpstart a specific activity."
+        title="Measures the share of capabilities, skills, and know-how present in a location that is necessary to jumpstart a specific activity"
         placement="top"
       >
         <text
@@ -124,22 +132,26 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
         </tspan>
       </text>
 
-      <text
-        x={x + width * 0.2}
-        y={y + height + 15}
-        textAnchor="middle"
-        style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
-      >
-        ← LESS FEASIBLE
-      </text>
-      <text
-        x={x + width * 0.8}
-        y={y + height + 15}
-        textAnchor="middle"
-        style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
-      >
-        MORE FEASIBLE →
-      </text>
+      {!isNarrow && (
+        <>
+          <text
+            x={x + width * 0.2}
+            y={y + height + 15}
+            textAnchor="middle"
+            style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
+          >
+            ← LESS FEASIBLE
+          </text>
+          <text
+            x={x + width * 0.8}
+            y={y + height + 15}
+            textAnchor="middle"
+            style={{ fontSize: "12px", fill: "black", fontWeight: 600 }}
+          >
+            MORE FEASIBLE →
+          </text>
+        </>
+      )}
     </g>
   );
 };
@@ -165,17 +177,19 @@ const ProductScatter = () => {
       .map((item) => {
         const productDetails = productLookup.get(item.productId);
         const supplyChains = supplyChainProductLookup.get(item.productId) || [];
+        const attractiveness =
+          0.6 * parseFloat(item.normalizedCog) +
+          0.4 * parseFloat(item.normalizedPci);
 
         return {
           product: item.productId,
           productName: productDetails?.nameShortEn,
-          cog: parseFloat(item.attractiveness),
-          density: parseFloat(item.feasibility),
+          density: parseFloat(item.feasibilityStd),
           rca: parseFloat(item.normalizedExportRca),
           color: getProductColor(item.productId),
           supplyChains: supplyChains.map((sc) => sc.supplyChainId),
           uniqueKey: createUniqueProductKey(item.productId),
-          attractiveness: parseFloat(item.attractiveness),
+          attractiveness,
         };
       })
       .filter((d) => d.rca < 1);
@@ -195,22 +209,13 @@ const ProductScatter = () => {
   };
 
   const [selectedSupplyChains, setSelectedSupplyChains] = useState([
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
   ]);
 
   const filteredData = useMemo(() => {
     return scatterData.filter(
       (d) =>
-        selectedSupplyChains.length === 0 ||
+        selectedSupplyChains.length > 0 &&
         d.supplyChains.some((chain) => selectedSupplyChains.includes(chain)),
     );
   }, [scatterData, selectedSupplyChains]);
@@ -224,28 +229,26 @@ const ProductScatter = () => {
   return (
     <Box sx={{ width: "100%", height: "auto" }}>
       <Box sx={{ px: 4, py: 2, height: "100%" }}>
-        <Typography type="p" sx={{ mt: 8, mb: 2, fontSize: "22px" }}>
-          Looking forward, {countryName} needs to build around its best
-          opportunities in green supply chains, rather than just support its
-          historic strengths. Economic complexity provides a framework that
-          allows countries to identify their most strategic opportunities. 
+        <Typography sx={{ fontSize: "23px", fontWeight: 600 }} gutterBottom>
+          {countryName}'s High-Value Opportunities to Enter Green Value Chains
+        </Typography>
+        <Typography type="p" sx={{ mt: 2, mb: 2, fontSize: "22px" }}>
+          What opportunities in green value chains should {countryName} enter?
+          Diversifying into new, more complex products drives economic growth.
+          Countries are more successful at entering new industries that build on
+          existing capabilities. So {countryName}'s best opportunities will
+          often be new industries that leverage its existing capabilities.
         </Typography>
         <Typography type="p" sx={{ mb: 8, fontSize: "22px" }}>
-          Countries that diversify into more, and more complex, industries grow
-          faster. Equally, countries will be more successful at diversifying
-          into industries which are related to their existing industrial
-          structure.  The graph below helps {countryName} assess its best
-          opportunities. Feasibility measures how well industries in green
-          supply chains are related to {countryName}'s existing industrial
-          structure. Attractiveness measures how [complex / strategic] an
-          industry is to enable {countryName}'s economic diversification. Good
-          opportunities for {countryName} are ones that are both feasible and
-          attractive (towards the top right of the graph).{" "}
+          The graph below shows which opportunities are most feasible and
+          attractive for {countryName}. Feasibility measures the share of
+          capabilities, skills, and know-how present in {countryName} that is
+          necessary to jumpstart a specific activity. Attractiveness measures
+          how valuable a product is based on the capabilities it will help{" "}
+          {countryName} develop. {countryName}'s best opportunities are towards
+          the top right of the graph.
         </Typography>
-        <Typography sx={{ fontSize: "23px", fontWeight: 600 }} gutterBottom>
-          {countryName}'s High-Potential Opportunities to Enter Green Supply
-          Chains
-        </Typography>
+
         <Box>
           <Box
             sx={{
@@ -301,14 +304,14 @@ const ProductScatter = () => {
                   left: 20,
                 }}
               >
-                <ReferenceArea
+                {/* <ReferenceArea
                   x1={0}
                   x2={1}
                   y1={0}
                   y2={1}
                   fill="#E4F3F680"
                   fillOpacity={1}
-                />
+                /> */}
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   type="number"
@@ -316,7 +319,7 @@ const ProductScatter = () => {
                   name="Feasibility"
                   label={<CustomAxisLabel axis="x" />}
                   tick={{ fontSize: 12 }}
-                  ticks={[-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]}
+                  // ticks={[-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]}
                 />
                 <YAxis
                   type="number"
@@ -324,10 +327,8 @@ const ProductScatter = () => {
                   name="Attractiveness"
                   label={<CustomAxisLabel axis="y" />}
                   tick={{ fontSize: 12 }}
-                  ticks={[-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]}
+                  // ticks={[-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]}
                 />
-                <ReferenceLine x={0} stroke="black" strokeWidth={2} />
-                <ReferenceLine y={0} stroke="black" strokeWidth={2} />
                 <Tooltip
                   cursor={{ strokeDasharray: "3 3" }}
                   content={({ payload }) => {
@@ -370,7 +371,7 @@ const ProductScatter = () => {
                             </Box>
                             <Box>
                               <Typography>
-                                Supply Chains:{" "}
+                                Value Chains:{" "}
                                 <b>
                                   {props.supplyChains
                                     .map((chainId) =>

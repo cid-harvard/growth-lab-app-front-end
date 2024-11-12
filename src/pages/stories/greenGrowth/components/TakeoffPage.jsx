@@ -1,6 +1,9 @@
-import React from "react";
-import { Box, Typography, Container, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography, Container, Button, Modal } from "@mui/material";
 import { styled } from "@mui/system";
+import { triggerGoogleAnalyticsEvent } from "../../../../routing/tracking";
+import { Widget } from "@typeform/embed-react";
+import { useCountryName } from "../queries/useCountryName";
 
 const GradientBackground = styled(Box)(({ theme }) => ({
   background:
@@ -37,9 +40,16 @@ const RegisterButton = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor: "#f0f0f0",
   },
+  maxWidth: "500px",
+  fontSize: "26px",
 }));
 
 const TakeoffPage = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const countryName = useCountryName();
+
   return (
     <GradientBackground>
       <Container maxWidth="md" sx={{ mb: 6 }}>
@@ -49,17 +59,76 @@ const TakeoffPage = () => {
           paragraph
           sx={{ color: "white", mb: 6, mt: 8 }}
         >
-          The energy transition offers countries a defining opportunity for
-          growth. Countries must act quickly to carve out a place for themselves
-          in emerging clean industries, or risk being left behind.
+          The energy transition offers {countryName} a defining opportunity for
+          growth. {countryName} must act quickly to create a winning strategy
+          for green growth, or risk being left behind.
         </Typography>
 
-        <Box display="flex" justifyContent="center">
-          <RegisterButton variant="contained">
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          gap={2}
+        >
+          <RegisterButton
+            onClick={() => {
+              triggerGoogleAnalyticsEvent(
+                "GREENPLEXITY",
+                "click-button",
+                "Green Growth Research",
+              );
+              handleOpen();
+            }}
+            variant="contained"
+          >
             Get in Touch to Learn More
+          </RegisterButton>
+          <RegisterButton
+            variant="contained"
+            component="a"
+            href="https://growthlab.hks.harvard.edu/policy-area/green-growth"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Green Growth Research
           </RegisterButton>
         </Box>
       </Container>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="typeform-modal"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            width: "80%",
+            height: "80%",
+            bgcolor: "none",
+            boxShadow: 24,
+            outline: "none",
+            overflow: "hidden",
+          }}
+        >
+          <Widget
+            id="pl5LJPFr"
+            style={{ height: "100%" }}
+            onSubmit={() => {
+              triggerGoogleAnalyticsEvent(
+                "GREENPLEXITY",
+                "submit-form",
+                "Green Growth Research",
+              );
+            }}
+          />
+        </Box>
+      </Modal>
     </GradientBackground>
   );
 };

@@ -7,7 +7,6 @@ export const GET_ALL_SUPPLY_CHAIN_DETAILS = gql`
     ggSupplyChainList {
       supplyChainId
       supplyChain
-      id
     }
   }
 `;

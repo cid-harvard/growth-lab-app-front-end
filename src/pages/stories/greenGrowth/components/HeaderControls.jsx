@@ -57,6 +57,7 @@ export const HeaderControls = () => {
             <Box display="flex" alignItems="center">
               <Autocomplete
                 disableClearable
+                blurOnSelect
                 value={
                   countries.find(
                     (country) => country.countryId === countrySelection,

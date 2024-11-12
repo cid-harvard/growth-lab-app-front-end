@@ -35,3 +35,6 @@ hks-country-tools.pem
 temp-deploy.txt
 
 build.zip
+
+# Visualization inputs
+public/visualization_inputs

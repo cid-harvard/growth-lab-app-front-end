@@ -12,6 +12,8 @@ import { useStackedBars } from "./useStackedBars";
 import Legend from "./Legend";
 import Box from "@mui/material/Box";
 import SupplyChainCircle from "./SupplyChainCircle";
+import { useMediaQuery, useTheme } from "@mui/material";
+
 export const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -28,14 +30,19 @@ const ScrollyCanvas = ({
 }) => {
   const yearSelection = useRecoilValue(yearSelectionState);
   const countrySelection = useRecoilValue(countrySelectionState);
-  const { fill, stroke } = view;
+  const { fill, stroke, legendHeight } = view;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const screenSize = useScreenSize({ debounceTime: 150 });
-  const width = useMemo(() => screenSize.width - 160, [screenSize.width]);
+  const width = useMemo(
+    () => (isMobile ? screenSize.width : screenSize.width - 160),
+    [screenSize.width, isMobile],
+  );
   const { childBubbles, parentCircles } = useSupplyChainBubbles({
     year: yearSelection,
     countryId: countrySelection,
     width: width,
-    height: screenSize.height,
+    height: isMobile ? screenSize.height - legendHeight : screenSize.height,
     fill,
     stroke,
   });
@@ -44,7 +51,7 @@ const ScrollyCanvas = ({
     year: yearSelection,
     countryId: countrySelection,
     width: width,
-    height: screenSize.height,
+    height: isMobile ? screenSize.height - legendHeight : screenSize.height,
   });
 
   const layouts = useMemo(
@@ -90,7 +97,10 @@ const ScrollyCanvas = ({
       finishedAnimation.current = view.base;
       isAnimating.current = false;
     },
-    config: view.base !== prevBase ? config.molasses : config.default,
+    config:
+      view.base !== prevBase
+        ? { ...config.molasses, friction: 60 }
+        : config.default,
   });
 
   const flubberInterpolator = (fromShape, toShape) => {
@@ -102,27 +112,30 @@ const ScrollyCanvas = ({
     <>
       <Box
         sx={{
-          ml: 4,
+          ml: isMobile ? 0 : 4,
           marginTop: 2,
           fontSize: "clamp(20px, 2vw, 23px)",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          width: "100vw",
+          width: isMobile ? "100%" : "100vw",
+          px: isMobile ? 2 : 0,
         }}
       >
         {view.title}
       </Box>
+
+      {isMobile && <Legend key={view.legend} mode={view.legend} />}
+
       <svg
         style={{
           position: "absolute",
-          top: "12%",
+          top: isMobile ? `calc(12% + ${legendHeight}px)` : "12%",
           left: "0",
-
           width: width,
         }}
         width="100%"
-        height="88%"
+        height={isMobile ? "88%" : "88%"}
         preserveAspectRatio="xMidYMid meet"
       >
         {view.base === "bars" && (
@@ -161,22 +174,22 @@ const ScrollyCanvas = ({
               stroke={style.stroke}
               strokeWidth={style.strokeWidth}
               d={style.transition.to((o) => {
-                const prevCoords = previousLayout.get(node.id)?.coords ||
-                  currentLayout.get(node.id)?.coords || [
+                const prevCoords = previousLayout?.get?.(node.id)?.coords ||
+                  currentLayout?.get?.(node.id)?.coords || [
                     [0, 0],
                     [0, 0],
                     [0, 0],
                     [0, 0],
                   ];
-                const currCoords = currentLayout.get(node.id)?.coords || [
+                const currCoords = currentLayout?.get?.(node.id)?.coords || [
                   [0, 0],
                   [0, 0],
                   [0, 0],
                   [0, 0],
                 ];
                 if (
-                  previousLayout.get(node.id)?.type ===
-                    currentLayout.get(node.id)?.type ||
+                  previousLayout?.get?.(node.id)?.type ===
+                    currentLayout?.get?.(node.id)?.type ||
                   finishedAnimation.current === view.base
                 ) {
                   return flubberInterpolator(prevCoords, currCoords)(1);
@@ -185,7 +198,7 @@ const ScrollyCanvas = ({
                 }
               })}
               strokeOpacity={style.strokeOpacity}
-              fill={colorScale(childBubbles.get(node.id)?.parentId)}
+              fill={colorScale(childBubbles?.get?.(node.id)?.parentId)}
               style={style}
               fillOpacity={style.fillOpacity}
               onMouseEnter={(event) => {
@@ -194,7 +207,7 @@ const ScrollyCanvas = ({
                   showTooltip({
                     tooltipData: {
                       ...node,
-                      radius: childBubbles.get(node.id).radius,
+                      radius: childBubbles?.get?.(node.id)?.radius,
                     },
                     tooltipLeft: clientX,
                     tooltipTop: clientY,
@@ -233,7 +246,7 @@ const ScrollyCanvas = ({
                     fontWeight="600"
                   >
                     {overlay.name} Actual Value: {formatter.format(actualValue)}{" "}
-                    | Expected Value: {formatter.format(overlay.expectedTotal)}
+                    | World Average: {formatter.format(overlay.expectedTotal)}
                   </text>
                 </g>
               );
@@ -242,7 +255,8 @@ const ScrollyCanvas = ({
         )}
       </svg>
 
-      <Legend key={view.legend} mode={view.legend} />
+      {!isMobile && <Legend key={view.legend} mode={view.legend} />}
+
       {view.base === "bubbles" &&
         parentCircles.map((circle) => (
           <div
@@ -251,11 +265,13 @@ const ScrollyCanvas = ({
             style={{
               position: "absolute",
               left: `${circle.x}px`,
-              bottom: `calc(${screenSize.height - (circle.y - circle.radius - 10)}px - 12%)`,
+              bottom: `calc(${screenSize.height - (circle.y - circle.radius - (isMobile ? 0 : 10))}px - ${
+                isMobile ? `calc(12% + ${legendHeight}px)` : "12%"
+              })`,
               transform: "translateX(-50%)",
               textAlign: "center",
-              maxWidth: `${circle.radius * 2}px`,
-              fontSize: `clamp(12px, 1.5vw, 18px)`,
+              maxWidth: isMobile ? "none" : `${circle.radius * 2}px`,
+              fontSize: `clamp(12px, 1.5vw, ${isMobile ? "14px" : "18px"})`,
               pointerEvents: "none",
             }}
           >

@@ -1,7 +1,9 @@
 {
   "defaultSeverity": "error",
   "extends": ["tslint:recommended"],
-  "jsRules": {},
+  "jsRules": {
+    "no-restricted-globals": false
+  },
   "rules": {
     "interface-over-type-literal": false,
     "quotemark": [true, "single", "avoid-escape", "jsx-single"],
@@ -17,7 +19,10 @@
     "comment-format": false,
     "no-var-requires": false,
     "prefer-const": true,
-    "trailing-comma": [true, {"multiline": "always", "singleline": "never", "esSpecCompliant": true}],
+    "trailing-comma": [
+      true,
+      { "multiline": "always", "singleline": "never", "esSpecCompliant": true }
+    ],
     "triple-equals": true,
     "no-irregular-whitespace": true,
     "indent": [true, "spaces", 2],
@@ -25,7 +30,8 @@
     "no-namespace": [true, "allow-declarations"],
     "await-promise": true,
     "interface-name": false,
-    "max-line-length" : false
+    "max-line-length": false,
+    "no-restricted-globals": false
   },
   "rulesDirectory": [],
   "linterOptions": {

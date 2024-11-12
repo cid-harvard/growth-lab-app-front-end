@@ -90,7 +90,7 @@ const Landing = ({ onExplore }) => {
             gutterBottom
             sx={{ color: "white", fontWeight: "bold" }}
           >
-            GREEN GROWTH INTELLIGENCE
+            GREENPLEXITY
           </Typography>
 
           <Typography
@@ -102,10 +102,7 @@ const Landing = ({ onExplore }) => {
             The world's transition to a lower-carbon economy will radically
             transform global production. Decarbonization presents a defining
             opportunity for economic growth, by creating new industries,
-            markets, and paths for prosperity. Places have exciting new
-            opportunities to enter green value chains that are driving the
-            energy transition, like critical minerals, solar panels, and
-            electric vehicles.
+            markets, and paths to prosperity.
           </Typography>
 
           <Typography
@@ -114,10 +111,12 @@ const Landing = ({ onExplore }) => {
             paragraph
             sx={{ color: "white", mb: 4, fontSize: "20px" }}
           >
-            This tool identifies opportunities to create winning strategies for
-            green growth: to generate prosperity by helping the world
-            decarbonize. It helps policymakers craft strategies to enter green
-            value chains, by exploring countries' productive capabilities.
+            Greenplexity helps policymakers craft strategies to enter green
+            value chains that are driving the energy transition, like critical
+            minerals, solar panels, and electric vehicles. By analyzing local
+            productive capabilities, this tool identifies opportunities to
+            create winning strategies for green growth: to generate prosperity
+            by supplying what the world needs to decarbonize.
           </Typography>
 
           <Box display="flex" justifyContent="center" width="100%">
@@ -125,6 +124,8 @@ const Landing = ({ onExplore }) => {
               fullWidth
               options={countries}
               getOptionLabel={(option) => option.nameEn}
+              disableClearable
+              blurOnSelect
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -184,8 +185,8 @@ const Landing = ({ onExplore }) => {
           align="center"
           sx={{ color: "white", mt: 4, fontSize: "18px" }}
         >
-          The Green Growth Portal is a public good financed in part with the
-          support of the Government of the Republic of Azerbaijan
+          Greenplexity is a public good, financed in part by the Government of
+          Azerbaijan.
         </Typography>
       </GradientBackground>
     </div>

@@ -8,6 +8,8 @@ import { useProductLookup } from "../../queries/products";
 import { useSupplyChainLookup } from "../../queries/supplyChains";
 import { colorScale } from "../../utils";
 import { index } from "d3";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const circlePath = (x, y, r) => `
   M ${x},${y}
@@ -41,16 +43,16 @@ const getDiscreteRanking = (ranking, minRank, maxRank) => {
 };
 
 const SUPPLY_CHAIN_LAYOUT_WIDE = {
-  ROW_1: ["3", "5", "4", "9", "8"], // EVs, Heat Pumps, Fuel Cells, Wind, Solar
-  ROW_2: ["6", "7", "0", "2", "1"], // Hydro, Nuclear, Batteries, Grid, Minerals
+  ROW_1: [3, 5, 4, 9, 8], // EVs, Heat Pumps, Fuel Cells, Wind, Solar
+  ROW_2: [6, 7, 0, 2, 1], // Hydro, Nuclear, Batteries, Grid, Minerals
 };
 
 const SUPPLY_CHAIN_LAYOUT_TALL = {
-  ROW_1: ["3", "4"], // EVs, Fuel Cells
-  ROW_2: ["5", "9"], // Heat Pumps, Wind
-  ROW_3: ["8", "6"], // Solar, Hydro
-  ROW_4: ["7", "0"], // Nuclear, Batteries
-  ROW_5: ["2", "1"], // Grid, Minerals
+  ROW_1: [3, 5], // EVs, Heat Pumps
+  ROW_2: [4, 9], // Fuel Cells, Wind
+  ROW_3: [8, 6], // Solar, Hydro
+  ROW_4: [7, 0], // Nuclear, Batteries
+  ROW_5: [2, 1], // Grid, Minerals
 };
 
 export const useSupplyChainBubbles = ({
@@ -61,6 +63,9 @@ export const useSupplyChainBubbles = ({
   fill,
   stroke,
 }) => {
+  const theme = useTheme();
+  const isWide = useMediaQuery(theme.breakpoints.up("sm"));
+
   const { loading, error, data, previousData } = useQuery(GG_CPY_LIST_QUERY, {
     variables: { year: parseInt(year), countryId: parseInt(countryId) },
   });
@@ -73,19 +78,17 @@ export const useSupplyChainBubbles = ({
       if (!ggCpyList || !ggCpyscList || !width || !height)
         return { childBubbles: [], parentCircles: [] };
 
-      const isWide = width >= height;
       const SUPPLY_CHAIN_LAYOUT = isWide
         ? SUPPLY_CHAIN_LAYOUT_WIDE
         : SUPPLY_CHAIN_LAYOUT_TALL;
       const numRows = isWide ? 2 : 5;
 
-      const margin = 100;
+      const margin = isWide ? 100 : 100;
       const padding = 0;
-      const groupSpacing = 40;
-      const rowSpacing = 80;
+      const groupSpacing = isWide ? 40 : 0;
+      const rowSpacing = isWide ? 80 : 45;
 
-      // Calculate row heights based on layout
-      const availableHeight = height - margin * 2 - rowSpacing * (numRows - 1);
+      const availableHeight = height - margin * 1.5 - rowSpacing * numRows;
       const rowHeights = Array(numRows).fill(availableHeight / numRows);
 
       const supplyChainMap = new Map();
@@ -96,7 +99,7 @@ export const useSupplyChainBubbles = ({
         }
         supplyChainMap.get(supplyChainId).set(productId, productRanking);
       });
-      const criticalMinerals = Array.from(supplyChainMap.get("1").keys());
+      const criticalMinerals = Array.from(supplyChainMap.get(1).keys());
 
       supplyChainMap.forEach((products, supplyChainId) => {
         const rankings = Array.from(products.values());
@@ -148,7 +151,6 @@ export const useSupplyChainBubbles = ({
 
       const groups = packedSectorTree.children || [];
 
-      // Calculate maxBubblesPerGroup before layout
       const maxBubblesPerGroup = Math.max(
         ...groups.map((g) => g.children?.length || 0),
       );
@@ -160,7 +162,6 @@ export const useSupplyChainBubbles = ({
         const supplyChainId = group.data.id;
         let row, col, totalColsInRow;
 
-        // Find which row and column this supply chain belongs to
         for (let i = 1; i <= numRows; i++) {
           const rowKey = `ROW_${i}`;
           const rowArray = SUPPLY_CHAIN_LAYOUT[rowKey];
@@ -173,7 +174,7 @@ export const useSupplyChainBubbles = ({
           }
         }
 
-        if (row === undefined) return; // Skip if not in layout
+        if (row === undefined) return;
 
         const rowHeight = rowHeights[row];
         const cellWidth =
@@ -220,7 +221,6 @@ export const useSupplyChainBubbles = ({
         });
 
         packedGroup.children.forEach((leaf) => {
-          // Calculate absolute position where circle will be rendered
           const x = groupX + (leaf.x - packedGroup.x);
           const y = groupY + (leaf.y - packedGroup.y);
           const radius = leaf.r;
@@ -280,7 +280,7 @@ export const useSupplyChainBubbles = ({
         parentCircles,
       };
     },
-    [productLookup, supplyChainLookup, width, height, fill, stroke],
+    [width, height, isWide, supplyChainLookup, productLookup, fill, stroke],
   );
 
   const layout = useMemo(

@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "strictFunctionTypes": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -27,11 +23,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "preserve"
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "exclude": [
     "build",
     "node_modules",

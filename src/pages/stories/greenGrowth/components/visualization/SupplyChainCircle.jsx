@@ -13,9 +13,14 @@ import {
   TableRow,
   Paper,
   Typography,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 const SupplyChainCircle = memo(({ circle, isAnimating }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const productLookup = useProductLookup();
@@ -66,9 +71,9 @@ const SupplyChainCircle = memo(({ circle, isAnimating }) => {
       >
         <rect
           x={circle.x - circle.radius - 5}
-          y={circle.y - circle.radius - 65}
+          y={circle.y - circle.radius - (isMobile ? 20 : 65)}
           width={circle.radius * 2 + 10}
-          height={circle.radius * 2 + 70}
+          height={circle.radius * 2 + (isMobile ? 20 : 70)}
           fill="rgba(255,255,255,0)"
           stroke={colorScale(circle.id)}
           strokeWidth={2}

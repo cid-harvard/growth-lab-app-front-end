@@ -1,4 +1,10 @@
+import Box from "@mui/material/Box";
+import { useMediaQuery, useTheme } from "@mui/material";
+
 const Legend = ({ mode }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   if (!mode) return null;
   const getItems = () => {
     switch (mode) {
@@ -28,11 +34,12 @@ const Legend = ({ mode }) => {
 
   const renderShape = (item) => {
     const shapeContainer = {
-      width: "30px", // Fixed width for all shape containers
+      width: "30px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       marginRight: "10px",
+      height: isMobile ? "15px" : "20px",
     };
 
     switch (item.shape) {
@@ -42,13 +49,12 @@ const Legend = ({ mode }) => {
             <div
               style={{
                 ...shapeContainer,
-                height: "20px",
               }}
             >
               <div
                 style={{
-                  width: "20px",
-                  height: "20px",
+                  width: isMobile ? "15px" : "20px",
+                  height: isMobile ? "15px" : "20px",
                   borderRadius: "50%",
                   border: "2px solid black",
                   backgroundColor: "transparent",
@@ -61,13 +67,12 @@ const Legend = ({ mode }) => {
           <div
             style={{
               ...shapeContainer,
-              height: "20px",
             }}
           >
             <div
               style={{
-                width: "20px",
-                height: "20px",
+                width: isMobile ? "15px" : "20px",
+                height: isMobile ? "15px" : "20px",
                 borderRadius: "50%",
                 backgroundColor: item.color,
               }}
@@ -80,7 +85,7 @@ const Legend = ({ mode }) => {
             <div
               style={{
                 width: "30px",
-                height: "20px",
+                height: isMobile ? "15px" : "20px",
                 backgroundColor: item.color,
               }}
             />
@@ -92,7 +97,7 @@ const Legend = ({ mode }) => {
             <div
               style={{
                 width: "2px",
-                height: "20px",
+                height: isMobile ? "15px" : "20px",
                 backgroundColor: item.color,
               }}
             />
@@ -106,16 +111,18 @@ const Legend = ({ mode }) => {
   const items = getItems();
 
   return (
-    <div
-      className="parent-circle"
-      style={{
-        position: "absolute",
-        right: "20px",
-        top: "50%",
-        background: "rgba(255, 255, 255, 0.8)",
-        padding: "10px",
-        borderRadius: "5px",
-        width: "150px",
+    <Box
+      sx={{
+        position: isMobile ? "relative" : "absolute",
+        bottom: isMobile ? "auto" : "50%",
+        right: isMobile ? "auto" : "2%",
+        transform: isMobile ? "none" : "translateY(50%)",
+        width: isMobile ? "100%" : "160px",
+        px: isMobile ? 2 : 0,
+        py: isMobile ? 1 : 0,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: isMobile ? "center" : "flex-start",
       }}
     >
       {mode === "rca" && (
@@ -128,6 +135,7 @@ const Legend = ({ mode }) => {
             display: "flex",
             alignItems: "center",
             marginBottom: "5px",
+            fontSize: isMobile ? "0.875rem" : "1rem",
             ...(item.style || {}),
           }}
         >
@@ -135,7 +143,7 @@ const Legend = ({ mode }) => {
           <span>{item.label}</span>
         </div>
       ))}
-    </div>
+    </Box>
   );
 };
 export default Legend;

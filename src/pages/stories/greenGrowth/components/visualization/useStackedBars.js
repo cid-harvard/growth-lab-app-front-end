@@ -69,7 +69,7 @@ export const useStackedBars = ({ year, countryId, width, height }) => {
 
       const sortedParents = Object.keys(groupedData)
         .map((parentId) => ({
-          parentId,
+          parentId: parseInt(parentId),
           totalExports: groupedData[parentId].reduce(
             (sum, child) => sum + child.exportValue,
             0,

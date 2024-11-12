@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Tooltip, useTooltip } from "@visx/tooltip";
 import ScrollyCanvas, { formatter } from "./ScrollyCanvas";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, useMediaQuery, useTheme } from "@mui/material";
 import { useSupplyChainBubbles } from "./useSupplyChainBubbles";
 import { useScreenSize } from "@visx/responsive";
 import { yearSelectionState } from "../ScollamaStory";
@@ -11,9 +11,14 @@ import { useRecoilValue } from "recoil";
 const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
   const yearSelection = useRecoilValue(yearSelectionState);
   const countrySelection = useRecoilValue(countrySelectionState);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   // Get screen dimensions for the overlay
   const screenSize = useScreenSize({ debounceTime: 150 });
-  const width = useMemo(() => screenSize.width - 160, [screenSize.width]);
+  const width = useMemo(
+    () => (isMobile ? screenSize.width : screenSize.width - 160),
+    [screenSize.width, isMobile],
+  );
 
   const {
     tooltipData,
@@ -34,7 +39,9 @@ const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
     year: yearSelection,
     countryId: countrySelection,
     width: width,
-    height: screenSize.height,
+    height: isMobile
+      ? screenSize.height - currentView.legendHeight
+      : screenSize.height,
     fill: currentView?.fill,
     stroke: currentView?.stroke,
   });
@@ -55,13 +62,20 @@ const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
         <svg
           style={{
             position: "absolute",
-            top: "12%",
+            top: isMobile ? `calc(12% + ${currentView.legendHeight}px)` : "12%",
             left: "0",
-            width,
+            width: width,
+            height: isMobile
+              ? `calc(88% - ${currentView.legendHeight}px)`
+              : "88%",
             pointerEvents: "none",
           }}
-          width="100%"
-          height="88%"
+          width={width}
+          height={
+            isMobile
+              ? screenSize.height - currentView.legendHeight
+              : screenSize.height
+          }
           preserveAspectRatio="xMidYMid meet"
         >
           {Array.from(childBubbles.values())

@@ -26,26 +26,21 @@ import { useCountryName } from "../../queries/useCountryName";
 import { Close as CloseIcon } from "@mui/icons-material";
 
 const dimensionObject = {
-  "Global Market Share": "globalMarketShare",
+  "Product Complexity": "normalizedPci",
   "Complexity Outlook Gain": "normalizedCog",
-  Attractiveness: "attractiveness",
+  Feasibility: "feasibility",
   "Effective Exporters": "effectiveNumberOfExporters",
   "Market Growth": "marketGrowth",
 };
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    const originalValue = payload[0].payload[`${payload[0].dataKey}_original`];
     return (
       <Paper sx={{ px: 1, py: 0.5 }}>
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
           {label}
         </Typography>
-        <Typography variant="body2">
-          Score: {payload[0].value}
-          <br />
-          Actual: {originalValue}
-        </Typography>
+        <Typography variant="body2">Score: {payload[0].value}</Typography>
       </Paper>
     );
   }
@@ -61,13 +56,16 @@ const CustomPolarAngleAxis = ({
   radius,
 }) => {
   const tooltipContent = {
-    "Global Market Share": "The share of global exports in this product",
+    "Product Complexity":
+      "Normalized measure of product complexity, indicating the sophistication and knowledge intensity required for production.",
     "Complexity Outlook Gain":
-      "How much this product would contribute to future diversification opportunities",
-    Attractiveness: "How attractive this product is to the market",
+      "Normalized measure of how this product could enable future diversification into complex products.",
+    Feasibility:
+      "Measure of how feasible it is for the country to develop competitive advantage in this product.",
     "Effective Exporters":
-      "Number of countries that effectively export this product",
-    "Market Growth": "Growth rate of global trade in this product",
+      "Effective number of countries exporting this product. Lower numbers indicate more concentrated markets.",
+    "Market Growth":
+      "The rate of increase in this product's market size from 2013 to 2022. A higher number indicates faster growth in this market.",
   };
 
   return (
@@ -120,8 +118,9 @@ const ProductRadar = () => {
 
     return selectedProducts.map((product) => {
       const cpyData = currentData.ggCpyList.find(
-        (cpy) => cpy.productId === product.productId,
+        (cpy) => cpy?.productId === product?.productId,
       );
+      if (!cpyData) return {};
       return {
         ...product,
         rca: cpyData?.normalizedExportRca || 0,
@@ -139,7 +138,7 @@ const ProductRadar = () => {
         .filter((d) => d.exportRca < 1)
         .map((d) => ({
           ...d,
-          score: 0.625 * d.normalizedPci + 0.375 * d.normalizedCog,
+          score: d.pciCogFeasibilityComposite,
         }));
 
       const topProducts = productsWithScores
@@ -163,63 +162,53 @@ const ProductRadar = () => {
 
   const radarData = useMemo(() => {
     const dimensions = [
-      "Global Market Share",
+      "Product Complexity",
       "Complexity Outlook Gain",
-      "Attractiveness",
+      "Feasibility",
       "Effective Exporters",
       "Market Growth",
     ];
 
     if (productData.length === 0 || !currentData?.ggCpyList) return [];
 
-    const dimensionRanges = dimensions.reduce((acc, dimension) => {
+    const dimensionBreakpoints = dimensions.reduce((acc, dimension) => {
       const valueKey = dimensionObject[dimension];
-
       const values = currentData.ggCpyList
         .map((product) => product[valueKey])
         .filter((v) => v != null)
         .sort((a, b) => a - b);
 
-      // Calculate quantile breakpoints
-      const quantileSize = values.length / 10;
-      const quantiles = Array.from({ length: 9 }, (_, i) => {
-        const index = Math.floor((i + 1) * quantileSize);
-        return values[Math.min(index, values.length - 1)];
-      });
+      const groupSize = values.length / 11;
+      acc[dimension] = Array(10)
+        .fill(0)
+        .map((_, i) => {
+          const index = Math.min(
+            Math.floor((i + 1) * groupSize),
+            values.length - 1,
+          );
+          return values[index];
+        });
 
-      acc[dimension] = {
-        quantiles: quantiles,
-        min: values[0],
-        max: values[values.length - 1],
-      };
       return acc;
     }, {});
 
     const scaleValue = (value, dimension) => {
-      const { quantiles, min } = dimensionRanges[dimension];
-      if (value <= min) return 1;
-
-      for (let i = 0; i < quantiles.length; i++) {
-        if (value <= quantiles[i]) return i + 2;
-      }
-      return 10;
+      const breakpoints = dimensionBreakpoints[dimension];
+      const score = breakpoints.findIndex((b) => value < b);
+      return score === -1 ? 10 : score;
     };
 
     return dimensions.map((dimension) => {
       const valueKey = dimensionObject[dimension];
-
-      const entry = {
+      return {
         dimension,
         ...productData.reduce((acc, product) => {
           const originalValue = product[valueKey] || 0;
           const scaledValue = scaleValue(originalValue, dimension);
-
-          acc[product.productId] = scaledValue;
-          acc[`${product.productId}_original`] = originalValue;
+          acc[product?.productId] = scaledValue;
           return acc;
         }, {}),
       };
-      return entry;
     });
   }, [productData, currentData?.ggCpyList]);
 
@@ -230,20 +219,20 @@ const ProductRadar = () => {
           Dimensions of {countryName}'s Opportunities in Green Value Chains
         </Typography>
       </Box>
-
       <Typography type="p" sx={{ mt: 2, mb: 8, fontSize: "22px" }}>
-        There are many dimensions to consider when evaluating an opportunity in
-        green value chains. These spider diagrams help compare and prioritize
-        opportunities in green value chains across 5 impactful dimensions.
+        These diagrams compare green value chain opportunities across five key
+        dimensions, to provide more perspective on the feasibility and
+        attractiveness of different opportunities.
       </Typography>
-
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, my: 2 }}>
         <Autocomplete
           sx={{ width: "300px" }}
           size="small"
           multiple
           options={products}
-          getOptionLabel={(option) => `${option.nameEn} (${option.code})`}
+          getOptionLabel={(option) => `${option.nameShortEn} (${option.code})`}
+          disableClearable
+          blurOnSelect
           renderInput={(params) => (
             <TextField
               size="sm"
@@ -258,7 +247,7 @@ const ProductRadar = () => {
         />
         {selectedProducts.map((product) => (
           <Box
-            key={product.productId}
+            key={product?.productId}
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -278,7 +267,7 @@ const ProductRadar = () => {
                 cursor: "default",
               }}
             >
-              {`${product.nameShortEn} (${product.code})`}
+              {`${product?.nameShortEn} (${product?.code})`}
               <CloseIcon
                 onClick={() => handleDelete(product)}
                 sx={{
@@ -300,15 +289,22 @@ const ProductRadar = () => {
       <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {productData.map((product) => (
           <Box
-            key={product.productId}
-            sx={{ m: 2, width: "45%", minWidth: 320 }}
+            key={product?.productId}
+            sx={{
+              m: 2,
+              width: "45%",
+              minWidth: 480,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
             <Typography
               variant="h6"
               align="center"
               sx={{ color: "black", fontWeight: 600 }}
             >
-              {product.nameShortEn}
+              {product?.nameShortEn}
             </Typography>
             <RadarChart
               width={480}
@@ -329,8 +325,8 @@ const ProductRadar = () => {
                 ticks={[0, 2, 4, 6, 8, 10]}
               />
               <Radar
-                name={product.nameEn}
-                dataKey={product.productId}
+                name={product?.nameEn}
+                dataKey={product?.productId}
                 stroke="#1F6584"
                 fill="#1F6584"
                 fillOpacity={0.6}
