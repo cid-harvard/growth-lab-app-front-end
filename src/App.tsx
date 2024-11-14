@@ -10,6 +10,7 @@ import {
   RouterProvider,
   Outlet,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import GlobalStyles from "./styling/GlobalStyles";
 import Helmet from "react-helmet";
@@ -22,7 +23,6 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import ReactGA from "react-ga4";
 import { overlayPortalContainerId } from "./Utils";
 import styled from "styled-components";
-import { json, csv } from "d3-fetch";
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_GA4_ID) {
   ReactGA.initialize([
@@ -76,48 +76,6 @@ const CustomIndustrySpaceTool = lazy(
 );
 const PageNotFound = lazy(() => import("./pages/pageNotFound"));
 const GreenGrowth = lazy(() => import("./pages/stories/greenGrowth"));
-
-const WIPORoot = lazy(() => import("./pages/wipo/routes/root"));
-const WIPOHomePage = lazy(() => import("./pages/wipo/routes/index/HomePage"));
-const WIPOCountry = lazy(() => import("./pages/wipo/routes/country"));
-const WIPOStrengths = lazy(
-  () => import("./pages/wipo/routes/country/Strengths"),
-);
-const WIPORemuneration = lazy(
-  () => import("./pages/wipo/routes/country/Remuneration"),
-);
-const WIPOCapabilities = lazy(
-  () => import("./pages/wipo/routes/country/Capabilities"),
-);
-const WIPOReccomendations = lazy(
-  () => import("./pages/wipo/routes/country/Reccomendations"),
-);
-const WIPOTreemap = lazy(
-  () => import("./pages/wipo/routes/country/Strengths/Treemap"),
-);
-const WIPOStrengthsTable = lazy(
-  () => import("./pages/wipo/routes/country/Strengths/StrengthsTable"),
-);
-const WIPOScatterplots = lazy(
-  () => import("./pages/wipo/routes/country/Remuneration/Scatterplot"),
-);
-const WIPORemunerationTable = lazy(
-  () => import("./pages/wipo/routes/country/Remuneration/RemunerationTable"),
-);
-const WIPOCapabilitiesScatterplot = lazy(
-  () => import("./pages/wipo/routes/country/Capabilities/Scatterplot"),
-);
-const WIPOCapabilitiesTable = lazy(
-  () => import("./pages/wipo/routes/country/Capabilities/CapabilitiesTable"),
-);
-const WIPOReccomendationsPlot = lazy(
-  () =>
-    import("./pages/wipo/routes/country/Reccomendations/ReccomendationsPlot"),
-);
-const WIPOReccomendationsTable = lazy(
-  () =>
-    import("./pages/wipo/routes/country/Reccomendations/ReccomendationsTable"),
-);
 
 export interface IAppContext {
   windowWidth: number;
@@ -242,64 +200,8 @@ const router = createBrowserRouter([
         element: <GreenGrowth />,
       },
       {
-        path: "wipo",
-        element: <WIPORoot />,
-        children: [
-          {
-            index: true,
-            element: <WIPOHomePage />,
-          },
-          {
-            path: "country/:countryId",
-            element: <WIPOCountry />,
-            loader: async ({ params: { countryId } }) =>
-              json(`/visualization_inputs/${countryId}_stats.json`),
-            children: [
-              {
-                path: "strengths",
-                element: <WIPOStrengths />,
-                loader: async ({ params: { countryId } }) =>
-                  csv(`/visualization_inputs/${countryId}_treemap.csv`),
-                children: [
-                  { path: "", element: <WIPOTreemap /> },
-                  { path: "table", element: <WIPOStrengthsTable /> },
-                ],
-              },
-              {
-                path: "remuneration",
-                element: <WIPORemuneration />,
-                loader: async () =>
-                  csv(`/visualization_inputs/innovation_scatterplots.csv`),
-                children: [
-                  { path: "", element: <WIPOScatterplots /> },
-                  { path: "table", element: <WIPORemunerationTable /> },
-                ],
-              },
-              {
-                path: "capabilities",
-                element: <WIPOCapabilities />,
-                loader: async ({ params: { countryId } }) =>
-                  csv(`/visualization_inputs/${countryId}_capabilities.csv`),
-                children: [
-                  { path: "", element: <WIPOCapabilitiesScatterplot /> },
-                  { path: "table", element: <WIPOCapabilitiesTable /> },
-                ],
-              },
-              {
-                path: "reccomendations",
-                element: <WIPOReccomendations />,
-                loader: async ({ params: { countryId } }) =>
-                  csv(
-                    `/visualization_inputs/${countryId}_expected_realized.csv`,
-                  ),
-                children: [
-                  { path: "", element: <WIPOReccomendationsPlot /> },
-                  { path: "table", element: <WIPOReccomendationsTable /> },
-                ],
-              },
-            ],
-          },
-        ],
+        path: "green-growth",
+        element: <Navigate to="/greenplexity" replace />,
       },
       {
         path: "*",

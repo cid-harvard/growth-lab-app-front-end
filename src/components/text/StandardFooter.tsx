@@ -232,11 +232,12 @@ export const socialIcon = {
 
 interface Props {
   socialItems?: {target: string, type: SocialType, alt?: string}[];
+  showGithubLink?: boolean;
 }
 
 const StandardFooter = (props: Props) => {
   const socialItems = props.socialItems === undefined ? defaultSocialIcons : props.socialItems;
-
+  const showGithubLink = props.showGithubLink === undefined ? true : props.showGithubLink;
   const socialItemsList = socialItems.map(({target, type, alt}) =>{
     return (
       <SocialLink
@@ -295,15 +296,17 @@ const StandardFooter = (props: Props) => {
             >
               Growth Lab
             </StyledLink>
-            <GitHubLink
-              href='https://github.com/cid-harvard/growth-lab-app-front-end'
-              target='_blank'
-              rel='noopener noreferrer'
-              color={'#333'}
+            {showGithubLink && (
+              <GitHubLink
+                href='https://github.com/cid-harvard/growth-lab-app-front-end'
+                target='_blank'
+                rel='noopener noreferrer'
+                color={'#333'}
             >
               <GitHubIcon src={GitHubIconSVG} alt='' title='' />
-              GitHub Repo
-            </GitHubLink>
+                GitHub Repo
+              </GitHubLink>
+            )}
           </RepoColumn>
           <SocialColumn>
             {socialItemsList}

@@ -12,7 +12,8 @@ import { useStackedBars } from "./useStackedBars";
 import Legend from "./Legend";
 import Box from "@mui/material/Box";
 import SupplyChainCircle from "./SupplyChainCircle";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { useMediaQuery, useTheme, Typography } from "@mui/material";
+import ExpectedOverlay from "./ExpectedOverlay";
 
 export const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -52,6 +53,8 @@ const ScrollyCanvas = ({
     countryId: countrySelection,
     width: width,
     height: isMobile ? screenSize.height - legendHeight : screenSize.height,
+    legendHeight: isMobile ? legendHeight : 0,
+    isMobile,
   });
 
   const layouts = useMemo(
@@ -138,27 +141,6 @@ const ScrollyCanvas = ({
         height={isMobile ? "88%" : "88%"}
         preserveAspectRatio="xMidYMid meet"
       >
-        {view.base === "bars" && (
-          <>
-            {expectedOverlays.map((overlay) => {
-              return (
-                <g
-                  key={`supply-chain-${overlay.parentId}`}
-                  className="parent-circle"
-                >
-                  <rect
-                    x={60}
-                    y={overlay.coords[0][1]}
-                    width={overlay.coords[0][0] - 60}
-                    height={overlay.coords[1][1] - overlay.coords[0][1]}
-                    fill="#f0f0f0"
-                    fillOpacity={0.7}
-                  />
-                </g>
-              );
-            })}
-          </>
-        )}
         {view.base === "bubbles" &&
           parentCircles.map((circle) => (
             <SupplyChainCircle
@@ -217,46 +199,17 @@ const ScrollyCanvas = ({
             />
           );
         })}
-        {view.base === "bars" && (
-          <>
-            {expectedOverlays.map((overlay) => {
-              const actualValue = Array.from(bars.values())
-                .filter((bar) => bar.parentId === overlay.parentId)
-                .reduce((sum, bar) => sum + bar.exportValue, 0);
-
-              return (
-                <g
-                  key={`supply-chain-${overlay.parentId}`}
-                  className="parent-circle"
-                >
-                  <rect
-                    x={overlay.coords[0][0]}
-                    y={overlay.coords[0][1]}
-                    width={5}
-                    height={overlay.coords[1][1] - overlay.coords[0][1]}
-                    fill="black"
-                    fillOpacity={0.7}
-                  />
-
-                  <text
-                    x={60}
-                    y={overlay.coords[0][1] - 8}
-                    fontSize="16px"
-                    textAnchor="start"
-                    fontWeight="600"
-                  >
-                    {overlay.name} Actual Value: {formatter.format(actualValue)}{" "}
-                    | World Average: {formatter.format(overlay.expectedTotal)}
-                  </text>
-                </g>
-              );
-            })}
-          </>
-        )}
+        {view.base === "bars" &&
+          expectedOverlays.map((overlay) => (
+            <ExpectedOverlay
+              key={overlay.parentId}
+              overlay={overlay}
+              bars={bars}
+              isMobile={isMobile}
+            />
+          ))}
       </svg>
-
       {!isMobile && <Legend key={view.legend} mode={view.legend} />}
-
       {view.base === "bubbles" &&
         parentCircles.map((circle) => (
           <div
@@ -265,9 +218,9 @@ const ScrollyCanvas = ({
             style={{
               position: "absolute",
               left: `${circle.x}px`,
-              bottom: `calc(${screenSize.height - (circle.y - circle.radius - (isMobile ? 0 : 10))}px - ${
-                isMobile ? `calc(12% + ${legendHeight}px)` : "12%"
-              })`,
+              bottom: isMobile
+                ? `calc(88% - ${legendHeight}px - ${circle.y - circle.radius - 3}px)`
+                : `calc(88% - ${circle.y - circle.radius - 10}px)`,
               transform: "translateX(-50%)",
               textAlign: "center",
               maxWidth: isMobile ? "none" : `${circle.radius * 2}px`,
@@ -278,6 +231,17 @@ const ScrollyCanvas = ({
             {circle.name}
           </div>
         ))}
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{
+          position: "absolute",
+          right: isMobile ? 40 : 200,
+          bottom: isMobile ? 4 : 10,
+        }}
+      >
+        {view.source}
+      </Typography>
     </>
   );
 };

@@ -7,13 +7,14 @@ import { useScreenSize } from "@visx/responsive";
 import { yearSelectionState } from "../ScollamaStory";
 import { countrySelectionState } from "../ScollamaStory";
 import { useRecoilValue } from "recoil";
+import { color } from "d3-color";
 
 const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
   const yearSelection = useRecoilValue(yearSelectionState);
   const countrySelection = useRecoilValue(countrySelectionState);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  // Get screen dimensions for the overlay
+
   const screenSize = useScreenSize({ debounceTime: 150 });
   const width = useMemo(
     () => (isMobile ? screenSize.width : screenSize.width - 160),
@@ -34,7 +35,7 @@ const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
     const prevBase = prevView.base;
     return { currentView, prevView, prevBase };
   }, [currentStep, prevStep, steps]);
-  // Get bubble data for highlighting
+
   const { childBubbles } = useSupplyChainBubbles({
     year: yearSelection,
     countryId: countrySelection,
@@ -58,7 +59,7 @@ const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
         yearSelection={yearSelection}
       />
 
-      {tooltipOpen && tooltipData && currentView.base === "bubbles" && (
+      {tooltipOpen && tooltipData && (
         <svg
           style={{
             position: "absolute",
@@ -78,27 +79,42 @@ const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
           }
           preserveAspectRatio="xMidYMid meet"
         >
-          {Array.from(childBubbles.values())
-            .filter(
-              (bubble) =>
-                bubble.data.product.code === tooltipData.data.product.code,
-            )
-            .map((bubble) => (
-              <circle
-                key={`highlight-${bubble.id}`}
-                cx={bubble.x}
-                cy={bubble.y}
-                r={bubble.r}
-                fill="none"
-                stroke="black"
-                strokeWidth={2}
-                strokeOpacity={1}
-              />
-            ))}
+          {currentView.base === "bubbles" &&
+            Array.from(childBubbles.values())
+              .filter(
+                (bubble) =>
+                  bubble.data.product.code === tooltipData.data.product.code,
+              )
+              .map((bubble) => (
+                <circle
+                  key={`highlight-${bubble.id}`}
+                  cx={bubble.x}
+                  cy={bubble.y}
+                  r={bubble.r}
+                  fill="none"
+                  stroke="black"
+                  strokeWidth={2}
+                  strokeOpacity={1}
+                />
+              ))}
+          {currentView.base === "bars" && tooltipData?.expectedExports && (
+            <path
+              d={
+                tooltipData?.coords
+                  ?.map(
+                    (point, i) =>
+                      `${i === 0 ? "M" : "L"} ${point[0]} ${point[1]}`,
+                  )
+                  .join(" ") + " Z"
+              }
+              fill={color(tooltipData.fill).brighter(0.75)}
+              fillOpacity={0.5}
+              stroke="none"
+            />
+          )}
         </svg>
       )}
 
-      {/* Existing Tooltip */}
       {tooltipOpen && (
         <Tooltip left={tooltipLeft} top={tooltipTop}>
           <Typography

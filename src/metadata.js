@@ -144,13 +144,6 @@ const metadata = [
     og_image: "growth-lab-hub.jpg",
     favicon: defaultFavicon,
   },
-  {
-    url: Routes.WIPO,
-    title: "WIPO | " + defaultTitle,
-    description: defaultDescription,
-    og_image: "growth-lab-hub.jpg",
-    favicon: defaultFavicon,
-  },
 ];
 
 const get = (route) => {

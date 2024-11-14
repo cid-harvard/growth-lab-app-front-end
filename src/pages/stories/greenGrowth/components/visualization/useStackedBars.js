@@ -9,7 +9,14 @@ import { useCallback } from "react";
 import { colorScale } from "../../utils";
 import { scaleLinear } from "d3-scale";
 
-export const useStackedBars = ({ year, countryId, width, height }) => {
+export const useStackedBars = ({
+  year,
+  countryId,
+  width,
+  height,
+  legendHeight,
+  isMobile,
+}) => {
   const { loading, error, data, previousData } = useQuery(GG_CPY_LIST_QUERY, {
     variables: { year: parseInt(year), countryId: parseInt(countryId) },
   });
@@ -23,7 +30,12 @@ export const useStackedBars = ({ year, countryId, width, height }) => {
       if (!ggCpyList || !width || !height)
         return { bars: [], expectedOverlays: [] };
 
-      const margin = { top: 40, right: 20, bottom: 40, left: 60 };
+      const margin = {
+        top: 40 + legendHeight,
+        right: 20,
+        bottom: 40,
+        left: isMobile ? 10 : 60,
+      };
       const chartWidth = width - margin.left - margin.right;
       const chartHeight = height - margin.top - margin.bottom - 100;
       const barPadding = 30;
@@ -164,7 +176,7 @@ export const useStackedBars = ({ year, countryId, width, height }) => {
       const bars = index(
         result.filter(
           (d) =>
-            !d.coords.flat().flat().includes(NaN) &&
+            !d?.coords?.flat()?.flat()?.includes(NaN) &&
             !d.id.includes("undefined"),
         ),
         (d) => d.id,
@@ -174,7 +186,14 @@ export const useStackedBars = ({ year, countryId, width, height }) => {
         expectedOverlays: expectedPositions,
       };
     },
-    [productLookup, supplyChainProductLookup, supplyChainLookup, width, height],
+    [
+      productLookup,
+      supplyChainProductLookup,
+      supplyChainLookup,
+      width,
+      height,
+      legendHeight,
+    ],
   );
 
   const layout = useMemo(

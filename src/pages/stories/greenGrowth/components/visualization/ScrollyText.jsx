@@ -31,7 +31,8 @@ const ScrollyText = ({ open, onClose, children }) => {
             overflowY: "auto",
             bgcolor: "background.paper",
             boxShadow: 24,
-            p: 4,
+            py: 4,
+            px: 3,
             borderRadius: 2,
           }}
         >

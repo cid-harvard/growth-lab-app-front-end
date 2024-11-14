@@ -83,13 +83,27 @@ export const useSupplyChainBubbles = ({
         : SUPPLY_CHAIN_LAYOUT_TALL;
       const numRows = isWide ? 2 : 5;
 
-      const margin = isWide ? 100 : 100;
+      const margin = isWide ? 100 : 10;
       const padding = 0;
-      const groupSpacing = isWide ? 40 : 0;
-      const rowSpacing = isWide ? 80 : 45;
+      const groupSpacing = isWide ? 40 : 6;
+      const rowSpacing = isWide ? 80 : 7;
 
-      const availableHeight = height - margin * 1.5 - rowSpacing * numRows;
-      const rowHeights = Array(numRows).fill(availableHeight / numRows);
+      const legendOffset = isWide ? 0 : 80;
+      const topMargin = isWide ? margin : 30 + legendOffset;
+      const bottomMargin = isWide ? margin : 40;
+
+      const availableHeight = isWide
+        ? height - margin * 1.5 - rowSpacing * numRows
+        : Math.min(
+            height - topMargin - bottomMargin - rowSpacing * (numRows - 1),
+            window.innerHeight -
+              topMargin -
+              bottomMargin -
+              rowSpacing * (numRows - 1),
+          );
+      const rowHeights = Array(numRows).fill(
+        availableHeight / (numRows * (isWide ? 1 : 1.1)),
+      );
 
       const supplyChainMap = new Map();
       ggCpyscList.forEach((item) => {
@@ -177,27 +191,35 @@ export const useSupplyChainBubbles = ({
         if (row === undefined) return;
 
         const rowHeight = rowHeights[row];
-        const cellWidth =
-          (width - margin * 2 - groupSpacing * (totalColsInRow - 1)) /
-          totalColsInRow;
+        const cellWidth = isWide
+          ? (width - margin * 2 - groupSpacing * (totalColsInRow - 1)) /
+            totalColsInRow
+          : (width - margin * 2 - groupSpacing) / 2;
 
-        const rowY =
-          margin +
-          rowHeights.slice(0, row).reduce((a, b) => a + b, 0) +
-          row * rowSpacing;
+        const rowY = isWide
+          ? margin +
+            rowHeights.slice(0, row).reduce((a, b) => a + b, 0) +
+            row * rowSpacing
+          : topMargin +
+            rowHeights.slice(0, row).reduce((a, b) => a + b, 0) +
+            row * rowSpacing;
 
         const groupX =
           margin + (cellWidth + groupSpacing) * col + cellWidth / 2;
         const groupY = rowY + rowHeight / 2;
 
         const groupPack = pack()
-          .size([cellWidth * 0.9, rowHeight * 0.9])
-          .padding(2)
+          .size([
+            cellWidth * (isWide ? 0.9 : 0.85),
+            rowHeight * (isWide ? 0.9 : 0.25),
+          ])
+          .padding(isWide ? 2 : 1)
           .radius((d) => {
             const baseRadius =
               Math.min(cellWidth, rowHeight) /
-              (2 * Math.sqrt(maxBubblesPerGroup));
-            return baseRadius * d.data.data.scaledRanking;
+              (isWide ? 2 : 3) /
+              Math.sqrt(maxBubblesPerGroup);
+            return baseRadius * d.data.data.scaledRanking * (isWide ? 1 : 1);
           });
 
         const packedGroup = groupPack(hierarchy(group).sum((d) => d.value));

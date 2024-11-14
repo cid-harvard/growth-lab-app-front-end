@@ -57,13 +57,13 @@ const CustomPolarAngleAxis = ({
 }) => {
   const tooltipContent = {
     "Product Complexity":
-      "Normalized measure of product complexity, indicating the sophistication and knowledge intensity required for production.",
+      "Measures the amount of diversity of knowhow required to make a product.",
     "Complexity Outlook Gain":
-      "Normalized measure of how this product could enable future diversification into complex products.",
+      "Measures opportunities for future diversification in entering a product, by opening new links to complex products.",
     Feasibility:
-      "Measure of how feasible it is for the country to develop competitive advantage in this product.",
+      "Measures the share of capabilities, skills, and know-how present in a location that is necessary to jumpstart a specific activity.",
     "Effective Exporters":
-      "Effective number of countries exporting this product. Lower numbers indicate more concentrated markets.",
+      "Measures the concentration of an industry, by estimating the number of countries that compete in the industry (assuming each country has an equal market share).",
     "Market Growth":
       "The rate of increase in this product's market size from 2013 to 2022. A higher number indicates faster growth in this market.",
   };
@@ -337,6 +337,18 @@ const ProductRadar = () => {
           </Box>
         ))}
       </Box>
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{
+          display: "block",
+          textAlign: "right",
+          mb: 2,
+          mr: 2,
+        }}
+      >
+        Source: Growth Lab research
+      </Typography>
     </Box>
   );
 };

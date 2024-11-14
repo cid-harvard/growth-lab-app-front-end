@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
-  ReferenceArea,
 } from "recharts";
 import { useQuery } from "@apollo/react-hooks";
 import { GG_CPY_LIST_QUERY } from "../../queries/cpy";
@@ -68,18 +67,6 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
             ATTRACTIVENESS
           </text>
         </MuiTooltip>
-
-        <text
-          x={x}
-          y={y + height / 2}
-          textAnchor="middle"
-          transform={`rotate(-90, ${x}, ${y + height / 2})`}
-        >
-          <tspan x={x} dy="1.2em" style={{ fontSize: "14px" }}>
-            (COG & PCI composite, standardized)
-          </tspan>
-        </text>
-
         {!isShort && (
           <>
             <text
@@ -125,13 +112,6 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
           FEASIBILITY
         </text>
       </MuiTooltip>
-
-      <text x={x + width / 2} y={y + height + 15} textAnchor="middle">
-        <tspan x={x + width / 2} dy="1.2em" style={{ fontSize: "14px" }}>
-          (DENSITY, STANDARDIZED)
-        </tspan>
-      </text>
-
       {!isNarrow && (
         <>
           <text
@@ -405,6 +385,19 @@ const ProductScatter = () => {
                 </Scatter>
               </ScatterChart>
             </ResponsiveContainer>
+
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{
+                display: "block",
+                textAlign: "right",
+                mb: 2,
+                mr: 2,
+              }}
+            >
+              Source: Growth Lab research
+            </Typography>
           </Box>
         </Box>
       </Box>

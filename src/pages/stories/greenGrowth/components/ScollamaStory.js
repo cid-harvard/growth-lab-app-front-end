@@ -34,7 +34,9 @@ const ScollamaStory = () => {
         tooltip: [],
         modalContent:
           "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+        legend: "size",
         legendHeight: 50,
+        source: "Source: Growth Lab research",
       },
 
       {
@@ -45,6 +47,7 @@ const ScollamaStory = () => {
         modalContent: `Here is ${countryName}'s competitiveness across different green value chains.`,
         legend: "rca",
         legendHeight: 50,
+        source: "Source: Growth Lab research",
       },
 
       {
@@ -57,6 +60,7 @@ const ScollamaStory = () => {
           "Critical minerals power the energy transition, since they form important inputs to many different energy technologies. Minerals are circled here with black borders. For the world to decarbonize, mineral producers will need to quickly scale-up production, which represents an important green growth opportunity for many countries. This requires mineral deposits and good mining policy.",
         legend: "minerals",
         legendHeight: 50,
+        source: "Source: Growth Lab research",
       },
       {
         title: "Competitiveness in Green Value Chains",
@@ -65,6 +69,7 @@ const ScollamaStory = () => {
         modalContent: `This shows ${countryName}'s actual presence (colored bar) in each green value chain versus the level if ${countryName} had average competitiveness in all value chain components (black line), revealing ${countryName}'s areas of strength and concentration.`,
         legend: "production",
         legendHeight: 50,
+        source: "Source: Growth Lab research",
       },
     ],
     [countryName],
@@ -107,9 +112,7 @@ const ScollamaStory = () => {
             {steps.map((step, index) => (
               <Step data={index} key={index}>
                 <div className="step-content">
-                  <div className="step-content-inner">
-                    <p>{step.modalContent}</p>
-                  </div>
+                  <div className="step-content-inner">{step.modalContent}</div>
                 </div>
               </Step>
             ))}
@@ -124,7 +127,7 @@ const ScollamaStory = () => {
         </div>
         <TakeoffPage />
         <Attribution />
-        <StandardFooter />
+        <StandardFooter showGithubLink={false} />
       </div>
     </div>
   );

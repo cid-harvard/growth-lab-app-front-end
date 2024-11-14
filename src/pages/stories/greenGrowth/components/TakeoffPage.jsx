@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography, Container, Button, Modal } from "@mui/material";
 import { styled } from "@mui/system";
 import { triggerGoogleAnalyticsEvent } from "../../../../routing/tracking";
@@ -46,12 +46,37 @@ const RegisterButton = styled(Button)(({ theme }) => ({
 
 const TakeoffPage = () => {
   const [open, setOpen] = useState(false);
+  const [hasBeenViewed, setHasBeenViewed] = useState(false);
+  const componentRef = useRef(null);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const countryName = useCountryName();
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasBeenViewed) {
+          triggerGoogleAnalyticsEvent(
+            "GREENPLEXITY",
+            "section-view",
+            "Reached bottom of Greenplexity",
+          );
+          setHasBeenViewed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+
+    if (componentRef.current) {
+      observer.observe(componentRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasBeenViewed]);
+
   return (
-    <GradientBackground>
+    <GradientBackground ref={componentRef}>
       <Container maxWidth="md" sx={{ mb: 6 }}>
         <Typography
           variant="h5"
@@ -73,11 +98,6 @@ const TakeoffPage = () => {
         >
           <RegisterButton
             onClick={() => {
-              triggerGoogleAnalyticsEvent(
-                "GREENPLEXITY",
-                "click-button",
-                "Green Growth Research",
-              );
               handleOpen();
             }}
             variant="contained"
@@ -87,9 +107,16 @@ const TakeoffPage = () => {
           <RegisterButton
             variant="contained"
             component="a"
-            href="https://growthlab.hks.harvard.edu/policy-area/green-growth"
+            href="https://growthlab.hks.harvard.edu/green-growth"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              triggerGoogleAnalyticsEvent(
+                "GREENPLEXITY",
+                "click-button",
+                "Green Growth Research",
+              );
+            }}
           >
             Green Growth Research
           </RegisterButton>

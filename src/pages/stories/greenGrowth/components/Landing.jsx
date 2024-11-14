@@ -15,6 +15,7 @@ import { countrySelectionState } from "./ScollamaStory";
 import { useQuery } from "@apollo/client";
 import { GET_COUNTRIES } from "../queries/countries";
 import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
+import { triggerGoogleAnalyticsEvent } from "../../../../routing/tracking";
 
 const GradientBackground = styled(Box)(({ theme }) => ({
   background:
@@ -173,7 +174,14 @@ const Landing = ({ onExplore }) => {
             <ExploreButton
               variant="contained"
               color="primary"
-              onClick={onExplore}
+              onClick={() => {
+                onExplore();
+                triggerGoogleAnalyticsEvent(
+                  "GREENPLEXITY",
+                  "click-button",
+                  "Explore",
+                );
+              }}
               sx={{ mt: 0 }}
             >
               <KeyboardArrowDownIcon fontSize="large" />

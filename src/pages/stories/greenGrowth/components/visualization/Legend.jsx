@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import { useMediaQuery, useTheme } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 const Legend = ({ mode }) => {
   const theme = useTheme();
@@ -26,6 +27,21 @@ const Legend = ({ mode }) => {
       case "minerals":
         return [
           { label: "Critical Minerals", color: "black", shape: "circle" },
+        ];
+      case "size":
+        return [
+          {
+            label: "More Important",
+            color: "black",
+            shape: "circle",
+            size: "large",
+          },
+          {
+            label: "Less Important",
+            color: "black",
+            shape: "circle",
+            size: "small",
+          },
         ];
       default:
         return [];
@@ -58,6 +74,28 @@ const Legend = ({ mode }) => {
                   borderRadius: "50%",
                   border: "2px solid black",
                   backgroundColor: "transparent",
+                }}
+              />
+            </div>
+          );
+        }
+        if (mode === "size") {
+          const circleSize =
+            item.size === "large"
+              ? isMobile
+                ? "15px"
+                : "20px"
+              : isMobile
+                ? "8px"
+                : "10px";
+          return (
+            <div style={{ ...shapeContainer }}>
+              <div
+                style={{
+                  width: circleSize,
+                  height: circleSize,
+                  borderRadius: "50%",
+                  backgroundColor: item.color,
                 }}
               />
             </div>
@@ -96,7 +134,7 @@ const Legend = ({ mode }) => {
           <div style={shapeContainer}>
             <div
               style={{
-                width: "2px",
+                width: "4px",
                 height: isMobile ? "15px" : "20px",
                 backgroundColor: item.color,
               }}
@@ -127,6 +165,42 @@ const Legend = ({ mode }) => {
     >
       {mode === "rca" && (
         <h3 style={{ margin: "0 0 10px 0" }}>Economic Competitiveness</h3>
+      )}
+      {mode === "size" && (
+        <Tooltip
+          title="The size of each product reflects its importance within a network of exported products, based on how often it is co-exported with other green value chain products in international trade data."
+          arrow
+          placement="top"
+        >
+          <h3
+            style={{
+              margin: "0 0 10px 0",
+              textDecoration: "underline",
+              cursor: "help",
+              display: "flex",
+            }}
+          >
+            Product Importance
+          </h3>
+        </Tooltip>
+      )}
+      {mode === "production" && (
+        <Tooltip
+          title="The world average of exports here indicates the level of exports a country would have if it exported goods in the same proportion as its overall share of global trade. This is calculated using an RCA (Revealed Comparative Advantage) index value of 1, also known as the Balassa index."
+          arrow
+          placement="top"
+        >
+          <h3
+            style={{
+              margin: "0 0 10px 0",
+              textDecoration: "underline",
+              cursor: "help",
+              display: "flex",
+            }}
+          >
+            Export Value
+          </h3>
+        </Tooltip>
       )}
       {items.map((item, index) => (
         <div
