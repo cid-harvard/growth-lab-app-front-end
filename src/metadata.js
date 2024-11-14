@@ -141,7 +141,7 @@ const metadata = [
     title: "Greenplexity | " + defaultTitle,
     description:
       "Identify green growth opportunities to generate prosperity by supplying what the world needs to decarbonize.",
-    og_image: "growth-lab-hub.jpg",
+    og_image: "greenplexity-card-background-lo.jpg",
     favicon: defaultFavicon,
   },
 ];
