@@ -29,7 +29,7 @@
     "graphql-tag": "^2.10.3",
     "lodash": "^4.17.15",
     "mapbox-gl": "^1.11.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "npm": "^6.14.2",
     "polished": "^3.4.4",
     "query-string": "^6.11.1",
