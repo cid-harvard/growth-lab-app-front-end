@@ -154,7 +154,7 @@ const ExploreMoreButtons = () => {
         <ButtonLink
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
-          href={"https://atlas.cid.harvard.edu/countries/155"}
+          href={"https://atlas.hks.harvard.edu/countries/516"}
           target={'_blank'}
           key={"linkout_namibia-country-profile"}
         >

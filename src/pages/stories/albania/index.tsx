@@ -586,7 +586,7 @@ const AlbaniaStory = () => {
           <SingleColumnNarrative>
             <StoryHeading>What Constrains Further Acceleration after COVID-19?</StoryHeading>
             <p ref={section_10}>
-              Based on our <a href='https://atlas.cid.harvard.edu/countries/4' target='_blank' rel='noopener noreferrer'>Atlas of Economic Complexity</a>, Albania’s anticipated steady state economic growth rate for the next 10 years based on the embedded capabilities of the economy is around 3.4%.
+              Based on our <a href='https://atlas.hks.harvard.edu/countries/516' target='_blank' rel='noopener noreferrer'>Atlas of Economic Complexity</a>, Albania’s anticipated steady state economic growth rate for the next 10 years based on the embedded capabilities of the economy is around 3.4%.
             </p>
             <h3>Growth Projections, 2018-2028</h3>
             <InlineVizContainer>

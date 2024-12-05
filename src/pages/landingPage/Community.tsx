@@ -54,7 +54,7 @@ const CommunityPage = () => {
           </Content>
 
           <Content>
-            Are you looking to collaborate on complementary projects?  Do you have ideas or critique to share?  We welcome all interest and inquiries and invite you to <a href='mailto:cidatlas@hks.harvard.edu'>drop us a line</a> or find us on <a href='https://github.com/cid-harvard'>Github</a> and <a href='https://twitter.com/HarvardGrwthLab'>Twitter</a>.
+            Are you looking to collaborate on complementary projects?  Do you have ideas or critique to share?  We welcome all interest and inquiries and invite you to <a href='mailto:growthlabtools@hks.harvard.edu'>drop us a line</a> or find us on <a href='https://github.com/cid-harvard'>Github</a> and <a href='https://twitter.com/HarvardGrwthLab'>Twitter</a>.
           </Content>
         </Root>
       </HubContentContainer>

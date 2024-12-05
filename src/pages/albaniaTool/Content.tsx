@@ -289,7 +289,7 @@ const AlbaniaToolContent = (props: Props) => {
                 triggerGoogleAnalyticsEvent(gaCategory, gaEvent, 'methodology_link')
               }
             >here</a> {textChunks[1]} <a
-              href='https://atlas.cid.harvard.edu/explore?country=4&product=undefined&year=2017&productClass=HS&target=Product&partner=undefined&startYear=undefined'
+              href='https://atlas.hks.harvard.edu/explore/treemap?exporter=country-516'
               target='_blank'
               rel='noopener noreferrer'
               onClick={() =>
@@ -317,7 +317,7 @@ const AlbaniaToolContent = (props: Props) => {
               rel='noopener noreferrer'
             >here</a>`},
             {key: '<<atlas_link>>', value: `<a
-              href='https://atlas.cid.harvard.edu/explore?country=4&product=undefined&year=2017&productClass=HS&target=Product&partner=undefined&startYear=undefined'
+              href='https://atlas.hks.harvard.edu/explore/treemap?exporter=country-516'
               target='_blank'
               rel='noopener noreferrer'
             >Atlas of Economic Complexity
@@ -634,7 +634,7 @@ const AlbaniaToolContent = (props: Props) => {
         textColor={'#fff'}
         linkColor={'#fff'}
         links={[
-          {label: 'Country Profile', target: 'https://atlas.cid.harvard.edu/countries/4'},
+          {label: 'Country Profile', target: 'https://atlas.hks.harvard.edu/countries/516'},
           {label: 'Country Research', target: 'https://albania.growthlab.hks.harvard.edu/'},
         ]}
         introText={introText}
@@ -654,7 +654,7 @@ const AlbaniaToolContent = (props: Props) => {
         exploreNextLinks={[
           {
             label: 'Country Profile',
-            target: 'https://atlas.cid.harvard.edu/countries/4',
+            target: 'https://atlas.hks.harvard.edu/countries/8',
           },
           {
             label: 'Country Research',
