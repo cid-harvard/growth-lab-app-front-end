@@ -9,6 +9,7 @@ const Routes = {
   BestOf2020: "/best-of-2020",
   BestOf2021: "/best-of-2021",
   BestOf2022: "/best-of-2022",
+  BestOf2024: "/best-of-2024",
   NamibiaTool: "/namibia-tool",
   CustomProductSpace: "/custom-product-space",
   CustomIndustrySpace: "/custom-industry-space",

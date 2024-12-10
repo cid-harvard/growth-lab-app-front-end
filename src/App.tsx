@@ -67,6 +67,7 @@ const JordanOverview = lazy(() => import("./pages/jordanTool/overviewPage"));
 const BestOf2020 = lazy(() => import("./pages/stories/bestOf/2020"));
 const BestOf2021 = lazy(() => import("./pages/stories/bestOf/2021"));
 const BestOf2022 = lazy(() => import("./pages/stories/bestOf/2022"));
+const BestOf2024 = lazy(() => import("./pages/stories/bestOf/2024"));
 const NamibiaTool = lazy(() => import("./pages/namibiaTool"));
 const CustomProductSpaceTool = lazy(
   () => import("./pages/iframeTools/CreateYourProductSpace"),
@@ -174,6 +175,10 @@ const router = createBrowserRouter([
       {
         path: routingRoutes.BestOf2022,
         element: <BestOf2022 />,
+      },
+      {
+        path: routingRoutes.BestOf2024,
+        element: <BestOf2024 />,
       },
       {
         path: routingRoutes.NamibiaTool,
