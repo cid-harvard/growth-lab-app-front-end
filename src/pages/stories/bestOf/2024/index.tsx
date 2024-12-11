@@ -7,25 +7,11 @@ import data from "./bestviz_2024-Sheet1.json";
 import { scrollToAnchor } from "../../../../hooks/useScrollBehavior";
 import { useLocation } from "react-router";
 import { storyMobileWidth } from "../../../../styling/Grid";
-import orderBy from "lodash/orderBy";
-
-// Type for the JSON data
-interface DataItem {
-  title: string;
-  image: string;
-  text: string;
-  source: string;
-  order: string;
-  link: string;
-  hash_id?: string;
-}
-
-const orderedData = orderBy(data as DataItem[], ["order"], ["asc"]);
 
 const BestOf2024 = () => {
   // Create refs for each section based on the data length
   const sections = useRef<Array<React.RefObject<HTMLParagraphElement>>>(
-    Array(orderedData.length)
+    Array(data.length)
       .fill(null)
       .map(() => React.createRef()),
   );
@@ -44,7 +30,7 @@ const BestOf2024 = () => {
 
   const metadata = get(Routes.BestOf2024);
 
-  const sectionsData: SectionDatum[] = orderedData.map((d, i) => {
+  const sectionsData: SectionDatum[] = data.map((d, i) => {
     const source =
       d.source && d.source.length ? (
         <>
@@ -80,7 +66,7 @@ const BestOf2024 = () => {
       metaDescription={metadata.description}
       coverPhotoSrc={{ low: CoverPhotoImageLowRes, high: CoverPhotoImage }}
       pageTitle={"Visual Insights from the Growth Lab's 2024 Research"}
-      dateLine={"December 2024"}
+      dateLine={"December 11, 2024"}
       byLine={null}
       introText={
         <p>

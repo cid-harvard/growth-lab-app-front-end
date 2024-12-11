@@ -108,9 +108,9 @@
     "hash_id": "us-manufacturing-concentration"
   },
   {
-    "title": "How Does Türkiye Contribute to the Global Innovation Landscape?",
+    "title": "How Many Countries Compete with Türkiye?",
     "image": "wipo.png",
-    "text": "This treemap depicts Türkiye's innovation ecosystem across three dimensions of innovation: science, technology, and production.  Türkiye belongs to the 92nd percentile of the distribution of countries by innovation capabilities, with its main contributions to the global innovation landscape concentrated in the technological dimension.",
+    "text": "This scatterplot evaluates the economic and strategic value of Türkiye's innovation capabilities relative to other countries. By analyzing the uniqueness of capabilities, the visualization provides insights into which areas offer the greatest reward, helping to prioritize efforts and resources to maximize benefits. Türkiye masters 47%, 50%, and 39% of the total capabilities in the scientific, technological, and productive innovation dimensions, respectively. On average, Türkiye's innovation capabilities are also present in 80, 86, and 112 other countries within these respective dimensions.",
     "source": "Growth Lab, WIPO research",
     "order": "13",
     "link": "",
