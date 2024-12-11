@@ -111,6 +111,15 @@ const metadata = [
     favicon: defaultFavicon,
   },
   {
+    url: Routes.BestOf2022,
+    title:
+      "Visual Insights from the Growth Lab's 2024 Research | " + defaultTitle,
+    description:
+      "2024's most notable visual insights from faculty, fellows, researchers and staff at Harvard’s Growth Lab.",
+    og_image: "best-of-2024-share-image.png",
+    favicon: defaultFavicon,
+  },
+  {
     url: Routes.NamibiaTool,
     title: "Namibia’s Industry Targeting Dashboard | " + defaultTitle,
     description: "View data visualizations for Namibia’s industries.",

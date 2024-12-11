@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import BestOfTemplate, { SectionDatum } from "./Template";
-// import CoverPhotoImage from "./header_image.png";
-// import CoverPhotoImageLowRes from "./header_image.png";
+import CoverPhotoImage from "./header_image.png";
+import CoverPhotoImageLowRes from "./header_image.png";
 import { get, Routes } from "../../../../metadata";
 import data from "./bestviz_2024-Sheet1.json";
 import { scrollToAnchor } from "../../../../hooks/useScrollBehavior";
@@ -17,6 +17,7 @@ interface DataItem {
   source: string;
   order: string;
   link: string;
+  hash_id?: string;
 }
 
 const orderedData = orderBy(data as DataItem[], ["order"], ["asc"]);
@@ -55,7 +56,7 @@ const BestOf2024 = () => {
     const url = d.link && d.link.length ? d.link : undefined;
 
     return {
-      id: `viz-${i + 1}`,
+      id: d.hash_id || `viz-${i + 1}`,
       title: d.title,
       text: (
         <p>
@@ -77,18 +78,21 @@ const BestOf2024 = () => {
     <BestOfTemplate
       metaTitle={metadata.title}
       metaDescription={metadata.description}
-      //   coverPhotoSrc={{ low: CoverPhotoImageLowRes, high: CoverPhotoImage }}
+      coverPhotoSrc={{ low: CoverPhotoImageLowRes, high: CoverPhotoImage }}
       pageTitle={"Visual Insights from the Growth Lab's 2024 Research"}
-      dateLine={"March 2024"}
+      dateLine={"December 2024"}
       byLine={null}
       introText={
         <p>
-          In 2024, the Growth Lab's research agenda continues to span multiple
-          continents, addressing critical development challenges across diverse
-          regions. Our researchers have focused on pressing issues including
-          water sustainability, gender equality in employment, green growth, and
-          regional economic development. Here are our top visual insights of
-          2024.
+          In 2024, the Growth Lab’s research agenda continues to span multiple
+          continents, addressing critical economic growth and development
+          challenges across diverse regions. Our researchers have focused on
+          pressing issues, including water sustainability, gender equality in
+          employment, green growth, and regional economic development. It’s our
+          mission to collaborate with policymakers and share our insights with
+          the world through teaching, publications, and open-access digital
+          tools. In this spirit, here are some visual insights from our research
+          in 2024.
         </p>
       }
       sectionsData={sectionsData}

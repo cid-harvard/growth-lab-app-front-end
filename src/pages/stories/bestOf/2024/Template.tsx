@@ -109,7 +109,7 @@ export interface SectionDatum {
 interface Props {
   metaTitle: string;
   metaDescription: string;
-  coverPhotoSrc?: {
+  coverPhotoSrc: {
     high: string;
     low: string;
   };
@@ -125,7 +125,7 @@ const BestOfTemplate = (props: Props) => {
   const {
     metaTitle,
     metaDescription,
-    // coverPhotoSrc,
+    coverPhotoSrc,
     sectionsData,
     pageTitle,
     dateLine,
@@ -222,8 +222,8 @@ const BestOfTemplate = (props: Props) => {
       </Helmet>
       <DefaultHubHeader backgroundColor={"rgb(75, 75, 75, 0.7)"} />
       <SmartCoverPhoto
-      // highResSrc={coverPhotoSrc.high}
-      // lowResSrc={coverPhotoSrc.low}
+        highResSrc={coverPhotoSrc.high}
+        lowResSrc={coverPhotoSrc.low}
       />
       <RootAlternative style={{ borderTop: "solid 1px #e1e1e1" }}>
         <StoriesGrid>
