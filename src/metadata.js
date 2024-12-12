@@ -16,7 +16,6 @@ const Routes = {
   PortEcosystemsStory: "/port-ecosystems",
   NamibiaWalvisBay: "/namibia-walvis-bay",
   GreenGrowth: "/greenplexity",
-  WIPO: "/wipo",
 };
 
 const defaultTitle = "The Growth Lab at Harvard Kennedy School";

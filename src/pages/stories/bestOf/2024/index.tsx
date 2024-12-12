@@ -66,7 +66,7 @@ const BestOf2024 = () => {
       metaDescription={metadata.description}
       coverPhotoSrc={{ low: CoverPhotoImageLowRes, high: CoverPhotoImage }}
       pageTitle={"Visual Insights from the Growth Lab's 2024 Research"}
-      dateLine={"December 11, 2024"}
+      dateLine={"December 12, 2024"}
       byLine={null}
       introText={
         <p>
