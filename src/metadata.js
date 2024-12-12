@@ -110,7 +110,7 @@ const metadata = [
     favicon: defaultFavicon,
   },
   {
-    url: Routes.BestOf2022,
+    url: Routes.BestOf2024,
     title:
       "Visual Insights from the Growth Lab's 2024 Research | " + defaultTitle,
     description:
