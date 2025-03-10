@@ -11,7 +11,7 @@ const Attribution = () => (
   >
     <Typography sx={{ fontSize: 14 }}>
       <span style={{ fontWeight: 600 }}>Growth Lab's Research Team:</span>{" "}
-      Muhammed Yildirim, Tim Cheston, Ketan Ahuja, Karan Daryanani
+      Muhammed Yildirim, Tim Cheston, Ketan Ahuja, Karan Daryanani, Lucas Lamby
       <br />
       <span style={{ fontWeight: 600 }}>
         Growth Lab's Digital Development & Design Team:
