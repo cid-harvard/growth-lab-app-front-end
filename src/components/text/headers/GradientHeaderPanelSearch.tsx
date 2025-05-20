@@ -1,25 +1,18 @@
-import React from 'react';
-import {
-  StandardH1,
-  secondaryFont,
-  Label,
-} from '../../../styling/styleUtils';
-import {
-  FullWidthHeader,
-  FullWidthHeaderContent,
-} from '../../../styling/Grid';
-import styled from 'styled-components';
-import PanelSearch, {Datum} from 'react-panel-search';
-import {triggerGoogleAnalyticsEvent} from '../../../routing/tracking';
-import DefaultHubHeader from '../../navigation/DefaultHubHeader';
+import React from "react";
+import { StandardH1, secondaryFont, Label } from "../../../styling/styleUtils";
+import { FullWidthHeader, FullWidthHeaderContent } from "../../../styling/Grid";
+import styled from "styled-components";
+import PanelSearch, { Datum } from "react-panel-search";
+import { triggerGoogleAnalyticsEvent } from "../../../routing/tracking";
+import DefaultHubHeader from "../../navigation/DefaultHubHeader";
 
 const Root = styled(FullWidthHeader)`
   grid-template-rows: auto auto;
 `;
 
-const GradientContainer = styled.div<{gradient: string}>`
+const GradientContainer = styled.div<{ gradient: string }>`
   padding: 0 0 2.5rem;
-  background: ${({gradient}) => gradient};
+  background: ${({ gradient }) => gradient};
 `;
 
 const mediumMediaWidth = 1000;
@@ -57,8 +50,8 @@ interface ImageProps {
 }
 
 const Logo = styled.img<ImageProps>`
-  width: ${({imgWidth}) => imgWidth ? imgWidth : '100%'};
-  height: ${({imgHeight}) => imgHeight ? imgHeight : 'auto'};
+  width: ${({ imgWidth }) => (imgWidth ? imgWidth : "100%")};
+  height: ${({ imgHeight }) => (imgHeight ? imgHeight : "auto")};
 
   @media (max-width: ${mediumMediaWidth}px) {
     max-width: 100%;
@@ -115,9 +108,9 @@ const ButtonContainer = styled.div`
   margin-top: 1.2rem;
 `;
 
-const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
-  border: 1px solid ${({primaryColor}) => primaryColor};
-  color: ${({primaryColor}) => primaryColor};
+const ButtonLink = styled.a<{ primaryColor: string; secondaryColor: string }>`
+  border: 1px solid ${({ primaryColor }) => primaryColor};
+  color: ${({ primaryColor }) => primaryColor};
   font-size: 0.875rem;
   text-transform: uppercase;
   text-decoration: none;
@@ -127,18 +120,18 @@ const ButtonLink = styled.a<{primaryColor: string, secondaryColor: string}>`
   display: inline-block;
 
   &:hover {
-    color: ${({secondaryColor}) => secondaryColor};
-    background-color: ${({primaryColor}) => primaryColor};
-    border-color: ${({primaryColor}) => primaryColor};
+    color: ${({ secondaryColor }) => secondaryColor};
+    background-color: ${({ primaryColor }) => primaryColor};
+    border-color: ${({ primaryColor }) => primaryColor};
   }
 `;
 
-const IntroText = styled.div<{primaryColor: string}>`
+const IntroText = styled.div<{ primaryColor: string }>`
   padding: 0 1rem;
   margin-bottom: 2rem;
 
   a {
-    color: ${({primaryColor}) => primaryColor};
+    color: ${({ primaryColor }) => primaryColor};
   }
 `;
 
@@ -149,8 +142,8 @@ interface LinkDatum {
 }
 
 export enum IntroTextPosition {
-  Top = 'Top',
-  Bottom = 'Bottom',
+  Top = "Top",
+  Bottom = "Bottom",
 }
 
 interface BaseProps {
@@ -166,93 +159,114 @@ interface BaseProps {
   introTextPosition?: IntroTextPosition;
 }
 
-type Props = BaseProps & (
-  {
-    hasSearch: false;
-  } | {
-    hasSearch: true;
-    searchLabelText: string;
-    data: Datum[];
-    selectedValue?: Datum;
-    onChange?: (val: Datum) => void;
-  }
-);
+type Props = BaseProps &
+  (
+    | {
+        hasSearch: false;
+      }
+    | {
+        hasSearch: true;
+        searchLabelText: string;
+        data: Datum[];
+        selectedValue?: Datum;
+        onChange?: (val: Datum | null) => void;
+      }
+  );
 
 const HeaderWithSearch = (props: Props) => {
   const {
-    title, imageSrc, textColor, primaryColor, links, linkColor,
-    imageProps, introText, gradient, introTextPosition,
+    title,
+    imageSrc,
+    textColor,
+    primaryColor,
+    links,
+    linkColor,
+    imageProps,
+    introText,
+    gradient,
+    introTextPosition,
   } = props;
 
-  const gaEventCategory = 'HEADER: ' + title;
+  const gaEventCategory = "HEADER: " + title;
 
-  const linkElms = links && links.length ? links.map(({label, target, internal}) => (
-    <ButtonLink
-      primaryColor={linkColor}
-      secondaryColor={linkColor === textColor ? primaryColor : textColor}
-      onClick={() => triggerGoogleAnalyticsEvent(gaEventCategory, 'click-link', label)}
-      href={target}
-      target={!internal ? '_blank' : undefined}
-      key={target + label}
-    >
-      {label}
-    </ButtonLink>
-  )) : null;
+  const linkElms =
+    links && links.length
+      ? links.map(({ label, target, internal }) => (
+          <ButtonLink
+            primaryColor={linkColor}
+            secondaryColor={linkColor === textColor ? primaryColor : textColor}
+            onClick={() =>
+              triggerGoogleAnalyticsEvent(gaEventCategory, "click-link", label)
+            }
+            href={target}
+            target={!internal ? "_blank" : undefined}
+            key={target + label}
+          >
+            {label}
+          </ButtonLink>
+        ))
+      : null;
 
-  const buttons = !linkElms || !linkElms.length ? null : (
-    <ButtonContainer>{linkElms}</ButtonContainer>
-  );
+  const buttons =
+    !linkElms || !linkElms.length ? null : (
+      <ButtonContainer>{linkElms}</ButtonContainer>
+    );
 
-  const searchBar = props.hasSearch === false ? null : (
-    <SearchRoot>
-      <SearchContainer>
-        <SearchLabel>{props.searchLabelText}</SearchLabel>
-        <PanelSearch
-          data={props.data}
-          topLevelTitle={'Classifications'}
-          disallowSelectionLevels={[1]}
-          onSelect={props.onChange}
-          selectedValue={props.selectedValue}
-          showCount={true}
-          resultsIdentation={1.75}
-          maxResults={500}
-          neverEmpty={true}
-        />
-      </SearchContainer>
-    </SearchRoot>
-  );
+  const searchBar =
+    props.hasSearch === false ? null : (
+      <SearchRoot>
+        <SearchContainer>
+          <SearchLabel>{props.searchLabelText}</SearchLabel>
+          <PanelSearch
+            data={props.data}
+            topLevelTitle={"Classifications"}
+            disallowSelectionLevels={[1]}
+            onSelect={props.onChange}
+            selectedValue={props.selectedValue}
+            showCount={true}
+            resultsIdentation={1.75}
+            maxResults={500}
+            neverEmpty={true}
+          />
+        </SearchContainer>
+      </SearchRoot>
+    );
 
-  const imgWidth = imageProps && imageProps.imgWidth ? imageProps.imgWidth : undefined;
-  const imgHeight = imageProps && imageProps.imgHeight ? imageProps.imgHeight : undefined;
+  const imgWidth =
+    imageProps && imageProps.imgWidth ? imageProps.imgWidth : undefined;
+  const imgHeight =
+    imageProps && imageProps.imgHeight ? imageProps.imgHeight : undefined;
   const img = !imageSrc ? null : (
     <LogoContainer>
-      <Logo src={imageSrc} alt={title} imgWidth={imgWidth} imgHeight={imgHeight} />
+      <Logo
+        src={imageSrc}
+        alt={title}
+        imgWidth={imgWidth}
+        imgHeight={imgHeight}
+      />
     </LogoContainer>
   );
 
   const introPara = introText ? (
     <FullWidthHeaderContent>
       <FullWidthHeaderContent>
-        <IntroText
-          primaryColor={primaryColor}
-        >
-          {introText}
-        </IntroText>
+        <IntroText primaryColor={primaryColor}>{introText}</IntroText>
       </FullWidthHeaderContent>
     </FullWidthHeaderContent>
   ) : null;
 
-  const introAndSearch = introTextPosition === IntroTextPosition.Bottom ? (
-    <>
-      {searchBar}
-      {introPara}
-    </>
-  ) : (
-    <>
-      {introPara}
-      {searchBar}
-    </>
-  );
+  const introAndSearch =
+    introTextPosition === IntroTextPosition.Bottom ? (
+      <>
+        {searchBar}
+        {introPara}
+      </>
+    ) : (
+      <>
+        {introPara}
+        {searchBar}
+      </>
+    );
 
   return (
     <Root>
@@ -261,9 +275,9 @@ const HeaderWithSearch = (props: Props) => {
         <ContentGrid>
           {img}
           <TitleContainer
-            style={{gridColumn: imageSrc ? undefined : '1 / 3'}}
+            style={{ gridColumn: imageSrc ? undefined : "1 / 3" }}
           >
-            <Title style={{color: textColor}}>{title}</Title>
+            <Title style={{ color: textColor }}>{title}</Title>
             {buttons}
           </TitleContainer>
         </ContentGrid>

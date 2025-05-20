@@ -23,6 +23,9 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import ReactGA from "react-ga4";
 import { overlayPortalContainerId } from "./Utils";
 import styled from "styled-components";
+import { loader as spaceVisualizerLoader } from "./pages/spaceVisualizer/loader";
+import DataSelection from "./pages/spaceVisualizer/DataSelection";
+import SpaceVisualizer from "./pages/spaceVisualizer";
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_GA4_ID) {
   ReactGA.initialize([
@@ -39,6 +42,7 @@ const useTrackPageView = () => {
     ReactGA.send({ hitType: "pageview", page: page });
   }, [routerLocation]);
 };
+
 const GATracker = () => {
   useTrackPageView();
   return null;
@@ -203,6 +207,15 @@ const router = createBrowserRouter([
       {
         path: routingRoutes.GreenGrowth,
         element: <GreenGrowth />,
+      },
+      {
+        path: routingRoutes.SpaceVisualizer,
+        element: <DataSelection />,
+      },
+      {
+        path: `${routingRoutes.SpaceVisualizer}/visualization`,
+        element: <SpaceVisualizer />,
+        loader: spaceVisualizerLoader,
       },
       {
         path: "green-growth",
