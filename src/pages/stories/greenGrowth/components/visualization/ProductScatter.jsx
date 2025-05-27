@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   ScatterChart,
   Scatter,
@@ -12,7 +12,10 @@ import {
 import { useQuery } from "@apollo/react-hooks";
 import { GG_CPY_LIST_QUERY } from "../../queries/cpy";
 import { useProductLookup } from "../../queries/products";
-import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";
+import {
+  useSupplyChainProductLookup,
+  useClusterToSupplyChains,
+} from "../../queries/supplyChainProducts";
 import { useSupplyChainLookup } from "../../queries/supplyChains";
 import { useRecoilValue } from "recoil";
 import { countrySelectionState } from "../ScollamaStory";
@@ -25,7 +28,14 @@ import {
   Paper,
   Tooltip as MuiTooltip,
   useMediaQuery,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
+import {
+  useQuery as useApolloQuery,
+  gql,
+  useApolloClient,
+} from "@apollo/client";
 
 const createUniqueProductKey = (product) => {
   return `${product}`;
@@ -36,7 +46,7 @@ const getProductColor = (product) => {
   for (let i = 0; i < product.length; i++) {
     hash = product.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const color = "#" + ((hash & 0x00ffffff) | 0x1000000).toString(16).slice(1);
+  const color = `#${((hash & 0x00ffffff) | 0x1000000).toString(16).slice(1)}`;
   return color;
 };
 
@@ -136,20 +146,43 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
   );
 };
 
+const CLUSTERS_QUERY = gql`
+  query Clusters {
+    ggClusterList {
+      clusterId
+      clusterName
+    }
+  }
+`;
+
+const CLUSTER_COUNTRY_QUERY = gql`
+  query ClusterCountry($clusterId: Int!, $countryId: Int!) {
+    ggClusterCountryList(clusterId: $clusterId, countryId: $countryId) {
+      clusterId
+      countryId
+      pci
+      cog
+      density
+      rca
+    }
+  }
+`;
+
 const ProductScatter = () => {
   const selectedCountry = useRecoilValue(countrySelectionState);
   const selectedYear = useRecoilValue(yearSelectionState);
   const countryName = useCountryName();
   const { loading, error, data, previousData } = useQuery(GG_CPY_LIST_QUERY, {
     variables: {
-      year: parseInt(selectedYear),
-      countryId: parseInt(selectedCountry),
+      year: Number.parseInt(selectedYear),
+      countryId: Number.parseInt(selectedCountry),
     },
   });
   const currentData = useMemo(() => data || previousData, [data, previousData]);
   const productLookup = useProductLookup();
   const supplyChainProductLookup = useSupplyChainProductLookup();
   const supplyChainLookup = useSupplyChainLookup();
+  const clusterToSupplyChains = useClusterToSupplyChains();
   const scatterData = useMemo(() => {
     if (!currentData || !currentData.ggCpyList) return [];
 
@@ -158,14 +191,14 @@ const ProductScatter = () => {
         const productDetails = productLookup.get(item.productId);
         const supplyChains = supplyChainProductLookup.get(item.productId) || [];
         const attractiveness =
-          0.6 * parseFloat(item.normalizedCog) +
-          0.4 * parseFloat(item.normalizedPci);
+          0.6 * Number.parseFloat(item.normalizedCog) +
+          0.4 * Number.parseFloat(item.normalizedPci);
 
         return {
           product: item.productId,
           productName: productDetails?.nameShortEn,
-          density: parseFloat(item.feasibilityStd),
-          rca: parseFloat(item.normalizedExportRca),
+          density: Number.parseFloat(item.feasibilityStd),
+          rca: Number.parseFloat(item.normalizedExportRca),
           color: getProductColor(item.productId),
           supplyChains: supplyChains.map((sc) => sc.supplyChainId),
           uniqueKey: createUniqueProductKey(item.productId),
@@ -177,9 +210,11 @@ const ProductScatter = () => {
 
   const allSupplyChains = useMemo(() => {
     const chains = new Set();
-    scatterData.forEach((item) => {
-      item.supplyChains.forEach((chainId) => chains.add(chainId));
-    });
+    for (const item of scatterData) {
+      for (const chainId of item.supplyChains) {
+        chains.add(chainId);
+      }
+    }
     return Array.from(chains).sort();
   }, [scatterData]);
 
@@ -206,6 +241,81 @@ const ProductScatter = () => {
     );
   };
 
+  const [viewMode, setViewMode] = useState("cluster"); // 'cluster' or 'product'
+
+  const { data: clustersData } = useApolloQuery(CLUSTERS_QUERY);
+  const clusters = clustersData?.ggClusterList || [];
+  const [clusterCountryData, setClusterCountryData] = useState([]);
+  const client = useApolloClient();
+  useEffect(() => {
+    if (!clusters.length || !selectedCountry) return;
+    let isMounted = true;
+    Promise.all(
+      clusters.map((cluster) =>
+        client
+          .query({
+            query: CLUSTER_COUNTRY_QUERY,
+            variables: {
+              clusterId: cluster.clusterId,
+              countryId: Number.parseInt(selectedCountry),
+            },
+          })
+          .then((res) =>
+            res.data.ggClusterCountryList.map((d) => ({
+              ...d,
+              clusterName: cluster.clusterName,
+              attractiveness: 0.6 * d.cog + 0.4 * d.pci,
+              uniqueKey: `cluster-${d.clusterId}-${d.countryId}`,
+            })),
+          ),
+      ),
+    ).then((results) => {
+      if (isMounted) {
+        setClusterCountryData(results.flat());
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [clusters, selectedCountry, client]);
+
+  // Add supply chain filter for clusters
+  const [selectedClusterSupplyChains, setSelectedClusterSupplyChains] =
+    useState([]);
+  // Get all supply chains present in clusters
+  const allClusterSupplyChains = useMemo(() => {
+    const set = new Set();
+    for (const arr of clusterToSupplyChains.values()) {
+      for (const item of arr) {
+        set.add(item.supplyChainId);
+      }
+    }
+    return Array.from(set).sort();
+  }, [clusterToSupplyChains]);
+  // Filter clusterCountryData by selected supply chains
+  const filteredClusterCountryData = useMemo(() => {
+    if (!selectedClusterSupplyChains.length) return clusterCountryData;
+    // Only include clusters that have at least one of the selected supply chains
+    return clusterCountryData.filter((d) => {
+      const clusterSupplyChains = (
+        clusterToSupplyChains.get(d.clusterId) || []
+      ).map((item) => item.supplyChainId);
+      return clusterSupplyChains.some((sc) =>
+        selectedClusterSupplyChains.includes(sc),
+      );
+    });
+  }, [clusterCountryData, selectedClusterSupplyChains, clusterToSupplyChains]);
+
+  // Filtered data for scatterplot
+  const filteredScatterData = useMemo(() => {
+    if (viewMode === "cluster") return filteredClusterCountryData;
+    return scatterData.filter(
+      (d) =>
+        selectedSupplyChains.length > 0 &&
+        d.supplyChains.some((chain) => selectedSupplyChains.includes(chain)),
+    );
+  }, [viewMode, filteredClusterCountryData, scatterData, selectedSupplyChains]);
+
   return (
     <Box sx={{ width: "100%", height: "auto" }}>
       <Box sx={{ px: 4, py: 2, height: "100%" }}>
@@ -228,16 +338,70 @@ const ProductScatter = () => {
           {countryName} develop. {countryName}'s best opportunities are towards
           the top right of the graph.
         </Typography>
-
-        <Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 1,
-              mb: 2,
-            }}
+        {/* Toggle Button Group */}
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          onChange={(e, newValue) => {
+            if (newValue !== null) setViewMode(newValue);
+          }}
+          sx={{ mb: 2 }}
+        >
+          <ToggleButton
+            value="cluster"
+            sx={{ textTransform: "none", fontSize: 16, px: 3 }}
           >
+            Manufacturing Clusters
+          </ToggleButton>
+          <ToggleButton
+            value="product"
+            sx={{ textTransform: "none", fontSize: 16, px: 3 }}
+          >
+            Products
+          </ToggleButton>
+        </ToggleButtonGroup>
+        {/* Add supply chain filter for clusters */}
+        {viewMode === "cluster" && (
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
+            {allClusterSupplyChains.map((chain) => (
+              <Button
+                key={chain}
+                variant={
+                  selectedClusterSupplyChains.includes(chain)
+                    ? "contained"
+                    : "outlined"
+                }
+                onClick={() =>
+                  setSelectedClusterSupplyChains((prev) =>
+                    prev.includes(chain)
+                      ? prev.filter((c) => c !== chain)
+                      : [...prev, chain],
+                  )
+                }
+                size="small"
+                sx={{
+                  color: "black",
+                  borderColor: "black",
+                  "&.MuiButton-contained": {
+                    backgroundColor: "#E4F3F6",
+                    "&:hover": {
+                      backgroundColor: "#c9e8ed",
+                    },
+                  },
+                  "&.MuiButton-outlined": {
+                    "&:hover": {
+                      backgroundColor: "rgba(228, 243, 246, 0.1)",
+                    },
+                  },
+                }}
+              >
+                {getSupplyChainName(chain)}
+              </Button>
+            ))}
+          </Box>
+        )}
+        {viewMode === "product" && (
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
             {allSupplyChains.map((chain) => (
               <Button
                 key={chain}
@@ -268,6 +432,8 @@ const ProductScatter = () => {
               </Button>
             ))}
           </Box>
+        )}
+        <Box>
           <Box
             sx={{
               position: "relative",
@@ -275,116 +441,135 @@ const ProductScatter = () => {
               mb: 6,
             }}
           >
-            <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart
-                margin={{
-                  top: 20,
-                  right: 20,
-                  bottom: 45,
-                  left: 20,
-                }}
-              >
-                {/* <ReferenceArea
-                  x1={0}
-                  x2={1}
-                  y1={0}
-                  y2={1}
-                  fill="#E4F3F680"
-                  fillOpacity={1}
-                /> */}
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  type="number"
-                  dataKey="density"
-                  name="Feasibility"
-                  label={<CustomAxisLabel axis="x" />}
-                  tick={{ fontSize: 12 }}
-                  // ticks={[-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]}
-                />
-                <YAxis
-                  type="number"
-                  dataKey="attractiveness"
-                  name="Attractiveness"
-                  label={<CustomAxisLabel axis="y" />}
-                  tick={{ fontSize: 12 }}
-                  // ticks={[-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]}
-                />
-                <Tooltip
-                  cursor={{ strokeDasharray: "3 3" }}
-                  content={({ payload }) => {
-                    if (payload && payload.length > 0) {
-                      const props = payload[0].payload;
-                      return (
-                        <Paper
-                          elevation={3}
-                          sx={{
-                            p: 1,
-                            minWidth: 200,
-                            maxWidth: 200,
-                            backgroundColor: "#fff",
-                            border: "1px solid #ddd",
-                            borderRadius: "4px",
-                          }}
-                        >
-                          <Typography
+            {filteredScatterData.length > 0 && (
+              <ResponsiveContainer width="100%" height="100%">
+                <ScatterChart
+                  margin={{
+                    top: 20,
+                    right: 20,
+                    bottom: 45,
+                    left: 20,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    type="number"
+                    dataKey="density"
+                    name="Feasibility"
+                    label={<CustomAxisLabel axis="x" />}
+                    tick={{ fontSize: 12 }}
+                  />
+                  <YAxis
+                    type="number"
+                    dataKey="attractiveness"
+                    name="Attractiveness"
+                    label={<CustomAxisLabel axis="y" />}
+                    tick={{ fontSize: 12 }}
+                  />
+                  <Tooltip
+                    cursor={{ strokeDasharray: "3 3" }}
+                    content={({ payload }) => {
+                      if (payload && payload.length > 0) {
+                        const props = payload[0].payload;
+                        if (viewMode === "cluster") {
+                          return (
+                            <Paper
+                              elevation={3}
+                              sx={{
+                                p: 1,
+                                minWidth: 200,
+                                maxWidth: 200,
+                                backgroundColor: "#fff",
+                                border: "1px solid #ddd",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              <Typography sx={{ fontSize: "16px", mb: 1 }}>
+                                {props.clusterName}
+                              </Typography>
+                              <hr style={{ width: "95%", margin: "10px 0" }} />
+                              <Box sx={{ display: "grid", gap: 1 }}>
+                                <Box>
+                                  <Typography>
+                                    Attractiveness:{" "}
+                                    <b>{props.attractiveness.toFixed(1)}</b>
+                                  </Typography>
+                                </Box>
+                                <Box>
+                                  <Typography>
+                                    Feasibility:{" "}
+                                    <b>{props.density.toFixed(1)}</b>
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </Paper>
+                          );
+                        }
+                        return (
+                          <Paper
+                            elevation={3}
                             sx={{
-                              fontSize: "16px",
-                              mb: 1,
+                              p: 1,
+                              minWidth: 200,
+                              maxWidth: 200,
+                              backgroundColor: "#fff",
+                              border: "1px solid #ddd",
+                              borderRadius: "4px",
                             }}
                           >
-                            {props.productName} ({props.product})
-                          </Typography>
-
-                          <hr style={{ width: "95%", margin: "10px 0" }} />
-
-                          <Box sx={{ display: "grid", gap: 1 }}>
-                            <Box>
-                              <Typography>
-                                Attractiveness:{" "}
-                                <b>{props.attractiveness.toFixed(1)}</b>
-                              </Typography>
+                            <Typography sx={{ fontSize: "16px", mb: 1 }}>
+                              {props.productName} ({props.product})
+                            </Typography>
+                            <hr style={{ width: "95%", margin: "10px 0" }} />
+                            <Box sx={{ display: "grid", gap: 1 }}>
+                              <Box>
+                                <Typography>
+                                  Attractiveness:{" "}
+                                  <b>{props.attractiveness.toFixed(1)}</b>
+                                </Typography>
+                              </Box>
+                              <Box>
+                                <Typography>
+                                  Feasibility: <b>{props.density.toFixed(1)}</b>
+                                </Typography>
+                              </Box>
+                              <Box>
+                                <Typography>
+                                  Value Chains:{" "}
+                                  <b>
+                                    {props.supplyChains
+                                      ?.map((chainId) =>
+                                        getSupplyChainName(chainId),
+                                      )
+                                      .join(", ")}
+                                  </b>
+                                </Typography>
+                              </Box>
                             </Box>
-                            <Box>
-                              <Typography>
-                                Feasibility: <b>{props.density.toFixed(1)}</b>
-                              </Typography>
-                            </Box>
-                            <Box>
-                              <Typography>
-                                Value Chains:{" "}
-                                <b>
-                                  {props.supplyChains
-                                    .map((chainId) =>
-                                      getSupplyChainName(chainId),
-                                    )
-                                    .join(", ")}
-                                </b>
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </Paper>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-                <Scatter
-                  data={filteredData}
-                  dataKey="uniqueKey"
-                  isAnimationActive={false}
-                >
-                  {filteredData.map((entry) => (
-                    <Cell
-                      key={entry.uniqueKey}
-                      stroke="#0F8A8F"
-                      strokeWidth={1}
-                      fill="#0F8A8F"
-                      fillOpacity={0.5}
-                    />
-                  ))}
-                </Scatter>
-              </ScatterChart>
-            </ResponsiveContainer>
+                          </Paper>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Scatter
+                    data={filteredScatterData}
+                    dataKey="uniqueKey"
+                    isAnimationActive={false}
+                  >
+                    {filteredScatterData.map((entry) => (
+                      <Cell
+                        key={entry.uniqueKey}
+                        stroke="#0F8A8F"
+                        strokeWidth={1}
+                        fill="#0F8A8F"
+                        fillOpacity={0.5}
+                      />
+                    ))}
+                  </Scatter>
+                </ScatterChart>
+              </ResponsiveContainer>
+            )}
 
             <Typography
               variant="caption"

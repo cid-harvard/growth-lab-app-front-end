@@ -8,6 +8,27 @@ import { max, index } from "d3-array";
 import { useCallback } from "react";
 import { colorScale } from "../../utils";
 import { scaleLinear } from "d3-scale";
+import { useQuery as useApolloQuery, gql } from "@apollo/client";
+
+const CLUSTERS_QUERY = gql`
+  query Clusters {
+    ggClusterList {
+      clusterId
+      clusterName
+    }
+  }
+`;
+
+const useClusterLookup = () => {
+  const { data } = useApolloQuery(CLUSTERS_QUERY);
+  return useMemo(
+    () =>
+      new Map(
+        (data?.ggClusterList || []).map((c) => [c.clusterId, c.clusterName]),
+      ),
+    [data?.ggClusterList],
+  );
+};
 
 export const useStackedBars = ({
   year,
@@ -18,11 +39,14 @@ export const useStackedBars = ({
   isMobile,
 }) => {
   const { loading, error, data, previousData } = useQuery(GG_CPY_LIST_QUERY, {
-    variables: { year: parseInt(year), countryId: parseInt(countryId) },
+    variables: {
+      year: Number.parseInt(year),
+      countryId: Number.parseInt(countryId),
+    },
   });
   const currentData = data || previousData;
   const productLookup = useProductLookup();
-  const supplyChainLookup = useSupplyChainLookup();
+  const clusterLookup = useClusterLookup();
   const supplyChainProductLookup = useSupplyChainProductLookup();
 
   const createLayout = useCallback(
@@ -40,34 +64,32 @@ export const useStackedBars = ({
       const chartHeight = height - margin.top - margin.bottom - 100;
       const barPadding = 30;
 
-      const sectorArray = ggCpyList.reduce((arr, product) => {
+      const clusterArray = ggCpyList.reduce((arr, product) => {
         const productDetails = productLookup.get(product.productId);
         const supplyChains =
           supplyChainProductLookup.get(product.productId) || [];
-
-        supplyChains.forEach((sc) => {
-          const supplyChainId = sc.supplyChainId;
-          const supplyChainDetails = supplyChainLookup.get(supplyChainId);
-          const supplyChainName = supplyChainDetails
-            ? supplyChainDetails.supplyChain
-            : supplyChainId;
-
+        const clusters = new Set(
+          supplyChains.map((sc) => sc.clusterId).filter((id) => id != null),
+        );
+        if (clusters.size === 0) return arr;
+        for (const clusterId of clusters) {
           arr.push({
             id: productDetails?.code,
-            parentId: supplyChainDetails.supplyChainId,
-            exportValue: parseFloat(product.exportValue) || 0,
-            expectedExports: parseFloat(product.expectedExports) || 0,
-            logtfExportValue: parseFloat(product.logtfExportValue) || 0,
-            logtfExpectedExports: parseFloat(product.logtfExpectedExports) || 0,
-            title: `${supplyChainName}-${productDetails?.nameShortEn}`,
-            value: parseFloat(product.exportValue) || 0,
-            parent: supplyChainDetails,
+            parentId: clusterId,
+            exportValue: Number.parseFloat(product.exportValue) || 0,
+            expectedExports: Number.parseFloat(product.expectedExports) || 0,
+            logtfExportValue: Number.parseFloat(product.logtfExportValue) || 0,
+            logtfExpectedExports:
+              Number.parseFloat(product.logtfExpectedExports) || 0,
+            title: `${clusterLookup.get(clusterId) || clusterId}-${productDetails?.nameShortEn}`,
+            value: Number.parseFloat(product.exportValue) || 0,
+            parent: { clusterId, clusterName: clusterLookup.get(clusterId) },
           });
-        });
+        }
         return arr;
       }, []);
 
-      const groupedData = sectorArray.reduce((acc, item) => {
+      const groupedData = clusterArray.reduce((acc, item) => {
         if (!acc[item.parentId]) {
           acc[item.parentId] = [];
         }
@@ -75,19 +97,16 @@ export const useStackedBars = ({
         return acc;
       }, {});
 
-      Object.keys(groupedData).forEach((parentId) => {
-        groupedData[parentId].sort((a, b) => b.exportValue - a.exportValue);
-      });
-
       const sortedParents = Object.keys(groupedData)
         .map((parentId) => ({
-          parentId: parseInt(parentId),
+          parentId: Number.parseInt(parentId),
           totalExports: groupedData[parentId].reduce(
             (sum, child) => sum + child.exportValue,
             0,
           ),
         }))
         .sort((a, b) => b.totalExports - a.totalExports)
+        .slice(0, 10)
         .map((item) => item.parentId);
 
       const barHeight =
@@ -120,14 +139,14 @@ export const useStackedBars = ({
         .domain([0, maxTotalValue])
         .range([0, chartWidth]);
 
-      let result = [];
-      let expectedPositions = [];
+      const result = [];
+      const expectedPositions = [];
 
       sortedParents.forEach((parentId, parentIndex) => {
         const children = groupedData[parentId];
         let cumulativeWidth = 0;
 
-        children.forEach((item) => {
+        for (const item of children) {
           const x = margin.left + xScale(cumulativeWidth);
           const itemWidth = xScale(item.exportValue);
           const y = margin.top + parentIndex * (barHeight + barPadding);
@@ -156,27 +175,26 @@ export const useStackedBars = ({
           });
 
           cumulativeWidth += item.exportValue;
-        });
+        }
 
         const x = margin.left + xScale(expectedTotals[parentId].absolute);
         const y = margin.top + parentIndex * (barHeight + barPadding);
 
         expectedPositions.push({
           parentId: parentId,
-          name: groupedData[parentId][0].parent.supplyChain,
+          name: clusterLookup.get(Number.parseInt(parentId)) || parentId,
           coords: [
             [x, y],
             [x, y + barHeight],
           ],
           expectedTotal: expectedTotals[parentId].absolute,
-          logtfExpectedTotal: expectedTotals[parentId].log,
           strokeWidth: 1,
         });
       });
       const bars = index(
         result.filter(
           (d) =>
-            !d?.coords?.flat()?.flat()?.includes(NaN) &&
+            !d?.coords?.flat()?.flat()?.includes(Number.NaN) &&
             !d.id.includes("undefined"),
         ),
         (d) => d.id,
@@ -189,10 +207,11 @@ export const useStackedBars = ({
     [
       productLookup,
       supplyChainProductLookup,
-      supplyChainLookup,
+      clusterLookup,
       width,
       height,
       legendHeight,
+      isMobile,
     ],
   );
 

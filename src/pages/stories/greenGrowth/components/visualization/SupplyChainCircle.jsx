@@ -27,12 +27,14 @@ const SupplyChainCircle = memo(({ circle, isAnimating }) => {
   const supplyChainProductLookup = useSupplyChainProductLookup();
 
   const products = useMemo(() => {
-    const supplyChains = Array.from(supplyChainProductLookup.values())
-      .filter((sc) => sc.some((item) => item.supplyChainId === circle.id))
-      .flat();
-
-    return supplyChains
-      .filter((item) => item.supplyChainId === circle.id)
+    // Flatten all product arrays
+    const allProducts = Array.from(supplyChainProductLookup.values()).flat();
+    // Filter by supplyChainId (circle.id)
+    const filtered = allProducts.filter(
+      (item) => item.supplyChainId === circle.id,
+    );
+    // Optionally, if you want to filter by clusterId, add: && item.clusterId === someClusterId
+    return filtered
       .map((item) => {
         const productDetails = productLookup.get(item.productId);
         return {

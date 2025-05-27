@@ -25,7 +25,6 @@ export const GG_CPY_LIST_QUERY = gql`
       countryId
       productId
       supplyChainId
-      productRanking
     }
   }
 `;
