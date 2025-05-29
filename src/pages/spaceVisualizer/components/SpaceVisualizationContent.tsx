@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import * as d3 from "d3";
+import React from "react";
+import type * as d3 from "d3";
 import type { Node } from "../loader";
 
 interface SpaceVisualizationContentProps {
@@ -96,7 +96,7 @@ export const SpaceVisualizationContent: React.FC<SpaceVisualizationContentProps>
           {showAllLinks
             ? allLinks.map((link, i) => (
                 <line
-                  key={i}
+                  key={`link-${link.x1}-${link.y1}-${link.x2}-${link.y2}`}
                   x1={xScale(link.x1)}
                   y1={yScale(link.y1)}
                   x2={xScale(link.x2)}
@@ -132,7 +132,7 @@ export const SpaceVisualizationContent: React.FC<SpaceVisualizationContentProps>
 
             return (
               <circle
-                key={i}
+                key={`node-${nodeId}`}
                 cx={xScale(x)}
                 cy={yScale(y)}
                 r={radius}

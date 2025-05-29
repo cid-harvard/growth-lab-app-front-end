@@ -137,21 +137,21 @@ const SpaceVisualizationInner: React.FC<
         .nice();
 
       return { xScale, yScale };
-    } else {
-      const xScale = d3
-        .scaleLinear()
-        .domain([0, 1])
-        .range([margin.left, width - margin.right])
-        .nice();
-
-      const yScale = d3
-        .scaleLinear()
-        .domain([0, 1])
-        .range([height - margin.bottom, margin.top])
-        .nice();
-
-      return { xScale, yScale };
     }
+
+    const xScale = d3
+      .scaleLinear()
+      .domain([0, 1])
+      .range([margin.left, width - margin.right])
+      .nice();
+
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, 1])
+      .range([height - margin.bottom, margin.top])
+      .nice();
+
+    return { xScale, yScale };
   }, [width, height, margin, dataExtents]);
 
   const initialTransform = useMemo(() => {
@@ -225,8 +225,18 @@ const SpaceVisualizationInner: React.FC<
 
   // Create a shared fallback color scale for categories
   const categoryColorScale = useMemo(() => {
-    return d3.scaleOrdinal(d3.schemeCategory10);
-  }, []);
+    // Get unique categories from nodes
+    const categories = Array.from(
+      new Set(
+        nodes
+          .map((node) => String(node[fieldNames.category || ""]))
+          .filter(Boolean),
+      ),
+    );
+
+    // Create scale with proper domain
+    return d3.scaleOrdinal(d3.schemeCategory10).domain(categories);
+  }, [nodes, fieldNames.category]);
 
   const { tooltipData, tooltipLeft, tooltipTop, showTooltip, hideTooltip } =
     useTooltip<Node>();

@@ -26,6 +26,7 @@ import styled from "styled-components";
 import { loader as spaceVisualizerLoader } from "./pages/spaceVisualizer/loader";
 import DataSelection from "./pages/spaceVisualizer/DataSelection";
 import SpaceVisualizer from "./pages/spaceVisualizer";
+import PasswordGate from "./components/general/PasswordGate";
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_GA4_ID) {
   ReactGA.initialize([
@@ -210,11 +211,19 @@ const router = createBrowserRouter([
       },
       {
         path: routingRoutes.SpaceVisualizer,
-        element: <DataSelection />,
+        element: (
+          <PasswordGate>
+            <DataSelection />
+          </PasswordGate>
+        ),
       },
       {
         path: `${routingRoutes.SpaceVisualizer}/visualization`,
-        element: <SpaceVisualizer />,
+        element: (
+          <PasswordGate>
+            <SpaceVisualizer />
+          </PasswordGate>
+        ),
         loader: spaceVisualizerLoader,
       },
       {

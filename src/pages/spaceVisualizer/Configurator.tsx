@@ -34,6 +34,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useLoaderData } from "react-router-dom";
 import type { LoaderData } from "./loader";
+import { Link } from "react-router-dom";
 
 interface FieldNames {
   id: string;
@@ -301,14 +302,26 @@ export default function Configurator({
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6">Growth Lab Space Viewer</Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <svg width="28" height="28" viewBox="0 0 95.6 93.3">
-              <title>Growth Lab Logo</title>
-              <path
-                fill="#ed3f4b"
-                d="M84.7,58.5c-4.7,0-8.9,3.2-10.1,7.7h-7.1V50.5h3.3c9.5,0,17.1-7.6,17.1-17c0-9.4-7.7-17-17.1-17c-1.2,0-2.5,0.2-3.7,0.4
+            <Link
+              to="/space-viewer"
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h6">Growth Lab Space Viewer</Typography>
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 95.6 93.3"
+                style={{ marginLeft: "4px" }}
+              >
+                <title>Growth Lab Logo</title>
+                <path
+                  fill="#ed3f4b"
+                  d="M84.7,58.5c-4.7,0-8.9,3.2-10.1,7.7h-7.1V50.5h3.3c9.5,0,17.1-7.6,17.1-17c0-9.4-7.7-17-17.1-17c-1.2,0-2.5,0.2-3.7,0.4
 	C61.3,5.3,47.3,0.7,35.8,6.5c-6.1,3.1-10.6,8.7-12.2,15.3c-0.6-0.1-1.3-0.2-1.9-0.2c-8,0-14.5,6.5-14.5,14.5c0,8,6.5,14.5,14.5,14.5
 	h5.9v15.8h-7.1c-1.4-5.5-7.1-8.9-12.7-7.4c-5.6,1.4-8.9,7.1-7.5,12.6s7.1,8.9,12.7,7.4c3.7-0.9,6.5-3.8,7.5-7.4h9.7
 	c1.5,0,2.6-1.1,2.7-2.6V50.5h12.1v18.7c-5.6,1.4-8.9,7.1-7.5,12.6c1.4,5.5,7.1,8.9,12.7,7.4c5.6-1.4,8.9-7.1,7.5-12.6
@@ -317,8 +330,9 @@ export default function Configurator({
 	C15.7,71.7,13.4,74,10.4,74C10.5,74,10.4,74,10.4,74L10.4,74z M52.8,79.2c0,2.9-2.3,5.2-5.2,5.2c-2.9,0-5.2-2.3-5.2-5.2
 	c0-2.9,2.3-5.2,5.2-5.2c0,0,0,0,0,0C50.4,74,52.8,76.3,52.8,79.2C52.8,79.2,52.8,79.2,52.8,79.2L52.8,79.2z M84.7,74
 	c-2.9,0-5.2-2.3-5.2-5.2s2.3-5.2,5.2-5.2c2.9,0,5.2,2.3,5.2,5.2c0,0,0,0,0,0C89.9,71.7,87.6,74,84.7,74L84.7,74z"
-              />
-            </svg>
+                />
+              </svg>
+            </Link>
           </Box>
         </Box>
         <Box sx={{ p: 2, flex: 1, overflowY: "auto" }}>

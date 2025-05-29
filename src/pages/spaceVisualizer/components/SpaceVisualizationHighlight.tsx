@@ -122,19 +122,6 @@ export const SpaceVisualizationHighlight: React.FC<SpaceVisualizationHighlightPr
 
       return (
         <g>
-          {connectedLinks.map((link, i) => (
-            <line
-              key={`highlight-link-${i}`}
-              x1={xScale(link.x1)}
-              y1={yScale(link.y1)}
-              x2={xScale(link.x2)}
-              y2={yScale(link.y2)}
-              stroke="grey"
-              strokeOpacity={0.6}
-              strokeWidth={2}
-              style={{ pointerEvents: "none" }}
-            />
-          ))}
           {connectedNodes.map((node) => {
             const radius = fieldNames.radius
               ? (() => {
@@ -188,6 +175,19 @@ export const SpaceVisualizationHighlight: React.FC<SpaceVisualizationHighlightPr
               />
             );
           })()}
+          {connectedLinks.map((link, i) => (
+            <line
+              key={`highlight-link-${i}`}
+              x1={xScale(link.x1)}
+              y1={yScale(link.y1)}
+              x2={xScale(link.x2)}
+              y2={yScale(link.y2)}
+              stroke="grey"
+              strokeOpacity={0.6}
+              strokeWidth={2}
+              style={{ pointerEvents: "none" }}
+            />
+          ))}
         </g>
       );
     },
