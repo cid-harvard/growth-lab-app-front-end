@@ -147,6 +147,47 @@ export default function DataSelection() {
     meta: string;
   }>({ nodes: "", links: "", meta: "" });
 
+  // Utility function to transform Dropbox URLs for CORS compatibility
+  const transformDropboxUrl = (url: string): string => {
+    if (!url.includes("dropbox.com")) {
+      return url; // Not a Dropbox URL, return as-is
+    }
+
+    let transformedUrl = url;
+
+    // Replace dropbox.com domain with dl.dropboxusercontent.com
+    if (url.includes("www.dropbox.com")) {
+      transformedUrl = url.replace(
+        "www.dropbox.com",
+        "dl.dropboxusercontent.com",
+      );
+    } else if (
+      url.includes("dropbox.com") &&
+      !url.includes("dl.dropboxusercontent.com")
+    ) {
+      transformedUrl = url.replace("dropbox.com", "dl.dropboxusercontent.com");
+    }
+
+    // Replace dl=0 with dl=1 to get raw file
+    if (transformedUrl.includes("dl=0")) {
+      transformedUrl = transformedUrl.replace("dl=0", "dl=1");
+    } else if (
+      transformedUrl.includes("?") &&
+      !transformedUrl.includes("dl=")
+    ) {
+      // Add dl=1 if no dl parameter exists but there are other parameters
+      transformedUrl += "&dl=1";
+    } else if (
+      !transformedUrl.includes("?") &&
+      !transformedUrl.includes("dl=")
+    ) {
+      // Add dl=1 if no parameters exist at all
+      transformedUrl += "?dl=1";
+    }
+
+    return transformedUrl;
+  };
+
   // Default dataset options
   const defaultDatasets = [
     {
@@ -236,13 +277,20 @@ export default function DataSelection() {
       return; // Don't proceed if required URLs are missing
     }
 
-    // Encode the URLs for the query parameters
+    // Transform Dropbox URLs to handle CORS restrictions
+    const transformedNodesUrl = transformDropboxUrl(remoteUrls.nodes);
+    const transformedLinksUrl = transformDropboxUrl(remoteUrls.links);
+    const transformedMetaUrl = remoteUrls.meta
+      ? transformDropboxUrl(remoteUrls.meta)
+      : "";
+
+    // Encode the transformed URLs for the query parameters
     const params = new URLSearchParams();
     params.append("remote", "true");
-    params.append("nodesUrl", encodeURIComponent(remoteUrls.nodes));
-    params.append("linksUrl", encodeURIComponent(remoteUrls.links));
-    if (remoteUrls.meta) {
-      params.append("metaUrl", encodeURIComponent(remoteUrls.meta));
+    params.append("nodesUrl", encodeURIComponent(transformedNodesUrl));
+    params.append("linksUrl", encodeURIComponent(transformedLinksUrl));
+    if (transformedMetaUrl) {
+      params.append("metaUrl", encodeURIComponent(transformedMetaUrl));
     }
 
     navigate(`/space-viewer/visualization?${params.toString()}`);

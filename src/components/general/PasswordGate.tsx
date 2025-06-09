@@ -35,12 +35,20 @@ const PasswordGate: FC<PasswordGateProps> = ({ children }) => {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         background: "#f5f5f5",
+        zIndex: 9999,
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
       }}
     >
       <form
@@ -53,19 +61,56 @@ const PasswordGate: FC<PasswordGateProps> = ({ children }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          maxWidth: "400px",
+          width: "90%",
+          boxSizing: "border-box",
         }}
       >
-        <h2>Enter Password</h2>
+        <h2 style={{ margin: "0 0 20px 0", fontSize: "24px", color: "#333" }}>
+          Enter Password
+        </h2>
         <input
           type="password"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          style={{ padding: 8, fontSize: 16, marginBottom: 12 }}
+          style={{
+            padding: 12,
+            fontSize: 16,
+            marginBottom: 16,
+            border: "1px solid #ddd",
+            borderRadius: 4,
+            width: "100%",
+            boxSizing: "border-box",
+          }}
+          placeholder="Password"
         />
-        <button type="submit" style={{ padding: "8px 16px", fontSize: 16 }}>
+        <button
+          type="submit"
+          style={{
+            padding: "12px 24px",
+            fontSize: 16,
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: 4,
+            cursor: "pointer",
+            width: "100%",
+          }}
+        >
           Unlock
         </button>
-        {error && <div style={{ color: "red", marginTop: 12 }}>{error}</div>}
+        {error && (
+          <div
+            style={{
+              color: "#dc3545",
+              marginTop: 16,
+              textAlign: "center",
+              fontSize: "14px",
+            }}
+          >
+            {error}
+          </div>
+        )}
       </form>
     </div>
   );

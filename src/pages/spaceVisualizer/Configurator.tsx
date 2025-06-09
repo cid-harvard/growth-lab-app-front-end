@@ -71,6 +71,39 @@ interface ConfiguratorProps {
 
 const SCALE_TYPES = ["linear", "log", "sqrt", "pow"];
 
+// Utility function to convert JSON array to CSV
+const convertToCSV = (data: Record<string, unknown>[]): string => {
+  if (!data || data.length === 0) return "";
+
+  const headers = Object.keys(data[0]);
+  const csvContent = [
+    headers.join(","),
+    ...data.map((row) =>
+      headers
+        .map((header) => {
+          const rawValue = row[header];
+          // Handle values that contain commas, newlines, or quotes
+          if (rawValue === null || rawValue === undefined) {
+            return "";
+          }
+          let value = String(rawValue);
+          if (
+            value.includes(",") ||
+            value.includes("\n") ||
+            value.includes('"')
+          ) {
+            // Escape quotes and wrap in quotes
+            value = `"${value.replace(/"/g, '""')}"`;
+          }
+          return value;
+        })
+        .join(","),
+    ),
+  ].join("\n");
+
+  return csvContent;
+};
+
 export function inferFieldNames(
   nodeKeys: string[],
   linkKeys?: string[],
@@ -203,41 +236,57 @@ export default function Configurator({
   };
 
   const handleDownload = () => {
-    // Download nodes data
-    const nodesBlob = new Blob([JSON.stringify(nodes, null, 2)], {
-      type: "application/json",
+    // Download nodes data as CSV
+    const nodesCsv = convertToCSV(nodes);
+    const nodesBlob = new Blob([nodesCsv], {
+      type: "text/csv",
     });
     const nodesUrl = URL.createObjectURL(nodesBlob);
     const nodesLink = document.createElement("a");
     nodesLink.href = nodesUrl;
-    nodesLink.download = "nodes.json";
+    nodesLink.download = "nodes.csv";
     document.body.appendChild(nodesLink);
     nodesLink.click();
     document.body.removeChild(nodesLink);
     URL.revokeObjectURL(nodesUrl);
 
-    // Download links data
-    const linksBlob = new Blob([JSON.stringify(links, null, 2)], {
-      type: "application/json",
+    // Download links data as CSV
+    const linksCsv = convertToCSV(links);
+    const linksBlob = new Blob([linksCsv], {
+      type: "text/csv",
     });
     const linksUrl = URL.createObjectURL(linksBlob);
     const linksLink = document.createElement("a");
     linksLink.href = linksUrl;
-    linksLink.download = "links.json";
+    linksLink.download = "links.csv";
     document.body.appendChild(linksLink);
     linksLink.click();
     document.body.removeChild(linksLink);
     URL.revokeObjectURL(linksUrl);
 
-    // Download metadata if available
-    if (metadata && metadata.length > 0) {
-      const metadataBlob = new Blob([JSON.stringify(metadata, null, 2)], {
-        type: "application/json",
+    // Download metadata - use defaultMetadata if available, otherwise use regular metadata
+    let metadataToDownload = null;
+    if (defaultMetadata && defaultMetadata.length > 0) {
+      // For products dataset, use the display metadata that's actually used for visualization
+      // Use cluster_name (full name) to match the product_space_cluster_name field in nodes
+      metadataToDownload = defaultMetadata.map((meta) => ({
+        category: meta.cluster_name,
+        color: meta.cluster_col,
+      }));
+    } else if (metadata && metadata.length > 0) {
+      // For other datasets, use the uploaded metadata
+      metadataToDownload = metadata;
+    }
+
+    if (metadataToDownload) {
+      const metadataCsv = convertToCSV(metadataToDownload);
+      const metadataBlob = new Blob([metadataCsv], {
+        type: "text/csv",
       });
       const metadataUrl = URL.createObjectURL(metadataBlob);
       const metadataLink = document.createElement("a");
       metadataLink.href = metadataUrl;
-      metadataLink.download = "metadata.json";
+      metadataLink.download = "metadata.csv";
       document.body.appendChild(metadataLink);
       metadataLink.click();
       document.body.removeChild(metadataLink);
@@ -573,7 +622,8 @@ export default function Configurator({
             <Divider sx={{ my: 2 }} />
 
             {/* METADATA SECTION */}
-            {metadata && metadata.length > 0 && !defaultMetadata ? (
+            {(metadata && metadata.length > 0 && !defaultMetadata) ||
+            (defaultMetadata && defaultMetadata.length > 0) ? (
               <>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <FormLabel>
@@ -589,42 +639,23 @@ export default function Configurator({
                   </Tooltip>
                 </Box>
 
-                <FormControl fullWidth>
-                  <InputLabel>Node Category Field</InputLabel>
-                  <Select
-                    value={fieldNames.category || ""}
-                    label="Node Category Field"
-                    onChange={(e) =>
-                      setFieldNames((prev) => ({
-                        ...prev,
-                        category: e.target.value || undefined,
-                      }))
-                    }
-                  >
-                    <MenuItem value="">None</MenuItem>
-                    {nodeKeys.map((key) => (
-                      <MenuItem key={key} value={key}>
-                        {key}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                {fieldNames.category && (
+                {/* Only show configuration options for custom metadata, not defaultMetadata */}
+                {metadata && metadata.length > 0 && !defaultMetadata && (
                   <>
                     <FormControl fullWidth>
-                      <InputLabel>Metadata ID Field</InputLabel>
+                      <InputLabel>Node Category Field</InputLabel>
                       <Select
-                        value={fieldNames.metaId || ""}
-                        label="Metadata ID Field"
+                        value={fieldNames.category || ""}
+                        label="Node Category Field"
                         onChange={(e) =>
                           setFieldNames((prev) => ({
                             ...prev,
-                            metaId: e.target.value || undefined,
+                            category: e.target.value || undefined,
                           }))
                         }
                       >
-                        {metaKeys.map((key) => (
+                        <MenuItem value="">None</MenuItem>
+                        {nodeKeys.map((key) => (
                           <MenuItem key={key} value={key}>
                             {key}
                           </MenuItem>
@@ -632,46 +663,82 @@ export default function Configurator({
                       </Select>
                     </FormControl>
 
-                    <FormControl fullWidth>
-                      <InputLabel>Metadata Name Field</InputLabel>
-                      <Select
-                        value={fieldNames.metaName || ""}
-                        label="Metadata Name Field"
-                        onChange={(e) =>
-                          setFieldNames((prev) => ({
-                            ...prev,
-                            metaName: e.target.value || undefined,
-                          }))
-                        }
-                      >
-                        {metaKeys.map((key) => (
-                          <MenuItem key={key} value={key}>
-                            {key}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    {fieldNames.category && (
+                      <>
+                        <FormControl fullWidth>
+                          <InputLabel>Metadata ID Field</InputLabel>
+                          <Select
+                            value={fieldNames.metaId || ""}
+                            label="Metadata ID Field"
+                            onChange={(e) =>
+                              setFieldNames((prev) => ({
+                                ...prev,
+                                metaId: e.target.value || undefined,
+                              }))
+                            }
+                          >
+                            {metaKeys.map((key) => (
+                              <MenuItem key={key} value={key}>
+                                {key}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
 
-                    <FormControl fullWidth>
-                      <InputLabel>Metadata Color Field</InputLabel>
-                      <Select
-                        value={fieldNames.metaColor || ""}
-                        label="Metadata Color Field"
-                        onChange={(e) =>
-                          setFieldNames((prev) => ({
-                            ...prev,
-                            metaColor: e.target.value || undefined,
-                          }))
-                        }
-                      >
-                        {metaKeys.map((key) => (
-                          <MenuItem key={key} value={key}>
-                            {key}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                        <FormControl fullWidth>
+                          <InputLabel>Metadata Name Field</InputLabel>
+                          <Select
+                            value={fieldNames.metaName || ""}
+                            label="Metadata Name Field"
+                            onChange={(e) =>
+                              setFieldNames((prev) => ({
+                                ...prev,
+                                metaName: e.target.value || undefined,
+                              }))
+                            }
+                          >
+                            {metaKeys.map((key) => (
+                              <MenuItem key={key} value={key}>
+                                {key}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth>
+                          <InputLabel>Metadata Color Field</InputLabel>
+                          <Select
+                            value={fieldNames.metaColor || ""}
+                            label="Metadata Color Field"
+                            onChange={(e) =>
+                              setFieldNames((prev) => ({
+                                ...prev,
+                                metaColor: e.target.value || undefined,
+                              }))
+                            }
+                          >
+                            {metaKeys.map((key) => (
+                              <MenuItem key={key} value={key}>
+                                {key}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </>
+                    )}
                   </>
+                )}
+
+                {/* Show information about products dataset metadata */}
+                {defaultMetadata && defaultMetadata.length > 0 && (
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ fontStyle: "italic", mt: 1 }}
+                  >
+                    This dataset uses predefined category metadata with{" "}
+                    {defaultMetadata.length} categories.
+                  </Typography>
                 )}
               </>
             ) : null}
@@ -729,7 +796,10 @@ export default function Configurator({
           >
             <Tab label="Nodes Data" />
             <Tab label="Links Data" />
-            {metadata && metadata.length > 0 && <Tab label="Metadata" />}
+            {((metadata && metadata.length > 0) ||
+              (defaultMetadata && defaultMetadata.length > 0)) && (
+              <Tab label="Metadata" />
+            )}
           </Tabs>
           <Box sx={{ overflow: "auto" }}>
             <TableContainer component={Paper}>
@@ -739,7 +809,11 @@ export default function Configurator({
                     {(() => {
                       if (previewTab === 0) return nodeKeys;
                       if (previewTab === 1) return linkKeys;
-                      return metaKeys;
+                      // For metadata tab, show appropriate keys based on data source
+                      if (defaultMetadata && defaultMetadata.length > 0) {
+                        return ["category", "color"]; // Display metadata format
+                      }
+                      return metaKeys; // Regular metadata format
                     })().map((key) => (
                       <TableCell key={key}>{key}</TableCell>
                     ))}
@@ -749,6 +823,13 @@ export default function Configurator({
                   {(() => {
                     if (previewTab === 0) return nodes;
                     if (previewTab === 1) return links;
+                    // For metadata tab, show appropriate data based on source
+                    if (defaultMetadata && defaultMetadata.length > 0) {
+                      return defaultMetadata.map((meta) => ({
+                        category: meta.cluster_name,
+                        color: meta.cluster_col,
+                      }));
+                    }
                     return metadata || [];
                   })()
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -758,7 +839,9 @@ export default function Configurator({
                           ? nodeKeys
                           : previewTab === 1
                             ? linkKeys
-                            : metaKeys;
+                            : defaultMetadata && defaultMetadata.length > 0
+                              ? ["category", "color"]
+                              : metaKeys;
                       const idKey = keys[0];
                       const idValue = row[idKey as keyof typeof row];
                       return (
@@ -779,6 +862,10 @@ export default function Configurator({
                 count={(() => {
                   if (previewTab === 0) return nodes.length;
                   if (previewTab === 1) return links.length;
+                  // For metadata tab, return appropriate count
+                  if (defaultMetadata && defaultMetadata.length > 0) {
+                    return defaultMetadata.length;
+                  }
                   return metadata?.length || 0;
                 })()}
                 rowsPerPage={rowsPerPage}
