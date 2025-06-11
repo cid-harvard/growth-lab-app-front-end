@@ -76,7 +76,9 @@ const CustomIndustrySpaceTool = lazy(
   () => import("./pages/iframeTools/CreateYourIndustrySpace"),
 );
 const PageNotFound = lazy(() => import("./pages/pageNotFound"));
-const GreenGrowth = lazy(() => import("./pages/stories/greenGrowth"));
+const RoutedGreenGrowthStory = lazy(
+  () => import("./pages/stories/greenGrowth/components/RoutedGreenGrowthStory"),
+);
 
 export interface IAppContext {
   windowWidth: number;
@@ -201,8 +203,8 @@ const router = createBrowserRouter([
         element: <PortEcosystemsStory />,
       },
       {
-        path: routingRoutes.GreenGrowth,
-        element: <GreenGrowth />,
+        path: "greenplexity/*",
+        element: <RoutedGreenGrowthStory />,
       },
       {
         path: "green-growth",

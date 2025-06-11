@@ -4,14 +4,15 @@ import ScrollyCanvas, { formatter } from "./ScrollyCanvas";
 import { Typography, Box, useMediaQuery, useTheme } from "@mui/material";
 import { useSupplyChainBubbles } from "./useSupplyChainBubbles";
 import { useScreenSize } from "@visx/responsive";
-import { yearSelectionState } from "../ScollamaStory";
-import { countrySelectionState } from "../ScollamaStory";
-import { useRecoilValue } from "recoil";
+import {
+  useCountrySelection,
+  useYearSelection,
+} from "../../hooks/useUrlParams";
 import { color } from "d3-color";
 
 const Scrolly = ({ steps, currentStep, prevStep, onStepChange }) => {
-  const yearSelection = useRecoilValue(yearSelectionState);
-  const countrySelection = useRecoilValue(countrySelectionState);
+  const yearSelection = useYearSelection();
+  const countrySelection = useCountrySelection();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 

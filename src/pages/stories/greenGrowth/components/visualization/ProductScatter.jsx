@@ -10,16 +10,17 @@ import {
   Cell,
 } from "recharts";
 import { useQuery } from "@apollo/react-hooks";
-import { GG_CPY_LIST_QUERY } from "../../queries/cpy";
+import { GET_COUNTRY_PRODUCT_DATA } from "../../queries/shared";
 import { useProductLookup } from "../../queries/products";
 import {
   useSupplyChainProductLookup,
   useClusterToSupplyChains,
 } from "../../queries/supplyChainProducts";
 import { useSupplyChainLookup } from "../../queries/supplyChains";
-import { useRecoilValue } from "recoil";
-import { countrySelectionState } from "../ScollamaStory";
-import { yearSelectionState } from "../ScollamaStory";
+import {
+  useCountrySelection,
+  useYearSelection,
+} from "../../hooks/useUrlParams";
 import { useCountryName } from "../../queries/useCountryName";
 import {
   Typography,
@@ -31,11 +32,8 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from "@mui/material";
-import {
-  useQuery as useApolloQuery,
-  gql,
-  useApolloClient,
-} from "@apollo/client";
+import { useQuery as useApolloQuery, useApolloClient } from "@apollo/client";
+import { GET_CLUSTERS, GET_COUNTRY_CLUSTER_DATA } from "../../queries/shared";
 
 const createUniqueProductKey = (product) => {
   return `${product}`;
@@ -146,38 +144,21 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
   );
 };
 
-const CLUSTERS_QUERY = gql`
-  query Clusters {
-    ggClusterList {
-      clusterId
-      clusterName
-    }
-  }
-`;
-
-const CLUSTER_COUNTRY_QUERY = gql`
-  query ClusterCountry($clusterId: Int!, $countryId: Int!) {
-    ggClusterCountryList(clusterId: $clusterId, countryId: $countryId) {
-      clusterId
-      countryId
-      pci
-      cog
-      density
-      rca
-    }
-  }
-`;
+// Using shared queries from ../../queries/shared.ts
 
 const ProductScatter = () => {
-  const selectedCountry = useRecoilValue(countrySelectionState);
-  const selectedYear = useRecoilValue(yearSelectionState);
+  const selectedCountry = useCountrySelection();
+  const selectedYear = useYearSelection();
   const countryName = useCountryName();
-  const { loading, error, data, previousData } = useQuery(GG_CPY_LIST_QUERY, {
-    variables: {
-      year: Number.parseInt(selectedYear),
-      countryId: Number.parseInt(selectedCountry),
+  const { loading, error, data, previousData } = useQuery(
+    GET_COUNTRY_PRODUCT_DATA,
+    {
+      variables: {
+        year: Number.parseInt(selectedYear),
+        countryId: Number.parseInt(selectedCountry),
+      },
     },
-  });
+  );
   const currentData = useMemo(() => data || previousData, [data, previousData]);
   const productLookup = useProductLookup();
   const supplyChainProductLookup = useSupplyChainProductLookup();
@@ -198,7 +179,7 @@ const ProductScatter = () => {
           product: item.productId,
           productName: productDetails?.nameShortEn,
           density: Number.parseFloat(item.feasibilityStd),
-          rca: Number.parseFloat(item.normalizedExportRca),
+          rca: Number.parseFloat(item.exportRca),
           color: getProductColor(item.productId),
           supplyChains: supplyChains.map((sc) => sc.supplyChainId),
           uniqueKey: createUniqueProductKey(item.productId),
@@ -243,25 +224,26 @@ const ProductScatter = () => {
 
   const [viewMode, setViewMode] = useState("cluster"); // 'cluster' or 'product'
 
-  const { data: clustersData } = useApolloQuery(CLUSTERS_QUERY);
+  const { data: clustersData } = useApolloQuery(GET_CLUSTERS);
   const clusters = clustersData?.ggClusterList || [];
   const [clusterCountryData, setClusterCountryData] = useState([]);
   const client = useApolloClient();
   useEffect(() => {
-    if (!clusters.length || !selectedCountry) return;
+    if (!clusters.length || !selectedCountry || !selectedYear) return;
     let isMounted = true;
     Promise.all(
       clusters.map((cluster) =>
         client
           .query({
-            query: CLUSTER_COUNTRY_QUERY,
+            query: GET_COUNTRY_CLUSTER_DATA,
             variables: {
               clusterId: cluster.clusterId,
               countryId: Number.parseInt(selectedCountry),
+              year: Number.parseInt(selectedYear),
             },
           })
           .then((res) =>
-            res.data.ggClusterCountryList.map((d) => ({
+            res.data.ggClusterCountryYearList.map((d) => ({
               ...d,
               clusterName: cluster.clusterName,
               attractiveness: 0.6 * d.cog + 0.4 * d.pci,
@@ -277,7 +259,7 @@ const ProductScatter = () => {
     return () => {
       isMounted = false;
     };
-  }, [clusters, selectedCountry, client]);
+  }, [clusters, selectedCountry, selectedYear, client]);
 
   // Add supply chain filter for clusters
   const [selectedClusterSupplyChains, setSelectedClusterSupplyChains] =

@@ -1,26 +1,13 @@
-import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/react-hooks";
 import { index } from "d3";
 import { useMemo } from "react";
+import { GET_PRODUCTS } from "./shared";
 
-export const GG_PRODUCT_LIST_QUERY = gql`
-  query ggProductList {
-    ggProductList {
-      productId
-      code
-      nameEn
-      nameShortEn
-      productLevel
-      parentId
-      productIdHierarchy
-      topParentId
-      showFeasibility
-    }
-  }
-`;
+// Re-export the shared query for backward compatibility
+export const GG_PRODUCT_LIST_QUERY = GET_PRODUCTS;
 
 export const useProductLookup = () => {
-  const { data } = useQuery(GG_PRODUCT_LIST_QUERY);
+  const { data } = useQuery(GET_PRODUCTS);
   const lookup = useMemo(
     () => index(data?.ggProductList || [], (d) => d.productId),
     [data?.ggProductList],

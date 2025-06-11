@@ -5,9 +5,10 @@ import { memo, useMemo, useRef } from "react";
 import "./scrollyCanvas.css";
 import { colorScale } from "../../utils";
 import { useSupplyChainBubbles } from "./useSupplyChainBubbles";
-import { useRecoilValue } from "recoil";
-import { countrySelectionState } from "../ScollamaStory";
-import { yearSelectionState } from "../ScollamaStory";
+import {
+  useCountrySelection,
+  useYearSelection,
+} from "../../hooks/useUrlParams";
 import { useStackedBars } from "./useStackedBars";
 import Legend from "./Legend";
 import Box from "@mui/material/Box";
@@ -29,8 +30,8 @@ const ScrollyCanvas = ({
   onScroll,
   prevBase,
 }) => {
-  const yearSelection = useRecoilValue(yearSelectionState);
-  const countrySelection = useRecoilValue(countrySelectionState);
+  const yearSelection = useYearSelection();
+  const countrySelection = useCountrySelection();
   const { fill, stroke, legendHeight } = view;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));

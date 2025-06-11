@@ -1,7 +1,6 @@
 import React from "react";
 // import Story from "./components/Story";
-import ScrollamaStory from "./components/ScollamaStory";
-import { RecoilRoot } from "recoil";
+import RoutedGreenGrowthStory from "./components/RoutedGreenGrowthStory";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import "./index.css";
@@ -14,12 +13,10 @@ const theme = createTheme({
 
 const GreenGrowth = () => {
   return (
-    <RecoilRoot>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ScrollamaStory />
-      </ThemeProvider>
-    </RecoilRoot>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RoutedGreenGrowthStory />
+    </ThemeProvider>
   );
 };
 

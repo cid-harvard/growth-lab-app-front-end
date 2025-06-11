@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from "react";
 import "./scrollyCanvas.css";
 import { useQuery } from "@apollo/react-hooks";
-import { GG_CPY_LIST_QUERY } from "../../queries/cpy";
+import { GET_COUNTRY_PRODUCT_DATA } from "../../queries/shared";
 import { pack, hierarchy } from "d3-hierarchy";
 import { toCircle } from "flubber";
 import { useProductLookup } from "../../queries/products";
@@ -66,9 +66,12 @@ export const useSupplyChainBubbles = ({
   const theme = useTheme();
   const isWide = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const { loading, error, data, previousData } = useQuery(GG_CPY_LIST_QUERY, {
-    variables: { year: parseInt(year), countryId: parseInt(countryId) },
-  });
+  const { loading, error, data, previousData } = useQuery(
+    GET_COUNTRY_PRODUCT_DATA,
+    {
+      variables: { year: parseInt(year), countryId: parseInt(countryId) },
+    },
+  );
   const currentData = data || previousData;
   const productLookup = useProductLookup();
   const supplyChainLookup = useSupplyChainLookup();
@@ -248,7 +251,6 @@ export const useSupplyChainBubbles = ({
           const radius = leaf.r;
 
           childBubbles.push({
-            id: `${leaf.data.data.id}-${leaf.parent.id}`,
             parentId: group.data.id,
             coords: toCircle(
               circlePath(
@@ -293,12 +295,46 @@ export const useSupplyChainBubbles = ({
         scaledRanking: d.data.scaledRanking,
       }));
 
+      // Create supply chain parent nodes for smooth animation with sankey layout
+      const supplyChainParentNodes = parentCircles.map((circle) => {
+        return {
+          id: circle.id,
+          parentId: null,
+          type: "rectangle",
+          // Create rectangular coordinates from circle center and radius
+          coords: [
+            [circle.x - circle.radius, circle.y - circle.radius],
+            [circle.x + circle.radius, circle.y - circle.radius],
+            [circle.x + circle.radius, circle.y + circle.radius],
+            [circle.x - circle.radius, circle.y + circle.radius],
+          ],
+          fill: colorScale(circle.id),
+          stroke: stroke || "white",
+          strokeWidth: 1,
+          strokeOpacity: 0.8,
+          opacity: 0.3, // Make them semi-transparent in bubble mode
+          data: {
+            supplyChainId: circle.id,
+            supplyChainName: circle.name,
+            isSupplyChainParent: true,
+            type: "supply_chain_parent",
+          },
+        };
+      });
+
       const bubbles = index(
         bubblesArray.filter((d) => d && !d?.id?.includes("undefined")),
         (d) => d.id,
       );
+
+      // Combine child bubbles with supply chain parent nodes
+      const allBubbles = new Map([
+        ...bubbles,
+        ...index(supplyChainParentNodes, (d) => d.id),
+      ]);
+
       return {
-        childBubbles: bubbles,
+        childBubbles: allBubbles,
         parentCircles,
       };
     },

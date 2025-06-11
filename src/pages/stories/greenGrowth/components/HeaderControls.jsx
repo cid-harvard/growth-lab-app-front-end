@@ -8,11 +8,9 @@ import {
   Autocomplete,
   TextField,
 } from "@mui/material";
-import { useRecoilState } from "recoil";
-
-import { countrySelectionState, yearSelectionState } from "./ScollamaStory";
+import { useUrlParams } from "../hooks/useUrlParams";
 import { useQuery } from "@apollo/client";
-import { GET_COUNTRIES } from "../queries/countries";
+import { GET_COUNTRIES } from "../queries/shared";
 import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
 
 const StyledAppBar = styled(AppBar)({
@@ -38,10 +36,12 @@ const StyledSelect = styled(Select)({
 });
 
 export const HeaderControls = () => {
-  const [countrySelection, setCountrySelection] = useRecoilState(
-    countrySelectionState,
-  );
-  const [yearSelection, setYearSelection] = useRecoilState(yearSelectionState);
+  const {
+    countrySelection,
+    setCountrySelection,
+    yearSelection,
+    setYearSelection,
+  } = useUrlParams();
   const { data } = useQuery(GET_COUNTRIES);
   const countries = data?.ggLocationCountryList || [];
   const availableYears = Array.from({ length: 11 }, (_, i) => 2022 - i);

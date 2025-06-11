@@ -1,4 +1,3 @@
-import { scaleOrdinal, schemeCategory10 } from "d3";
 import { asyncBufferFromUrl, parquetRead, parquetMetadata } from "hyparquet";
 function serializeBigInt(key, value) {
   if (typeof value === "bigint") {
@@ -37,4 +36,5 @@ export const sortByStringId = (a, b) => {
   return generateId(a).localeCompare(generateId(b));
 };
 
-export const colorScale = scaleOrdinal(schemeCategory10);
+// Re-export shared color scale
+export { colorScale } from "./utils/colors";

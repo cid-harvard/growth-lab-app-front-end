@@ -30,3 +30,13 @@ body,
   grid-column: 1 / -1;
   grid-row: 1 / -1;
 }
+
+.routed-story {
+  min-height: 100vh;
+  position: relative;
+}
+
+.green-growth-app {
+  min-height: 100vh;
+  position: relative;
+}

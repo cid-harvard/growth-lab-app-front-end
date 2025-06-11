@@ -10,10 +10,9 @@ import {
 import { styled } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useRecoilState } from "recoil";
-import { countrySelectionState } from "./ScollamaStory";
+import { useUrlParams } from "../hooks/useUrlParams";
 import { useQuery } from "@apollo/client";
-import { GET_COUNTRIES } from "../queries/countries";
+import { GET_COUNTRIES } from "../queries/shared";
 import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
 import { triggerGoogleAnalyticsEvent } from "../../../../routing/tracking";
 
@@ -65,9 +64,7 @@ const ExploreButton = styled(Button)(({ theme }) => ({
 
 const Landing = ({ onExplore }) => {
   const { data } = useQuery(GET_COUNTRIES);
-  const [countrySelection, setCountrySelection] = useRecoilState(
-    countrySelectionState,
-  );
+  const { countrySelection, setCountrySelection } = useUrlParams();
 
   const countries = data?.ggLocationCountryList || [];
 

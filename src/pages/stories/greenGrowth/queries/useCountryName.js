@@ -1,10 +1,9 @@
-import { useRecoilValue } from "recoil";
-import { countrySelectionState } from "../components/ScollamaStory";
-import { GET_COUNTRIES } from "./countries";
+import { useCountrySelection } from "../hooks/useUrlParams";
+import { GET_COUNTRIES } from "./shared";
 import { useQuery } from "@apollo/react-hooks";
 
 export const useCountryName = () => {
-  const selectedCountryId = useRecoilValue(countrySelectionState);
+  const selectedCountryId = useCountrySelection();
   const { data: countryData } = useQuery(GET_COUNTRIES);
   const selectedCountry = countryData?.ggLocationCountryList.find(
     (country) => country.countryId === selectedCountryId,

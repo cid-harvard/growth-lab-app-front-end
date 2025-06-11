@@ -9,18 +9,7 @@ import HeaderControls from "./HeaderControls";
 import ProductRadar from "./visualization/ProductRadar";
 import StandardFooter from "../../../../components/text/StandardFooter";
 import TakeoffPage from "./TakeoffPage";
-import { atom } from "recoil";
 import Attribution from "./Attribution";
-
-export const yearSelectionState = atom({
-  key: "yearSelectionState",
-  default: "2022",
-});
-
-export const countrySelectionState = atom({
-  key: "countrySelectionState",
-  default: 710,
-});
 
 const ScollamaStory = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);

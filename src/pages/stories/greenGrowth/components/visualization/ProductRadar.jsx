@@ -17,10 +17,11 @@ import {
   Tooltip,
 } from "recharts";
 import { useQuery } from "@apollo/client";
-import { countrySelectionState } from "../ScollamaStory";
-import { yearSelectionState } from "../ScollamaStory";
-import { useRecoilValue } from "recoil";
-import { GG_CPY_LIST_QUERY } from "../../queries/cpy";
+import {
+  useCountrySelection,
+  useYearSelection,
+} from "../../hooks/useUrlParams";
+import { GET_COUNTRY_PRODUCT_DATA } from "../../queries/shared";
 import { useProductLookup } from "../../queries/products";
 import { useCountryName } from "../../queries/useCountryName";
 import { Close as CloseIcon } from "@mui/icons-material";
@@ -96,15 +97,15 @@ const CustomPolarAngleAxis = ({
 const ProductRadar = () => {
   const countryName = useCountryName();
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const selectedYear = useRecoilValue(yearSelectionState);
-  const selectedCountry = useRecoilValue(countrySelectionState);
+  const selectedYear = useYearSelection();
+  const selectedCountry = useCountrySelection();
   const productLookup = useProductLookup();
   const products = useMemo(
     () => Array.from(productLookup.values()),
     [productLookup],
   );
 
-  const { data, previousData } = useQuery(GG_CPY_LIST_QUERY, {
+  const { data, previousData } = useQuery(GET_COUNTRY_PRODUCT_DATA, {
     variables: {
       year: parseInt(selectedYear),
       countryId: parseInt(selectedCountry),
@@ -123,7 +124,7 @@ const ProductRadar = () => {
       if (!cpyData) return {};
       return {
         ...product,
-        rca: cpyData?.normalizedExportRca || 0,
+        rca: cpyData?.exportRca || 0,
         complexity: cpyData?.normalizedPci || 0,
         opportunity: cpyData?.attractiveness || 0,
         sustainability: cpyData?.feasibility || 0,
