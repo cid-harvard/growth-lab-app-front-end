@@ -10,6 +10,7 @@ import {
   Cell,
 } from "recharts";
 import { useQuery } from "@apollo/react-hooks";
+import { ParentSize } from "@visx/responsive";
 import { GET_COUNTRY_PRODUCT_DATA } from "../../queries/shared";
 import { useProductLookup } from "../../queries/products";
 import {
@@ -31,6 +32,7 @@ import {
   useMediaQuery,
   ToggleButtonGroup,
   ToggleButton,
+  useTheme,
 } from "@mui/material";
 import { useQuery as useApolloQuery, useApolloClient } from "@apollo/client";
 import { GET_CLUSTERS, GET_COUNTRY_CLUSTER_DATA } from "../../queries/shared";
@@ -146,7 +148,9 @@ const CustomAxisLabel = ({ viewBox, value, axis }) => {
 
 // Using shared queries from ../../queries/shared.ts
 
-const ProductScatter = () => {
+const ProductScatterInternal = ({ width, height }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const selectedCountry = useCountrySelection();
   const selectedYear = useYearSelection();
   const countryName = useCountryName();
@@ -164,6 +168,15 @@ const ProductScatter = () => {
   const supplyChainProductLookup = useSupplyChainProductLookup();
   const supplyChainLookup = useSupplyChainLookup();
   const clusterToSupplyChains = useClusterToSupplyChains();
+
+  const [viewMode, setViewMode] = useState("product");
+  const [selectedSupplyChains, setSelectedSupplyChains] = useState([]);
+
+  // Calculate responsive layout
+  const controlsHeight = isMobile ? 100 : 140;
+  const chartHeight = Math.max(height - controlsHeight - 40, 300);
+  const padding = isMobile ? 8 : 16;
+
   const scatterData = useMemo(() => {
     if (!currentData || !currentData.ggCpyList) return [];
 
@@ -200,21 +213,8 @@ const ProductScatter = () => {
   }, [scatterData]);
 
   const getSupplyChainName = (chainId) => {
-    const chain = supplyChainLookup.get(chainId);
-    return chain?.supplyChain || chainId;
+    return supplyChainLookup.get(chainId)?.nameEn || `Chain ${chainId}`;
   };
-
-  const [selectedSupplyChains, setSelectedSupplyChains] = useState([
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-  ]);
-
-  const filteredData = useMemo(() => {
-    return scatterData.filter(
-      (d) =>
-        selectedSupplyChains.length > 0 &&
-        d.supplyChains.some((chain) => selectedSupplyChains.includes(chain)),
-    );
-  }, [scatterData, selectedSupplyChains]);
 
   const toggleSupplyChain = (chain) => {
     setSelectedSupplyChains((prev) =>
@@ -222,169 +222,70 @@ const ProductScatter = () => {
     );
   };
 
-  const [viewMode, setViewMode] = useState("cluster"); // 'cluster' or 'product'
-
-  const { data: clustersData } = useApolloQuery(GET_CLUSTERS);
-  const clusters = clustersData?.ggClusterList || [];
-  const [clusterCountryData, setClusterCountryData] = useState([]);
-  const client = useApolloClient();
-  useEffect(() => {
-    if (!clusters.length || !selectedCountry || !selectedYear) return;
-    let isMounted = true;
-    Promise.all(
-      clusters.map((cluster) =>
-        client
-          .query({
-            query: GET_COUNTRY_CLUSTER_DATA,
-            variables: {
-              clusterId: cluster.clusterId,
-              countryId: Number.parseInt(selectedCountry),
-              year: Number.parseInt(selectedYear),
-            },
-          })
-          .then((res) =>
-            res.data.ggClusterCountryYearList.map((d) => ({
-              ...d,
-              clusterName: cluster.clusterName,
-              attractiveness: 0.6 * d.cog + 0.4 * d.pci,
-              uniqueKey: `cluster-${d.clusterId}-${d.countryId}`,
-            })),
-          ),
-      ),
-    ).then((results) => {
-      if (isMounted) {
-        setClusterCountryData(results.flat());
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, [clusters, selectedCountry, selectedYear, client]);
-
-  // Add supply chain filter for clusters
-  const [selectedClusterSupplyChains, setSelectedClusterSupplyChains] =
-    useState([]);
-  // Get all supply chains present in clusters
-  const allClusterSupplyChains = useMemo(() => {
-    const set = new Set();
-    for (const arr of clusterToSupplyChains.values()) {
-      for (const item of arr) {
-        set.add(item.supplyChainId);
-      }
-    }
-    return Array.from(set).sort();
-  }, [clusterToSupplyChains]);
-  // Filter clusterCountryData by selected supply chains
-  const filteredClusterCountryData = useMemo(() => {
-    if (!selectedClusterSupplyChains.length) return clusterCountryData;
-    // Only include clusters that have at least one of the selected supply chains
-    return clusterCountryData.filter((d) => {
-      const clusterSupplyChains = (
-        clusterToSupplyChains.get(d.clusterId) || []
-      ).map((item) => item.supplyChainId);
-      return clusterSupplyChains.some((sc) =>
-        selectedClusterSupplyChains.includes(sc),
-      );
-    });
-  }, [clusterCountryData, selectedClusterSupplyChains, clusterToSupplyChains]);
-
-  // Filtered data for scatterplot
   const filteredScatterData = useMemo(() => {
-    if (viewMode === "cluster") return filteredClusterCountryData;
-    return scatterData.filter(
-      (d) =>
-        selectedSupplyChains.length > 0 &&
-        d.supplyChains.some((chain) => selectedSupplyChains.includes(chain)),
+    if (selectedSupplyChains.length === 0) return scatterData;
+    return scatterData.filter((item) =>
+      item.supplyChains.some((chain) => selectedSupplyChains.includes(chain)),
     );
-  }, [viewMode, filteredClusterCountryData, scatterData, selectedSupplyChains]);
+  }, [scatterData, selectedSupplyChains]);
 
   return (
-    <Box sx={{ width: "100%", height: "auto" }}>
-      <Box sx={{ px: 4, py: 2, height: "100%" }}>
-        <Typography sx={{ fontSize: "23px", fontWeight: 600 }} gutterBottom>
-          {countryName}'s High-Value Opportunities to Enter Green Value Chains
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        padding: `${padding}px`,
+        overflow: "auto",
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ mb: isMobile ? 1 : 2 }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontSize: isMobile ? "20px" : "28px",
+            fontWeight: 600,
+            mb: 1,
+          }}
+        >
+          {countryName}'s Green Opportunities
         </Typography>
-        <Typography type="p" sx={{ mt: 2, mb: 2, fontSize: "22px" }}>
-          What opportunities in green value chains should {countryName} enter?
-          Diversifying into new, more complex products drives economic growth.
-          Countries are more successful at entering new industries that build on
-          existing capabilities. So {countryName}'s best opportunities will
-          often be new industries that leverage its existing capabilities.
+        <Typography
+          sx={{
+            fontSize: isMobile ? "14px" : "16px",
+            lineHeight: 1.4,
+            mb: 2,
+          }}
+        >
+          Explore products where {countryName} has revealed comparative
+          disadvantage (RCA {"<"} 1) but potential for growth.
         </Typography>
-        <Typography type="p" sx={{ mb: 8, fontSize: "22px" }}>
-          The graph below shows which opportunities are most feasible and
-          attractive for {countryName}. Feasibility measures the share of
-          capabilities, skills, and know-how present in {countryName} that is
-          necessary to jumpstart a specific activity. Attractiveness measures
-          how valuable a product is based on the capabilities it will help{" "}
-          {countryName} develop. {countryName}'s best opportunities are towards
-          the top right of the graph.
-        </Typography>
-        {/* Toggle Button Group */}
+      </Box>
+
+      {/* Controls */}
+      <Box
+        sx={{
+          mb: 2,
+          minHeight: controlsHeight - 40,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
         <ToggleButtonGroup
           value={viewMode}
           exclusive
-          onChange={(e, newValue) => {
-            if (newValue !== null) setViewMode(newValue);
-          }}
-          sx={{ mb: 2 }}
+          onChange={(_, newMode) => newMode && setViewMode(newMode)}
+          size="small"
+          sx={{ mb: 1 }}
         >
-          <ToggleButton
-            value="cluster"
-            sx={{ textTransform: "none", fontSize: 16, px: 3 }}
-          >
-            Manufacturing Clusters
-          </ToggleButton>
-          <ToggleButton
-            value="product"
-            sx={{ textTransform: "none", fontSize: 16, px: 3 }}
-          >
-            Products
-          </ToggleButton>
+          <ToggleButton value="product">Products</ToggleButton>
+          <ToggleButton value="cluster">Clusters</ToggleButton>
         </ToggleButtonGroup>
-        {/* Add supply chain filter for clusters */}
-        {viewMode === "cluster" && (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
-            {allClusterSupplyChains.map((chain) => (
-              <Button
-                key={chain}
-                variant={
-                  selectedClusterSupplyChains.includes(chain)
-                    ? "contained"
-                    : "outlined"
-                }
-                onClick={() =>
-                  setSelectedClusterSupplyChains((prev) =>
-                    prev.includes(chain)
-                      ? prev.filter((c) => c !== chain)
-                      : [...prev, chain],
-                  )
-                }
-                size="small"
-                sx={{
-                  color: "black",
-                  borderColor: "black",
-                  "&.MuiButton-contained": {
-                    backgroundColor: "#E4F3F6",
-                    "&:hover": {
-                      backgroundColor: "#c9e8ed",
-                    },
-                  },
-                  "&.MuiButton-outlined": {
-                    "&:hover": {
-                      backgroundColor: "rgba(228, 243, 246, 0.1)",
-                    },
-                  },
-                }}
-              >
-                {getSupplyChainName(chain)}
-              </Button>
-            ))}
-          </Box>
-        )}
+
         {viewMode === "product" && (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
-            {allSupplyChains.map((chain) => (
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+            {allSupplyChains.slice(0, isMobile ? 6 : 12).map((chain) => (
               <Button
                 key={chain}
                 variant={
@@ -395,6 +296,7 @@ const ProductScatter = () => {
                 onClick={() => toggleSupplyChain(chain)}
                 size="small"
                 sx={{
+                  fontSize: isMobile ? "11px" : "12px",
                   color: "black",
                   borderColor: "black",
                   "&.MuiButton-contained": {
@@ -415,160 +317,187 @@ const ProductScatter = () => {
             ))}
           </Box>
         )}
-        <Box>
-          <Box
-            sx={{
-              position: "relative",
-              height: "70vh",
-              mb: 6,
-            }}
-          >
-            {filteredScatterData.length > 0 && (
-              <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart
-                  margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 45,
-                    left: 20,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    type="number"
-                    dataKey="density"
-                    name="Feasibility"
-                    label={<CustomAxisLabel axis="x" />}
-                    tick={{ fontSize: 12 }}
-                  />
-                  <YAxis
-                    type="number"
-                    dataKey="attractiveness"
-                    name="Attractiveness"
-                    label={<CustomAxisLabel axis="y" />}
-                    tick={{ fontSize: 12 }}
-                  />
-                  <Tooltip
-                    cursor={{ strokeDasharray: "3 3" }}
-                    content={({ payload }) => {
-                      if (payload && payload.length > 0) {
-                        const props = payload[0].payload;
-                        if (viewMode === "cluster") {
-                          return (
-                            <Paper
-                              elevation={3}
-                              sx={{
-                                p: 1,
-                                minWidth: 200,
-                                maxWidth: 200,
-                                backgroundColor: "#fff",
-                                border: "1px solid #ddd",
-                                borderRadius: "4px",
-                              }}
-                            >
-                              <Typography sx={{ fontSize: "16px", mb: 1 }}>
-                                {props.clusterName}
-                              </Typography>
-                              <hr style={{ width: "95%", margin: "10px 0" }} />
-                              <Box sx={{ display: "grid", gap: 1 }}>
-                                <Box>
-                                  <Typography>
-                                    Attractiveness:{" "}
-                                    <b>{props.attractiveness.toFixed(1)}</b>
-                                  </Typography>
-                                </Box>
-                                <Box>
-                                  <Typography>
-                                    Feasibility:{" "}
-                                    <b>{props.density.toFixed(1)}</b>
-                                  </Typography>
-                                </Box>
-                              </Box>
-                            </Paper>
-                          );
-                        }
-                        return (
-                          <Paper
-                            elevation={3}
-                            sx={{
-                              p: 1,
-                              minWidth: 200,
-                              maxWidth: 200,
-                              backgroundColor: "#fff",
-                              border: "1px solid #ddd",
-                              borderRadius: "4px",
-                            }}
-                          >
-                            <Typography sx={{ fontSize: "16px", mb: 1 }}>
-                              {props.productName} ({props.product})
-                            </Typography>
-                            <hr style={{ width: "95%", margin: "10px 0" }} />
-                            <Box sx={{ display: "grid", gap: 1 }}>
-                              <Box>
-                                <Typography>
-                                  Attractiveness:{" "}
-                                  <b>{props.attractiveness.toFixed(1)}</b>
-                                </Typography>
-                              </Box>
-                              <Box>
-                                <Typography>
-                                  Feasibility: <b>{props.density.toFixed(1)}</b>
-                                </Typography>
-                              </Box>
-                              <Box>
-                                <Typography>
-                                  Value Chains:{" "}
-                                  <b>
-                                    {props.supplyChains
-                                      ?.map((chainId) =>
-                                        getSupplyChainName(chainId),
-                                      )
-                                      .join(", ")}
-                                  </b>
-                                </Typography>
-                              </Box>
-                            </Box>
-                          </Paper>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Scatter
-                    data={filteredScatterData}
-                    dataKey="uniqueKey"
-                    isAnimationActive={false}
-                  >
-                    {filteredScatterData.map((entry) => (
-                      <Cell
-                        key={entry.uniqueKey}
-                        stroke="#0F8A8F"
-                        strokeWidth={1}
-                        fill="#0F8A8F"
-                        fillOpacity={0.5}
-                      />
-                    ))}
-                  </Scatter>
-                </ScatterChart>
-              </ResponsiveContainer>
-            )}
+      </Box>
 
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{
-                display: "block",
-                textAlign: "right",
-                mb: 2,
-                mr: 2,
+      {/* Chart */}
+      <Box
+        sx={{
+          height: `${chartHeight}px`,
+          width: "100%",
+          position: "relative",
+        }}
+      >
+        {filteredScatterData.length > 0 && (
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart
+              margin={{
+                top: 20,
+                right: isMobile ? 10 : 20,
+                bottom: isMobile ? 60 : 70,
+                left: isMobile ? 10 : 20,
               }}
             >
-              Source: Growth Lab research
-            </Typography>
-          </Box>
-        </Box>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                type="number"
+                dataKey="density"
+                name="Feasibility"
+                label={<CustomAxisLabel axis="x" />}
+                tick={{ fontSize: isMobile ? 10 : 12 }}
+              />
+              <YAxis
+                type="number"
+                dataKey="attractiveness"
+                name="Attractiveness"
+                label={<CustomAxisLabel axis="y" />}
+                tick={{ fontSize: isMobile ? 10 : 12 }}
+              />
+              <Tooltip
+                cursor={{ strokeDasharray: "3 3" }}
+                content={({ payload }) => {
+                  if (payload && payload.length > 0) {
+                    const props = payload[0].payload;
+                    if (viewMode === "cluster") {
+                      return (
+                        <Paper
+                          elevation={3}
+                          sx={{
+                            p: 1,
+                            minWidth: isMobile ? 150 : 200,
+                            maxWidth: isMobile ? 150 : 200,
+                            backgroundColor: "#fff",
+                            border: "1px solid #ddd",
+                            borderRadius: "4px",
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontSize: isMobile ? "14px" : "16px", mb: 1 }}
+                          >
+                            {props.clusterName}
+                          </Typography>
+                          <hr style={{ width: "95%", margin: "10px 0" }} />
+                          <Box sx={{ display: "grid", gap: 1 }}>
+                            <Box>
+                              <Typography
+                                sx={{ fontSize: isMobile ? "12px" : "14px" }}
+                              >
+                                Attractiveness:{" "}
+                                <b>{props.attractiveness.toFixed(1)}</b>
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography
+                                sx={{ fontSize: isMobile ? "12px" : "14px" }}
+                              >
+                                Feasibility: <b>{props.density.toFixed(1)}</b>
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Paper>
+                      );
+                    }
+                    return (
+                      <Paper
+                        elevation={3}
+                        sx={{
+                          p: 1,
+                          minWidth: isMobile ? 150 : 200,
+                          maxWidth: isMobile ? 150 : 200,
+                          backgroundColor: "#fff",
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontSize: isMobile ? "14px" : "16px", mb: 1 }}
+                        >
+                          {props.productName} ({props.product})
+                        </Typography>
+                        <hr style={{ width: "95%", margin: "10px 0" }} />
+                        <Box sx={{ display: "grid", gap: 1 }}>
+                          <Box>
+                            <Typography
+                              sx={{ fontSize: isMobile ? "12px" : "14px" }}
+                            >
+                              Attractiveness:{" "}
+                              <b>{props.attractiveness.toFixed(1)}</b>
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <Typography
+                              sx={{ fontSize: isMobile ? "12px" : "14px" }}
+                            >
+                              Feasibility: <b>{props.density.toFixed(1)}</b>
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <Typography
+                              sx={{ fontSize: isMobile ? "12px" : "14px" }}
+                            >
+                              Value Chains:{" "}
+                              <b>
+                                {props.supplyChains
+                                  ?.map((chainId) =>
+                                    getSupplyChainName(chainId),
+                                  )
+                                  .slice(0, 2)
+                                  .join(", ")}
+                                {props.supplyChains?.length > 2 ? "..." : ""}
+                              </b>
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Paper>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Scatter
+                data={filteredScatterData}
+                dataKey="uniqueKey"
+                isAnimationActive={false}
+              >
+                {filteredScatterData.map((entry) => (
+                  <Cell
+                    key={entry.uniqueKey}
+                    stroke="#0F8A8F"
+                    strokeWidth={1}
+                    fill="#0F8A8F"
+                    fillOpacity={0.5}
+                  />
+                ))}
+              </Scatter>
+            </ScatterChart>
+          </ResponsiveContainer>
+        )}
       </Box>
+
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{
+          display: "block",
+          textAlign: "right",
+          mt: 1,
+          fontSize: isMobile ? "10px" : "12px",
+        }}
+      >
+        Source: Growth Lab research
+      </Typography>
     </Box>
+  );
+};
+
+const ProductScatter = () => {
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <ParentSize>
+        {({ width, height }) => (
+          <ProductScatterInternal width={width} height={height} />
+        )}
+      </ParentSize>
+    </div>
   );
 };
 

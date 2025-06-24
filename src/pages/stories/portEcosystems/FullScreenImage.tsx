@@ -25,7 +25,7 @@ const Image = styled.img`
   max-height: 80vh;
   cursor: zoom-in;
 
-  
+
   &.scale-in {
     animation: ${scaleIn} 150ms;
 

@@ -118,8 +118,9 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
   const [sortDirection, setSortDirection] = useState("desc");
   const [showAllGroups, setShowAllGroups] = useState(false);
 
-  // Calculate dimensions - use available space with padding for controls
-  const chartHeight = Math.max(height - 160, 300); // Account for controls at top
+  // Calculate dimensions - minimal space for controls, maximum for chart
+  const controlsHeight = isMobile ? 80 : 100;
+  const chartHeight = Math.max(height - controlsHeight, 200);
 
   // Get data from hook
   const { bars, expectedOverlays, groups, loading } = useStackedBars({
@@ -173,15 +174,16 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
       {/* Controls */}
       <Box
         sx={{
-          padding: isMobile ? "16px 20px 12px" : "20px 40px 16px",
+          padding: isMobile ? "8px 12px" : "12px 20px",
           backgroundColor: "white",
           borderBottom: "1px solid #e0e0e0",
           display: "flex",
-          gap: isMobile ? "24px" : "40px",
+          gap: isMobile ? "16px" : "24px",
           flexDirection: isMobile ? "column" : "row",
           alignItems: "flex-start",
           position: "relative",
           zIndex: 10,
+          minHeight: controlsHeight,
         }}
       >
         <ToggleButton
@@ -199,90 +201,60 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         </ToggleButton>
 
         <SortButton
-          label="Sort by"
           options={[
-            { value: "actual", label: "Actual Export Value" },
-            { value: "world-average", label: "World Average" },
-            { value: "missing-link", label: "Missing Link" },
+            { value: "actual", label: "Actual" },
+            { value: "expected", label: "Expected" },
+            { value: "name", label: "Name" },
           ]}
           selected={sortBy}
           direction={sortDirection}
           onChange={handleSortChange}
+          label="Sort by"
         />
+
+        <ToggleButton
+          active={showAllGroups}
+          onClick={() => setShowAllGroups(!showAllGroups)}
+        >
+          {showAllGroups ? "Show Top 10" : "Show All"}
+        </ToggleButton>
       </Box>
 
       {/* Chart */}
-      <Box sx={{ position: "relative" }}>
-        <svg width={width} height={height} style={{ display: "block" }}>
-          {/* Render bars */}
+      <Box sx={{ flex: 1, position: "relative", overflow: "hidden" }}>
+        <svg width={width} height={chartHeight} style={{ display: "block" }}>
           {Array.from(bars.values()).map((bar) => (
-            <path
-              key={`${bar.id}-${bar.parentId}`}
-              d={`M${bar.coords[0][0]},${bar.coords[0][1]} 
-                  L${bar.coords[1][0]},${bar.coords[1][1]} 
-                  L${bar.coords[2][0]},${bar.coords[2][1]} 
-                  L${bar.coords[3][0]},${bar.coords[3][1]} Z`}
+            <rect
+              key={bar.id}
+              x={bar.x}
+              y={bar.y}
+              width={bar.width}
+              height={bar.height}
               fill={bar.fill}
-              stroke="#fff"
-              strokeWidth={1}
+              stroke={bar.stroke}
+              strokeWidth={bar.strokeWidth}
+              strokeOpacity={bar.strokeOpacity}
               onMouseEnter={(event) => {
-                const svgElement = event.currentTarget.ownerSVGElement;
-                const rect = svgElement.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
+                const { clientX, clientY } = event;
                 showTooltip({
                   tooltipData: bar,
-                  tooltipLeft: x,
-                  tooltipTop: y,
+                  tooltipLeft: clientX,
+                  tooltipTop: clientY,
                 });
               }}
-              onMouseLeave={() => {
-                hideTooltip();
-              }}
-              style={{ cursor: "pointer" }}
+              onMouseLeave={hideTooltip}
             />
           ))}
 
-          {/* Render expected overlays */}
           {expectedOverlays.map((overlay) => (
             <SimpleExpectedOverlay
-              key={overlay.parentId}
+              key={`overlay-${overlay.parentId}`}
               overlay={overlay}
               bars={bars}
               isMobile={isMobile}
             />
           ))}
         </svg>
-
-        {/* Show All button */}
-        {!showAllGroups && groups && groups.length >= 10 && (
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: "60px",
-              left: isMobile ? "20px" : "40px",
-              zIndex: 10,
-            }}
-          >
-            <Button
-              onClick={() => setShowAllGroups(true)}
-              sx={{
-                padding: "8px 16px",
-                backgroundColor: "transparent",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                color: "#333",
-                fontSize: "14px",
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "#f8f9fa",
-                },
-              }}
-            >
-              ↓ Show All {groupBy === "clusters" ? "Clusters" : "Value Chains"}
-            </Button>
-          </Box>
-        )}
       </Box>
 
       {/* Tooltip */}
@@ -335,7 +307,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
 
 const StackedBarsChart = ({ year, countryId }) => {
   return (
-    <div style={{ width: "100%", height: "100%", minHeight: "600px" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <ParentSize>
         {({ width, height }) => (
           <StackedBarsChartInternal

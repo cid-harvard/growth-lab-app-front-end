@@ -9,14 +9,14 @@ import {
   StorySectionContainer as StorySectionContainerBase,
   Authors,
   StickyContainer as StickyContainerBase,
-  VizSource
+  VizSource,
 } from '../../../styling/styleUtils';
 import TextBlock from '../../../components/text/TextBlock';
 import styled from 'styled-components';
 import useScrollingSections from '../../../hooks/useScrollingSections';
 import StandardFooter from '../../../components/text/StandardFooter';
 import CoverPhotoImage from './images/cover-photo2.jpg';
-import CoverPhotoImageLowRes from './images/cover-photo2-lowres.jpg'; 
+import CoverPhotoImageLowRes from './images/cover-photo2-lowres.jpg';
 import Helmet from 'react-helmet';
 import SmartCoverPhoto from '../../../components/general/SmartCoverPhoto';
 import DefaultHubHeader from '../../../components/navigation/DefaultHubHeader';
@@ -147,40 +147,40 @@ const StoriesGrid = styled(StoriesGridBase)`
 
 const ExploreMoreButtons = () => {
 
-  let primaryColor = "#000";
-  let secondaryColor = "#fff";
+  const primaryColor = '#000';
+  const secondaryColor = '#fff';
 
   return <ButtonContainer>
         <ButtonLink
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
-          href={"https://atlas.hks.harvard.edu/countries/516"}
+          href={'https://atlas.hks.harvard.edu/countries/516'}
           target={'_blank'}
-          key={"linkout_namibia-country-profile"}
+          key={'linkout_namibia-country-profile'}
         >
         Country Profile
       </ButtonLink>
         <ButtonLink
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
-          href={"https://growthlab.app/namibia-tool"}
+          href={'https://growthlab.app/namibia-tool'}
           target={'_blank'}
-          key={"linkout_namibia-tool"}
+          key={'linkout_namibia-tool'}
         >
         Industry Dashboard
       </ButtonLink>
       <ButtonLink
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
-          href={"https://growthlab.hks.harvard.edu/policy-research/namibia"}
+          href={'https://growthlab.hks.harvard.edu/policy-research/namibia'}
           target={'_blank'}
-          key={"linkout_namibia-research"}
+          key={'linkout_namibia-research'}
         >
         Country Research
       </ButtonLink>
-  </ButtonContainer>
+  </ButtonContainer>;
 
-}
+};
 
 const NamibiaWalvisBayStory = () => {
 
@@ -214,29 +214,29 @@ const NamibiaWalvisBayStory = () => {
     section_9,
     section_10,
     section_11,
-    section_12
+    section_12,
   ]});
 
   // <VizSource>Source: <em>{vizSource}</em></VizSource>
 
   const visualizationsPerSection = [
-    {sectionIndex: 1, sectionRef: section_1, image: "Pop_Cities.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
-    {sectionIndex: 2, sectionRef: section_2, image: "Pop_Travel_Time_2.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
-    {sectionIndex: 3, sectionRef: section_3, image: "Pop_Travel_Time_3.png", title: "Africa's Population Density and 16-hour Travel Times", source: "Own elaboration using WorldPop and ArcGIS Routing API"},
-    {sectionIndex: 4, sectionRef: section_4, image: "area_barplot_pop.png", title: "Port Connectivity to Population Centers within 16 Hours Travel Time", source: "Own elaboration"},
-    {sectionIndex: 5, sectionRef: section_5, image: "PC_Railways.png", title: "Rail Connectivity in Southern Africa", source: "Own elaboration using OpenStreetMaps"},
-    {sectionIndex: 6, sectionRef: section_6, image: "shipping_routes_3.png", title: "The Walvis Bay Port and Global Shipping Lanes", source: "Benden, P. (2022). Global Shipping Lanes. Zenodo."},
-    {sectionIndex: 7, sectionRef: section_7, image: "namibia-line-chart-1-no-title.png", title: "Container Cargo Handled at the Walvis Bay Port", source: "Namibian Port Authority"},
-    {sectionIndex: 8, sectionRef: section_8, image: "namibia-line-chart-2-no-title.png", title: "Container Cargo Handled at the Walvis Bay Port", source: "Namibian Port Authority"},
-    {sectionIndex: 9, sectionRef: section_9, image: "Scatter.png", title: "GDP vs. Container Traffic Per Capita in 2019", source: "WDI"},
-    {sectionIndex: 10, sectionRef: section_10, image: "nam_reexports_new_withlegend-transparent.svg", title: "Re-exports by HS-4 Commodity 2015-2020", source: "COMTRADE"},
-    {sectionIndex: 11, sectionRef: section_11, image: "mines.png", title: "Mining Projects in Africa by the Type of Mineral", source: "World Bank"},
-    {sectionIndex: 12, sectionRef: section_12, image: "Namibia-vertical-bar-chart.png", source: "EIA and IRENA"}
+    {sectionIndex: 1, sectionRef: section_1, image: 'Pop_Cities.png', title: "Africa's Population Density and 16-hour Travel Times", source: 'Own elaboration using WorldPop and ArcGIS Routing API'},
+    {sectionIndex: 2, sectionRef: section_2, image: 'Pop_Travel_Time_2.png', title: "Africa's Population Density and 16-hour Travel Times", source: 'Own elaboration using WorldPop and ArcGIS Routing API'},
+    {sectionIndex: 3, sectionRef: section_3, image: 'Pop_Travel_Time_3.png', title: "Africa's Population Density and 16-hour Travel Times", source: 'Own elaboration using WorldPop and ArcGIS Routing API'},
+    {sectionIndex: 4, sectionRef: section_4, image: 'area_barplot_pop.png', title: 'Port Connectivity to Population Centers within 16 Hours Travel Time', source: 'Own elaboration'},
+    {sectionIndex: 5, sectionRef: section_5, image: 'PC_Railways.png', title: 'Rail Connectivity in Southern Africa', source: 'Own elaboration using OpenStreetMaps'},
+    {sectionIndex: 6, sectionRef: section_6, image: 'shipping_routes_3.png', title: 'The Walvis Bay Port and Global Shipping Lanes', source: 'Benden, P. (2022). Global Shipping Lanes. Zenodo.'},
+    {sectionIndex: 7, sectionRef: section_7, image: 'namibia-line-chart-1-no-title.png', title: 'Container Cargo Handled at the Walvis Bay Port', source: 'Namibian Port Authority'},
+    {sectionIndex: 8, sectionRef: section_8, image: 'namibia-line-chart-2-no-title.png', title: 'Container Cargo Handled at the Walvis Bay Port', source: 'Namibian Port Authority'},
+    {sectionIndex: 9, sectionRef: section_9, image: 'Scatter.png', title: 'GDP vs. Container Traffic Per Capita in 2019', source: 'WDI'},
+    {sectionIndex: 10, sectionRef: section_10, image: 'nam_reexports_new_withlegend-transparent.svg', title: 'Re-exports by HS-4 Commodity 2015-2020', source: 'COMTRADE'},
+    {sectionIndex: 11, sectionRef: section_11, image: 'mines.png', title: 'Mining Projects in Africa by the Type of Mineral', source: 'World Bank'},
+    {sectionIndex: 12, sectionRef: section_12, image: 'Namibia-vertical-bar-chart.png', source: 'EIA and IRENA'},
   ];
 
   useEffect(() => {
     if(section) {
-      let matchingVisualizationPerSection = visualizationsPerSection.find((item: any) => item.sectionIndex == section);
+      const matchingVisualizationPerSection = visualizationsPerSection.find((item: any) => item.sectionIndex == section);
 
       if(matchingVisualizationPerSection) {
         setCurrentVisualization(matchingVisualizationPerSection);
@@ -245,14 +245,14 @@ const NamibiaWalvisBayStory = () => {
 
   }, [section]);
 
-  let useVisualization = currentVisualization === undefined ? visualizationsPerSection[0] : currentVisualization;
+  const useVisualization = currentVisualization === undefined ? visualizationsPerSection[0] : currentVisualization;
 
-  const visualizationImage = useVisualization !== undefined ? 
+  const visualizationImage = useVisualization !== undefined ?
     (
     <FullScreenImage src={require(`./images/${useVisualization.image}`)} />
     ) : null;
 
-  const visualizationTitle = useVisualization && ('title' in useVisualization) ? 
+  const visualizationTitle = useVisualization && ('title' in useVisualization) ?
   (
   <VizTitle>{useVisualization.title}</VizTitle>
   ) : null;
@@ -262,7 +262,7 @@ const NamibiaWalvisBayStory = () => {
   ) : null;
 
 
-  let secondSectionVisualization = visualizationsPerSection.find((vis: any) => vis.sectionIndex == 10);
+  const secondSectionVisualization = visualizationsPerSection.find((vis: any) => vis.sectionIndex == 10);
   const secondSectionVisualizationImage = <FullScreenImage src={require(`./images/${secondSectionVisualization!.image}`)} />;
   const secondSectionVisualizationTitle = <VizTitle>{secondSectionVisualization!.title}</VizTitle>;
   const secondSectionVisualizationSource = <VizSource>Source: <em>{secondSectionVisualization!.source}</em></VizSource>;
@@ -347,7 +347,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText>
                     <p>
-                    Concretely, one can calculate the number of people in these 16-hour travel time areas and find that the Port of Walvis Bay is the least connected to population centers among these peer ports. This matters while evaluating the port’s competitiveness and the ability to attract volumes and generate economic activity to drive growth in the region. 
+                    Concretely, one can calculate the number of people in these 16-hour travel time areas and find that the Port of Walvis Bay is the least connected to population centers among these peer ports. This matters while evaluating the port’s competitiveness and the ability to attract volumes and generate economic activity to drive growth in the region.
                     </p>
                     </MobileText>
                     </StickyText>
@@ -356,7 +356,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText>
                   <p>
-                  Besides roads, railways can connect ports to inland population centers. Even though rail transportation is more time- and cost-effective when traveling long distances, connectivity by rail to Walvis Bay doesn’t compare to regional ports. There are currently no direct connections from Walvis Bay to Botswana, Zambia, or Zimbabwe. At the same time, there are direct rail lines between Zambia and the Democratic Republic of the Congo to the Port of Lobito, Angola. 
+                  Besides roads, railways can connect ports to inland population centers. Even though rail transportation is more time- and cost-effective when traveling long distances, connectivity by rail to Walvis Bay doesn’t compare to regional ports. There are currently no direct connections from Walvis Bay to Botswana, Zambia, or Zimbabwe. At the same time, there are direct rail lines between Zambia and the Democratic Republic of the Congo to the Port of Lobito, Angola.
                   </p>
                   </MobileText>
                   </StickyText>
@@ -377,7 +377,7 @@ const NamibiaWalvisBayStory = () => {
                   Despite the odds, Walvis Bay experienced an impressive fourteen-fold increase in containerized cargo during the commodity price supercycle of the 2000s. Commodities such as oil, metals, and agricultural products surged, providing a boon for many African nations. In response, these countries increased their exports and imported more goods for consumption and investment. Ports in Angola and South Africa were unable to keep up with the surge in demand and one beneficiary of this trend was the Walvis Bay Port. Major global shipping lines began to rely on Walvis Bay as a transshipment hub. The port's success continued to grow as its uncongested and efficient operations met the rising demand in the region.
                   </p>
                   <p>
-                  With an eye toward the future, Walvis Bay embarked on an ambitious port expansion in 2014 to prepare for further volume increases at a time where the utilization rate of the container terminal stood at 95%. The expansion project, completed in 2019, increased the port's capacity from 350 thousand twenty-foot equivalent units (TEUs) — a standard unit of measurement used in the shipping industry to quantify the cargo capacity of a container — to 750 thousand TEUs. This major upgrade looked to cement its status as a key player in the transshipment business. 
+                  With an eye toward the future, Walvis Bay embarked on an ambitious port expansion in 2014 to prepare for further volume increases at a time where the utilization rate of the container terminal stood at 95%. The expansion project, completed in 2019, increased the port's capacity from 350 thousand twenty-foot equivalent units (TEUs) — a standard unit of measurement used in the shipping industry to quantify the cargo capacity of a container — to 750 thousand TEUs. This major upgrade looked to cement its status as a key player in the transshipment business.
                   </p>
                   </MobileText>
                   </StickyText>
@@ -438,7 +438,7 @@ const NamibiaWalvisBayStory = () => {
               <StickyText>
                   <MobileText ref={section_11}>
                   <p>
-                  The re-export of copper from Solwezi, Zambia, stands as a successful example of the potential for Walvis Bay to become a crucial hub for the re-export of critical minerals and raw materials, particularly as the world moves towards cleaner technologies that require these resources for electrification. Building on this success, targeted initiatives can be established to facilitate the re-export of additional copper from the Democratic Republic of Congo (DRC) and cobalt from both Zambia and the DRC. The Walvis Bay Port's strategic location and well-established infrastructure make it well positioned to play a central role in facilitating such exports. 
+                  The re-export of copper from Solwezi, Zambia, stands as a successful example of the potential for Walvis Bay to become a crucial hub for the re-export of critical minerals and raw materials, particularly as the world moves towards cleaner technologies that require these resources for electrification. Building on this success, targeted initiatives can be established to facilitate the re-export of additional copper from the Democratic Republic of Congo (DRC) and cobalt from both Zambia and the DRC. The Walvis Bay Port's strategic location and well-established infrastructure make it well positioned to play a central role in facilitating such exports.
                   </p>
                   </MobileText>
                   </StickyText>

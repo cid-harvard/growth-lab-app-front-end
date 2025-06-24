@@ -114,9 +114,10 @@ const ScrollyCanvasInternal = ({
       <Box
         sx={{
           position: "relative",
-          marginTop: isMobile ? `calc(2% + ${legendHeight}px)` : "2%",
-          height: isMobile ? `calc(96vh - ${legendHeight}px)` : "96vh",
+          height: "100%",
+          width: "100%",
           overflow: "hidden",
+          padding: isMobile ? "8px" : "12px",
         }}
       >
         {/* Instruction text */}
@@ -124,8 +125,8 @@ const ScrollyCanvasInternal = ({
           variant="body2"
           sx={{
             position: "absolute",
-            top: isMobile ? 10 : 20,
-            left: isMobile ? 10 : 20,
+            top: isMobile ? 8 : 12,
+            left: isMobile ? 8 : 12,
             zIndex: 10,
             color: "#333",
             backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -143,8 +144,9 @@ const ScrollyCanvasInternal = ({
           style={{
             position: "absolute",
             top: 0,
-            left: "0",
-            width: width,
+            left: 0,
+            width: "100%",
+            height: "100%",
           }}
           width="100%"
           height="100%"
@@ -228,7 +230,7 @@ const ScrollyCanvasInternal = ({
 
 const ScrollyCanvas = ({ view, showTooltip, hideTooltip, tooltipData }) => {
   return (
-    <div style={{ width: "100%", height: "100%", minHeight: "600px" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <ParentSize>
         {({ width, height }) => (
           <ScrollyCanvasInternal

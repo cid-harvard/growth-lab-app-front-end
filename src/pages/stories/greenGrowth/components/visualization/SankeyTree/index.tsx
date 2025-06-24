@@ -36,11 +36,11 @@ const SankeyTreeInternal = ({
 
   // Calculate responsive dimensions based on available space
   const { dimensions, leftMargin, rightMargin } = useMemo(() => {
-    const calculatedWidth = Math.max(width - (isMobile ? 20 : 60), 400);
-    const calculatedHeight = Math.max(height * 0.85, 400);
+    const calculatedWidth = Math.max(width - (isMobile ? 10 : 20), 400);
+    const calculatedHeight = Math.max(height - (isMobile ? 10 : 20), 400);
 
-    const responsiveLeftMargin = isMobile ? 80 : 150;
-    const responsiveRightMargin = isMobile ? 150 : 250;
+    const responsiveLeftMargin = isMobile ? 60 : 100;
+    const responsiveRightMargin = isMobile ? 100 : 180;
 
     return {
       dimensions: {
@@ -562,41 +562,20 @@ const SankeyTreeInternal = ({
   return (
     <div
       style={{
-        padding: isMobile ? "15px" : "20px",
         width: "100%",
         height: "100%",
-        minHeight: "100vh",
-        backgroundColor: "#ffffff",
-        color: "#333333",
         position: "relative",
         overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
       }}
     >
-      {/* Back button */}
-      {(focusedCluster || focusedValueChain) && (
-        <div style={{ marginBottom: isMobile ? "10px" : "20px" }}>
-          <button
-            onClick={handleBackClick}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: isMobile ? "8px 12px" : "10px 15px",
-              background: "transparent",
-              color: "#333333",
-              border: "1px solid #333333",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: isMobile ? "14px" : "16px",
-            }}
-          >
-            ← BACK
-          </button>
+      {/* Loading indicator */}
+      {isCountryDataLoading && (
+        <div style={{ marginBottom: "20px" }}>
+          <span style={{ color: "#333333" }}>Loading country data...</span>
         </div>
       )}
 
-      {/* Controls */}
+      {/* Top-level Controls for Global vs Country Specific */}
       {!focusedCluster && !focusedValueChain && (
         <div
           style={{
@@ -652,28 +631,43 @@ const SankeyTreeInternal = ({
         </div>
       )}
 
-      {/* Loading indicator */}
-      {isCountryDataLoading && (
-        <div style={{ marginBottom: "20px" }}>
-          <span style={{ color: "#333333" }}>Loading country data...</span>
+      {/* Back button for focused views */}
+      {(focusedCluster || focusedValueChain) && (
+        <div
+          style={{
+            marginBottom: "20px",
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+          }}
+        >
+          <button
+            onClick={handleBackClick}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#f5f5f5",
+              border: "1px solid #ddd",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            ← Back to Overview
+          </button>
         </div>
       )}
 
       {/* SVG Visualization */}
       <svg
         width={dimensions.width}
-        height={dimensions.height + 30}
+        height={dimensions.height}
         style={{
           maxWidth: "100%",
           height: "auto",
-          minHeight: isMobile ? "400px" : "500px",
-          paddingTop: "0px",
+          minHeight: isMobile ? "350px" : "400px",
+          paddingBottom: isMobile ? "50px" : "60px", // Space for legend
         }}
-        viewBox={
-          isMobile
-            ? `0 -30 ${dimensions.width} ${dimensions.height + 30}`
-            : `0 -30 ${dimensions.width} ${dimensions.height + 30}`
-        }
+        viewBox={`0 -30 ${dimensions.width} ${dimensions.height + 30}`}
         preserveAspectRatio={isMobile ? "xMidYMid meet" : undefined}
         aria-labelledby="sankeyTitle"
       >
@@ -1170,7 +1164,7 @@ const SankeyTreeInternal = ({
 // Main export component with ParentSize wrapper
 export default function SankeyTree() {
   return (
-    <div style={{ width: "100%", height: "100%", minHeight: "600px" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <ParentSize>
         {({ width, height }) => (
           <SankeyTreeInternal width={width} height={height} />

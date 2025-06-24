@@ -41,19 +41,19 @@ const StrategicPositionChartInternal = ({ width, height }) => {
 
   // Calculate responsive dimensions using provided width/height
   const { chartWidth, chartHeight, margin } = useMemo(() => {
-    const calculatedWidth = Math.max(width - 40, 300); // Account for padding
-    const calculatedHeight = Math.max(height - 40, 300); // Account for padding
+    const adjustedWidth = Math.max(width - 20, 300); // Minimal padding
+    const adjustedHeight = Math.max(height - 20, 300); // Minimal padding
 
     const responsiveMargin = {
-      top: isMobile ? 60 : 80,
-      right: isMobile ? 30 : 60,
-      bottom: isMobile ? 60 : 80,
-      left: isMobile ? 80 : 140,
+      top: isMobile ? 40 : 50,
+      right: isMobile ? 20 : 40,
+      bottom: isMobile ? 50 : 60,
+      left: isMobile ? 60 : 80,
     };
 
     return {
-      chartWidth: calculatedWidth,
-      chartHeight: calculatedHeight,
+      chartWidth: adjustedWidth,
+      chartHeight: adjustedHeight,
       margin: responsiveMargin,
     };
   }, [width, height, isMobile]);
@@ -202,7 +202,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
 
   return (
     <Box
-      sx={{ px: 2, py: 1, width: "100%", height: "100%", overflow: "hidden" }}
+      sx={{ padding: "8px", width: "100%", height: "100%", overflow: "hidden" }}
     >
       <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
         <svg

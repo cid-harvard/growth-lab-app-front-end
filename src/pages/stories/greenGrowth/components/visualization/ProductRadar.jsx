@@ -7,6 +7,8 @@ import {
   Paper,
   Button,
   Tooltip as MuiTooltip,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   RadarChart,
@@ -15,8 +17,10 @@ import {
   PolarRadiusAxis,
   Radar,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { useQuery } from "@apollo/client";
+import { ParentSize } from "@visx/responsive";
 import {
   useCountrySelection,
   useYearSelection,
@@ -94,7 +98,9 @@ const CustomPolarAngleAxis = ({
   );
 };
 
-const ProductRadar = () => {
+const ProductRadarInternal = ({ width, height }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const countryName = useCountryName();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const selectedYear = useYearSelection();
@@ -213,21 +219,60 @@ const ProductRadar = () => {
     });
   }, [productData, currentData?.ggCpyList]);
 
+  // Calculate responsive layout
+  const controlsHeight = isMobile ? 120 : 160;
+  const availableHeight = height - controlsHeight;
+  const padding = isMobile ? 8 : 16;
+
+  // Calculate grid layout for charts
+  const chartsPerRow = isMobile ? 1 : Math.min(2, productData.length);
+  const chartRows = Math.ceil(productData.length / chartsPerRow);
+  const chartWidth = Math.max((width - padding * 2) / chartsPerRow - 20, 300);
+  const chartHeight = Math.max(availableHeight / chartRows - 40, 200);
+
   return (
-    <Box sx={{ px: 4, py: 2, height: "100%" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-        <Typography sx={{ fontSize: "23px", fontWeight: 600 }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        padding: `${padding}px`,
+        overflow: "auto",
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ mb: isMobile ? 1 : 2 }}>
+        <Typography
+          sx={{ fontSize: isMobile ? "18px" : "23px", fontWeight: 600 }}
+        >
           Dimensions of {countryName}'s Opportunities in Green Value Chains
         </Typography>
+        <Typography
+          sx={{
+            mt: 1,
+            mb: isMobile ? 2 : 3,
+            fontSize: isMobile ? "14px" : "16px",
+            lineHeight: 1.4,
+          }}
+        >
+          These diagrams compare green value chain opportunities across five key
+          dimensions, to provide more perspective on the feasibility and
+          attractiveness of different opportunities.
+        </Typography>
       </Box>
-      <Typography type="p" sx={{ mt: 2, mb: 8, fontSize: "22px" }}>
-        These diagrams compare green value chain opportunities across five key
-        dimensions, to provide more perspective on the feasibility and
-        attractiveness of different opportunities.
-      </Typography>
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, my: 2 }}>
+
+      {/* Controls */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          flexWrap: "wrap",
+          gap: 1,
+          mb: 2,
+          minHeight: controlsHeight - 40,
+        }}
+      >
         <Autocomplete
-          sx={{ width: "300px" }}
+          sx={{ width: isMobile ? "100%" : "300px" }}
           size="small"
           multiple
           options={products}
@@ -236,7 +281,7 @@ const ProductRadar = () => {
           blurOnSelect
           renderInput={(params) => (
             <TextField
-              size="sm"
+              size="small"
               {...params}
               label="Search a product name"
               variant="outlined"
@@ -246,55 +291,66 @@ const ProductRadar = () => {
           value={selectedProducts}
           renderTags={() => null}
         />
-        {selectedProducts.map((product) => (
-          <Box
-            key={product?.productId}
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              position: "relative",
-            }}
-          >
-            <Button
-              variant="contained"
-              size="small"
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+          {selectedProducts.map((product) => (
+            <Box
+              key={product?.productId}
               sx={{
-                color: "black",
-                backgroundColor: "#E4F3F6",
-                "&:hover": {
-                  backgroundColor: "#c9e8ed",
-                },
-                pr: 4,
-                cursor: "default",
+                display: "inline-flex",
+                alignItems: "center",
+                position: "relative",
               }}
             >
-              {`${product?.nameShortEn} (${product?.code})`}
-              <CloseIcon
-                onClick={() => handleDelete(product)}
+              <Button
+                variant="contained"
+                size="small"
                 sx={{
-                  position: "absolute",
-                  right: 8,
-                  fontSize: 18,
-                  cursor: "pointer",
-                  opacity: 0.7,
+                  color: "black",
+                  backgroundColor: "#E4F3F6",
                   "&:hover": {
-                    opacity: 1,
+                    backgroundColor: "#c9e8ed",
                   },
+                  pr: 4,
+                  cursor: "default",
+                  fontSize: isMobile ? "12px" : "14px",
                 }}
-              />
-            </Button>
-          </Box>
-        ))}
+              >
+                {`${product?.nameShortEn} (${product?.code})`}
+                <CloseIcon
+                  onClick={() => handleDelete(product)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    fontSize: isMobile ? 16 : 18,
+                    cursor: "pointer",
+                    opacity: 0.7,
+                    "&:hover": {
+                      opacity: 1,
+                    },
+                  }}
+                />
+              </Button>
+            </Box>
+          ))}
+        </Box>
       </Box>
 
-      <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+      {/* Charts Grid */}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: isMobile ? "center" : "flex-start",
+          gap: 2,
+          minHeight: availableHeight - 60,
+        }}
+      >
         {productData.map((product) => (
           <Box
             key={product?.productId}
             sx={{
-              m: 2,
-              width: "45%",
-              minWidth: 480,
+              width: isMobile ? "100%" : `${chartWidth}px`,
+              height: `${chartHeight}px`,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -303,54 +359,71 @@ const ProductRadar = () => {
             <Typography
               variant="h6"
               align="center"
-              sx={{ color: "black", fontWeight: 600 }}
+              sx={{
+                color: "black",
+                fontWeight: 600,
+                fontSize: isMobile ? "14px" : "16px",
+                mb: 1,
+              }}
             >
               {product?.nameShortEn}
             </Typography>
-            <RadarChart
-              width={480}
-              height={250}
-              data={radarData}
-              margin={{ left: 100, right: 100, top: 0, bottom: 0 }}
-              style={{ margin: "auto" }}
-            >
-              <PolarGrid />
-              <PolarAngleAxis
-                dataKey="dimension"
-                tick={<CustomPolarAngleAxis />}
-              />
-              <PolarRadiusAxis
-                angle={90}
-                domain={[0, 10]}
-                tick={{ fill: "black", fontSize: 10 }}
-                ticks={[0, 2, 4, 6, 8, 10]}
-              />
-              <Radar
-                name={product?.nameEn}
-                dataKey={product?.productId}
-                stroke="#1F6584"
-                fill="#1F6584"
-                fillOpacity={0.6}
-                dot={{ stroke: "rgb(77, 112, 130)", fill: "none", r: 3 }}
-              />
-              <Tooltip content={<CustomTooltip />} />
-            </RadarChart>
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart
+                data={radarData}
+                margin={{ left: 50, right: 50, top: 10, bottom: 10 }}
+              >
+                <PolarGrid />
+                <PolarAngleAxis
+                  dataKey="dimension"
+                  tick={<CustomPolarAngleAxis />}
+                />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 10]}
+                  tick={{ fill: "black", fontSize: isMobile ? 8 : 10 }}
+                  ticks={[0, 2, 4, 6, 8, 10]}
+                />
+                <Radar
+                  name={product?.nameEn}
+                  dataKey={product?.productId}
+                  stroke="#1F6584"
+                  fill="#1F6584"
+                  fillOpacity={0.6}
+                  dot={{ stroke: "rgb(77, 112, 130)", fill: "none", r: 3 }}
+                />
+                <Tooltip content={<CustomTooltip />} />
+              </RadarChart>
+            </ResponsiveContainer>
           </Box>
         ))}
       </Box>
+
       <Typography
         variant="caption"
         color="text.secondary"
         sx={{
           display: "block",
           textAlign: "right",
-          mb: 2,
-          mr: 2,
+          mt: 1,
+          fontSize: isMobile ? "10px" : "12px",
         }}
       >
         Source: Growth Lab research
       </Typography>
     </Box>
+  );
+};
+
+const ProductRadar = () => {
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <ParentSize>
+        {({ width, height }) => (
+          <ProductRadarInternal width={width} height={height} />
+        )}
+      </ParentSize>
+    </div>
   );
 };
 

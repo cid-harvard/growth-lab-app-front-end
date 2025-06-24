@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Box, Typography, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
@@ -20,15 +20,17 @@ import {
   MenuItem,
   FormControl,
 } from "@mui/material";
+import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
+import { useSidebar } from "./SidebarContext";
 
 const NavigationContainer = styled(Box)<{ isCondensed?: boolean }>(
   ({ isCondensed }) => ({
     position: isCondensed ? "fixed" : "relative",
     left: 0,
     top: 0,
-    width: isCondensed ? "60px" : "320px",
+    width: isCondensed ? "auto" : "320px",
     height: isCondensed ? "60px" : "100vh",
-    backgroundColor: "#ffffff",
+    backgroundColor: isCondensed ? "transparent" : "#ffffff",
     borderRight: isCondensed ? "none" : "1px solid #e0e0e0",
     borderBottom: isCondensed ? "1px solid #e0e0e0" : "none",
     borderRadius: isCondensed ? "0 0 8px 0" : "0",
@@ -44,30 +46,30 @@ const NavigationContainer = styled(Box)<{ isCondensed?: boolean }>(
 
 const ToggleButton = styled(IconButton)<{ isCondensed?: boolean }>(
   ({ isCondensed }) => ({
-    position: "absolute",
-    top: isCondensed ? "50%" : "12px",
-    right: isCondensed ? "50%" : "12px",
-    transform: isCondensed ? "translate(50%, -50%)" : "none",
-    zIndex: 101,
-    backgroundColor: isCondensed ? "transparent" : "rgba(255,255,255,0.9)",
-    border: isCondensed ? "none" : "1px solid #e0e0e0",
+    position: "relative",
+    backgroundColor: isCondensed
+      ? "rgba(255,255,255,0.2)"
+      : "rgba(255,255,255,0.2)",
+    border: "1px solid white",
     borderRadius: "4px",
-    padding: isCondensed ? "12px" : "6px",
+    padding: "8px",
+    minWidth: "40px",
+    height: "40px",
+    marginLeft: isCondensed ? 1 : 0,
     "&:hover": {
-      backgroundColor: isCondensed
-        ? "rgba(74, 144, 164, 0.1)"
-        : "rgba(255,255,255,1)",
+      backgroundColor: "rgba(255,255,255,0.3)",
     },
     "& .MuiSvgIcon-root": {
-      fontSize: isCondensed ? "24px" : "20px",
-      color: isCondensed ? "#4A90A4" : "#666",
+      fontSize: "20px",
+      color: "white",
     },
   }),
 );
 
-const SidebarHeader = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2.5),
-  backgroundColor: "#4A90A4",
+const SidebarHeaderAndControls = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3, 2.5, 2.5, 2.5),
+  background:
+    "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
   color: "white",
 }));
 
@@ -78,32 +80,51 @@ const SidebarContent = styled(Box)(({ theme }) => ({
   flexDirection: "column",
 }));
 
-const ControlsContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2, 2.5),
-  backgroundColor: "#f8f9fa",
-  borderBottom: "1px solid #e0e0e0",
-}));
+const Logo = styled("img")({
+  height: "25px",
+  marginRight: "12px",
+});
 
 const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
-  marginBottom: theme.spacing(1.5),
+  flex: 1,
+  marginRight: theme.spacing(1.5),
   "& .MuiOutlinedInput-root": {
     fontSize: "14px",
-    "& fieldset": { borderColor: "#d0d7de" },
-    "&:hover fieldset": { borderColor: "#0969da" },
-    "&.Mui-focused fieldset": { borderColor: "#0969da" },
+    color: "white",
+    "& fieldset": { borderColor: "white" },
+    "&:hover fieldset": { borderColor: "white" },
+    "&.Mui-focused fieldset": { borderColor: "white" },
+    "& .MuiInputBase-input::placeholder": {
+      color: "white",
+      opacity: 0.7,
+    },
+  },
+  "& .MuiAutocomplete-popupIndicator": {
+    color: "white",
+  },
+  "& .MuiAutocomplete-clearIndicator": {
+    color: "white",
   },
 }));
 
 const StyledSelect = styled(Select)(() => ({
   fontSize: "14px",
+  minWidth: "100px",
+  color: "white",
   "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#d0d7de",
+    borderColor: "white",
   },
   "&:hover .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#0969da",
+    borderColor: "white",
   },
   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#0969da",
+    borderColor: "white",
+  },
+  "& .MuiSelect-icon": {
+    color: "white",
+  },
+  "& .MuiSelect-select": {
+    color: "white",
   },
 }));
 
@@ -267,7 +288,7 @@ interface StoryNavigationProps {
 const StoryNavigation: React.FC<StoryNavigationProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isCondensed, setIsCondensed] = useState(false);
+  const { isCondensed, toggleSidebar } = useSidebar();
 
   const {
     countrySelection,
@@ -335,107 +356,102 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
   };
 
   const toggleNavigation = () => {
-    const newCondensedState = !isCondensed;
-    setIsCondensed(newCondensedState);
-
-    // Emit event to notify layout about state change
-    window.dispatchEvent(
-      new CustomEvent("sidebarToggle", {
-        detail: { isCondensed: newCondensedState },
-      }),
-    );
+    toggleSidebar();
   };
 
   if (isCondensed) {
     return (
       <NavigationContainer isCondensed={true}>
-        <ToggleButton isCondensed={true} onClick={toggleNavigation}>
-          <Menu />
-        </ToggleButton>
+        <Box
+          sx={{
+            background:
+              "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 1.5,
+          }}
+        >
+          <Logo src={GrowthLabLogoPNG} alt="Growth Lab" />
+          <ToggleButton isCondensed={true} onClick={toggleNavigation}>
+            <Menu />
+          </ToggleButton>
+        </Box>
       </NavigationContainer>
     );
   }
 
   return (
     <NavigationContainer isCondensed={false}>
-      {/* Toggle Button */}
-      <ToggleButton isCondensed={false} onClick={toggleNavigation}>
-        <Close />
-      </ToggleButton>
-
-      {/* Header */}
-      <SidebarHeader>
-        <Typography
-          variant="h6"
+      {/* Header and Controls Combined */}
+      <SidebarHeaderAndControls>
+        <Box
           sx={{
-            fontWeight: 700,
-            fontSize: "18px",
-            marginBottom: 0.5,
-            textAlign: "center",
-          }}
-        >
-          GREENPLEXITY
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: "14px",
-            opacity: 0.9,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            marginBottom: 3,
+            gap: 2,
           }}
         >
-          <Box
-            component="span"
+          <Typography
+            variant="h4"
             sx={{
-              width: 6,
-              height: 6,
-              backgroundColor: "white",
-              borderRadius: "50%",
-              marginRight: 1,
+              fontWeight: 500,
+              fontSize: "22px",
+              letterSpacing: "0.5px",
             }}
-          />
-          Growth Lab
-        </Typography>
-      </SidebarHeader>
-
-      {/* Controls */}
-      <ControlsContainer>
-        <StyledAutocomplete
-          disableClearable
-          blurOnSelect
-          value={
-            countries.find(
-              (country: any) => country.countryId === countrySelection,
-            ) || null
-          }
-          onChange={(_: any, newValue: any) => {
-            setCountrySelection(newValue ? newValue.countryId : null);
-          }}
-          options={countries}
-          getOptionLabel={(option: any) => option.nameEn}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              placeholder="Country xyz"
-              size="small"
-            />
-          )}
-        />
-        <FormControl fullWidth size="small">
-          <StyledSelect
-            value={yearSelection}
-            onChange={(e: any) => setYearSelection(e.target.value)}
           >
-            {availableYears.map((year) => (
-              <MenuItem key={year} value={year.toString()}>
-                {year}
-              </MenuItem>
-            ))}
-          </StyledSelect>
-        </FormControl>
-      </ControlsContainer>
+            GREENPLEXITY
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Logo src={GrowthLabLogoPNG} alt="Growth Lab" />
+          </Box>
+        </Box>
+
+        {/* Controls - side by side */}
+        <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
+          <StyledAutocomplete
+            disableClearable
+            blurOnSelect
+            value={
+              countries.find(
+                (country: any) => country.countryId === countrySelection,
+              ) || null
+            }
+            onChange={(_: any, newValue: any) => {
+              setCountrySelection(newValue ? newValue.countryId : null);
+            }}
+            options={countries}
+            getOptionLabel={(option: any) => option.nameEn}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                placeholder="Country xyz"
+                size="small"
+              />
+            )}
+          />
+          <FormControl size="small">
+            <StyledSelect
+              value={yearSelection}
+              onChange={(e: any) => setYearSelection(e.target.value)}
+            >
+              {availableYears.map((year) => (
+                <MenuItem key={year} value={year.toString()}>
+                  {year}
+                </MenuItem>
+              ))}
+            </StyledSelect>
+          </FormControl>
+          {/* Toggle Button */}
+          <ToggleButton isCondensed={false} onClick={toggleNavigation}>
+            <Close />
+          </ToggleButton>
+        </Box>
+      </SidebarHeaderAndControls>
 
       {/* Content */}
       <SidebarContent>

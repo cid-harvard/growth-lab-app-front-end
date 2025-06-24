@@ -12,6 +12,7 @@ import TakeoffPage from "./TakeoffPage";
 import Attribution from "./Attribution";
 import StandardFooter from "../../../../components/text/StandardFooter";
 import Landing from "./Landing";
+import { SidebarProvider, useSidebar } from "./SidebarContext";
 import "../index.css";
 
 const theme = createTheme({
@@ -20,42 +21,68 @@ const theme = createTheme({
   },
 });
 
-// Add dynamic CSS for collapsed sidebar constraints
-const addCollapsedSidebarStyles = () => {
-  const styleId = "collapsed-sidebar-constraints";
+// Custom hook to manage sidebar-related styles and body classes
+const useSidebarStyles = () => {
+  const { isCondensed } = useSidebar();
 
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = `
-      /* When sidebar is collapsed, only add top constraint to prevent overlap */
-      .sidebar-collapsed .content-area {
-        margin-top: 70px !important;
-        height: calc(100vh - 70px) !important;
-        transition: all 0.3s ease-in-out;
-      }
-    `;
-    document.head.appendChild(style);
-  }
+  useEffect(() => {
+    const styleId = "collapsed-sidebar-constraints";
+
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement("style");
+      style.id = styleId;
+      style.textContent = `
+        /* When sidebar is collapsed, give visualizations maximum space */
+        .sidebar-collapsed .content-area {
+          margin-top: 60px !important;
+          height: calc(100vh - 60px) !important;
+          transition: all 0.3s ease-in-out;
+          padding: 0 !important;
+        }
+        
+        /* Ensure visualizations use full available space */
+        .sidebar-collapsed .visualization-container {
+          height: 100% !important;
+          width: 100% !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        
+        /* When sidebar is open, provide appropriate constraints */
+        .content-area {
+          height: 100vh;
+          overflow: hidden;
+          padding: 0;
+          margin: 0;
+        }
+        
+        .visualization-container {
+          height: 100%;
+          width: 100%;
+          overflow: hidden;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isCondensed) {
+      document.body.classList.add("sidebar-collapsed");
+    } else {
+      document.body.classList.remove("sidebar-collapsed");
+    }
+
+    // Cleanup function to remove class when component unmounts
+    return () => {
+      document.body.classList.remove("sidebar-collapsed");
+    };
+  }, [isCondensed]);
 };
 
 // Layout component for story steps with navigation
 const StoryStepLayout = () => {
-  useEffect(() => {
-    addCollapsedSidebarStyles();
-
-    const handleSidebarToggle = (event: any) => {
-      if (event.detail.isCondensed) {
-        document.body.classList.add("sidebar-collapsed");
-      } else {
-        document.body.classList.remove("sidebar-collapsed");
-      }
-    };
-
-    window.addEventListener("sidebarToggle", handleSidebarToggle);
-    return () =>
-      window.removeEventListener("sidebarToggle", handleSidebarToggle);
-  }, []);
+  useSidebarStyles();
 
   return (
     <Box
@@ -75,10 +102,16 @@ const StoryStepLayout = () => {
           height: "100%",
           overflow: "hidden",
           minWidth: 0,
-          transition: "all 0.3s ease-in-out",
+          padding: 0,
+          margin: 0,
         }}
       >
-        <Outlet />
+        <Box
+          className="visualization-container"
+          sx={{ height: "100%", width: "100%" }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );
@@ -86,21 +119,7 @@ const StoryStepLayout = () => {
 
 // Layout component for radar with padding
 const RadarLayout = () => {
-  useEffect(() => {
-    addCollapsedSidebarStyles();
-
-    const handleSidebarToggle = (event: any) => {
-      if (event.detail.isCondensed) {
-        document.body.classList.add("sidebar-collapsed");
-      } else {
-        document.body.classList.remove("sidebar-collapsed");
-      }
-    };
-
-    window.addEventListener("sidebarToggle", handleSidebarToggle);
-    return () =>
-      window.removeEventListener("sidebarToggle", handleSidebarToggle);
-  }, []);
+  useSidebarStyles();
 
   return (
     <Box
@@ -120,10 +139,16 @@ const RadarLayout = () => {
           height: "100%",
           overflow: "hidden",
           minWidth: 0,
-          transition: "all 0.3s ease-in-out",
+          padding: 0,
+          margin: 0,
         }}
       >
-        <Outlet />
+        <Box
+          className="visualization-container"
+          sx={{ height: "100%", width: "100%" }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );
@@ -131,21 +156,7 @@ const RadarLayout = () => {
 
 // Layout component for takeoff with footer
 const TakeoffLayout = () => {
-  useEffect(() => {
-    addCollapsedSidebarStyles();
-
-    const handleSidebarToggle = (event: any) => {
-      if (event.detail.isCondensed) {
-        document.body.classList.add("sidebar-collapsed");
-      } else {
-        document.body.classList.remove("sidebar-collapsed");
-      }
-    };
-
-    window.addEventListener("sidebarToggle", handleSidebarToggle);
-    return () =>
-      window.removeEventListener("sidebarToggle", handleSidebarToggle);
-  }, []);
+  useSidebarStyles();
 
   return (
     <Box
@@ -165,10 +176,16 @@ const TakeoffLayout = () => {
           height: "100%",
           overflow: "hidden",
           minWidth: 0,
-          transition: "all 0.3s ease-in-out",
+          padding: 0,
+          margin: 0,
         }}
       >
-        <Outlet />
+        <Box
+          className="visualization-container"
+          sx={{ height: "100%", width: "100%" }}
+        >
+          <Outlet />
+        </Box>
         <Attribution />
         <StandardFooter showGithubLink={false} />
       </Box>
@@ -179,12 +196,23 @@ const TakeoffLayout = () => {
 // Explore page component
 const ExplorePage = () => {
   return (
-    <Box>
-      <ProductScatter />
-      <Box sx={{ minHeight: "100vh" }}>
+    <Box
+      sx={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Box sx={{ flex: 1 }}>
+        <ProductScatter />
+      </Box>
+      <Box sx={{ flex: 1 }}>
         <ProductRadar />
       </Box>
-      <TakeoffPage />
+      <Box sx={{ flex: 1 }}>
+        <TakeoffPage />
+      </Box>
       <Attribution />
       <StandardFooter showGithubLink={false} />
     </Box>
@@ -203,47 +231,49 @@ const LandingPage = () => {
 
 const RoutedGreenGrowthStory = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <div className="routed-story appRoot">
-        <Routes>
-          {/* Landing page */}
-          <Route index element={<LandingPage />} />
+    <SidebarProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="routed-story appRoot">
+          <Routes>
+            {/* Landing page */}
+            <Route index element={<LandingPage />} />
 
-          {/* Story steps with scrolly visualizations */}
-          <Route path="" element={<StoryStepLayout />}>
-            <Route path="overview" element={<RoutedVisualization />} />
-            <Route
-              path="competitive-advantage"
-              element={<RoutedVisualization />}
-            />
-            <Route path="competitiveness" element={<RoutedVisualization />} />
-            <Route
-              path="strategic-position"
-              element={<RoutedVisualization />}
-            />
-            <Route path="value-chains" element={<SankeyTree />} />
-            <Route path="opportunities" element={<ProductScatter />} />
-          </Route>
+            {/* Story steps with scrolly visualizations */}
+            <Route path="" element={<StoryStepLayout />}>
+              <Route path="overview" element={<RoutedVisualization />} />
+              <Route
+                path="competitive-advantage"
+                element={<RoutedVisualization />}
+              />
+              <Route path="competitiveness" element={<RoutedVisualization />} />
+              <Route
+                path="strategic-position"
+                element={<RoutedVisualization />}
+              />
+              <Route path="value-chains" element={<SankeyTree />} />
+              <Route path="opportunities" element={<ProductScatter />} />
+            </Route>
 
-          {/* Dimensions with ProductRadar (needs padding) */}
-          <Route path="" element={<RadarLayout />}>
-            <Route path="dimensions" element={<ProductRadar />} />
-          </Route>
+            {/* Dimensions with ProductRadar (needs padding) */}
+            <Route path="" element={<RadarLayout />}>
+              <Route path="dimensions" element={<ProductRadar />} />
+            </Route>
 
-          {/* Takeoff with footer */}
-          <Route path="" element={<TakeoffLayout />}>
-            <Route path="takeoff" element={<TakeoffPage />} />
-          </Route>
+            {/* Takeoff with footer */}
+            <Route path="" element={<TakeoffLayout />}>
+              <Route path="takeoff" element={<TakeoffPage />} />
+            </Route>
 
-          {/* Explore page */}
-          <Route path="explore" element={<ExplorePage />} />
+            {/* Explore page */}
+            <Route path="explore" element={<ExplorePage />} />
 
-          {/* Fallback redirect */}
-          <Route path="*" element={<Navigate to="/greenplexity" replace />} />
-        </Routes>
-      </div>
-    </ThemeProvider>
+            {/* Fallback redirect */}
+            <Route path="*" element={<Navigate to="/greenplexity" replace />} />
+          </Routes>
+        </div>
+      </ThemeProvider>
+    </SidebarProvider>
   );
 };
 

@@ -307,6 +307,14 @@ export const useStackedBars = ({
               [x + segmentWidth, y + barHeight],
               [x, y + barHeight],
             ],
+            x: x,
+            y: y,
+            width: segmentWidth,
+            height: barHeight,
+            fill: segment.color,
+            stroke: "#fff",
+            strokeWidth: 1,
+            strokeOpacity: 1,
             exportValue: segment.exportValue,
             expectedExports: segment.expectedExports,
             exportRca: segment.exportRca,
@@ -324,8 +332,6 @@ export const useStackedBars = ({
                 nameShortEn: segment.productName,
               },
             },
-            fill: segment.color,
-            strokeWidth: 1,
           });
 
           cumulativeWidth += segment.exportValue;

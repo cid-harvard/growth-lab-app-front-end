@@ -122,7 +122,8 @@ const RoutedVisualization = () => {
     return (
       <div
         style={{
-          height: "100vh",
+          height: "100%",
+          width: "100%",
           position: "relative",
         }}
       >
@@ -138,7 +139,6 @@ const RoutedVisualization = () => {
         style={{
           width: "100%",
           height: "100%",
-          minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
         }}
@@ -153,7 +153,6 @@ const RoutedVisualization = () => {
       style={{
         width: "100%",
         height: "100%",
-        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",

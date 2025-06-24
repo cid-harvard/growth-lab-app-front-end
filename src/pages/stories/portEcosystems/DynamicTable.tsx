@@ -160,13 +160,13 @@ const DynamicTable = (props: Props) => {
         borderBottom: hideGridLines ? 'none' : undefined,
         fontSize,
         gridColumn,
-        borderTop: d.naics_chapter !== "" && gridRow != 2 ? `1px solid #000` : undefined,
-        fontWeight: d.naics_chapter !== "" && gridColumn == 1 ? 700 : undefined,
+        borderTop: d.naics_chapter !== '' && gridRow != 2 ? `1px solid #000` : undefined,
+        fontWeight: d.naics_chapter !== '' && gridColumn == 1 ? 700 : undefined,
         justifyContent: alignToFlexValue(
           columns[gridColumn - 1] && columns[gridColumn - 1].align ? columns[gridColumn - 1].align as Align : Align.Left,
         ),
       };
-      
+
       if (gridColumn) {
         if (d[key] !== null) {
           return (<Cell style={style} key={(d[key] as string | number).toString() + i + key}>{d[key]}</Cell>);
