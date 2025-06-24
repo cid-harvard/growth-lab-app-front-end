@@ -1,4 +1,4 @@
-import ReactGA from "react-ga4";
+import ReactGA from 'react-ga4';
 
 // See documentation for react-ga4 package:
 // https://www.npmjs.com/package/react-ga4

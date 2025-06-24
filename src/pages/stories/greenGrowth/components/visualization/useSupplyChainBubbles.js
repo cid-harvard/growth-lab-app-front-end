@@ -3,21 +3,12 @@ import "./scrollyCanvas.css";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_COUNTRY_PRODUCT_DATA } from "../../queries/shared";
 import { pack, hierarchy } from "d3-hierarchy";
-import { toCircle } from "flubber";
 import { useProductLookup } from "../../queries/products";
 import { useSupplyChainLookup } from "../../queries/supplyChains";
 import { colorScale } from "../../utils";
 import { index } from "d3";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
-const circlePath = (x, y, r) => `
-  M ${x},${y}
-  m -${r},0
-  a ${r},${r} 0 1,0 ${2 * r},0
-  a ${r},${r} 0 1,0 -${2 * r},0
-  z
-`;
 
 const getRCAOpacity = (rca) => {
   if (rca >= 1) return 1;
@@ -61,7 +52,7 @@ export const useSupplyChainBubbles = ({
   width,
   height,
   fill,
-  stroke,
+  stroke = null,
 }) => {
   const theme = useTheme();
   const isWide = useMediaQuery(theme.breakpoints.up("sm"));
@@ -86,27 +77,19 @@ export const useSupplyChainBubbles = ({
         : SUPPLY_CHAIN_LAYOUT_TALL;
       const numRows = isWide ? 2 : 5;
 
-      const margin = isWide ? 100 : 10;
+      const margin = isWide ? 60 : 10;
       const padding = 0;
       const groupSpacing = isWide ? 40 : 6;
-      const rowSpacing = isWide ? 80 : 7;
+      const rowSpacing = isWide ? 60 : 7;
 
-      const legendOffset = isWide ? 0 : 80;
-      const topMargin = isWide ? margin : 30 + legendOffset;
-      const bottomMargin = isWide ? margin : 40;
+      const legendOffset = isWide ? 0 : 50; // Reduced from 80 to prevent overflow
+      const topMargin = isWide ? margin : 20 + legendOffset;
+      const bottomMargin = isWide ? margin : 20; // Reduced from 40 to prevent overflow
 
       const availableHeight = isWide
-        ? height - margin * 1.5 - rowSpacing * numRows
-        : Math.min(
-            height - topMargin - bottomMargin - rowSpacing * (numRows - 1),
-            window.innerHeight -
-              topMargin -
-              bottomMargin -
-              rowSpacing * (numRows - 1),
-          );
-      const rowHeights = Array(numRows).fill(
-        availableHeight / (numRows * (isWide ? 1 : 1.1)),
-      );
+        ? height - margin * 1.2 - rowSpacing * numRows
+        : height - topMargin - bottomMargin - rowSpacing * (numRows - 1);
+      const rowHeights = Array(numRows).fill(availableHeight / numRows);
 
       const supplyChainMap = new Map();
       ggCpyscList.forEach((item) => {
@@ -116,7 +99,6 @@ export const useSupplyChainBubbles = ({
         }
         supplyChainMap.get(supplyChainId).set(productId, productRanking);
       });
-      const criticalMinerals = Array.from(supplyChainMap.get(1).keys());
 
       supplyChainMap.forEach((products, supplyChainId) => {
         const rankings = Array.from(products.values());
@@ -248,20 +230,9 @@ export const useSupplyChainBubbles = ({
         packedGroup.children.forEach((leaf) => {
           const x = groupX + (leaf.x - packedGroup.x);
           const y = groupY + (leaf.y - packedGroup.y);
-          const radius = leaf.r;
 
           childBubbles.push({
             parentId: group.data.id,
-            coords: toCircle(
-              circlePath(
-                groupX + leaf.x - packedGroup.x,
-                groupY + leaf.y - packedGroup.y,
-                leaf.r,
-              ),
-              groupX + leaf.x - packedGroup.x,
-              groupY + leaf.y - packedGroup.y,
-              leaf.r,
-            )(1),
             radius: leaf.r,
             ...leaf.data,
             x,
@@ -276,69 +247,26 @@ export const useSupplyChainBubbles = ({
         i,
         title: d?.data?.product?.nameShortEn,
         opacity: fill === "rca" ? getRCAOpacity(d.data.exportRca) : 1,
-        stroke:
-          stroke === "minerals" && criticalMinerals.includes(d.data.productId)
-            ? "black"
-            : "white",
-        strokeWidth:
-          stroke === "minerals" && criticalMinerals.includes(d.data.productId)
-            ? 1
-            : 0,
-        strokeOpacity:
-          stroke === "minerals" && criticalMinerals.includes(d.data.productId)
-            ? 1
-            : 0,
-        type: "circle",
+        stroke: "white",
+        strokeWidth: 0,
+        strokeOpacity: 0,
         rca: d.data.exportRca,
         fill: colorScale(d.parentId),
         id: `${d?.data?.product?.code}-${d?.parent?.data?.id}`,
         scaledRanking: d.data.scaledRanking,
       }));
 
-      // Create supply chain parent nodes for smooth animation with sankey layout
-      const supplyChainParentNodes = parentCircles.map((circle) => {
-        return {
-          id: circle.id,
-          parentId: null,
-          type: "rectangle",
-          // Create rectangular coordinates from circle center and radius
-          coords: [
-            [circle.x - circle.radius, circle.y - circle.radius],
-            [circle.x + circle.radius, circle.y - circle.radius],
-            [circle.x + circle.radius, circle.y + circle.radius],
-            [circle.x - circle.radius, circle.y + circle.radius],
-          ],
-          fill: colorScale(circle.id),
-          stroke: stroke || "white",
-          strokeWidth: 1,
-          strokeOpacity: 0.8,
-          opacity: 0.3, // Make them semi-transparent in bubble mode
-          data: {
-            supplyChainId: circle.id,
-            supplyChainName: circle.name,
-            isSupplyChainParent: true,
-            type: "supply_chain_parent",
-          },
-        };
-      });
-
       const bubbles = index(
         bubblesArray.filter((d) => d && !d?.id?.includes("undefined")),
         (d) => d.id,
       );
 
-      // Combine child bubbles with supply chain parent nodes
-      const allBubbles = new Map([
-        ...bubbles,
-        ...index(supplyChainParentNodes, (d) => d.id),
-      ]);
-
       return {
-        childBubbles: allBubbles,
+        childBubbles: bubbles,
         parentCircles,
       };
     },
-    [width, height, isWide, supplyChainLookup, productLookup, fill, stroke],
+    [width, height, isWide, supplyChainLookup, productLookup, fill],
   );
 
   const layout = useMemo(

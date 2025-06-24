@@ -17,7 +17,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-const SupplyChainCircle = memo(({ circle, isAnimating }) => {
+const SupplyChainCircle = memo(({ circle }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -33,8 +33,17 @@ const SupplyChainCircle = memo(({ circle, isAnimating }) => {
     const filtered = allProducts.filter(
       (item) => item.supplyChainId === circle.id,
     );
+
+    // Deduplicate by productId since the same product can appear in multiple clusters
+    const uniqueProducts = new Map();
+    filtered.forEach((item) => {
+      if (!uniqueProducts.has(item.productId)) {
+        uniqueProducts.set(item.productId, item);
+      }
+    });
+
     // Optionally, if you want to filter by clusterId, add: && item.clusterId === someClusterId
-    return filtered
+    return Array.from(uniqueProducts.values())
       .map((item) => {
         const productDetails = productLookup.get(item.productId);
         return {
@@ -66,9 +75,9 @@ const SupplyChainCircle = memo(({ circle, isAnimating }) => {
       <g
         key={circle.id}
         className="parent-circle"
-        onMouseEnter={() => !isAnimating.current && setIsHovered(true)}
-        onMouseLeave={() => !isAnimating.current && setIsHovered(false)}
-        onClick={() => !isAnimating.current && setIsModalOpen(true)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => setIsModalOpen(true)}
         style={{ cursor: "pointer" }}
       >
         <rect

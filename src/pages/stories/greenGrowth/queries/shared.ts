@@ -83,6 +83,7 @@ export const GET_COUNTRY_PRODUCT_DATA = gql`
       countryId
       productId
       supplyChainId
+      productRanking
     }
   }
 `;
@@ -167,6 +168,19 @@ export const GET_SUPPLY_CHAIN_PRODUCT_MAPPINGS = gql`
       supplyChainId
       productId
       clusterId
+    }
+  }
+`;
+
+export const GET_COUNTRY_YEAR_METRICS = gql`
+  query GetCountryYearMetrics($year: Int!, $countryId: Int!) {
+    ggCountryYearList(year: $year, countryId: $countryId) {
+      countryId
+      year
+      coiGreen
+      lntotnetnrexpPc
+      lnypc
+      xResid
     }
   }
 `;

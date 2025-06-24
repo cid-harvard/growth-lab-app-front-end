@@ -19,10 +19,10 @@ const Routes = {
   // Green Growth sub-routes
   GreenGrowthOverview: "/greenplexity/overview",
   GreenGrowthAdvantage: "/greenplexity/competitive-advantage",
-  GreenGrowthMinerals: "/greenplexity/critical-minerals",
   GreenGrowthValueChains: "/greenplexity/value-chains",
   GreenGrowthCompetitiveness: "/greenplexity/competitiveness",
   GreenGrowthOpportunities: "/greenplexity/opportunities",
+  GreenGrowthStrategicPosition: "/greenplexity/strategic-position",
   GreenGrowthDimensions: "/greenplexity/dimensions",
   GreenGrowthTakeoff: "/greenplexity/takeoff",
   GreenGrowthExplore: "/greenplexity/explore",

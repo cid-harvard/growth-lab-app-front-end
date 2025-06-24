@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const Root = styled.div`
   grid-column: 1 / -1;
@@ -31,12 +31,12 @@ const SmartCoverPhoto = ({ highResSrc, lowResSrc }: Props) => {
     <Root>
       <Image
         src={highResSrc}
-        title={""}
+        title={''}
         onLoad={() => setHighResLoaded(true)}
       />
       <Image
         src={lowResSrc}
-        title={""}
+        title={''}
         style={{ opacity: highResLoaded ? 0 : 1 }}
       />
     </Root>

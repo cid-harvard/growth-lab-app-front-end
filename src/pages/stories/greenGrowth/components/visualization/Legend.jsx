@@ -11,9 +11,17 @@ const Legend = ({ mode }) => {
     switch (mode) {
       case "rca":
         return [
-          { label: "High (RCA>1)", color: "black", shape: "circle" },
-          { label: "Mid (0.2<RCA<1)", color: "grey", shape: "circle" },
-          { label: "Low (RCA<0.2)", color: "lightgrey", shape: "circle" },
+          { label: "High (RCA>1)", color: "rgba(0, 0, 0, 1)", shape: "circle" },
+          {
+            label: "Mid (0.2<RCA<1)",
+            color: "rgba(0, 0, 0, 0.6)",
+            shape: "circle",
+          },
+          {
+            label: "Low (RCA<0.2)",
+            color: "rgba(0, 0, 0, 0.15)",
+            shape: "circle",
+          },
         ];
       case "production":
         return [
@@ -23,10 +31,6 @@ const Legend = ({ mode }) => {
             color: "black",
             shape: "line",
           },
-        ];
-      case "minerals":
-        return [
-          { label: "Critical Minerals", color: "black", shape: "circle" },
         ];
       case "size":
         return [
@@ -60,25 +64,6 @@ const Legend = ({ mode }) => {
 
     switch (item.shape) {
       case "circle":
-        if (mode === "minerals") {
-          return (
-            <div
-              style={{
-                ...shapeContainer,
-              }}
-            >
-              <div
-                style={{
-                  width: isMobile ? "15px" : "20px",
-                  height: isMobile ? "15px" : "20px",
-                  borderRadius: "50%",
-                  border: "2px solid black",
-                  backgroundColor: "transparent",
-                }}
-              />
-            </div>
-          );
-        }
         if (mode === "size") {
           const circleSize =
             item.size === "large"
@@ -151,20 +136,36 @@ const Legend = ({ mode }) => {
   return (
     <Box
       sx={{
-        position: isMobile ? "relative" : "absolute",
-        bottom: isMobile ? "auto" : "50%",
-        right: isMobile ? "auto" : "2%",
-        transform: isMobile ? "none" : "translateY(50%)",
-        width: isMobile ? "100%" : "160px",
-        px: isMobile ? 2 : 0,
-        py: isMobile ? 1 : 0,
+        position: "absolute",
+        bottom: isMobile ? "10px" : "20px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "auto",
+        px: 2,
+        py: 1,
         display: "flex",
-        flexDirection: "column",
-        alignItems: isMobile ? "center" : "flex-start",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: isMobile ? 2 : 3,
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        borderRadius: 1,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        flexWrap: "nowrap",
       }}
     >
       {mode === "rca" && (
-        <h3 style={{ margin: "0 0 10px 0" }}>Economic Competitiveness</h3>
+        <Box
+          sx={{
+            fontWeight: "bold",
+            fontSize: "14px",
+            mr: 2,
+            mb: 0,
+            whiteSpace: "nowrap",
+          }}
+        >
+          Economic Competitiveness:
+        </Box>
       )}
       {mode === "size" && (
         <Tooltip
@@ -172,16 +173,19 @@ const Legend = ({ mode }) => {
           arrow
           placement="top"
         >
-          <h3
-            style={{
-              margin: "0 0 10px 0",
+          <Box
+            sx={{
+              fontWeight: "bold",
+              fontSize: "14px",
               textDecoration: "underline",
               cursor: "help",
-              display: "flex",
+              mr: 2,
+              mb: 0,
+              whiteSpace: "nowrap",
             }}
           >
-            Product Importance
-          </h3>
+            Product Importance:
+          </Box>
         </Tooltip>
       )}
       {mode === "production" && (
@@ -190,33 +194,46 @@ const Legend = ({ mode }) => {
           arrow
           placement="top"
         >
-          <h3
-            style={{
-              margin: "0 0 10px 0",
+          <Box
+            sx={{
+              fontWeight: "bold",
+              fontSize: "14px",
               textDecoration: "underline",
               cursor: "help",
-              display: "flex",
+              mr: 2,
+              mb: 0,
+              whiteSpace: "nowrap",
             }}
           >
-            Export Value
-          </h3>
+            Export Value:
+          </Box>
         </Tooltip>
       )}
-      {items.map((item, index) => (
-        <div
-          key={index}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "5px",
-            fontSize: isMobile ? "0.875rem" : "1rem",
-            ...(item.style || {}),
-          }}
-        >
-          {renderShape(item)}
-          <span>{item.label}</span>
-        </div>
-      ))}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: isMobile ? 1 : 2,
+          alignItems: "center",
+          flexWrap: "nowrap",
+        }}
+      >
+        {items.map((item, index) => (
+          <Box
+            key={index}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: "0.875rem",
+              whiteSpace: "nowrap",
+              ...(item.style || {}),
+            }}
+          >
+            {renderShape(item)}
+            <span>{item.label}</span>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 };

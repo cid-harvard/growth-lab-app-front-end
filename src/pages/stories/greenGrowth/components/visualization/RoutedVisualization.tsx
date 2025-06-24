@@ -2,30 +2,22 @@ import React, { useMemo, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Tooltip, useTooltip } from "@visx/tooltip";
 import ScrollyCanvas, { formatter } from "./ScrollyCanvas";
-import { Typography, Box, useMediaQuery, useTheme } from "@mui/material";
-import { useSupplyChainBubbles } from "./useSupplyChainBubbles";
-import { useScreenSize } from "@visx/responsive";
+import StrategicPositionChart from "./StrategicPositionChart";
+import StackedBarsChart from "./StackedBarsChart";
+import { Typography, Box } from "@mui/material";
+
 import {
   useCountrySelection,
   useYearSelection,
 } from "../../hooks/useUrlParams";
-import { color } from "d3-color";
 import { Routes } from "../../../../../metadata";
 import { useCountryName } from "../../queries/useCountryName";
 
 const RoutedVisualization = () => {
   const yearSelection = useYearSelection();
   const countrySelection = useCountrySelection();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const countryName = useCountryName();
-
-  const screenSize = useScreenSize({ debounceTime: 150 });
-  const width = useMemo(
-    () => (isMobile ? screenSize.width : screenSize.width - 160), // Match original Scrolly width calculation
-    [screenSize.width, isMobile],
-  );
 
   const {
     tooltipData,
@@ -62,26 +54,24 @@ const RoutedVisualization = () => {
         source: "Source: Growth Lab research",
       },
       {
-        route: Routes.GreenGrowthMinerals,
-        title: "Critical Mineral Opportunities Across Value Chains",
-        base: "bubbles",
-        tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
-        fill: "rca",
-        stroke: "minerals",
-        modalContent:
-          "Critical minerals power the energy transition, since they form important inputs to many different energy technologies. Minerals are circled here with black borders. For the world to decarbonize, mineral producers will need to quickly scale-up production, which represents an important green growth opportunity for many countries. This requires mineral deposits and good mining policy.",
-        legend: "minerals",
-        legendHeight: 50,
-        source: "Source: Growth Lab research",
-      },
-      {
         route: Routes.GreenGrowthCompetitiveness,
         title: "Competitiveness in Green Value Chains",
         base: "bars",
-        tooltip: [{ field: "value", title: "Export Value" }],
-        modalContent: `This shows ${countryName}'s actual presence (colored bar) in each green value chain versus the level if ${countryName} had average competitiveness in all value chain components (black line), revealing ${countryName}'s areas of strength and concentration.`,
-        legend: "production",
-        legendHeight: 50,
+        tooltip: [],
+        modalContent: `This shows ${countryName}'s actual presence (colored bar) in each green value chain versus the level if ${countryName} had average competitiveness in all value chain components (black line). This reveals ${countryName}'s areas of strength and concentration.`,
+        legend: "",
+        legendHeight: 0,
+        source: "Source: Growth Lab research",
+      },
+      {
+        route: Routes.GreenGrowthStrategicPosition,
+        title: "Strategic Position in Green Growth",
+        base: "strategicPosition",
+        tooltip: [],
+        modalContent:
+          "This scatter plot shows each country's strategic position in green growth opportunities, revealing areas of strength and potential for development across different economic contexts.",
+        legend: "",
+        legendHeight: 0,
         source: "Source: Growth Lab research",
       },
     ],
@@ -123,135 +113,103 @@ const RoutedVisualization = () => {
     }
   }, [currentStepIndex, animationState.currentStep]);
 
-  const { currentView, prevBase } = useMemo(() => {
-    const currentView = steps[animationState.currentStep];
-    const prevView = steps[animationState.prevStep];
-    const prevBase = prevView?.base || currentView?.base || "bubbles";
-    return { currentView, prevView, prevBase };
-  }, [animationState.currentStep, animationState.prevStep, steps]);
+  const currentView = useMemo(() => {
+    return steps[animationState.currentStep];
+  }, [animationState.currentStep, steps]);
 
-  const { childBubbles } = useSupplyChainBubbles({
-    year: yearSelection,
-    countryId: countrySelection,
-    width: width,
-    height: isMobile
-      ? screenSize.height - currentView.legendHeight
-      : screenSize.height,
-    fill: currentView?.fill,
-    stroke: currentView?.stroke,
-  });
+  // Render Strategic Position Chart for strategic base type
+  if (currentView?.base === "strategicPosition") {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          position: "relative",
+        }}
+      >
+        <StrategicPositionChart />
+      </div>
+    );
+  }
+
+  // Render Stacked Bars Chart for bars base type
+  if (currentView?.base === "bars") {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <StackedBarsChart year={yearSelection} countryId={countrySelection} />
+      </div>
+    );
+  }
 
   return (
     <div
       style={{
-        height: "100vh",
-        position: "relative",
-        paddingTop: "60px",
+        width: "100%",
+        height: "100%",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
       }}
     >
       <ScrollyCanvas
         key="routed-visualization" // Stable key to prevent remounting
         view={currentView}
-        prevBase={prevBase}
         showTooltip={showTooltip}
         hideTooltip={hideTooltip}
-        onScroll={undefined}
+        tooltipData={tooltipData}
       />
-
-      {tooltipOpen && tooltipData && (
-        <svg
-          style={{
-            position: "absolute",
-            top: isMobile ? `calc(12% + ${currentView.legendHeight}px)` : "12%",
-            left: "0",
-            width: width,
-            height: isMobile
-              ? `calc(88% - ${currentView.legendHeight}px)`
-              : "88%",
-            pointerEvents: "none",
-          }}
-          width={width}
-          height={
-            isMobile
-              ? screenSize.height - currentView.legendHeight
-              : screenSize.height
-          }
-          preserveAspectRatio="xMidYMid meet"
-        >
-          {currentView.base === "bubbles" &&
-            (tooltipData as any)?.data?.product?.code &&
-            Array.from(childBubbles.values())
-              .filter(
-                (bubble: any) =>
-                  bubble.data.product.code ===
-                  (tooltipData as any).data.product.code,
-              )
-              .map((bubble: any) => (
-                <circle
-                  key={`highlight-${bubble.id}`}
-                  cx={bubble.x}
-                  cy={bubble.y}
-                  r={bubble.r}
-                  fill="none"
-                  stroke="black"
-                  strokeWidth={2}
-                  strokeOpacity={1}
-                />
-              ))}
-          {currentView.base === "bars" &&
-            (tooltipData as any)?.expectedExports && (
-              <path
-                d={
-                  (tooltipData as any)?.coords
-                    ?.map(
-                      (point: any, i: number) =>
-                        `${i === 0 ? "M" : "L"} ${point[0]} ${point[1]}`,
-                    )
-                    .join(" ") + " Z"
-                }
-                fill={color((tooltipData as any).fill)
-                  ?.brighter(0.75)
-                  .toString()}
-                fillOpacity={0.5}
-                stroke="none"
-              />
-            )}
-        </svg>
-      )}
-
       {tooltipOpen && tooltipData && (
         <Tooltip left={tooltipLeft} top={tooltipTop}>
-          <Typography
+          <Box
             sx={{
-              fontSize: "16px",
-              mb: 1,
-              color: "black",
+              backgroundColor: "#fff",
+              color: "#333",
+              padding: "8px 12px",
+              borderRadius: "4px",
+              fontSize: "14px",
+              maxWidth: "300px",
+              textAlign: "left",
             }}
           >
-            {(tooltipData as any)?.data?.product?.nameShortEn} (
-            {(tooltipData as any)?.data?.product?.code})
-          </Typography>
-
-          {currentView.tooltip?.length > 0 && (
-            <hr style={{ width: "95%", margin: "10px 0" }} />
-          )}
-
-          <Box sx={{ display: "grid", gap: 1 }}>
-            {currentView.tooltip.map(({ field, title }) => {
-              let value = (tooltipData as any)[field] ?? 0;
-              if (field === "value") {
-                value = formatter.format(value);
-              } else {
-                value = Number(value).toFixed(2);
-              }
-              return (
-                <Box key={field}>
-                  <Typography sx={{ color: "black" }}>
-                    {title}: <b>{value}</b>
-                  </Typography>
-                </Box>
-              );
-            })}
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: "600", mb: 0.5, color: "#333" }}
+            >
+              {(tooltipData as any)?.data?.product?.nameShortEn ||
+                (tooltipData as any)?.data?.nameShortEn ||
+                "Unknown Product"}
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{ display: "block", mb: 0.5, color: "#666" }}
+            >
+              Code:{" "}
+              {(tooltipData as any)?.data?.product?.code ||
+                (tooltipData as any)?.data?.code}
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{ display: "block", color: "#666" }}
+            >
+              Export Value:{" "}
+              {formatter.format((tooltipData as any)?.data?.exportValue || 0)}
+            </Typography>
+            {(tooltipData as any)?.data?.exportRca && (
+              <Typography
+                variant="caption"
+                sx={{ display: "block", color: "#666" }}
+              >
+                RCA: {(tooltipData as any)?.data?.exportRca.toFixed(2)}
+              </Typography>
+            )}
           </Box>
         </Tooltip>
       )}

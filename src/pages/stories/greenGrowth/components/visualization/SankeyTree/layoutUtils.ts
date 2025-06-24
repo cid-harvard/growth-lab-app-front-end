@@ -42,8 +42,8 @@ export function applySankeyLayout(
     .nodeWidth(25)
     .nodePadding(10)
     .extent([
-      [leftMargin, 20],
-      [dimensions.width - rightMargin, dimensions.height - 40],
+      [leftMargin, 70],
+      [dimensions.width - rightMargin, dimensions.height - 100],
     ]);
 
   const { nodes, links } = sankeyLayout({
@@ -107,21 +107,37 @@ export function convertToPositions(
       let sourceX, sourceY, targetX, targetY;
 
       if (focusedValueChain) {
-        // Tree layout - links go from right side of source to left side of target
-        const sourceWidth = sourceNode.width ?? 0;
-        const sourceHeight = sourceNode.height ?? 0;
-        const targetHeight = targetNode.height ?? 0;
+        // Tree layout - network graph style with center-to-center connections for circles
+        const circleRadius = 8; // Match the circle radius used in rendering
 
-        sourceX = (sourceNode.x ?? 0) + sourceWidth;
-        sourceY = (sourceNode.y ?? 0) + sourceHeight / 2;
-        targetX = targetNode.x ?? 0;
-        targetY = (targetNode.y ?? 0) + targetHeight / 2;
+        // For circular nodes, connect from center to center
+        sourceX = (sourceNode.x ?? 0) + (sourceNode.width ?? 0) / 2;
+        sourceY = (sourceNode.y ?? 0) + (sourceNode.height ?? 0) / 2;
+        targetX = (targetNode.x ?? 0) + (targetNode.width ?? 0) / 2;
+        targetY = (targetNode.y ?? 0) + (targetNode.height ?? 0) / 2;
+
+        // Calculate direction vector and adjust for circle edge
+        const dx = targetX - sourceX;
+        const dy = targetY - sourceY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 0) {
+          const unitX = dx / distance;
+          const unitY = dy / distance;
+
+          // Adjust positions to circle edges
+          sourceX += unitX * circleRadius;
+          sourceY += unitY * circleRadius;
+          targetX -= unitX * circleRadius;
+          targetY -= unitY * circleRadius;
+        }
 
         const verticalDistance = Math.abs(sourceY - targetY);
         const curveIntensity = Math.min(0.8, verticalDistance / 300);
 
+        // Always use value chain color for value chain → cluster links, grey for everything else
         const linkColor =
-          targetNode.type === "product" ? targetNode.color : sourceNode.color;
+          sourceNode.type === "value_chain" ? sourceNode.color : "#808080";
 
         return {
           id: link.id,
@@ -135,35 +151,40 @@ export function convertToPositions(
           value: link.value,
           isTreeLink: true,
           curveIntensity,
+          rca: link.rca,
         };
       } else if (focusedCluster) {
-        // When focused on a cluster, use center-to-center connections like a tree
-        const sourceWidth = sourceNode.width ?? 0;
-        const sourceHeight = sourceNode.height ?? 0;
-        const targetWidth = targetNode.width ?? 0;
-        const targetHeight = targetNode.height ?? 0;
+        // When focused on a cluster, use center-to-center connections for network graph style
+        const circleRadius = 8; // Match the circle radius used in rendering
 
-        if (sourceNode.type === "manufacturing_cluster") {
-          sourceX = (sourceNode.x ?? 0) + sourceWidth / 2;
-          sourceY = (sourceNode.y ?? 0) + sourceHeight / 2;
-        } else {
-          sourceX = (sourceNode.x ?? 0) + sourceWidth;
-          sourceY = (sourceNode.y ?? 0) + sourceHeight / 2;
-        }
+        // For circular nodes, connect from center to center
+        sourceX = (sourceNode.x ?? 0) + (sourceNode.width ?? 0) / 2;
+        sourceY = (sourceNode.y ?? 0) + (sourceNode.height ?? 0) / 2;
+        targetX = (targetNode.x ?? 0) + (targetNode.width ?? 0) / 2;
+        targetY = (targetNode.y ?? 0) + (targetNode.height ?? 0) / 2;
 
-        if (targetNode.type === "manufacturing_cluster") {
-          targetX = (targetNode.x ?? 0) + targetWidth / 2;
-          targetY = (targetNode.y ?? 0) + targetHeight / 2;
-        } else {
-          targetX = targetNode.x ?? 0;
-          targetY = (targetNode.y ?? 0) + targetHeight / 2;
+        // Calculate direction vector and adjust for circle edge
+        const dx = targetX - sourceX;
+        const dy = targetY - sourceY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 0) {
+          const unitX = dx / distance;
+          const unitY = dy / distance;
+
+          // Adjust positions to circle edges
+          sourceX += unitX * circleRadius;
+          sourceY += unitY * circleRadius;
+          targetX -= unitX * circleRadius;
+          targetY -= unitY * circleRadius;
         }
 
         const verticalDistance = Math.abs(sourceY - targetY);
         const curveIntensity = Math.min(0.8, verticalDistance / 300);
 
+        // Always use value chain color for value chain → cluster links, grey for everything else
         const linkColor =
-          targetNode.type === "product" ? targetNode.color : sourceNode.color;
+          sourceNode.type === "value_chain" ? sourceNode.color : "#808080";
 
         return {
           id: link.id,
@@ -177,17 +198,93 @@ export function convertToPositions(
           value: link.value,
           isTreeLink: true,
           curveIntensity,
+          rca: link.rca,
         };
       } else {
-        // Sankey layout - use standard sankey positioning
+        // Sankey layout - use proper proportional link positioning
         sourceX = (sourceNode.x ?? 0) + (sourceNode.width ?? 0);
         targetX = targetNode.x ?? 0;
 
         const sourceHeight = sourceNode.height ?? 0;
         const targetHeight = targetNode.height ?? 0;
 
-        sourceY = (sourceNode.y ?? 0) + sourceHeight / 2;
-        targetY = (targetNode.y ?? 0) + targetHeight / 2;
+        // Get all links coming from this source node
+        const sourceLinks = positionedHierarchyData.links.filter(
+          (l) => l.source === link.source && l.visible,
+        );
+
+        // Sort by target node's vertical position for better alignment
+        sourceLinks.sort((a, b) => {
+          const targetA = nodeMap.get(a.target);
+          const targetB = nodeMap.get(b.target);
+          if (targetA && targetB) {
+            return (targetA.y ?? 0) - (targetB.y ?? 0);
+          }
+          return a.id.localeCompare(b.id);
+        });
+
+        // Find current link's index
+        const linkIndex = sourceLinks.findIndex((l) => l.id === link.id);
+
+        // Calculate total value of all links from this source
+        const totalSourceLinkValue = sourceLinks.reduce(
+          (sum, l) => sum + l.value,
+          0,
+        );
+
+        // Sum of values up to this link
+        const valueSumBefore = sourceLinks
+          .slice(0, linkIndex)
+          .reduce((sum, l) => sum + l.value, 0);
+
+        // Calculate proportional positions for source
+        const sourceRatio =
+          totalSourceLinkValue > 0 ? valueSumBefore / totalSourceLinkValue : 0;
+
+        // Get all links going to this target node
+        const targetLinks = positionedHierarchyData.links.filter(
+          (l) => l.target === link.target && l.visible,
+        );
+
+        // Sort by source node's vertical position for better alignment
+        targetLinks.sort((a, b) => {
+          const sourceA = nodeMap.get(a.source);
+          const sourceB = nodeMap.get(b.source);
+          if (sourceA && sourceB) {
+            return (sourceA.y ?? 0) - (sourceB.y ?? 0);
+          }
+          return a.id.localeCompare(b.id);
+        });
+
+        // Find current link's index in target links
+        const targetLinkIndex = targetLinks.findIndex((l) => l.id === link.id);
+
+        // Calculate total value of all links to this target
+        const totalTargetLinkValue = targetLinks.reduce(
+          (sum, l) => sum + l.value,
+          0,
+        );
+
+        // Sum of values up to this link for target
+        const targetValueSumBefore = targetLinks
+          .slice(0, targetLinkIndex)
+          .reduce((sum, l) => sum + l.value, 0);
+
+        // Calculate proportional positions for target
+        const targetRatio =
+          totalTargetLinkValue > 0
+            ? targetValueSumBefore / totalTargetLinkValue
+            : 0;
+
+        // Calculate actual Y positions based on proportional distribution
+        sourceY =
+          (sourceNode.y ?? 0) +
+          sourceHeight * sourceRatio +
+          (sourceHeight * link.value) / (2 * totalSourceLinkValue);
+        targetY =
+          (targetNode.y ?? 0) +
+          targetHeight * targetRatio +
+          (targetHeight * link.value) / (2 * totalTargetLinkValue);
 
         return {
           id: link.id,
@@ -201,6 +298,7 @@ export function convertToPositions(
           value: link.value,
           isTreeLink: false,
           curveIntensity: 0,
+          rca: link.rca,
         };
       }
     })

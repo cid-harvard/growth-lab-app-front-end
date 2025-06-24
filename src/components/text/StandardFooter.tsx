@@ -7,16 +7,16 @@ import {
   primaryFont,
 } from '../../styling/styleUtils';
 import styled from 'styled-components';
-import GrowthLabLogoPNG from "../../assets/growth-lab-new-logo-2022.png"
+import GrowthLabLogoPNG from '../../assets/growth-lab-new-logo-2022.png';
 import FacebookIconSVG from './assets/facebook.svg';
-import InstagramIconSVG from "./assets/instagram.svg";
+import InstagramIconSVG from './assets/instagram.svg';
 import TwitterIconSVG from './assets/twitter.svg';
 import LinkedinIconSVG from './assets/linkedin.svg';
 import YouTubeIconSVG from './assets/youtube.svg';
 import ApplePodcastSVG from './assets/applepodcast.svg';
 import {Routes, hubId} from '../../routing/routes';
 import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
-import GitHubIconSVG from "./assets/githubicon.svg";
+import GitHubIconSVG from './assets/githubicon.svg';
 
 export const Root = styled(FullWidthFooter)`
   color: #333;
@@ -227,7 +227,7 @@ export const socialIcon = {
   linkedin: LinkedinIconSVG,
   youtube: YouTubeIconSVG,
   applepodcast: ApplePodcastSVG,
-  instagram: InstagramIconSVG
+  instagram: InstagramIconSVG,
 };
 
 interface Props {
@@ -274,7 +274,7 @@ const StandardFooter = (props: Props) => {
             <GrowthLabInfo>
               Harvard Kennedy School<br />
               79 JFK St. | Cambridge, MA 02138<br />
-              <a href="mailto:growthlab@hks.harvard.edu">growthlab@hks.harvard.edu</a>
+              <a href='mailto:growthlab@hks.harvard.edu'>growthlab@hks.harvard.edu</a>
             </GrowthLabInfo>
           </LogoColumn>
           <RepoColumn>

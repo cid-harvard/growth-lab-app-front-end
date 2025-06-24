@@ -65,6 +65,7 @@ export interface HierarchyNodeData {
   type: "value_chain" | "manufacturing_cluster" | "product";
   color: string;
   visible: boolean;
+  rca?: number; // Optional RCA value for opacity calculations
   x?: number;
   y?: number;
   width?: number;
@@ -79,6 +80,7 @@ export interface HierarchyLinkData {
   value: number;
   color: string;
   visible: boolean;
+  rca?: number; // Optional RCA value for opacity calculations
   sourceX?: number;
   sourceY?: number;
   targetX?: number;
@@ -125,6 +127,7 @@ export interface LinkPosition {
   value: number;
   isTreeLink: boolean;
   curveIntensity: number;
+  rca?: number; // Optional RCA value for opacity calculations
 }
 
 export interface SankeyNodeExtra {
@@ -148,3 +151,6 @@ export interface NodeStyles {
   height: number;
   opacity: number;
 }
+
+// Sankey coloring mode type
+export type SankeyColoringMode = "Country Specific" | "Global";

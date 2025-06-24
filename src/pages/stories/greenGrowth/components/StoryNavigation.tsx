@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import {
+  ArrowBack,
+  ArrowForward,
+  Menu,
+  Close,
+  Home,
+} from "@mui/icons-material";
 import { Routes } from "../../../../metadata";
 import { useUrlParams } from "../hooks/useUrlParams";
 import { useQuery } from "@apollo/client";
@@ -15,29 +21,49 @@ import {
   FormControl,
 } from "@mui/material";
 
-const NavigationContainer = styled(Box)(({ theme }) => ({
-  position: "fixed",
-  left: 0,
-  top: 0,
-  width: "320px",
-  height: "100vh",
-  backgroundColor: "#ffffff",
-  borderRight: "1px solid #e0e0e0",
-  display: "flex",
-  flexDirection: "column",
-  zIndex: 100,
-  overflowY: "auto",
-  [theme.breakpoints.down("md")]: {
-    width: "280px",
-  },
-  [theme.breakpoints.down("sm")]: {
-    position: "relative",
-    width: "100%",
-    height: "auto",
-    maxHeight: "40vh",
+const NavigationContainer = styled(Box)<{ isCondensed?: boolean }>(
+  ({ isCondensed }) => ({
+    position: isCondensed ? "fixed" : "relative",
+    left: 0,
     top: 0,
-  },
-}));
+    width: isCondensed ? "60px" : "320px",
+    height: isCondensed ? "60px" : "100vh",
+    backgroundColor: "#ffffff",
+    borderRight: isCondensed ? "none" : "1px solid #e0e0e0",
+    borderBottom: isCondensed ? "1px solid #e0e0e0" : "none",
+    borderRadius: isCondensed ? "0 0 8px 0" : "0",
+    display: "flex",
+    flexDirection: "column",
+    zIndex: isCondensed ? 1000 : 1,
+    overflowY: isCondensed ? "hidden" : "auto",
+    transition: "all 0.3s ease-in-out",
+    boxShadow: isCondensed ? "0 2px 8px rgba(0,0,0,0.1)" : "none",
+    flexShrink: 0,
+  }),
+);
+
+const ToggleButton = styled(IconButton)<{ isCondensed?: boolean }>(
+  ({ isCondensed }) => ({
+    position: "absolute",
+    top: isCondensed ? "50%" : "12px",
+    right: isCondensed ? "50%" : "12px",
+    transform: isCondensed ? "translate(50%, -50%)" : "none",
+    zIndex: 101,
+    backgroundColor: isCondensed ? "transparent" : "rgba(255,255,255,0.9)",
+    border: isCondensed ? "none" : "1px solid #e0e0e0",
+    borderRadius: "4px",
+    padding: isCondensed ? "12px" : "6px",
+    "&:hover": {
+      backgroundColor: isCondensed
+        ? "rgba(74, 144, 164, 0.1)"
+        : "rgba(255,255,255,1)",
+    },
+    "& .MuiSvgIcon-root": {
+      fontSize: isCondensed ? "24px" : "20px",
+      color: isCondensed ? "#4A90A4" : "#666",
+    },
+  }),
+);
 
 const SidebarHeader = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2.5),
@@ -88,6 +114,9 @@ const TopNavButton = styled(Button)({
   fontWeight: 500,
   marginBottom: "24px",
   justifyContent: "flex-start",
+  minHeight: "60px", // Fixed height to prevent layout shift
+  alignItems: "flex-start",
+
   "&:disabled": {
     color: "#ccc",
   },
@@ -106,31 +135,55 @@ const ProgressContainer = styled(Box)({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  justifyContent: "flex-start",
   gap: "16px",
   paddingTop: "8px",
-  minWidth: "20px",
+  minWidth: "24px",
+  height: "320px", // Fixed height to prevent movement
+  position: "relative",
 });
 
-const StepIndicator = styled(Box)<{ active?: boolean; completed?: boolean }>(
-  ({ active, completed }) => ({
-    width: "12px",
-    height: "12px",
-    borderRadius: "50%",
-    flexShrink: 0,
-    backgroundColor: completed ? "#4A90A4" : active ? "#4A90A4" : "#e0e0e0",
-    border: active
-      ? "3px solid #4A90A4"
-      : completed
-        ? "none"
-        : "2px solid #e0e0e0",
-    boxShadow: active ? "0 0 0 2px rgba(74, 144, 164, 0.2)" : "none",
-    cursor: "pointer",
-    transition: "all 0.2s ease",
-    "&:hover": {
-      transform: "scale(1.1)",
-    },
-  }),
-);
+const HomeIcon = styled(Box)({
+  width: "16px",
+  height: "16px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  transition: "all 0.2s ease",
+  "&:hover": {
+    transform: "scale(1.1)",
+  },
+  "& .MuiSvgIcon-root": {
+    fontSize: "16px",
+    color: "#4A90A4",
+  },
+});
+
+const StepIndicator = styled(Box)<{ active?: boolean }>(({ active }) => ({
+  width: "12px",
+  height: "12px",
+  borderRadius: "50%",
+  backgroundColor: "#4A90A4",
+  cursor: "pointer",
+  transition: "all 0.2s ease",
+  position: "relative",
+  "&:hover": {
+    transform: "scale(1.1)",
+  },
+  "&::after": active
+    ? {
+        content: '""',
+        position: "absolute",
+        top: "-4px",
+        left: "-4px",
+        right: "-4px",
+        bottom: "-4px",
+        border: "2px solid #4A90A4",
+        borderRadius: "50%",
+      }
+    : {},
+}));
 
 // Current step content display
 const CurrentStepContent = styled(Box)({
@@ -159,58 +212,51 @@ const navigationSteps: NavigationStep[] = [
   {
     id: "overview",
     route: Routes.GreenGrowthOverview,
-    title: "In Which Clusters Am I Most Competitive? (Well Positioned)",
+    title: "What is a green value chain?",
     modalContent:
-      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
   },
   {
     id: "advantage",
     route: Routes.GreenGrowthAdvantage,
-    title: "What Is My Strategic Policy Approach?",
+    title: "Where Is My Country in Green Value Chains?",
     modalContent:
-      "Green Value Chains Include A Range Of Products From Critical Minerals To Final Goods. These Products Require Distinct Productive Capabilities. Each Circle Represents An Input For A Green Value Chain That Is Critical For The Energy Transition. These Products Require Distinct Productive Capabilities. Each Circle Represents An Input For A Green Value Chain That Is Critical For The Energy Transition.",
-  },
-  {
-    id: "minerals",
-    route: Routes.GreenGrowthMinerals,
-    title: "What Are My Opportunities?",
-    modalContent:
-      "Critical minerals power the energy transition, since they form important inputs to many different energy technologies. Minerals are circled here with black borders. For the world to decarbonize, mineral producers will need to quickly scale-up production. This represents an important green growth opportunity for many countries. This requires mineral deposits and good mining policy.",
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
   },
   {
     id: "value-chains",
     route: "/greenplexity/value-chains",
-    title: "Green Value Chain Structure",
+    title: "What Manufacturing communities are contained in value chains?",
     modalContent:
-      "Explore how green value chains connect to manufacturing clusters and individual products. This interactive view shows the hierarchical structure of green technologies, from broad value chains down to specific products. Click on value chains or clusters to dive deeper into the connections.",
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
   },
   {
     id: "competitiveness",
     route: Routes.GreenGrowthCompetitiveness,
-    title: "Competitiveness in Green Value Chains",
+    title: "In which clusters am I most competitive?",
     modalContent:
-      "This shows your country's actual presence (colored bar) in each green value chain versus the level if your country had average competitiveness in all value chain components (black line). This reveals your country's areas of strength and concentration.",
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+  },
+  {
+    id: "strategic-position",
+    route: Routes.GreenGrowthStrategicPosition,
+    title: "What is my strategic policy approach?",
+    modalContent:
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
   },
   {
     id: "opportunities",
     route: "/greenplexity/opportunities",
-    title: "High-Value Opportunities to Enter Green Value Chains",
+    title: "What are My Opportunities?",
     modalContent:
-      "What opportunities in green value chains should your country enter? Diversifying into new, more complex products drives economic growth. Countries are more successful at entering new industries that build on existing capabilities. So your country's best opportunities will often be new industries that leverage its existing capabilities. The graph shows which opportunities are most feasible and attractive for your country. Your country's best opportunities are towards the top right of the graph.",
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
   },
   {
     id: "dimensions",
     route: "/greenplexity/dimensions",
-    title: "Dimensions of Opportunities in Green Value Chains",
+    title: "What are My Opportunities?",
     modalContent:
-      "These diagrams compare green value chain opportunities across five key dimensions, to provide more perspective on the feasibility and attractiveness of different opportunities. Use the search to select products to compare across dimensions like complexity, feasibility, and market growth.",
-  },
-  {
-    id: "takeoff",
-    route: "/greenplexity/takeoff",
-    title: "Your Green Growth Strategy",
-    modalContent:
-      "The energy transition offers your country a defining opportunity for growth. Your country must act quickly to create a winning strategy for green growth, or risk being left behind. Get in touch to learn more about creating your green growth strategy.",
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
   },
 ];
 
@@ -221,6 +267,7 @@ interface StoryNavigationProps {
 const StoryNavigation: React.FC<StoryNavigationProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isCondensed, setIsCondensed] = useState(false);
 
   const {
     countrySelection,
@@ -247,24 +294,75 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
       ? navigationSteps[currentStepIndex + 1]
       : null;
 
+  // Build URL with current parameters
+  const buildUrlWithParams = (basePath: string) => {
+    const params = new URLSearchParams();
+    if (countrySelection) {
+      params.set("country", String(countrySelection));
+    }
+    if (yearSelection) {
+      params.set("year", String(yearSelection));
+    }
+    return `${basePath}${params.toString() ? `?${params.toString()}` : ""}`;
+  };
+
   const handleStepClick = (route: string) => {
-    navigate(route);
+    const urlWithParams = buildUrlWithParams(route);
+    navigate(urlWithParams);
+  };
+
+  const handleHome = () => {
+    const urlWithParams = buildUrlWithParams("/greenplexity");
+    navigate(urlWithParams);
   };
 
   const handlePrevious = () => {
     if (currentStepIndex > 0) {
-      navigate(navigationSteps[currentStepIndex - 1].route);
+      const urlWithParams = buildUrlWithParams(
+        navigationSteps[currentStepIndex - 1].route,
+      );
+      navigate(urlWithParams);
     }
   };
 
   const handleNext = () => {
     if (currentStepIndex < navigationSteps.length - 1) {
-      navigate(navigationSteps[currentStepIndex + 1].route);
+      const urlWithParams = buildUrlWithParams(
+        navigationSteps[currentStepIndex + 1].route,
+      );
+      navigate(urlWithParams);
     }
   };
 
+  const toggleNavigation = () => {
+    const newCondensedState = !isCondensed;
+    setIsCondensed(newCondensedState);
+
+    // Emit event to notify layout about state change
+    window.dispatchEvent(
+      new CustomEvent("sidebarToggle", {
+        detail: { isCondensed: newCondensedState },
+      }),
+    );
+  };
+
+  if (isCondensed) {
+    return (
+      <NavigationContainer isCondensed={true}>
+        <ToggleButton isCondensed={true} onClick={toggleNavigation}>
+          <Menu />
+        </ToggleButton>
+      </NavigationContainer>
+    );
+  }
+
   return (
-    <NavigationContainer>
+    <NavigationContainer isCondensed={false}>
+      {/* Toggle Button */}
+      <ToggleButton isCondensed={false} onClick={toggleNavigation}>
+        <Close />
+      </ToggleButton>
+
       {/* Header */}
       <SidebarHeader>
         <Typography
@@ -273,6 +371,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             fontWeight: 700,
             fontSize: "18px",
             marginBottom: 0.5,
+            textAlign: "center",
           }}
         >
           GREENPLEXITY
@@ -283,6 +382,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             opacity: 0.9,
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Box
@@ -352,16 +452,20 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         <MainContentArea>
           {/* Progress Indicators on the left */}
           <ProgressContainer>
-            {navigationSteps.map((step, index) => {
+            {/* Home Icon */}
+            <HomeIcon onClick={handleHome} title="Go to Greenplexity Home">
+              <Home />
+            </HomeIcon>
+
+            {navigationSteps.map((step) => {
               const isActive = location.pathname === step.route;
-              const isCompleted = index < currentStepIndex;
 
               return (
                 <StepIndicator
                   key={step.id}
                   active={isActive}
-                  completed={isCompleted}
                   onClick={() => handleStepClick(step.route)}
+                  title={step.title}
                 />
               );
             })}

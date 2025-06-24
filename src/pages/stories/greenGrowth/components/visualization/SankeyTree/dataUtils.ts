@@ -7,9 +7,9 @@ import {
   HierarchyLinkData,
   TreeNode,
 } from "./types";
-import { valueChainColors, getColorFromRca } from "./constants";
+import { valueChainColors } from "./constants";
 
-// Function to build hierarchical data with RCA coloring
+// Function to build hierarchical data with value chain coloring and RCA opacity
 export function buildHierarchicalData(
   rows: ProductClusterRow[],
   countryData?: {
@@ -91,16 +91,11 @@ export function buildHierarchicalData(
     }
   }
 
-  // Create nodes for value chains and clusters
+  // Create nodes - only value chains get their colors, everything else is grey
   const nodes: HierarchyNodeData[] = [
     ...valueChains.map((name) => {
-      let color = valueChainColors[name] || "#ccc";
-
-      // If country data is available, adjust color based on RCA
-      if (countryData && countryData.productData.length > 0) {
-        const rca = valueChainRcaMap.get(name) || 0;
-        color = getColorFromRca(rca);
-      }
+      // Value chains always use their designated colors
+      const color = valueChainColors[name] || "#808080";
 
       return {
         id: name,
@@ -108,16 +103,13 @@ export function buildHierarchicalData(
         type: "value_chain" as const,
         color,
         visible: true,
+        // Store RCA for opacity calculation later if needed
+        rca: valueChainRcaMap.get(name) || 0,
       };
     }),
     ...clusters.map((name) => {
-      let color = "#808080"; // Default color
-
-      // If country data is available, color by RCA
-      if (countryData && countryData.productData.length > 0) {
-        const rca = clusterRcaMap.get(name) || 0;
-        color = getColorFromRca(rca);
-      }
+      // Clusters are always grey in the main view
+      const color = "#808080";
 
       return {
         id: name,
@@ -125,6 +117,8 @@ export function buildHierarchicalData(
         type: "manufacturing_cluster" as const,
         color,
         visible: true,
+        // Store RCA for opacity calculation later if needed
+        rca: clusterRcaMap.get(name) || 0,
       };
     }),
   ];
@@ -144,13 +138,12 @@ export function buildHierarchicalData(
 
       // Get node references for source and target
       const vcNode = nodes.find((n) => n.id === vc);
-      const clNode = nodes.find((n) => n.id === cl);
 
-      // When country is selected, links inherit color from target node
-      const linkColor =
-        countryData && countryData.productData.length > 0
-          ? clNode?.color || vcNode?.color || "#ccc"
-          : vcNode?.color || valueChainColors[vc] || "#ccc";
+      // First-level links (value chain to cluster) inherit value chain color
+      const linkColor = vcNode?.color || valueChainColors[vc] || "#808080";
+
+      // Get RCA for the link (use target cluster's RCA)
+      const linkRca = clusterRcaMap.get(cl) || 0;
 
       links.push({
         id: `vc-${vc}-cl-${cl}`,
@@ -159,6 +152,7 @@ export function buildHierarchicalData(
         value: linkValue,
         color: linkColor,
         visible: true,
+        rca: linkRca,
       });
     }
   }
@@ -178,22 +172,21 @@ export function buildHierarchicalData(
       new Map(clusterProducts.map((item) => [item.id, item])).values(),
     );
 
-    // Find the cluster node to get its color
-    const clusterNode = nodes.find((n) => n.id === cluster);
-
     // Add products to nodes array
     for (const product of uniqueProducts) {
       if (!nodes.find((n) => n.id === product.id)) {
-        let productColor = clusterNode?.color || "#808080";
+        // Products are always grey
+        const productColor = "#808080";
+        let productRca = 0;
 
-        // If country data is available, color by normalized export RCA
+        // If country data is available, get RCA for opacity calculation
         if (countryData && countryData.productData.length > 0) {
           const productCountryData = countryData.productData.find(
             (pd) => pd.productId.toString() === product.id,
           );
 
           if (productCountryData) {
-            productColor = getColorFromRca(productCountryData.exportRca);
+            productRca = productCountryData.exportRca;
           }
         }
 
@@ -203,6 +196,7 @@ export function buildHierarchicalData(
           type: "product",
           color: productColor,
           visible: false, // Initially hidden
+          rca: productRca,
         });
 
         // Add link from cluster to product
@@ -218,13 +212,15 @@ export function buildHierarchicalData(
           }
         }
 
+        // Second-level links (cluster to product) are grey
         links.push({
-          id: `cl-${cluster}-pd-${product.id}`,
+          id: `cl-${cluster}-pr-${product.id}`,
           source: cluster,
           target: product.id,
           value: linkValue,
-          color: clusterNode?.color || "#808080",
+          color: "#808080", // Grey links for cluster to product
           visible: false, // Initially hidden
+          rca: productRca,
         });
       }
     }

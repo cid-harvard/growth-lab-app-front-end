@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { scrollToAnchor } from '../../hooks/useScrollBehavior';
 import {FullWidthHeaderContent} from '../../styling/Grid';
-import HarvardLogo from "../../assets/harvard-logo.png";
+import HarvardLogo from '../../assets/harvard-logo.png';
 import {secondaryFont} from '../../styling/styleUtils';
 
 export const navHeight = 3.375; // in rem
@@ -182,10 +182,10 @@ const TopLevelStickyNav = (props: Props) => {
 
   // Add Harvard Logo link to top-level nav, link externally to Harvard website
   linkList.push(
-    <a href="http://www.harvard.edu/" target="_blank">
-    <HarvardLogoImg src={HarvardLogo} alt="Harvard University" />
-    </a>
-  )
+    <a href='http://www.harvard.edu/' target='_blank'>
+    <HarvardLogoImg src={HarvardLogo} alt='Harvard University' />
+    </a>,
+  );
 
   return (
     <Root

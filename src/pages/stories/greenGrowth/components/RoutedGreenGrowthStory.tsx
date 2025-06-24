@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,12 +20,64 @@ const theme = createTheme({
   },
 });
 
+// Add dynamic CSS for collapsed sidebar constraints
+const addCollapsedSidebarStyles = () => {
+  const styleId = "collapsed-sidebar-constraints";
+
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      /* When sidebar is collapsed, only add top constraint to prevent overlap */
+      .sidebar-collapsed .content-area {
+        margin-top: 70px !important;
+        height: calc(100vh - 70px) !important;
+        transition: all 0.3s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+};
+
 // Layout component for story steps with navigation
 const StoryStepLayout = () => {
+  useEffect(() => {
+    addCollapsedSidebarStyles();
+
+    const handleSidebarToggle = (event: any) => {
+      if (event.detail.isCondensed) {
+        document.body.classList.add("sidebar-collapsed");
+      } else {
+        document.body.classList.remove("sidebar-collapsed");
+      }
+    };
+
+    window.addEventListener("sidebarToggle", handleSidebarToggle);
+    return () =>
+      window.removeEventListener("sidebarToggle", handleSidebarToggle);
+  }, []);
+
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        width: "100%",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
       <StoryNavigation />
-      <Box sx={{ flex: 1, marginLeft: "320px" }}>
+      <Box
+        className="content-area"
+        sx={{
+          flex: 1,
+          height: "100%",
+          overflow: "hidden",
+          minWidth: 0,
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
         <Outlet />
       </Box>
     </Box>
@@ -34,10 +86,43 @@ const StoryStepLayout = () => {
 
 // Layout component for radar with padding
 const RadarLayout = () => {
+  useEffect(() => {
+    addCollapsedSidebarStyles();
+
+    const handleSidebarToggle = (event: any) => {
+      if (event.detail.isCondensed) {
+        document.body.classList.add("sidebar-collapsed");
+      } else {
+        document.body.classList.remove("sidebar-collapsed");
+      }
+    };
+
+    window.addEventListener("sidebarToggle", handleSidebarToggle);
+    return () =>
+      window.removeEventListener("sidebarToggle", handleSidebarToggle);
+  }, []);
+
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        width: "100%",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
       <StoryNavigation />
-      <Box sx={{ flex: 1, marginLeft: "320px", paddingTop: "60px" }}>
+      <Box
+        className="content-area"
+        sx={{
+          flex: 1,
+          height: "100%",
+          overflow: "hidden",
+          minWidth: 0,
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
         <Outlet />
       </Box>
     </Box>
@@ -46,10 +131,43 @@ const RadarLayout = () => {
 
 // Layout component for takeoff with footer
 const TakeoffLayout = () => {
+  useEffect(() => {
+    addCollapsedSidebarStyles();
+
+    const handleSidebarToggle = (event: any) => {
+      if (event.detail.isCondensed) {
+        document.body.classList.add("sidebar-collapsed");
+      } else {
+        document.body.classList.remove("sidebar-collapsed");
+      }
+    };
+
+    window.addEventListener("sidebarToggle", handleSidebarToggle);
+    return () =>
+      window.removeEventListener("sidebarToggle", handleSidebarToggle);
+  }, []);
+
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        width: "100%",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
       <StoryNavigation />
-      <Box sx={{ flex: 1, marginLeft: "320px" }}>
+      <Box
+        className="content-area"
+        sx={{
+          flex: 1,
+          height: "100%",
+          overflow: "hidden",
+          minWidth: 0,
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
         <Outlet />
         <Attribution />
         <StandardFooter showGithubLink={false} />
@@ -99,8 +217,11 @@ const RoutedGreenGrowthStory = () => {
               path="competitive-advantage"
               element={<RoutedVisualization />}
             />
-            <Route path="critical-minerals" element={<RoutedVisualization />} />
             <Route path="competitiveness" element={<RoutedVisualization />} />
+            <Route
+              path="strategic-position"
+              element={<RoutedVisualization />}
+            />
             <Route path="value-chains" element={<SankeyTree />} />
             <Route path="opportunities" element={<ProductScatter />} />
           </Route>
