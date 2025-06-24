@@ -28,6 +28,21 @@ export interface MetaData {
   color?: string;
 }
 
+// New interfaces for cluster boundaries
+export interface ClusterBoundary {
+  center: [number, number];
+  polygon: Array<[number, number]>;
+  color: string;
+  clusterId: string;
+  clusterCode: number;
+  continent?: string; // For countries, reference to parent continent
+}
+
+export interface ClusterData {
+  continents: ClusterBoundary[];
+  countries: ClusterBoundary[];
+}
+
 // Predefined metadata for default dataset
 const defaultMetadata = [
   {
@@ -76,6 +91,7 @@ export interface LoaderData {
   nodes: Node[];
   links: Link[];
   metadata: MetaData[];
+  clusters?: ClusterData;
   defaultMetadata?: typeof defaultMetadata;
   categoryMetaMap?: Record<string, { color: string }>;
 }
@@ -115,36 +131,45 @@ export async function loader({
       throw new Error("No dataset specified");
     }
 
+    let clusters: ClusterData | undefined;
+
     if (isRemote) {
       const nodesUrl = url.searchParams.get("nodesUrl");
       const linksUrl = url.searchParams.get("linksUrl");
       const metaUrl =
         url.searchParams.get("metaUrl") || url.searchParams.get("metadataUrl");
+      const clustersUrl = url.searchParams.get("clustersUrl");
 
       if (!nodesUrl || !linksUrl) {
         throw new Error("Nodes and links URLs are required");
       }
 
-      const [nodesResponse, linksResponse, metadataResponse] =
+      const [nodesResponse, linksResponse, metadataResponse, clustersResponse] =
         await Promise.all([
           fetch(decodeURIComponent(nodesUrl)),
           fetch(decodeURIComponent(linksUrl)),
           metaUrl ? fetch(decodeURIComponent(metaUrl)) : Promise.resolve(null),
+          clustersUrl
+            ? fetch(decodeURIComponent(clustersUrl))
+            : Promise.resolve(null),
         ]);
 
       if (
         !nodesResponse.ok ||
         !linksResponse.ok ||
-        (metaUrl && !metadataResponse?.ok)
+        (metaUrl && !metadataResponse?.ok) ||
+        (clustersUrl && !clustersResponse?.ok)
       ) {
         throw new Error("Failed to fetch remote dataset files");
       }
 
-      const [nodesText, linksText, metadataText] = await Promise.all([
-        nodesResponse.text(),
-        linksResponse.text(),
-        metaUrl ? metadataResponse?.text() : Promise.resolve(null),
-      ]);
+      const [nodesText, linksText, metadataText, clustersText] =
+        await Promise.all([
+          nodesResponse.text(),
+          linksResponse.text(),
+          metaUrl ? metadataResponse?.text() : Promise.resolve(null),
+          clustersUrl ? clustersResponse?.text() : Promise.resolve(null),
+        ]);
 
       const nodes = d3.csvParse(nodesText) as any[];
 
@@ -164,7 +189,18 @@ export async function loader({
         }
       }
 
-      return { nodes, links, metadata };
+      // Handle optional cluster boundaries for remote URLs
+      if (clustersText) {
+        try {
+          clusters = JSON.parse(clustersText).clusters as ClusterData;
+          console.log("Loaded remote clusters:", clusters);
+        } catch (error) {
+          console.error("Failed to parse remote clusters:", error);
+          // Continue without clusters rather than failing
+        }
+      }
+
+      return { nodes, links, metadata, clusters };
     }
 
     if (isCustom) {
@@ -172,6 +208,7 @@ export async function loader({
       const nodesText = localStorage.getItem("custom_nodes");
       const linksText = localStorage.getItem("custom_links");
       const metadataText = localStorage.getItem("custom_meta");
+      const clustersText = localStorage.getItem("custom_clusters");
 
       if (!nodesText || !linksText) {
         throw new Error("Nodes and links files are required");
@@ -195,7 +232,18 @@ export async function loader({
         }
       }
 
-      return { nodes, links, metadata };
+      // Handle optional cluster boundaries
+      if (clustersText) {
+        try {
+          clusters = JSON.parse(clustersText).clusters as ClusterData;
+          console.log("Loaded custom clusters:", clusters);
+        } catch (error) {
+          console.error("Failed to parse clusters:", error);
+          // Continue without clusters rather than failing
+        }
+      }
+
+      return { nodes, links, metadata, clusters };
     }
 
     // For default dataset, use the predefined metadata
@@ -255,13 +303,15 @@ export async function loader({
     }));
 
     // Assign colors to clusters using d3.schemeCategory10
-    const clusters = Array.from(
+    const clusterNames = Array.from(
       new Set(nodes.map((n) => n.product_space_cluster_name)),
     );
-    const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(clusters);
+    const colorScale = d3
+      .scaleOrdinal(d3.schemeCategory10)
+      .domain(clusterNames);
     const categoryMetaMap: Record<string, { color: string }> = {};
-    for (const cluster of clusters) {
-      categoryMetaMap[cluster] = { color: colorScale(cluster) };
+    for (const clusterName of clusterNames) {
+      categoryMetaMap[clusterName] = { color: colorScale(clusterName) };
     }
 
     // Attach color to each node
@@ -269,10 +319,29 @@ export async function loader({
       node.color = categoryMetaMap[node.product_space_cluster_name]?.color;
     }
 
+    // Load default cluster boundaries for industry space
+    if (datasetKey === "industry") {
+      try {
+        // For now, we'll load from a static JSON file. In production, this could be a URL.
+        const clustersResponse = await fetch(
+          "/static/industry_space_clusters.json",
+        );
+        if (clustersResponse.ok) {
+          const clustersData = await clustersResponse.json();
+          clusters = clustersData.clusters as ClusterData;
+          console.log("Loaded default industry clusters:", clusters);
+        }
+      } catch (error) {
+        console.warn("Could not load default cluster boundaries:", error);
+        // Continue without clusters
+      }
+    }
+
     return {
       nodes,
       links,
       metadata,
+      clusters,
       defaultMetadata,
       categoryMetaMap,
     };

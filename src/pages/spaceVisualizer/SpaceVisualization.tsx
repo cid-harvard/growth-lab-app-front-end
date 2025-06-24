@@ -10,7 +10,8 @@ import { SpaceVisualizationControls } from "./components/SpaceVisualizationContr
 import { SpaceVisualizationContent } from "./components/SpaceVisualizationContent";
 import { SpaceVisualizationTooltip } from "./components/SpaceVisualizationTooltip";
 import { SpaceVisualizationHighlight } from "./components/SpaceVisualizationHighlight";
-import type { Node } from "./loader";
+import { SpaceVisualizationClusters } from "./components/SpaceVisualizationClusters";
+import type { Node, ClusterData } from "./loader";
 
 interface FieldNames {
   id: string;
@@ -33,6 +34,22 @@ interface RadiusConfig {
   fixedSize?: number;
 }
 
+interface ClusterConfig {
+  showContinents: boolean;
+  showCountries: boolean;
+  continents: {
+    strokeWidth: number;
+    fillOpacity: number;
+    strokeOpacity: number;
+    showLabels: boolean;
+  };
+  countries: {
+    strokeWidth: number;
+    fillOpacity: number;
+    strokeOpacity: number;
+  };
+}
+
 interface SpaceVisualizationProps {
   nodes: Node[];
   fieldNames: FieldNames;
@@ -41,6 +58,8 @@ interface SpaceVisualizationProps {
   allLinks: { x1: number; y1: number; x2: number; y2: number }[];
   svgRef: RefObject<SVGSVGElement>;
   radiusConfig?: RadiusConfig;
+  clusters?: ClusterData;
+  clusterConfig?: ClusterConfig;
   defaultMetadata?: Array<{
     cluster_name: string;
     cluster_name_short: string;
@@ -61,6 +80,8 @@ const SpaceVisualizationInner: React.FC<
   allLinks,
   svgRef,
   radiusConfig,
+  clusters,
+  clusterConfig,
   defaultMetadata,
   metadata,
   width,
@@ -392,6 +413,19 @@ const SpaceVisualizationInner: React.FC<
                       metadata={metadata}
                       categoryColorScale={categoryColorScale}
                     />
+                    {/* Render cluster boundaries and labels on top of everything else */}
+                    {clusters && clusterConfig && (
+                      <SpaceVisualizationClusters
+                        clusters={clusters}
+                        xScale={xScale}
+                        yScale={yScale}
+                        showContinents={clusterConfig.showContinents}
+                        showCountries={clusterConfig.showCountries}
+                        continentsConfig={clusterConfig.continents}
+                        countriesConfig={clusterConfig.countries}
+                        clusterColorMap={clusterColorMap}
+                      />
+                    )}
                   </g>
 
                   {showLegend &&

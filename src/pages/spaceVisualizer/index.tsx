@@ -20,6 +20,7 @@ interface LoaderData {
   nodes: Node[];
   links: Link[];
   metadata: MetaData[];
+  clusters?: import("./loader").ClusterData;
   defaultMetadata?: Array<{
     cluster_name: string;
     cluster_name_short: string;
@@ -44,9 +45,26 @@ interface FieldNames {
 
 export default function Visualization() {
   const svgRef = useRef<SVGSVGElement>(null);
-  const { nodes, links, metadata, defaultMetadata } =
+  const { nodes, links, metadata, clusters, defaultMetadata } =
     useLoaderData() as LoaderData;
   const [showAllLinks, setShowAllLinks] = useState(false);
+
+  // Cluster boundary configuration
+  const [clusterConfig, setClusterConfig] = useState({
+    showContinents: true,
+    showCountries: false,
+    continents: {
+      strokeWidth: 2,
+      fillOpacity: 0.1,
+      strokeOpacity: 0.8,
+      showLabels: false,
+    },
+    countries: {
+      strokeWidth: 1.5,
+      fillOpacity: 0.05,
+      strokeOpacity: 0.6,
+    },
+  });
 
   const nodeKeys =
     nodes.length > 0
@@ -239,6 +257,9 @@ export default function Visualization() {
             setRadiusConfig={setRadiusConfig}
             showAllLinks={showAllLinks}
             setShowAllLinks={setShowAllLinks}
+            clusters={clusters}
+            clusterConfig={clusterConfig}
+            setClusterConfig={setClusterConfig}
           />
           <Box
             sx={{
@@ -256,6 +277,8 @@ export default function Visualization() {
               allLinks={allLinks}
               svgRef={svgRef}
               radiusConfig={radiusConfig}
+              clusters={clusters}
+              clusterConfig={clusterConfig}
               defaultMetadata={defaultMetadata}
               metadata={metadata}
             />

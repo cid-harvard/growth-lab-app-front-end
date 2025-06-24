@@ -28,10 +28,14 @@ import {
   Paper,
   TablePagination,
   Button,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadIcon from "@mui/icons-material/Download";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useLoaderData } from "react-router-dom";
 import type { LoaderData } from "./loader";
 import { Link } from "react-router-dom";
@@ -57,6 +61,22 @@ interface RadiusConfig {
   fixedSize: number;
 }
 
+interface ClusterConfig {
+  showContinents: boolean;
+  showCountries: boolean;
+  continents: {
+    strokeWidth: number;
+    fillOpacity: number;
+    strokeOpacity: number;
+    showLabels: boolean;
+  };
+  countries: {
+    strokeWidth: number;
+    fillOpacity: number;
+    strokeOpacity: number;
+  };
+}
+
 interface ConfiguratorProps {
   nodeKeys: string[];
   linkKeys: string[];
@@ -67,6 +87,9 @@ interface ConfiguratorProps {
   setRadiusConfig: React.Dispatch<React.SetStateAction<RadiusConfig>>;
   showAllLinks: boolean;
   setShowAllLinks: React.Dispatch<React.SetStateAction<boolean>>;
+  clusters?: import("./loader").ClusterData;
+  clusterConfig: ClusterConfig;
+  setClusterConfig: React.Dispatch<React.SetStateAction<ClusterConfig>>;
 }
 
 const SCALE_TYPES = ["linear", "log", "sqrt", "pow"];
@@ -210,6 +233,9 @@ export default function Configurator({
   setRadiusConfig,
   showAllLinks,
   setShowAllLinks,
+  clusters,
+  clusterConfig,
+  setClusterConfig,
 }: ConfiguratorProps) {
   const [open, setOpen] = useState(true);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -619,6 +645,264 @@ export default function Configurator({
                 px: 1,
               }}
             />
+            <Divider sx={{ my: 2 }} />
+
+            {/* CLUSTER BOUNDARIES SECTION */}
+            {clusters && (
+              <>
+                <FormLabel>
+                  <b>Cluster Boundaries:</b>
+                </FormLabel>
+
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="continents-panel-content"
+                    id="continents-panel-header"
+                  >
+                    <Typography>
+                      Continents ({clusters.continents.length})
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={clusterConfig.showContinents}
+                          onChange={(e) =>
+                            setClusterConfig((prev) => ({
+                              ...prev,
+                              showContinents: e.target.checked,
+                            }))
+                          }
+                        />
+                      }
+                      label="Show Continents"
+                      sx={{
+                        mb: 2,
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
+                      Stroke Width:
+                    </Typography>
+                    <Slider
+                      value={clusterConfig.continents.strokeWidth}
+                      onChange={(_e, value) =>
+                        setClusterConfig((prev) => ({
+                          ...prev,
+                          continents: {
+                            ...prev.continents,
+                            strokeWidth: value as number,
+                          },
+                        }))
+                      }
+                      min={0.5}
+                      max={5}
+                      step={0.5}
+                      valueLabelDisplay="auto"
+                      sx={{
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+                      Fill Opacity:
+                    </Typography>
+                    <Slider
+                      value={clusterConfig.continents.fillOpacity}
+                      onChange={(_e, value) =>
+                        setClusterConfig((prev) => ({
+                          ...prev,
+                          continents: {
+                            ...prev.continents,
+                            fillOpacity: value as number,
+                          },
+                        }))
+                      }
+                      min={0}
+                      max={0.5}
+                      step={0.05}
+                      valueLabelDisplay="auto"
+                      sx={{
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+                      Stroke Opacity:
+                    </Typography>
+                    <Slider
+                      value={clusterConfig.continents.strokeOpacity}
+                      onChange={(_e, value) =>
+                        setClusterConfig((prev) => ({
+                          ...prev,
+                          continents: {
+                            ...prev.continents,
+                            strokeOpacity: value as number,
+                          },
+                        }))
+                      }
+                      min={0}
+                      max={1}
+                      step={0.1}
+                      valueLabelDisplay="auto"
+                      sx={{
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+                      Show Labels:
+                    </Typography>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={clusterConfig.continents.showLabels}
+                          onChange={(e) =>
+                            setClusterConfig((prev) => ({
+                              ...prev,
+                              continents: {
+                                ...prev.continents,
+                                showLabels: e.target.checked,
+                              },
+                            }))
+                          }
+                        />
+                      }
+                      label="Show Labels"
+                      sx={{
+                        mb: 2,
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+                  </AccordionDetails>
+                </Accordion>
+
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="countries-panel-content"
+                    id="countries-panel-header"
+                  >
+                    <Typography>
+                      Countries ({clusters.countries.length})
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={clusterConfig.showCountries}
+                          onChange={(e) =>
+                            setClusterConfig((prev) => ({
+                              ...prev,
+                              showCountries: e.target.checked,
+                            }))
+                          }
+                        />
+                      }
+                      label="Show Countries"
+                      sx={{
+                        mb: 2,
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
+                      Stroke Width:
+                    </Typography>
+                    <Slider
+                      value={clusterConfig.countries.strokeWidth}
+                      onChange={(_e, value) =>
+                        setClusterConfig((prev) => ({
+                          ...prev,
+                          countries: {
+                            ...prev.countries,
+                            strokeWidth: value as number,
+                          },
+                        }))
+                      }
+                      min={0.5}
+                      max={5}
+                      step={0.5}
+                      valueLabelDisplay="auto"
+                      sx={{
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+                      Fill Opacity:
+                    </Typography>
+                    <Slider
+                      value={clusterConfig.countries.fillOpacity}
+                      onChange={(_e, value) =>
+                        setClusterConfig((prev) => ({
+                          ...prev,
+                          countries: {
+                            ...prev.countries,
+                            fillOpacity: value as number,
+                          },
+                        }))
+                      }
+                      min={0}
+                      max={0.5}
+                      step={0.05}
+                      valueLabelDisplay="auto"
+                      sx={{
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+                      Stroke Opacity:
+                    </Typography>
+                    <Slider
+                      value={clusterConfig.countries.strokeOpacity}
+                      onChange={(_e, value) =>
+                        setClusterConfig((prev) => ({
+                          ...prev,
+                          countries: {
+                            ...prev.countries,
+                            strokeOpacity: value as number,
+                          },
+                        }))
+                      }
+                      min={0}
+                      max={1}
+                      step={0.1}
+                      valueLabelDisplay="auto"
+                      sx={{
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+                  </AccordionDetails>
+                </Accordion>
+
+                <Divider sx={{ my: 2 }} />
+              </>
+            )}
+
             <Divider sx={{ my: 2 }} />
 
             {/* METADATA SECTION */}
