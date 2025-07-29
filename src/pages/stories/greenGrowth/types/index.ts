@@ -30,12 +30,21 @@ export interface CountryProductData {
   expectedExports: number;
   normalizedPci: number;
   normalizedCog: number;
-  feasibility: number;
-  effectiveNumberOfExporters: number;
-  marketGrowth: number;
+  density: number;
+  productMarketShareGrowth: number;
+  globalMarketShare: number;
+  productMarketShare: number;
+
   pciStd: number;
   cogStd: number;
   feasibilityStd: number;
+  strategyBalancedPortfolio: number;
+  strategyLongJump: number;
+  strategyLowHangingFruit: number;
+  strategyFrontier: number;
+
+  // Computed fields
+  marketGrowth: number;
   pciCogFeasibilityComposite: number;
 }
 

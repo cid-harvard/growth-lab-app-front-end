@@ -7,6 +7,8 @@ import expectedActualProductSelector from "../../atoms/expectedActualProduct";
 import { stratify, tree, hierarchy } from "d3-hierarchy";
 import { scaleSqrt, scaleLinear } from "d3-scale";
 import { linkRadial } from "d3-shape";
+import { VisualizationControls } from "../shared";
+import { Box, Typography } from "@mui/material";
 
 const treeSelector = selectorFamily({
   key: "treeSelector",
@@ -166,6 +168,55 @@ const TreeGrowth = () => {
     setIsPlaying((prev) => !prev);
   };
 
+  // Prepare country options for controls
+  const countryOptions = Object.entries(countryLookup).map(([code, name]) => ({
+    value: code,
+    label: name,
+  }));
+
+  // Prepare year options for controls
+  const yearOptions = availableYears.map((year) => ({
+    value: year.toString(),
+    label: year.toString(),
+  }));
+
+  // Define control groups for VisualizationControls
+  const controlGroups = [
+    {
+      label: "Country",
+      options: countryOptions,
+      selected: selectedCountry,
+      onChange: setSelectedCountry,
+      defaultValue: "USA",
+      paramKey: "treecountry",
+    },
+    {
+      label: "Year",
+      options: yearOptions,
+      selected: selectedYear.toString(),
+      onChange: (value) => setSelectedYear(Number(value)),
+      defaultValue: "2022",
+      paramKey: "treeyear",
+    },
+    {
+      label: "Animation",
+      options: [
+        { value: "pause", label: "Pause" },
+        { value: "play", label: "Play" },
+      ],
+      selected: isPlaying ? "play" : "pause",
+      onChange: (value) => {
+        if (value === "play" && !isPlaying) {
+          setIsPlaying(true);
+        } else if (value === "pause" && isPlaying) {
+          setIsPlaying(false);
+        }
+      },
+      defaultValue: "pause",
+      paramKey: "animation",
+    },
+  ];
+
   const { nodes, links, colorScale, sizeScale, linkWidthScale, opacityScale } =
     useMemo(() => {
       if (!greenSupplyChainTree)
@@ -251,42 +302,24 @@ const TreeGrowth = () => {
   const maxLabelLength = 15;
 
   return (
-    <div>
-      <h2>
-        Green Supply Chain Tree for {countryLookup[selectedCountry]} in{" "}
-        {selectedYear}
-      </h2>
-      <div>
-        <label htmlFor="country-select">Select Country: </label>
-        <select
-          id="country-select"
-          value={selectedCountry}
-          onChange={(e) => setSelectedCountry(e.target.value)}
-        >
-          {Object.entries(countryLookup).map(([code, name]) => (
-            <option key={code} value={code}>
-              {name}
-            </option>
-          ))}
-        </select>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Controls */}
+      <VisualizationControls controlGroups={controlGroups} />
 
-        <label htmlFor="year-slider" style={{ marginLeft: "1rem" }}>
-          Select Year: {selectedYear}
-        </label>
-        <input
-          id="year-slider"
-          type="range"
-          min={minYear}
-          max={maxYear}
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(Number(e.target.value))}
-          style={{ marginLeft: "0.5rem" }}
-        />
-
-        <button onClick={togglePlay} style={{ marginLeft: "1rem" }}>
-          {isPlaying ? "Pause" : "Play"}
-        </button>
-      </div>
+      {/* Title */}
+      <Box sx={{ padding: 2 }}>
+        <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
+          Green Supply Chain Tree for {countryLookup[selectedCountry]} in{" "}
+          {selectedYear}
+        </Typography>
+      </Box>
       <svg
         width="100%"
         height="80%"
@@ -383,7 +416,7 @@ const TreeGrowth = () => {
           )}
         </g>
       </svg>
-    </div>
+    </Box>
   );
 };
 

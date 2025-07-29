@@ -84,7 +84,7 @@ const ButtonLink = styled(ButtonLinkBase)`
 const StickyText = styled(StickyContainer)`
   background-color: rgba(0,0,0,0.1);
   padding: 1.5rem;
-  
+
   @media (max-width: ${storyMobileWidth}px) {
     background-color: unset;
   }
@@ -106,13 +106,13 @@ const InlineShareButtonDiv = styled.div`
   float: right;
   margin-top: 1rem;
   padding: 0.4rem 0.6rem;
-  
+
   @media (max-width: ${storyMobileWidth}px) {
 
     * {
       background-color: #fff;
       box-shadow: 0px 0px 1px 1px #fff;
-  
+
     }
   }
 `;
@@ -151,7 +151,7 @@ interface Props {
 const BestOfTemplate = (props: Props) => {
   const {
     metaTitle, metaDescription, coverPhotoSrc, sectionsData,
-    pageTitle, dateLine, byLine, introText, hasBeenRendered
+    pageTitle, dateLine, byLine, introText, hasBeenRendered,
   } = props;
 
   /*
@@ -163,12 +163,12 @@ const BestOfTemplate = (props: Props) => {
 
   */
   const linkToResearch = [
-    "better_sanctions_on_russia_needed",
-    "countries_diversify_industries_with_similar_occupational_inputs",
-    "manufacturing_country_space",
-    "south_africa_income_consumption_deciles",
-    "remote_work_across_commuting_zones_wyoming",
-    "wyoming_outmigration_by_age_bracket"
+    'better_sanctions_on_russia_needed',
+    'countries_diversify_industries_with_similar_occupational_inputs',
+    'manufacturing_country_space',
+    'south_africa_income_consumption_deciles',
+    'remote_work_across_commuting_zones_wyoming',
+    'wyoming_outmigration_by_age_bracket',
   ];
 
   const {section} = useScrollingSections({refs: sectionsData.map(({ref}) => ref)});
@@ -189,10 +189,10 @@ const BestOfTemplate = (props: Props) => {
 
     if(hasBeenRendered.current === true) {
       if(section === i) {
-        window.history.pushState("", document.title, window.location.pathname + "#" + id);
+        window.history.pushState('', document.title, window.location.pathname + '#' + id);
       } else if(section === null && i === 0) {
-        window.history.pushState("", document.title, window.location.pathname);
-      }  
+        window.history.pushState('', document.title, window.location.pathname);
+      }
     }
     let linkButton: React.ReactElement<any> | null;
     if (url) {

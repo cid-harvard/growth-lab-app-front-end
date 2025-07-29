@@ -38,3 +38,12 @@ build.zip
 
 # Visualization inputs
 public/visualization_inputs
+
+# Test data directories
+cluster_data/
+dag_test_data/
+group_data/
+scripts/
+
+sankeyTreeData.json
+tangledTreeData.json

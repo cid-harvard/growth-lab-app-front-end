@@ -36,7 +36,15 @@ export interface CountryProductData {
   exportRca: number;
   normalizedPci: number;
   normalizedCog: number;
-  feasibility: number | null;
+  density: number;
+  globalMarketShare: number;
+  productMarketShare: number;
+  productMarketShareGrowth: number;
+  feasibilityStd: number | null;
+  strategyBalancedPortfolio: number | null;
+  strategyLongJump: number | null;
+  strategyLowHangingFruit: number | null;
+  strategyFrontier: number | null;
 }
 
 export interface CountryClusterData {

@@ -10,7 +10,8 @@ import {
 import { styled } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useUrlParams } from "../hooks/useUrlParams";
+import { useUrlParams, useYearSelection } from "../hooks/useUrlParams";
+import { useGreenGrowthData } from "../hooks/useGreenGrowthData";
 import { useQuery } from "@apollo/client";
 import { GET_COUNTRIES } from "../queries/shared";
 import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
@@ -65,6 +66,15 @@ const ExploreButton = styled(Button)(({ theme }) => ({
 const Landing = ({ onExplore }) => {
   const { data } = useQuery(GET_COUNTRIES);
   const { countrySelection, setCountrySelection } = useUrlParams();
+  const selectedYear = useYearSelection();
+
+  // Preload all component queries when a country is selected
+  // This will cache the data in Apollo Client for faster navigation
+  useGreenGrowthData(
+    countrySelection,
+    parseInt(selectedYear),
+    true, // fetchAllCountriesMetrics = true to preload all country data
+  );
 
   const countries = data?.ggLocationCountryList || [];
 
@@ -85,36 +95,72 @@ const Landing = ({ onExplore }) => {
             variant="h3"
             component="h1"
             align="center"
-            gutterBottom
-            sx={{ color: "white", fontWeight: "bold" }}
+            sx={{
+              margin: "0px 0px 0.35em",
+              fontFamily: '"Source Sans Pro", "Source Sans", sans-serif',
+              fontSize: "3rem",
+              lineHeight: 1.167,
+              textAlign: "center",
+              color: "white",
+              fontWeight: 700,
+            }}
           >
-            GREENPLEXITY
+            Greenplexity
+          </Typography>
+
+          <Typography
+            variant="h4"
+            component="h2"
+            align="center"
+            sx={{
+              color: "white",
+              fontWeight: 400,
+              fontSize: "1.75rem",
+              lineHeight: 1.3,
+              margin: "0px 0px 3rem",
+              maxWidth: "800px",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            How can your country grow by helping the world decarbonize?
           </Typography>
 
           <Typography
             variant="body1"
             align="left"
-            paragraph
-            sx={{ color: "white", mb: 4, fontSize: "20px" }}
+            sx={{
+              margin: "0px 0px 32px",
+              fontFamily: '"Source Sans Pro", "Source Sans", sans-serif',
+              fontWeight: 400,
+              lineHeight: 1.5,
+              textAlign: "left",
+              color: "white",
+              fontSize: "20px",
+            }}
           >
-            The world's transition to a lower-carbon economy will radically
-            transform global production. Decarbonization presents a defining
-            opportunity for economic growth, by creating new industries,
-            markets, and paths to prosperity.
+            The global transition to a low-carbon economy is transforming what
+            the world produces—and who prospers.
           </Typography>
 
           <Typography
             variant="body1"
             align="left"
-            paragraph
-            sx={{ color: "white", mb: 4, fontSize: "20px" }}
+            sx={{
+              margin: "0px 0px 32px",
+              fontFamily: '"Source Sans Pro", "Source Sans", sans-serif',
+              fontWeight: 400,
+              lineHeight: 1.5,
+              textAlign: "left",
+              color: "white",
+              fontSize: "20px",
+            }}
           >
-            Greenplexity helps policymakers craft strategies to enter green
-            value chains that are driving the energy transition, like critical
-            minerals, solar panels, and electric vehicles. By analyzing local
-            productive capabilities, this tool identifies opportunities to
-            create winning strategies for green growth: to generate prosperity
-            by supplying what the world needs to decarbonize.
+            Greenplexity reveals where your country can lead inside the green
+            value chains powering the energy transition, to drive new paths to
+            prosperity. By mapping local capabilities against the needs of green
+            technologies, Greenplexity uncovers actionable strategies for green
+            growth—by supplying what the world needs to decarbonize.
           </Typography>
 
           <Box display="flex" justifyContent="center" width="100%">
@@ -164,7 +210,13 @@ const Landing = ({ onExplore }) => {
 
           <Box display="flex" flexDirection="column" alignItems="center">
             <Typography
-              sx={{ color: "white", mt: 2, fontSize: "24px", fontWeight: 600 }}
+              sx={(theme) => ({
+                color: "white",
+                mt: 2,
+                fontSize: theme.typography.h4.fontSize,
+                fontWeight: theme.typography.h4.fontWeight,
+                letterSpacing: theme.typography.caption.letterSpacing,
+              })}
             >
               EXPLORE
             </Typography>
@@ -188,7 +240,12 @@ const Landing = ({ onExplore }) => {
         <Typography
           variant="body1"
           align="center"
-          sx={{ color: "white", mt: 4, fontSize: "18px" }}
+          sx={(theme) => ({
+            color: "white",
+            mt: 4,
+            fontSize: theme.typography.subtitle1.fontSize,
+            lineHeight: theme.typography.body1.lineHeight,
+          })}
         >
           Greenplexity is a public good, financed in part by the Government of
           Azerbaijan.

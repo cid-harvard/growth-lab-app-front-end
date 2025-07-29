@@ -1,16 +1,16 @@
-import React, { useRef, useEffect } from "react";
-import BestOfTemplate, { SectionDatum } from "./Template";
-import CoverPhotoImage from "./header_image.png";
-import CoverPhotoImageLowRes from "./header_image.png";
-import { get, Routes } from "../../../../metadata";
-import data from "./bestviz_2024-Sheet1.json";
-import { scrollToAnchor } from "../../../../hooks/useScrollBehavior";
-import { useLocation } from "react-router";
-import { storyMobileWidth } from "../../../../styling/Grid";
+import React, { useRef, useEffect } from 'react';
+import BestOfTemplate, { SectionDatum } from './Template';
+import CoverPhotoImage from './header_image.png';
+import CoverPhotoImageLowRes from './header_image.png';
+import { get, Routes } from '../../../../metadata';
+import data from './bestviz_2024-Sheet1.json';
+import { scrollToAnchor } from '../../../../hooks/useScrollBehavior';
+import { useLocation } from 'react-router';
+import { storyMobileWidth } from '../../../../styling/Grid';
 
 const BestOf2024 = () => {
   // Create refs for each section based on the data length
-  const sections = useRef<Array<React.RefObject<HTMLParagraphElement>>>(
+  const sections = useRef<React.RefObject<HTMLParagraphElement>[]>(
     Array(data.length)
       .fill(null)
       .map(() => React.createRef()),
@@ -66,7 +66,7 @@ const BestOf2024 = () => {
       metaDescription={metadata.description}
       coverPhotoSrc={{ low: CoverPhotoImageLowRes, high: CoverPhotoImage }}
       pageTitle={"Visual Insights from the Growth Lab's 2024 Research"}
-      dateLine={"December 12, 2024"}
+      dateLine={'December 12, 2024'}
       byLine={null}
       introText={
         <p>

@@ -8,6 +8,20 @@ import {
   LinkPosition,
 } from "./types";
 
+// Import the value chain name to supply chain ID mapping for consistent ordering
+const valueChainNameToSupplyChainId: Record<string, number> = {
+  "Electric Vehicles": 0,
+  "Fuel Cells And Green Hydrogen": 1,
+  "Nuclear Power": 2,
+  "Heat Pumps": 3,
+  "Hydroelectric Power": 4,
+  "Critical Metals and Minerals": 5,
+  "Solar Power": 6,
+  Batteries: 7,
+  "Electric Grid": 8,
+  "Wind Power": 9,
+};
+
 // Function to apply sankey layout
 export function applySankeyLayout(
   hierarchyData: TreeHierarchy,
@@ -18,9 +32,30 @@ export function applySankeyLayout(
   const visibleNodes = hierarchyData.nodes.filter((n) => n.visible);
   const visibleNodeIds = new Set(visibleNodes.map((n) => n.id));
 
-  const sankeyNodes = visibleNodes.map((node) => ({
+  // Sort nodes to maintain consistent order: value chains by ID, clusters will be auto-organized
+  const sortedVisibleNodes = visibleNodes.sort((a, b) => {
+    // First, sort by type: value chains before manufacturing clusters
+    if (a.type !== b.type) {
+      if (a.type === "value_chain") return -1;
+      if (b.type === "value_chain") return 1;
+    }
+
+    // For value chains, sort by supply chain ID
+    if (a.type === "value_chain" && b.type === "value_chain") {
+      const idA = valueChainNameToSupplyChainId[a.name] ?? 999;
+      const idB = valueChainNameToSupplyChainId[b.name] ?? 999;
+      return idA - idB;
+    }
+
+    // For other types, maintain their current order (don't force alphabetical sorting)
+    return 0;
+  });
+
+  const sankeyNodes = sortedVisibleNodes.map((node, index) => ({
     name: node.id,
     type: node.type === "product" ? "manufacturing_cluster" : node.type,
+    originalIndex: index, // Store original index for sorting
+    nodeType: node.type, // Store the actual node type for sorting logic
   }));
 
   const nodeMap = Object.fromEntries(sankeyNodes.map((n, i) => [n.name, i]));
@@ -41,6 +76,7 @@ export function applySankeyLayout(
   const sankeyLayout = sankey<SankeyNodeExtra, object>()
     .nodeWidth(25)
     .nodePadding(10)
+
     .extent([
       [leftMargin, 70],
       [dimensions.width - rightMargin, dimensions.height - 100],
@@ -277,14 +313,18 @@ export function convertToPositions(
             : 0;
 
         // Calculate actual Y positions based on proportional distribution
+        // Position at the center of each link's proportional segment for better sankey flow
+        const sourceLinkRatio =
+          totalSourceLinkValue > 0 ? link.value / totalSourceLinkValue : 0;
+        const targetLinkRatio =
+          totalTargetLinkValue > 0 ? link.value / totalTargetLinkValue : 0;
+
         sourceY =
           (sourceNode.y ?? 0) +
-          sourceHeight * sourceRatio +
-          (sourceHeight * link.value) / (2 * totalSourceLinkValue);
+          sourceHeight * (sourceRatio + sourceLinkRatio / 2);
         targetY =
           (targetNode.y ?? 0) +
-          targetHeight * targetRatio +
-          (targetHeight * link.value) / (2 * totalTargetLinkValue);
+          targetHeight * (targetRatio + targetLinkRatio / 2);
 
         return {
           id: link.id,

@@ -66,7 +66,7 @@ const BestOf2022 = () =>{
   const metadata = get(Routes.BestOf2022);
 
   const sectionsData: SectionDatum[] = orderedData.map((d, i) => {
-    const source = d.data_source && d.data_source.length 
+    const source = d.data_source && d.data_source.length
       ? <><br /><br /><em>Source: {d.data_source}</em></> : null;
     const url = d.research_link_url && d.research_link_url.toLowerCase() !== 'n/a'
       ? d.research_link_url : undefined;

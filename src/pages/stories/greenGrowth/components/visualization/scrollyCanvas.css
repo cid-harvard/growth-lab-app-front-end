@@ -1,10 +1,46 @@
 .parent-circle {
-  opacity: 0;
-  animation: fadeIn 2s ease-in forwards;
+  opacity: 1;
+  /* animation: fadeIn 2s ease-in forwards; */
+}
+
+.cluster-label {
+  opacity: 1;
+  /* animation: fadeIn 2.5s ease-in forwards; */
+}
+
+.cluster-layer circle {
+  transition:
+    opacity 0.8s ease-in-out,
+    r 0.8s ease-in-out;
+}
+
+.highlight-layer circle {
+  transition: opacity 0.1s ease-in-out;
 }
 
 @keyframes fadeIn {
   to {
     opacity: 1;
+  }
+}
+
+.cluster-label {
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ensure smooth transitions for all animated elements */
+.parent-circle,
+.cluster-label {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Additional styling for better mobile experience */
+@media (max-width: 600px) {
+  .cluster-label {
+    font-size: 10px !important;
+    max-width: 80px;
   }
 }

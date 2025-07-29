@@ -36,5 +36,9 @@ export const sortByStringId = (a, b) => {
   return generateId(a).localeCompare(generateId(b));
 };
 
-// Re-export shared color scale
-export { colorScale } from "./utils/colors";
+// Re-export color utilities
+export {
+  colorScale,
+  getSupplyChainColor,
+  getValueChainColor,
+} from "./utils/colors";

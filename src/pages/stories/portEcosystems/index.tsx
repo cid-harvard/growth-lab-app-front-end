@@ -205,45 +205,45 @@ const dataTable = (
     // {naics_desc: "Apparel, Piece Goods, and Notions Merchant Wholesalers", naics_chapter: "Wholesale Trade"},
     // {naics_desc: "Petroleum and Petroleum Products Merchant Wholesalers", naics_chapter: "Wholesale Trade"}
     // Original above, modified below
-    {naics_desc: "Restaurants and Other Eating Places", naics_chapter: "Accommodation and Food Services"},
-    {naics_desc: "Traveler Accommodation", naics_chapter: ""},
-    {naics_desc: "Employment Services", naics_chapter: "Administrative and Support and Waste Management and Remediation Services"},
-    {naics_desc: "Services to Buildings and Dwellings", naics_chapter: ""},
-    {naics_desc: "Investigation and Security Services", naics_chapter: ""},
-    {naics_desc: "Travel Arrangement and Reservation Services", naics_chapter: ""},
-    {naics_desc: "Nonresidential Building Construction", naics_chapter: "Construction"},
-    {naics_desc: "Building Equipment Contractors", naics_chapter: ""},
-    {naics_desc: "Other Heavy and Civil Engineering Construction", naics_chapter: ""},
-    {naics_desc: "Foundation, Structure, and Building Exterior Contractors", naics_chapter: ""},
-    {naics_desc: "Colleges, Universities, and Professional Schools", naics_chapter: "Educational Services"},
-    {naics_desc: "Other Schools and Instruction", naics_chapter: ""},
-    {naics_desc: "General Medical and Surgical Hospitals", naics_chapter: "Health Care and Social Assistance"},
-    {naics_desc: "Offices of Physicians", naics_chapter: ""},
-    {naics_desc: "Individual and Family Services", naics_chapter: ""},
-    {naics_desc: "Newspaper, Periodical, Book, and Directory Publishers", naics_chapter: "Information"},
-    {naics_desc: "Other Information Services", naics_chapter: ""},
-    {naics_desc: "Management of Companies and Enterprises", naics_chapter: "Management of Companies and Enterprises"},
-    {naics_desc: "Bakeries and Tortilla Manufacturing", naics_chapter: "Manufacturing"},
-    {naics_desc: "Ship and Boat Building", naics_chapter: ""},
-    {naics_desc: "Business, Professional, Labor, Political, and Similar Organizations", naics_chapter: "Other Services (except Public Administration)"},
-    {naics_desc: "Personal Care Services", naics_chapter: ""},
-    {naics_desc: "Architectural, Engineering, and Related Services", naics_chapter: "Professional, Scientific, and Technical Services"},
-    {naics_desc: "Other Professional, Scientific, and Technical Services", naics_chapter: ""},
-    {naics_desc: "Legal Services", naics_chapter: ""},
-    {naics_desc: "Accounting, Tax Preparation, Bookkeeping, and Payroll Services", naics_chapter: ""},
-    {naics_desc: "Offices of Real Estate Agents and Brokers", naics_chapter: "Real Estate and Rental and Leasing"},
-    {naics_desc: "Grocery Stores", naics_chapter: "Retail Trade"},
-    {naics_desc: "Other Miscellaneous Store Retailers", naics_chapter: ""},
-    {naics_desc: "Clothing Stores", naics_chapter: ""},
-    {naics_desc: "Building Material and Supplies Dealers", naics_chapter: ""},
-    {naics_desc: "Other Support Activities for Transportation", naics_chapter: "Transportation and Warehousing"},
-    {naics_desc: "Freight Transportation Arrangement", naics_chapter: ""},
-    {naics_desc: "Scheduled Air Transportation", naics_chapter: ""},
-    {naics_desc: "Support Activities for Water Transportation", naics_chapter: ""},
-    {naics_desc: "Specialized Freight Trucking", naics_chapter: ""},
-    {naics_desc: "Grocery and Related Product Merchant Wholesalers", naics_chapter: "Wholesale Trade"},
-    {naics_desc: "Apparel, Piece Goods, and Notions Merchant Wholesalers", naics_chapter: ""},
-    {naics_desc: "Petroleum and Petroleum Products Merchant Wholesalers", naics_chapter: ""}
+    {naics_desc: 'Restaurants and Other Eating Places', naics_chapter: 'Accommodation and Food Services'},
+    {naics_desc: 'Traveler Accommodation', naics_chapter: ''},
+    {naics_desc: 'Employment Services', naics_chapter: 'Administrative and Support and Waste Management and Remediation Services'},
+    {naics_desc: 'Services to Buildings and Dwellings', naics_chapter: ''},
+    {naics_desc: 'Investigation and Security Services', naics_chapter: ''},
+    {naics_desc: 'Travel Arrangement and Reservation Services', naics_chapter: ''},
+    {naics_desc: 'Nonresidential Building Construction', naics_chapter: 'Construction'},
+    {naics_desc: 'Building Equipment Contractors', naics_chapter: ''},
+    {naics_desc: 'Other Heavy and Civil Engineering Construction', naics_chapter: ''},
+    {naics_desc: 'Foundation, Structure, and Building Exterior Contractors', naics_chapter: ''},
+    {naics_desc: 'Colleges, Universities, and Professional Schools', naics_chapter: 'Educational Services'},
+    {naics_desc: 'Other Schools and Instruction', naics_chapter: ''},
+    {naics_desc: 'General Medical and Surgical Hospitals', naics_chapter: 'Health Care and Social Assistance'},
+    {naics_desc: 'Offices of Physicians', naics_chapter: ''},
+    {naics_desc: 'Individual and Family Services', naics_chapter: ''},
+    {naics_desc: 'Newspaper, Periodical, Book, and Directory Publishers', naics_chapter: 'Information'},
+    {naics_desc: 'Other Information Services', naics_chapter: ''},
+    {naics_desc: 'Management of Companies and Enterprises', naics_chapter: 'Management of Companies and Enterprises'},
+    {naics_desc: 'Bakeries and Tortilla Manufacturing', naics_chapter: 'Manufacturing'},
+    {naics_desc: 'Ship and Boat Building', naics_chapter: ''},
+    {naics_desc: 'Business, Professional, Labor, Political, and Similar Organizations', naics_chapter: 'Other Services (except Public Administration)'},
+    {naics_desc: 'Personal Care Services', naics_chapter: ''},
+    {naics_desc: 'Architectural, Engineering, and Related Services', naics_chapter: 'Professional, Scientific, and Technical Services'},
+    {naics_desc: 'Other Professional, Scientific, and Technical Services', naics_chapter: ''},
+    {naics_desc: 'Legal Services', naics_chapter: ''},
+    {naics_desc: 'Accounting, Tax Preparation, Bookkeeping, and Payroll Services', naics_chapter: ''},
+    {naics_desc: 'Offices of Real Estate Agents and Brokers', naics_chapter: 'Real Estate and Rental and Leasing'},
+    {naics_desc: 'Grocery Stores', naics_chapter: 'Retail Trade'},
+    {naics_desc: 'Other Miscellaneous Store Retailers', naics_chapter: ''},
+    {naics_desc: 'Clothing Stores', naics_chapter: ''},
+    {naics_desc: 'Building Material and Supplies Dealers', naics_chapter: ''},
+    {naics_desc: 'Other Support Activities for Transportation', naics_chapter: 'Transportation and Warehousing'},
+    {naics_desc: 'Freight Transportation Arrangement', naics_chapter: ''},
+    {naics_desc: 'Scheduled Air Transportation', naics_chapter: ''},
+    {naics_desc: 'Support Activities for Water Transportation', naics_chapter: ''},
+    {naics_desc: 'Specialized Freight Trucking', naics_chapter: ''},
+    {naics_desc: 'Grocery and Related Product Merchant Wholesalers', naics_chapter: 'Wholesale Trade'},
+    {naics_desc: 'Apparel, Piece Goods, and Notions Merchant Wholesalers', naics_chapter: ''},
+    {naics_desc: 'Petroleum and Petroleum Products Merchant Wholesalers', naics_chapter: ''},
   ]}
   color={'#1f4b79'}
   invertHeading={true}
@@ -280,26 +280,26 @@ const PortEcosystemsStory = () => {
   ]});
 
   const visualizationsPerSection = [
-    {sectionIndex: 1, sectionRef: section_1, image: "1_Global_Ports.png", source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>", title: "Selected Global Port Cities"},
-    {sectionIndex: 2, sectionRef: section_2, image: "2_recife_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Recife, Brazil"},
-    {sectionIndex: 3, sectionRef: section_3, image: "3_antwerp_map.png", source: "Dun & Bradstreet, UN World Food Programme, own calculations", title: "Antwerp, Belgium"},
-    {sectionIndex: 4, sectionRef: section_4, image: "4a_antwerp_treemap_5km_(larger_labels_no_legend).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - Share of Employment, by Industry, within 5km of Port"},
-    {sectionIndex: 5, sectionRef: section_5, image: "4b_antwerp_treemap_10km_(larger_labels).svg", source: "Dun & Bradstreet", title: "Antwerp, Belgium - Share of employment, by industry, within 10km of Port"},
-    {sectionIndex: 6, sectionRef: section_6, image: "5_naics_chapter_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations", title: "Employment Shares by Sector, World vs. Port Zones"},
-    {sectionIndex: 7, sectionRef: section_7, image: "6_prof_services_world_vs_ports_10km_(transparent_with_legend)-01.svg", source: "Dun & Bradstreet, own calculations", title: "Employment Shares in Professional Services by Activity, World vs. Port Zones"},
-    {sectionIndex: 8, sectionRef: section_8, image: "7_prof_services_rca.png", source: "Dun & Bradstreet, own calculations", title: "RCA of Port Cities in Professional Services"},
-    {sectionIndex: 9, sectionRef: section_9, image: "8_ring_reduced.png", imageFullSize: "8_ring_full.png", source: "Dun & Bradstreet, own calculations", title: "Closest Proximity Industries to Support Activities for Water Transportation"}
+    {sectionIndex: 1, sectionRef: section_1, image: '1_Global_Ports.png', source: "<a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>", title: 'Selected Global Port Cities'},
+    {sectionIndex: 2, sectionRef: section_2, image: '2_recife_map.png', source: 'Dun & Bradstreet, UN World Food Programme, own calculations', title: 'Recife, Brazil'},
+    {sectionIndex: 3, sectionRef: section_3, image: '3_antwerp_map.png', source: 'Dun & Bradstreet, UN World Food Programme, own calculations', title: 'Antwerp, Belgium'},
+    {sectionIndex: 4, sectionRef: section_4, image: '4a_antwerp_treemap_5km_(larger_labels_no_legend).svg', source: 'Dun & Bradstreet', title: 'Antwerp, Belgium - Share of Employment, by Industry, within 5km of Port'},
+    {sectionIndex: 5, sectionRef: section_5, image: '4b_antwerp_treemap_10km_(larger_labels).svg', source: 'Dun & Bradstreet', title: 'Antwerp, Belgium - Share of employment, by industry, within 10km of Port'},
+    {sectionIndex: 6, sectionRef: section_6, image: '5_naics_chapter_world_vs_ports_10km_(transparent_with_legend)-01.svg', source: 'Dun & Bradstreet, own calculations', title: 'Employment Shares by Sector, World vs. Port Zones'},
+    {sectionIndex: 7, sectionRef: section_7, image: '6_prof_services_world_vs_ports_10km_(transparent_with_legend)-01.svg', source: 'Dun & Bradstreet, own calculations', title: 'Employment Shares in Professional Services by Activity, World vs. Port Zones'},
+    {sectionIndex: 8, sectionRef: section_8, image: '7_prof_services_rca.png', source: 'Dun & Bradstreet, own calculations', title: 'RCA of Port Cities in Professional Services'},
+    {sectionIndex: 9, sectionRef: section_9, image: '8_ring_reduced.png', imageFullSize: '8_ring_full.png', source: 'Dun & Bradstreet, own calculations', title: 'Closest Proximity Industries to Support Activities for Water Transportation'},
   ];
 
-  let ringVisualization = visualizationsPerSection.find((vis: any) => vis.sectionIndex == 9);
+  const ringVisualization = visualizationsPerSection.find((vis: any) => vis.sectionIndex == 9);
 
-  let ringVisualizationImage = <FullScreenImage src={require(`./images/${ringVisualization!.image}`)} fullSizeSrc={require(`./images/${ringVisualization!.imageFullSize}`)}/>;
-  let ringVisualizationSource = <VizSource><b>Click image to expand.</b> Source: <em>{ringVisualization!.source}</em></VizSource>;
-  let ringVisualizationTitle = <VizTitle>{ringVisualization!.title}</VizTitle>;
+  const ringVisualizationImage = <FullScreenImage src={require(`./images/${ringVisualization!.image}`)} fullSizeSrc={require(`./images/${ringVisualization!.imageFullSize}`)}/>;
+  const ringVisualizationSource = <VizSource><b>Click image to expand.</b> Source: <em>{ringVisualization!.source}</em></VizSource>;
+  const ringVisualizationTitle = <VizTitle>{ringVisualization!.title}</VizTitle>;
 
   useEffect(() => {
     if(section) {
-      let matchingVisualizationPerSection = visualizationsPerSection.find((item: any) => item.sectionIndex == section);
+      const matchingVisualizationPerSection = visualizationsPerSection.find((item: any) => item.sectionIndex == section);
 
       if(matchingVisualizationPerSection) {
         setCurrentVisualization(matchingVisualizationPerSection);
@@ -310,7 +310,7 @@ const PortEcosystemsStory = () => {
 
   let visualizationImage = null;
   let visualizationSource = null;
-  let useVisualization = currentVisualization === undefined ? visualizationsPerSection[0] : currentVisualization;
+  const useVisualization = currentVisualization === undefined ? visualizationsPerSection[0] : currentVisualization;
   if(useVisualization !== undefined) {
     if('imageFullSize' in useVisualization) {
       // The ring chart has a different full-size image to use when zoomed in
@@ -330,12 +330,12 @@ const PortEcosystemsStory = () => {
       if(useVisualization.sectionIndex == 1) {
         visualizationSource = <VizSource>Source: <em>
           <a target='_blank' href='https://data.humdata.org/dataset/global-ports'>UN World Food Programme Logistics Database</a>
-          </em></VizSource>
+          </em></VizSource>;
 
       } else if(useVisualization.sectionIndex == 9) {
-        visualizationSource = <VizSource><b>Click image to expand.</b> Source: <em>{useVisualization.source}</em></VizSource>
+        visualizationSource = <VizSource><b>Click image to expand.</b> Source: <em>{useVisualization.source}</em></VizSource>;
       } else {
-        visualizationSource = <VizSource>Source: <em>{useVisualization.source}</em></VizSource>
+        visualizationSource = <VizSource>Source: <em>{useVisualization.source}</em></VizSource>;
 
       }
 
@@ -343,11 +343,11 @@ const PortEcosystemsStory = () => {
 
   }
 
-  const visualizationTitle = useVisualization && ('title' in useVisualization) ? 
+  const visualizationTitle = useVisualization && ('title' in useVisualization) ?
   (
-    
+
   <VizTitle>{useVisualization.title}</VizTitle>
-  
+
   ) : null;
 
   return (
@@ -384,17 +384,17 @@ const PortEcosystemsStory = () => {
                   Commercial ports are complex ecosystems that drive globalization and trade as we know it today. The COVID-19 pandemic and subsequent disruptions to the global supply chain have put a spotlight on the central role that ports play in shaping how we live. The <a target='_blank' href='https://growthlab.app/namibia-walvis-bay'>competitiveness of ports</a> is particularly vulnerable to rapidly changing market dynamics and the business decisions of shipping lines. While we often think about ports as gateways for transporting goods and materials across cities, countries, and continents, it is also relevant to ask: how do ports play a role in shaping their <em>local</em> economies? To hedge against vulnerabilities, how can port cities capitalize on their productive strengths to develop other industries?
 
                   </p>
-              
+
                   <p>
                   Today, there are nearly 1,000 commercial ports that are situated within cities and towns in every corner of the world. Some are very large ports that serve as major crossroads for routes along global supply chains (Shanghai, China; Rotterdam, Netherlands); others are very small ports that focus on serving the immediate hinterland (Bethel, United States). Some are situated in major cities that also serve as the capitals of their respective countries (Manila, Philippines; Buenos Aires, Argentina); others are located in relatively small cities and serve as the main driver of the city’s growth (Gioia Tauro, Italy; Algeciras, Spain).
                   </p>
                   <p>
-                  No matter the location or size of these ports, each one operates within a local ecosystem of industries that support port operations, process import/export activities, and transport goods inland. Some of these industries employ people with specialized skills for port functions, such as freight handling or marine engineering; other industries contribute to port functions but are also used by a range of other economic activities, such as financial and legal services. Some industries develop near ports not because they are needed for port functions, but because they benefit from having access to the resources, skills, and capabilities that the port offers, such as assembly plants and passenger cruise terminals. 
+                  No matter the location or size of these ports, each one operates within a local ecosystem of industries that support port operations, process import/export activities, and transport goods inland. Some of these industries employ people with specialized skills for port functions, such as freight handling or marine engineering; other industries contribute to port functions but are also used by a range of other economic activities, such as financial and legal services. Some industries develop near ports not because they are needed for port functions, but because they benefit from having access to the resources, skills, and capabilities that the port offers, such as assembly plants and passenger cruise terminals.
                   </p>
                   <p>
                   We set out to identify which industries constitute this local ecosystem around ports. We analyze industries that are not only present in port cities but are more heavily concentrated near ports than in the world overall. By identifying these activities, we can contribute to the understanding of the comparative advantages of port cities and pathways for diversification that utilize their resources.
                   </p>
-                
+
             </SingleColumnNarrative>
           </StoriesGrid>
           <StoriesGrid>
@@ -417,7 +417,7 @@ const PortEcosystemsStory = () => {
                   </p>
                   </FirstMobileText>
                 </FirstStickyText>
-                
+
               </StorySectionContainer>
               <StorySectionContainer ref={section_2}>
               <StickyText>
@@ -442,7 +442,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                     <MobileText>
                     <p>
-                    What economic activities occur in these zones? In the city of Antwerp, our database records 81,500 employees within 5 kilometers of the port. In this area, employment is most concentrated in transportation and warehousing and in professional, scientific and technical services including architecture and engineering services. 
+                    What economic activities occur in these zones? In the city of Antwerp, our database records 81,500 employees within 5 kilometers of the port. In this area, employment is most concentrated in transportation and warehousing and in professional, scientific and technical services including architecture and engineering services.
                     </p>
                     </MobileText>
                   </StickyText>
@@ -452,7 +452,7 @@ const PortEcosystemsStory = () => {
               <StickyText>
                   <MobileText>
                   <p>
-                  We can zoom out to a larger view of 10 kilometers around the port and observe how the concentration of employment changes across sectors. At this distance, our data records 151,000 total employees, with a lower share of employment in transportation and warehousing and higher share of employment in construction, manufacturing and healthcare compared to the 5 kilometer zone. 
+                  We can zoom out to a larger view of 10 kilometers around the port and observe how the concentration of employment changes across sectors. At this distance, our data records 151,000 total employees, with a lower share of employment in transportation and warehousing and higher share of employment in construction, manufacturing and healthcare compared to the 5 kilometer zone.
                   </p>
                   </MobileText>
                 </StickyText>
@@ -511,7 +511,7 @@ const PortEcosystemsStory = () => {
                   </p>
                   </SingleColumnNarrative>
           </StoriesGrid>
-          <StoriesGrid> 
+          <StoriesGrid>
           <VizContainer style={{
               position: window.innerWidth < 700 && section !== null ? 'sticky' : undefined,
               height: window.innerWidth < 700 && section !== null ? 'auto' : undefined,

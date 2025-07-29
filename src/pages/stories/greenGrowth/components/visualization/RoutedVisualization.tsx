@@ -12,6 +12,7 @@ import {
 } from "../../hooks/useUrlParams";
 import { Routes } from "../../../../../metadata";
 import { useCountryName } from "../../queries/useCountryName";
+import { themeUtils } from "../../theme";
 
 const RoutedVisualization = () => {
   const yearSelection = useYearSelection();
@@ -169,42 +170,47 @@ const RoutedVisualization = () => {
         <Tooltip left={tooltipLeft} top={tooltipTop}>
           <Box
             sx={{
-              backgroundColor: "#fff",
-              color: "#333",
-              padding: "8px 12px",
-              borderRadius: "4px",
-              fontSize: "14px",
+              ...themeUtils.chart.getTooltipSx(),
               maxWidth: "300px",
               textAlign: "left",
             }}
           >
             <Typography
-              variant="body2"
-              sx={{ fontWeight: "600", mb: 0.5, color: "#333" }}
+              sx={{
+                ...themeUtils.chart.typography["chart-tooltip-title"],
+                mb: 0.5,
+              }}
             >
               {(tooltipData as any)?.data?.product?.nameShortEn ||
                 (tooltipData as any)?.data?.nameShortEn ||
                 "Unknown Product"}
             </Typography>
             <Typography
-              variant="caption"
-              sx={{ display: "block", mb: 0.5, color: "#666" }}
+              sx={{
+                ...themeUtils.chart.typography["chart-tooltip-content"],
+                display: "block",
+                mb: 0.5,
+              }}
             >
               Code:{" "}
               {(tooltipData as any)?.data?.product?.code ||
                 (tooltipData as any)?.data?.code}
             </Typography>
             <Typography
-              variant="caption"
-              sx={{ display: "block", color: "#666" }}
+              sx={{
+                ...themeUtils.chart.typography["chart-tooltip-content"],
+                display: "block",
+              }}
             >
               Export Value:{" "}
               {formatter.format((tooltipData as any)?.data?.exportValue || 0)}
             </Typography>
             {(tooltipData as any)?.data?.exportRca && (
               <Typography
-                variant="caption"
-                sx={{ display: "block", color: "#666" }}
+                sx={{
+                  ...themeUtils.chart.typography["chart-tooltip-content"],
+                  display: "block",
+                }}
               >
                 RCA: {(tooltipData as any)?.data?.exportRca.toFixed(2)}
               </Typography>

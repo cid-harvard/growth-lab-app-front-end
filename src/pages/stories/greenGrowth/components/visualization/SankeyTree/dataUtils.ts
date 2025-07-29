@@ -7,7 +7,21 @@ import {
   HierarchyLinkData,
   TreeNode,
 } from "./types";
-import { valueChainColors } from "./constants";
+import { getValueChainColor } from "./constants";
+
+// Import the value chain name to supply chain ID mapping for consistent ordering
+const valueChainNameToSupplyChainId: Record<string, number> = {
+  "Electric Vehicles": 0,
+  "Fuel Cells And Green Hydrogen": 1,
+  "Nuclear Power": 2,
+  "Heat Pumps": 3,
+  "Hydroelectric Power": 4,
+  "Critical Metals and Minerals": 5,
+  "Solar Power": 6,
+  Batteries: 7,
+  "Electric Grid": 8,
+  "Wind Power": 9,
+};
 
 // Function to build hierarchical data with value chain coloring and RCA opacity
 export function buildHierarchicalData(
@@ -17,9 +31,16 @@ export function buildHierarchicalData(
     productData: CountryProductData[];
   },
 ): TreeHierarchy {
-  // Extract unique value chains, clusters, and products
+  // Extract unique value chains and clusters
   const valueChains = Array.from(new Set(rows.map((r) => r.supply_chain)));
   const clusters = Array.from(new Set(rows.map((r) => r.cluster_name)));
+
+  // Sort value chains by their supply chain ID for consistent ordering
+  valueChains.sort((a, b) => {
+    const idA = valueChainNameToSupplyChainId[a] ?? 999; // Unknown chains go to end
+    const idB = valueChainNameToSupplyChainId[b] ?? 999;
+    return idA - idB;
+  });
 
   // Calculate average RCA for each cluster when country data is available
   const clusterRcaMap = new Map<string, number>();
@@ -91,11 +112,11 @@ export function buildHierarchicalData(
     }
   }
 
-  // Create nodes - only value chains get their colors, everything else is grey
+  // Create nodes - value chains use consistent colors, everything else is grey
   const nodes: HierarchyNodeData[] = [
     ...valueChains.map((name) => {
-      // Value chains always use their designated colors
-      const color = valueChainColors[name] || "#808080";
+      // Value chains use the consistent color mapping to match bubbles layout
+      const color = getValueChainColor(name);
 
       return {
         id: name,
@@ -109,7 +130,7 @@ export function buildHierarchicalData(
     }),
     ...clusters.map((name) => {
       // Clusters are always grey in the main view
-      const color = "#808080";
+      const color = "#333333";
 
       return {
         id: name,
@@ -134,13 +155,13 @@ export function buildHierarchicalData(
       ),
     );
     for (const cl of clustersForVC) {
-      let linkValue = 1; // Default value
+      const linkValue = 1; // Default value
 
       // Get node references for source and target
       const vcNode = nodes.find((n) => n.id === vc);
 
       // First-level links (value chain to cluster) inherit value chain color
-      const linkColor = vcNode?.color || valueChainColors[vc] || "#808080";
+      const linkColor = vcNode?.color || getValueChainColor(vc);
 
       // Get RCA for the link (use target cluster's RCA)
       const linkRca = clusterRcaMap.get(cl) || 0;
@@ -227,6 +248,76 @@ export function buildHierarchicalData(
   }
 
   return { nodes, links };
+}
+
+// Function to filter hierarchy based on RCA threshold for products
+export function filterHierarchyByProductRCA(
+  hierarchy: TreeHierarchy,
+  countryData?: {
+    clusterData: CountryClusterData[];
+    productData: CountryProductData[];
+  },
+  rcaThreshold: number = 0,
+  coloringMode: string = "Global",
+): TreeHierarchy {
+  // If not in Country Specific mode or no threshold, return original hierarchy
+  if (
+    coloringMode !== "Country Specific" ||
+    rcaThreshold <= 0 ||
+    !countryData?.productData
+  ) {
+    return hierarchy;
+  }
+
+  // Get products that meet the RCA threshold
+  const validProductIds = new Set(
+    countryData.productData
+      .filter((p) => p.exportRca >= rcaThreshold)
+      .map((p) => p.productId.toString()),
+  );
+
+  // Get clusters that contain at least one valid product
+  const validClusterIds = new Set<string>();
+  const validValueChainIds = new Set<string>();
+
+  // Find clusters that have valid products
+  hierarchy.links.forEach((link) => {
+    if (link.target && validProductIds.has(link.target)) {
+      // This is a cluster->product link, so the source is the cluster
+      validClusterIds.add(link.source);
+    }
+  });
+
+  // Find value chains that connect to valid clusters
+  hierarchy.links.forEach((link) => {
+    if (validClusterIds.has(link.target)) {
+      // This is a value_chain->cluster link, so the source is the value chain
+      validValueChainIds.add(link.source);
+    }
+  });
+
+  // Filter nodes to only include those that are valid or contain valid children
+  const filteredNodes = hierarchy.nodes.filter((node) => {
+    if (node.type === "product") {
+      return validProductIds.has(node.id);
+    } else if (node.type === "manufacturing_cluster") {
+      return validClusterIds.has(node.id);
+    } else if (node.type === "value_chain") {
+      return validValueChainIds.has(node.id);
+    }
+    return false;
+  });
+
+  // Filter links to only include those between valid nodes
+  const validNodeIds = new Set(filteredNodes.map((n) => n.id));
+  const filteredLinks = hierarchy.links.filter(
+    (link) => validNodeIds.has(link.source) && validNodeIds.has(link.target),
+  );
+
+  return {
+    nodes: filteredNodes,
+    links: filteredLinks,
+  };
 }
 
 // Function to build a tree structure when focusing on a value chain

@@ -38,7 +38,7 @@ const FullScreenImage = ({src}: {src: string}) => {
     width: '100vw',
     height: '100vh',
     backgroundColor: '#fff',
-    padding: '4rem'
+    padding: '4rem',
   } : {};
 
   const closeButton = fullscreen ? <CloseButtonBig /> : null;

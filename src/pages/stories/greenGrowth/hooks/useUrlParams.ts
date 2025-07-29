@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useCallback } from "react";
 
 // Default values (matching the original Recoil atoms)
-const DEFAULT_YEAR = "2022";
+const DEFAULT_YEAR = "2023";
 const DEFAULT_COUNTRY = "710";
 
 export const useUrlParams = () => {

@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import { useMediaQuery, useTheme } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import { themeUtils } from "../../theme";
 
 const Legend = ({ mode }) => {
   const theme = useTheme();
@@ -11,24 +13,32 @@ const Legend = ({ mode }) => {
     switch (mode) {
       case "rca":
         return [
-          { label: "High (RCA>1)", color: "rgba(0, 0, 0, 1)", shape: "circle" },
+          {
+            label: "High (RCA>1)",
+            color: theme.palette.custom?.legendHigh || "#000000",
+            shape: "circle",
+          },
           {
             label: "Mid (0.2<RCA<1)",
-            color: "rgba(0, 0, 0, 0.6)",
+            color: theme.palette.custom?.legendMid || "#808080",
             shape: "circle",
           },
           {
             label: "Low (RCA<0.2)",
-            color: "rgba(0, 0, 0, 0.15)",
+            color: theme.palette.custom?.legendLow || "#D3D3D3",
             shape: "circle",
           },
         ];
       case "production":
         return [
-          { label: "Actual Export Value", color: "grey", shape: "rect" },
+          {
+            label: "Actual Export Value",
+            color: theme.palette.grey[500],
+            shape: "rect",
+          },
           {
             label: "World Average",
-            color: "black",
+            color: theme.palette.text.primary,
             shape: "line",
           },
         ];
@@ -36,13 +46,13 @@ const Legend = ({ mode }) => {
         return [
           {
             label: "More Important",
-            color: "black",
+            color: theme.palette.text.primary,
             shape: "circle",
             size: "large",
           },
           {
             label: "Less Important",
-            color: "black",
+            color: theme.palette.text.primary,
             shape: "circle",
             size: "small",
           },
@@ -148,24 +158,20 @@ const Legend = ({ mode }) => {
         alignItems: "center",
         justifyContent: "center",
         gap: isMobile ? 2 : 3,
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
-        borderRadius: 1,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
         flexWrap: "nowrap",
       }}
     >
       {mode === "rca" && (
-        <Box
+        <Typography
+          variant="chart-legend-title"
           sx={{
-            fontWeight: "bold",
-            fontSize: "14px",
             mr: 2,
             mb: 0,
             whiteSpace: "nowrap",
           }}
         >
           Economic Competitiveness:
-        </Box>
+        </Typography>
       )}
       {mode === "size" && (
         <Tooltip
@@ -173,10 +179,9 @@ const Legend = ({ mode }) => {
           arrow
           placement="top"
         >
-          <Box
+          <Typography
+            variant="chart-legend-title"
             sx={{
-              fontWeight: "bold",
-              fontSize: "14px",
               textDecoration: "underline",
               cursor: "help",
               mr: 2,
@@ -185,7 +190,7 @@ const Legend = ({ mode }) => {
             }}
           >
             Product Importance:
-          </Box>
+          </Typography>
         </Tooltip>
       )}
       {mode === "production" && (
@@ -194,10 +199,9 @@ const Legend = ({ mode }) => {
           arrow
           placement="top"
         >
-          <Box
+          <Typography
+            variant="chart-legend-title"
             sx={{
-              fontWeight: "bold",
-              fontSize: "14px",
               textDecoration: "underline",
               cursor: "help",
               mr: 2,
@@ -206,7 +210,7 @@ const Legend = ({ mode }) => {
             }}
           >
             Export Value:
-          </Box>
+          </Typography>
         </Tooltip>
       )}
       <Box
@@ -224,7 +228,8 @@ const Legend = ({ mode }) => {
             sx={{
               display: "flex",
               alignItems: "center",
-              fontSize: "0.875rem",
+              ...themeUtils.chart.typography["chart-legend-item"],
+              lineHeight: "40px", // Specific line-height from Figma override
               whiteSpace: "nowrap",
               ...(item.style || {}),
             }}

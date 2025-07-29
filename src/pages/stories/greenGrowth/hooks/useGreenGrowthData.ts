@@ -1,12 +1,16 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useQuery, useApolloClient, gql } from "@apollo/client";
 import {
   GET_PRODUCTS,
   GET_CLUSTERS,
   GET_SUPPLY_CHAINS,
   GET_COUNTRY_PRODUCT_DATA,
-  GET_COUNTRY_CLUSTER_DATA,
+  // GET_COUNTRY_CLUSTER_DATA, // DEPRECATED: Removed individual cluster query
+  GET_CLUSTER_COUNTRY_DATA, // OPTIMIZED: Batched cluster query
   GET_PRODUCT_MAPPINGS_FOR_SUPPLY_CHAIN,
+  GET_COUNTRY_YEAR_METRICS,
+  GET_ALL_COUNTRIES_YEAR_METRICS,
+  GET_COUNTRIES,
 } from "../queries/shared";
 import {
   ProductMapping,
@@ -25,11 +29,62 @@ const GET_ALL_CLUSTERS = gql`
   }
 `;
 
+// Enhanced type for country year metrics
+interface CountryYearMetrics {
+  countryId: number;
+  year: number;
+  coiGreen: number;
+  lntotnetnrexpPc: number;
+  lnypc: number;
+  xResid: number;
+  policyRecommendation?: string;
+  // Include country info for convenience
+  nameEn?: string;
+  nameShortEn?: string;
+  iso3Code?: string;
+}
+
 /**
  * Centralized data loading hook for the Green Growth app
- * Integrates SankeyTree data loading with shared app data
+ * Integrates all visualization data loading with shared app data
+ * Uses Apollo Client's previousData for smooth country transitions
+ *
+ * @param countrySelection - Selected country ID
+ * @param selectedYear - Selected year for analysis
+ * @param fetchAllCountriesMetrics - Whether to fetch metrics for all countries (for StrategicPositionChart)
+ * @returns {Object} Hook return object with loadable data and loading states
+ *
+ * Loading States:
+ * - isLoading: Only true when no usable data is available (initial load)
+ * - isCountryDataLoading: True when country-specific data is loading (but previous data is shown)
+ * - isInitialLoading: True only on first load when no previous data exists
+ * - hasPreviousData: True when previous country data is available as fallback
+ *
+ * Usage Pattern:
+ * ```tsx
+ * const {
+ *   countryData,
+ *   productClusterRows,
+ *   allCountriesMetrics,
+ *   isLoading,
+ *   isCountryDataLoading,
+ *   hasPreviousData
+ * } = useGreenGrowthData(countryId, selectedYear, true);
+ *
+ * // Show full loading screen only on initial load
+ * if (isLoading && !hasPreviousData) {
+ *   return <LoadingScreen />;
+ * }
+ *
+ * // Show subtle loading indicator when updating with previous data fallback
+ * const showSubtleLoader = isCountryDataLoading && hasPreviousData;
+ * ```
  */
-export const useGreenGrowthData = (countrySelection: number | null) => {
+export const useGreenGrowthData = (
+  countrySelection: number | null,
+  selectedYear: number = 2021,
+  fetchAllCountriesMetrics: boolean = false,
+) => {
   const client = useApolloClient();
 
   // Shared GraphQL queries - these are used across multiple components
@@ -49,36 +104,93 @@ export const useGreenGrowthData = (countrySelection: number | null) => {
     error: supplyChainsError,
   } = useQuery(GET_SUPPLY_CHAINS);
 
-  // Country-specific data queries (conditional loading)
+  // Countries data for country metrics lookup
+  const {
+    data: countriesData,
+    loading: countriesLoading,
+    error: countriesError,
+  } = useQuery(GET_COUNTRIES, {
+    skip: !fetchAllCountriesMetrics,
+  });
+
+  // Country-specific data queries with previousData pattern
   const {
     data: countryProductData,
+    previousData: previousCountryProductData,
     loading: countryProductLoading,
     error: countryProductError,
   } = useQuery(GET_COUNTRY_PRODUCT_DATA, {
-    variables: { year: 2021, countryId: countrySelection },
+    variables: { year: selectedYear, countryId: countrySelection },
     skip: countrySelection === null,
+    // Enable previousData to show previous country data while loading
+    notifyOnNetworkStatusChange: true,
   });
 
   const {
     data: allClustersData,
+    previousData: previousAllClustersData,
     loading: allClustersLoading,
     error: allClustersError,
   } = useQuery(GET_ALL_CLUSTERS, {
     skip: countrySelection === null,
+    // Enable previousData for clusters as well
+    notifyOnNetworkStatusChange: true,
   });
 
-  // State for SankeyTree-specific data
+  // Use current data or fallback to previous data for smooth transitions
+  const currentCountryProductData =
+    countryProductData || previousCountryProductData;
+
+  // State for SankeyTree-specific data with previous data tracking
   const [productMappings, setProductMappings] = useState<ProductMapping[]>([]);
+  const [previousProductMappings, setPreviousProductMappings] = useState<
+    ProductMapping[]
+  >([]);
   const [countryClusterData, setCountryClusterData] = useState<
     CountryClusterData[]
   >([]);
+  const [previousCountryClusterData, setPreviousCountryClusterData] = useState<
+    CountryClusterData[]
+  >([]);
+
+  // State for all countries metrics (for StrategicPositionChart)
+  const [allCountriesMetrics, setAllCountriesMetrics] = useState<
+    CountryYearMetrics[]
+  >([]);
+  const [previousAllCountriesMetrics, setPreviousAllCountriesMetrics] =
+    useState<CountryYearMetrics[]>([]);
+
   const [productMappingsLoading, setProductMappingsLoading] = useState(false);
   const [countryClusterLoading, setCountryClusterLoading] = useState(false);
+  const [allCountriesMetricsLoading, setAllCountriesMetricsLoading] =
+    useState(false);
+
+  // Track the current country selection to detect changes
+  const previousCountrySelection = useRef<number | null>(null);
+  const previousSelectedYear = useRef<number>(selectedYear);
+  const isCountryChanging =
+    previousCountrySelection.current !== countrySelection;
+  const isYearChanging = previousSelectedYear.current !== selectedYear;
+
+  // Update previous selection refs
+  useEffect(() => {
+    if (previousCountrySelection.current !== countrySelection) {
+      previousCountrySelection.current = countrySelection;
+    }
+    if (previousSelectedYear.current !== selectedYear) {
+      previousSelectedYear.current = selectedYear;
+    }
+  }, [countrySelection, selectedYear]);
 
   // Fetch product mappings when supply chains data is available
   useEffect(() => {
     const fetchProductMappings = async () => {
       if (!supplyChainsData?.ggSupplyChainList) return;
+
+      // Store previous mappings before starting new fetch
+      if (productMappings.length > 0 && isCountryChanging) {
+        setPreviousProductMappings(productMappings);
+      }
 
       setProductMappingsLoading(true);
       try {
@@ -105,49 +217,44 @@ export const useGreenGrowthData = (countrySelection: number | null) => {
     };
 
     fetchProductMappings();
-  }, [supplyChainsData, client]);
+  }, [supplyChainsData, client]); // Simplified deps to avoid infinite loops
 
-  // Fetch country cluster data for all clusters (batched and optimized)
+  // Fetch country cluster data for all clusters (OPTIMIZED: single batched request)
+  // PERFORMANCE: Reduced from ~6 individual requests to 1 batched GraphQL query using aliases
   useEffect(() => {
-    if (!allClustersData?.ggClusterList || countrySelection === null) {
-      setCountryClusterData([]);
+    if (countrySelection === null) {
+      // Don't clear data immediately to maintain previous data during transitions
+      if (!countryClusterLoading) {
+        setCountryClusterData([]);
+      }
       return;
     }
 
     const loadCountryClusterData = async () => {
+      // Store previous cluster data before starting new fetch
+      if (countryClusterData.length > 0 && isCountryChanging) {
+        setPreviousCountryClusterData(countryClusterData);
+      }
+
       setCountryClusterLoading(true);
       try {
-        const clusters = allClustersData.ggClusterList;
+        // OPTIMIZATION: Use single batched request instead of N individual requests
+        const { data } = await client.query({
+          query: GET_CLUSTER_COUNTRY_DATA,
+          variables: {
+            countryId: countrySelection,
+            year: selectedYear,
+          },
+        });
 
-        // Batch requests with Promise.allSettled to handle failures gracefully
-        const clusterRequests = clusters.map((cluster: any) =>
-          client
-            .query({
-              query: GET_COUNTRY_CLUSTER_DATA,
-              variables: {
-                clusterId: cluster.clusterId,
-                countryId: countrySelection,
-                year: 2021,
-              },
-            })
-            .catch((err) => {
-              console.warn(
-                `Failed to load data for cluster ${cluster.clusterId}:`,
-                err,
-              );
-              return null;
-            }),
-        );
-
-        const clusterResponses = await Promise.allSettled(clusterRequests);
-
+        // Process the aliased response structure
         const clusterData: CountryClusterData[] = [];
-        clusterResponses.forEach((response) => {
-          if (
-            response.status === "fulfilled" &&
-            response.value?.data.ggClusterCountryYearList?.length > 0
-          ) {
-            clusterData.push(...response.value.data.ggClusterCountryYearList);
+
+        // Extract data from each cluster alias (cluster0, cluster1, cluster2, etc.)
+        Object.keys(data).forEach((clusterKey) => {
+          const clusterResults = data[clusterKey];
+          if (clusterResults && clusterResults.length > 0) {
+            clusterData.push(...clusterResults);
           }
         });
 
@@ -161,7 +268,181 @@ export const useGreenGrowthData = (countrySelection: number | null) => {
     };
 
     loadCountryClusterData();
-  }, [allClustersData, countrySelection, client]);
+  }, [countrySelection, selectedYear, client, isCountryChanging]); // Optimized to remove unnecessary dependencies
+
+  // Fetch all countries metrics when needed (for StrategicPositionChart)
+  // OPTIMIZATION: Uses a single GraphQL request instead of N individual requests
+  useEffect(() => {
+    if (!fetchAllCountriesMetrics || !countriesData?.ggLocationCountryList) {
+      return;
+    }
+
+    const fetchAllCountryMetrics = async () => {
+      // Store previous metrics before starting new fetch
+      if (
+        allCountriesMetrics.length > 0 &&
+        (isCountryChanging || isYearChanging)
+      ) {
+        setPreviousAllCountriesMetrics(allCountriesMetrics);
+      }
+
+      setAllCountriesMetricsLoading(true);
+      try {
+        const countries = countriesData.ggLocationCountryList;
+
+        // Create a lookup map for country metadata
+        const countryLookupMap = new Map(
+          countries.map((country: any) => [country.countryId, country]),
+        );
+
+        // Optimized: Try to fetch all countries' data in a single request
+        // Falls back to individual requests if backend doesn't support it yet
+        let allMetrics: any[] = [];
+
+        try {
+          const { data } = await client.query({
+            query: GET_ALL_COUNTRIES_YEAR_METRICS,
+            variables: {
+              year: selectedYear,
+            },
+          });
+          allMetrics = data.ggCountryYearList || [];
+        } catch (singleQueryError: any) {
+          // Fallback: If single query fails, use individual requests
+          if (
+            singleQueryError.message?.includes(
+              "missing 1 required positional argument",
+            )
+          ) {
+            console.info(
+              "Using fallback individual requests - backend will be updated to support bulk fetch",
+            );
+
+            const promises = countries.map(async (country: any) => {
+              try {
+                const { data } = await client.query({
+                  query: GET_COUNTRY_YEAR_METRICS,
+                  variables: {
+                    year: selectedYear,
+                    countryId: country.countryId,
+                  },
+                });
+                return data.ggCountryYearList?.[0] || null;
+              } catch (err) {
+                // Silently skip countries without data
+                console.warn(
+                  `No data for country ${country.countryId}:`,
+                  (err as Error).message,
+                );
+                return null;
+              }
+            });
+
+            const results = await Promise.all(promises);
+            allMetrics = results.filter(Boolean);
+          } else {
+            throw singleQueryError;
+          }
+        }
+
+        // Process and enrich the results with country metadata
+        const validResults = allMetrics
+          .map((metrics: any) => {
+            const country = countryLookupMap.get(metrics.countryId);
+            if (
+              country &&
+              metrics.coiGreen !== null &&
+              metrics.xResid !== null
+            ) {
+              return {
+                ...metrics,
+                nameEn: (country as any).nameEn,
+                nameShortEn: (country as any).nameShortEn,
+                iso3Code: (country as any).iso3Code,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean)
+          .filter(
+            (d: any) =>
+              d.nameEn &&
+              !isNaN(d.coiGreen) &&
+              !isNaN(d.xResid) &&
+              d.coiGreen !== null &&
+              d.xResid !== null,
+          ) as CountryYearMetrics[];
+
+        setAllCountriesMetrics(validResults);
+      } catch (error) {
+        console.error("Error fetching all countries metrics:", error);
+        setAllCountriesMetrics([]);
+      } finally {
+        setAllCountriesMetricsLoading(false);
+      }
+    };
+
+    fetchAllCountryMetrics();
+  }, [
+    countriesData,
+    selectedYear,
+    fetchAllCountriesMetrics,
+    client,
+    isCountryChanging,
+    isYearChanging,
+  ]);
+
+  // Current mappings with fallback to previous when loading
+  const currentProductMappings = useMemo(() => {
+    if (
+      productMappingsLoading &&
+      isCountryChanging &&
+      previousProductMappings.length > 0
+    ) {
+      return previousProductMappings;
+    }
+    return productMappings;
+  }, [
+    productMappings,
+    previousProductMappings,
+    productMappingsLoading,
+    isCountryChanging,
+  ]);
+
+  // Current cluster data with fallback to previous when loading
+  const currentCountryClusterData = useMemo(() => {
+    if (
+      countryClusterLoading &&
+      isCountryChanging &&
+      previousCountryClusterData.length > 0
+    ) {
+      return previousCountryClusterData;
+    }
+    return countryClusterData;
+  }, [
+    countryClusterData,
+    previousCountryClusterData,
+    countryClusterLoading,
+    isCountryChanging,
+  ]);
+
+  // Current all countries metrics with fallback to previous when loading
+  const currentAllCountriesMetrics = useMemo(() => {
+    if (
+      allCountriesMetricsLoading &&
+      (isCountryChanging || isYearChanging) &&
+      previousAllCountriesMetrics.length > 0
+    ) {
+      return previousAllCountriesMetrics;
+    }
+    return allCountriesMetrics;
+  }, [
+    allCountriesMetrics,
+    previousAllCountriesMetrics,
+    allCountriesMetricsLoading,
+    isCountryChanging,
+    isYearChanging,
+  ]);
 
   // Build product cluster rows (SankeyTree-specific derived data)
   const productClusterRows = useMemo((): ProductClusterRow[] => {
@@ -169,7 +450,7 @@ export const useGreenGrowthData = (countrySelection: number | null) => {
       !productsData ||
       !clustersData ||
       !supplyChainsData ||
-      !productMappings.length
+      !currentProductMappings.length
     ) {
       return [];
     }
@@ -187,7 +468,7 @@ export const useGreenGrowthData = (countrySelection: number | null) => {
     );
     const mappingMap = new Map();
 
-    for (const mapping of productMappings) {
+    for (const mapping of currentProductMappings) {
       mappingMap.set(mapping.productId, {
         clusterId: mapping.clusterId,
         supplyChainId: mapping.supplyChainId,
@@ -215,58 +496,112 @@ export const useGreenGrowthData = (countrySelection: number | null) => {
         (row: ProductClusterRow) =>
           row.supply_chain !== "Unknown" && row.cluster_name !== "Unknown",
       );
-  }, [productsData, clustersData, supplyChainsData, productMappings]);
+  }, [productsData, clustersData, supplyChainsData, currentProductMappings]);
 
-  // Combine country data from different sources
+  // Combine country data from different sources (using current data with fallbacks)
   const countryData = useMemo(
     () => ({
-      clusterData: countryClusterData,
-      productData: countryProductData?.ggCpyList || [],
+      clusterData: currentCountryClusterData,
+      productData: currentCountryProductData?.ggCpyList || [],
+      productSupplyChainData: currentCountryProductData?.ggCpyscList || [],
     }),
-    [countryClusterData, countryProductData],
+    [currentCountryClusterData, currentCountryProductData],
   );
 
-  // Calculate overall loading state (includes country data loading)
-  const isLoading =
-    productsLoading ||
-    clustersLoading ||
-    supplyChainsLoading ||
-    productMappingsLoading ||
+  // Countries lookup for convenience
+  const countryLookup = useMemo(() => {
+    if (!countriesData?.ggLocationCountryList) return new Map();
+    return new Map(
+      countriesData.ggLocationCountryList.map((country: any) => [
+        country.countryId,
+        country,
+      ]),
+    );
+  }, [countriesData]);
+
+  // Calculate loading states - differentiate between initial loading and country switching
+  // Only show loading when core GraphQL queries are actually loading AND we have no data
+  const isCoreDataLoading =
+    productsLoading || clustersLoading || supplyChainsLoading;
+  const hasCoreData = !!(
+    productsData?.ggProductList &&
+    clustersData?.ggClusterList &&
+    supplyChainsData?.ggSupplyChainList
+  );
+
+  // For country-specific data, only show loading if we have no current data AND no previous data
+  const hasCountryData = !!(
+    countryProductData?.ggCpyList || previousCountryProductData?.ggCpyList
+  );
+
+  const isInitialLoading =
+    (isCoreDataLoading && !hasCoreData) ||
+    (fetchAllCountriesMetrics &&
+      countriesLoading &&
+      !countriesData?.ggLocationCountryList) ||
+    (countrySelection !== null &&
+      (!hasCountryData || (!allClustersData && !previousAllClustersData))) ||
+    (fetchAllCountriesMetrics &&
+      allCountriesMetrics.length === 0 &&
+      previousAllCountriesMetrics.length === 0 &&
+      countriesData?.ggLocationCountryList?.length > 0);
+
+  // Loading state specifically for country data changes (shows previous data)
+  const isCountryDataLoading =
     countryProductLoading ||
     allClustersLoading ||
-    countryClusterLoading;
+    countryClusterLoading ||
+    allCountriesMetricsLoading;
 
-  const isCountryDataLoading =
-    countryProductLoading || allClustersLoading || countryClusterLoading;
+  // Overall loading (true only when no usable data is available)
+  // If we have cached core data, don't show loading even if derived data is still processing
+  const isLoading = hasCoreData && hasCountryData ? false : isInitialLoading;
 
   const hasErrors =
     productsError ||
     clustersError ||
     supplyChainsError ||
     countryProductError ||
-    allClustersError;
+    allClustersError ||
+    (fetchAllCountriesMetrics && countriesError);
 
   return {
     // Raw GraphQL data (can be used by other components)
     productsData,
     clustersData,
     supplyChainsData,
+    countriesData,
 
-    // SankeyTree-specific processed data
-    productMappings,
+    // SankeyTree-specific processed data (using current data with fallbacks)
+    productMappings: currentProductMappings,
     countryData,
     productClusterRows,
 
+    // All countries metrics for StrategicPositionChart
+    allCountriesMetrics: currentAllCountriesMetrics,
+    countryLookup,
+
     // Loading states
-    isLoading,
-    isCountryDataLoading,
+    isLoading, // Only true when no usable data is available
+    isCountryDataLoading, // True when country-specific data is loading (but previous data shown)
+    isInitialLoading, // True only on first load when no previous data exists
     productsLoading,
     clustersLoading,
     supplyChainsLoading,
+    countriesLoading,
     productMappingsLoading,
     countryProductLoading,
     allClustersLoading,
     countryClusterLoading,
+    allCountriesMetricsLoading,
+
+    // Previous data availability (useful for UI indicators)
+    hasPreviousData: !!(
+      previousCountryProductData ||
+      previousProductMappings.length > 0 ||
+      previousCountryClusterData.length > 0 ||
+      previousAllCountriesMetrics.length > 0
+    ),
 
     // Error states
     hasErrors,
@@ -275,5 +610,6 @@ export const useGreenGrowthData = (countrySelection: number | null) => {
     supplyChainsError,
     countryProductError,
     allClustersError,
+    countriesError: fetchAllCountriesMetrics ? countriesError : null,
   };
 };

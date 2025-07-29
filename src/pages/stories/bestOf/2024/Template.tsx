@@ -1,5 +1,5 @@
-import React from "react";
-import { StoriesGrid, storyMobileWidth } from "../../../../styling/Grid";
+import React from 'react';
+import { StoriesGrid, storyMobileWidth } from '../../../../styling/Grid';
 import {
   FullWidth,
   StoryTitle,
@@ -7,15 +7,15 @@ import {
   Authors,
   ButtonLink as ButtonLinkBase,
   baseColor,
-} from "../../../../styling/styleUtils";
-import Share from "../../../../components/share";
-import TextBlock from "../../../../components/text/TextBlock";
-import styled from "styled-components";
-import useScrollingSections from "../../../../hooks/useScrollingSections";
-import StandardFooter from "../../../../components/text/StandardFooter";
-import Helmet from "react-helmet";
-import SmartCoverPhoto from "../../../../components/general/SmartCoverPhoto";
-import DefaultHubHeader from "../../../../components/navigation/DefaultHubHeader";
+} from '../../../../styling/styleUtils';
+import Share from '../../../../components/share';
+import TextBlock from '../../../../components/text/TextBlock';
+import styled from 'styled-components';
+import useScrollingSections from '../../../../hooks/useScrollingSections';
+import StandardFooter from '../../../../components/text/StandardFooter';
+import Helmet from 'react-helmet';
+import SmartCoverPhoto from '../../../../components/general/SmartCoverPhoto';
+import DefaultHubHeader from '../../../../components/navigation/DefaultHubHeader';
 
 import {
   RootAlternative,
@@ -25,9 +25,9 @@ import {
   MobileTextAlternate,
   FirstParagraphAlternative,
   FadeInContainer,
-} from "../../sharedStyling";
-import HashLinkTitle from "../HashLinkTitle";
-import FullScreenImage from "../FullScreenImage";
+} from '../../sharedStyling';
+import HashLinkTitle from '../HashLinkTitle';
+import FullScreenImage from '../FullScreenImage';
 
 // Styled components from 2022 template
 const StickyContainer = styled.div`
@@ -161,13 +161,13 @@ const BestOfTemplate = (props: Props) => {
       if (hasBeenRendered.current === true) {
         if (section === i) {
           window.history.pushState(
-            "",
+            '',
             document.title,
-            window.location.pathname + "#" + id,
+            window.location.pathname + '#' + id,
           );
         } else if (section === null && i === 0) {
           window.history.pushState(
-            "",
+            '',
             document.title,
             window.location.pathname,
           );
@@ -187,7 +187,7 @@ const BestOfTemplate = (props: Props) => {
       ) : null;
 
       return (
-        <React.Fragment key={"bestof-section-" + title + image + i}>
+        <React.Fragment key={'bestof-section-' + title + image + i}>
           <div id={id} />
           <StorySectionContainer>
             <StickyText>
@@ -212,20 +212,20 @@ const BestOfTemplate = (props: Props) => {
     <>
       <Helmet>
         <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
-        <meta property="og:title" content={metaTitle} />
-        <meta property="og:description" content={metaDescription} />
+        <meta name='description' content={metaDescription} />
+        <meta property='og:title' content={metaTitle} />
+        <meta property='og:description' content={metaDescription} />
         <link
-          href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&display=swap"
-          rel="stylesheet"
+          href='https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&display=swap'
+          rel='stylesheet'
         />
       </Helmet>
-      <DefaultHubHeader backgroundColor={"rgb(75, 75, 75, 0.7)"} />
+      <DefaultHubHeader backgroundColor={'rgb(75, 75, 75, 0.7)'} />
       <SmartCoverPhoto
         highResSrc={coverPhotoSrc.high}
         lowResSrc={coverPhotoSrc.low}
       />
-      <RootAlternative style={{ borderTop: "solid 1px #e1e1e1" }}>
+      <RootAlternative style={{ borderTop: 'solid 1px #e1e1e1' }}>
         <StoriesGrid>
           <HeadingAlternative>
             <FullWidth>
@@ -241,11 +241,11 @@ const BestOfTemplate = (props: Props) => {
             style={{
               position:
                 window.innerWidth < 700 && section !== null
-                  ? "sticky"
+                  ? 'sticky'
                   : undefined,
               height:
                 window.innerWidth < 700 && section !== null
-                  ? "auto"
+                  ? 'auto'
                   : undefined,
             }}
           >

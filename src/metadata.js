@@ -17,6 +17,7 @@ const Routes = {
   NamibiaWalvisBay: "/namibia-walvis-bay",
   GreenGrowth: "/greenplexity",
   // Green Growth sub-routes
+  GreenGrowthIntroduction: "/greenplexity/introduction",
   GreenGrowthOverview: "/greenplexity/overview",
   GreenGrowthAdvantage: "/greenplexity/competitive-advantage",
   GreenGrowthValueChains: "/greenplexity/value-chains",
@@ -26,6 +27,13 @@ const Routes = {
   GreenGrowthDimensions: "/greenplexity/dimensions",
   GreenGrowthTakeoff: "/greenplexity/takeoff",
   GreenGrowthExplore: "/greenplexity/explore",
+  // Experimental routes (no links)
+  GreenEciBumpChart: "/experimental/green-eci-bump-chart",
+  TangleTreeExperiment: "/experimental",
+  SugiyamaDAGExperiment: "/experimental/sugiyama-dag",
+  TreeGrowthExperiment: "/experimental/tree-growth",
+  CirclePackMapExperiment: "/experimental/circle-pack-map",
+  ClusterTreeExperiment: "/experimental/cluster-tree",
 };
 
 const defaultTitle = "The Growth Lab at Harvard Kennedy School";
@@ -161,6 +169,22 @@ const metadata = [
     description:
       "Identify green growth opportunities to generate prosperity by supplying what the world needs to decarbonize.",
     og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthIntroduction,
+    title: "Introduction to Green Value Chains | " + defaultTitle,
+    description:
+      "An animated introduction to green value chains hierarchy, showing how different components build upon each other from raw materials to final products in the green economy.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.ClusterTreeExperiment,
+    title: "Cluster Tree Explorer | " + defaultTitle,
+    description:
+      "Explore manufacturing clusters and their hierarchical relationships with supply chains and products",
+    og_image: defaultOgImage,
     favicon: defaultFavicon,
   },
 ];

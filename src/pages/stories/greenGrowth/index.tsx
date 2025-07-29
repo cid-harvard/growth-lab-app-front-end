@@ -1,19 +1,14 @@
 import React from "react";
 // import Story from "./components/Story";
 import RoutedGreenGrowthStory from "./components/RoutedGreenGrowthStory";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import greenGrowthTheme from "./theme";
 import "./index.css";
-
-const theme = createTheme({
-  typography: {
-    fontFamily: '"Source Sans Pro", "Source Sans", sans-serif',
-  },
-});
 
 const GreenGrowth = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={greenGrowthTheme}>
       <CssBaseline />
       <RoutedGreenGrowthStory />
     </ThemeProvider>

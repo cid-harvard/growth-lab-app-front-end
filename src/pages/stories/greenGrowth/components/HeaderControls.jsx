@@ -22,7 +22,7 @@ const Logo = styled("img")({
   maxHeight: "40px",
 });
 
-const StyledSelect = styled(Select)({
+const StyledSelect = styled(Select)(({ theme }) => ({
   color: "white",
   "& .MuiSelect-icon": {
     color: "white",
@@ -33,7 +33,19 @@ const StyledSelect = styled(Select)({
   "&:hover .MuiOutlinedInput-notchedOutline": {
     borderColor: "white",
   },
-});
+  // Use theme typography for consistent sizing
+  fontSize: theme.typography.body1.fontSize,
+  fontFamily: theme.typography.fontFamily,
+  // Fix alignment for selected year
+  "& .MuiSelect-select": {
+    textAlign: "center",
+    paddingLeft: "14px",
+    paddingRight: "32px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+}));
 
 export const HeaderControls = () => {
   const {
@@ -76,17 +88,22 @@ export const HeaderControls = () => {
                     size="small"
                   />
                 )}
-                sx={{
+                sx={(theme) => ({
                   width: 200,
                   "& .MuiOutlinedInput-root": {
                     color: "white",
+                    fontSize: theme.typography.body1.fontSize,
+                    fontFamily: theme.typography.fontFamily,
                     "& fieldset": { borderColor: "rgba(255, 255, 255, 0.5)" },
                     "&:hover fieldset": { borderColor: "white" },
                   },
-                  "& .MuiInputLabel-root": { color: "white" },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                    fontSize: theme.typography.body1.fontSize,
+                  },
                   "& .MuiAutocomplete-popupIndicator": { color: "white" },
                   "& .MuiAutocomplete-clearIndicator": { color: "white" },
-                }}
+                })}
               />
             </Box>
             <Box display="flex" alignItems="center">

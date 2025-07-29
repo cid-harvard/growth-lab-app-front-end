@@ -23,6 +23,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import ReactGA from "react-ga4";
 import { overlayPortalContainerId } from "./Utils";
 import styled from "styled-components";
+import { SidebarProvider } from "./pages/stories/greenGrowth/components/SidebarContext";
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_GA4_ID) {
   ReactGA.initialize([
@@ -36,7 +37,7 @@ const useTrackPageView = () => {
   const routerLocation = useLocation();
   useEffect(() => {
     const page = routerLocation.pathname + window.location.search;
-    ReactGA.send({ hitType: "pageview", page: page });
+    ReactGA.send({ hitType: "pageview", page });
   }, [routerLocation]);
 };
 const GATracker = () => {
@@ -78,6 +79,26 @@ const CustomIndustrySpaceTool = lazy(
 const PageNotFound = lazy(() => import("./pages/pageNotFound"));
 const RoutedGreenGrowthStory = lazy(
   () => import("./pages/stories/greenGrowth/components/RoutedGreenGrowthStory"),
+);
+const GreenEciExperiment = lazy(
+  () => import("./pages/stories/greenGrowth/experimental"),
+);
+const TangleTreeExperiment = lazy(
+  () => import("./pages/stories/greenGrowth/experimental"),
+);
+const SugiyamaDAGExperiment = lazy(
+  () =>
+    import("./pages/stories/greenGrowth/experimental/SugiyamaDAGExperiment"),
+);
+const TreeGrowthExperiment = lazy(
+  () => import("./pages/stories/greenGrowth/experimental/TreeGrowthExperiment"),
+);
+const CirclePackMapExperiment = lazy(
+  () =>
+    import("./pages/stories/greenGrowth/experimental/CirclePackMapExperiment"),
+);
+const ClusterTreeExperiment = lazy(
+  () => import("./pages/stories/greenGrowth/experimental/ClusterTree"),
 );
 
 export interface IAppContext {
@@ -209,6 +230,34 @@ const router = createBrowserRouter([
       {
         path: "green-growth",
         element: <Navigate to="/greenplexity" replace />,
+      },
+      {
+        path: routingRoutes.GreenEciBumpChart,
+        element: <GreenEciExperiment />,
+      },
+      {
+        path: routingRoutes.TangleTreeExperiment,
+        element: <TangleTreeExperiment />,
+      },
+      {
+        path: routingRoutes.SugiyamaDAGExperiment,
+        element: <SugiyamaDAGExperiment />,
+      },
+      {
+        path: routingRoutes.TreeGrowthExperiment,
+        element: (
+          <SidebarProvider>
+            <TreeGrowthExperiment />
+          </SidebarProvider>
+        ),
+      },
+      {
+        path: routingRoutes.CirclePackMapExperiment,
+        element: <CirclePackMapExperiment />,
+      },
+      {
+        path: routingRoutes.ClusterTreeExperiment,
+        element: <ClusterTreeExperiment />,
       },
       {
         path: "*",

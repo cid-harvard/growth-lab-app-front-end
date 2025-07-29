@@ -1,5 +1,5 @@
 import { memo, useState, useMemo } from "react";
-import { colorScale } from "../../utils";
+import { getSupplyChainColor } from "../../utils";
 import { useProductLookup } from "../../queries/products";
 import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";
 import {
@@ -86,7 +86,7 @@ const SupplyChainCircle = memo(({ circle }) => {
           width={circle.radius * 2 + 10}
           height={circle.radius * 2 + (isMobile ? 20 : 70)}
           fill="rgba(255,255,255,0)"
-          stroke={colorScale(circle.id)}
+          stroke={getSupplyChainColor(circle.id)}
           strokeWidth={2}
           strokeDasharray="5,5"
           strokeOpacity={isHovered ? 1 : 0}
@@ -97,10 +97,10 @@ const SupplyChainCircle = memo(({ circle }) => {
           cx={circle.x}
           cy={circle.y}
           r={circle.radius + 2}
-          fill={colorScale(circle.id)}
+          fill={getSupplyChainColor(circle.id)}
           fillOpacity={0.1}
           strokeWidth={2}
-          stroke={colorScale(circle.id)}
+          stroke={getSupplyChainColor(circle.id)}
           strokeOpacity={0.3}
           pointerEvents="none"
         />

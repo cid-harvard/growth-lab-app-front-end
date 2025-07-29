@@ -125,7 +125,7 @@ interface Props {
 export default (props: Props) => {
   const {
     onClose,
-    useTitle
+    useTitle,
   } = props;
   // const getString = useFluent();
   const [copied, setCopied] = useState<boolean>(false);

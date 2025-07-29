@@ -27,7 +27,7 @@ createContext<IAppContext>({
 
 const useWindowWidth = () => {
     const [windowDimensions, setWindowDimensions] = useState<IAppContext['windowDimensions']>(initialWindowDimension);
-  
+
     useEffect(() => {
       const updateWindowDimensions = debounce(() => {
         setWindowDimensions({width: window.innerWidth, height: window.innerHeight});
@@ -37,7 +37,7 @@ const useWindowWidth = () => {
         window.removeEventListener('resize', updateWindowDimensions);
       };
     }, []);
-  
+
     return windowDimensions;
   };
 

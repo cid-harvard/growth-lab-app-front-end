@@ -1,53 +1,80 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useRef } from "react";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useQuery, useApolloClient } from "@apollo/client";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { scaleLinear } from "d3-scale";
 import { ParentSize } from "@visx/responsive";
+import { useTooltip, useTooltipInPortal } from "@visx/tooltip";
+import { localPoint } from "@visx/event";
 import {
   useYearSelection,
   useCountrySelection,
 } from "../../hooks/useUrlParams";
-import { GET_COUNTRIES, GET_COUNTRY_YEAR_METRICS } from "../../queries/shared";
+import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
 import { useCountryName } from "../../queries/useCountryName";
-
-const quadrantLabels = {
-  topRight: "Green Growth Leaders",
-  topLeft: "Well Connected, Low Complexity",
-  bottomRight: "High Complexity, Not Well Connected",
-  bottomLeft: "Emerging Opportunities",
-};
-
-const quadrantColors = {
-  topLeft: "#4A90E2", // Blue
-  topRight: "#7ED321", // Green
-  bottomLeft: "#F5A623", // Orange
-  bottomRight: "#FFD700", // Yellow/Gold
-};
+import { VisualizationLoading } from "../shared";
+import {
+  STRATEGIC_POSITION_QUADRANTS,
+  STRATEGIC_POSITION_COLORS,
+  mapPolicyRecommendationToPosition,
+} from "../../utils/strategicPositionConstants";
+import { useImageCaptureContext } from "../../hooks/useImageCaptureContext";
+import { themeUtils } from "../../theme";
+import html2canvas from "html2canvas";
 
 // Internal component that receives dimensions from ParentSize
+// Updated to use API policy_recommendation field instead of naive quadrant calculation
 const StrategicPositionChartInternal = ({ width, height }) => {
   const selectedYear = useYearSelection();
   const selectedCountryId = useCountrySelection();
   const countryName = useCountryName();
-  const [hoveredCountry, setHoveredCountry] = useState(null);
   const xVar = "xResid"; // Fixed to use residual variable
-  const [countryMetrics, setCountryMetrics] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  const client = useApolloClient();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // Image capture functionality
+  const chartContainerRef = useRef(null);
+  const { registerCaptureFunction, unregisterCaptureFunction } =
+    useImageCaptureContext();
+
+  // Use visx tooltip state
+  const {
+    tooltipData,
+    tooltipLeft,
+    tooltipTop,
+    tooltipOpen,
+    showTooltip,
+    hideTooltip,
+  } = useTooltip();
+
+  // Use visx tooltip in portal for better positioning and z-index
+  const { containerRef, TooltipInPortal } = useTooltipInPortal({
+    detectBounds: true,
+    scroll: true,
+  });
+
+  // Use shared hook for all countries metrics
+  const { allCountriesMetrics, isLoading, hasErrors } = useGreenGrowthData(
+    null, // No specific country selection needed for this chart
+    Number.parseInt(selectedYear),
+    true, // Fetch all countries metrics
+  );
+
+  // Map to expected format for compatibility
+  const countryMetrics = allCountriesMetrics;
+  // Only show loading if we have no data to display
+  const loading = isLoading && allCountriesMetrics.length === 0;
+  const error = hasErrors;
+
   // Calculate responsive dimensions using provided width/height
   const { chartWidth, chartHeight, margin } = useMemo(() => {
-    const adjustedWidth = Math.max(width - 20, 300); // Minimal padding
+    const adjustedWidth = Math.max(width - 50, 300); // Minimal padding
     const adjustedHeight = Math.max(height - 20, 300); // Minimal padding
 
     const responsiveMargin = {
       top: isMobile ? 40 : 50,
       right: isMobile ? 20 : 40,
-      bottom: isMobile ? 50 : 60,
+      bottom: isMobile ? 50 : 120,
       left: isMobile ? 60 : 80,
     };
 
@@ -58,128 +85,91 @@ const StrategicPositionChartInternal = ({ width, height }) => {
     };
   }, [width, height, isMobile]);
 
-  // Fetch countries data
-  const { data: countriesData } = useQuery(GET_COUNTRIES);
-
-  // Fetch metrics data for all countries individually
-  useEffect(() => {
-    if (!countriesData?.ggLocationCountryList || !selectedYear) return;
-
-    let isMounted = true;
-    setLoading(true);
-    setError(null);
-
-    const fetchAllCountryMetrics = async () => {
-      try {
-        const countries = countriesData.ggLocationCountryList;
-
-        // Fetch data for each country in parallel
-        const promises = countries.map(async (country) => {
-          try {
-            const { data } = await client.query({
-              query: GET_COUNTRY_YEAR_METRICS,
-              variables: {
-                year: parseInt(selectedYear),
-                countryId: country.countryId,
-              },
-            });
-
-            const metrics = data.ggCountryYearList?.[0];
-            if (metrics) {
-              return {
-                ...metrics,
-                ...country,
-              };
-            }
-            return null;
-          } catch (err) {
-            // Silently skip countries without data
-            console.warn(
-              `No data for country ${country.countryId}:`,
-              err.message,
-            );
-            return null;
-          }
-        });
-
-        const results = await Promise.all(promises);
-        const validResults = results
-          .filter(Boolean)
-          .filter(
-            (d) =>
-              d.nameEn &&
-              !isNaN(d.coiGreen) &&
-              !isNaN(d[xVar]) &&
-              d.coiGreen !== null &&
-              d[xVar] !== null,
-          );
-
-        if (isMounted) {
-          setCountryMetrics(validResults);
-          setLoading(false);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err);
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchAllCountryMetrics();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [countriesData, selectedYear, xVar, client]);
-
-  // D3 scales
+  // D3 scales - adjusted to account for circle radius so all points fit within grid
   const xScale = useMemo(() => {
     if (!countryMetrics.length) return null;
     const values = countryMetrics.map((d) => Number(d[xVar]));
+    const maxRadius = isMobile ? 12 : 16; // Account for largest halo radius
     return scaleLinear()
       .domain([Math.min(...values), Math.max(...values)])
-      .range([margin.left, chartWidth - margin.right]);
-  }, [countryMetrics, xVar, margin.left, chartWidth, margin.right]);
+      .range([margin.left + maxRadius, chartWidth - margin.right - maxRadius]);
+  }, [countryMetrics, xVar, margin.left, chartWidth, margin.right, isMobile]);
 
   const yScale = useMemo(() => {
     if (!countryMetrics.length) return null;
     const values = countryMetrics.map((d) => Number(d.coiGreen));
+    const maxRadius = isMobile ? 12 : 16; // Account for largest halo radius
     return scaleLinear()
       .domain([Math.min(...values), Math.max(...values)])
-      .range([chartHeight - margin.bottom, margin.top]);
-  }, [countryMetrics, chartHeight, margin.bottom, margin.top]);
+      .range([chartHeight - margin.bottom - maxRadius, margin.top + maxRadius]);
+  }, [countryMetrics, chartHeight, margin.bottom, margin.top, isMobile]);
 
-  // Calculate midpoints
-  const { xMidPx, yMidPx } = useMemo(() => {
-    if (!xScale || !yScale || !countryMetrics.length)
-      return { xMidPx: 0, yMidPx: 0 };
-
-    const xValues = countryMetrics.map((d) => Number(d[xVar]));
-    const yValues = countryMetrics.map((d) => Number(d.coiGreen));
-    const xMidData = (Math.min(...xValues) + Math.max(...xValues)) / 2;
-    const yMidData = (Math.min(...yValues) + Math.max(...yValues)) / 2;
-
-    return {
-      xMidPx: xScale(xMidData),
-      yMidPx: yScale(yMidData),
-    };
-  }, [xScale, yScale, countryMetrics, xVar]);
-
-  const handleMouseEnter = useCallback((country) => {
-    setHoveredCountry(country);
-  }, []);
+  const handleMouseEnter = useCallback(
+    (event, country) => {
+      const coords = localPoint(event.target.ownerSVGElement, event);
+      showTooltip({
+        tooltipData: country,
+        tooltipLeft: coords.x,
+        tooltipTop: coords.y,
+      });
+    },
+    [showTooltip],
+  );
 
   const handleMouseLeave = useCallback(() => {
-    setHoveredCountry(null);
-  }, []);
+    hideTooltip();
+  }, [hideTooltip]);
+
+  // Register/unregister image capture function
+  React.useEffect(() => {
+    const handleCaptureImage = async () => {
+      if (!chartContainerRef.current) {
+        console.warn("Chart container not found");
+        return;
+      }
+
+      try {
+        const canvas = await html2canvas(chartContainerRef.current, {
+          backgroundColor: "#ffffff",
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          width: chartContainerRef.current.offsetWidth,
+          height: chartContainerRef.current.offsetHeight,
+        });
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `strategic_position_${selectedCountryId}_${selectedYear}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }
+        }, "image/png");
+      } catch (error) {
+        console.error("Error capturing image:", error);
+      }
+    };
+
+    registerCaptureFunction(handleCaptureImage);
+
+    return () => {
+      unregisterCaptureFunction();
+    };
+  }, [
+    registerCaptureFunction,
+    unregisterCaptureFunction,
+    selectedCountryId,
+    selectedYear,
+  ]);
 
   if (loading) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-        <Typography>Loading strategic position data...</Typography>
-      </Box>
-    );
+    return <VisualizationLoading />;
   }
 
   if (error) {
@@ -202,10 +192,19 @@ const StrategicPositionChartInternal = ({ width, height }) => {
 
   return (
     <Box
+      ref={chartContainerRef}
       sx={{ padding: "8px", width: "100%", height: "100%", overflow: "hidden" }}
     >
-      <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mb: 1,
+          position: "relative",
+        }}
+      >
         <svg
+          ref={containerRef}
           width={chartWidth}
           height={chartHeight}
           style={{ background: "white" }}
@@ -258,32 +257,19 @@ const StrategicPositionChartInternal = ({ width, height }) => {
             fill="url(#grid)"
           />
 
-          {/* Main axis lines */}
-          <line
-            x1={margin.left}
-            x2={chartWidth - margin.right}
-            y1={yMidPx}
-            y2={yMidPx}
-            stroke="#000"
-            strokeWidth="2"
-          />
-          <line
-            x1={xMidPx}
-            x2={xMidPx}
-            y1={margin.top}
-            y2={chartHeight - margin.bottom}
-            stroke="#000"
-            strokeWidth="2"
-          />
-
           {/* Axis labels */}
           <text
             x={chartWidth / 2}
-            y={chartHeight - 20}
+            y={chartHeight - 40}
             textAnchor="middle"
-            fontSize={isMobile ? "12" : "14"}
-            fill="#333"
-            fontWeight="500"
+            fontSize={isMobile ? "12" : "16"}
+            fill={themeUtils.chart.colors.text.secondary}
+            fontFamily={
+              themeUtils.chart.typography["chart-axis-label"].fontFamily
+            }
+            fontWeight={
+              themeUtils.chart.typography["chart-axis-label"].fontWeight
+            }
           >
             Is the Country's Economy Complex?
           </text>
@@ -292,29 +278,46 @@ const StrategicPositionChartInternal = ({ width, height }) => {
             y={chartHeight / 2}
             textAnchor="middle"
             transform={`rotate(-90 ${isMobile ? 30 : 50} ${chartHeight / 2})`}
-            fontSize={isMobile ? "12" : "14"}
-            fill="#333"
-            fontWeight="500"
+            fontSize={isMobile ? "12" : "16"}
+            fill={themeUtils.chart.colors.text.secondary}
+            fontFamily={
+              themeUtils.chart.typography["chart-axis-label"].fontFamily
+            }
+            fontWeight={
+              themeUtils.chart.typography["chart-axis-label"].fontWeight
+            }
           >
             Is the Country well-connected to Green Growth Opportunities?
           </text>
 
           {/* Arrow indicators */}
           <text
-            x={margin.left + (isMobile ? 40 : 80)}
-            y={chartHeight - 40}
+            x={chartWidth / 2 - 100}
+            y={chartHeight - 20}
             textAnchor="middle"
-            fontSize={isMobile ? "10" : "12"}
-            fill="#666"
+            fontSize={isMobile ? "10" : "16"}
+            fontWeight={
+              themeUtils.chart.typography["chart-axis-direction"].fontWeight
+            }
+            fill={themeUtils.chart.colors.text.secondary}
+            fontFamily={
+              themeUtils.chart.typography["chart-axis-direction"].fontFamily
+            }
           >
             ← Less Complex
           </text>
           <text
-            x={chartWidth - margin.right - (isMobile ? 40 : 80)}
-            y={chartHeight - 40}
+            x={chartWidth / 2 + 100}
+            y={chartHeight - 20}
             textAnchor="middle"
-            fontSize={isMobile ? "10" : "12"}
-            fill="#666"
+            fontSize={isMobile ? "10" : "16"}
+            fontWeight={
+              themeUtils.chart.typography["chart-axis-direction"].fontWeight
+            }
+            fill={themeUtils.chart.colors.text.secondary}
+            fontFamily={
+              themeUtils.chart.typography["chart-axis-direction"].fontFamily
+            }
           >
             More Complex →
           </text>
@@ -324,9 +327,15 @@ const StrategicPositionChartInternal = ({ width, height }) => {
             x={10}
             y={chartHeight / 2 - (isMobile ? 60 : 100)}
             textAnchor="middle"
-            fontSize={isMobile ? "10" : "12"}
-            fill="#666"
+            fontSize={isMobile ? "10" : "16"}
             transform={`rotate(-90 10 ${chartHeight / 2 - (isMobile ? 60 : 100)})`}
+            fontWeight={
+              themeUtils.chart.typography["chart-axis-direction"].fontWeight
+            }
+            fill={themeUtils.chart.colors.text.secondary}
+            fontFamily={
+              themeUtils.chart.typography["chart-axis-direction"].fontFamily
+            }
           >
             Well Connected →
           </text>
@@ -334,138 +343,70 @@ const StrategicPositionChartInternal = ({ width, height }) => {
             x={10}
             y={chartHeight / 2 + (isMobile ? 60 : 100)}
             textAnchor="middle"
-            fontSize={isMobile ? "10" : "12"}
-            fill="#666"
+            fontSize={isMobile ? "10" : "16"}
             transform={`rotate(-90 10 ${chartHeight / 2 + (isMobile ? 60 : 100)})`}
+            fontWeight={
+              themeUtils.chart.typography["chart-axis-direction"].fontWeight
+            }
+            fill={themeUtils.chart.colors.text.secondary}
+            fontFamily={
+              themeUtils.chart.typography["chart-axis-direction"].fontFamily
+            }
           >
             ← Not Well Connected
           </text>
 
-          {/* Quadrant labels positioned at corners */}
-          {/* Top right - Green Growth Leaders */}
-          <g>
-            <rect
-              x={chartWidth - margin.right - (isMobile ? 130 : 170)}
-              y={margin.top}
-              width={isMobile ? 130 : 170}
-              height={isMobile ? 20 : 25}
-              fill={quadrantColors.topRight}
-              rx={4}
-            />
-            <text
-              x={chartWidth - margin.right - (isMobile ? 65 : 85)}
-              y={margin.top + (isMobile ? 13 : 17)}
-              textAnchor="middle"
-              fontSize={isMobile ? "10" : "12"}
-              fill="white"
-              fontWeight="bold"
-            >
-              {quadrantLabels.topRight}
-            </text>
-          </g>
-
-          {/* Top left - Well Connected, Low Complexity */}
-          <g>
-            <rect
-              x={margin.left}
-              y={margin.top}
-              width={isMobile ? 160 : 200}
-              height={isMobile ? 20 : 25}
-              fill={quadrantColors.topLeft}
-              rx={4}
-            />
-            <text
-              x={margin.left + (isMobile ? 80 : 100)}
-              y={margin.top + (isMobile ? 13 : 17)}
-              textAnchor="middle"
-              fontSize={isMobile ? "10" : "12"}
-              fill="white"
-              fontWeight="bold"
-            >
-              {quadrantLabels.topLeft}
-            </text>
-          </g>
-
-          {/* Bottom left - Emerging Opportunities */}
-          <g>
-            <rect
-              x={margin.left}
-              y={chartHeight - margin.bottom - (isMobile ? 20 : 25)}
-              width={isMobile ? 130 : 160}
-              height={isMobile ? 20 : 25}
-              fill={quadrantColors.bottomLeft}
-              rx={4}
-            />
-            <text
-              x={margin.left + (isMobile ? 65 : 80)}
-              y={chartHeight - margin.bottom - (isMobile ? 7 : 8)}
-              textAnchor="middle"
-              fontSize={isMobile ? "10" : "12"}
-              fill="white"
-              fontWeight="bold"
-            >
-              {quadrantLabels.bottomLeft}
-            </text>
-          </g>
-
-          {/* Bottom right - High Complexity, Not Well Connected */}
-          <g>
-            <rect
-              x={chartWidth - margin.right - (isMobile ? 185 : 245)}
-              y={chartHeight - margin.bottom - (isMobile ? 20 : 25)}
-              width={isMobile ? 185 : 245}
-              height={isMobile ? 20 : 25}
-              fill={quadrantColors.bottomRight}
-              rx={4}
-            />
-            <text
-              x={chartWidth - margin.right - (isMobile ? 92 : 122)}
-              y={chartHeight - margin.bottom - (isMobile ? 7 : 8)}
-              textAnchor="middle"
-              fontSize={isMobile ? "10" : "12"}
-              fill="black"
-              fontWeight="bold"
-            >
-              {quadrantLabels.bottomRight}
-            </text>
-          </g>
-
           {/* Data points */}
           <g clipPath="url(#plot-area)">
+            {/* First draw halos for selected points */}
+            {countryMetrics.map((country) => {
+              const isSelected = country.countryId === selectedCountryId;
+              if (!isSelected) return null;
+
+              const x = Number(country[xVar]);
+              const y = country.coiGreen;
+
+              // Use API policy recommendation for classification
+              const { fillColor } = mapPolicyRecommendationToPosition(
+                country.policyRecommendation,
+              );
+
+              return (
+                <circle
+                  key={`halo-${country.countryId}`}
+                  cx={xScale(x)}
+                  cy={yScale(y)}
+                  r={isMobile ? 12 : 16}
+                  fill={fillColor}
+                  opacity={0.5}
+                  stroke="none"
+                />
+              );
+            })}
+
+            {/* Then draw all data points */}
             {countryMetrics.map((country) => {
               const isSelected = country.countryId === selectedCountryId;
               const x = Number(country[xVar]);
               const y = country.coiGreen;
 
-              // Determine quadrant and color
-              let fillColor;
-              const isAboveMidY =
-                y > (yScale.domain()[0] + yScale.domain()[1]) / 2;
-              const isRightOfMidX =
-                x > (xScale.domain()[0] + xScale.domain()[1]) / 2;
-
-              if (isAboveMidY && !isRightOfMidX) {
-                fillColor = quadrantColors.topLeft; // Blue
-              } else if (isAboveMidY && isRightOfMidX) {
-                fillColor = quadrantColors.topRight; // Green
-              } else if (!isAboveMidY && !isRightOfMidX) {
-                fillColor = quadrantColors.bottomLeft; // Orange
-              } else {
-                fillColor = quadrantColors.bottomRight; // Orange/Yellow
-              }
+              // Use API policy recommendation for classification
+              const { fillColor } = mapPolicyRecommendationToPosition(
+                country.policyRecommendation,
+              );
 
               return (
                 <circle
                   key={country.countryId}
                   cx={xScale(x)}
                   cy={yScale(y)}
-                  r={isSelected ? (isMobile ? 6 : 8) : isMobile ? 4 : 6}
+                  r={isMobile ? 4 : 6}
                   fill={fillColor}
-                  stroke={isSelected ? "#000" : "#333"}
-                  strokeWidth={isSelected ? (isMobile ? 2 : 3) : 1}
+                  stroke="#333"
+                  strokeWidth={1}
                   opacity={isSelected ? 1 : 0.8}
                   style={{ cursor: "pointer" }}
-                  onMouseEnter={() => handleMouseEnter(country)}
+                  onMouseEnter={(event) => handleMouseEnter(event, country)}
                   onMouseLeave={handleMouseLeave}
                 />
               );
@@ -508,67 +449,181 @@ const StrategicPositionChartInternal = ({ width, height }) => {
               })()}
             </g>
           )}
-
-          {/* Tooltip */}
-          {hoveredCountry && (
-            <g>
-              <rect
-                x={xScale(Number(hoveredCountry[xVar])) + 10}
-                y={yScale(hoveredCountry.coiGreen) - (isMobile ? 70 : 80)}
-                width={isMobile ? 160 : 200}
-                height={isMobile ? 70 : 90}
-                fill="#fff"
-                stroke="#333"
-                rx={6}
-                opacity={0.95}
-              />
-              <text
-                x={xScale(Number(hoveredCountry[xVar])) + 20}
-                y={yScale(hoveredCountry.coiGreen) - (isMobile ? 55 : 60)}
-                fontSize={isMobile ? "10" : "12"}
-                fontWeight="bold"
-                fill="#333"
-              >
-                {hoveredCountry.nameEn}
-              </text>
-              <text
-                x={xScale(Number(hoveredCountry[xVar])) + 20}
-                y={yScale(hoveredCountry.coiGreen) - (isMobile ? 42 : 45)}
-                fontSize={isMobile ? "9" : "11"}
-                fill="#666"
-              >
-                COI Green: {Number(hoveredCountry.coiGreen).toFixed(3)}
-              </text>
-              <text
-                x={xScale(Number(hoveredCountry[xVar])) + 20}
-                y={yScale(hoveredCountry.coiGreen) - (isMobile ? 29 : 30)}
-                fontSize={isMobile ? "9" : "11"}
-                fill="#666"
-              >
-                {xVar}: {Number(hoveredCountry[xVar]).toFixed(3)}
-              </text>
-              <text
-                x={xScale(Number(hoveredCountry[xVar])) + 20}
-                y={yScale(hoveredCountry.coiGreen) - (isMobile ? 16 : 15)}
-                fontSize={isMobile ? "9" : "11"}
-                fill="#666"
-              >
-                X Residual: {Number(hoveredCountry.xResid || 0).toFixed(3)}
-              </text>
-            </g>
-          )}
         </svg>
+
+        {/* HTML Overlay for Quadrant Labels */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            pointerEvents: "none",
+            zIndex: 2,
+          }}
+        >
+          {/* Top right - Green Growth Leaders */}
+          <div
+            style={{
+              position: "absolute",
+              top: `${margin.top}px`,
+              right: `${margin.right + (isMobile ? 0 : 0)}px`,
+              backgroundColor: STRATEGIC_POSITION_COLORS.topRight,
+              color: "white",
+              padding: isMobile ? "4px 8px" : "6px 12px",
+              borderRadius: "4px",
+              fontSize: isMobile ? "12px" : "16px",
+              fontWeight: "600",
+              whiteSpace: "nowrap",
+
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <BookmarkIcon sx={{ fontSize: isMobile ? "14px" : "18px" }} />
+            <span style={{ textDecoration: "underline" }}>
+              {STRATEGIC_POSITION_QUADRANTS.topRight}
+            </span>
+          </div>
+
+          {/* Top left - Well Connected, Low Complexity */}
+          <div
+            style={{
+              position: "absolute",
+              top: `${margin.top}px`,
+              left: `${margin.left}px`,
+              backgroundColor: STRATEGIC_POSITION_COLORS.topLeft,
+              color: "white",
+              padding: isMobile ? "4px 8px" : "6px 12px",
+              borderRadius: "4px",
+              fontSize: isMobile ? "12px" : "16px",
+              fontWeight: "600",
+              whiteSpace: "nowrap",
+
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <BookmarkIcon sx={{ fontSize: isMobile ? "14px" : "18px" }} />
+            <span style={{ textDecoration: "underline" }}>
+              {STRATEGIC_POSITION_QUADRANTS.topLeft}
+            </span>
+          </div>
+
+          {/* Bottom left - Emerging Opportunities */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: `${margin.bottom - 40}px`,
+              left: `${margin.left}px`,
+              backgroundColor: STRATEGIC_POSITION_COLORS.bottomLeft,
+              color: "white",
+              padding: isMobile ? "4px 8px" : "6px 12px",
+              borderRadius: "4px",
+              fontSize: isMobile ? "12px" : "16px",
+              fontWeight: "600",
+              whiteSpace: "nowrap",
+
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <BookmarkIcon sx={{ fontSize: isMobile ? "14px" : "18px" }} />
+            <span style={{ textDecoration: "underline" }}>
+              {STRATEGIC_POSITION_QUADRANTS.bottomLeft}
+            </span>
+          </div>
+
+          {/* Bottom right - High Complexity, Not Well Connected */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: `${margin.bottom - 40}px`,
+              right: `${margin.right + (isMobile ? 0 : 0)}px`,
+              backgroundColor: STRATEGIC_POSITION_COLORS.bottomRight,
+              color: "white",
+              padding: isMobile ? "4px 8px" : "6px 12px",
+              borderRadius: "4px",
+              fontSize: isMobile ? "12px" : "16px",
+              fontWeight: "600",
+              whiteSpace: "nowrap",
+
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <BookmarkIcon sx={{ fontSize: isMobile ? "14px" : "18px" }} />
+            <span style={{ textDecoration: "underline" }}>
+              {STRATEGIC_POSITION_QUADRANTS.bottomRight}
+            </span>
+          </div>
+        </div>
       </Box>
 
+      {/* Visx Tooltip in Portal */}
+      {tooltipOpen && tooltipData && (
+        <TooltipInPortal
+          key={Math.random()}
+          left={tooltipLeft}
+          top={tooltipTop}
+          zIndex={100}
+        >
+          <Box
+            sx={{
+              ...themeUtils.chart.getTooltipSx(),
+              maxWidth: isMobile ? "200px" : "250px",
+              textAlign: "left",
+              zIndex: 10,
+            }}
+          >
+            <Typography variant="chart-tooltip-title">
+              {tooltipData.nameEn}
+            </Typography>
+            <Typography
+              variant="chart-tooltip-content"
+              sx={{ display: "block", mb: 0.5 }}
+            >
+              COI Green: {Number(tooltipData.coiGreen).toFixed(3)}
+            </Typography>
+            <Typography
+              variant="chart-tooltip-content"
+              sx={{ display: "block", mb: 0.5 }}
+            >
+              {xVar}: {Number(tooltipData[xVar]).toFixed(3)}
+            </Typography>
+            <Typography
+              variant="chart-tooltip-content"
+              sx={{ display: "block", mb: 0.5 }}
+            >
+              X Residual: {Number(tooltipData.xResid || 0).toFixed(3)}
+            </Typography>
+            {tooltipData.policyRecommendation && (
+              <Typography
+                variant="chart-tooltip-content"
+                sx={{
+                  display: "block",
+                  fontWeight: "bold",
+                }}
+              >
+                Policy: {tooltipData.policyRecommendation}
+              </Typography>
+            )}
+          </Box>
+        </TooltipInPortal>
+      )}
+
       <Typography
-        variant="caption"
-        color="text.secondary"
+        variant="chart-attribution"
         sx={{
           display: "block",
           textAlign: "right",
           mb: 1,
           mr: 2,
-          fontSize: isMobile ? "10px" : "12px",
         }}
       >
         Source: Growth Lab research
@@ -580,9 +635,12 @@ const StrategicPositionChartInternal = ({ width, height }) => {
 const StrategicPositionChart = () => {
   return (
     <ParentSize>
-      {({ width, height }) => (
-        <StrategicPositionChartInternal width={width} height={height} />
-      )}
+      {({ width, height }) => {
+        if (width === 0 || height === 0) {
+          return null;
+        }
+        return <StrategicPositionChartInternal width={width} height={height} />;
+      }}
     </ParentSize>
   );
 };
