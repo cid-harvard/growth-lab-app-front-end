@@ -48,8 +48,6 @@ public/visualization_inputs
 /sankeyTreeData.json
 /tangledTreeData.json
 
-# Product space generated assets
-/public/static/product_space_*.csv
 
 # Script-generated artifacts (keep JS scripts tracked)
 /scripts/*.csv
