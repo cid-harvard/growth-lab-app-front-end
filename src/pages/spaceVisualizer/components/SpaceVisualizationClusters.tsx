@@ -18,6 +18,7 @@ interface SpaceVisualizationClustersProps {
     strokeWidth: number;
     fillOpacity: number;
     strokeOpacity: number;
+    showLabels?: boolean;
   };
   clusterColorMap: Map<string, string>;
 }
@@ -121,6 +122,28 @@ export const SpaceVisualizationClusters: React.FC<SpaceVisualizationClustersProp
                 }}
               >
                 {getClusterName(continent)}
+              </text>
+            ))}
+
+          {/* Render country labels ON TOP of boundaries */}
+          {showCountries &&
+            countriesConfig.showLabels &&
+            clusters.countries.map((country) => (
+              <text
+                key={`country-label-${country.clusterId}`}
+                x={xScale(country.center[0])}
+                y={yScale(country.center[1])}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fontSize="10"
+                fontWeight="bold"
+                fill="#111"
+                stroke="white"
+                strokeWidth="2"
+                paintOrder="stroke fill"
+                style={{ pointerEvents: "none" }}
+              >
+                {country.name || country.clusterId}
               </text>
             ))}
         </g>

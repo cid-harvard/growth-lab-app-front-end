@@ -82,6 +82,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:fix": "tslint --project tsconfig.json --config tslint.json --fix",
+    "generate:product-space": "node scripts/generate_product_space_static.js",
     "clean:cache": "rimraf node_modules/.cache",
     "connect:staging": "ssh -i hks-country-tools.pem ubuntu@hgl-app-staging.cid-labs.com",
     "connect:production": "ssh -i hks-country-tools.pem ubuntu@growthlab.app",

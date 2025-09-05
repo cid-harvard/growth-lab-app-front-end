@@ -74,6 +74,7 @@ interface ClusterConfig {
     strokeWidth: number;
     fillOpacity: number;
     strokeOpacity: number;
+    showLabels: boolean;
   };
 }
 
@@ -891,6 +892,33 @@ export default function Configurator({
                       step={0.1}
                       valueLabelDisplay="auto"
                       sx={{
+                        bgcolor: "rgba(255,255,255,0.7)",
+                        borderRadius: 1,
+                        px: 1,
+                      }}
+                    />
+
+                    <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+                      Show Labels:
+                    </Typography>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={clusterConfig.countries.showLabels}
+                          onChange={(e) =>
+                            setClusterConfig((prev) => ({
+                              ...prev,
+                              countries: {
+                                ...prev.countries,
+                                showLabels: e.target.checked,
+                              },
+                            }))
+                          }
+                        />
+                      }
+                      label="Show Labels"
+                      sx={{
+                        mb: 2,
                         bgcolor: "rgba(255,255,255,0.7)",
                         borderRadius: 1,
                         px: 1,

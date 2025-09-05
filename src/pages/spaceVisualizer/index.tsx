@@ -63,6 +63,7 @@ export default function Visualization() {
       strokeWidth: 1.5,
       fillOpacity: 0.05,
       strokeOpacity: 0.6,
+      showLabels: false,
     },
   });
 

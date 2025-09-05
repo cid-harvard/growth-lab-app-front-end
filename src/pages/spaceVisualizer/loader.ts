@@ -36,6 +36,8 @@ export interface ClusterBoundary {
   clusterId: string;
   clusterCode: number;
   continent?: string; // For countries, reference to parent continent
+  // Optional human-readable name for the boundary (e.g., country name)
+  name?: string;
 }
 
 export interface ClusterData {
@@ -97,10 +99,11 @@ export interface LoaderData {
 }
 
 const datasetSources = {
+  // Use static files for the default Product Space dataset
   product: {
-    nodes: "https://dataverse.harvard.edu/api/access/datafile/11037601",
-    links: "https://dataverse.harvard.edu/api/access/datafile/11037602",
-    metadata: "https://dataverse.harvard.edu/api/access/datafile/11064008",
+    nodes: "/static/product_space_nodes.csv",
+    links: "/static/product_space_links.csv",
+    metadata: "/static/product_space_metadata.csv",
   },
   industry: {
     nodes: "https://dataverse.harvard.edu/api/access/datafile/11037601",
@@ -285,9 +288,10 @@ export async function loader({
       }
     }
 
-    // Parse nodes and attach export_value from metadata
+    // Parse nodes and attach export_value from metadata. Preserve any extra fields (e.g., name)
     const rawNodes = d3.csvParse(nodesText);
     const nodes: Node[] = rawNodes.map((d) => ({
+      ...d,
       product_hs92_code: d.product_hs92_code,
       product_space_x: Number.parseFloat(d.product_space_x),
       product_space_y: Number.parseFloat(d.product_space_y),

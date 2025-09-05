@@ -47,6 +47,7 @@ interface ClusterConfig {
     strokeWidth: number;
     fillOpacity: number;
     strokeOpacity: number;
+    showLabels: boolean;
   };
 }
 

@@ -38,3 +38,35 @@ build.zip
 
 # Visualization inputs
 public/visualization_inputs
+
+# Generated datasets and analysis artifacts
+/cluster_data/
+/group_data/
+/dag_test_data/
+
+# Local data dumps at repo root (generated)
+/sankeyTreeData.json
+/tangledTreeData.json
+
+# Product space generated assets
+/public/static/product_space_*.csv
+
+# Script-generated artifacts (keep JS scripts tracked)
+/scripts/*.csv
+/scripts/*.json
+
+# Backup/temp files
+*.bak
+*.tmp
+._*
+
+# Editors/IDEs
+.idea/
+.vscode/
+
+# Ensure deploy key folders are ignored (redundant if already tracked)
+/deploy_keys/
+
+/scripts/cluster_data/
+/scripts/group_data/
+/scripts
