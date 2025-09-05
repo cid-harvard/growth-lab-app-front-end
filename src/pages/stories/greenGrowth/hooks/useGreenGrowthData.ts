@@ -5,7 +5,7 @@ import {
   GET_CLUSTERS,
   GET_SUPPLY_CHAINS,
   GET_COUNTRY_PRODUCT_DATA,
-  // GET_COUNTRY_CLUSTER_DATA, // DEPRECATED: Removed individual cluster query
+  // Note: Using GET_CLUSTER_COUNTRY_DATA for optimized batched cluster queries
   GET_CLUSTER_COUNTRY_DATA, // OPTIMIZED: Batched cluster query
   GET_PRODUCT_MAPPINGS_FOR_SUPPLY_CHAIN,
   GET_COUNTRY_YEAR_METRICS,

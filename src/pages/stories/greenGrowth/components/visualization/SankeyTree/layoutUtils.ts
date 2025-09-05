@@ -8,20 +8,6 @@ import {
   LinkPosition,
 } from "./types";
 
-// Import the value chain name to supply chain ID mapping for consistent ordering
-const valueChainNameToSupplyChainId: Record<string, number> = {
-  "Electric Vehicles": 0,
-  "Fuel Cells And Green Hydrogen": 1,
-  "Nuclear Power": 2,
-  "Heat Pumps": 3,
-  "Hydroelectric Power": 4,
-  "Critical Metals and Minerals": 5,
-  "Solar Power": 6,
-  Batteries: 7,
-  "Electric Grid": 8,
-  "Wind Power": 9,
-};
-
 // Function to apply sankey layout
 export function applySankeyLayout(
   hierarchyData: TreeHierarchy,
@@ -32,26 +18,8 @@ export function applySankeyLayout(
   const visibleNodes = hierarchyData.nodes.filter((n) => n.visible);
   const visibleNodeIds = new Set(visibleNodes.map((n) => n.id));
 
-  // Sort nodes to maintain consistent order: value chains by ID, clusters will be auto-organized
-  const sortedVisibleNodes = visibleNodes.sort((a, b) => {
-    // First, sort by type: value chains before manufacturing clusters
-    if (a.type !== b.type) {
-      if (a.type === "value_chain") return -1;
-      if (b.type === "value_chain") return 1;
-    }
-
-    // For value chains, sort by supply chain ID
-    if (a.type === "value_chain" && b.type === "value_chain") {
-      const idA = valueChainNameToSupplyChainId[a.name] ?? 999;
-      const idB = valueChainNameToSupplyChainId[b.name] ?? 999;
-      return idA - idB;
-    }
-
-    // For other types, maintain their current order (don't force alphabetical sorting)
-    return 0;
-  });
-
-  const sankeyNodes = sortedVisibleNodes.map((node, index) => ({
+  // Do not impose a fixed order; let the sankey algorithm determine ordering
+  const sankeyNodes = visibleNodes.map((node, index) => ({
     name: node.id,
     type: node.type === "product" ? "manufacturing_cluster" : node.type,
     originalIndex: index, // Store original index for sorting
@@ -76,10 +44,9 @@ export function applySankeyLayout(
   const sankeyLayout = sankey<SankeyNodeExtra, object>()
     .nodeWidth(25)
     .nodePadding(10)
-
     .extent([
-      [leftMargin, 70],
-      [dimensions.width - rightMargin, dimensions.height - 100],
+      [leftMargin, 40],
+      [dimensions.width - rightMargin, dimensions.height - 40],
     ]);
 
   const { nodes, links } = sankeyLayout({
@@ -100,7 +67,7 @@ export function applyTreeLayout(
 
   // Calculate tree layout
   const treeLayout = tree<TreeNode>()
-    .size([dimensions.height - 120, dimensions.width * 0.7])
+    .size([dimensions.height - 40, dimensions.width * 0.7])
     .separation((a, b) => {
       const baseSeparation = a.parent === b.parent ? 1.5 : 2;
       if (a.children && a.children.length > 3) {
@@ -140,17 +107,27 @@ export function convertToPositions(
 
       if (!sourceNode || !targetNode) return null;
 
-      let sourceX, sourceY, targetX, targetY;
+      let sourceX: number, sourceY: number, targetX: number, targetY: number;
 
       if (focusedValueChain) {
         // Tree layout - network graph style with center-to-center connections for circles
-        const circleRadius = 8; // Match the circle radius used in rendering
 
-        // For circular nodes, connect from center to center
-        sourceX = (sourceNode.x ?? 0) + (sourceNode.width ?? 0) / 2;
-        sourceY = (sourceNode.y ?? 0) + (sourceNode.height ?? 0) / 2;
-        targetX = (targetNode.x ?? 0) + (targetNode.width ?? 0) / 2;
-        targetY = (targetNode.y ?? 0) + (targetNode.height ?? 0) / 2;
+        // Use fixed rendered circle radius (8px) and compute centers from node bbox
+        const sourceRadius = 8;
+        const targetRadius = 8;
+
+        const sourceCenterX =
+          (sourceNode.x ?? 0) + (sourceNode.width ?? 16) / 2;
+        const sourceCenterY =
+          (sourceNode.y ?? 0) + (sourceNode.height ?? 16) / 2;
+        const targetCenterX =
+          (targetNode.x ?? 0) + (targetNode.width ?? 16) / 2;
+        const targetCenterY =
+          (targetNode.y ?? 0) + (targetNode.height ?? 16) / 2;
+        sourceX = sourceCenterX;
+        sourceY = sourceCenterY;
+        targetX = targetCenterX;
+        targetY = targetCenterY;
 
         // Calculate direction vector and adjust for circle edge
         const dx = targetX - sourceX;
@@ -161,11 +138,11 @@ export function convertToPositions(
           const unitX = dx / distance;
           const unitY = dy / distance;
 
-          // Adjust positions to circle edges
-          sourceX += unitX * circleRadius;
-          sourceY += unitY * circleRadius;
-          targetX -= unitX * circleRadius;
-          targetY -= unitY * circleRadius;
+          // Adjust positions to circle edges using fixed radii
+          sourceX += unitX * sourceRadius;
+          sourceY += unitY * sourceRadius;
+          targetX -= unitX * targetRadius;
+          targetY -= unitY * targetRadius;
         }
 
         const verticalDistance = Math.abs(sourceY - targetY);
@@ -191,13 +168,23 @@ export function convertToPositions(
         };
       } else if (focusedCluster) {
         // When focused on a cluster, use center-to-center connections for network graph style
-        const circleRadius = 8; // Match the circle radius used in rendering
 
-        // For circular nodes, connect from center to center
-        sourceX = (sourceNode.x ?? 0) + (sourceNode.width ?? 0) / 2;
-        sourceY = (sourceNode.y ?? 0) + (sourceNode.height ?? 0) / 2;
-        targetX = (targetNode.x ?? 0) + (targetNode.width ?? 0) / 2;
-        targetY = (targetNode.y ?? 0) + (targetNode.height ?? 0) / 2;
+        // Use fixed rendered circle radius (8px) and compute centers from node bbox
+        const sourceRadius = 8;
+        const targetRadius = 8;
+
+        const sourceCenterX =
+          (sourceNode.x ?? 0) + (sourceNode.width ?? 16) / 2;
+        const sourceCenterY =
+          (sourceNode.y ?? 0) + (sourceNode.height ?? 16) / 2;
+        const targetCenterX =
+          (targetNode.x ?? 0) + (targetNode.width ?? 16) / 2;
+        const targetCenterY =
+          (targetNode.y ?? 0) + (targetNode.height ?? 16) / 2;
+        sourceX = sourceCenterX;
+        sourceY = sourceCenterY;
+        targetX = targetCenterX;
+        targetY = targetCenterY;
 
         // Calculate direction vector and adjust for circle edge
         const dx = targetX - sourceX;
@@ -208,11 +195,49 @@ export function convertToPositions(
           const unitX = dx / distance;
           const unitY = dy / distance;
 
-          // Adjust positions to circle edges
-          sourceX += unitX * circleRadius;
-          sourceY += unitY * circleRadius;
-          targetX -= unitX * circleRadius;
-          targetY -= unitY * circleRadius;
+          // For curved bezier paths, we need to adjust the entry/exit points to account for the curve direction
+          // Calculate the control points to determine the actual curve direction at the circle edges
+          const controlPointOffset = Math.abs(targetX - sourceX) * 0.5;
+
+          // Approximate the tangent direction at the source (start of curve)
+          const sourceControlX = sourceX + controlPointOffset;
+          const sourceControlY = sourceY;
+          const sourceTangentX = sourceControlX - sourceX;
+          const sourceTangentY = sourceControlY - sourceY;
+          const sourceTangentLength = Math.sqrt(
+            sourceTangentX * sourceTangentX + sourceTangentY * sourceTangentY,
+          );
+
+          // Approximate the tangent direction at the target (end of curve)
+          const targetControlX = targetX - controlPointOffset;
+          const targetControlY = targetY;
+          const targetTangentX = targetX - targetControlX;
+          const targetTangentY = targetY - targetControlY;
+          const targetTangentLength = Math.sqrt(
+            targetTangentX * targetTangentX + targetTangentY * targetTangentY,
+          );
+
+          // Use curve tangent direction if available, otherwise fall back to straight line
+          let sourceUnitX = unitX;
+          let sourceUnitY = unitY;
+          let targetUnitX = unitX;
+          let targetUnitY = unitY;
+
+          if (sourceTangentLength > 0) {
+            sourceUnitX = sourceTangentX / sourceTangentLength;
+            sourceUnitY = sourceTangentY / sourceTangentLength;
+          }
+
+          if (targetTangentLength > 0) {
+            targetUnitX = targetTangentX / targetTangentLength;
+            targetUnitY = targetTangentY / targetTangentLength;
+          }
+
+          // Adjust positions to circle edges using curve-aware directions and fixed radii
+          sourceX += sourceUnitX * sourceRadius;
+          sourceY += sourceUnitY * sourceRadius;
+          targetX -= targetUnitX * targetRadius;
+          targetY -= targetUnitY * targetRadius;
         }
 
         const verticalDistance = Math.abs(sourceY - targetY);

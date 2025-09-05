@@ -61,7 +61,7 @@ After analyzing the codebase, several duplications have been identified that cou
 **Duplicated Color Logic:**
 
 - RCA color mapping in `SankeyTree/constants.ts` (`getColorFromRca`)
-- Similar RCA opacity logic in `useSupplyChainBubbles.js` (`getRCAOpacity`)
+- Similar RCA opacity logic in `CirclePack.jsx` (`getRCAOpacity`)
 - Multiple `colorScale` definitions across files
 - Various color schemes in different tools
 

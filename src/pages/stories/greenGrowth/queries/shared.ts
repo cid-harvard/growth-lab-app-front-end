@@ -544,30 +544,7 @@ export const GET_COUNTRY_PRODUCT_DATA = gql`
 
 // DEPRECATED: Use GET_CLUSTER_COUNTRY_DATA instead for better performance
 // This individual cluster query has been replaced by a batched version
-export const GET_COUNTRY_CLUSTER_DATA = gql`
-  query GetCountryClusterData($clusterId: Int!, $countryId: Int!, $year: Int!) {
-    ggClusterCountryYearList(
-      clusterId: $clusterId
-      countryId: $countryId
-      year: $year
-    ) {
-      clusterId
-      countryId
-      year
-      pci
-      cog
-      density
-      rca
-    }
-  }
-`;
-
-// Runtime warning for deprecated query usage
-if (typeof window !== "undefined") {
-  console.warn(
-    "⚠️ GET_COUNTRY_CLUSTER_DATA is deprecated. Use GET_CLUSTER_COUNTRY_DATA for better performance.",
-  );
-}
+// Note: GET_COUNTRY_CLUSTER_DATA has been removed in favor of GET_CLUSTER_COUNTRY_DATA for better performance
 
 export const GET_PRODUCT_MAPPINGS_FOR_SUPPLY_CHAIN = gql`
   query GetProductMappingsForSupplyChain($supplyChainId: Int!) {

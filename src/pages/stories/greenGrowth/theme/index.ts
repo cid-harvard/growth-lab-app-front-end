@@ -130,6 +130,7 @@ const greenGrowthTheme = createTheme(baseTheme, {
           "&.chart-column-header":
             chartTypographyVariants["chart-column-header"],
           "&.chart-large-label": chartTypographyVariants["chart-large-label"],
+          "&.chart-title": chartTypographyVariants["chart-title"],
           "&.chart-attribution": chartTypographyVariants["chart-attribution"],
         },
       },
@@ -236,10 +237,12 @@ declare module "@mui/material/styles" {
 
   interface TypographyVariants {
     fontWeightSemiBold: number;
+    "chart-title": React.CSSProperties;
   }
 
   interface TypographyVariantsOptions {
     fontWeightSemiBold?: number;
+    "chart-title"?: React.CSSProperties;
   }
 }
 

@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+/* eslint-disable react/no-array-index-key */
+import React, { useMemo, useState, useCallback, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -9,14 +10,15 @@ import {
   Paper,
   Typography,
   Box,
-  Tooltip,
   useTheme,
   useMediaQuery,
-  ToggleButtonGroup,
-  ToggleButton,
-  Switch,
-  FormControlLabel,
+  Button,
+  ButtonGroup,
+  TableSortLabel,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
+import GGTooltip from "./GGTooltip";
 import { useProductLookup } from "../../queries/products";
 import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";
 import { useSupplyChainLookup } from "../../queries/supplyChains";
@@ -24,11 +26,13 @@ import {
   useCountrySelection,
   useYearSelection,
 } from "../../hooks/useUrlParams";
-import { useCountryName } from "../../queries/useCountryName";
 import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
 import VisualizationLoading from "./VisualizationLoading";
+import DisplayAsSwitch from "./DisplayAsSwitch";
+import { columnTooltips } from "../shared/columnTooltips";
+import AtlasIcon from "../../../../../assets/GL_Atlas_favicon.png";
 
-export type DataTableType = "products" | "country" | "nested";
+export type DataTableType = "products" | "nested";
 
 interface DataTableProps {
   defaultDataType: DataTableType;
@@ -40,23 +44,47 @@ const formatNumber = (
   value: number | null | undefined,
   decimals = 2,
 ): string => {
-  if (value === null || value === undefined || isNaN(value)) return "N/A";
-  return value.toFixed(decimals);
+  if (
+    value === null ||
+    value === undefined ||
+    Number.isNaN(typeof value === "number" ? value : Number(value))
+  )
+    return "N/A";
+  return Number(value).toFixed(decimals);
 };
 
 const formatPercent = (value: number | null | undefined): string => {
-  if (value === null || value === undefined || isNaN(value)) return "N/A";
-  return `${(value * 100).toFixed(1)}%`;
+  if (
+    value === null ||
+    value === undefined ||
+    Number.isNaN(typeof value === "number" ? value : Number(value))
+  )
+    return "N/A";
+  return `${(Number(value) * 100).toFixed(1)}%`;
 };
 
 const formatCurrency = (value: number | null | undefined): string => {
-  if (value === null || value === undefined || isNaN(value)) return "N/A";
+  if (
+    value === null ||
+    value === undefined ||
+    Number.isNaN(typeof value === "number" ? value : Number(value))
+  )
+    return "N/A";
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     notation: value >= 1e6 ? "compact" : "standard",
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(Number(value));
+};
+
+// Product market growth is returned from the API in percentage units (e.g., 5.09 for 5.09%).
+// Convert to a ratio for display/CSV functions that multiply by 100.
+const percentToRatio = (value: unknown): number | null => {
+  if (value === null || value === undefined) return null;
+  const num = Number(value);
+  if (Number.isNaN(num)) return null;
+  return num / 100;
 };
 
 interface ColumnDef {
@@ -64,22 +92,136 @@ interface ColumnDef {
   header: string;
   width: number;
   format?: (value: any) => string;
+  render?: (row: any) => React.ReactNode;
   tooltip?: string;
+  sortable?: boolean;
+  sortValue?: (row: any) => any;
+  defaultOrder?: "asc" | "desc";
 }
 
 const ProductsTable = ({
   data,
   clustersData,
+  selectedYear,
 }: {
   data: any[];
   clustersData?: any;
   selectedProducts?: any[];
+  selectedYear?: string | number;
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const productLookup = useProductLookup();
   const supplyChainProductLookup = useSupplyChainProductLookup();
   const supplyChainLookup = useSupplyChainLookup();
+  const selectedCountry = useCountrySelection();
+
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
+  const [orderBy, setOrderBy] = useState<string>("defaultComposite");
+  const defaultOrderByField = useMemo(
+    () =>
+      ({
+        productCode: "asc",
+        productName: "asc",
+        clusterName: "asc",
+        supplyChainName: "asc",
+        exportValue: "desc",
+        marketSize: "desc",
+        marketGrowth: "desc",
+        exportRca: "desc",
+        normalizedCog: "desc",
+        normalizedPci: "desc",
+        density: "desc",
+        defaultComposite: "desc",
+      }) as Record<string, "asc" | "desc">,
+    [],
+  );
+
+  const handleRequestSort = useCallback(
+    (property: string) => {
+      if (orderBy !== property) {
+        const firstOrder = defaultOrderByField[property] ?? "desc";
+        setOrder(firstOrder);
+        setOrderBy(property);
+        return;
+      }
+      setOrder((prev) => (prev === "desc" ? "asc" : "desc"));
+    },
+    [orderBy, defaultOrderByField],
+  );
+
+  // Helper: compute 1-5 diamond rating based on deciles
+  const computeDiamondRatings = useCallback(
+    (values: Array<number | null | undefined>) => {
+      const valid = values
+        .filter((v) => typeof v === "number" && !Number.isNaN(Number(v)))
+        .map((v) => Number(v as number))
+        .sort((a, b) => a - b);
+      if (valid.length === 0) {
+        return {
+          getRating: (_v: number | null | undefined) => 0,
+        };
+      }
+
+      const getRating = (v: number | null | undefined): number => {
+        if (v === null || v === undefined || Number.isNaN(Number(v))) return 0;
+        const value = Number(v);
+        // Find rank index (last index <= value)
+        let lo = 0;
+        let hi = valid.length - 1;
+        while (lo <= hi) {
+          const mid = Math.floor((lo + hi) / 2);
+          if (valid[mid] <= value) lo = mid + 1;
+          else hi = mid - 1;
+        }
+        const rankIndex = Math.max(0, Math.min(valid.length - 1, lo - 1));
+        const percentile =
+          valid.length === 1 ? 1 : (rankIndex + 1) / valid.length; // 0..1
+        const decile = Math.min(10, Math.max(1, Math.floor(percentile * 10)));
+        const rating = Math.min(5, Math.max(1, Math.ceil(decile / 2)));
+        return rating;
+      };
+
+      return { getRating };
+    },
+    [],
+  );
+
+  const DiamondRow = useCallback(
+    ({ count }: { count: number }) => {
+      const total = 5;
+      const size = isMobile ? 10 : 12;
+      const gap = isMobile ? 6 : 8;
+      const diamondIds = ["d1", "d2", "d3", "d4", "d5"];
+      return (
+        <Box sx={{ display: "flex", alignItems: "center", gap: `${gap}px` }}>
+          {diamondIds.slice(0, total).map((id, idx) => {
+            const filled = idx < count;
+            // eslint-disable-next-line react/no-array-index-key
+            return (
+              <Box
+                key={id}
+                component="span"
+                sx={{
+                  width: `${size}px`,
+                  height: `${size}px`,
+                  transform: "rotate(45deg)",
+                  borderRadius: "2px",
+                  border: `2px solid ${theme.palette.grey[500]}`,
+                  backgroundColor: filled
+                    ? theme.palette.grey[600]
+                    : "transparent",
+                  boxSizing: "border-box",
+                  display: "inline-block",
+                }}
+              />
+            );
+          })}
+        </Box>
+      );
+    },
+    [isMobile, theme],
+  );
 
   // Create cluster lookup for enriching data
   const clusterLookup = useMemo(() => {
@@ -90,162 +232,312 @@ const ProductsTable = ({
         cluster,
       ]),
     );
-  }, [clustersData]);
+  }, [clustersData?.ggClusterList]);
+
+  // Stable getters to satisfy lint rules about dependencies
+  const getSupplyChainMappings = useCallback(
+    (productId: number) => supplyChainProductLookup?.get(productId) || [],
+    [supplyChainProductLookup],
+  );
+  const getSupplyChainById = useCallback(
+    (supplyChainId: number) => supplyChainLookup?.get(supplyChainId) || null,
+    [supplyChainLookup],
+  );
+  const getClusterById = useCallback(
+    (clusterId: number) => clusterLookup?.get(clusterId) || null,
+    [clusterLookup],
+  );
 
   const processedData = useMemo(() => {
     if (!data || !productLookup) return [];
 
     // Show ALL products data with relationships
-    return data
-      .map((item) => {
-        const product = productLookup.get(item.productId);
-        const supplyChainMappings =
-          supplyChainProductLookup?.get(item.productId) || [];
-        const firstMapping = supplyChainMappings[0];
-        const supplyChain = firstMapping
-          ? supplyChainLookup?.get(firstMapping.supplyChainId)
-          : null;
-        const cluster = firstMapping
-          ? clusterLookup?.get(firstMapping.clusterId)
+    return data.map((item) => {
+      const product = productLookup.get(item.productId);
+      const supplyChainMappings = getSupplyChainMappings(item.productId);
+      const firstMapping = supplyChainMappings[0];
+      const supplyChain = firstMapping
+        ? getSupplyChainById(firstMapping.supplyChainId)
+        : null;
+      const cluster = firstMapping
+        ? getClusterById(firstMapping.clusterId)
+        : null;
+
+      const marketSize =
+        item &&
+        typeof item.exportValue === "number" &&
+        typeof item.globalMarketShare === "number" &&
+        item.globalMarketShare > 0
+          ? item.exportValue / item.globalMarketShare
           : null;
 
-        return {
-          ...item,
-          productName: product?.nameShortEn || "Unknown Product",
-          productCode: product?.code || "N/A",
-          productLevel: product?.productLevel || "N/A",
-          parentId: product?.parentId || "N/A",
-          supplyChainName: supplyChain?.supplyChain || "N/A",
-          clusterName: cluster?.clusterName || "N/A",
-        };
-      })
-      .sort(
-        (a, b) =>
-          (b.pciCogFeasibilityComposite || 0) -
-          (a.pciCogFeasibilityComposite || 0),
-      );
+      return {
+        ...item,
+        productName: product?.nameShortEn || "Unknown Product",
+        productCode: product?.code || "N/A",
+        supplyChainName: supplyChain?.supplyChain || "N/A",
+        clusterName: cluster?.clusterName || "N/A",
+        marketSize,
+        // Ensure table uses a consistent key for growth
+        marketGrowth: percentToRatio(
+          item.marketGrowth ?? item.productMarketShareGrowth ?? null,
+        ),
+      };
+    });
   }, [
     data,
     productLookup,
-    supplyChainProductLookup,
-    supplyChainLookup,
-    clusterLookup,
+    getSupplyChainMappings,
+    getSupplyChainById,
+    getClusterById,
   ]);
 
-  const columns: ColumnDef[] = [
-    // Basic Product Information & Hierarchy
-    { field: "productCode", header: "Code", width: isMobile ? 80 : 100 },
-    { field: "productName", header: "Product", width: isMobile ? 150 : 200 },
-    {
-      field: "productLevel",
-      header: "Level",
-      width: 80,
-      tooltip: "Product hierarchy level in classification system",
-    },
+  const computeCompositeScore = useCallback((row: any) => {
+    if (typeof row?.pciCogFeasibilityComposite === "number") {
+      return row.pciCogFeasibilityComposite as number;
+    }
+    const parts = [row?.normalizedPci, row?.normalizedCog, row?.density];
+    return parts
+      .map((v) => (typeof v === "number" ? (v as number) : 0))
+      .reduce((s, v) => s + v, 0);
+  }, []);
 
-    // Relationships
-    {
-      field: "clusterName",
-      header: "Industry Cluster",
-      width: isMobile ? 140 : 180,
-      tooltip: "Industry cluster this product belongs to",
-    },
-    {
-      field: "supplyChainName",
-      header: "Supply Chain",
-      width: isMobile ? 120 : 150,
-      tooltip: "Green supply chain this product is part of",
-    },
+  // Build decile-based rating functions for three dimensions
+  const { getRating: getCogRating } = useMemo(
+    () => computeDiamondRatings(processedData.map((d: any) => d.normalizedCog)),
+    [processedData, computeDiamondRatings],
+  );
+  const { getRating: getPciRating } = useMemo(
+    () => computeDiamondRatings(processedData.map((d: any) => d.normalizedPci)),
+    [processedData, computeDiamondRatings],
+  );
+  const { getRating: getDensityRating } = useMemo(
+    () => computeDiamondRatings(processedData.map((d: any) => d.density)),
+    [processedData, computeDiamondRatings],
+  );
 
-    // Export Performance (Current State)
-    {
-      field: "exportRca",
-      header: "Export RCA",
-      width: 100,
-      format: formatNumber,
-      tooltip:
-        "Revealed Comparative Advantage - measures a country's relative export performance",
+  const buildAtlasUrl = useCallback(
+    (productId: number | string | undefined | null) => {
+      const pid = String(productId ?? "").replace(/\D/g, "");
+      const countryId = String(selectedCountry || "");
+      if (!pid || !countryId) return null;
+      return `https://atlas.hks.harvard.edu/explore/treemap?exporter=country-${countryId}&view=markets&product=product-HS12-${pid}&productClass=HS12`;
     },
-    {
-      field: "exportValue",
-      header: "Export Value",
-      width: 120,
-      format: formatCurrency,
-      tooltip: "Total export value for this product",
-    },
-    {
-      field: "expectedExports",
-      header: "Expected Exports",
-      width: 130,
-      format: formatCurrency,
-      tooltip: "Expected export value based on the country's capabilities",
-    },
+    [selectedCountry],
+  );
 
-    // Complexity Dimensions (ProductRadar focus)
-    {
-      field: "normalizedPci",
-      header: "Product Complexity",
-      width: 130,
-      format: formatNumber,
-      tooltip: "Measures the diversity of knowhow required to make a product",
-    },
-    {
-      field: "normalizedCog",
-      header: "Opportunity Gain",
-      width: 150,
-      format: formatNumber,
-      tooltip: "Measures opportunities for future diversification",
-    },
+  const yearNum = selectedYear ? Number(selectedYear) : undefined;
+  const columns: ColumnDef[] = useMemo(
+    () => [
+      // Basic Product Information
+      {
+        field: "productCode",
+        header: "HS Code",
+        width: isMobile ? 90 : 110,
+        format: (value: any) => (value ? `HS ${value}` : "N/A"),
+        sortable: true,
+        sortValue: (row: any) => String(row.productCode ?? ""),
+        defaultOrder: "asc",
+      },
+      {
+        field: "productName",
+        header: "Product",
+        width: isMobile ? 150 : 220,
+        sortable: true,
+        sortValue: (row: any) => String(row.productName ?? ""),
+        defaultOrder: "asc",
+        render: (row: any) => {
+          const atlasUrl = buildAtlasUrl(row.productId);
+          return (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {atlasUrl && (
+                <Tooltip title="View in Atlas" placement="top">
+                  <IconButton
+                    component="a"
+                    href={atlasUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open in Atlas treemap (markets view)"
+                    size="small"
+                    sx={{
+                      width: 28,
+                      height: 28,
+                      p: 0,
+                      borderRadius: 1,
+                      backgroundColor: (t) => t.palette.grey[200],
+                      "&:hover": {
+                        backgroundColor: (t) => t.palette.grey[300],
+                      },
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={AtlasIcon as any}
+                      alt="Atlas"
+                      sx={{ width: 16, height: 16, display: "block" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <span>{row.productName}</span>
+            </Box>
+          );
+        },
+      },
 
-    // Market Dynamics (ProductScatter focus)
-    {
-      field: "marketGrowth",
-      header: "Market Growth",
-      width: 120,
-      format: formatPercent,
-      tooltip:
-        "Rate of increase in this product's market size from 2013 to 2022",
-    },
-    {
-      field: "productMarketShareGrowth",
-      header: "Market Share Growth",
-      width: 150,
-      format: formatPercent,
-      tooltip: "Growth in this product's market share over time",
-    },
+      // Relationships
+      {
+        field: "clusterName",
+        header: "Green Industrial Cluster",
+        width: isMobile ? 160 : 220,
+        tooltip: columnTooltips["Green Industrial Cluster"],
+        sortable: true,
+        sortValue: (row: any) => String(row.clusterName ?? ""),
+        defaultOrder: "asc",
+      },
+      {
+        field: "supplyChainName",
+        header: "Green Value Chain",
+        width: isMobile ? 150 : 200,
+        tooltip: columnTooltips["Green Value Chain"],
+        sortable: true,
+        sortValue: (row: any) => String(row.supplyChainName ?? ""),
+        defaultOrder: "asc",
+      },
 
-    // Statistical Measures
-    {
-      field: "pciStd",
-      header: "PCI Std Dev",
-      width: 110,
-      format: formatNumber,
-      tooltip: "Standard deviation of Product Complexity Index",
-    },
-    {
-      field: "cogStd",
-      header: "COG Std Dev",
-      width: 110,
-      format: formatNumber,
-      tooltip: "Standard deviation of Complexity Outlook Gain",
-    },
-    {
-      field: "feasibilityStd",
-      header: "Feasibility Std Dev",
-      width: 140,
-      format: formatNumber,
-      tooltip: "Standard deviation of Feasibility score",
-    },
+      // Export performance and market size
+      {
+        field: "exportValue",
+        header: `Product Export Value (USD, ${selectedYear ?? "year"})`,
+        width: 160,
+        format: formatCurrency,
+        sortable: true,
+        sortValue: (row: any) => row.exportValue ?? null,
+        defaultOrder: "desc",
+      },
+      {
+        field: "marketSize",
+        header: `Product Market Size (USD, ${selectedYear ?? "year"})`,
+        width: 170,
+        format: formatCurrency,
+        sortable: true,
+        sortValue: (row: any) => row.marketSize ?? null,
+        defaultOrder: "desc",
+      },
+      {
+        field: "marketGrowth",
+        header:
+          yearNum && !Number.isNaN(yearNum)
+            ? `Product Market Growth (%: ${yearNum - 1} → ${yearNum})`
+            : "Product Market Growth (% over year range)",
+        width: 210,
+        format: formatPercent,
+        sortable: true,
+        sortValue: (row: any) => row.marketGrowth ?? null,
+        defaultOrder: "desc",
+      },
 
-    // Composite Score (Key for all visualizations)
-    {
-      field: "pciCogFeasibilityComposite",
-      header: "Composite Score",
-      width: 130,
-      format: formatNumber,
-      tooltip: "Combined score of complexity, outlook gain, and feasibility",
+      // Capability dimensions
+      {
+        field: "exportRca",
+        header: "Export RCA",
+        width: 120,
+        format: formatNumber,
+        tooltip: columnTooltips["Export RCA"],
+        sortable: true,
+        sortValue: (row: any) => row.exportRca ?? null,
+        defaultOrder: "desc",
+      },
+      {
+        field: "normalizedCog",
+        header: "Opportunity Gain",
+        width: 160,
+        render: (row: any) => (
+          <DiamondRow count={getCogRating(row.normalizedCog)} />
+        ),
+        tooltip: columnTooltips["Opportunity Gain"],
+        sortable: true,
+        sortValue: (row: any) => row.normalizedCog ?? null,
+        defaultOrder: "desc",
+      },
+      {
+        field: "normalizedPci",
+        header: "Product Complexity",
+        width: 160,
+        render: (row: any) => (
+          <DiamondRow count={getPciRating(row.normalizedPci)} />
+        ),
+        tooltip: columnTooltips["Product Complexity"],
+        sortable: true,
+        sortValue: (row: any) => row.normalizedPci ?? null,
+        defaultOrder: "desc",
+      },
+      {
+        field: "density",
+        header: "Product Feasibility",
+        width: 160,
+        render: (row: any) => (
+          <DiamondRow count={getDensityRating(row.density)} />
+        ),
+        tooltip: columnTooltips["Product Feasibility"],
+        sortable: true,
+        sortValue: (row: any) => row.density ?? null,
+        defaultOrder: "desc",
+      },
+    ],
+    [
+      isMobile,
+      selectedYear,
+      yearNum,
+      getCogRating,
+      getPciRating,
+      getDensityRating,
+      DiamondRow,
+      buildAtlasUrl,
+    ],
+  );
+
+  const getSortValueForField = useCallback(
+    (row: any, field: string) => {
+      if (field === "defaultComposite") return computeCompositeScore(row);
+      const col = columns.find((c) => c.field === field);
+      if (!col) return null;
+      if (col.sortValue) return col.sortValue(row);
+      return (row as any)[field];
     },
-  ];
+    [columns, computeCompositeScore],
+  );
+
+  const sortedData = useMemo(() => {
+    const arr = processedData.slice();
+    const comparator = (a: any, b: any) => {
+      const va = getSortValueForField(a, orderBy);
+      const vb = getSortValueForField(b, orderBy);
+      const aNull =
+        va === null ||
+        va === undefined ||
+        (typeof va === "number" && Number.isNaN(va));
+      const bNull =
+        vb === null ||
+        vb === undefined ||
+        (typeof vb === "number" && Number.isNaN(vb));
+      if (aNull && bNull) return 0;
+      if (aNull) return 1;
+      if (bNull) return -1;
+      if (typeof va === "string" || typeof vb === "string") {
+        const res = String(va).localeCompare(String(vb));
+        return order === "asc" ? res : -res;
+      }
+      const na = Number(va);
+      const nb = Number(vb);
+      const res = na < nb ? -1 : na > nb ? 1 : 0;
+      return order === "asc" ? res : -res;
+    };
+    return arr.sort(comparator);
+  }, [processedData, order, orderBy, getSortValueForField]);
 
   return (
     <TableContainer
@@ -256,6 +548,10 @@ const ProductsTable = ({
         display: "flex",
         flexDirection: "column",
         minHeight: 0,
+        mr: 2,
+        mb: 2,
+        borderRadius: 1,
+        border: `1px solid ${theme.palette.divider}`,
       }}
     >
       <Table stickyHeader size={isMobile ? "small" : "medium"} sx={{ flex: 1 }}>
@@ -273,17 +569,51 @@ const ProductsTable = ({
                     : theme.typography.body2.fontSize,
                 }}
               >
-                <Tooltip title={col.tooltip || ""} placement="top">
-                  <span style={{ cursor: "help", textDecoration: "underline" }}>
-                    {col.header}
-                  </span>
-                </Tooltip>
+                {col.sortable ? (
+                  col.tooltip ? (
+                    <GGTooltip title={col.tooltip} placement="top">
+                      <TableSortLabel
+                        active={orderBy === col.field}
+                        direction={
+                          orderBy === col.field
+                            ? order
+                            : (defaultOrderByField[col.field] ?? "desc")
+                        }
+                        onClick={() => handleRequestSort(col.field)}
+                      >
+                        {col.header}
+                      </TableSortLabel>
+                    </GGTooltip>
+                  ) : (
+                    <TableSortLabel
+                      active={orderBy === col.field}
+                      direction={
+                        orderBy === col.field
+                          ? order
+                          : (defaultOrderByField[col.field] ?? "desc")
+                      }
+                      onClick={() => handleRequestSort(col.field)}
+                    >
+                      {col.header}
+                    </TableSortLabel>
+                  )
+                ) : col.tooltip ? (
+                  <GGTooltip title={col.tooltip} placement="top">
+                    <span
+                      style={{ cursor: "help", textDecoration: "underline" }}
+                    >
+                      {col.header}
+                    </span>
+                  </GGTooltip>
+                ) : (
+                  <span>{col.header}</span>
+                )}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {processedData.map((row, index) => (
+          {sortedData.map((row, index) => (
             <TableRow key={`${row.productId}-${index}`} hover>
               {columns.map((col) => (
                 <TableCell
@@ -294,166 +624,11 @@ const ProductsTable = ({
                       : theme.typography.body2.fontSize,
                   }}
                 >
-                  {col.format ? col.format(row[col.field]) : row[col.field]}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
-
-const CountryTable = ({
-  data,
-  selectedCountryId,
-  countryLookup,
-}: {
-  data: any[];
-  selectedCountryId: number;
-  countryLookup: Map<number, any>;
-}) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  // Process data to add country names and organize with selected country first
-  const processedData = useMemo(() => {
-    if (!data || !countryLookup) return [];
-
-    const dataWithNames = data.map((item) => {
-      const country = countryLookup.get(item.countryId);
-      return {
-        ...item,
-        countryName: country?.nameShortEn || "Unknown Country",
-        countryCode: country?.iso3Code || "N/A",
-        isSelected: item.countryId === selectedCountryId,
-      };
-    });
-
-    // Sort: selected country first, then by country name
-    return dataWithNames.sort((a, b) => {
-      if (a.isSelected && !b.isSelected) return -1;
-      if (!a.isSelected && b.isSelected) return 1;
-      return b.coiGreen - a.coiGreen;
-    });
-  }, [data, countryLookup, selectedCountryId]);
-
-  const columns: ColumnDef[] = [
-    {
-      field: "countryName",
-      header: "Country",
-      width: isMobile ? 120 : 150,
-      tooltip: "Country name",
-    },
-    {
-      field: "countryCode",
-      header: "Code",
-      width: 80,
-      tooltip: "ISO3 country code",
-    },
-    {
-      field: "year",
-      header: "Year",
-      width: 80,
-      tooltip: "Data year",
-    },
-    {
-      field: "coiGreen",
-      header: "Green COI",
-      width: 120,
-      format: formatNumber,
-      tooltip:
-        "Green Complexity Outlook Index - measures green diversification potential",
-    },
-    {
-      field: "lntotnetnrexpPc",
-      header: "Ln Total Net NR Exp PC",
-      width: 180,
-      format: formatNumber,
-      tooltip: "Log of total net natural resource exports per capita",
-    },
-    {
-      field: "lnypc",
-      header: "Ln GDP Per Capita",
-      width: 150,
-      format: formatNumber,
-      tooltip: "Log of GDP per capita",
-    },
-    {
-      field: "xResid",
-      header: "Export Residual",
-      width: 130,
-      format: formatNumber,
-      tooltip: "Export complexity residual after controlling for income",
-    },
-  ];
-
-  return (
-    <TableContainer
-      component={Paper}
-      sx={{
-        flex: 1,
-        overflow: "auto",
-        display: "flex",
-        flexDirection: "column",
-        minHeight: 0,
-      }}
-    >
-      <Table stickyHeader size={isMobile ? "small" : "medium"} sx={{ flex: 1 }}>
-        <TableHead>
-          <TableRow>
-            {columns.map((col) => (
-              <TableCell
-                key={col.field}
-                sx={{
-                  minWidth: col.width,
-                  fontWeight: theme.typography.fontWeightMedium,
-                  backgroundColor: theme.palette.grey[50],
-                  fontSize: isMobile
-                    ? theme.typography.caption.fontSize
-                    : theme.typography.body2.fontSize,
-                }}
-              >
-                <Tooltip title={col.tooltip || ""} placement="top">
-                  <span
-                    style={{
-                      cursor: "help",
-                      textDecoration: col.tooltip ? "underline" : "none",
-                    }}
-                  >
-                    {col.header}
-                  </span>
-                </Tooltip>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {processedData.map((row, index) => (
-            <TableRow
-              key={`${row.countryId}-${row.year}-${index}`}
-              hover
-              sx={{
-                backgroundColor: "white",
-                position: row.isSelected ? "sticky" : "static",
-                top: row.isSelected ? 48 : "auto", // Below the header
-                zIndex: row.isSelected ? 100 : "auto",
-              }}
-            >
-              {columns.map((col) => (
-                <TableCell
-                  key={col.field}
-                  sx={{
-                    fontSize: isMobile
-                      ? theme.typography.caption.fontSize
-                      : theme.typography.body2.fontSize,
-                    fontWeight: row.isSelected
-                      ? theme.typography.fontWeightMedium
-                      : theme.typography.fontWeightRegular,
-                  }}
-                >
-                  {col.format ? col.format(row[col.field]) : row[col.field]}
+                  {col.render
+                    ? col.render(row)
+                    : col.format
+                      ? col.format(row[col.field])
+                      : row[col.field]}
                 </TableCell>
               ))}
             </TableRow>
@@ -466,16 +641,11 @@ const CountryTable = ({
 
 const NestedProductsTable = ({
   data,
-  clustersData,
-  showAllProducts,
   productClusterRows,
   selectedYear,
-  selectedCountry,
 }: {
   data: any[];
-  clustersData?: any;
   selectedProducts?: any[];
-  showAllProducts?: boolean;
   productClusterRows?: any[];
   selectedYear?: string;
   selectedCountry?: number;
@@ -483,306 +653,456 @@ const NestedProductsTable = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const productLookup = useProductLookup();
-  const supplyChainProductLookup = useSupplyChainProductLookup();
-  const supplyChainLookup = useSupplyChainLookup();
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
+  const [orderBy, setOrderBy] = useState<string>("defaultComposite");
+  const defaultOrderByField = useMemo(
+    () =>
+      ({
+        productCode: "asc",
+        productName: "asc",
+        exportRca: "desc",
+        exportValue: "desc",
+        marketSize: "desc",
+        marketGrowth: "desc",
+        normalizedPci: "desc",
+        normalizedCog: "desc",
+        density: "desc",
+        defaultComposite: "desc",
+      }) as Record<string, "asc" | "desc">,
+    [],
+  );
+  const handleRequestSort = useCallback(
+    (property: string) => {
+      if (orderBy !== property) {
+        const firstOrder = defaultOrderByField[property] ?? "desc";
+        setOrder(firstOrder);
+        setOrderBy(property);
+        return;
+      }
+      setOrder((prev) => (prev === "desc" ? "asc" : "desc"));
+    },
+    [orderBy, defaultOrderByField],
+  );
 
-  // Create cluster lookup for enriching data
-  const clusterLookup = useMemo(() => {
-    if (!clustersData?.ggClusterList) return new Map();
-    return new Map(
-      clustersData.ggClusterList.map((cluster: any) => [
-        cluster.clusterId,
-        cluster,
-      ]),
-    );
-  }, [clustersData]);
+  // Helper: compute 1-5 diamond rating based on deciles (nested scope)
+  const computeDiamondRatings = useCallback(
+    (values: Array<number | null | undefined>) => {
+      const valid = values
+        .filter((v) => typeof v === "number" && !Number.isNaN(Number(v)))
+        .map((v) => Number(v as number))
+        .sort((a, b) => a - b);
+      if (valid.length === 0) {
+        return {
+          getRating: (_v: number | null | undefined) => 0,
+        };
+      }
+
+      const getRating = (v: number | null | undefined): number => {
+        if (v === null || v === undefined || Number.isNaN(Number(v))) return 0;
+        const value = Number(v);
+        let lo = 0;
+        let hi = valid.length - 1;
+        while (lo <= hi) {
+          const mid = Math.floor((lo + hi) / 2);
+          if (valid[mid] <= value) lo = mid + 1;
+          else hi = mid - 1;
+        }
+        const rankIndex = Math.max(0, Math.min(valid.length - 1, lo - 1));
+        const percentile =
+          valid.length === 1 ? 1 : (rankIndex + 1) / valid.length;
+        const decile = Math.min(10, Math.max(1, Math.floor(percentile * 10)));
+        const rating = Math.min(5, Math.max(1, Math.ceil(decile / 2)));
+        return rating;
+      };
+
+      return { getRating };
+    },
+    [],
+  );
+
+  const DiamondRow = useCallback(
+    ({ count }: { count: number }) => {
+      const total = 5;
+      const size = isMobile ? 10 : 12;
+      const gap = isMobile ? 6 : 8;
+      const diamondIds = ["d1", "d2", "d3", "d4", "d5"];
+      return (
+        <Box sx={{ display: "flex", alignItems: "center", gap: `${gap}px` }}>
+          {diamondIds.slice(0, total).map((id, idx) => {
+            const filled = idx < count;
+            // eslint-disable-next-line react/no-array-index-key
+            return (
+              <Box
+                key={id}
+                component="span"
+                sx={{
+                  width: `${size}px`,
+                  height: `${size}px`,
+                  transform: "rotate(45deg)",
+                  borderRadius: "2px",
+                  border: `2px solid ${theme.palette.grey[500]}`,
+                  backgroundColor: filled
+                    ? theme.palette.grey[600]
+                    : "transparent",
+                  boxSizing: "border-box",
+                  display: "inline-block",
+                }}
+              />
+            );
+          })}
+        </Box>
+      );
+    },
+    [isMobile, theme],
+  );
+
+  // No cluster lookup needed for nested full-taxonomy view
 
   // Get additional data needed for complete taxonomy
 
-  // Process and group data hierarchically
+  // Process and group data hierarchically (API-backed products only)
   const hierarchicalData = useMemo(() => {
-    if (showAllProducts) {
-      // SHOW ALL MODE: Use productClusterRows for complete taxonomy structure
-      if (!productClusterRows || !productClusterRows.length) return [];
+    if (!productClusterRows || !productClusterRows.length) return [];
 
-      // Build the hierarchy using the same approach as SankeyTree
-      // Extract unique value chains and clusters from the complete product data
-      const valueChains = Array.from(
-        new Set(productClusterRows.map((r: any) => r.supply_chain)),
-      );
-      const clusters = Array.from(
-        new Set(productClusterRows.map((r: any) => r.cluster_name)),
-      ).sort();
+    const valueChainNameToSortOrder: Record<string, number> = {
+      "Electric Vehicles": 0,
+      "Heat Pumps": 1,
+      "Fuel Cells And Green Hydrogen": 2,
+      "Wind Power": 3,
+      "Solar Power": 4,
+      "Hydroelectric Power": 5,
+      "Nuclear Power": 6,
+      Batteries: 7,
+      "Electric Grid": 8,
+      "Critical Metals and Minerals": 9,
+    };
 
-      // Value chain name to supply chain ID mapping for ordering
-      const valueChainNameToSupplyChainId: Record<string, number> = {
-        "Heat Pumps": 0,
-        "Critical Metals and Minerals": 1,
-        "Fuel Cells And Green Hydrogen": 2,
-        "Wind Power": 3,
-        "Electric Vehicles": 4,
-        "Nuclear Power": 5,
-        "Electric Grid": 6,
-        "Solar Power": 7,
-        "Hydroelectric Power": 8,
-        Batteries: 9,
-      };
+    const completeHierarchy: any = {};
 
-      // Sort value chains by their supply chain ID for consistent ordering
-      valueChains.sort((a, b) => {
-        const idA = valueChainNameToSupplyChainId[a] ?? 999;
-        const idB = valueChainNameToSupplyChainId[b] ?? 999;
-        return idA - idB;
+    if (data && productLookup) {
+      const countryProductMap = new Map();
+      data.forEach((item) => {
+        countryProductMap.set(item.productId, item);
       });
 
-      // Build the complete hierarchy structure
-      const completeHierarchy: any = {};
+      productClusterRows.forEach((row: any) => {
+        // Only include products that exist in API-provided country data
+        const countryProductData = countryProductMap.get(row.product_id);
+        if (!countryProductData) return;
 
-      // Initialize all supply chains
-      valueChains.forEach((supplyChainName) => {
         const supplyChainId =
-          valueChainNameToSupplyChainId[supplyChainName] ?? 999;
-        completeHierarchy[supplyChainId] = {
-          supplyChainName,
-          supplyChainId,
-          clusters: {},
-          totalProducts: 0,
-        };
-      });
-
-      // Add all clusters to their appropriate supply chains
-      clusters.forEach((clusterName) => {
-        // Find which supply chains this cluster belongs to
-        const clustersForSupplyChains = productClusterRows
-          .filter((r: any) => r.cluster_name === clusterName)
-          .map((r: any) => r.supply_chain);
-
-        const uniqueSupplyChains = Array.from(new Set(clustersForSupplyChains));
-
-        uniqueSupplyChains.forEach((supplyChainName) => {
-          const supplyChainId =
-            valueChainNameToSupplyChainId[supplyChainName] ?? 999;
-          if (completeHierarchy[supplyChainId]) {
-            // Use cluster name as key to handle clusters that appear in multiple supply chains
-            const clusterKey = `${clusterName}_${supplyChainId}`;
-            completeHierarchy[supplyChainId].clusters[clusterKey] = {
-              clusterName,
-              clusterId: clusterKey,
-              products: [],
-            };
-          }
-        });
-      });
-
-      // Now populate with actual product data if available
-      if (data && productLookup) {
-        // Create a map of product data for quick lookup
-        const countryProductMap = new Map();
-        data.forEach((item) => {
-          countryProductMap.set(item.productId, item);
-        });
-
-        // Add all products from productClusterRows
-        productClusterRows.forEach((row: any) => {
-          const supplyChainId =
-            valueChainNameToSupplyChainId[row.supply_chain] ?? 999;
-          const clusterKey = `${row.cluster_name}_${supplyChainId}`;
-
-          if (completeHierarchy[supplyChainId]?.clusters[clusterKey]) {
-            // Get country-specific data if available, otherwise create synthetic entry
-            const countryProductData = countryProductMap.get(row.product_id);
-
-            const product = productLookup.get(row.product_id);
-            const processedProduct = {
-              // Use country data if available, otherwise null values
-              ...(countryProductData || {
-                year: selectedYear ? parseInt(selectedYear) : 2021,
-                countryId: selectedCountry || 0,
-                productId: row.product_id,
-                exportRca: null,
-                exportValue: null,
-                expectedExports: null,
-                normalizedPci: null,
-                normalizedCog: null,
-                density: null,
-                globalMarketShare: null,
-                productMarketShare: null,
-                productMarketShareGrowth: null,
-                pciStd: null,
-                cogStd: null,
-                feasibilityStd: null,
-                strategyBalancedPortfolio: null,
-                strategyLongJump: null,
-                strategyLowHangingFruit: null,
-                strategyFrontier: null,
-                pciCogFeasibilityComposite: null,
-              }),
-              productName: product?.nameShortEn || row.name_short_en,
-              productCode: product?.code || row.HS2012_4dg,
-              supplyChainName: row.supply_chain,
-              clusterName: row.cluster_name,
-              clusterId: clusterKey,
-              supplyChainId,
-            };
-
-            completeHierarchy[supplyChainId].clusters[clusterKey].products.push(
-              processedProduct,
-            );
-            completeHierarchy[supplyChainId].totalProducts++;
-          }
-        });
-
-        // Sort products within each cluster by composite score (nulls last)
-        Object.values(completeHierarchy).forEach((supplyChain: any) => {
-          Object.values(supplyChain.clusters).forEach((cluster: any) => {
-            cluster.products.sort((a: any, b: any) => {
-              const aScore = a.pciCogFeasibilityComposite;
-              const bScore = b.pciCogFeasibilityComposite;
-              if (aScore === null && bScore === null) return 0;
-              if (aScore === null) return 1;
-              if (bScore === null) return -1;
-              return bScore - aScore;
-            });
-          });
-        });
-      }
-
-      return Object.values(completeHierarchy) as any[];
-    } else {
-      // COUNTRY MODE: Only show hierarchy for products that the country actually exports
-      if (
-        !data ||
-        !productLookup ||
-        !supplyChainProductLookup ||
-        !supplyChainLookup
-      )
-        return [];
-
-      // Filter data to only include products the country actually exports (with valid export data)
-      const countryExportedProducts = data.filter((item) => {
-        return (
-          item.exportValue !== null &&
-          item.exportValue !== undefined &&
-          item.exportValue > 0
-        );
-      });
-
-      if (countryExportedProducts.length === 0) return [];
-
-      const processedData = countryExportedProducts
-        .map((item) => {
-          const product = productLookup.get(item.productId);
-          const supplyChainMappings =
-            supplyChainProductLookup?.get(item.productId) || [];
-          const firstMapping = supplyChainMappings[0];
-          const supplyChain = firstMapping
-            ? supplyChainLookup?.get(firstMapping.supplyChainId)
-            : null;
-          const cluster = firstMapping
-            ? clusterLookup?.get(firstMapping.clusterId)
-            : null;
-
-          return {
-            ...item,
-            productName: product?.nameShortEn || "Unknown Product",
-            productCode: product?.code || "N/A",
-            supplyChainName: supplyChain?.supplyChain || "Uncategorized",
-            clusterName: cluster?.clusterName || "Uncategorized",
-            clusterId: firstMapping?.clusterId || "uncategorized",
-            supplyChainId: firstMapping?.supplyChainId || "uncategorized",
-          };
-        })
-        .filter(
-          (product) =>
-            // Only include products that have valid supply chain and cluster mappings
-            product.supplyChainName !== "Uncategorized" &&
-            product.clusterName !== "Uncategorized",
-        )
-        .sort(
-          (a, b) =>
-            (b.pciCogFeasibilityComposite || 0) -
-            (a.pciCogFeasibilityComposite || 0),
-        );
-
-      // Group by supply chain first, then by cluster within each supply chain
-      const grouped = processedData.reduce((acc, product) => {
-        const supplyChainKey = product.supplyChainId;
-        if (!acc[supplyChainKey]) {
-          acc[supplyChainKey] = {
-            supplyChainName: product.supplyChainName,
-            supplyChainId: product.supplyChainId,
+          valueChainNameToSortOrder[row.supply_chain] ?? 999;
+        if (!completeHierarchy[supplyChainId]) {
+          completeHierarchy[supplyChainId] = {
+            supplyChainName: row.supply_chain,
+            supplyChainId,
             clusters: {},
             totalProducts: 0,
           };
         }
 
-        const clusterKey = product.clusterId;
-        if (!acc[supplyChainKey].clusters[clusterKey]) {
-          acc[supplyChainKey].clusters[clusterKey] = {
-            clusterName: product.clusterName,
-            clusterId: product.clusterId,
+        const clusterKey = `${row.cluster_name}_${supplyChainId}`;
+        if (!completeHierarchy[supplyChainId].clusters[clusterKey]) {
+          completeHierarchy[supplyChainId].clusters[clusterKey] = {
+            clusterName: row.cluster_name,
+            clusterId: clusterKey,
             products: [],
           };
         }
 
-        acc[supplyChainKey].clusters[clusterKey].products.push(product);
-        acc[supplyChainKey].totalProducts++;
-        return acc;
-      }, {} as any);
+        const product = productLookup.get(row.product_id);
+        const processedProduct: any = {
+          ...countryProductData,
+          productName: product?.nameShortEn || row.name_short_en,
+          productCode: product?.code || row.HS2012_4dg,
+          supplyChainName: row.supply_chain,
+          clusterName: row.cluster_name,
+          clusterId: clusterKey,
+          supplyChainId,
+        };
 
-      return Object.values(grouped) as any[];
+        if (
+          typeof processedProduct.exportValue === "number" &&
+          typeof processedProduct.globalMarketShare === "number" &&
+          processedProduct.globalMarketShare > 0
+        ) {
+          processedProduct.marketSize =
+            processedProduct.exportValue / processedProduct.globalMarketShare;
+        } else {
+          processedProduct.marketSize = null;
+        }
+
+        completeHierarchy[supplyChainId].clusters[clusterKey].products.push(
+          processedProduct,
+        );
+        completeHierarchy[supplyChainId].totalProducts++;
+      });
     }
-  }, [
-    data,
-    productLookup,
-    supplyChainProductLookup,
-    supplyChainLookup,
-    clusterLookup,
-    clustersData,
-    showAllProducts,
-    productClusterRows,
-    selectedYear,
-    selectedCountry,
-  ]);
 
-  const productColumns = [
-    { field: "productCode", header: "Code", width: isMobile ? 80 : 100 },
-    { field: "productName", header: "Product", width: isMobile ? 150 : 200 },
-    {
-      field: "exportRca",
-      header: "Export RCA",
-      width: 100,
-      format: formatNumber,
-      tooltip: "Revealed Comparative Advantage",
-    },
-    {
-      field: "exportValue",
-      header: "Export Value",
-      width: 120,
-      format: formatCurrency,
-      tooltip: "Total export value for this product",
-    },
-    {
-      field: "normalizedPci",
-      header: "Complexity",
-      width: 100,
-      format: formatNumber,
-      tooltip: "Product Complexity Index",
-    },
+    // Convert to array and prune any empty clusters or supply chains
+    const result = Object.values(completeHierarchy)
+      .map((sc: any) => {
+        const prunedClusters = Object.fromEntries(
+          Object.entries(sc.clusters).filter(
+            ([, cl]: any) => (cl.products || []).length > 0,
+          ),
+        );
+        return { ...sc, clusters: prunedClusters };
+      })
+      .filter((sc: any) => Object.keys(sc.clusters).length > 0)
+      .sort((a: any, b: any) => a.supplyChainId - b.supplyChainId);
 
-    {
-      field: "pciCogFeasibilityComposite",
-      header: "Composite Score",
-      width: 120,
-      format: formatNumber,
-      tooltip: "Combined complexity, outlook, and feasibility score",
-    },
-  ];
+    return result as any[];
+  }, [data, productLookup, productClusterRows]);
 
-  // Calculate header heights for sticky positioning
-  const mainHeaderHeight = isMobile ? 48 : 56; // Standard Material-UI table header height
+  // Flatten all nested products for ratings
+  const allNestedProducts = useMemo(() => {
+    const items: any[] = [];
+    (hierarchicalData || []).forEach((sc: any) => {
+      Object.values(sc.clusters).forEach((cl: any) => {
+        items.push(...(cl as any).products);
+      });
+    });
+    return items;
+  }, [hierarchicalData]);
+
+  const { getRating: getNestedCogRating } = useMemo(
+    () =>
+      computeDiamondRatings(allNestedProducts.map((p: any) => p.normalizedCog)),
+    [computeDiamondRatings, allNestedProducts],
+  );
+  const { getRating: getNestedPciRating } = useMemo(
+    () =>
+      computeDiamondRatings(allNestedProducts.map((p: any) => p.normalizedPci)),
+    [computeDiamondRatings, allNestedProducts],
+  );
+  const { getRating: getNestedDensityRating } = useMemo(
+    () => computeDiamondRatings(allNestedProducts.map((p: any) => p.density)),
+    [computeDiamondRatings, allNestedProducts],
+  );
+
+  const selectedCountry = useCountrySelection();
+  const buildAtlasUrl = useCallback(
+    (productId: number | string | undefined | null) => {
+      const pid = String(productId ?? "").replace(/\D/g, "");
+      const countryId = String(selectedCountry || "");
+      if (!pid || !countryId) return null;
+      return `https://atlas.hks.harvard.edu/explore/treemap?exporter=country-${countryId}&view=markets&product=product-HS12-${pid}&productClass=HS12`;
+    },
+    [selectedCountry],
+  );
+
+  const productColumns: ColumnDef[] = useMemo(
+    () => [
+      {
+        field: "productCode",
+        header: "HS Code",
+        width: isMobile ? 90 : 110,
+        format: (value: any) => (value ? `HS ${value}` : "N/A"),
+        sortable: true,
+        sortValue: (row: any) => String(row.productCode ?? ""),
+      },
+      {
+        field: "productName",
+        header: "Product",
+        width: isMobile ? 150 : 220,
+        sortable: true,
+        sortValue: (row: any) => String(row.productName ?? ""),
+        render: (row: any) => {
+          const atlasUrl = buildAtlasUrl(row.productId);
+          return (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {atlasUrl && (
+                <Tooltip title="View in Atlas" placement="top">
+                  <IconButton
+                    component="a"
+                    href={atlasUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open in Atlas treemap (markets view)"
+                    size="small"
+                    sx={{
+                      width: 28,
+                      height: 28,
+                      p: 0,
+                      borderRadius: 1,
+                      backgroundColor: (t) => t.palette.grey[200],
+                      "&:hover": {
+                        backgroundColor: (t) => t.palette.grey[300],
+                      },
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={AtlasIcon as any}
+                      alt="Atlas"
+                      sx={{ width: 16, height: 16, display: "block" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <span>{row.productName}</span>
+            </Box>
+          );
+        },
+      },
+      {
+        field: "exportRca",
+        header: "Export RCA",
+        width: 120,
+        format: formatNumber,
+        tooltip: columnTooltips["Export RCA"],
+        sortable: true,
+        sortValue: (row: any) => row.exportRca ?? null,
+      },
+      {
+        field: "exportValue",
+        header: `Product Export Value (USD, ${selectedYear ?? "year"})`,
+        width: 160,
+        format: formatCurrency,
+        sortable: true,
+        sortValue: (row: any) => row.exportValue ?? null,
+      },
+      {
+        field: "marketSize",
+        header: `Product Market Size (USD, ${selectedYear ?? "year"})`,
+        width: 170,
+        format: formatCurrency,
+        sortable: true,
+        sortValue: (row: any) => row.marketSize ?? null,
+      },
+      {
+        field: "marketGrowth",
+        header:
+          selectedYear && !Number.isNaN(Number(selectedYear))
+            ? `Product Market Growth (%: ${Number(selectedYear) - 1} → ${Number(
+                selectedYear,
+              )})`
+            : "Product Market Growth (% over year range)",
+        width: 160,
+        format: formatPercent,
+        sortable: true,
+        sortValue: (row: any) => row.marketGrowth ?? null,
+      },
+      {
+        field: "normalizedPci",
+        header: "Product Complexity",
+        width: 160,
+        render: (row: any) => (
+          <DiamondRow count={getNestedPciRating(row.normalizedPci)} />
+        ),
+        tooltip: columnTooltips["Product Complexity"],
+        sortable: true,
+        sortValue: (row: any) => row.normalizedPci ?? null,
+      },
+      {
+        field: "normalizedCog",
+        header: "Opportunity Gain",
+        width: 160,
+        render: (row: any) => (
+          <DiamondRow count={getNestedCogRating(row.normalizedCog)} />
+        ),
+        tooltip: columnTooltips["Opportunity Gain"],
+        sortable: true,
+        sortValue: (row: any) => row.normalizedCog ?? null,
+      },
+      {
+        field: "density",
+        header: "Product Feasibility",
+        width: 160,
+        render: (row: any) => (
+          <DiamondRow count={getNestedDensityRating(row.density)} />
+        ),
+        tooltip: columnTooltips["Product Feasibility"],
+        sortable: true,
+        sortValue: (row: any) => row.density ?? null,
+      },
+    ],
+    [
+      isMobile,
+      selectedYear,
+      getNestedPciRating,
+      getNestedCogRating,
+      getNestedDensityRating,
+      DiamondRow,
+      buildAtlasUrl,
+    ],
+  );
+
+  const computeCompositeScore = useCallback((row: any) => {
+    if (typeof row?.pciCogFeasibilityComposite === "number") {
+      return row.pciCogFeasibilityComposite as number;
+    }
+    const parts = [row?.normalizedPci, row?.normalizedCog, row?.density];
+    return parts
+      .map((v) => (typeof v === "number" ? (v as number) : 0))
+      .reduce((s, v) => s + v, 0);
+  }, []);
+
+  const getSortValueForField = useCallback(
+    (row: any, field: string) => {
+      if (field === "defaultComposite") return computeCompositeScore(row);
+      const col = (productColumns as any[]).find((c: any) => c.field === field);
+      if (!col) return null;
+      if (col.sortValue) return col.sortValue(row);
+      return (row as any)[field];
+    },
+    [productColumns, computeCompositeScore],
+  );
+
+  const compareRows = useCallback(
+    (a: any, b: any) => {
+      const va = getSortValueForField(a, orderBy);
+      const vb = getSortValueForField(b, orderBy);
+      const aNull =
+        va === null ||
+        va === undefined ||
+        (typeof va === "number" && Number.isNaN(va));
+      const bNull =
+        vb === null ||
+        vb === undefined ||
+        (typeof vb === "number" && Number.isNaN(vb));
+      if (aNull && bNull) return 0;
+      if (aNull) return 1;
+      if (bNull) return -1;
+      if (typeof va === "string" || typeof vb === "string") {
+        const res = String(va).localeCompare(String(vb));
+        return order === "asc" ? res : -res;
+      }
+      const na = Number(va);
+      const nb = Number(vb);
+      const res = na < nb ? -1 : na > nb ? 1 : 0;
+      return order === "asc" ? res : -res;
+    },
+    [order, orderBy, getSortValueForField],
+  );
+
+  // Calculate header heights for sticky positioning (measure actual header)
+  const tableHeadRef = React.useRef<HTMLTableSectionElement | null>(null);
+  const [measuredHeaderHeight, setMeasuredHeaderHeight] = React.useState(56);
   const supplyChainHeaderHeight = isMobile ? 40 : 48;
   const clusterHeaderHeight = isMobile ? 36 : 40;
+
+  useEffect(() => {
+    if (!tableHeadRef.current) return;
+    const target = tableHeadRef.current;
+    const update = () => {
+      // Sum heights of header rows to get accurate sticky offset
+      const rect = target.getBoundingClientRect();
+      if (rect && rect.height) setMeasuredHeaderHeight(Math.ceil(rect.height));
+    };
+    update();
+    const ro = new (window as any).ResizeObserver(() => update());
+    if (ro) ro.observe(target);
+    window.addEventListener("resize", update);
+    return () => {
+      if (ro) ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   return (
     <TableContainer
@@ -793,10 +1113,14 @@ const NestedProductsTable = ({
         display: "flex",
         flexDirection: "column",
         minHeight: 0,
+        mr: 2,
+        mb: 2,
+        borderRadius: 1,
+        border: `1px solid ${theme.palette.divider}`,
       }}
     >
       <Table stickyHeader size={isMobile ? "small" : "medium"} sx={{ flex: 1 }}>
-        <TableHead>
+        <TableHead ref={tableHeadRef}>
           <TableRow>
             {productColumns.map((col) => (
               <TableCell
@@ -810,19 +1134,40 @@ const NestedProductsTable = ({
                     : theme.typography.body2.fontSize,
                   position: "sticky",
                   top: 0,
-                  zIndex: 4,
+                  zIndex: 50,
                 }}
               >
-                <Tooltip title={col.tooltip || ""} placement="top">
-                  <span
-                    style={{
-                      cursor: "help",
-                      textDecoration: col.tooltip ? "underline" : "none",
-                    }}
-                  >
-                    {col.header}
-                  </span>
-                </Tooltip>
+                {col.sortable ? (
+                  col.tooltip ? (
+                    <GGTooltip title={col.tooltip} placement="top">
+                      <TableSortLabel
+                        active={orderBy === col.field}
+                        direction={orderBy === col.field ? order : "desc"}
+                        onClick={() => handleRequestSort(col.field)}
+                      >
+                        {col.header}
+                      </TableSortLabel>
+                    </GGTooltip>
+                  ) : (
+                    <TableSortLabel
+                      active={orderBy === col.field}
+                      direction={orderBy === col.field ? order : "desc"}
+                      onClick={() => handleRequestSort(col.field)}
+                    >
+                      {col.header}
+                    </TableSortLabel>
+                  )
+                ) : col.tooltip ? (
+                  <GGTooltip title={col.tooltip} placement="top">
+                    <span
+                      style={{ cursor: "help", textDecoration: "underline" }}
+                    >
+                      {col.header}
+                    </span>
+                  </GGTooltip>
+                ) : (
+                  <span>{col.header}</span>
+                )}
               </TableCell>
             ))}
           </TableRow>
@@ -835,8 +1180,8 @@ const NestedProductsTable = ({
                 sx={{
                   fontWeight: "bold",
                   position: "sticky",
-                  top: mainHeaderHeight,
-                  zIndex: 3,
+                  top: measuredHeaderHeight,
+                  zIndex: 40,
                   backgroundColor: theme.palette.grey[50],
                   "& .MuiTableCell-root": {
                     backgroundColor: theme.palette.grey[50],
@@ -851,6 +1196,11 @@ const NestedProductsTable = ({
                     height: supplyChainHeaderHeight,
                     backgroundColor: "inherit",
                     color: "inherit",
+                    position: "sticky",
+                    top: measuredHeaderHeight,
+                    zIndex: 40,
+                    borderBottom: `2px solid ${theme.palette.grey[300]}`,
+                    boxShadow: "0 1px 0 rgba(0,0,0,0.04)",
                   }}
                 >
                   <Typography
@@ -873,8 +1223,8 @@ const NestedProductsTable = ({
                         backgroundColor: theme.palette.grey[100],
                         fontWeight: "600",
                         position: "sticky",
-                        top: mainHeaderHeight + supplyChainHeaderHeight,
-                        zIndex: 2,
+                        top: measuredHeaderHeight + supplyChainHeaderHeight,
+                        zIndex: 30,
                         "& .MuiTableCell-root": {
                           backgroundColor: theme.palette.grey[100],
                           borderBottom: `1px solid ${theme.palette.grey[300]}`,
@@ -886,6 +1236,10 @@ const NestedProductsTable = ({
                         sx={{
                           height: clusterHeaderHeight,
                           backgroundColor: "inherit",
+                          position: "sticky",
+                          top: measuredHeaderHeight + supplyChainHeaderHeight,
+                          zIndex: 30,
+                          boxShadow: "0 1px 0 rgba(0,0,0,0.03)",
                         }}
                       >
                         <Typography
@@ -899,36 +1253,42 @@ const NestedProductsTable = ({
                     </TableRow>
 
                     {/* Product Rows */}
-                    {cluster.products.map((product: any, index: number) => (
-                      <TableRow
-                        key={`${product.productId}-${index}`}
-                        hover
-                        sx={{
-                          pl: 4,
-                          "& .MuiTableCell-root": {
-                            backgroundColor: theme.palette.background.paper,
-                          },
-                        }}
-                      >
-                        {productColumns.map((col) => (
-                          <TableCell
-                            key={col.field}
-                            sx={{
-                              fontSize: isMobile
-                                ? theme.typography.caption.fontSize
-                                : theme.typography.body2.fontSize,
-                              minWidth: col.width,
-                              pl: col.field === productColumns[0].field ? 4 : 2,
-                              backgroundColor: "inherit",
-                            }}
-                          >
-                            {col.format
-                              ? col.format(product[col.field])
-                              : product[col.field]}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
+                    {cluster.products
+                      .slice()
+                      .sort(compareRows)
+                      .map((product: any, index: number) => (
+                        <TableRow
+                          key={`${product.productId}-${index}`}
+                          hover
+                          sx={{
+                            pl: 4,
+                            "& .MuiTableCell-root": {
+                              backgroundColor: theme.palette.background.paper,
+                            },
+                          }}
+                        >
+                          {productColumns.map((col) => (
+                            <TableCell
+                              key={col.field}
+                              sx={{
+                                fontSize: isMobile
+                                  ? theme.typography.caption.fontSize
+                                  : theme.typography.body2.fontSize,
+                                minWidth: col.width,
+                                pl:
+                                  col.field === productColumns[0].field ? 4 : 2,
+                                backgroundColor: "inherit",
+                              }}
+                            >
+                              {col.render
+                                ? col.render(product)
+                                : col.format
+                                  ? col.format(product[col.field])
+                                  : product[col.field]}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
                   </React.Fragment>
                 ),
               )}
@@ -947,7 +1307,7 @@ const DataTable: React.FC<DataTableProps> = ({
 }) => {
   const selectedYear = useYearSelection();
   const selectedCountry = useCountrySelection();
-  const countryName = useCountryName();
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -955,27 +1315,18 @@ const DataTable: React.FC<DataTableProps> = ({
   const [currentDataType, setCurrentDataType] =
     useState<DataTableType>(defaultDataType);
 
-  // State for showing all products vs country products in nested view
-  const [showAllProducts, setShowAllProducts] = useState(false);
+  // Always show all products in both flat and nested views
 
   // Use shared data fetching hook for all data types
   const {
     countryData,
     clustersData,
-    allCountriesMetrics,
-    countryLookup,
     productClusterRows,
     isLoading,
     hasErrors,
-  } = useGreenGrowthData(
-    selectedCountry,
-    parseInt(selectedYear),
-    true, // Fetch all countries metrics for country table
-  );
+  } = useGreenGrowthData(selectedCountry, parseInt(selectedYear), false);
 
-  // Get product lookup for all products data
-  const productLookup = useProductLookup();
-  const supplyChainProductLookup = useSupplyChainProductLookup();
+  // Get product lookup for all products data (not needed in this scope)
 
   // Extract product data for compatibility
   const productData = useMemo(() => {
@@ -983,104 +1334,18 @@ const DataTable: React.FC<DataTableProps> = ({
     return { ggCpyList: countryData.productData };
   }, [countryData]);
 
-  // Create synthetic all-products data when showAllProducts is enabled
-  const allProductsData = useMemo(() => {
-    if (!productLookup || !supplyChainProductLookup) return null;
+  // Synthetic all-products data removed; use only API-provided rows
 
-    // Create a lookup map of existing country data for quick access
-    const countryDataMap = new Map();
-    if (productData?.ggCpyList) {
-      productData.ggCpyList.forEach((item: any) => {
-        countryDataMap.set(item.productId, item);
-      });
-    }
+  // Country metrics view removed
 
-    const allProducts = Array.from(productLookup.values());
-    const syntheticProductData = allProducts
-      .map((product) => {
-        // Check if this product has supply chain mappings (is part of green growth)
-        const supplyChainMappings =
-          supplyChainProductLookup.get(product.productId) || [];
-
-        // Only include products that are part of green supply chains
-        if (supplyChainMappings.length === 0) return null;
-
-        // Check if we have real country data for this product
-        const existingCountryData = countryDataMap.get(product.productId);
-
-        return {
-          year: parseInt(selectedYear),
-          countryId: selectedCountry,
-          productId: product.productId,
-          // Use real country data if available, otherwise null
-          exportRca: existingCountryData?.exportRca || null,
-          exportValue: existingCountryData?.exportValue || null,
-          expectedExports: existingCountryData?.expectedExports || null,
-          normalizedPci: existingCountryData?.normalizedPci || null,
-          normalizedCog: existingCountryData?.normalizedCog || null,
-          density: existingCountryData?.density || null,
-          globalMarketShare: existingCountryData?.globalMarketShare || null,
-          productMarketShare: existingCountryData?.productMarketShare || null,
-
-          productMarketShareGrowth:
-            existingCountryData?.productMarketShareGrowth || null,
-          marketGrowth: existingCountryData?.marketGrowth || null,
-          pciStd: existingCountryData?.pciStd || null,
-          cogStd: existingCountryData?.cogStd || null,
-          feasibilityStd: existingCountryData?.feasibilityStd || null,
-          strategyBalancedPortfolio:
-            existingCountryData?.strategyBalancedPortfolio || null,
-          strategyLongJump: existingCountryData?.strategyLongJump || null,
-          strategyLowHangingFruit:
-            existingCountryData?.strategyLowHangingFruit || null,
-          strategyFrontier: existingCountryData?.strategyFrontier || null,
-          pciCogFeasibilityComposite:
-            existingCountryData?.pciCogFeasibilityComposite || null,
-        };
-      })
-      .filter(Boolean); // Remove null entries
-
-    return { ggCpyList: syntheticProductData };
-  }, [
-    productLookup,
-    supplyChainProductLookup,
-    selectedYear,
-    selectedCountry,
-    productData,
-  ]);
-
-  // Format data to match expected structure
-  const countryYearData = useMemo(() => {
-    if (!allCountriesMetrics.length) return null;
-    return { ggCountryYearList: allCountriesMetrics };
-  }, [allCountriesMetrics]);
-
-  // Get the appropriate data based on currentDataType and showAllProducts toggle
+  // Get the appropriate data based on currentDataType (always use all-products where applicable)
   const tableData = useMemo(() => {
-    if (currentDataType === "products") {
-      return productData?.ggCpyList || [];
-    } else if (currentDataType === "nested") {
-      // Use all products data if toggle is enabled and data is available
-      if (showAllProducts && allProductsData?.ggCpyList) {
-        return allProductsData.ggCpyList;
-      }
-      return productData?.ggCpyList || [];
-    } else if (currentDataType === "country") {
-      return countryYearData?.ggCountryYearList || [];
-    }
-    return [];
-  }, [
-    currentDataType,
-    showAllProducts,
-    productData,
-    allProductsData,
-    countryYearData,
-  ]);
+    return productData?.ggCpyList || [];
+  }, [productData]);
 
   // Use unified loading and error states
   // Only show loading if we have no data to display at all
-  const hasAnyData =
-    productData?.ggCpyList?.length > 0 || allCountriesMetrics.length > 0;
+  const hasAnyData = (productData?.ggCpyList?.length || 0) > 0;
   const loading = isLoading && !hasAnyData;
   const error = hasErrors;
 
@@ -1119,65 +1384,37 @@ const DataTable: React.FC<DataTableProps> = ({
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            gap: 3,
             alignItems: "flex-start",
-            mb: 2,
+            flexWrap: "wrap",
           }}
         >
-          <Box>
-            <Typography variant="h6" component="h2">
-              {getTableTitle(currentDataType)} - {countryName} ({selectedYear})
+          {/* Match visualization controls: DisplayAs leftmost */}
+          <DisplayAsSwitch />
+
+          {/* Table Type control */}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+            <Typography
+              sx={{ fontSize: isMobile ? "12px" : "14px", color: "#000" }}
+            >
+              Table Type
             </Typography>
+            <ButtonGroup size={isMobile ? "small" : "medium"}>
+              <Button
+                aria-pressed={currentDataType === "products"}
+                onClick={() => setCurrentDataType("products")}
+              >
+                {isMobile ? "Flat" : "Flat Products"}
+              </Button>
+              <Button
+                aria-pressed={currentDataType === "nested"}
+                onClick={() => setCurrentDataType("nested")}
+              >
+                {isMobile ? "Nested" : "Nested Products"}
+              </Button>
+            </ButtonGroup>
           </Box>
-
-          {/* Data Type Selector */}
-          <ToggleButtonGroup
-            value={currentDataType}
-            exclusive
-            onChange={(_, newDataType) => {
-              if (newDataType !== null) {
-                setCurrentDataType(newDataType);
-              }
-            }}
-            aria-label="data type selector"
-            size={isMobile ? "small" : "medium"}
-            sx={{
-              flexShrink: 0,
-              ml: 2,
-            }}
-          >
-            <ToggleButton value="products" aria-label="products">
-              {isMobile ? "Flat" : "Flat Products"}
-            </ToggleButton>
-            <ToggleButton value="nested" aria-label="nested">
-              {isMobile ? "Nested" : "Nested Products"}
-            </ToggleButton>
-            <ToggleButton value="country" aria-label="country">
-              {isMobile ? "Country" : "Country Metrics"}
-            </ToggleButton>
-          </ToggleButtonGroup>
         </Box>
-
-        {/* Show All Products Toggle - only for nested view */}
-        {currentDataType === "nested" && (
-          <Box sx={{ mb: 1 }}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={showAllProducts}
-                  onChange={(e) => setShowAllProducts(e.target.checked)}
-                  size="small"
-                />
-              }
-              label={
-                <Typography variant="body2">
-                  Show all products (not just {countryName} exports)
-                </Typography>
-              }
-              sx={{ ml: 0 }}
-            />
-          </Box>
-        )}
       </Box>
       <Box
         sx={{
@@ -1193,38 +1430,21 @@ const DataTable: React.FC<DataTableProps> = ({
             data={tableData}
             clustersData={clustersData}
             selectedProducts={selectedProducts}
+            selectedYear={selectedYear}
           />
         )}
         {currentDataType === "nested" && (
           <NestedProductsTable
             data={tableData}
-            clustersData={clustersData}
             selectedProducts={selectedProducts}
-            showAllProducts={showAllProducts}
             productClusterRows={productClusterRows}
             selectedYear={selectedYear}
             selectedCountry={selectedCountry}
           />
         )}
-        {currentDataType === "country" && (
-          <CountryTable
-            data={tableData}
-            selectedCountryId={selectedCountry}
-            countryLookup={countryLookup}
-          />
-        )}
       </Box>
     </Box>
   );
-};
-
-const getTableTitle = (dataType: DataTableType): string => {
-  const titles: Record<DataTableType, string> = {
-    products: "Products & Relationships",
-    nested: "Nested Product Hierarchy",
-    country: "Country Metrics",
-  };
-  return titles[dataType];
 };
 
 export default DataTable;

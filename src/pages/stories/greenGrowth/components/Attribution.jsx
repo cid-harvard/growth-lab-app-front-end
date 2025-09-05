@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 const Attribution = () => (
   <Box
     sx={(theme) => ({
-      bgcolor: theme.palette.custom?.footerBg || "rgba(0, 0, 0, 0.10)",
+      bgcolor: "rgb(245, 222, 179)",
       py: 1,
       textAlign: "center",
       width: "100%",
@@ -13,7 +13,8 @@ const Attribution = () => (
       <Typography component="span" sx={{ fontWeight: 600 }}>
         Growth Lab's Research Team:
       </Typography>{" "}
-      Muhammed Yildirim, Tim Cheston, Ketan Ahuja, Karan Daryanani, Lucas Lamby
+      Muhammed Yildirim, Tim Cheston, Ketan Ahuja, Karan Daryanani, Lucas Lamby,
+      Eric Protzer
       <br />
       <Typography component="span" sx={{ fontWeight: 600 }}>
         Growth Lab's Digital Development & Design Team:

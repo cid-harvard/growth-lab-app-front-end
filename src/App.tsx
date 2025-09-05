@@ -97,8 +97,9 @@ const CirclePackMapExperiment = lazy(
   () =>
     import("./pages/stories/greenGrowth/experimental/CirclePackMapExperiment"),
 );
-const ClusterTreeExperiment = lazy(
-  () => import("./pages/stories/greenGrowth/experimental/ClusterTree"),
+const ProductSpaceClusterBoundaries = lazy(
+  () =>
+    import("./pages/stories/greenGrowth/experimental/ProductSpaceClusterBoundaries"),
 );
 
 export interface IAppContext {
@@ -256,8 +257,8 @@ const router = createBrowserRouter([
         element: <CirclePackMapExperiment />,
       },
       {
-        path: routingRoutes.ClusterTreeExperiment,
-        element: <ClusterTreeExperiment />,
+        path: routingRoutes.ProductSpaceClusterBoundaries,
+        element: <ProductSpaceClusterBoundaries />,
       },
       {
         path: "*",

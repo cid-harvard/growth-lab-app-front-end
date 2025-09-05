@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import { useMediaQuery, useTheme } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import GGTooltip from "../shared/GGTooltip";
+import { getTerm } from "../../utils/terms";
 import Typography from "@mui/material/Typography";
 import { themeUtils } from "../../theme";
 
@@ -12,6 +13,7 @@ const Legend = ({ mode }) => {
   const getItems = () => {
     switch (mode) {
       case "rca":
+        // Two-category RCA legend: >1 and ≤1
         return [
           {
             label: "High (RCA>1)",
@@ -19,12 +21,7 @@ const Legend = ({ mode }) => {
             shape: "circle",
           },
           {
-            label: "Mid (0.2<RCA<1)",
-            color: theme.palette.custom?.legendMid || "#808080",
-            shape: "circle",
-          },
-          {
-            label: "Low (RCA<0.2)",
+            label: "Low (RCA≤1)",
             color: theme.palette.custom?.legendLow || "#D3D3D3",
             shape: "circle",
           },
@@ -43,20 +40,8 @@ const Legend = ({ mode }) => {
           },
         ];
       case "size":
-        return [
-          {
-            label: "More Important",
-            color: theme.palette.text.primary,
-            shape: "circle",
-            size: "large",
-          },
-          {
-            label: "Less Important",
-            color: theme.palette.text.primary,
-            shape: "circle",
-            size: "small",
-          },
-        ];
+        // Size legend is no longer used - products now have fixed sizes
+        return [];
       default:
         return [];
     }
@@ -74,28 +59,6 @@ const Legend = ({ mode }) => {
 
     switch (item.shape) {
       case "circle":
-        if (mode === "size") {
-          const circleSize =
-            item.size === "large"
-              ? isMobile
-                ? "15px"
-                : "20px"
-              : isMobile
-                ? "8px"
-                : "10px";
-          return (
-            <div style={{ ...shapeContainer }}>
-              <div
-                style={{
-                  width: circleSize,
-                  height: circleSize,
-                  borderRadius: "50%",
-                  backgroundColor: item.color,
-                }}
-              />
-            </div>
-          );
-        }
         return (
           <div
             style={{
@@ -146,11 +109,7 @@ const Legend = ({ mode }) => {
   return (
     <Box
       sx={{
-        position: "absolute",
-        bottom: isMobile ? "10px" : "20px",
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: "auto",
+        width: "100%",
         px: 2,
         py: 1,
         display: "flex",
@@ -161,84 +120,94 @@ const Legend = ({ mode }) => {
         flexWrap: "nowrap",
       }}
     >
-      {mode === "rca" && (
-        <Typography
-          variant="chart-legend-title"
-          sx={{
-            mr: 2,
-            mb: 0,
-            whiteSpace: "nowrap",
-          }}
-        >
-          Economic Competitiveness:
-        </Typography>
-      )}
-      {mode === "size" && (
-        <Tooltip
-          title="The size of each product reflects its importance within a network of exported products, based on how often it is co-exported with other green value chain products in international trade data."
-          arrow
-          placement="top"
-        >
-          <Typography
-            variant="chart-legend-title"
-            sx={{
-              textDecoration: "underline",
-              cursor: "help",
-              mr: 2,
-              mb: 0,
-              whiteSpace: "nowrap",
-            }}
-          >
-            Product Importance:
-          </Typography>
-        </Tooltip>
-      )}
       {mode === "production" && (
-        <Tooltip
-          title="The world average of exports here indicates the level of exports a country would have if it exported goods in the same proportion as its overall share of global trade. This is calculated using an RCA (Revealed Comparative Advantage) index value of 1, also known as the Balassa index."
-          arrow
-          placement="top"
-        >
-          <Typography
-            variant="chart-legend-title"
-            sx={{
-              textDecoration: "underline",
-              cursor: "help",
-              mr: 2,
-              mb: 0,
-              whiteSpace: "nowrap",
-            }}
+        <>
+          <GGTooltip
+            title={getTerm("worldAverageExport").description}
+            placement="top"
           >
-            Export Value:
-          </Typography>
-        </Tooltip>
-      )}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          gap: isMobile ? 1 : 2,
-          alignItems: "center",
-          flexWrap: "nowrap",
-        }}
-      >
-        {items.map((item, index) => (
+            <Typography
+              variant="chart-legend-title"
+              sx={{
+                textDecoration: "underline",
+                cursor: "help",
+                mr: 2,
+                mb: 0,
+                whiteSpace: "nowrap",
+              }}
+            >
+              Export Value:
+            </Typography>
+          </GGTooltip>
           <Box
-            key={index}
             sx={{
               display: "flex",
+              flexDirection: "row",
+              gap: isMobile ? 1 : 2,
               alignItems: "center",
-              ...themeUtils.chart.typography["chart-legend-item"],
-              lineHeight: "40px", // Specific line-height from Figma override
-              whiteSpace: "nowrap",
-              ...(item.style || {}),
+              flexWrap: "nowrap",
             }}
           >
-            {renderShape(item)}
-            <span>{item.label}</span>
+            {items.map((item, index) => (
+              <Box
+                key={`legend-item-${item.label}-${index}`}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  ...themeUtils.chart.typography["chart-legend-item"],
+                  lineHeight: "40px", // Specific line-height from Figma override
+                  whiteSpace: "nowrap",
+                  ...(item.style || {}),
+                }}
+              >
+                {renderShape(item)}
+                <span>{item.label}</span>
+              </Box>
+            ))}
           </Box>
-        ))}
-      </Box>
+        </>
+      )}
+      {mode === "rca" && (
+        <Box
+          sx={{
+            display: "grid",
+            gridAutoFlow: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            columnGap: isMobile ? 2 : 3,
+          }}
+        >
+          <GGTooltip title={getTerm("rca").description} placement="top">
+            <Typography
+              variant="chart-legend-title"
+              sx={{
+                mb: 0,
+                whiteSpace: "nowrap",
+                fontWeight: 600,
+                borderBottom: "1px solid currentColor",
+                cursor: "help",
+              }}
+            >
+              Economic Competitiveness
+            </Typography>
+          </GGTooltip>
+          {items.map((item, index) => (
+            <Box
+              key={`legend-item-${item.label}-${index}`}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                ...themeUtils.chart.typography["chart-legend-item"],
+                whiteSpace: "nowrap",
+                ...(item.style || {}),
+              }}
+            >
+              {renderShape(item)}
+              <span>{item.label}</span>
+            </Box>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };

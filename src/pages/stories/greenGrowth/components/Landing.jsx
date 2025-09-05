@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Typography,
@@ -156,11 +155,11 @@ const Landing = ({ onExplore }) => {
               fontSize: "20px",
             }}
           >
-            Greenplexity reveals where your country can lead inside the green
-            value chains powering the energy transition, to drive new paths to
-            prosperity. By mapping local capabilities against the needs of green
-            technologies, Greenplexity uncovers actionable strategies for green
-            growth—by supplying what the world needs to decarbonize.
+            <b>Greenplexity</b> reveals where your country can lead inside the
+            green value chains powering the energy transition, to drive new
+            paths to prosperity. By mapping local capabilities against the needs
+            of green technologies, Greenplexity uncovers actionable strategies
+            for green growth—by supplying what the world needs to decarbonize.
           </Typography>
 
           <Box display="flex" justifyContent="center" width="100%">
@@ -170,6 +169,7 @@ const Landing = ({ onExplore }) => {
               getOptionLabel={(option) => option.nameEn}
               disableClearable
               blurOnSelect
+              popupIcon={<KeyboardArrowDownIcon />}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -191,7 +191,7 @@ const Landing = ({ onExplore }) => {
                   (country) => country.countryId === countrySelection,
                 ) || null
               }
-              onChange={(event, newValue) => {
+              onChange={(_, newValue) => {
                 setCountrySelection(newValue ? newValue.countryId : null);
               }}
               sx={{
@@ -201,7 +201,14 @@ const Landing = ({ onExplore }) => {
                   "& fieldset": { borderColor: "white" },
                 },
                 "& .MuiInputLabel-root": { color: "white" },
-                "& .MuiAutocomplete-popupIndicator": { color: "white" },
+                "& .MuiAutocomplete-popupIndicator": {
+                  color: "white",
+                  transform: "rotate(0deg)",
+                  transition: "transform 150ms ease",
+                },
+                "& .MuiAutocomplete-popupIndicatorOpen": {
+                  transform: "rotate(180deg)",
+                },
                 "& .MuiAutocomplete-clearIndicator": { color: "white" },
                 maxWidth: "400px",
               }}

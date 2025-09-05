@@ -17,6 +17,7 @@ import {
   FullWidthContentContainer,
 } from "../../../../styling/Grid";
 import TangleTree from "./TangleTree";
+// import ProductSpaceClusterBoundaries from "./ProductSpaceClusterBoundaries";
 
 const theme = createTheme({
   typography: {

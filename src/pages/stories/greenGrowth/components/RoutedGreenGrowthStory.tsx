@@ -1,21 +1,33 @@
-import React from "react";
-import { Routes, Route, Outlet, Navigate, useNavigate } from "react-router-dom";
+// React import not required for JSX runtime
+import {
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+  useNavigate,
+  Link as RouterLink,
+  useLocation,
+} from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Box } from "@mui/material";
+import { Box, Typography, Container } from "@mui/material";
 import StoryNavigation from "./StoryNavigation";
 import RoutedVisualization from "./visualization/RoutedVisualization";
 import ProductScatter from "./visualization/ProductScatter";
 import ProductRadar from "./visualization/ProductRadar";
-import SankeyTree from "./visualization/SankeyTree";
+import ClusterTree from "./visualization/ClusterTree/index";
 import ValueChainsHierarchy from "./ValueChainsHierarchy";
-import TakeoffPage from "./TakeoffPage";
+
+import SummaryPage from "./SummaryPage";
 import Attribution from "./Attribution";
 import StandardFooter from "../../../../components/text/StandardFooter";
 import Landing from "./Landing";
 import { SidebarProvider, useSidebar } from "./SidebarContext";
 import { ImageCaptureProvider } from "../hooks/useImageCaptureContext";
+import { SelectionDataModalProvider } from "../hooks/useSelectionDataModal";
+import SelectionDataModal from "./SelectionDataModal";
 import greenGrowthTheme from "../theme";
+
 import "../index.css";
 
 // Layout component for story steps with navigation
@@ -117,55 +129,83 @@ const RadarLayout = () => {
   );
 };
 
-// Layout component for takeoff with footer
-const TakeoffLayout = () => {
-  const { isCondensed } = useSidebar();
-
+// Layout for Summary (no sidebar) with footer
+const SummaryLayout = () => {
   return (
     <Box
       sx={{
         display: "flex",
-        height: "100vh",
+        flexDirection: "column",
+        minHeight: "100vh",
         width: "100%",
-        overflow: "hidden",
       }}
     >
-      <StoryNavigation />
+      {/* Top gradient header bar matching app style */}
+      <Box
+        sx={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "60px",
+          background:
+            "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: (theme) => theme.zIndex.appBar,
+        }}
+      >
+        <Container
+          maxWidth="md"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: "100%",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography
+              component={RouterLink}
+              to="/greenplexity"
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                letterSpacing: 0.5,
+                color: "white",
+                fontSize: "22px",
+                textDecoration: "none",
+              }}
+            >
+              GREENPLEXITY
+            </Typography>
+          </Box>
+          <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+            <img
+              src={require("../../../../assets/GL_logo_white.png")}
+              alt="Growth Lab"
+              style={{ height: 28 }}
+            />
+          </a>
+        </Container>
+      </Box>
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          // Adjust height to account for top bar when condensed
-          height: {
-            xs: isCondensed ? "calc(100vh - 60px)" : "calc(100vh - 64px)",
-            md: isCondensed ? "calc(100vh - 60px)" : "100vh",
-          },
-          overflow: "auto", // Allow scrolling for footer content
-          marginTop: {
-            xs: isCondensed ? "60px" : "64px",
-            md: isCondensed ? "60px" : 0,
-          },
-          transition: (theme) =>
-            theme.transitions.create(["margin", "height"], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
+          marginTop: "60px",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <Box sx={{ minHeight: "100%" }}>
-          <Box
-            sx={{
-              height: {
-                xs: isCondensed ? "calc(100vh - 180px)" : "calc(100vh - 184px)",
-                md: isCondensed ? "calc(100vh - 180px)" : "calc(100vh - 120px)",
-              },
-            }}
-          >
-            <Outlet />
-          </Box>
-          <Attribution />
-          <StandardFooter showGithubLink={false} />
+        {/* Main content area that grows to fill available space */}
+        <Box sx={{ flex: 1 }}>
+          <Outlet />
         </Box>
+        {/* Footer components that render inline after content */}
+        <Attribution />
+        <StandardFooter showGithubLink={false} />
       </Box>
     </Box>
   );
@@ -189,9 +229,7 @@ const ExplorePage = () => {
       <Box sx={{ flex: 1, minHeight: "33.33%" }}>
         <ProductRadar />
       </Box>
-      <Box sx={{ flex: 1, minHeight: "33.33%" }}>
-        <TakeoffPage />
-      </Box>
+
       <Attribution />
       <StandardFooter showGithubLink={false} />
     </Box>
@@ -201,10 +239,11 @@ const ExplorePage = () => {
 // Landing page with navigation handler
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const handleExplore = () => {
     // Navigate to the first step - use React Router to preserve any existing URL params
-    navigate("/greenplexity/introduction");
+    navigate({ pathname: "/greenplexity/introduction", search });
   };
 
   return <Landing onExplore={handleExplore} />;
@@ -214,60 +253,68 @@ const RoutedGreenGrowthStory = () => {
   return (
     <SidebarProvider>
       <ImageCaptureProvider>
-        <ThemeProvider theme={greenGrowthTheme}>
-          <CssBaseline />
-          <div className="routed-story appRoot">
-            <Routes>
-              {/* Landing page */}
-              <Route index element={<LandingPage />} />
+        <SelectionDataModalProvider>
+          <ThemeProvider theme={greenGrowthTheme}>
+            <CssBaseline />
+            <div className="routed-story appRoot">
+              <Routes>
+                {/* Landing page */}
+                <Route index element={<LandingPage />} />
 
-              {/* Story steps with scrolly visualizations */}
-              <Route path="" element={<StoryStepLayout />}>
-                <Route path="introduction" element={<ValueChainsHierarchy />} />
-                <Route path="overview" element={<RoutedVisualization />} />
+                {/* Story steps with scrolly visualizations */}
+                <Route path="" element={<StoryStepLayout />}>
+                  <Route
+                    path="introduction"
+                    element={<ValueChainsHierarchy />}
+                  />
+                  <Route path="overview" element={<RoutedVisualization />} />
+                  <Route
+                    path="competitive-advantage"
+                    element={<RoutedVisualization />}
+                  />
+                  <Route path="clusters" element={<RoutedVisualization />} />
+                  <Route
+                    path="competitiveness"
+                    element={<RoutedVisualization />}
+                  />
+                  <Route
+                    path="strategic-position"
+                    element={<RoutedVisualization />}
+                  />
+                  <Route path="value-chains" element={<ClusterTree />} />
+                  <Route path="value-chains/table" element={<ClusterTree />} />
+                  <Route path="opportunities" element={<ProductScatter />} />
+                  <Route
+                    path="opportunities/table"
+                    element={<ProductScatter />}
+                  />
+                </Route>
+
+                {/* Dimensions with ProductRadar (needs padding) */}
+                <Route path="" element={<RadarLayout />}>
+                  <Route path="dimensions" element={<ProductRadar />} />
+                  <Route path="dimensions/table" element={<ProductRadar />} />
+                </Route>
+
+                {/* Summary (no sidebar) with footer */}
+                <Route path="" element={<SummaryLayout />}>
+                  <Route path="summary" element={<SummaryPage />} />
+                </Route>
+
+                {/* Explore page */}
+                <Route path="explore" element={<ExplorePage />} />
+
+                {/* Fallback redirect */}
                 <Route
-                  path="competitive-advantage"
-                  element={<RoutedVisualization />}
+                  path="*"
+                  element={<Navigate to="/greenplexity" replace />}
                 />
-                <Route
-                  path="competitiveness"
-                  element={<RoutedVisualization />}
-                />
-                <Route
-                  path="strategic-position"
-                  element={<RoutedVisualization />}
-                />
-                <Route path="value-chains" element={<SankeyTree />} />
-                <Route path="value-chains/table" element={<SankeyTree />} />
-                <Route path="opportunities" element={<ProductScatter />} />
-                <Route
-                  path="opportunities/table"
-                  element={<ProductScatter />}
-                />
-              </Route>
-
-              {/* Dimensions with ProductRadar (needs padding) */}
-              <Route path="" element={<RadarLayout />}>
-                <Route path="dimensions" element={<ProductRadar />} />
-                <Route path="dimensions/table" element={<ProductRadar />} />
-              </Route>
-
-              {/* Takeoff with footer */}
-              <Route path="" element={<TakeoffLayout />}>
-                <Route path="takeoff" element={<TakeoffPage />} />
-              </Route>
-
-              {/* Explore page */}
-              <Route path="explore" element={<ExplorePage />} />
-
-              {/* Fallback redirect */}
-              <Route
-                path="*"
-                element={<Navigate to="/greenplexity" replace />}
-              />
-            </Routes>
-          </div>
-        </ThemeProvider>
+              </Routes>
+            </div>
+            {/* Global contextual selection modal */}
+            <SelectionDataModal />
+          </ThemeProvider>
+        </SelectionDataModalProvider>
       </ImageCaptureProvider>
     </SidebarProvider>
   );

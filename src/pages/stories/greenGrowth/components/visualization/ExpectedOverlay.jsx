@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { formatter } from "./ScrollyCanvas";
+import { formatter } from "./CirclePack";
 
 const ExpectedOverlay = ({ overlay, bars, isMobile }) => {
   const actualValue = Array.from(bars.values())

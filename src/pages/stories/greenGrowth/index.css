@@ -40,3 +40,14 @@ body,
   min-height: 100vh;
   position: relative;
 }
+
+/* Remove default visx tooltip chrome; SharedTooltip provides its own */
+.gg-unskinned-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+  position: absolute;
+  z-index: 10;
+}

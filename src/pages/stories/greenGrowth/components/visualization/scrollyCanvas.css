@@ -10,12 +10,12 @@
 
 .cluster-layer circle {
   transition:
-    opacity 0.8s ease-in-out,
-    r 0.8s ease-in-out;
+    opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    r 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .highlight-layer circle {
-  transition: opacity 0.1s ease-in-out;
+  transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @keyframes fadeIn {
@@ -34,13 +34,98 @@
 /* Ensure smooth transitions for all animated elements */
 .parent-circle,
 .cluster-label {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Additional styling for better mobile experience */
+/* Value Chain Item Responsive Styles */
+.value-chain-item {
+  /* Enable container queries for responsive behavior */
+  container-type: inline-size;
+  position: relative;
+  box-sizing: border-box;
+  /* Allow natural sizing within grid */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Circle Container Styles */
+.circle-container {
+  /* Ensure circle container is responsive */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+/* SVG Circle Responsive Styles */
+.circle-container svg {
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* SVG maintains its natural size as calculated by JS */
+  flex-shrink: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Typography responsive enhancements */
+.value-chain-item .MuiTypography-root {
+  /* Prevent text from causing horizontal overflow */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Enhanced mobile responsiveness */
 @media (max-width: 600px) {
   .cluster-label {
     font-size: 10px !important;
     max-width: 80px;
+  }
+
+  /* Adjust SVG borders for mobile */
+  .circle-container svg {
+    border-width: 1px !important;
+  }
+}
+
+/* Ensure containers can always shrink on very narrow screens */
+@media (max-width: 480px) {
+  .value-chain-item {
+    /* Allow even smaller minimum sizes on very narrow screens */
+    min-width: 80px !important;
+    min-height: 100px !important;
+  }
+}
+
+/* Medium screen adaptations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .value-chain-item {
+    /* Ensure good minimum sizing on tablets and small laptops */
+    min-width: 100px !important;
+    min-height: 120px !important;
+  }
+}
+
+/* Container queries for responsive typography */
+@container (max-width: 120px) {
+  .value-chain-item .MuiTypography-root {
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+  }
+}
+
+@container (min-width: 180px) {
+  .value-chain-item .MuiTypography-root {
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+  }
+}
+
+@container (min-width: 250px) {
+  .value-chain-item .MuiTypography-root {
+    font-size: 16px !important;
+    line-height: 1.3 !important;
   }
 }

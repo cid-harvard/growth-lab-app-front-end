@@ -21,11 +21,11 @@ const Routes = {
   GreenGrowthOverview: "/greenplexity/overview",
   GreenGrowthAdvantage: "/greenplexity/competitive-advantage",
   GreenGrowthValueChains: "/greenplexity/value-chains",
+  GreenGrowthClusters: "/greenplexity/clusters",
   GreenGrowthCompetitiveness: "/greenplexity/competitiveness",
   GreenGrowthOpportunities: "/greenplexity/opportunities",
   GreenGrowthStrategicPosition: "/greenplexity/strategic-position",
   GreenGrowthDimensions: "/greenplexity/dimensions",
-  GreenGrowthTakeoff: "/greenplexity/takeoff",
   GreenGrowthExplore: "/greenplexity/explore",
   // Experimental routes (no links)
   GreenEciBumpChart: "/experimental/green-eci-bump-chart",
@@ -34,6 +34,8 @@ const Routes = {
   TreeGrowthExperiment: "/experimental/tree-growth",
   CirclePackMapExperiment: "/experimental/circle-pack-map",
   ClusterTreeExperiment: "/experimental/cluster-tree",
+  ProductSpaceClusterBoundaries:
+    "/experimental/product-space-cluster-boundaries",
 };
 
 const defaultTitle = "The Growth Lab at Harvard Kennedy School";
@@ -184,6 +186,14 @@ const metadata = [
     title: "Cluster Tree Explorer | " + defaultTitle,
     description:
       "Explore manufacturing clusters and their hierarchical relationships with supply chains and products",
+    og_image: defaultOgImage,
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.ProductSpaceClusterBoundaries,
+    title: "Product Space with Cluster Boundaries | " + defaultTitle,
+    description:
+      "Visualize the product space for a given country and year with boundaries drawn around products based on their clusters from the Green Growth taxonomy",
     og_image: defaultOgImage,
     favicon: defaultFavicon,
   },

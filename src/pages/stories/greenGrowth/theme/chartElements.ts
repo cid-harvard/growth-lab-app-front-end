@@ -160,6 +160,21 @@ export const chartTypographyVariants = {
     },
   },
 
+  // Chart main titles
+  "chart-title": {
+    fontSize: "22px",
+    fontWeight: 600,
+    lineHeight: "28px",
+    fontFamily: "Source Sans Pro, sans-serif",
+    color: "#298BBC",
+    textTransform: "uppercase",
+    textAlign: "center",
+    "@media (max-width:600px)": {
+      fontSize: "22px", // Keep same size on mobile per spec
+      lineHeight: "28px",
+    },
+  },
+
   // Attribution text
   "chart-attribution": {
     fontSize: "12px",
@@ -292,6 +307,7 @@ declare module "@mui/material/styles" {
     "chart-data-label": React.CSSProperties;
     "chart-column-header": React.CSSProperties;
     "chart-large-label": React.CSSProperties;
+    "chart-title": React.CSSProperties;
     "chart-attribution": React.CSSProperties;
   }
 
@@ -308,6 +324,27 @@ declare module "@mui/material/styles" {
     "chart-data-label"?: React.CSSProperties;
     "chart-column-header"?: React.CSSProperties;
     "chart-large-label"?: React.CSSProperties;
+    "chart-title"?: React.CSSProperties;
     "chart-attribution"?: React.CSSProperties;
+  }
+}
+
+// Allow using custom chart variants in the Typography `variant` prop
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    "chart-axis-label": true;
+    "chart-axis-tick": true;
+    "chart-axis-direction": true;
+    "chart-tooltip-title": true;
+    "chart-tooltip-content": true;
+    "chart-legend-title": true;
+    "chart-legend-item": true;
+    "chart-legend-item-small": true;
+    "chart-annotation": true;
+    "chart-data-label": true;
+    "chart-column-header": true;
+    "chart-large-label": true;
+    "chart-title": true;
+    "chart-attribution": true;
   }
 }

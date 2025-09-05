@@ -25,12 +25,7 @@ const ValueChainsHierarchy = () => {
           justifyContent: "center",
         }}
       >
-        <AnimatedValueChainIntro
-          width={1300}
-          height={800}
-          selectedCountry={1}
-          selectedYear={2021}
-        />
+        <AnimatedValueChainIntro selectedCountry={1} selectedYear={2021} />
       </Box>
     </Box>
   );

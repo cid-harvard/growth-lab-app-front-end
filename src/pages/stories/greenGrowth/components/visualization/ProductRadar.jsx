@@ -3,7 +3,6 @@ import {
   TextField,
   Box,
   Typography,
-  Paper,
   Tooltip as MuiTooltip,
   useTheme,
   useMediaQuery,
@@ -29,11 +28,17 @@ import {
 import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
 import { useProductLookup } from "../../queries/products";
 import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";
+import { useSupplyChainLookup } from "../../queries/supplyChains";
 import { Search as SearchIcon, Close as CloseIcon } from "@mui/icons-material";
 import TableWrapper from "../shared/TableWrapper";
+import { DisplayAsSwitch } from "../shared";
 import { useImageCaptureContext } from "../../hooks/useImageCaptureContext";
 import { themeUtils } from "../../theme";
 import html2canvas from "html2canvas";
+import { getValueChainIcon } from "./ClusterTree/valueChainIconMapping";
+import { getValueChainColor } from "../../utils/colors";
+import { useSelectionDataModal } from "../../hooks/useSelectionDataModal";
+import SharedTooltip from "../shared/SharedTooltip";
 
 const dimensionObject = {
   "Product Complexity": "normalizedPci",
@@ -43,18 +48,127 @@ const dimensionObject = {
   "Global Market Share": "globalMarketShare",
 };
 
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    return (
-      <Paper sx={themeUtils.chart.getTooltipSx()}>
-        <Typography variant="chart-tooltip-title">{label}</Typography>
-        <Typography variant="chart-tooltip-content">
-          Score: {payload[0].value}
-        </Typography>
-      </Paper>
-    );
+// Component to display value chain icons for a product
+const ValueChainIcons = ({
+  product,
+  supplyChainProductLookup,
+  supplyChainLookup,
+  selectedValueChains = [],
+  onValueChainClick,
+}) => {
+  const mappings = supplyChainProductLookup.get(product.productId) || [];
+
+  // Get unique supply chain names for this product
+  const supplyChainNames = [
+    ...new Set(
+      mappings
+        .map((mapping) => {
+          const supplyChainData = supplyChainLookup.get(mapping.supplyChainId);
+          return supplyChainData?.supplyChain;
+        })
+        .filter(Boolean), // Remove any undefined values
+    ),
+  ];
+
+  if (supplyChainNames.length === 0) {
+    return null;
   }
-  return null;
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 0.5,
+        mt: 0.5,
+        alignItems: "center",
+      }}
+    >
+      {supplyChainNames.map((chainName) => {
+        const iconPath = getValueChainIcon(chainName);
+        if (!iconPath) return null;
+
+        const isSelected = selectedValueChains.includes(chainName);
+        const valueChainColor = getValueChainColor(chainName);
+
+        return (
+          <MuiTooltip key={chainName} title={chainName} placement="top">
+            <Box
+              component="img"
+              src={iconPath}
+              alt={chainName}
+              onClick={() => onValueChainClick?.(chainName)}
+              sx={{
+                width: 25,
+                height: 25,
+                opacity: isSelected ? 1 : 0.7,
+                cursor: onValueChainClick ? "pointer" : "default",
+                filter: isSelected
+                  ? `drop-shadow(0px 0px 1px ${valueChainColor}) drop-shadow(0px 0px 3px ${valueChainColor}) drop-shadow(0px 0px 5px ${valueChainColor})`
+                  : "none",
+                "&:hover": {
+                  opacity: 1,
+                  transform: onValueChainClick ? "scale(1.1)" : "none",
+                  filter: isSelected
+                    ? `drop-shadow(0px 0px 2px ${valueChainColor}) drop-shadow(0px 0px 5px ${valueChainColor}) drop-shadow(0px 0px 8px ${valueChainColor})`
+                    : `drop-shadow(0px 0px 2px rgba(0,0,0,0.3))`,
+                },
+                transition: "all 0.2s ease-in-out",
+              }}
+            />
+          </MuiTooltip>
+        );
+      })}
+    </Box>
+  );
+};
+
+const CustomTooltip = ({ active, payload, productData, radarData }) => {
+  if (!active || !payload || !payload.length || !productData) {
+    return null;
+  }
+
+  // Find the product data for the current product
+  const productId = payload[0]?.dataKey;
+  const product = productData.find((p) => p?.productId === productId);
+
+  if (!product) {
+    return null;
+  }
+
+  // No raw values needed; tooltip shows scaled 0–10 scores
+
+  // Map from dimension label to display label for consistency
+  const dimensionLabelMap = {
+    normalizedPci: "Product Complexity:",
+    normalizedCog: "Opportunity Gain:",
+    density: "Feasibility:",
+    productMarketShareGrowth: "Market Share Growth:",
+    globalMarketShare: "Global Market Share:",
+  };
+
+  // Build rows using the scaled scores (0–10) from radarData for this product
+  const rows = (radarData || []).map((entry) => {
+    const dimension = entry.dimension;
+    const valueKey = dimensionObject[dimension];
+    const label = dimensionLabelMap[valueKey] || dimension;
+    const score = entry[productId];
+    return {
+      label,
+      value: score != null ? Number(score).toFixed(0) : "-",
+    };
+  });
+
+  // Create tooltip data in SharedTooltip format
+  const tooltipData = {
+    type: "custom",
+    data: {
+      title: product.nameShortEn || "Unknown Product",
+      rows,
+    },
+  };
+
+  return <SharedTooltip payload={tooltipData} />;
 };
 
 const CustomPolarAngleAxis = ({
@@ -80,21 +194,26 @@ const CustomPolarAngleAxis = ({
 
   return (
     <g className="recharts-layer recharts-polar-angle-axis-tick">
-      <MuiTooltip title={tooltipContent[payload.value]} placement="top">
-        <text
-          radius={radius}
-          stroke={stroke}
-          x={x}
-          y={y}
-          className="recharts-text recharts-polar-angle-axis-tick-value"
-          textAnchor={textAnchor}
-          style={themeUtils.chart.typography["chart-axis-label"]}
-        >
-          <tspan x={x} dy="-4px">
-            {payload.value}
-          </tspan>
-        </text>
-      </MuiTooltip>
+      {/* <MuiTooltip title={tooltipContent[payload.value]} placement="top"> */}
+      <text
+        radius={radius}
+        stroke={stroke}
+        x={x}
+        y={y}
+        className="recharts-text recharts-polar-angle-axis-tick-value"
+        textAnchor={textAnchor}
+        style={{
+          ...themeUtils.chart.typography["chart-axis-label"],
+          fontSize: "14px",
+          fontWeight: 600,
+          textDecoration: "none",
+        }}
+      >
+        <tspan x={x} dy="-4px">
+          {payload.value}
+        </tspan>
+      </text>
+      {/* </MuiTooltip> */}
     </g>
   );
 };
@@ -105,6 +224,7 @@ const NestedProductSelector = ({
   onSelectionChange,
   isMobile,
   firstSelectedCluster, // New prop for the first selected cluster
+  leftControls,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedClusters, setExpandedClusters] = useState(new Set());
@@ -522,60 +642,70 @@ const NestedProductSelector = ({
 
   return (
     <Box sx={{ p: 2 }}>
-      <Typography
-        sx={{
-          mb: 2,
-          fontSize: "16px",
-          fontWeight: 600,
-        }}
-      >
-        Add a product or cluster to display
-      </Typography>
-
-      {/* Search Input */}
+      {/* Controls row: Display switch + search */}
       <Box
         sx={{
-          position: "relative",
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 3,
+          flexWrap: "wrap",
           mb: 2,
-          maxWidth: "450px",
         }}
       >
-        <TextField
-          ref={setInputRef}
-          fullWidth
-          placeholder="Search a product or cluster"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onClick={() => setIsModalOpen(true)}
-          onKeyDown={handleKeyDown}
-          variant="outlined"
-          size="small"
-          role="combobox"
-          aria-expanded={isModalOpen}
-          aria-haspopup="listbox"
-          aria-autocomplete="list"
+        {leftControls}
+        <Box
           sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                border: "1px solid #000",
-                borderRadius: "8px",
-              },
-              "&:hover fieldset": {
-                border: "1px solid #333",
-              },
-              "&.Mui-focused fieldset": {
-                border: "1px solid #000",
-              },
-            },
+            position: "relative",
+            maxWidth: "450px",
+            flex: "1 1 360px",
+            minWidth: 260,
+            display: "flex",
+            flexDirection: "column",
+            gap: 0.5,
           }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: "#000", fontSize: 20 }} />
-              </InputAdornment>
-            ),
-          }}
-        />
+        >
+          <Typography
+            sx={{ fontSize: isMobile ? "12px" : "14px", color: "#000" }}
+          >
+            Add a product or cluster
+          </Typography>
+          <TextField
+            ref={setInputRef}
+            fullWidth
+            placeholder="Search a product or cluster"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onClick={() => setIsModalOpen(true)}
+            onKeyDown={handleKeyDown}
+            variant="outlined"
+            size="small"
+            role="combobox"
+            aria-expanded={isModalOpen}
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  border: "1px solid #000",
+                  borderRadius: "8px",
+                },
+                "&:hover fieldset": {
+                  border: "1px solid #333",
+                },
+                "&.Mui-focused fieldset": {
+                  border: "1px solid #000",
+                },
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: "#000", fontSize: 20 }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
       </Box>
 
       {/* Modal Overlay */}
@@ -789,11 +919,29 @@ const ProductRadarInternal = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { openSelectionModal } = useSelectionDataModal();
 
   const selectedYear = useYearSelection();
   const selectedCountry = useCountrySelection();
   const productLookup = useProductLookup();
   const supplyChainProductLookup = useSupplyChainProductLookup();
+  const supplyChainLookup = useSupplyChainLookup();
+
+  // Value chain filtering state
+  const [selectedValueChains, setSelectedValueChains] = useState([]);
+
+  // Handle value chain icon clicks
+  const handleValueChainClick = (valueChainName) => {
+    setSelectedValueChains((prev) => {
+      if (prev.includes(valueChainName)) {
+        // Deselect value chain
+        return prev.filter((name) => name !== valueChainName);
+      } else {
+        // Select value chain
+        return [...prev, valueChainName];
+      }
+    });
+  };
 
   // Image capture functionality
   const chartContainerRef = useRef(null);
@@ -819,6 +967,25 @@ const ProductRadarInternal = ({
 
   // Group products by clusters
   const groupedProducts = useMemo(() => {
+    // Helper function to check if a product belongs to any selected value chain
+    const productMatchesSelectedValueChains = (product) => {
+      if (selectedValueChains.length === 0) {
+        return true; // Show all if no filter
+      }
+
+      const mappings = supplyChainProductLookup.get(product.productId) || [];
+      const productValueChains = mappings
+        .map((mapping) => {
+          const supplyChainData = supplyChainLookup.get(mapping.supplyChainId);
+          return supplyChainData?.supplyChain;
+        })
+        .filter(Boolean);
+
+      return selectedValueChains.some((selectedChain) =>
+        productValueChains.includes(selectedChain),
+      );
+    };
+
     const products = Array.from(productLookup.values());
     const groups = new Map();
 
@@ -832,8 +999,13 @@ const ProductRadarInternal = ({
       });
     }
 
-    // Group products by their clusters
+    // Group products by their clusters, filtering by selected value chains
     products.forEach((product) => {
+      // Skip products that don't match selected value chains
+      if (!productMatchesSelectedValueChains(product)) {
+        return;
+      }
+
       const mappings = supplyChainProductLookup.get(product.productId) || [];
 
       if (mappings.length === 0) {
@@ -868,7 +1040,14 @@ const ProductRadarInternal = ({
           a.nameShortEn.localeCompare(b.nameShortEn),
         ),
       }));
-  }, [productLookup, supplyChainProductLookup, clusterLookup, clustersData]);
+  }, [
+    productLookup,
+    supplyChainProductLookup,
+    clusterLookup,
+    clustersData,
+    selectedValueChains,
+    supplyChainLookup,
+  ]);
 
   // Group selected products by clusters for chart display
   const selectedProductsByCluster = useMemo(() => {
@@ -908,6 +1087,46 @@ const ProductRadarInternal = ({
       }))
       .sort((a, b) => b.lastAddedIndex - a.lastAddedIndex); // Sort by last added index, newest first
   }, [selectedProducts, supplyChainProductLookup, clusterLookup]);
+
+  // Filter radar charts based on selected value chains (hide non-matching but keep products selected)
+  const visibleProductsByCluster = useMemo(() => {
+    if (selectedValueChains.length === 0) {
+      // No value chain filter active, show all selected products
+      return selectedProductsByCluster;
+    }
+
+    // Filter each cluster to only show products that match selected value chains
+    return selectedProductsByCluster
+      .map((cluster) => {
+        const visibleProducts = cluster.products.filter((product) => {
+          const mappings =
+            supplyChainProductLookup.get(product.productId) || [];
+          const productValueChains = mappings
+            .map((mapping) => {
+              const supplyChainData = supplyChainLookup.get(
+                mapping.supplyChainId,
+              );
+              return supplyChainData?.supplyChain;
+            })
+            .filter(Boolean);
+
+          return selectedValueChains.some((selectedChain) =>
+            productValueChains.includes(selectedChain),
+          );
+        });
+
+        return {
+          ...cluster,
+          products: visibleProducts,
+        };
+      })
+      .filter((cluster) => cluster.products.length > 0); // Remove clusters with no visible products
+  }, [
+    selectedProductsByCluster,
+    selectedValueChains,
+    supplyChainProductLookup,
+    supplyChainLookup,
+  ]);
 
   // Get the first selected cluster for scroll positioning (based on render order)
   const firstSelectedCluster = useMemo(() => {
@@ -958,6 +1177,13 @@ const ProductRadarInternal = ({
 
   // Track the country/year combination that was last used for initialization
   const lastInitialized = useRef({ country: null, year: null });
+
+  // Clear selections when country/year changes to ensure defaults for the new
+  // selection are applied cleanly (prevents old-country products lingering)
+  useEffect(() => {
+    setSelectedProducts([]);
+    setSelectedValueChains([]);
+  }, [selectedCountry, selectedYear, setSelectedProducts]);
 
   // Calculate default products declaratively
   const defaultProducts = useMemo(() => {
@@ -1283,13 +1509,14 @@ const ProductRadarInternal = ({
         overflow: "auto",
       }}
     >
-      {/* Custom Nested Selector */}
+      {/* Controls + Nested Selector */}
       <NestedProductSelector
         groupedProducts={groupedProducts}
         selectedProducts={selectedProducts}
         onSelectionChange={setSelectedProducts}
         isMobile={isMobile}
         firstSelectedCluster={firstSelectedCluster}
+        leftControls={<DisplayAsSwitch />}
       />
 
       {/* Chart + Legend Container for Image Capture */}
@@ -1299,7 +1526,7 @@ const ProductRadarInternal = ({
           minHeight: availableHeight - 60,
         }}
       >
-        {selectedProductsByCluster.map((cluster, clusterIndex) => (
+        {visibleProductsByCluster.map((cluster, clusterIndex) => (
           <Box key={cluster.clusterName} sx={{ mb: 4 }}>
             {/* Cluster Header */}
             <Box
@@ -1339,8 +1566,8 @@ const ProductRadarInternal = ({
                 variant="h5"
                 sx={{
                   color: "black",
-                  fontWeight: "bold",
-                  fontSize: "16px",
+                  fontWeight: 600,
+                  fontSize: "20px",
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                   whiteSpace: "nowrap",
@@ -1364,7 +1591,7 @@ const ProductRadarInternal = ({
                 flexWrap: "wrap",
                 justifyContent: isMobile ? "center" : "flex-start",
                 gap: 1,
-                mb: clusterIndex < selectedProductsByCluster.length - 1 ? 4 : 0,
+                mb: clusterIndex < visibleProductsByCluster.length - 1 ? 4 : 0,
               }}
             >
               {cluster.products.map((product) => {
@@ -1372,6 +1599,8 @@ const ProductRadarInternal = ({
                   (p) => p?.productId === product?.productId,
                 );
                 if (!productWithData) return null;
+
+                const clusterColor = "#FABEB4"; // Default color
 
                 return (
                   <Box
@@ -1427,9 +1656,20 @@ const ProductRadarInternal = ({
                       sx={{
                         color: "black",
                         fontWeight: 600,
-                        fontSize: isMobile ? "14px" : "16px",
+                        fontSize: "18px",
                         mb: 1,
+                        cursor: "pointer",
+                        textDecoration: "underline",
                       }}
+                      onClick={() =>
+                        openSelectionModal({
+                          type: "product",
+                          productId: product?.productId,
+                          title: product?.nameShortEn,
+                          source: "product-radar",
+                          detailLevel: "full",
+                        })
+                      }
                     >
                       {product?.nameShortEn}
                     </Typography>
@@ -1437,6 +1677,7 @@ const ProductRadarInternal = ({
                       <RadarChart
                         data={radarData}
                         margin={{ left: 0, right: 0, top: 15, bottom: 0 }}
+                        padding={0}
                       >
                         <PolarGrid />
                         <PolarAngleAxis
@@ -1458,8 +1699,8 @@ const ProductRadarInternal = ({
                         <Radar
                           name={product?.nameEn}
                           dataKey={product?.productId}
-                          stroke="#F59280"
-                          fill="#F59280"
+                          stroke={clusterColor}
+                          fill={clusterColor}
                           fillOpacity={0.6}
                           dot={{
                             stroke: "rgb(77, 112, 130)",
@@ -1467,26 +1708,53 @@ const ProductRadarInternal = ({
                             r: 3,
                           }}
                         />
-                        <Tooltip content={<CustomTooltip />} />
+                        <Tooltip
+                          content={
+                            <CustomTooltip
+                              productData={productData}
+                              radarData={radarData}
+                            />
+                          }
+                        />
                       </RadarChart>
                     </ResponsiveContainer>
+                    <Box
+                      sx={{
+                        m: 0,
+
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          mb: 0,
+                          color: "black",
+                          mr: 1,
+                        }}
+                      >
+                        Belongs to Value Chains:
+                      </Typography>
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <ValueChainIcons
+                          product={product}
+                          supplyChainProductLookup={supplyChainProductLookup}
+                          supplyChainLookup={supplyChainLookup}
+                          selectedValueChains={selectedValueChains}
+                          onValueChainClick={handleValueChainClick}
+                        />
+                      </Box>
+                    </Box>
                   </Box>
                 );
               })}
             </Box>
           </Box>
         ))}
-
-        <Typography
-          variant="chart-attribution"
-          sx={{
-            display: "block",
-            textAlign: "right",
-            mt: 1,
-          }}
-        >
-          Source: Growth Lab research
-        </Typography>
       </Box>
     </Box>
   );

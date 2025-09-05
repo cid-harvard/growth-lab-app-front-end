@@ -1,13 +1,7 @@
-import React from "react";
-import { Box, useTheme, useMediaQuery, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const StackedBarsLegend = ({ groups, isMobile }) => {
-  const theme = useTheme();
-
   if (!groups || groups.length === 0) return null;
-
-  // Always show clusters now
-  const groupLabel = "Product Clusters";
 
   return (
     <Box
@@ -26,7 +20,6 @@ const StackedBarsLegend = ({ groups, isMobile }) => {
           maxWidth: "100%",
           px: isMobile ? 2 : 3,
           py: isMobile ? 1.5 : 2,
-          backgroundColor: "white",
         }}
       >
         <Box
@@ -38,7 +31,12 @@ const StackedBarsLegend = ({ groups, isMobile }) => {
           }}
         >
           {/* How to Read Section */}
-          <Box display="flex" flexDirection="row" gap={1.5}>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap={1.5}
+            sx={{ alignItems: "center" }}
+          >
             <Typography
               variant="chart-legend-title"
               sx={{
@@ -53,7 +51,7 @@ const StackedBarsLegend = ({ groups, isMobile }) => {
                 display: "flex",
                 flexDirection: "row",
                 gap: 1,
-                alignItems: isMobile ? "center" : "flex-start",
+                alignItems: "center",
               }}
             >
               {/* Above Expectation Bars */}
@@ -68,12 +66,12 @@ const StackedBarsLegend = ({ groups, isMobile }) => {
                   sx={{
                     width: isMobile ? "30px" : "40px",
                     height: "8px",
-                    backgroundColor: "#2E7D32",
+                    backgroundColor: "#268fbd",
                     borderRadius: "2px",
                   }}
                 />
                 <Typography variant="chart-legend-item">
-                  Above Expectation
+                  Outperforming Clusters
                 </Typography>
               </Box>
 
@@ -89,12 +87,12 @@ const StackedBarsLegend = ({ groups, isMobile }) => {
                   sx={{
                     width: isMobile ? "30px" : "40px",
                     height: "8px",
-                    backgroundColor: "#D32F2F",
+                    backgroundColor: "#f1b47d",
                     borderRadius: "2px",
                   }}
                 />
                 <Typography variant="chart-legend-item">
-                  Below Expectation
+                  Underperforming Clusters
                 </Typography>
               </Box>
 
@@ -108,9 +106,9 @@ const StackedBarsLegend = ({ groups, isMobile }) => {
               >
                 <Box
                   sx={{
-                    width: "1px",
+                    width: "2px",
                     height: isMobile ? "20px" : "25px",
-                    backgroundColor: "black",
+                    backgroundColor: "rgb(51,51,51)",
                     borderRadius: "1px",
                   }}
                 />

@@ -1,19 +1,27 @@
 import React from "react";
-import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Typography,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { TableChart as TableIcon } from "@mui/icons-material";
 import DataTable, { DataTableType } from "./DataTable";
 
 interface TableWrapperProps {
   children: React.ReactNode;
   defaultDataType: DataTableType;
   selectedProducts?: any[];
+  showDisplaySwitch?: boolean; // deprecated: use DisplayAsSwitch inline in visualization if needed
 }
 
 const TableWrapper: React.FC<TableWrapperProps> = ({
   children,
   defaultDataType,
   selectedProducts,
+  showDisplaySwitch = false,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,27 +54,9 @@ const TableWrapper: React.FC<TableWrapperProps> = ({
   };
 
   if (isTableView) {
+    // Let DataTable render its own controls; no separate header here
     return (
       <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        <Box
-          sx={{
-            p: 1,
-            borderBottom: 1,
-            borderColor: "grey.200",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Button
-            variant="outlined"
-            size={isMobile ? "small" : "medium"}
-            onClick={handleToggleView}
-            sx={{ minWidth: isMobile ? "auto" : "120px" }}
-          >
-            Back to Chart
-          </Button>
-        </Box>
         <Box
           sx={{
             flex: 1,
@@ -87,32 +77,41 @@ const TableWrapper: React.FC<TableWrapperProps> = ({
   return (
     <Box sx={{ height: "100%", position: "relative" }}>
       {children}
-      <Box
-        sx={{
-          position: "absolute",
-          top: isMobile ? 8 : 16,
-          right: isMobile ? 8 : 16,
-          zIndex: 1000,
-        }}
-      >
-        <Button
-          variant="contained"
-          size={isMobile ? "small" : "medium"}
-          onClick={handleToggleView}
-          startIcon={<TableIcon />}
+      {showDisplaySwitch && (
+        <Box
           sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            color: "primary.main",
-            "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 1)",
-            },
-            fontSize: isMobile ? "0.75rem" : "0.875rem",
-            minWidth: isMobile ? "auto" : "120px",
+            position: "absolute",
+            top: isMobile ? 8 : 16,
+            left: isMobile ? 8 : 16,
+            zIndex: 1000,
+            backgroundColor: "rgba(255,255,255,0.95)",
+            borderRadius: 1,
+            p: isMobile ? 0.5 : 1,
           }}
         >
-          {isMobile ? "" : "Table"}
-        </Button>
-      </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography
+              sx={{ fontSize: isMobile ? "12px" : "14px", color: "#000" }}
+            >
+              Display As
+            </Typography>
+            <ButtonGroup size={isMobile ? "small" : "medium"}>
+              <Button
+                aria-pressed={!isTableView}
+                onClick={() => isTableView && handleToggleView()}
+              >
+                GRAPH
+              </Button>
+              <Button
+                aria-pressed={isTableView}
+                onClick={() => !isTableView && handleToggleView()}
+              >
+                TABLE
+              </Button>
+            </ButtonGroup>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };

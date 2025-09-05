@@ -14,13 +14,13 @@ export const STRATEGIC_POSITION_COLORS = {
 
 export const STRATEGIC_POSITION_DESCRIPTIONS = {
   topRight:
-    "Countries with high economic complexity and strong green connections - focus on advancing to more sophisticated green technologies",
+    "Ample space to diversify calls for leveraging existing successes to enter more complex production.",
   topLeft:
-    "Countries well-connected to green opportunities with moderate complexity - leverage accessible green growth options",
+    "Diversify into progressively more complex products in green value chains, considering related products as a starting point.",
   bottomRight:
-    "Countries with high economic complexity but limited green connections - preserve competitive advantages while building green capabilities",
+    "With good presence in complex green industries, gains come from developing new products and maintaining competitiveness.",
   bottomLeft:
-    "Countries with lower complexity and limited green connections - require fundamental industrial transformation for green transition",
+    "Few nearby opportunities call for coordinated long jumps into complex industries that open future diversification pathways.",
 } as const;
 
 export type QuadrantType = keyof typeof STRATEGIC_POSITION_QUADRANTS;

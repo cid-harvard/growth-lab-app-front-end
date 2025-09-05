@@ -93,6 +93,8 @@ export interface HierarchyLinkData {
   sourceY?: number;
   targetX?: number;
   targetY?: number;
+  // For cluster->product links, indicates which value chains this link is part of
+  supplyChains?: string[];
 }
 
 // Complete hierarchy data structure
@@ -107,6 +109,7 @@ export interface TreeNode {
   id: string;
   type: "value_chain" | "manufacturing_cluster" | "product";
   color: string;
+  radius?: number; // Dynamic radius for proper spacing
   children?: TreeNode[];
 }
 

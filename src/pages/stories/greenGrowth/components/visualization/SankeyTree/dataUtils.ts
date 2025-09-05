@@ -9,18 +9,18 @@ import {
 } from "./types";
 import { getValueChainColor } from "./constants";
 
-// Import the value chain name to supply chain ID mapping for consistent ordering
-const valueChainNameToSupplyChainId: Record<string, number> = {
+// Canonical display order for value chains (0-9 for consistent sorting)
+const valueChainNameToSortOrder: Record<string, number> = {
   "Electric Vehicles": 0,
-  "Fuel Cells And Green Hydrogen": 1,
-  "Nuclear Power": 2,
-  "Heat Pumps": 3,
-  "Hydroelectric Power": 4,
-  "Critical Metals and Minerals": 5,
-  "Solar Power": 6,
+  "Heat Pumps": 1,
+  "Fuel Cells And Green Hydrogen": 2,
+  "Wind Power": 3,
+  "Solar Power": 4,
+  "Hydroelectric Power": 5,
+  "Nuclear Power": 6,
   Batteries: 7,
   "Electric Grid": 8,
-  "Wind Power": 9,
+  "Critical Metals and Minerals": 9,
 };
 
 // Function to build hierarchical data with value chain coloring and RCA opacity
@@ -37,8 +37,8 @@ export function buildHierarchicalData(
 
   // Sort value chains by their supply chain ID for consistent ordering
   valueChains.sort((a, b) => {
-    const idA = valueChainNameToSupplyChainId[a] ?? 999; // Unknown chains go to end
-    const idB = valueChainNameToSupplyChainId[b] ?? 999;
+    const idA = valueChainNameToSortOrder[a] ?? 999; // Unknown chains go to end
+    const idB = valueChainNameToSortOrder[b] ?? 999;
     return idA - idB;
   });
 
@@ -186,6 +186,7 @@ export function buildHierarchicalData(
         id: r.product_id.toString(),
         name: r.name_short_en,
         productId: r.product_id.toString(),
+        supply_chain: r.supply_chain,
       }));
 
     // Get unique products by id
@@ -234,6 +235,7 @@ export function buildHierarchicalData(
         }
 
         // Second-level links (cluster to product) are grey
+        // Include the value chain this product belongs to (for filtering on focus)
         links.push({
           id: `cl-${cluster}-pr-${product.id}`,
           source: cluster,
@@ -242,6 +244,7 @@ export function buildHierarchicalData(
           color: "#808080", // Grey links for cluster to product
           visible: false, // Initially hidden
           rca: productRca,
+          supplyChains: [product.supply_chain],
         });
       }
     }
@@ -350,7 +353,13 @@ export function buildTreeDataForValueChain(
     children: clusterNodes.map((cluster) => {
       // Find products connected to this cluster
       const connectedProductIds = hierarchyData.links
-        .filter((l) => l.source === cluster.id && l.visible)
+        .filter((l) => {
+          if (l.source !== cluster.id || !l.visible) return false;
+          // Only include cluster->product links that belong to the selected value chain
+          // supplyChains may be undefined for older data; in that case include by default
+          if (!l.supplyChains || l.supplyChains.length === 0) return true;
+          return l.supplyChains.includes(valueChainNode.name);
+        })
         .map((l) => l.target);
 
       // Get product nodes

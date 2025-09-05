@@ -12,6 +12,7 @@ export interface ProcessedProductData {
   supplyChainName: string;
   exportRca: number | null;
   exportValue: number | null;
+  marketSize?: number | null;
   expectedExports: number | null;
   normalizedPci: number | null;
   normalizedCog: number | null;
@@ -90,6 +91,14 @@ export const useProcessedTableData = (
           ? clusterLookup?.get(firstMapping.clusterId)
           : null;
 
+        const marketSize =
+          item &&
+          typeof item.exportValue === "number" &&
+          typeof item.globalMarketShare === "number" &&
+          item.globalMarketShare > 0
+            ? item.exportValue / item.globalMarketShare
+            : null;
+
         return {
           productCode: product?.code || "N/A",
           productName: product?.nameShortEn || "Unknown Product",
@@ -98,13 +107,15 @@ export const useProcessedTableData = (
           supplyChainName: supplyChain?.supplyChain || "N/A",
           exportRca: item.exportRca,
           exportValue: item.exportValue,
+          marketSize,
           expectedExports: item.expectedExports,
           normalizedPci: item.normalizedPci,
           normalizedCog: item.normalizedCog,
           density: item.density,
           globalMarketShare: item.globalMarketShare,
           productMarketShare: item.productMarketShare,
-          marketGrowth: item.marketGrowth,
+          marketGrowth:
+            item.marketGrowth ?? item.productMarketShareGrowth ?? null,
           productMarketShareGrowth: item.productMarketShareGrowth,
           pciStd: item.pciStd,
           cogStd: item.cogStd,

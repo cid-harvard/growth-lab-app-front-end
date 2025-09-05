@@ -1,20 +1,18 @@
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { useTheme, useMediaQuery } from "@mui/material";
 import { ParentSize } from "@visx/responsive";
 import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
 import { localPoint } from "@visx/event";
 import { AxisBottom } from "@visx/axis";
 import { scaleLinear } from "@visx/scale";
-import { scaleSymlog } from "d3-scale";
-import { max, index } from "d3-array";
+import { index } from "d3-array";
 import Box from "@mui/material/Box";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { VisualizationLoading } from "../shared";
+import { VisualizationLoading, SharedTooltip } from "../shared";
 import { useImageCaptureContext } from "../../hooks/useImageCaptureContext";
-import { themeUtils } from "../../theme";
 import html2canvas from "html2canvas";
-import StackedBarsLegend from "./StackedBarsLegend";
 import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";
 import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
 
@@ -24,7 +22,17 @@ export const formatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
   notation: "compact",
   compactDisplay: "short",
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
 });
+
+// Chart margins - defined outside component to avoid dependency issues
+const margin = {
+  top: 20,
+  bottom: 0,
+  left: 60,
+  right: 80,
+};
 
 // Internal component that receives dimensions from ParentSize
 const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
@@ -52,17 +60,13 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
   // State for controls - simplified to just show all clusters
   const [showAllClusters, setShowAllClusters] = useState(false);
 
-  // State for scale type (temporary control)
-  const [useLogScale, setUseLogScale] = useState(true);
-
-  // Fixed values for removed controls
-  const groupBy = "clusters"; // Always show clusters
-  const sortBy = "difference"; // Always sort by difference
-  const sortDirection = "desc"; // Always descending
+  // Fixed values for removed controls - always use clusters sorted by difference in descending order
 
   // Data fetching hooks
-  const { countryData, clustersData, isLoading, hasErrors } =
-    useGreenGrowthData(Number.parseInt(countryId), Number.parseInt(year));
+  const { countryData, clustersData, isLoading } = useGreenGrowthData(
+    Number.parseInt(countryId),
+    Number.parseInt(year),
+  );
   const supplyChainProductLookup = useSupplyChainProductLookup();
 
   // Create cluster lookup from shared data
@@ -82,31 +86,21 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
   // Only show loading if we have no data to work with
   const loading = isLoading && !currentData;
 
-  // Calculate dimensions - space for title and legend only (no controls)
-  const titleHeight = 60; // Increased for button space
-  const legendHeight = isMobile ? 120 : 100;
-  const availableHeight = height - titleHeight - legendHeight;
+  // Calculate dimensions responsively
+  const titleHeight = 60;
+  // Legend removed – reclaim its space for the chart area
+  const legendHeight = 0;
+  const stickyAxisHeight = 60;
 
-  // Fixed bar height for consistency across all layouts
-  const fixedBarHeight = 20;
-  const barPadding = 10;
-  // Standardized margin - used consistently throughout
-  const margin = {
-    top: 40,
-    bottom: 0,
-    left: 200,
-    right: 40,
-  };
+  const availableHeight =
+    height - titleHeight - legendHeight - stickyAxisHeight;
 
-  // Calculate how many bars can fit in the available space
-  const stickyAxisHeight = 50; // Space for sticky x-axis
-  const scrollPadding = 20; // Some padding for scrolling
-  const availableSpaceForBars =
-    availableHeight - stickyAxisHeight - scrollPadding;
-  const maxBarsToFit = Math.max(
-    1,
-    Math.floor(availableSpaceForBars / (fixedBarHeight + barPadding)),
-  );
+  // Responsive bar sizing
+  const minBarHeight = 24;
+  const maxBarHeight = 48;
+  const barPadding = 12;
+
+  // We'll calculate maxBarsToFit inside useMemo after determining the actual bar height
 
   // Bar calculation logic (moved from useStackedBars hook)
   const { bars, expectedOverlays, groups, xScale, actualBarHeight } =
@@ -117,7 +111,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
           expectedOverlays: [],
           groups: [],
           xScale: null,
-          actualBarHeight: fixedBarHeight,
+          actualBarHeight: minBarHeight,
         };
 
       const ggCpyList = currentData.ggCpyList;
@@ -184,178 +178,94 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         return b.difference - a.difference;
       });
 
+      // Calculate optimal bar height for responsive layout
+      // Always use the total number of clusters (sortedData.length) to calculate bar height
+      // This ensures consistent smaller bar height regardless of how many bars are actually displayed
+      let actualBarHeight = minBarHeight;
+      if (availableHeight > 0 && sortedData.length > 0) {
+        // Calculate how much space each bar should take based on ALL clusters, not just displayed ones
+        const optimalBarHeight = Math.floor(
+          (availableHeight - (sortedData.length - 1) * barPadding) /
+            sortedData.length,
+        );
+
+        // Constrain to our min/max bounds
+        actualBarHeight = Math.max(
+          minBarHeight,
+          Math.min(maxBarHeight, optimalBarHeight),
+        );
+      }
+
+      // Calculate exactly how many bars can fit with the fixed smaller bar height and padding
+      const maxBarsToFit = Math.max(
+        1,
+        Math.floor(availableHeight / (actualBarHeight + barPadding)),
+      );
+
       // Filter data based on showAllClusters
       let filteredData = sortedData;
 
       if (!showAllClusters) {
-        if (useLogScale) {
-          // In log mode, show top and bottom performers by ratio
-          const topPerformers = sortedData
-            .filter((d) => d.ratio > 1)
-            .slice(0, Math.floor(maxBarsToFit / 2));
-          const bottomPerformers = sortedData
-            .filter((d) => d.ratio < 1)
-            .slice(-Math.floor(maxBarsToFit / 2));
-          filteredData = [...topPerformers, ...bottomPerformers].sort(
-            (a, b) => b.ratio - a.ratio,
+        // Show equal number from top and bottom of the distribution
+        // This gives a balanced view of best and worst performers regardless of +/- values
+        const halfBars = Math.floor(maxBarsToFit / 2);
+        const topPerformers = sortedData.slice(0, halfBars);
+        const bottomPerformers = sortedData.slice(-halfBars);
+
+        // Combine and sort by difference (descending) to maintain consistent ordering
+        filteredData = [...topPerformers, ...bottomPerformers].sort(
+          (a, b) => b.difference - a.difference,
+        );
+
+        // If we have an odd number of bars and there are enough clusters, add one more from the top
+        const remaining = maxBarsToFit - filteredData.length;
+        if (remaining > 0 && sortedData.length > filteredData.length) {
+          const additionalTop = sortedData.slice(
+            halfBars,
+            halfBars + remaining,
           );
-        } else {
-          // In linear mode, show top and bottom performers by difference
-          const positivePerformers = sortedData
-            .filter((d) => d.difference > 0)
-            .slice(0, Math.floor(maxBarsToFit / 2));
-          const negativePerformers = sortedData
-            .filter((d) => d.difference < 0)
-            .slice(-Math.floor(maxBarsToFit / 2));
-          filteredData = [...positivePerformers, ...negativePerformers].sort(
-            (a, b) => b.difference - a.difference,
-          );
+          filteredData = [
+            ...topPerformers,
+            ...additionalTop,
+            ...bottomPerformers,
+          ].sort((a, b) => b.difference - a.difference);
         }
       }
 
-      // Calculate optimal bar height for better space utilization
-      let actualBarHeight = fixedBarHeight;
-      if (availableSpaceForBars && filteredData.length > 0) {
-        const spaceWithBaseHeight =
-          filteredData.length * (fixedBarHeight + barPadding) - barPadding;
-        const spaceUtilizationThreshold = 0.7;
-        const currentUtilization = spaceWithBaseHeight / availableSpaceForBars;
-        const unusedSpace = availableSpaceForBars - spaceWithBaseHeight;
+      // Create linear scale based on differences
+      // Calculate scale domain to handle positive and negative differences
+      const maxPositiveDifference = Math.max(
+        ...filteredData.map((d) => Math.max(0, d.difference)),
+        0,
+      );
+      const maxNegativeDifference = Math.min(
+        ...filteredData.map((d) => Math.min(0, d.difference)),
+        0,
+      );
+      const maxAbsoluteDifference = Math.max(
+        maxPositiveDifference,
+        Math.abs(maxNegativeDifference),
+      );
 
-        if (
-          currentUtilization < spaceUtilizationThreshold ||
-          unusedSpace > 200
-        ) {
-          const optimalBarHeight =
-            Math.floor(
-              (availableSpaceForBars + barPadding) / filteredData.length,
-            ) -
-            (barPadding + 2);
-
-          const minBarHeight = 20;
-          const maxBarHeight = 40;
-
-          actualBarHeight = Math.max(
-            minBarHeight,
-            Math.min(maxBarHeight, optimalBarHeight),
-          );
-        }
-      }
-
-      // Create scale based on selected type
-      let xScale;
-      if (useLogScale) {
-        // For log scale, use ratios (actual/expected)
-        const maxRatio = Math.max(...filteredData.map((d) => d.ratio), 1);
-        const minRatio = Math.min(...filteredData.map((d) => d.ratio), 1);
-
-        // Create truly symmetric log scale around 1 (where actual = expected)
-        // Calculate logarithmic distances from 1 on each side
-        const logDistanceAbove = Math.log(maxRatio); // log distance from 1 to maxRatio
-        const logDistanceBelow = Math.log(1 / minRatio); // log distance from 1 to 1/minRatio
-
-        // Use the larger logarithmic distance to ensure equal visual space
-        const maxLogDistance = Math.max(logDistanceAbove, logDistanceBelow);
-
-        // Convert back to linear scale for symmetric domain
-        const domainMin = Math.exp(-maxLogDistance);
-        const domainMax = Math.exp(maxLogDistance);
-
-        // Create a custom log scale that's truly symmetric around 1
-        xScale = (value) => {
-          // Transform to log space where 1 becomes 0
-          const logValue = Math.log(value);
-          // Scale to 0-1 range where -maxLogDistance maps to 0, +maxLogDistance maps to 1
-          const normalizedLog =
-            (logValue + maxLogDistance) / (2 * maxLogDistance);
-          // Map to chart width
-          return normalizedLog * chartWidth;
-        };
-
-        // Add domain and other methods that visx expects
-        xScale.domain = () => [domainMin, domainMax];
-        xScale.range = () => [0, chartWidth];
-        xScale.ticks = (count) => {
-          // Generate symmetric ticks for the axis
-          const ticks = new Set();
-          ticks.add(1); // Always include baseline
-
-          const multipliers = [1, 2, 5];
-          const powers = [-3, -2, -1, 0, 1, 2, 3];
-
-          for (const power of powers) {
-            for (const mult of multipliers) {
-              const tick = mult * Math.pow(10, power);
-              if (tick >= domainMin && tick <= domainMax && tick !== 1) {
-                ticks.add(tick);
-              }
-              const fracTick = 1 / tick;
-              if (
-                fracTick >= domainMin &&
-                fracTick <= domainMax &&
-                fracTick !== 1
-              ) {
-                ticks.add(fracTick);
-              }
-            }
-          }
-
-          return Array.from(ticks).sort((a, b) => a - b);
-        };
-      } else {
-        // Calculate scale domain to handle positive and negative differences
-        const maxPositiveDifference = Math.max(
-          ...filteredData.map((d) => Math.max(0, d.difference)),
-          0,
-        );
-        const maxNegativeDifference = Math.min(
-          ...filteredData.map((d) => Math.min(0, d.difference)),
-          0,
-        );
-        const maxAbsoluteDifference = Math.max(
-          maxPositiveDifference,
-          Math.abs(maxNegativeDifference),
-        );
-
-        // Use linear scale
-        xScale = scaleLinear()
-          .domain([-maxAbsoluteDifference, maxAbsoluteDifference])
-          .range([0, chartWidth]);
-      }
+      // Use linear scale
+      const xScale = scaleLinear()
+        .domain([-maxAbsoluteDifference, maxAbsoluteDifference])
+        .range([0, chartWidth]);
 
       const result = [];
       const expectedPositions = [];
 
       filteredData.forEach((group, groupIndex) => {
+        // Use fixed spacing with the smaller bar height
         const y = margin.top + groupIndex * (actualBarHeight + barPadding);
 
-        let x, barWidth, fill, value;
-
-        if (useLogScale) {
-          // For log scale, use ratios centered around 1 (expected)
-          const ratio = group.ratio;
-          const baselinePoint = margin.left + xScale(1); // 1 = actual equals expected
-          const ratioPoint = margin.left + xScale(ratio);
-
-          if (ratio >= 1) {
-            x = baselinePoint;
-            barWidth = ratioPoint - baselinePoint;
-            fill = "#2E7D32"; // Green for above expectation
-          } else {
-            x = ratioPoint;
-            barWidth = baselinePoint - ratioPoint;
-            fill = "#D32F2F"; // Red for below expectation
-          }
-          value = ratio;
-        } else {
-          // For linear scale, use differences centered around 0
-          const zeroPoint = margin.left + xScale(0);
-          const difference = group.difference;
-          barWidth = Math.abs(xScale(difference) - xScale(0));
-          x = difference >= 0 ? zeroPoint : zeroPoint - barWidth;
-          fill = difference >= 0 ? "#2E7D32" : "#D32F2F"; // Green for above, red for below
-          value = difference;
-        }
+        // For linear scale, use differences centered around 0
+        const zeroPoint = margin.left + xScale(0);
+        const difference = group.difference;
+        const barWidth = Math.abs(xScale(difference) - xScale(0));
+        const x = difference >= 0 ? zeroPoint : zeroPoint - barWidth;
+        const fill = difference >= 0 ? "#268fbd" : "#f1b47d"; // Blue for overperforming, orange for underperforming
+        const value = difference;
 
         result.push({
           id: `bar-${group.parentId}`,
@@ -396,14 +306,16 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         });
       });
 
-      // Baseline reference line that spans all rows
-      const baselineValue = useLogScale ? 1 : 0; // 1x for log scale, 0 for linear scale
+      // Baseline reference line that spans from the first row all the way to the x-axis
+      const baselineValue = 0; // 0 for linear scale
       const baselinePoint = margin.left + xScale(baselineValue);
       const firstRowY = margin.top;
-      const lastRowY =
-        margin.top +
-        (filteredData.length - 1) * (actualBarHeight + barPadding) +
-        actualBarHeight;
+      // When not showing all clusters, extend the line to the bottom of the scrollable area
+      const lastRowY = showAllClusters
+        ? margin.top +
+          (filteredData.length - 1) * (actualBarHeight + barPadding) +
+          actualBarHeight
+        : margin.top + availableHeight;
 
       expectedPositions.push({
         id: "baseline",
@@ -435,23 +347,20 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
       width,
       height,
       showAllClusters,
-      maxBarsToFit,
-      availableSpaceForBars,
+      availableHeight,
       supplyChainProductLookup,
       clusterLookup,
-      useLogScale,
     ]);
 
-  // Calculate required height based on actual bar size
-  const requiredChartHeight = Math.max(
-    groups.length * (actualBarHeight + barPadding) -
+  // Calculate chart height based on whether we're showing all clusters or not
+  const chartHeight = showAllClusters
+    ? // When showing all clusters, calculate actual height needed (enables scrolling)
+      groups.length * (actualBarHeight + barPadding) -
       barPadding +
       margin.top +
-      margin.bottom,
-    200,
-  );
-
-  const chartHeight = requiredChartHeight;
+      margin.bottom
+    : // When showing subset, use available height (no scrolling needed)
+      availableHeight + margin.top + margin.bottom;
 
   // Register/unregister image capture function
   React.useEffect(() => {
@@ -500,6 +409,10 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
     return <VisualizationLoading />;
   }
 
+  // Tooltip definition for the "Expected" x-axis label
+  const expectedDefinition =
+    "indicates the level of exports a country would have if it exported goods in the same proportion as its overall share of global trade. This is calculated using an RCA (Revealed Comparative Advantage) index value of 1, also known as the Balassa index.";
+
   return (
     <Box
       sx={{
@@ -509,7 +422,6 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         display: "flex",
         flexDirection: "column",
         fontFamily: "Source Sans Pro, sans-serif",
-        backgroundColor: "white",
       }}
     >
       {/* Chart Section */}
@@ -520,61 +432,26 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
           display: "flex",
           flexDirection: "column",
           minHeight: 0,
-          backgroundColor: "white",
           p: 0,
           m: 0,
         }}
         ref={chartContainerRef}
       >
-        {/* Title and Button Section */}
+        {/* Title Section */}
         <Box
           sx={{
             position: "relative",
             height: titleHeight,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            alignItems: "flex-end",
+            justifyContent: "center",
             px: 2,
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
           }}
         >
-          <Typography
-            sx={{
-              fontSize: "18px",
-              fontFamily: "Source Sans Pro, sans-serif",
-              fontWeight: 600,
-              color: "black",
-              textTransform: "uppercase",
-              letterSpacing: "0.5px",
-              pl: "100px",
-            }}
-          >
-            PRODUCT CLUSTERS - PERFORMANCE VS EXPECTATION
+          <Typography variant="chart-title">
+            Competitiveness in Green Manufacturing Clusters
           </Typography>
-
-          {/* Scale Type Control (Temporary) */}
-          <Button
-            onClick={() => setUseLogScale(!useLogScale)}
-            sx={{
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              px: 1.5,
-              py: 0.75,
-              fontSize: "12px",
-              fontWeight: 400,
-              color: "#666",
-              textTransform: "none",
-              minWidth: "auto",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-              "&:hover": {
-                backgroundColor: "rgba(248, 248, 248, 0.95)",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-                borderColor: "#ccc",
-              },
-            }}
-          >
-            {useLogScale ? "Linear Scale" : "Log Scale"}
-          </Button>
         </Box>
 
         {/* Scrollable Chart Area */}
@@ -582,9 +459,12 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
           sx={{
             flex: 1,
             minHeight: 0,
-            overflow: "auto",
-            maxHeight: availableHeight - 80, // Leave space for sticky x-axis
-            backgroundColor: "white",
+            // In condensed view we do not want scroll; allow a bit more height to
+            // accommodate the internal top margin
+            overflow: showAllClusters ? "auto" : "hidden",
+            height: showAllClusters
+              ? availableHeight
+              : availableHeight + margin.top,
             borderRadius: "4px 4px 0 0",
             m: 0,
             p: 0,
@@ -612,48 +492,70 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
             height={chartHeight - margin.bottom} // Remove bottom margin from scrollable area
             style={{
               display: "block",
-              backgroundColor: "white",
             }}
             role="img"
-            aria-labelledby="chart-title"
+            aria-label="Competitiveness in Green Manufacturing Clusters"
+            aria-describedby="stacked-bars-desc"
           >
-            <title id="chart-title">
-              Product Clusters Performance vs Expectation Chart with{" "}
-              {useLogScale ? "Log" : "Linear"} Scale
-            </title>
-            {/* Y-axis labels (group names) */}
-            {groups.map((group, index) => {
-              const yPosition =
-                margin.top +
-                index * (actualBarHeight + barPadding) +
-                actualBarHeight / 2;
+            <desc id="stacked-bars-desc">
+              Bar chart of clusters showing export value versus expected export
+              value; difference indicates performance relative to expectation.
+            </desc>
+            {/* Background area for overperforming clusters only */}
+            {xScale &&
+              groups.length > 0 &&
+              (() => {
+                // Find the extent of positive (overperforming) bars
+                const positiveBars = Array.from(bars.values()).filter(
+                  (bar) => bar.difference >= 0,
+                );
 
-              // Truncate text if too long for the allocated space
-              const maxWidth = 240; // Leave 10px padding from margin
-              const fontSize = isMobile ? 11 : 14;
-              const charWidth = fontSize * 0.6; // Approximate character width
-              const maxChars = Math.floor(maxWidth / charWidth);
-              const truncatedText =
-                group.groupName.length > maxChars
-                  ? group.groupName.substring(0, maxChars - 3) + "..."
-                  : group.groupName;
+                if (positiveBars.length === 0) return null;
 
-              return (
-                <text
-                  key={`y-label-${group.groupId}`}
-                  x={margin.left - 10}
-                  y={yPosition}
-                  fontSize={isMobile ? "11px" : "14px"}
-                  fontFamily="Source Sans Pro, sans-serif"
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  fill="#333"
-                  fontWeight="400"
-                >
-                  {truncatedText}
-                </text>
-              );
-            })}
+                // Calculate the vertical area that contains overperforming clusters
+                const topY = Math.min(...positiveBars.map((bar) => bar.y));
+                const bottomY = Math.max(
+                  ...positiveBars.map((bar) => bar.y + bar.height),
+                );
+
+                return (
+                  <rect
+                    x={0}
+                    y={topY}
+                    width={width - 10}
+                    height={bottomY - topY}
+                    fill="#F3F3F3"
+                    fillOpacity={1}
+                  />
+                );
+              })()}
+
+            {/* Vertical grid lines */}
+            {xScale && (
+              <g>
+                {xScale.ticks(isMobile ? 5 : 8).map((tick) => {
+                  const x = margin.left + xScale(tick);
+                  const firstRowY = margin.top;
+                  const lastRowY = showAllClusters
+                    ? margin.top +
+                      (groups.length - 1) * (actualBarHeight + barPadding) +
+                      actualBarHeight
+                    : margin.top + availableHeight;
+
+                  return (
+                    <line
+                      key={`grid-${tick}`}
+                      x1={x}
+                      y1={firstRowY}
+                      x2={x}
+                      y2={lastRowY}
+                      stroke="rgb(223,223,223)"
+                      strokeWidth={1}
+                    />
+                  );
+                })}
+              </g>
+            )}
 
             {/* Row background rectangles for hover interaction */}
             {groups.map((group, index) => {
@@ -690,13 +592,12 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                     width={width - 10}
                     height={actualBarHeight}
                     fill="transparent"
-                    style={{ cursor: "pointer" }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${bar.title}: ${bar.difference >= 0 ? "+" : ""}${formatter.format(bar.difference)}`}
-                    onMouseEnter={(event) => {
+                    // purely decorative/invisible hover catcher; not focusable
+                    onPointerEnter={(event) => {
+                      // Use the chart container ref for more accurate positioning with scrolling
                       const coords = localPoint(
-                        event.target.ownerSVGElement,
+                        chartContainerRef.current ||
+                          event.target.ownerSVGElement,
                         event,
                       );
                       if (coords) {
@@ -714,9 +615,11 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                         rowBg.style.fill = "rgba(0, 0, 0, 0.03)";
                       }
                     }}
-                    onMouseMove={(event) => {
+                    onPointerMove={(event) => {
+                      // Use the chart container ref for more accurate positioning with scrolling
                       const coords = localPoint(
-                        event.target.ownerSVGElement,
+                        chartContainerRef.current ||
+                          event.target.ownerSVGElement,
                         event,
                       );
                       if (coords) {
@@ -727,7 +630,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                         });
                       }
                     }}
-                    onMouseLeave={() => {
+                    onPointerLeave={() => {
                       hideTooltip();
                       // Remove row highlight
                       const rowBg = svgRef.current?.querySelector(
@@ -760,89 +663,357 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               <rect
                 x={expectedOverlays[0].coords[0][0] - 1}
                 y={expectedOverlays[0].coords[0][1]}
-                width={1}
+                width={2}
                 height={
                   expectedOverlays[0].coords[1][1] -
                   expectedOverlays[0].coords[0][1]
                 }
-                fill="black"
-                fillOpacity={0.9}
+                fill="rgb(51,51,51)"
+                fillOpacity={1}
               />
             )}
-          </svg>
-        </Box>
 
-        {/* Show All Button - positioned fixed over the chart area */}
-        <Box
-          sx={{
-            position: "absolute",
-            right: 16,
-            top: titleHeight + (availableHeight - 80) / 2, // Position halfway down the visible chart area
-            transform: "translateY(-50%)",
-            zIndex: 10,
-            pointerEvents: "none", // Allow clicking through the container
-          }}
-        >
-          <Button
-            onClick={() => setShowAllClusters(!showAllClusters)}
+            {/* Vertical axis annotations - positioned based on actual data */}
+            {groups.length > 0 &&
+              Array.from(bars.values()).length > 0 &&
+              (() => {
+                // Find the boundaries between positive and negative performers
+                const positiveBars = Array.from(bars.values()).filter(
+                  (bar) => bar.difference >= 0,
+                );
+                const negativeBars = Array.from(bars.values()).filter(
+                  (bar) => bar.difference < 0,
+                );
+
+                // Calculate positions based on actual data distribution
+                let outperformingPosition = null;
+                let underperformingPosition = null;
+
+                if (positiveBars.length > 0) {
+                  // Position outperforming arrow in the center of the positive bars area
+                  const firstPositiveY = Math.min(
+                    ...positiveBars.map((bar) => bar.y),
+                  );
+                  const lastPositiveY = Math.max(
+                    ...positiveBars.map((bar) => bar.y + bar.height),
+                  );
+                  outperformingPosition = (firstPositiveY + lastPositiveY) / 2;
+                }
+
+                if (negativeBars.length > 0) {
+                  // Position underperforming arrow in the center of the negative bars area
+                  const firstNegativeY = Math.min(
+                    ...negativeBars.map((bar) => bar.y),
+                  );
+                  const lastNegativeY = Math.max(
+                    ...negativeBars.map((bar) => bar.y + bar.height),
+                  );
+                  underperformingPosition =
+                    (firstNegativeY + lastNegativeY) / 2;
+                }
+
+                // Clamp positions to keep annotations within the visible SVG area
+                // Arrow extends ~50px from center in the vertical direction (line + triangle)
+                const arrowHalfHeight = 121;
+                const svgTopBound = arrowHalfHeight;
+                const svgBottomBound =
+                  chartHeight - margin.bottom - arrowHalfHeight;
+
+                if (outperformingPosition != null) {
+                  // Ensure it doesn't go off the top/bottom of the page
+                  outperformingPosition = Math.min(
+                    svgBottomBound,
+                    Math.max(svgTopBound, outperformingPosition),
+                  );
+                }
+
+                if (underperformingPosition != null) {
+                  underperformingPosition = Math.min(
+                    svgBottomBound,
+                    Math.max(svgTopBound, underperformingPosition),
+                  );
+                }
+
+                return (
+                  <g>
+                    {/* Outperforming Clusters arrow and label */}
+                    {outperformingPosition && (
+                      <g transform={`translate(40, ${outperformingPosition})`}>
+                        <text
+                          x={0}
+                          y={0}
+                          fontSize={18}
+                          fontFamily="Source Sans Pro, sans-serif"
+                          fontWeight={600}
+                          fill="#268fbd"
+                          textAnchor="middle"
+                          transform="rotate(-90)"
+                        >
+                          Outperforming Clusters
+                        </text>
+                        <line
+                          x1={15}
+                          y1={-40}
+                          x2={15}
+                          y2={40}
+                          stroke="#268fbd"
+                          strokeWidth={2}
+                        />
+                        <polygon points="10,-40 15,-50 20,-40" fill="#268fbd" />
+                      </g>
+                    )}
+
+                    {/* Underperforming Clusters arrow and label */}
+                    {underperformingPosition && (
+                      <g
+                        transform={`translate(40, ${underperformingPosition})`}
+                      >
+                        <text
+                          x={0}
+                          y={0}
+                          fontSize={18}
+                          fontFamily="Source Sans Pro, sans-serif"
+                          fontWeight={600}
+                          fill="#f1b47d"
+                          textAnchor="middle"
+                          transform="rotate(-90)"
+                        >
+                          Underperforming Clusters
+                        </text>
+                        <line
+                          x1={15}
+                          y1={-40}
+                          x2={15}
+                          y2={40}
+                          stroke="#f1b47d"
+                          strokeWidth={2}
+                        />
+                        <polygon points="10,40 15,50 20,40" fill="#f1b47d" />
+                      </g>
+                    )}
+                  </g>
+                );
+              })()}
+
+            {/* Smart cluster name labels - rendered last to appear on top */}
+            {Array.from(bars.values()).map((bar) => {
+              const isPositive = bar.difference >= 0;
+              const yPosition = bar.y + bar.height / 2;
+              const fontSize = 16; // Fixed 16px as per spec
+              const charWidth = fontSize * 0.52;
+
+              // Position labels at the start of bars instead of the end
+              const outsideLabelX = isPositive
+                ? bar.x - 12 // For positive bars, position to the left of the start
+                : bar.x + bar.width + 12; // For negative bars, position to the right of the end
+              const outsideAvailableSpace = isPositive
+                ? bar.x - margin.left // Space from left margin to bar start
+                : width - margin.right - (bar.x + bar.width); // Space from bar end to right margin
+
+              // Calculate minimum space needed for readable text
+              const minReadableChars = 15; // Minimum characters for readable text
+              const minSpaceNeeded = minReadableChars * charWidth;
+
+              // Only move text inside if there's not enough room outside AND bar is wide enough
+              const needsInsidePositioning =
+                outsideAvailableSpace < minSpaceNeeded &&
+                bar.width > minSpaceNeeded;
+
+              let labelX, textAnchor, textColor, availableSpace, maxChars;
+
+              if (needsInsidePositioning) {
+                // Position text inside the bar, near the start
+                if (isPositive) {
+                  labelX = bar.x + 12; // 12px from the start
+                  textAnchor = "start";
+                } else {
+                  labelX = bar.x + bar.width - 12; // 12px from the end
+                  textAnchor = "end";
+                }
+                textColor = "white"; // White text for contrast on colored bars
+                availableSpace = bar.width - 24; // Account for padding on both sides
+              } else {
+                // Position text outside the bar at the start (preferred)
+                labelX = outsideLabelX;
+                textAnchor = isPositive ? "end" : "start"; // Swapped to align properly with new positioning
+                textColor = "black"; // Black text for outside labels as per spec
+                availableSpace = outsideAvailableSpace;
+              }
+
+              maxChars = Math.floor(Math.max(0, availableSpace / charWidth));
+
+              // Truncate only if necessary
+              const truncatedText =
+                bar.title.length > maxChars && maxChars > 8
+                  ? bar.title.substring(0, Math.max(8, maxChars - 3)) + "..."
+                  : bar.title;
+
+              return (
+                <text
+                  key={`bar-label-${bar.id}`}
+                  x={labelX}
+                  y={yPosition}
+                  fontSize={fontSize}
+                  fontFamily="Source Sans Pro, sans-serif"
+                  textAnchor={textAnchor}
+                  dominantBaseline="middle"
+                  fill={textColor}
+                  fontWeight="600" // 600 weight as per spec
+                  stroke={needsInsidePositioning ? "rgba(0,0,0,0.3)" : "none"}
+                  strokeWidth={needsInsidePositioning ? "0.5" : "0"}
+                  style={{ pointerEvents: "none" }}
+                >
+                  {truncatedText}
+                </text>
+              );
+            })}
+          </svg>
+          {/* Show All Button - positioned at the boundary between over/underperforming clusters (scroll-aware) */}
+          <Box
             sx={{
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              px: 1.5,
-              py: 0.75,
-              fontSize: "11px",
-              fontWeight: 400,
-              color: "#666",
-              textTransform: "none",
-              minWidth: "auto",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-              pointerEvents: "auto", // Re-enable pointer events for the button
-              "&:hover": {
-                backgroundColor: "rgba(248, 248, 248, 0.95)",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-                borderColor: "#ccc",
-              },
-              display: "flex",
-              alignItems: "center",
-              gap: 0.5,
-              lineHeight: 1.2,
+              position: "absolute",
+              right: 16,
+              top: (() => {
+                const positiveBars = Array.from(bars.values()).filter(
+                  (bar) => bar.difference >= 0,
+                );
+                const negativeBars = Array.from(bars.values()).filter(
+                  (bar) => bar.difference < 0,
+                );
+
+                let boundaryY = (chartHeight - margin.bottom) / 2; // fallback to center of scroll content
+
+                if (positiveBars.length > 0 && negativeBars.length > 0) {
+                  const lastPositiveY = Math.max(
+                    ...positiveBars.map((bar) => bar.y + bar.height),
+                  );
+                  const firstNegativeY = Math.min(
+                    ...negativeBars.map((bar) => bar.y),
+                  );
+                  boundaryY = (lastPositiveY + firstNegativeY) / 2;
+                } else if (positiveBars.length > 0) {
+                  const lastPositiveY = Math.max(
+                    ...positiveBars.map((bar) => bar.y + bar.height),
+                  );
+                  boundaryY = lastPositiveY;
+                } else if (negativeBars.length > 0) {
+                  const firstNegativeY = Math.min(
+                    ...negativeBars.map((bar) => bar.y),
+                  );
+                  boundaryY = firstNegativeY;
+                }
+
+                return boundaryY;
+              })(),
+              transform: "translateY(-50%)",
+              zIndex: 10,
+              pointerEvents: "none", // Allow clicking through the container
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                fontSize: "10px",
-                color: "#999",
-              }}
-            >
-              ↕
-            </Box>
-            {showAllClusters ? (
-              "Show top & bottom only"
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  lineHeight: 1.1,
-                  textAlign: "center",
-                }}
-              >
-                <span>Click to see all</span>
-                <span>industries</span>
-              </Box>
-            )}
-          </Button>
+            {(() => {
+              const positiveBars = Array.from(bars.values()).filter(
+                (bar) => bar.difference >= 0,
+              );
+              const negativeBars = Array.from(bars.values()).filter(
+                (bar) => bar.difference < 0,
+              );
+              const showAboveAnnotation = positiveBars.length > 0;
+              const showBelowAnnotation = negativeBars.length > 0;
+
+              return (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  {showAboveAnnotation && (
+                    <Typography
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        color: "#268fbd",
+                        textAlign: "center",
+                        lineHeight: 1,
+                      }}
+                    >
+                      Outperforming Clusters
+                    </Typography>
+                  )}
+
+                  <Button
+                    onClick={() => setShowAllClusters(!showAllClusters)}
+                    sx={{
+                      backgroundColor: "white",
+                      border: "1px solid #ccc",
+                      borderRadius: "2px",
+                      px: 1,
+                      py: 0.5,
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      color: "black",
+                      textTransform: "none",
+                      minWidth: "auto",
+                      boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
+                      pointerEvents: "auto",
+                      "&:hover": {
+                        backgroundColor: "#f8f8f8",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
+                        borderColor: "#bbb",
+                      },
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 0.5,
+                      lineHeight: 1,
+                      height: "auto",
+                    }}
+                  >
+                    {showAllClusters ? (
+                      "Show top & bottom only"
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          lineHeight: 1,
+                          textAlign: "center",
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: "black",
+                        }}
+                      >
+                        <span>↑Click to see</span>
+                        <span>↓all clusters</span>
+                      </Box>
+                    )}
+                  </Button>
+
+                  {showBelowAnnotation && (
+                    <Typography
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        color: "#f1b47d",
+                        textAlign: "center",
+                        lineHeight: 1,
+                      }}
+                    >
+                      Underperforming Clusters
+                    </Typography>
+                  )}
+                </Box>
+              );
+            })()}
+          </Box>
         </Box>
 
         {/* Sticky X-axis */}
         <Box
           sx={{
-            height: 40,
-            backgroundColor: "white",
+            height: 60,
             borderRadius: "0 0 4px 4px",
             display: "flex",
             alignItems: "flex-start",
@@ -852,136 +1023,161 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         >
           <svg
             width={width - 10}
-            height={40}
+            height={60}
             style={{
               display: "block",
-              backgroundColor: "white",
             }}
             role="img"
-            aria-labelledby="axis-title"
+            aria-label="Difference from expected exports axis"
           >
-            <title id="axis-title">
-              Chart X-Axis showing export value differences
-            </title>
-            <g transform={`translate(${margin.left}, 20)`}>
+            <g transform={`translate(${margin.left}, 0)`}>
               <AxisBottom
                 scale={xScale}
-                tickValues={useLogScale ? xScale.ticks(10) : undefined}
                 tickFormat={(value) => {
-                  if (useLogScale) {
-                    // For log scale, format as multiplicative ratios
-                    if (Math.abs(value - 1) < 0.05) return "Expected";
-
-                    if (value >= 1) {
-                      // Values >= 1 (above expectation)
-                      if (value >= 1000) {
-                        return `${Math.round(value / 1000)}Kx`;
-                      } else if (value >= 100) {
-                        return `${Math.round(value / 100)}00x`;
-                      } else if (value >= 10) {
-                        return `${Math.round(value / 10)}0x`;
-                      } else {
-                        return `${Math.round(value)}x`;
-                      }
-                    } else if (value > 0) {
-                      // Values < 1 (below expectation) - show as fractions
-                      const reciprocal = 1 / value;
-                      if (reciprocal >= 1000) {
-                        return `1/${Math.round(reciprocal / 1000)}Kx`;
-                      } else if (reciprocal >= 100) {
-                        return `1/${Math.round(reciprocal / 100)}00x`;
-                      } else if (reciprocal >= 10) {
-                        return `1/${Math.round(reciprocal / 10)}0x`;
-                      } else {
-                        return `1/${Math.round(reciprocal)}x`;
-                      }
-                    } else {
-                      return "0x";
-                    }
-                  } else {
-                    // For linear scale, format as currency differences
-                    if (value === 0) return "Expected";
-                    return (value >= 0 ? "+" : "") + formatter.format(value);
-                  }
+                  // For linear scale, format as currency differences
+                  if (value === 0) return "Expected";
+                  return (value >= 0 ? "+" : "") + formatter.format(value);
                 }}
                 tickLabelProps={() => ({
-                  fill: themeUtils.chart.colors.text.secondary,
-                  fontSize: isMobile ? 10 : 12,
-                  fontFamily:
-                    themeUtils.chart.typography["chart-axis-tick"].fontFamily,
+                  fill: "rgb(51,51,51)",
+                  fontSize: 16,
+                  fontWeight: 600,
+                  fontFamily: "Source Sans Pro, sans-serif",
                   textAnchor: "middle",
                 })}
                 tickLineProps={() => ({
-                  stroke: themeUtils.chart.colors.border.light,
-                  strokeWidth: themeUtils.chart.styles.axis.tickStrokeWidth,
+                  stroke: "rgb(51,51,51)",
+                  strokeWidth: 2,
                 })}
-                stroke={themeUtils.chart.colors.border.light}
-                strokeWidth={themeUtils.chart.styles.axis.axisStrokeWidth}
-                numTicks={useLogScale ? undefined : isMobile ? 5 : 8}
+                stroke="rgb(51,51,51)"
+                strokeWidth={2}
+                numTicks={isMobile ? 5 : 8}
+                tickComponent={({ formattedValue, ...tickProps }) => {
+                  const isExpected = formattedValue === "Expected";
+                  if (isExpected) {
+                    // Position precisely using tick's x/y instead of relying on transform
+                    const { x = 0, y = 0 } = tickProps;
+                    const boxWidth = 120;
+                    const boxHeight = 28;
+                    return (
+                      <g transform={`translate(${x}, ${y})`}>
+                        <foreignObject
+                          x={-boxWidth / 2}
+                          y={-20}
+                          width={boxWidth}
+                          height={boxHeight}
+                          style={{ overflow: "visible" }}
+                        >
+                          <div
+                            xmlns="http://www.w3.org/1999/xhtml"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "100%",
+                              height: "100%",
+                            }}
+                          >
+                            <Tooltip
+                              title={expectedDefinition}
+                              placement="top"
+                              arrow
+                              slotProps={{
+                                tooltip: {
+                                  sx: {
+                                    bgcolor: "#fff",
+                                    color: "#000",
+                                    border: "1px solid #ddd",
+                                  },
+                                },
+                                arrow: { sx: { color: "#fff" } },
+                              }}
+                            >
+                              <span
+                                style={{
+                                  textDecoration: "underline",
+                                  cursor: "help",
+                                  fontWeight: 600,
+                                  fontFamily: "Source Sans Pro, sans-serif",
+                                  fontSize: 16,
+                                  color: "rgb(51,51,51)",
+                                  lineHeight: 1,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                Expected
+                              </span>
+                            </Tooltip>
+                          </div>
+                        </foreignObject>
+                      </g>
+                    );
+                  }
+                  return (
+                    <text
+                      {...tickProps}
+                      fill="rgb(51,51,51)"
+                      fontSize={16}
+                      fontWeight={600}
+                      fontFamily="Source Sans Pro, sans-serif"
+                      textAnchor="middle"
+                    >
+                      {formattedValue}
+                    </text>
+                  );
+                }}
               />
+
+              {/* Axis annotations */}
             </g>
           </svg>
         </Box>
 
         {/* Legend Section with improved styling */}
-
-        <StackedBarsLegend groups={groups} isMobile={isMobile} />
       </Box>
 
       {/* Tooltip with visx bounds detection and custom styling */}
       {tooltipOpen && tooltipData && (
         <TooltipWithBounds
           key={Math.random()}
-          top={tooltipTop}
-          left={tooltipLeft}
+          top={(tooltipTop || 0) + 14}
+          left={(tooltipLeft || 0) + 14}
+          className="gg-unskinned-tooltip"
         >
-          <Box>
-            <Typography variant="chart-tooltip-title">
-              {tooltipData?.data?.group?.name}
-            </Typography>
-
-            <Box sx={{ display: "grid", gap: 1.2 }}>
-              {useLogScale && (
-                <Box>
-                  <Typography variant="chart-tooltip-content">
-                    <strong>Performance Ratio:</strong>{" "}
-                    {tooltipData?.ratio
-                      ? tooltipData.ratio >= 1
-                        ? `${tooltipData.ratio.toFixed(1)}x expected`
-                        : `1/${(1 / tooltipData.ratio).toFixed(1)}x expected`
-                      : "N/A"}
-                  </Typography>
-                </Box>
-              )}
-              <Box>
-                <Typography variant="chart-tooltip-content">
-                  <strong>Difference:</strong>{" "}
-                  {(tooltipData?.difference >= 0 ? "+" : "") +
-                    formatter.format(tooltipData?.difference || 0)}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="chart-tooltip-content">
-                  <strong>Actual Export Value:</strong>{" "}
-                  {formatter.format(tooltipData?.exportValue || 0)}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="chart-tooltip-content">
-                  <strong>Expected Exports:</strong>{" "}
-                  {formatter.format(tooltipData?.expectedExports || 0)}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="chart-tooltip-content">
-                  <strong>Performance:</strong>{" "}
-                  {tooltipData?.difference >= 0
-                    ? "Above Expectation"
-                    : "Below Expectation"}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
+          <SharedTooltip
+            payload={{
+              type: "custom",
+              data: {
+                title: tooltipData?.data?.group?.name || "",
+                rows: [
+                  {
+                    label: "Cluster:",
+                    value: tooltipData?.data?.group?.name || "-",
+                  },
+                  {
+                    label: "Export Value:",
+                    value: formatter.format(tooltipData?.exportValue || 0),
+                  },
+                  {
+                    label: "Expected Export Value:",
+                    value: formatter.format(tooltipData?.expectedExports || 0),
+                  },
+                  {
+                    label: "Difference:",
+                    value: `${tooltipData?.difference >= 0 ? "+" : ""}${formatter.format(tooltipData?.difference || 0)}`,
+                  },
+                  {
+                    label: "Performance:",
+                    value:
+                      tooltipData?.difference >= 0
+                        ? "Above Expectation"
+                        : "Below Expectation",
+                  },
+                  { label: "Year:", value: Number.parseInt(year) },
+                ],
+              },
+            }}
+          />
         </TooltipWithBounds>
       )}
     </Box>

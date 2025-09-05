@@ -1,4 +1,5 @@
-import React from "react";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
@@ -28,12 +29,15 @@ import { useUrlParams } from "../hooks/useUrlParams";
 import { useQuery } from "@apollo/client";
 import { GET_COUNTRIES } from "../queries/shared";
 import { Autocomplete, TextField, Select } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
-import HowToReadPNG from "../how-to-read.png";
 import { useSidebar } from "./SidebarContext";
 import ShareModal from "./ShareModal";
 import GlossaryModal from "./GlossaryModal";
 import DownloadModal from "./DownloadModal";
+import LearningModal from "./LearningModal";
+import HierarchyLegend from "./HierarchyLegend";
 import { useStrategicPosition } from "../hooks/useStrategicPosition";
 import {
   replaceCountryPlaceholder,
@@ -43,6 +47,33 @@ import {
 } from "./TextUtils";
 
 const drawerWidth = 420;
+
+// Dynamic country flag loader (CRA/Webpack)
+// Using `require.context` to resolve files from `src/assets/country_flags`
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const flagContext: any = (require as any).context(
+  "../../../../assets/country_flags",
+  false,
+  /^\.\/Flag-.*\.(svg|png)$/,
+);
+
+const getFlagSrc = (iso3Code?: string): string | null => {
+  const keys = flagContext.keys();
+  const upper = (iso3Code || "").toUpperCase();
+  const candidates = [`./Flag-${upper}.svg`, `./Flag-${upper}.png`];
+  for (const k of candidates) {
+    if (keys.includes(k)) {
+      const mod = flagContext(k);
+      return (mod && (mod.default || mod)) as string;
+    }
+  }
+  const fallback = "./Flag-Undeclared.png";
+  if (keys.includes(fallback)) {
+    const mod = flagContext(fallback);
+    return (mod && (mod.default || mod)) as string;
+  }
+  return null;
+};
 
 interface NavigationStep {
   id: string;
@@ -74,11 +105,11 @@ const navigationSteps: NavigationStep[] = [
       "This visualization reveals where [Country] is already active within green industrial clusters – including their component products and overarching green value chains. These existing strengths can unlock green growth opportunities by entering related production that requires similar knowhow.",
   },
   {
-    id: "value-chains",
-    route: "/greenplexity/value-chains",
-    title: "What Manufacturing communities are contained in value chains?",
+    id: "clusters",
+    route: Routes.GreenGrowthClusters,
+    title: "Which industrial clusters drive green growth?",
     modalContent:
-      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+      "Industrial clusters represent groups of related products that require similar productive capabilities and tend to be produced in the same places. This view shows all green industrial clusters and their component products, revealing the manufacturing communities that drive the green economy. Clusters can span multiple value chains, showing how capabilities transfer across different green technologies.",
   },
   {
     id: "competitiveness",
@@ -99,7 +130,14 @@ const navigationSteps: NavigationStep[] = [
     route: "/greenplexity/opportunities",
     title: "What are [country]'s green growth opportunities?",
     modalContent:
-      "As decarbonization accelerates, green growth involves entering new clusters that are poised for rapid expansion. Countries are more successful at entering clusters that build on existing capabilities. This chart identifies the green clusters where [country] can gain the most, based on 2 dimensions: feasibility (existing capabilities) and attractiveness (future benefits).\n\nThe highlighted clusters strike the balance between what [country] can do today and high-value prospects for the future.",
+      "[Country]'s existing capabilities in green industrial clusters afford [many/few] opportunities to diversify into related clusters. To create a winning green growth strategy, [Country] may consider the following policy approach:",
+  },
+  {
+    id: "value-chains",
+    route: "/greenplexity/value-chains",
+    title: "What Manufacturing communities are contained in value chains?",
+    modalContent:
+      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
   },
   {
     id: "dimensions",
@@ -107,6 +145,13 @@ const navigationSteps: NavigationStep[] = [
     title: "What are My Opportunities?",
     modalContent:
       "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+  },
+  {
+    id: "summary",
+    route: "/greenplexity/summary",
+    title: "[country] in Summary",
+    modalContent:
+      "This page summarizes your recommended green growth approach and highlights top clusters to prioritize next.",
   },
 ];
 
@@ -122,10 +167,18 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
 
   // Use existing sidebar context but adapt for MUI standards
   const { isCondensed, toggleSidebar } = useSidebar();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [shareModalOpen, setShareModalOpen] = React.useState(false);
-  const [glossaryModalOpen, setGlossaryModalOpen] = React.useState(false);
-  const [downloadModalOpen, setDownloadModalOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [glossaryModalOpen, setGlossaryModalOpen] = useState(false);
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+  const [learningModalOpen, setLearningModalOpen] = useState(false);
+  const [hoveredStep, setHoveredStep] = useState<string | null>(null);
+  const [hoverOverlay, setHoverOverlay] = useState<{
+    text: string;
+    x: number;
+    y: number;
+    visible: boolean;
+  }>({ text: "", x: 0, y: 0, visible: false });
 
   const {
     countrySelection,
@@ -239,8 +292,14 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
 
   const handlePrevious = () => {
     if (currentStepIndex > 0) {
+      // If we're on the radar (dimensions) step and currently viewing "/table",
+      // do not preserve the sub-route when navigating to a different step.
+      const preserve = !(
+        currentStep?.id === "dimensions" && getCurrentSubRoute() === "/table"
+      );
       const urlWithParams = buildUrlWithParams(
         navigationSteps[currentStepIndex - 1].route,
+        preserve,
       );
       navigate(urlWithParams);
     }
@@ -248,8 +307,14 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
 
   const handleNext = () => {
     if (currentStepIndex < navigationSteps.length - 1) {
+      // If we're on the radar (dimensions) step and currently viewing "/table",
+      // do not preserve the sub-route when navigating to a different step.
+      const preserve = !(
+        currentStep?.id === "dimensions" && getCurrentSubRoute() === "/table"
+      );
       const urlWithParams = buildUrlWithParams(
         navigationSteps[currentStepIndex + 1].route,
+        preserve,
       );
       navigate(urlWithParams);
     }
@@ -361,6 +426,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         <Button
           startIcon={<Lightbulb />}
           size="small"
+          onClick={() => setLearningModalOpen(true)}
           sx={{
             flex: 1,
             textTransform: "none",
@@ -384,7 +450,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        borderRight: "1px solid #e0e0e0", // Right border to separate from viz area
+        borderRight: "1px solid #777777", // Right border to separate from viz area
       }}
     >
       {/* Header - Fixed at top */}
@@ -416,15 +482,19 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                   fontWeight: 600,
                   lineHeight: "20px",
                   letterSpacing: "0.5px",
+                  cursor: "pointer",
                 }}
+                onClick={handleHome}
               >
                 GREENPLEXITY
               </Typography>
-              <img
-                src={GrowthLabLogoPNG}
-                alt="Growth Lab"
-                style={{ height: "25px", marginLeft: "12px" }}
-              />
+              <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+                <img
+                  src={GrowthLabLogoPNG}
+                  alt="Growth Lab"
+                  style={{ height: "25px", marginLeft: "12px" }}
+                />
+              </a>
             </Box>
 
             {/* Close button for desktop */}
@@ -449,48 +519,108 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
 
         {/* Controls */}
         <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
-          <Autocomplete
-            disableClearable
-            blurOnSelect
-            size="small"
-            sx={{ flex: 1 }}
-            value={
-              countries.find(
-                (country: any) => country.countryId === countrySelection,
-              ) || null
-            }
-            onChange={(_: any, newValue: any) => {
-              setCountrySelection(newValue ? newValue.countryId : null);
-            }}
-            options={countries}
-            getOptionLabel={(option: any) => option.nameEn}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                placeholder="Country xyz"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    fontSize: "14px",
-                    color: "white",
-                    "& fieldset": { borderColor: "white" },
-                    "&:hover fieldset": { borderColor: "white" },
-                    "&.Mui-focused fieldset": { borderColor: "white" },
-                    "& .MuiInputBase-input::placeholder": {
+          <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
+            <Autocomplete
+              disableClearable
+              blurOnSelect
+              size="small"
+              sx={{
+                flex: 1,
+                "& .MuiAutocomplete-popupIndicator": {
+                  color: "white",
+                  transform: "rotate(0deg)",
+                  transition: "transform 150ms ease",
+                },
+                "& .MuiAutocomplete-popupIndicatorOpen": {
+                  transform: "rotate(180deg)",
+                },
+              }}
+              popupIcon={<KeyboardArrowDownIcon />}
+              value={
+                countries.find(
+                  (country: any) => country.countryId === countrySelection,
+                ) || null
+              }
+              onChange={(_: any, newValue: any) => {
+                setCountrySelection(newValue ? newValue.countryId : null);
+              }}
+              options={countries}
+              getOptionLabel={(option: any) => option.nameEn}
+              renderOption={(props, option: any) => {
+                const src = getFlagSrc(option.iso3Code);
+                return (
+                  <li {...props}>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      {src && (
+                        <img
+                          src={src}
+                          alt=""
+                          width={20}
+                          height={14}
+                          style={{ borderRadius: 2 }}
+                        />
+                      )}
+                      {option.nameEn}
+                    </Box>
+                  </li>
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  placeholder="Country xyz"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "18px",
                       color: "white",
-                      opacity: 0.7,
+                      "& fieldset": { borderColor: "white" },
+                      "&:hover fieldset": { borderColor: "white" },
+                      "&.Mui-focused fieldset": { borderColor: "white" },
+                      "& .MuiInputBase-input::placeholder": {
+                        color: "white",
+                        opacity: 0.7,
+                      },
+                      display: "flex",
+                      alignItems: "center",
                     },
-                  },
-                  "& .MuiAutocomplete-popupIndicator": { color: "white" },
-                  "& .MuiAutocomplete-clearIndicator": { color: "white" },
-                }}
-              />
-            )}
-          />
+                    "& .MuiAutocomplete-popupIndicator": { color: "white" },
+                    "& .MuiAutocomplete-clearIndicator": { color: "white" },
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (() => {
+                      const selected = countries.find(
+                        (c: any) => c.countryId === countrySelection,
+                      );
+                      const src = selected
+                        ? getFlagSrc(selected.iso3Code)
+                        : null;
+                      return (
+                        <>
+                          {src && (
+                            <img
+                              src={src}
+                              alt=""
+                              width={20}
+                              height={14}
+                              style={{ marginRight: 8, borderRadius: 2 }}
+                            />
+                          )}
+                          {params.InputProps.startAdornment}
+                        </>
+                      );
+                    })(),
+                  }}
+                />
+              )}
+            />
+          </Box>
 
           <Select
             variant="outlined"
             size="small"
+            IconComponent={KeyboardArrowDownIcon}
             value={yearSelection}
             onChange={(e: any) => setYearSelection(e.target.value)}
             sx={{
@@ -505,8 +635,21 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "white",
               },
-              "& .MuiSelect-icon": { color: "white" },
-              "& .MuiSelect-select": { color: "white" },
+              "& .MuiSelect-icon": {
+                color: "white",
+                top: "50%",
+                transform: "translateY(-50%) rotate(0deg)",
+                transition: "transform 150ms ease",
+              },
+              "& .MuiSelect-icon.MuiSelect-iconOpen": {
+                transform: "translateY(-50%) rotate(180deg)",
+              },
+              "& .MuiSelect-select": {
+                color: "white",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              },
             }}
           >
             {availableYears.map((year) => (
@@ -545,33 +688,15 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           },
         }}
       >
-        {/* Previous Button */}
-        <Button
-          startIcon={<ArrowUpward />}
-          onClick={handlePrevious}
-          disabled={currentStepIndex <= 0}
-          sx={{
-            fontWeight: "semibold",
-            textTransform: "none",
-            fontSize: "18px",
-            justifyContent: "flex-start",
-            minHeight: "85px",
-            padding: "8px 16px",
-            color: "#106496",
-
-            "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.08)" },
-            "&:disabled": { color: "#ccc" },
-          }}
-        >
-          {previousStep ? getStepTitle(previousStep) : "Previous"}
-        </Button>
-
         {/* Main content area with indicators and text */}
         <Box
           sx={{
             display: "flex",
-            gap: "20px",
-            mb: 2, // Add margin bottom for spacing
+            gap: "8px",
+            flex: 1, // Take up all available space
+            minHeight: 0, // Allow flex shrinking
+            overflow: "visible",
+            alignItems: "flex-start",
           }}
         >
           {/* Progress Indicators */}
@@ -581,19 +706,23 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "flex-start",
-              gap: "16px",
+              gap: "10px",
               minWidth: "24px",
               width: "24px",
-              paddingTop: "60px",
+              height: "100%", // Take full height of the container
               flexShrink: 0,
+              overflow: "visible",
+              position: "relative",
+              zIndex: (theme) => theme.zIndex.drawer + 2,
+              pt: 12,
             }}
           >
             {/* Home Icon */}
             <Box
               onClick={handleHome}
               sx={{
-                width: "16px",
-                height: "16px",
+                width: "20px",
+                height: "20px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -602,7 +731,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                 flexShrink: 0,
                 "&:hover": { transform: "scale(1.1)" },
                 "& .MuiSvgIcon-root": {
-                  fontSize: "16px",
+                  fontSize: "20px",
                   color: "#2685BD",
                 },
               }}
@@ -616,59 +745,151 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
               const isActive =
                 location.pathname === step.route ||
                 location.pathname.startsWith(step.route + "/");
+              const isHovered = hoveredStep === step.id;
+
               return (
                 <Box
                   key={step.id}
-                  onClick={() => handleStepClick(step.route)}
-                  title={step.title}
                   sx={{
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "50%",
-                    backgroundColor: "#2685BD",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
                     position: "relative",
-                    flexShrink: 0,
-                    "&:hover": { transform: "scale(1.1)" },
-                    "&::after": isActive
-                      ? {
-                          content: '""',
-                          position: "absolute",
-                          top: "-4px",
-                          left: "-4px",
-                          right: "-4px",
-                          bottom: "-4px",
-                          border: "2px solid #2685BD",
-                          borderRadius: "50%",
-                        }
-                      : {},
+                    display: "flex",
+                    alignItems: "center",
+                    height: "24px",
+                    width: "18px", // Only take space for the circle
+                    zIndex: isHovered ? 1000 : 1,
+                    overflow: "visible",
                   }}
-                />
+                  onMouseEnter={(e) => {
+                    setHoveredStep(step.id);
+                    const rect = (
+                      e.currentTarget as HTMLElement
+                    ).getBoundingClientRect();
+                    setHoverOverlay({
+                      text: getStepTitle(step),
+                      x: rect.left,
+                      y: rect.top + rect.height / 2 - 12,
+                      visible: true,
+                    });
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredStep(null);
+                    setHoverOverlay((prev) => ({ ...prev, visible: false }));
+                  }}
+                  onClick={() => handleStepClick(step.route)}
+                >
+                  {/* Indicator: use takeoff icon for summary step, circle otherwise */}
+                  {step.id === "summary" ? (
+                    <Box
+                      sx={{
+                        width: "18px",
+                        height: "18px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "relative",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                        zIndex: 2,
+                        "&:hover": { transform: "scale(1.1)" },
+                      }}
+                    >
+                      <FlightTakeoffIcon
+                        sx={{ fontSize: 26, color: "#2685BD" }}
+                      />
+                      {isActive && (
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "-5px",
+                            left: "-5px",
+                            right: "-5px",
+                            bottom: "-5px",
+                            border: "2px solid #2685BD",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
+                    </Box>
+                  ) : (
+                    <Box
+                      sx={{
+                        width: "18px",
+                        height: "18px",
+                        borderRadius: "50%",
+                        backgroundColor: "#2685BD",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                        position: "relative",
+                        zIndex: 2,
+                        "&:hover": { transform: "scale(1.1)" },
+                        "&::after": isActive
+                          ? {
+                              content: '""',
+                              position: "absolute",
+                              top: "-5px",
+                              left: "-5px",
+                              right: "-5px",
+                              bottom: "-5px",
+                              border: "2px solid #2685BD",
+                              borderRadius: "50%",
+                            }
+                          : {},
+                      }}
+                    />
+                  )}
+
+                  {/* Remove white center dot as per image suggestion */}
+
+                  {/* Expanded overlay */}
+                  {/* Hover overlay handled via portal */}
+                </Box>
               );
             })}
           </Box>
 
-          {/* Content area */}
+          {/* Content area with navigation buttons */}
           <Box
             sx={{
               flex: 1,
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-start",
-              padding: "20px 16px 20px 0",
+              padding: "20px 16px 20px 4px",
             }}
           >
-            {currentStep && (
+            {/* Previous Button - aligned with content */}
+            <Button
+              startIcon={<ArrowUpward />}
+              onClick={handlePrevious}
+              disabled={currentStepIndex <= 0}
+              sx={{
+                fontWeight: "semibold",
+                textTransform: "none",
+                fontSize: "18px",
+                justifyContent: "flex-start",
+                minHeight: "45px",
+                padding: "8px 0",
+                color: "#106496",
+                opacity: 0.5, // Only the up button is de-emphasized
+                mb: 2,
+                "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.08)" },
+                "&:disabled": { color: "#ccc" },
+              }}
+            >
+              {previousStep ? getStepTitle(previousStep) : "Previous"}
+            </Button>
+
+            {currentStep && currentStep.id !== "summary" && (
               <>
                 <Typography
                   variant="h6"
                   sx={(theme) => ({
                     fontWeight: theme.typography.fontWeightBold,
-                    fontSize: theme.typography.h2.fontSize,
+                    fontSize: "22px",
                     marginBottom: 3,
                     color: theme.palette.text.primary,
-                    lineHeight: theme.typography.h5.lineHeight,
+                    lineHeight: 1.2,
+                    textTransform: "uppercase",
                   })}
                 >
                   {getStepTitle(currentStep)}
@@ -686,44 +907,62 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                     )}
                   </FormattedText>
                 )}
-                {currentStep.id === "advantage" && (
-                  <Box sx={{ mt: 3, textAlign: "center" }}>
-                    <img
-                      src={HowToReadPNG}
-                      alt="How to read the visualization"
-                      style={{
-                        maxWidth: "90%",
-                        height: "auto",
-                        borderRadius: "8px",
-                        border: "1px solid #e0e0e0",
+                {/* Show hierarchy legend for bubble visualization steps */}
+                {(currentStep.id === "overview" ||
+                  currentStep.id === "advantage" ||
+                  currentStep.id === "clusters") && (
+                  <Box sx={{ mt: 3 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 600,
+                        mb: 2,
+                        fontSize: "16px",
+                        textAlign: "left",
                       }}
-                    />
+                    >
+                      How to Read:
+                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <HierarchyLegend
+                        layoutMode={
+                          currentStep.id === "overview"
+                            ? "flat"
+                            : currentStep.id === "advantage"
+                              ? "clustered"
+                              : currentStep.id === "clusters"
+                                ? "clusters-only"
+                                : "flat"
+                        }
+                      />
+                    </Box>
                   </Box>
                 )}
               </>
             )}
+
+            {/* Next Button - aligned with content, normal opacity */}
+            <Button
+              startIcon={<ArrowDownward />}
+              onClick={handleNext}
+              disabled={currentStepIndex >= navigationSteps.length - 1}
+              sx={{
+                textTransform: "none",
+                fontSize: "18px",
+                fontWeight: "semibold",
+                justifyContent: "flex-start",
+                minHeight: "45px",
+                padding: "8px 0",
+                color: "#106496",
+                mt: 2,
+                "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.08)" },
+                "&:disabled": { color: "#ccc" },
+              }}
+            >
+              {nextStep ? getStepTitle(nextStep) : "Next"}
+            </Button>
           </Box>
         </Box>
-
-        {/* Next Button */}
-        <Button
-          endIcon={<ArrowDownward />}
-          onClick={handleNext}
-          disabled={currentStepIndex >= navigationSteps.length - 1}
-          sx={{
-            textTransform: "none",
-            fontSize: "18px",
-            fontWeight: "semibold",
-            justifyContent: "flex-start",
-            minHeight: "85px",
-            padding: "8px 16px",
-            color: "#106496",
-            "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.08)" },
-            "&:disabled": { color: "#ccc" },
-          }}
-        >
-          {nextStep ? getStepTitle(nextStep) : "Next"}
-        </Button>
       </Box>
 
       {/* Action Bar - Fixed at bottom */}
@@ -751,11 +990,13 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             justifyContent: "center",
           }}
         >
-          <img
-            src={GrowthLabLogoPNG}
-            alt="Growth Lab"
-            style={{ height: "20px", marginRight: "8px" }}
-          />
+          <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+            <img
+              src={GrowthLabLogoPNG}
+              alt="Growth Lab"
+              style={{ height: "20px", marginRight: "8px" }}
+            />
+          </a>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -805,11 +1046,13 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           ),
         }}
       >
-        <img
-          src={GrowthLabLogoPNG}
-          alt="Growth Lab"
-          style={{ height: "20px", marginRight: "8px" }}
-        />
+        <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+          <img
+            src={GrowthLabLogoPNG}
+            alt="Growth Lab"
+            style={{ height: "20px", marginRight: "8px" }}
+          />
+        </a>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -836,6 +1079,38 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
+      {hoverOverlay.visible &&
+        createPortal(
+          <Box
+            sx={{
+              position: "fixed",
+              left: hoverOverlay.x,
+              top: hoverOverlay.y,
+              transform: "translateX(0)",
+              height: "24px",
+              backgroundColor: "#2685BD",
+              borderRadius: "12px",
+              display: "flex",
+              alignItems: "center",
+              paddingLeft: "26px",
+              paddingRight: 1,
+              zIndex: (theme) => theme.zIndex.modal + 1,
+              pointerEvents: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: "16px",
+                fontWeight: 500,
+              }}
+            >
+              {hoverOverlay.text}
+            </Typography>
+          </Box>,
+          document.body,
+        )}
       {/* Mobile AppBar */}
       {isMobile && (
         <AppBar
@@ -856,12 +1131,19 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             >
               <MenuIcon />
             </IconButton>
-            <img
-              src={GrowthLabLogoPNG}
-              alt="Growth Lab"
-              style={{ height: "20px", marginRight: "8px" }}
-            />
-            <Typography variant="h6" noWrap>
+            <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+              <img
+                src={GrowthLabLogoPNG}
+                alt="Growth Lab"
+                style={{ height: "20px", marginRight: "8px" }}
+              />
+            </a>
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{ cursor: "pointer" }}
+              onClick={handleHome}
+            >
               GREENPLEXITY
             </Typography>
           </Toolbar>
@@ -937,6 +1219,12 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
       <DownloadModal
         open={downloadModalOpen}
         onClose={handleDownloadModalClose}
+      />
+
+      {/* Learning Modal */}
+      <LearningModal
+        open={learningModalOpen}
+        onClose={() => setLearningModalOpen(false)}
       />
     </Box>
   );

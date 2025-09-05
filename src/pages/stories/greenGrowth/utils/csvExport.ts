@@ -1,4 +1,4 @@
-import {
+import type {
   ProcessedProductData,
   ProcessedCountryData,
 } from "../hooks/useProcessedTableData";
@@ -8,23 +8,26 @@ const formatNumber = (
   value: number | null | undefined,
   decimals = 2,
 ): string => {
-  if (value === null || value === undefined || isNaN(value)) return "";
-  return value.toFixed(decimals);
+  const num = typeof value === "number" ? value : Number(value);
+  if (value === null || value === undefined || Number.isNaN(num)) return "";
+  return num.toFixed(decimals);
 };
 
 const formatPercent = (value: number | null | undefined): string => {
-  if (value === null || value === undefined || isNaN(value)) return "";
-  return (value * 100).toFixed(1);
+  const num = typeof value === "number" ? value : Number(value);
+  if (value === null || value === undefined || Number.isNaN(num)) return "";
+  return (num * 100).toFixed(1);
 };
 
 const formatCurrency = (value: number | null | undefined): string => {
-  if (value === null || value === undefined || isNaN(value)) return "";
-  return value.toString();
+  const num = typeof value === "number" ? value : Number(value);
+  if (value === null || value === undefined || Number.isNaN(num)) return "";
+  return num.toString();
 };
 
-const escapeCSV = (value: any): string => {
+const escapeCSV = (value: unknown): string => {
   if (value === null || value === undefined) return "";
-  const str = String(value);
+  const str = String(value as string);
   // If the value contains commas, quotes, or newlines, wrap in quotes and escape internal quotes
   if (str.includes(",") || str.includes('"') || str.includes("\n")) {
     return `"${str.replace(/"/g, '""')}"`;
@@ -52,59 +55,35 @@ export const generateProductsCSV = (
   if (!data.length) return;
 
   const headers = [
-    "Product Code",
-    "Product Name",
-    "Product Level",
-    "Industry Cluster",
-    "Supply Chain",
+    "HS Code",
+    "Product",
+    "Green Industrial Cluster",
+    "Green Value Chain",
+    `Product Export Value (USD, ${year})`,
+    `Product Market Size (USD, ${year})`,
+    "Product Market Growth (%)",
     "Export RCA",
-    "Export Value (USD)",
-    "Expected Exports (USD)",
-    "Product Complexity",
     "Opportunity Gain",
-    "Density",
-    "Global Market Share",
-    "Product Market Share",
-    "Market Growth (%)",
-    "Market Share Growth (%)",
-    "PCI Std Dev",
-    "COG Std Dev",
-    "Feasibility Std Dev",
-    "Strategy Balanced Portfolio",
-    "Strategy Long Jump",
-    "Strategy Low Hanging Fruit",
-    "Strategy Frontier",
-    "Composite Score",
+    "Product Complexity",
+    "Product Feasibility",
   ];
 
   const rows = data.map((row: ProcessedProductData) => [
-    escapeCSV(row.productCode),
+    escapeCSV(row.productCode ? `HS #${row.productCode}` : ""),
     escapeCSV(row.productName),
-    escapeCSV(row.productLevel),
     escapeCSV(row.clusterName),
     escapeCSV(row.supplyChainName),
-    escapeCSV(formatNumber(row.exportRca)),
     escapeCSV(formatCurrency(row.exportValue)),
-    escapeCSV(formatCurrency(row.expectedExports)),
-    escapeCSV(formatNumber(row.normalizedPci)),
-    escapeCSV(formatNumber(row.normalizedCog)),
-    escapeCSV(formatNumber(row.density)),
-    escapeCSV(formatNumber(row.globalMarketShare)),
-    escapeCSV(formatNumber(row.productMarketShare)),
+    escapeCSV(formatCurrency(row.marketSize ?? null)),
     escapeCSV(formatPercent(row.marketGrowth)),
-    escapeCSV(formatPercent(row.productMarketShareGrowth)),
-    escapeCSV(formatNumber(row.pciStd)),
-    escapeCSV(formatNumber(row.cogStd)),
-    escapeCSV(formatNumber(row.feasibilityStd)),
-    escapeCSV(formatNumber(row.strategyBalancedPortfolio)),
-    escapeCSV(formatNumber(row.strategyLongJump)),
-    escapeCSV(formatNumber(row.strategyLowHangingFruit)),
-    escapeCSV(formatNumber(row.strategyFrontier)),
-    escapeCSV(formatNumber(row.pciCogFeasibilityComposite)),
+    escapeCSV(formatNumber(row.exportRca)),
+    escapeCSV(formatNumber(row.normalizedCog)),
+    escapeCSV(formatNumber(row.normalizedPci)),
+    escapeCSV(formatNumber(row.density)),
   ]);
 
   const csvContent = [
-    headers.join(","),
+    headers.map(escapeCSV).join(","),
     ...rows.map((row) => row.join(",")),
   ].join("\n");
   const filename = `greenplexity_products_${countryName}_${year}.csv`;
@@ -139,7 +118,7 @@ export const generateCountryCSV = (
   ]);
 
   const csvContent = [
-    headers.join(","),
+    headers.map(escapeCSV).join(","),
     ...rows.map((row) => row.join(",")),
   ].join("\n");
   const filename = `greenplexity_countries_${year}.csv`;

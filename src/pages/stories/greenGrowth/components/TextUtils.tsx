@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
+import { lighten } from "@mui/material/styles";
 import { Bookmark as BookmarkIcon } from "@mui/icons-material";
 
 // Utility function to replace country placeholder in text
@@ -83,7 +84,7 @@ const StrategicPositionBadge: React.FC<StrategicPositionBadgeProps> = ({
   return (
     <Box
       sx={{
-        mb: 2,
+        mb: 0.5,
         display: "flex",
         alignItems: "center",
         gap: 1,
@@ -91,21 +92,19 @@ const StrategicPositionBadge: React.FC<StrategicPositionBadgeProps> = ({
     >
       <div
         style={{
-          backgroundColor: strategicPosition.color,
-          color: "white",
-          padding: "6px 12px",
-          borderRadius: "4px",
-          fontSize: "14px",
-          fontWeight: "600",
+          color: strategicPosition.color,
+          fontSize: "20px",
+          fontWeight: 700,
           display: "flex",
           alignItems: "center",
-          gap: "6px",
+          gap: "8px",
+          lineHeight: 1,
         }}
       >
-        <BookmarkIcon sx={{ fontSize: "16px" }} />
-        <span style={{ textDecoration: "underline" }}>
-          {strategicPosition.label}
-        </span>
+        <BookmarkIcon
+          sx={{ fontSize: "20px", color: strategicPosition.color }}
+        />
+        <span>{strategicPosition.label}</span>
       </div>
     </Box>
   );
@@ -135,12 +134,20 @@ export const StrategicPositionContent: React.FC<
       </FormattedText>
 
       <StrategicPositionBadge strategicPosition={strategicPosition} />
-
-      <FormattedText>
-        {STRATEGIC_POSITION_TEMPLATE.getPolicyDescription(
-          strategicPosition.label,
-        )}
-      </FormattedText>
+      <Box
+        sx={{
+          mt: 0.5,
+          backgroundColor: lighten(strategicPosition.color || "#2685BD", 0.85),
+          borderTop: `4px solid ${strategicPosition.color || "#2685BD"}`,
+          p: 2,
+        }}
+      >
+        <FormattedText>
+          {STRATEGIC_POSITION_TEMPLATE.getPolicyDescription(
+            strategicPosition.label,
+          )}
+        </FormattedText>
+      </Box>
     </>
   );
 };

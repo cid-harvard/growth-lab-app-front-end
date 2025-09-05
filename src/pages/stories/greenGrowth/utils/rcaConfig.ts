@@ -2,30 +2,23 @@ import { scaleSequential } from "d3-scale";
 import { interpolateBlues } from "d3-scale-chromatic";
 
 // Shared 3-tier RCA range definitions (consistent across all components)
+// Simplified 2-tier RCA ranges: >1 and ≤1
 export const RCA_RANGES = [
   {
     min: 1.0,
     max: Infinity,
-    label: "High RCA (≥1.0)",
+    label: "High (RCA>1)",
     description: "Strong Capability",
     opacity: 1.0,
-    colorPosition: 0.8,
+    colorPosition: 0.9,
   },
   {
-    min: 0.5,
+    min: -Infinity,
     max: 1.0,
-    label: "Medium RCA (0.5-1.0)",
-    description: "Moderate Capability",
-    opacity: 0.6,
-    colorPosition: 0.5,
-  },
-  {
-    min: 0,
-    max: 0.5,
-    label: "Low RCA (<0.5)",
+    label: "Low (RCA≤1)",
     description: "Limited Capability",
-    opacity: 0.3,
-    colorPosition: 0.2,
+    opacity: 0.35,
+    colorPosition: 0.3,
   },
 ];
 

@@ -1,5 +1,5 @@
 import { asyncBufferFromUrl, parquetRead, parquetMetadata } from "hyparquet";
-function serializeBigInt(key, value) {
+function serializeBigInt(_key, value) {
   if (typeof value === "bigint") {
     return value.toString() + "n";
   }
@@ -24,7 +24,9 @@ async function loadParquetData(url) {
   let data;
   await parquetRead({
     file: await asyncBufferFromUrl(url),
-    onComplete: (d) => (data = JSON.parse(JSON.stringify(d, serializeBigInt))),
+    onComplete: (d) => {
+      data = JSON.parse(JSON.stringify(d, serializeBigInt));
+    },
   });
 
   return data;
@@ -41,4 +43,7 @@ export {
   colorScale,
   getSupplyChainColor,
   getValueChainColor,
+  getLighterColor,
+  getLighterColorSolid,
+  getDarkerColorSolid,
 } from "./utils/colors";

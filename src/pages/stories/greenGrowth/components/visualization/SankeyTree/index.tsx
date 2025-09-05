@@ -1,19 +1,9 @@
-import React, {
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { animated, useTransition, to } from "@react-spring/web";
 import { tree, hierarchy } from "d3-hierarchy";
 import { useTheme, useMediaQuery } from "@mui/material";
 import { ParentSize } from "@visx/responsive";
-import {
-  TableWrapper,
-  VisualizationLoading,
-  VisualizationControls,
-} from "../../shared";
+import { TableWrapper, VisualizationLoading } from "../../shared";
 import { useUrlParams, useGreenGrowthData } from "../../../hooks";
 import { useImageCaptureContext } from "../../../hooks/useImageCaptureContext";
 import { themeUtils } from "../../../theme";
@@ -26,16 +16,9 @@ import {
   filterHierarchyByProductRCA,
 } from "./dataUtils";
 import { applySankeyLayout, convertToPositions } from "./layoutUtils";
-import Legend from "./Legend";
-import { SankeyColoringMode } from "./types";
+// Legend and controls removed for global-only view
 
-// Helper function to get RCA-based opacity (3 groups) - for visual emphasis within filtered results
-const getRCAOpacity = (rca?: number): number => {
-  if (!rca) return 1;
-  if (rca >= 1) return 1.0; // High RCA group - full opacity
-  if (rca >= 0.5) return 0.7; // Medium RCA group - slightly reduced
-  return 0.5; // Low RCA group - more reduced
-};
+// RCA-based opacity no longer used in global-only mode
 
 // Internal component that receives dimensions from ParentSize
 const SankeyTreeInternal = ({
@@ -54,16 +37,16 @@ const SankeyTreeInternal = ({
 
   // Calculate responsive dimensions based on available space
   const { dimensions, leftMargin, rightMargin } = useMemo(() => {
-    const calculatedWidth = Math.max(width - (isMobile ? 10 : 20), 400);
-    // Account for legend space (120px) in height calculation, especially important on mobile
-    const legendSpace = 120;
+    const calculatedWidth = Math.max(width, 400);
+    // No legend in global-only mode — use full available height
+    const legendSpace = 0;
     const calculatedHeight = Math.max(
-      height - (isMobile ? 20 : 20) - legendSpace,
+      height - legendSpace,
       isMobile ? 280 : 350,
     );
 
-    const responsiveLeftMargin = isMobile ? 60 : 100;
-    const responsiveRightMargin = isMobile ? 100 : 180;
+    const responsiveLeftMargin = 140;
+    const responsiveRightMargin = 140;
 
     return {
       dimensions: {
@@ -92,10 +75,10 @@ const SankeyTreeInternal = ({
   const [connectedLinkIds, setConnectedLinkIds] = useState<Set<string>>(
     new Set(),
   );
-  const [coloringMode, setColoringMode] =
-    useState<SankeyColoringMode>("Country Specific");
+  // Force global coloring mode (country-specific mode removed)
+  const coloringMode = "Global" as const;
 
-  const [rcaThreshold, setRcaThreshold] = useState<number>(1);
+  // RCA threshold not used in global mode; keep products toggle internal (no controls shown)
   const [showSubtleProducts, setShowSubtleProducts] = useState<boolean>(false);
 
   const isAnimating = useRef(false);
@@ -107,8 +90,6 @@ const SankeyTreeInternal = ({
     setHoveredNode(null);
     setConnectedNodeIds(new Set());
     setConnectedLinkIds(new Set());
-    setColoringMode("Country Specific");
-    setRcaThreshold(1);
     setShowSubtleProducts(false);
     isAnimating.current = false;
   }, []);
@@ -129,58 +110,51 @@ const SankeyTreeInternal = ({
     // Force reset focused states on page navigation
     setFocusedValueChain(null);
     setFocusedCluster(null);
-    // Reset RCA threshold on country change
-    setRcaThreshold(1);
+    void countrySelection;
   }, [countrySelection]);
+
+  // Image capture handler and registration
+  const handleCaptureImage = useCallback(async () => {
+    if (!chartContainerRef.current) {
+      console.warn("Chart container not found");
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(chartContainerRef.current, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        width: chartContainerRef.current.offsetWidth,
+        height: chartContainerRef.current.offsetHeight,
+      });
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `sankey_tree_${countrySelection}_${focusedValueChain || focusedCluster || "overview"}.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+      }, "image/png");
+    } catch (error) {
+      console.error("Error capturing image:", error);
+    }
+  }, [countrySelection, focusedValueChain, focusedCluster]);
 
   // Register/unregister image capture function
   useEffect(() => {
-    const handleCaptureImage = async () => {
-      if (!chartContainerRef.current) {
-        console.warn("Chart container not found");
-        return;
-      }
-
-      try {
-        const canvas = await html2canvas(chartContainerRef.current, {
-          backgroundColor: "#ffffff",
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          width: chartContainerRef.current.offsetWidth,
-          height: chartContainerRef.current.offsetHeight,
-        });
-
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `sankey_tree_${countrySelection}_${focusedValueChain || focusedCluster || "overview"}.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-          }
-        }, "image/png");
-      } catch (error) {
-        console.error("Error capturing image:", error);
-      }
-    };
-
     registerCaptureFunction(handleCaptureImage);
-
     return () => {
       unregisterCaptureFunction();
     };
-  }, [
-    registerCaptureFunction,
-    unregisterCaptureFunction,
-    countrySelection,
-    focusedValueChain,
-    focusedCluster,
-  ]);
+  }, [registerCaptureFunction, unregisterCaptureFunction, handleCaptureImage]);
 
   // Centralized data loading with previous data fallback
   const {
@@ -212,7 +186,7 @@ const SankeyTreeInternal = ({
     const filteredHierarchy = filterHierarchyByProductRCA(
       baseHierarchyData,
       countryData,
-      rcaThreshold,
+      0,
       coloringMode,
     );
 
@@ -332,7 +306,6 @@ const SankeyTreeInternal = ({
     baseHierarchyData,
     focusedCluster,
     focusedValueChain,
-    rcaThreshold,
     coloringMode,
     countryData,
   ]);
@@ -394,6 +367,7 @@ const SankeyTreeInternal = ({
 
     // Handle tree layout when focusing on a value chain
     if (focusedValueChain && treeLayoutData) {
+      const headerPadding = isMobile ? 30 : 45;
       const treeNodeMap = new Map();
       treeLayoutData.descendants().forEach((node) => {
         treeNodeMap.set(node.data.id, node);
@@ -405,37 +379,47 @@ const SankeyTreeInternal = ({
         .map((node) => {
           const treeNode = treeNodeMap.get(node.id)!; // Safe to use ! since we filtered above
 
-          const nodeWidth =
-            treeNode.data.type === "value_chain"
-              ? 30
-              : treeNode.data.type === "manufacturing_cluster"
-                ? 28
-                : 25;
-          const nodeHeight =
-            treeNode.data.type === "value_chain"
-              ? 50
-              : treeNode.data.type === "manufacturing_cluster"
-                ? 40
-                : 30;
+          // Use fixed bounding box (16x16) so circles and link centers align consistently
+          const nodeWidth = 16;
+          const nodeHeight = 16;
 
           return {
             ...node,
             x: 120 + treeNode.y,
-            y: treeNode.x,
+            y: headerPadding + treeNode.x,
             width: nodeWidth,
             height: nodeHeight,
           };
         });
 
+      // Filter links in value chain focus to include only:
+      // - value_chain -> cluster links for the focused value chain
+      // - cluster -> product links that belong to the focused value chain
+      const filteredLinks = hierarchyData.links.filter((l) => {
+        if (!l.visible) return false;
+        // Keep VC -> Cluster links for the focused VC
+        if (l.source === focusedValueChain) return true;
+        // For cluster -> product, only keep those that belong to the selected VC
+        if (
+          updatedNodes.find((n) => n.id === l.source)?.type ===
+          "manufacturing_cluster"
+        ) {
+          if (!l.supplyChains || l.supplyChains.length === 0) return true;
+          return l.supplyChains.includes(focusedValueChain);
+        }
+        return false;
+      });
+
       return {
         ...hierarchyData,
         nodes: updatedNodes,
-        links: hierarchyData.links.filter((l) => l.visible),
+        links: filteredLinks,
       };
     }
 
     // Handle tree layout when focusing on a cluster
     if (focusedCluster) {
+      const headerPadding = isMobile ? 30 : 45;
       const visibleNodes = hierarchyData.nodes.filter((n) => n.visible);
 
       // Get connected value chains (sources) and products (targets)
@@ -451,7 +435,7 @@ const SankeyTreeInternal = ({
           return {
             ...node,
             x: dimensions.width / 2 - nodeWidth / 2,
-            y: dimensions.height / 2 - nodeHeight / 2,
+            y: dimensions.height / 2 - nodeHeight / 2 + headerPadding,
             width: nodeWidth,
             height: nodeHeight,
           };
@@ -459,7 +443,7 @@ const SankeyTreeInternal = ({
           // Arrange value chains vertically on the left
           const index = valueChains.findIndex((vc) => vc.id === node.id);
           const totalHeight = valueChains.length * 60;
-          const startY = (dimensions.height - totalHeight) / 2;
+          const startY = (dimensions.height - totalHeight) / 2 + headerPadding;
 
           return {
             ...node,
@@ -472,7 +456,7 @@ const SankeyTreeInternal = ({
           // Arrange products vertically on the right
           const index = products.findIndex((p) => p.id === node.id);
           const totalHeight = products.length * 40;
-          const startY = (dimensions.height - totalHeight) / 2;
+          const startY = (dimensions.height - totalHeight) / 2 + headerPadding;
 
           return {
             ...node,
@@ -723,11 +707,21 @@ const SankeyTreeInternal = ({
 
   // Prepare header data for transitions
   const headerData = useMemo(() => {
-    const headers = [];
+    const headers = [] as Array<{
+      id: string;
+      text: string;
+      x: number;
+      y: number;
+      color: string;
+      fontSize: number;
+      fontWeight: any;
+      fontFamily: any;
+      textAnchor?: "start" | "middle" | "end";
+    }>;
     const isFocusedView = focusedCluster !== null || focusedValueChain !== null;
 
     if (hasValidLayout && nodePositions.length > 0) {
-      // Find representative nodes for each column
+      // Identify nodes by column
       const valueChainNodes = nodePositions.filter(
         (n) =>
           hierarchyData?.nodes.find((hn) => hn.id === n.id)?.type ===
@@ -743,97 +737,83 @@ const SankeyTreeInternal = ({
           hierarchyData?.nodes.find((hn) => hn.id === n.id)?.type === "product",
       );
 
-      const baseY = isFocusedView ? 11 : 30; // Focus mode headers higher
+      // Compute top Y of each side and anchor labels just above nodes
+      const vcTopY =
+        valueChainNodes.length > 0
+          ? Math.min(...valueChainNodes.map((n) => n.y))
+          : 50;
+      const clTopY =
+        clusterNodes.length > 0
+          ? Math.min(...clusterNodes.map((n) => n.y))
+          : 50;
+      const prTopY =
+        productNodes.length > 0
+          ? Math.min(...productNodes.map((n) => n.y))
+          : 50;
 
-      // Value Chains column
-      if (valueChainNodes.length > 0) {
-        const avgX =
-          valueChainNodes.reduce(
-            (sum, node) => sum + node.x + node.width / 2,
-            0,
-          ) / valueChainNodes.length;
-        headers.push({
-          id: "header-value-chains",
-          text: "VALUE CHAINS",
-          x: avgX,
-          y: baseY,
-          color: themeUtils.chart.colors.text.secondary,
-          fontSize: isMobile ? 10 : 16,
-          fontWeight:
-            themeUtils.chart.typography["chart-column-header"].fontWeight,
-          fontFamily:
-            themeUtils.chart.typography["chart-column-header"].fontFamily,
-        });
-      }
+      const highestTopY = Math.min(vcTopY, clTopY, prTopY);
+      const labelGap = 30;
+      // Clamp header Y so it never overlaps nodes, especially in large focus trees
+      const headerY = Math.max(isFocusedView ? 18 : 30, highestTopY - labelGap);
 
-      // Clusters column
-      if (clusterNodes.length > 0) {
-        const avgX =
-          clusterNodes.reduce((sum, node) => sum + node.x + node.width / 2, 0) /
-          clusterNodes.length;
-        headers.push({
-          id: "header-clusters",
-          text: isMobile ? "CLUSTERS" : "MANUFACTURING CLUSTERS",
-          x: avgX,
-          y: baseY,
-          color: themeUtils.chart.colors.text.secondary,
-          fontSize: isMobile ? 10 : 16,
-          fontWeight:
-            themeUtils.chart.typography["chart-column-header"].fontWeight,
-          fontFamily:
-            themeUtils.chart.typography["chart-column-header"].fontFamily,
-        });
-      }
+      // X anchors similar to ClusterTree
+      const valueChainX =
+        valueChainNodes.length > 0 ? valueChainNodes[0].x : leftMargin;
+      const productX =
+        productNodes.length > 0
+          ? productNodes[0].x
+          : dimensions.width - rightMargin;
+      const clusterX =
+        clusterNodes.length > 0
+          ? clusterNodes[0].x
+          : leftMargin + 0.33 * (dimensions.width - leftMargin - rightMargin);
 
-      // Products column
+      // VALUE CHAINS
+      headers.push({
+        id: "header-value-chains",
+        text: "VALUE CHAINS",
+        x: valueChainX - 10,
+        y: headerY,
+        color: themeUtils.chart.colors.text.secondary,
+        fontSize: isMobile ? 12 : 22,
+        fontWeight:
+          themeUtils.chart.typography["chart-column-header"].fontWeight,
+        fontFamily:
+          themeUtils.chart.typography["chart-column-header"].fontFamily,
+        textAnchor: "end",
+      });
+
+      // MANUFACTURING CLUSTERS
+      headers.push({
+        id: "header-clusters",
+        text: isMobile ? "CLUSTERS" : "MANUFACTURING CLUSTERS",
+        x: clusterX + 25,
+        y: headerY,
+        color: themeUtils.chart.colors.text.secondary,
+        fontSize: isMobile ? 12 : 22,
+        fontWeight:
+          themeUtils.chart.typography["chart-column-header"].fontWeight,
+        fontFamily:
+          themeUtils.chart.typography["chart-column-header"].fontFamily,
+        textAnchor: "middle",
+      });
+
+      // PRODUCTS (muted in sankey overview) - only when product column is present
       if (productNodes.length > 0) {
-        const avgX =
-          productNodes.reduce((sum, node) => sum + node.x + node.width / 2, 0) /
-          productNodes.length;
         headers.push({
           id: "header-products",
           text: "PRODUCTS",
-          x: avgX,
-          y: baseY,
+          x: productX,
+          y: headerY,
           color: isFocusedView
             ? themeUtils.chart.colors.text.secondary
-            : themeUtils.chart.colors.text.muted, // Less prominent in sankey mode
-          fontSize: isMobile ? 10 : 16,
+            : themeUtils.chart.colors.text.muted,
+          fontSize: isMobile ? 12 : 22,
           fontWeight:
             themeUtils.chart.typography["chart-column-header"].fontWeight,
           fontFamily:
             themeUtils.chart.typography["chart-column-header"].fontFamily,
-        });
-      } else if (
-        !isFocusedView &&
-        showSubtleProducts &&
-        compactProductPositions.length > 0
-      ) {
-        // Show products header in sankey mode when compact products are visible
-        const maxClusterX =
-          clusterNodes.length > 0
-            ? Math.max(...clusterNodes.map((n) => n.x + n.width))
-            : dimensions.width - rightMargin;
-
-        // Position header at the center of the compact products area
-        // Products are positioned from maxClusterX + 5 to maxClusterX + 5 + 300 - 2
-        const productAreaWidth = 300;
-        const productAreaStart = maxClusterX + 5;
-        const productAreaEnd = productAreaStart + productAreaWidth - 2;
-        const productAreaCenter = (productAreaStart + productAreaEnd) / 2;
-
-        headers.push({
-          id: "header-products",
-          text: "PRODUCTS",
-          x: productAreaCenter, // Position at center of compact products area
-          y: baseY,
-          color: themeUtils.chart.colors.text.muted, // Less prominent in sankey mode
-          fontSize: isMobile ? 10 : 16,
-          fontWeight:
-            themeUtils.chart.typography["chart-column-header"].fontWeight,
-          fontFamily:
-            themeUtils.chart.typography["chart-column-header"].fontFamily,
-          textAnchor: "end",
+          textAnchor: "start",
         });
       }
     }
@@ -1124,61 +1104,7 @@ const SankeyTreeInternal = ({
         </div>
       )}
 
-      {/* Standardized Controls - Always show controls */}
-      <VisualizationControls
-        controlGroups={[
-          // Display Mode Control
-          {
-            type: "buttonGroup",
-            label: "Display Mode",
-            options: [
-              { value: "Country Specific", label: "Country Specific" },
-              { value: "Global", label: "Global" },
-            ],
-            selected: coloringMode,
-            onChange: (value: string) =>
-              setColoringMode(value as SankeyColoringMode),
-            defaultValue: "Country Specific",
-            paramKey: "displayMode",
-          },
-          // RCA Threshold Slider - only show in Country Specific mode
-          ...(coloringMode === "Country Specific"
-            ? [
-                {
-                  type: "slider" as const,
-                  label: "Product RCA Threshold",
-                  value: rcaThreshold,
-                  onChange: setRcaThreshold,
-                  min: 0,
-                  max: 3,
-                  step: 0.1,
-                  defaultValue: 1,
-                  paramKey: "rcaThreshold",
-                  formatLabel: (value: number) =>
-                    `Product RCA Threshold: ${value.toFixed(1)}`,
-                },
-              ]
-            : []),
-          // Subtle Products Toggle - only show when no node is focused
-          ...(!focusedCluster && !focusedValueChain
-            ? [
-                {
-                  type: "buttonGroup" as const,
-                  label: "Show Products",
-                  options: [
-                    { value: "off", label: "Off" },
-                    { value: "on", label: "On" },
-                  ],
-                  selected: showSubtleProducts ? "on" : "off",
-                  onChange: (value: string) =>
-                    setShowSubtleProducts(value === "on"),
-                  defaultValue: "off",
-                  paramKey: "showProducts",
-                },
-              ]
-            : []),
-        ]}
-      />
+      {/* Controls removed for global-only view */}
 
       {/* Back button for focused views */}
       {(focusedCluster || focusedValueChain) && (
@@ -1191,6 +1117,7 @@ const SankeyTreeInternal = ({
           }}
         >
           <button
+            type="button"
             onClick={handleBackClick}
             style={{
               padding: "8px 16px",
@@ -1237,10 +1164,11 @@ const SankeyTreeInternal = ({
               height: "auto",
               minHeight: isMobile ? "250px" : "300px",
             }}
-            viewBox={`0 0 ${dimensions.width} ${dimensions.height + 120}`}
+            viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
             preserveAspectRatio={isMobile ? "xMidYMid meet" : undefined}
             aria-labelledby="sankeyTitle"
           >
+            <title id="sankeyTitle">Sankey Tree - Global</title>
             {/* Animated column headers */}
             {headerTransitions((styles, item) => (
               <animated.text
@@ -1267,11 +1195,7 @@ const SankeyTreeInternal = ({
                 focusedCluster !== null || focusedValueChain !== null;
 
               // Calculate RCA-based opacity for visual emphasis within filtered results
-              const linkRcaOpacity = isFocusedView
-                ? 1 // Focused views have full opacity
-                : coloringMode === "Country Specific"
-                  ? getRCAOpacity((item as any).rca)
-                  : 1; // Global mode uses full opacity
+              const linkRcaOpacity = 1;
 
               // Calculate flow highlighting opacity
               const isConnectedToHovered = connectedLinkIds.has(item.id);
@@ -1286,7 +1210,7 @@ const SankeyTreeInternal = ({
               const linkColor = item.color;
 
               // Calculate stroke width based on context and link value
-              let strokeWidth;
+              let strokeWidth: number;
               if (isFocusedView) {
                 // In focused views, use simple fixed width
                 strokeWidth = isConnectedToHovered && hasHoveredNode ? 3 : 2;
@@ -1427,18 +1351,7 @@ const SankeyTreeInternal = ({
 
               // Calculate RCA-based opacity for visual emphasis within filtered results
               let nodeRcaOpacity = 1.0;
-              if (
-                !isFocusedView &&
-                isCluster &&
-                coloringMode === "Country Specific"
-              ) {
-                const nodeData = hierarchyData?.nodes.find(
-                  (n) => n.id === item.id,
-                );
-                if (nodeData && nodeData.rca !== undefined) {
-                  nodeRcaOpacity = getRCAOpacity(nodeData.rca);
-                }
-              }
+              // In global-only mode, do not adjust opacity by RCA
 
               // Set opacity = 0 for subtle product nodes to enable smooth transitions
               const subtleProductOpacity = isSubtleProduct ? 0 : 1;
@@ -1706,7 +1619,11 @@ const SankeyTreeInternal = ({
                           );
                         },
                       ),
+                      paintOrder: "stroke",
                     }}
+                    stroke={isCluster ? "#ffffff" : "none"}
+                    strokeWidth={isCluster ? (isMobile ? 2 : 3) : 0}
+                    strokeLinejoin="round"
                   >
                     {(() => {
                       // Truncate text with ellipsis for focused views
@@ -1744,10 +1661,7 @@ const SankeyTreeInternal = ({
           </svg>
         </div>
 
-        {/* Legend - only show in Country Specific mode */}
-        {coloringMode === "Country Specific" && (
-          <Legend countrySelection={countrySelection} />
-        )}
+        {/* Legend removed for global-only view */}
       </div>
     </div>
   );
