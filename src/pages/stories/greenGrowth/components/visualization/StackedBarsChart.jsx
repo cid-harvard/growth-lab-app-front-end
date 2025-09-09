@@ -450,7 +450,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
           }}
         >
           <Typography variant="chart-title">
-            Competitiveness in Green Manufacturing Clusters
+            Exports by Green Cluster: Actual vs. Expected Share
           </Typography>
         </Box>
 

@@ -33,7 +33,7 @@ interface StrategicPositionType {
 // Template parts for strategic position content
 const STRATEGIC_POSITION_TEMPLATE = {
   intro: (countryName: string) =>
-    `${countryName}'s existing capabilities in green industrial clusters afford many opportunities to diversify into related clusters. To create a winning green growth strategy, ${countryName} may consider the following policy approach:`,
+    `${countryName}'s existing capabilities in green industrial clusters afford unique opportunities to diversify into related clusters.\n\nTo create a winning green growth strategy, ${countryName} may consider a:`,
 
   getPolicyDescription: (label: string) =>
     POLICY_APPROACH_DESCRIPTIONS[label] ||
@@ -55,17 +55,17 @@ export const FormattedText: React.FC<FormattedTextProps> = ({
   variant = "body1",
   sx = {},
 }) => {
+  // Allow simple rich text: convert newlines to <br/> and preserve <b> tags
+  const html = (children || "").replace(/\n/g, "<br/>");
   return (
     <Typography
       variant={variant}
       sx={{
-        whiteSpace: "pre-line",
         textAlign: "left",
         ...sx,
       }}
-    >
-      {children}
-    </Typography>
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 };
 

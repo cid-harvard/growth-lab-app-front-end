@@ -34,7 +34,7 @@ const RoutedVisualization = () => {
     () => [
       {
         route: Routes.GreenGrowthOverview,
-        title: "Green Value Chains and Their Components",
+        title: "Green Value Chains and Products",
         base: "bubbles",
         tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
         fill: "rca",
@@ -56,7 +56,7 @@ const RoutedVisualization = () => {
       },
       {
         route: Routes.GreenGrowthClusters,
-        title: "Industrial Clusters in Green Growth",
+        title: "Industrial Clusters & Products",
         base: "bubbles",
         tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
         fill: "rca",

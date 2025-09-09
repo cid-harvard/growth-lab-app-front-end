@@ -318,7 +318,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
         }}
       >
         <Typography variant="chart-title">
-          Strategic Position in Green Growth
+          Recommended Strategic Approach
         </Typography>
       </Box>
       <Box

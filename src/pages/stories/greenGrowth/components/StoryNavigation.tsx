@@ -88,70 +88,71 @@ const navigationSteps: NavigationStep[] = [
     route: Routes.GreenGrowthIntroduction,
     title: "Tutorial: Which green value chains drive decarbonization?",
     modalContent:
-      "The path to decarbonization runs through these green value chains, connecting everything from raw materials to finished green technologies.\n\nEach value chain requires distinct capabilities. In fact, products are often co-produced together in clusters that share common knowhow.\n\nGreenplexity visualizes these green industrial clusters – sets of related products that tend to be produced in the same place - and the green value chains that use these products.",
+      "The path to decarbonization runs through these green value chains.\n\nEach green value chain is composed of products used in clean energy technologies, from raw materials to finished green technologies.\n\nMany products appear in more than one value chain. Products requiring similar capabilities naturally group into green industrial clusters.",
   },
   {
     id: "overview",
     route: Routes.GreenGrowthOverview,
-    title: "What is a green value chain?",
+    title: "Which green products does [country] already produce?",
     modalContent:
-      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+      "[Country] is active today in the highlighted products in green value chains.",
   },
   {
     id: "advantage",
     route: Routes.GreenGrowthAdvantage,
-    title: "Which clusters is [country] already present in?",
+    title: "Which industrial clusters is [country] already present in?",
     modalContent:
-      "This visualization reveals where [Country] is already active within green industrial clusters – including their component products and overarching green value chains. These existing strengths can unlock green growth opportunities by entering related production that requires similar knowhow.",
+      "Products requiring similar capabilities are grouped into green industrial clusters within each value chain. By focusing on clusters, current strengths point the way to new green growth opportunities to enter related products.",
   },
   {
     id: "clusters",
     route: Routes.GreenGrowthClusters,
-    title: "Which industrial clusters drive green growth?",
+    title: "Which industrial clusters is [country] already present in?",
     modalContent:
-      "Industrial clusters represent groups of related products that require similar productive capabilities and tend to be produced in the same places. This view shows all green industrial clusters and their component products, revealing the manufacturing communities that drive the green economy. Clusters can span multiple value chains, showing how capabilities transfer across different green technologies.",
+      "For comparison, this grid shows where [Country] is active across every green industrial cluster and its component products.  Clusters span value chains, revealing how existing capabilities create opportunities to enter new green value chains.",
   },
   {
     id: "competitiveness",
     route: Routes.GreenGrowthCompetitiveness,
-    title: "Which green clusters punch above or below their weight?",
+    title:
+      "Where are [country]’s industrial clusters stronger or weaker than expected?",
     modalContent:
-      "This visualization reveals where [Country] leads in green clusters – and those clusters which offer [Country] potential growth. Clusters to the right of the line outperform expectations, contributing a larger share of [Country]'s exports than global averages predict. Clusters to the left lag behind, underperforming relative to the country's existing capabilities.",
+      "This view reveals where [Country] leads in green industrial clusters and which clusters offer potential for growth. The top clusters outperform expectations, contributing a larger share of exports than expected for the country's capabilities. The bottom clusters lag behind, underperforming relative to existing capabilities.",
   },
   {
     id: "strategic-position",
     route: Routes.GreenGrowthStrategicPosition,
-    title: "Which green policy approach fits [country]'s capabilities?",
+    title: "What strategic approach fits [country]'s current capabilities?",
     modalContent:
-      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+      "[Country]'s existing capabilities in green industrial clusters afford unique opportunities to diversify into related clusters. \n\n To create a winning green growth strategy, [Country] may consider a:\n\nRecommended Strategic Approach",
   },
   {
     id: "opportunities",
     route: "/greenplexity/opportunities",
-    title: "What are [country]'s green growth opportunities?",
+    title: "Which clusters offer green growth opportunities for [Country]?",
     modalContent:
-      "[Country]'s existing capabilities in green industrial clusters afford [many/few] opportunities to diversify into related clusters. To create a winning green growth strategy, [Country] may consider the following policy approach:",
+      "Some green clusters offer a stronger fit for [Country]’s green growth strategy, striking the right balance between feasibility and attractiveness. Here are some high-potential clusters to study further.",
   },
   {
     id: "value-chains",
     route: "/greenplexity/value-chains",
-    title: "What Manufacturing communities are contained in value chains?",
+    title: "Which opportunities does this cluster connect [Country] to?",
     modalContent:
-      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+      "Explore some of [Country]’s strategic green clusters, across its connections to value chains and related products. This view maps those connections, showing how strengthening one cluster can unlock opportunities across multiple value chains and spotlighting the closely related products most likely to boost [Country]’s green-growth footprint.",
   },
   {
     id: "dimensions",
     route: "/greenplexity/dimensions",
-    title: "What are My Opportunities?",
+    title: "Which green products should [Country] prioritize next?",
     modalContent:
-      "Green value chains include a range of products from critical minerals to final goods. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition. These products require distinct productive capabilities. Each circle represents an input for a green value chain that is critical for the energy transition.",
+      "[Country] can help the world decarbonize by diversifying into new green industrial clusters.\n\nStrategic clusters include products that aim to balance:\n\n<b>Complexity</b>: more complex products tend to support higher wages\n<b>Opportunity Gain</b>: higher values hold more connections to other complex products, creating more opportunities for future diversification.\n<b>Feasibility</b>: higher values indicate that a greater share of the required capabilities exists in a given location.\n<b>Product Market Size</b>: total global trade value of trade for the given product.\n<b>Product Market Growth</b>: five-year growth rate for global market volume for the product.",
   },
   {
     id: "summary",
     route: "/greenplexity/summary",
     title: "[country] in Summary",
     modalContent:
-      "This page summarizes your recommended green growth approach and highlights top clusters to prioritize next.",
+      "[Country] can help the world decarbonize by diversifying into new green industrial clusters. Strategic clusters include products that aim to balance:",
   },
 ];
 

@@ -1492,7 +1492,7 @@ const ProductScatterInternal = ({ width, height }) => {
           mb: 1,
         }}
       >
-        <Typography variant="chart-title">Green Value Chains</Typography>
+        <Typography variant="chart-title">Strategic Clusters</Typography>
       </Box>
 
       {/* Chart, Legend, and Attribution Container for Image Capture */}

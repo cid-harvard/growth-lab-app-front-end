@@ -734,7 +734,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
               ...themeUtils.chart.typography["chart-title"],
             }}
           >
-            Green Value Chains and Their Components
+            Cluster Connections
           </Typography>
         </Box>
 

@@ -116,63 +116,60 @@ const STEPS = [
     id: "value-chains",
     title: "",
     description:
-      "The path to decarbonization runs through these 10 green value chains, connecting everything from raw materials to finished green technologies.",
+      "The path to decarbonization runs through these <b>green value chains</b>.",
     duration: 3000,
   },
   {
     id: "green-products",
     title: "",
     description:
-      "Each value chain contains numerous tradeable green products that make up the global green economy.",
+      "Each green value chain is composed of products used in clean energy technologies, from raw materials to finished green technologies.",
     duration: 5000,
   },
   {
     id: "product-highlight-1",
-    title: "Product Connections",
-    description:
-      "Products are the building blocks of value chains, and the same product can appear in multiple value chains.",
+    title: "",
+    description: "Many products appear in more than one value chain.",
     duration: 1500,
   },
   {
     id: "product-highlight-2",
-    title: "Product Connections",
-    description:
-      "Products are the building blocks of value chains, and the same product can appear in multiple value chains.",
+    title: "",
+    description: "Many products appear in more than one value chain.",
     duration: 1500,
   },
   {
     id: "product-highlight-3",
-    title: "Product Connections",
-    description:
-      "Products are the building blocks of value chains, and the same product can appear in multiple value chains.",
+    title: "",
+    description: "Many products appear in more than one value chain.",
     duration: 1500,
   },
   {
     id: "value-chain-products",
-    title: "Value Chain Products",
+    title: "",
     description:
-      "Here we see all products that belong to [selected chain name]",
+      "For example, the Batteries value chain contains many distinct products that together enable battery technologies.",
     duration: 5000,
   },
   {
     id: "product-clusters",
     title: "",
     description:
-      "Products naturally group into industrial clusters, which leverage shared capabilities",
+      "Products that rely on similar capabilities naturally group into <b>green industrial clusters</b>.",
     duration: 5000,
   },
   {
     id: "value-chain-zoom",
-    title: "Value Chain Deep Dive",
+    title: "",
     description:
-      "Zoom into the selected value chain to see its complete structure: the value chain at the center, populated with its industrial clusters, with products in turn populating each cluster.",
+      "Zooming into the [selected chain name] value chain reveals the full structure: individual products, organized into green industrial clusters, all nested within a single value chain.",
     duration: 5000,
   },
   {
     id: "all-value-chains-hierarchy",
-    title: "All Value Chains",
+    title: "",
     description:
-      "All value chains shown with their industrial clusters and products packed inside.",
+      "Greenplexity maps ten value chains - Electric Vehicles, Heat Pumps, Fuel Cells & Green Hydrogen, Wind Power, Solar Power, Hydroelectric Power, Nuclear Power, Batteries, Electric Grid, and Critical Metals & Minerals - showing their respective clusters and products inside.",
     duration: 6000,
   },
 ];
@@ -1745,26 +1742,59 @@ const AnimatedValueChainIntroInternal: React.FC<
     return availableSvgHeight - textAreaHeight;
   })();
 
-  const dynamicTextTitleY =
+  // Base Y positions for bottom title/description
+  const baseDynamicTextTitleY =
     currentStep <= 5
       ? bottomOfContentY + 45
       : availableSvgHeight - textAreaHeight + 20;
-  const dynamicTextDescY = dynamicTextTitleY + 26;
+  const baseDynamicTextDescY = baseDynamicTextTitleY + 26;
 
   // Compute wrapped text for bottom title/description using simple width-based estimation
-  const textBlockWidth = Math.min(width - 40, 800);
+  // Allow a wider line length on the last two steps (7–8) so text doesn't break too early
+  const textBlockWidth = (() => {
+    if (currentStep >= 7) {
+      return Math.min(width - 16, 1100);
+    }
+    return Math.min(width - 40, 800);
+  })();
   const titleText = (STEPS[currentStep]?.title || "").toUpperCase();
-  const descText =
-    currentStep === 5 && selectedValueChain !== null
-      ? `Here we see all products that belong to ${
-          animationData.valueChains.find((vc) => vc.id === selectedValueChain)
-            ?.name || "Electric Grid"
-        }`
-      : STEPS[currentStep]?.description || "";
+  const selectedChainName =
+    (selectedValueChain !== null
+      ? animationData.valueChains.find((vc) => vc.id === selectedValueChain)
+          ?.name
+      : undefined) || "Batteries";
+  const descText = (() => {
+    if (currentStep === 5 && selectedValueChain !== null) {
+      return `For example, the ${selectedChainName} value chain contains many distinct products that together enable ${selectedChainName.toLowerCase()} technologies.`;
+    }
+    if (currentStep === 7 && selectedValueChain !== null) {
+      return `Zooming into the ${selectedChainName} value chain reveals the full structure: individual products, organized into green industrial clusters, all nested within a single value chain.`;
+    }
+    if (currentStep === 8) {
+      return STEPS[currentStep]?.description || "";
+    }
+    return STEPS[currentStep]?.description || "";
+  })();
   const titleMaxChars = estimateMaxCharsPerLine(textBlockWidth, 22);
   const descMaxChars = estimateMaxCharsPerLine(textBlockWidth, 20);
   const wrappedTitleLines = wrapTextIntoLines(titleText, titleMaxChars);
   const wrappedDescLines = wrapTextIntoLines(descText, descMaxChars);
+
+  // Prevent text cut-off on smaller heights by shifting the block upward
+  const descLineHeight = 20 * 1.3;
+  const descBlockHeight = wrappedDescLines.length * descLineHeight;
+  const estimatedBottomY = baseDynamicTextDescY + descBlockHeight - 4;
+  const overflowAmount = Math.max(
+    0,
+    estimatedBottomY - (availableSvgHeight - 0),
+  );
+  // Allow more upward shift on the last two steps to avoid clipping entirely
+  const minTitleYOffset = currentStep <= 5 ? bottomOfContentY + 12 : 8;
+  const dynamicTextTitleY = Math.max(
+    minTitleYOffset,
+    baseDynamicTextTitleY - overflowAmount,
+  );
+  const dynamicTextDescY = dynamicTextTitleY + 26;
 
   return (
     <Box
@@ -2166,11 +2196,14 @@ const AnimatedValueChainIntroInternal: React.FC<
         {/* Designated text section - using STEPS config as single source of truth */}
         <g>
           {/* Dynamic step title (wrapped) */}
-          {wrappedTitleLines.map((line, index) => (
+          {wrappedTitleLines.map((line) => (
             <Text
               key={`title-line-${line}-${titleText.length}`}
               x={width / 2}
-              y={dynamicTextTitleY + index * 22 * 1.15}
+              y={(() => {
+                const lineIndex = wrappedTitleLines.indexOf(line);
+                return dynamicTextTitleY + lineIndex * 22 * 1.15;
+              })()}
               textAnchor="middle"
               verticalAnchor="start"
               fontSize={22}
@@ -2181,21 +2214,166 @@ const AnimatedValueChainIntroInternal: React.FC<
             </Text>
           ))}
 
-          {/* Dynamic step description (wrapped) */}
-          {wrappedDescLines.map((line, index) => (
-            <Text
-              key={`desc-line-${line}-${descText.length}`}
-              x={width / 2}
-              y={dynamicTextDescY + index * 20 * 1.3}
-              textAnchor="middle"
-              verticalAnchor="start"
-              fontSize={20}
-              fontWeight={400}
-              fill="#1e293b"
-            >
-              {line}
-            </Text>
-          ))}
+          {/* Dynamic step description (wrapped, with <b> support) */}
+          {(() => {
+            // If description contains <b> tags, parse and render tspans with bold styling
+            if (descText && descText.includes("<b>")) {
+              const parseBoldSegments = (
+                text: string,
+              ): { text: string; bold: boolean }[] => {
+                const segments: { text: string; bold: boolean }[] = [];
+                let i = 0;
+                let isBold = false;
+                while (i < text.length) {
+                  if (text.startsWith("<b>", i)) {
+                    isBold = true;
+                    i += 3;
+                    continue;
+                  }
+                  if (text.startsWith("</b>", i)) {
+                    isBold = false;
+                    i += 4;
+                    continue;
+                  }
+                  segments.push({ text: text[i], bold: isBold });
+                  i += 1;
+                }
+                // Merge adjacent chars with same style
+                const merged: { text: string; bold: boolean }[] = [];
+                for (const seg of segments) {
+                  const last = merged[merged.length - 1];
+                  if (last && last.bold === seg.bold) {
+                    last.text += seg.text;
+                  } else {
+                    merged.push({ ...seg });
+                  }
+                }
+                return merged;
+              };
+
+              const wrapSegments = (
+                segments: { text: string; bold: boolean }[],
+                maxChars: number,
+              ): { text: string; bold: boolean }[][] => {
+                // Word-aware wrapping: do not break words; only wrap at whitespace.
+                const lines: { text: string; bold: boolean }[][] = [];
+                let current: { text: string; bold: boolean }[] = [];
+                let count = 0;
+
+                const pushLine = () => {
+                  if (current.length) lines.push(current);
+                  current = [];
+                  count = 0;
+                };
+
+                for (const seg of segments) {
+                  // Split into words and whitespace tokens, preserving both
+                  const tokens = seg.text.split(/(\s+)/);
+                  for (const token of tokens) {
+                    if (token.length === 0) continue;
+                    const isSpace = /^\s+$/.test(token);
+                    const tokenLen = token.length;
+
+                    // Avoid leading whitespace at start of a line
+                    const effectiveLen = isSpace && count === 0 ? 0 : tokenLen;
+
+                    // If token doesn't fit, wrap to next line (unless line is empty)
+                    if (
+                      effectiveLen > 0 &&
+                      count + effectiveLen > maxChars &&
+                      count > 0
+                    ) {
+                      pushLine();
+                    }
+
+                    // If a single non-space token is longer than maxChars and we're at line start,
+                    // hard-split it into chunks (rare fallback)
+                    if (!isSpace && tokenLen > maxChars && count === 0) {
+                      let start = 0;
+                      while (start < tokenLen) {
+                        const chunk = token.slice(
+                          start,
+                          start + Math.max(1, maxChars),
+                        );
+                        current.push({ text: chunk, bold: seg.bold });
+                        count += chunk.length;
+                        start += Math.max(1, maxChars);
+                        if (start < tokenLen) {
+                          pushLine();
+                        }
+                      }
+                      continue;
+                    }
+
+                    // Normal token append (skip leading spaces)
+                    if (!(isSpace && count === 0)) {
+                      current.push({ text: token, bold: seg.bold });
+                      count += effectiveLen;
+                    }
+                  }
+                }
+
+                if (current.length) lines.push(current);
+                return lines;
+              };
+
+              const richSegments = parseBoldSegments(
+                descText.replace(/\n/g, " "),
+              );
+              const richLines = wrapSegments(richSegments, descMaxChars);
+
+              return richLines.map((lineSegs) => (
+                <text
+                  key={`desc-rich-line-${lineSegs
+                    .map((s) => `${s.bold ? "b" : "n"}:${s.text}`)
+                    .join("|")}`}
+                  x={width / 2}
+                  y={(() => {
+                    const lineIndex = richLines.indexOf(lineSegs);
+                    return dynamicTextDescY + lineIndex * 20 * 1.3;
+                  })()}
+                  textAnchor="middle"
+                  dominantBaseline="hanging"
+                  style={{ pointerEvents: "none" }}
+                  fontSize={20}
+                  fill="#1e293b"
+                >
+                  {lineSegs.map((seg, j) => (
+                    <tspan
+                      key={`seg-${seg.bold ? "b" : "n"}-${seg.text}-${
+                        lineSegs
+                          .slice(0, j + 1)
+                          .filter(
+                            (p) => p.text === seg.text && p.bold === seg.bold,
+                          ).length
+                      }`}
+                      fontWeight={seg.bold ? 700 : 400}
+                    >
+                      {seg.text}
+                    </tspan>
+                  ))}
+                </text>
+              ));
+            }
+            // Fallback: simple wrapped lines
+            return wrappedDescLines.map((line) => (
+              <Text
+                key={`desc-line-${line}-${descText.length}`}
+                x={width / 2}
+                y={(() => {
+                  const lineIndex = wrappedDescLines.indexOf(line);
+                  return dynamicTextDescY + lineIndex * 20 * 1.3;
+                })()}
+                textAnchor="middle"
+                verticalAnchor="start"
+                fontSize={20}
+                fontWeight={400}
+                fill="#1e293b"
+              >
+                {line}
+              </Text>
+            ));
+          })()}
         </g>
       </svg>
 
