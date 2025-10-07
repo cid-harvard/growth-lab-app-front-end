@@ -71,8 +71,8 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
     const spacing = CLUSTER_RANKING_SPACING;
     const maxChars = CLUSTER_RANKING_MAX_LABEL_CHARS;
 
-    // Prefer minimal padding based on node radius so first circle starts near left
-    const baseEdgePadding = CLUSTER_RANKING_EDGE_PADDING + 50;
+    // Prefer minimal padding so first circle starts near left; avoid extra right whitespace
+    const baseEdgePadding = CLUSTER_RANKING_EDGE_PADDING;
     const count = clustersWithNames.length;
     const requiredWidth = (count - 1) * spacing + baseEdgePadding * 2;
     // Keep a fixed small edge padding; do not add extra left/right spacing
@@ -130,6 +130,34 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
 
     return { beeswarmHeight, adjustedRankingData: rankingData };
   }, [rankingData, height]);
+
+  // When a cluster is selected (from dropdown or click), scroll to center it
+  useEffect(() => {
+    if (!scrollRef.current || !selectedCluster || !adjustedRankingData.length)
+      return;
+
+    const container = scrollRef.current;
+    const containerWidth = container.clientWidth || 0;
+    if (containerWidth <= 0) return;
+
+    const targetItem = adjustedRankingData.find(
+      (d: any) => d.name === selectedCluster,
+    );
+    if (!targetItem) return;
+
+    const centerX = targetItem.x as number;
+    const maxScrollLeft = Math.max(0, contentWidth - containerWidth);
+    const desiredLeft = Math.max(
+      0,
+      Math.min(maxScrollLeft, centerX - containerWidth / 2),
+    );
+
+    try {
+      container.scrollTo({ left: Math.round(desiredLeft), behavior: "smooth" });
+    } catch {
+      container.scrollLeft = Math.round(desiredLeft);
+    }
+  }, [selectedCluster, adjustedRankingData, contentWidth]);
 
   // Compute an axis baseline positioned close to the bubbles to minimize the gap
   const axisBaselineY = useMemo(() => {

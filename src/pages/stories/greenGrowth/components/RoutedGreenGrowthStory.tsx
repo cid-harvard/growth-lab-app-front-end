@@ -5,12 +5,11 @@ import {
   Outlet,
   Navigate,
   useNavigate,
-  Link as RouterLink,
   useLocation,
 } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Typography, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import StoryNavigation from "./StoryNavigation";
 import RoutedVisualization from "./visualization/RoutedVisualization";
 import ProductScatter from "./visualization/ProductScatter";
@@ -19,6 +18,7 @@ import ClusterTree from "./visualization/ClusterTree/index";
 import ValueChainsHierarchy from "./ValueChainsHierarchy";
 
 import SummaryPage from "./SummaryPage";
+import RankingsPage from "./RankingsPage";
 import Attribution from "./Attribution";
 import StandardFooter from "../../../../components/text/StandardFooter";
 import Landing from "./Landing";
@@ -27,6 +27,7 @@ import { ImageCaptureProvider } from "../hooks/useImageCaptureContext";
 import { SelectionDataModalProvider } from "../hooks/useSelectionDataModal";
 import SelectionDataModal from "./SelectionDataModal";
 import greenGrowthTheme from "../theme";
+import GreenplexityHeader from "./GreenplexityHeader";
 
 import "../index.css";
 
@@ -119,7 +120,7 @@ const RadarLayout = () => {
           sx={{
             height: "100%",
             width: "100%",
-            padding: 2, // Add some padding for radar charts
+            padding: 0, // Add some padding for radar charts
           }}
         >
           <Outlet />
@@ -140,56 +141,7 @@ const SummaryLayout = () => {
         width: "100%",
       }}
     >
-      {/* Top gradient header bar matching app style */}
-      <Box
-        sx={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "100%",
-          height: "60px",
-          background:
-            "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: (theme) => theme.zIndex.appBar,
-        }}
-      >
-        <Container
-          maxWidth="md"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: "100%",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography
-              component={RouterLink}
-              to="/greenplexity"
-              variant="h6"
-              sx={{
-                fontWeight: 600,
-                letterSpacing: 0.5,
-                color: "white",
-                fontSize: "22px",
-                textDecoration: "none",
-              }}
-            >
-              GREENPLEXITY
-            </Typography>
-          </Box>
-          <a href="https://growthlab.app/" aria-label="Growth Lab Home">
-            <img
-              src={require("../../../../assets/GL_logo_white.png")}
-              alt="Growth Lab"
-              style={{ height: 28 }}
-            />
-          </a>
-        </Container>
-      </Box>
+      <GreenplexityHeader position="fixed" heightPx={60} maxWidth="lg" />
       <Box
         component="main"
         sx={{
@@ -274,7 +226,7 @@ const RoutedGreenGrowthStory = () => {
                   />
                   <Route path="clusters" element={<RoutedVisualization />} />
                   <Route
-                    path="competitiveness"
+                    path="competitiveness/*"
                     element={<RoutedVisualization />}
                   />
                   <Route
@@ -299,6 +251,7 @@ const RoutedGreenGrowthStory = () => {
                 {/* Summary (no sidebar) with footer */}
                 <Route path="" element={<SummaryLayout />}>
                   <Route path="summary" element={<SummaryPage />} />
+                  <Route path="rankings" element={<RankingsPage />} />
                 </Route>
 
                 {/* Explore page */}

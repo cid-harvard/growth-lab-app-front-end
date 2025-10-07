@@ -44,9 +44,12 @@ const dimensionObject = {
   "Product Complexity": "normalizedPci",
   "Opportunity Gain": "normalizedCog",
   Feasibility: "density",
-  "Market Share Growth": "productMarketShareGrowth",
-  "Global Market Share": "globalMarketShare",
+  // Updated labels and canonical keys
+  "Product Market Growth": "product_market_growth",
+  "Product Market Size": "market_size",
 };
+
+// Always display full axis labels; no short label variant
 
 // Component to display value chain icons for a product
 const ValueChainIcons = ({
@@ -143,19 +146,41 @@ const CustomTooltip = ({ active, payload, productData, radarData }) => {
     normalizedPci: "Product Complexity:",
     normalizedCog: "Opportunity Gain:",
     density: "Feasibility:",
-    productMarketShareGrowth: "Market Share Growth:",
-    globalMarketShare: "Global Market Share:",
+    product_market_growth: "Product Market Growth:",
+    market_size: "Product Market Size:",
   };
 
-  // Build rows using the scaled scores (0–10) from radarData for this product
+  // Build rows: show raw values for Product Market Growth and Product Market Size; scaled scores for others
   const rows = (radarData || []).map((entry) => {
     const dimension = entry.dimension;
     const valueKey = dimensionObject[dimension];
     const label = dimensionLabelMap[valueKey] || dimension;
-    const score = entry[productId];
+
+    // Decide value to display
+    let displayValue;
+    if (dimension === "Product Market Growth") {
+      const rawValue = product.productMarketShareGrowth;
+      displayValue =
+        rawValue != null && !Number.isNaN(rawValue)
+          ? `${Number(rawValue).toFixed(2)}%`
+          : "N/A";
+    } else if (dimension === "Product Market Size") {
+      const rawValue =
+        typeof product.productMarketShare === "number"
+          ? product.productMarketShare
+          : null;
+      displayValue =
+        rawValue != null && !Number.isNaN(rawValue)
+          ? `${Number(rawValue * 100).toFixed(2)}%`
+          : "N/A";
+    } else {
+      const score = entry[productId];
+      displayValue = score != null ? Number(score).toFixed(0) : "N/A";
+    }
+
     return {
       label,
-      value: score != null ? Number(score).toFixed(0) : "-",
+      value: displayValue,
     };
   });
 
@@ -178,42 +203,46 @@ const CustomPolarAngleAxis = ({
   textAnchor,
   stroke,
   radius,
+  fontSize = 14,
 }) => {
-  const tooltipContent = {
-    "Product Complexity":
-      "Measures the amount of diversity of knowhow required to make a product.",
-    "Opportunity Gain":
-      "Measures opportunities for future diversification in entering a product, by opening new links to complex products.",
-    Feasibility:
-      "Measures the share of capabilities, skills, and know-how present in a location that is necessary to jumpstart a specific activity.",
-    "Market Share Growth":
-      "Measures the growth rate of a country's market share in this product over time, indicating competitive positioning improvements.",
-    "Global Market Share":
-      "Measures the country's share of the global market for this specific product, indicating the country's competitive position worldwide.",
-  };
+  const isTopLabel = textAnchor === "middle"; // top tick is centered by Recharts
+  const words = String(payload?.value ?? "")
+    .split(" ")
+    .filter(Boolean);
+  const dx = textAnchor === "end" ? -2 : textAnchor === "start" ? 2 : 0;
 
   return (
     <g className="recharts-layer recharts-polar-angle-axis-tick">
-      {/* <MuiTooltip title={tooltipContent[payload.value]} placement="top"> */}
       <text
         radius={radius}
         stroke={stroke}
-        x={x}
+        x={x + dx}
         y={y}
         className="recharts-text recharts-polar-angle-axis-tick-value"
         textAnchor={textAnchor}
         style={{
           ...themeUtils.chart.typography["chart-axis-label"],
-          fontSize: "14px",
+          fontSize: `${fontSize}px`,
           fontWeight: 600,
           textDecoration: "none",
         }}
       >
-        <tspan x={x} dy="-4px">
-          {payload.value}
-        </tspan>
+        {isTopLabel ? (
+          <tspan x={x} dy="-4px">
+            {payload.value}
+          </tspan>
+        ) : (
+          words.map((w, i) => (
+            <tspan
+              key={`${w}-${i}`}
+              x={x + dx}
+              dy={i === 0 ? "-4px" : "1.15em"}
+            >
+              {w}
+            </tspan>
+          ))
+        )}
       </text>
-      {/* </MuiTooltip> */}
     </g>
   );
 };
@@ -735,7 +764,7 @@ const NestedProductSelector = ({
                 left: modalPosition.left,
                 width: modalPosition.width,
                 maxWidth: isMobile ? "90vw" : "600px",
-                maxHeight: "400px",
+                maxHeight: "500px",
                 border: "1px solid #000",
                 borderRadius: "8px",
                 backgroundColor: "white",
@@ -1208,7 +1237,7 @@ const ProductRadarInternal = ({
       const attractiveness =
         0.6 * Number.parseFloat(clusterItem.cog) +
         0.4 * Number.parseFloat(clusterItem.pci);
-      const density = Number.parseFloat(clusterItem.rca);
+      const density = Number.parseFloat(clusterItem.density);
 
       return {
         ...clusterItem,
@@ -1351,8 +1380,8 @@ const ProductRadarInternal = ({
       "Product Complexity",
       "Opportunity Gain",
       "Feasibility",
-      "Market Share Growth",
-      "Global Market Share",
+      "Product Market Growth",
+      "Product Market Size",
     ];
 
     if (productData.length === 0 || !currentData?.ggCpyList) return [];
@@ -1360,7 +1389,20 @@ const ProductRadarInternal = ({
     const dimensionBreakpoints = dimensions.reduce((acc, dimension) => {
       const valueKey = dimensionObject[dimension];
       const values = currentData.ggCpyList
-        .map((product) => product[valueKey])
+        .map((product) => {
+          if (dimension === "Product Market Growth") {
+            let v = product.productMarketShareGrowth;
+            return v;
+          }
+          if (dimension === "Product Market Size") {
+            const v =
+              typeof product.productMarketShare === "number"
+                ? product.productMarketShare
+                : null;
+            return v;
+          }
+          return product[valueKey] ?? null;
+        })
         .filter((v) => v != null)
         .sort((a, b) => a - b);
 
@@ -1379,39 +1421,7 @@ const ProductRadarInternal = ({
     }, {});
 
     const scaleValue = (value, dimension) => {
-      // Special handling for Global Market Share due to small values and many 0s
-      if (dimension === "Global Market Share") {
-        if (value === 0) return 0;
-
-        // Get all non-zero values for this dimension
-        const nonZeroValues = currentData.ggCpyList
-          .map((product) => product.globalMarketShare)
-          .filter((v) => v != null && v > 0)
-          .sort((a, b) => a - b);
-
-        if (nonZeroValues.length === 0) return 0;
-
-        // Use logarithmic percentiles for non-zero values
-        const logValues = nonZeroValues.map((v) => Math.log10(v));
-        const logValue = Math.log10(value);
-
-        // Find percentile position
-        let percentile = 0;
-        for (let i = 0; i < logValues.length; i++) {
-          if (logValue <= logValues[i]) {
-            percentile = i / logValues.length;
-            break;
-          }
-        }
-        if (percentile === 0 && logValue > logValues[logValues.length - 1]) {
-          percentile = 1;
-        }
-
-        // Convert percentile to 1-10 scale (0 is reserved for actual 0 values)
-        return Math.max(1, Math.min(10, Math.ceil(percentile * 10)));
-      }
-
-      // Standard scaling for other dimensions
+      // Standard scaling for all dimensions using decile breakpoints
       const breakpoints = dimensionBreakpoints[dimension];
 
       // Find the first breakpoint where value < breakpoint
@@ -1430,7 +1440,17 @@ const ProductRadarInternal = ({
       return {
         dimension,
         ...productData.reduce((acc, product) => {
-          const originalValue = product[valueKey] || 0;
+          let originalValue = 0;
+          if (dimension === "Product Market Growth") {
+            originalValue = product.productMarketShareGrowth ?? 0;
+          } else if (dimension === "Product Market Size") {
+            originalValue =
+              typeof product.productMarketShare === "number"
+                ? product.productMarketShare
+                : 0;
+          } else {
+            originalValue = product[valueKey] ?? 0;
+          }
           const scaledValue = scaleValue(originalValue, dimension);
           acc[product?.productId] = scaledValue;
           return acc;
@@ -1440,15 +1460,72 @@ const ProductRadarInternal = ({
   }, [productData, currentData?.ggCpyList]);
 
   // Calculate responsive layout
-  const controlsHeight = isMobile ? 120 : 160;
-  const availableHeight = height - controlsHeight;
-  const padding = isMobile ? 8 : 16;
+
+  const availableHeight = height;
+  const padding = 0;
+
+  // Minimum card width tuned to allow 2 columns at narrower widths
+  const MIN_CARD_WIDTH = 300;
+  const H_GUTTER = 6; // horizontal gap between cards
+
+  // Prefer 2 columns; only switch to 1 column on very small widths
+  const SINGLE_COLUMN_WIDTH_THRESHOLD = 640; // keep 2 cols until narrower than this
+  const isSingleColumn = isMobile || width < SINGLE_COLUMN_WIDTH_THRESHOLD;
 
   // Calculate grid layout for charts
-  const chartsPerRow = isMobile ? 1 : Math.min(2, productData.length);
+  const chartsPerRow = isSingleColumn ? 1 : Math.min(2, productData.length);
   const chartRows = Math.ceil(productData.length / chartsPerRow);
-  const chartWidth = Math.max((width - padding * 2) / chartsPerRow - 20, 300);
-  const chartHeight = Math.max(availableHeight / chartRows, 300);
+  const chartWidth = Math.max(
+    (width - padding * 2) / chartsPerRow - H_GUTTER,
+    MIN_CARD_WIDTH,
+  );
+  // Allow taller charts but cap overall card height for wide viewports
+  const byWidthHeight = Math.round(chartWidth * 0.9);
+  const minHeight = isSingleColumn ? 440 : 320;
+  const MAX_CARD_HEIGHT = isSingleColumn ? 420 : 420;
+  const chartHeight = Math.min(
+    Math.max(byWidthHeight, minHeight),
+    MAX_CARD_HEIGHT,
+  );
+
+  // Axis/label tweaks for very narrow charts
+  const isNarrowChart = isSingleColumn || chartWidth < 340;
+  const angleAxisFontSize = isNarrowChart ? 10 : 12;
+  // Tighter margins in two-column layout to use space efficiently
+  const isVeryNarrowTwoCol = !isSingleColumn && chartWidth < 340;
+  const dynamicLeftMargin = isSingleColumn ? 110 : isVeryNarrowTwoCol ? 0 : 10;
+  const dynamicRightMargin = isSingleColumn ? 48 : isVeryNarrowTwoCol ? 52 : 64; // extra room for right-side labels
+  const chartMargins = {
+    left: dynamicLeftMargin,
+    right: dynamicRightMargin,
+    top: isNarrowChart ? 6 : 0,
+    bottom: isNarrowChart ? 6 : 0,
+  };
+
+  // Reserve space inside the product card for the title and the
+  // "Belongs to Value Chains" footer so the chart does not push
+  // content outside the card boundary.
+  const TITLE_SECTION_HEIGHT_PX = 28; // approximate height of the title row
+  const FOOTER_SECTION_HEIGHT_PX = 48; // label + icons area below the chart
+  const RESERVED_NON_CHART_HEIGHT_PX =
+    TITLE_SECTION_HEIGHT_PX + FOOTER_SECTION_HEIGHT_PX;
+  const chartInnerHeight = Math.max(
+    120,
+    chartHeight - RESERVED_NON_CHART_HEIGHT_PX,
+  );
+
+  // Compute an outer radius in pixels that keeps axis labels within the card
+  const availableRadiusX = Math.floor(
+    (chartWidth - dynamicLeftMargin - dynamicRightMargin) / 2,
+  );
+  const availableRadiusY = Math.floor(
+    (chartInnerHeight - chartMargins.top - chartMargins.bottom) / 2,
+  );
+  const labelSafetyPadding = isSingleColumn ? 16 : isVeryNarrowTwoCol ? 22 : 26; // extra room for angle labels
+  const outerRadiusPx = Math.max(
+    80,
+    Math.min(availableRadiusX, availableRadiusY) - labelSafetyPadding,
+  );
 
   // Register/unregister image capture function
   useEffect(() => {
@@ -1505,7 +1582,7 @@ const ProductRadarInternal = ({
       sx={{
         width: "100%",
         height: "100%",
-        padding: `${padding}px`,
+        padding: "0px",
         overflow: "auto",
       }}
     >
@@ -1594,7 +1671,7 @@ const ProductRadarInternal = ({
                 mb: clusterIndex < visibleProductsByCluster.length - 1 ? 4 : 0,
               }}
             >
-              {cluster.products.map((product) => {
+              {cluster.products.map((product, productIndex) => {
                 const productWithData = productData.find(
                   (p) => p?.productId === product?.productId,
                 );
@@ -1602,11 +1679,24 @@ const ProductRadarInternal = ({
 
                 const clusterColor = "#FABEB4"; // Default color
 
+                // Heuristic tooltip positioning: bias toward page center and away from chart center
+                // - For two-column layout, place tooltip on the inward side (toward page center)
+                // - For single-column/mobile, keep it near the top-left of the chart card
+                const useInwardBias = !isMobile && chartsPerRow === 2;
+                const isLeftColumn = productIndex % 2 === 0;
+                const tooltipPosition = useInwardBias
+                  ? {
+                      x: isLeftColumn ? Math.max(chartWidth - 220, 12) : 12,
+                      y: 12,
+                    }
+                  : { x: 12, y: 12 };
+
                 return (
                   <Box
                     key={product?.productId}
                     sx={{
-                      width: isMobile ? "100%" : `${chartWidth}px`,
+                      width: isSingleColumn ? "100%" : `${chartWidth}px`,
+                      minWidth: `${MIN_CARD_WIDTH}px`,
                       height: `${chartHeight}px`,
                       display: "flex",
                       flexDirection: "column",
@@ -1673,23 +1763,28 @@ const ProductRadarInternal = ({
                     >
                       {product?.nameShortEn}
                     </Typography>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={chartInnerHeight}>
                       <RadarChart
                         data={radarData}
-                        margin={{ left: 0, right: 0, top: 15, bottom: 0 }}
+                        margin={chartMargins}
                         padding={0}
+                        outerRadius={outerRadiusPx}
                       >
                         <PolarGrid />
                         <PolarAngleAxis
                           dataKey="dimension"
-                          tick={<CustomPolarAngleAxis />}
+                          tick={
+                            <CustomPolarAngleAxis
+                              fontSize={angleAxisFontSize}
+                            />
+                          }
                         />
                         <PolarRadiusAxis
                           angle={90}
                           domain={[0, 10]}
                           tick={{
                             fill: themeUtils.chart.colors.text.primary,
-                            fontSize: isMobile ? 8 : 10,
+                            fontSize: isNarrowChart ? 8 : 12,
                             fontFamily:
                               themeUtils.chart.typography["chart-axis-tick"]
                                 .fontFamily,
@@ -1709,6 +1804,9 @@ const ProductRadarInternal = ({
                           }}
                         />
                         <Tooltip
+                          position={tooltipPosition}
+                          allowEscapeViewBox={{ x: true, y: true }}
+                          wrapperStyle={{ pointerEvents: "none" }}
                           content={
                             <CustomTooltip
                               productData={productData}

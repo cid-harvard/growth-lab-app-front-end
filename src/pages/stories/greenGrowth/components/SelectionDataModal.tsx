@@ -23,6 +23,7 @@ import { useCountrySelection, useYearSelection } from "../hooks/useUrlParams";
 import { useProductLookup } from "../queries/products";
 import { columnTooltips } from "./shared/columnTooltips";
 import { computeDiamondRatings, DiamondRow } from "./shared/DiamondRating";
+import GGTooltip from "./shared/GGTooltip";
 import AtlasIcon from "../../../../assets/GL_Atlas_favicon.png";
 
 const formatCurrency = (value?: number | null) => {
@@ -62,10 +63,8 @@ const SelectionDataModal: React.FC = () => {
   }, [state.payload]);
 
   // Pull all supporting datasets once
-  const { countryData, clustersData, productClusterRows } = useGreenGrowthData(
-    selectedCountry,
-    parseInt(selectedYear),
-  );
+  const { countryData, clustersData, supplyChainsData, productMappings } =
+    useGreenGrowthData(selectedCountry, parseInt(selectedYear));
 
   const title = useMemo(() => {
     if (!state.payload) return "Details";
@@ -89,6 +88,26 @@ const SelectionDataModal: React.FC = () => {
     const productById = new Map<number, any>(
       productList.map((p: any) => [p.productId, p]),
     );
+
+    // Build lookup maps
+    const supplyChainIdToName = new Map<number, string>();
+    supplyChainsData?.ggSupplyChainList?.forEach((sc: any) => {
+      supplyChainIdToName.set(sc.supplyChainId, sc.supplyChain);
+    });
+    const clusterIdToName = new Map<number, string>();
+    clustersData?.ggClusterList?.forEach((c: any) => {
+      clusterIdToName.set(c.clusterId, c.clusterName);
+    });
+
+    // If selection carries a value chain context, resolve its name
+    const contextChainName: string | null = (() => {
+      const supplyChainId = state.payload?.supplyChainId;
+      if (!supplyChainId) return null;
+      return supplyChainIdToName.get(Number(supplyChainId)) || null;
+    })();
+    const contextChainId: number | null = state.payload?.supplyChainId
+      ? Number(state.payload.supplyChainId)
+      : null;
 
     // Consistent headers with main table
     const baseHeaders = [
@@ -294,20 +313,66 @@ const SelectionDataModal: React.FC = () => {
               <TableRow sx={{ height: mainHeaderHeight }}>
                 {headers.map((h) => (
                   <TableCell key={h.key} sx={{ minWidth: h.width }}>
-                    {h.tooltip ? (
-                      <Tooltip title={h.tooltip} placement="top">
-                        <span
-                          style={{
-                            cursor: "help",
-                            textDecoration: "underline",
+                    {(() => {
+                      const diamondKeys = new Set([
+                        "normalizedCog",
+                        "normalizedPci",
+                        "density",
+                      ]);
+                      const buildDiamondLegend = (content: React.ReactNode) => (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1,
                           }}
                         >
-                          {h.label}
-                        </span>
-                      </Tooltip>
-                    ) : (
-                      h.label
-                    )}
+                          <Typography
+                            sx={{ fontSize: fullScreen ? "12px" : "14px" }}
+                          >
+                            {content}
+                          </Typography>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <DiamondRow count={5} />
+                            <Typography variant="caption">Strong</Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <DiamondRow count={0} />
+                            <Typography variant="caption">Weak</Typography>
+                          </Box>
+                        </Box>
+                      );
+                      if (h.tooltip) {
+                        const title = diamondKeys.has(h.key)
+                          ? buildDiamondLegend(h.tooltip as any)
+                          : (h.tooltip as any);
+                        return (
+                          <GGTooltip title={title} placement="top">
+                            <span
+                              style={{
+                                cursor: "help",
+                                textDecoration: "underline",
+                              }}
+                            >
+                              {h.label}
+                            </span>
+                          </GGTooltip>
+                        );
+                      }
+                      return h.label;
+                    })()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -375,23 +440,75 @@ const SelectionDataModal: React.FC = () => {
     };
     if (state.payload.type === "product" && state.payload.productId) {
       const pid = state.payload.productId as number;
-      const rowsForProduct = (productClusterRows || []).filter(
-        (r: any) => r.product_id === pid,
+      // Use full product->(cluster,value chain) mappings, not taxonomy rows which dedupe to one
+      const mappingsForProduct = (productMappings || []).filter(
+        (m: any) => Number(m.productId) === Number(pid),
       );
-      if (!rowsForProduct.length) {
+      let filteredMappings = contextChainName
+        ? mappingsForProduct.filter(
+            (m: any) =>
+              supplyChainIdToName.get(Number(m.supplyChainId)) ===
+              contextChainName,
+          )
+        : mappingsForProduct;
+      // Fallback: if nothing found for the contextual chain, show all mappings
+      if (!filteredMappings.length && mappingsForProduct.length) {
+        filteredMappings = mappingsForProduct;
+      }
+      if (!filteredMappings.length) {
         return (
           <Typography>
             No hierarchy mapping available for this product.
           </Typography>
         );
       }
-      const chains = Array.from(
-        new Set(rowsForProduct.map((r: any) => r.supply_chain)),
-      );
-      const fullRows = (productClusterRows || []).filter((r: any) =>
-        chains.includes(r.supply_chain),
-      );
-      return renderNested(fullRows);
+      // If we have a contextual chain, show ALL products and clusters in that value chain
+      const fullRows =
+        contextChainId != null
+          ? (productMappings || [])
+              .filter((m: any) => Number(m.supplyChainId) === contextChainId)
+              .map((m: any) => {
+                const meta = productLookup.get(m.productId);
+                const country = productById.get(m.productId);
+                return {
+                  supply_chain:
+                    supplyChainIdToName.get(Number(m.supplyChainId)) ||
+                    "Unknown",
+                  cluster_name:
+                    clusterIdToName.get(Number(m.clusterId)) ||
+                    String(m.clusterId),
+                  product_id: m.productId,
+                  exportRca: country?.exportRca ?? null,
+                  exportValue: country?.exportValue ?? null,
+                  expectedExports: country?.expectedExports ?? null,
+                  normalizedPci: country?.normalizedPci ?? null,
+                  normalizedCog: country?.normalizedCog ?? null,
+                  density: country?.density ?? null,
+                  code: meta?.code,
+                  nameShortEn: meta?.nameShortEn,
+                };
+              })
+          : filteredMappings.map((m: any) => {
+              const meta = productLookup.get(pid);
+              const country = productById.get(pid);
+              return {
+                supply_chain:
+                  supplyChainIdToName.get(Number(m.supplyChainId)) || "Unknown",
+                cluster_name:
+                  clusterIdToName.get(Number(m.clusterId)) ||
+                  String(m.clusterId),
+                product_id: pid,
+                exportRca: country?.exportRca ?? null,
+                exportValue: country?.exportValue ?? null,
+                expectedExports: country?.expectedExports ?? null,
+                normalizedPci: country?.normalizedPci ?? null,
+                normalizedCog: country?.normalizedCog ?? null,
+                density: country?.density ?? null,
+                code: meta?.code,
+                nameShortEn: meta?.nameShortEn,
+              };
+            });
+      return <Box>{renderNested(fullRows)}</Box>;
     }
 
     if (state.payload.type === "cluster" && state.payload.clusterId != null) {
@@ -405,12 +522,30 @@ const SelectionDataModal: React.FC = () => {
         );
         return match?.clusterName || String(clusterId);
       })();
-      // Get ALL products belonging to this cluster from taxonomy (productClusterRows)
-      const taxonomyRows = (productClusterRows || []).filter((r: any) =>
-        name
-          ? r.cluster_name === name
-          : String(r.cluster_id) === String(clusterId),
+      // Build rows using full mappings so we include all value chains this cluster spans
+      const clusterIdNum = (() => {
+        const m = clustersData?.ggClusterList?.find(
+          (c: any) =>
+            c.clusterName === name || String(c.clusterId) === String(clusterId),
+        );
+        return Number(m?.clusterId ?? clusterId);
+      })();
+      const mappingsForCluster = (productMappings || []).filter(
+        (m: any) => Number(m.clusterId) === clusterIdNum,
       );
+      const filteredMappingsForCluster = contextChainName
+        ? mappingsForCluster.filter(
+            (m: any) =>
+              supplyChainIdToName.get(Number(m.supplyChainId)) ===
+              contextChainName,
+          )
+        : mappingsForCluster;
+      const taxonomyRows = filteredMappingsForCluster.map((m: any) => ({
+        supply_chain:
+          supplyChainIdToName.get(Number(m.supplyChainId)) || "Unknown",
+        cluster_name: name,
+        product_id: m.productId,
+      }));
       // Build synthetic rows that ensure every product in the cluster appears even if country data missing
       const fullRows = taxonomyRows.map((r: any) => {
         const meta = productLookup.get(r.product_id);
@@ -430,27 +565,27 @@ const SelectionDataModal: React.FC = () => {
           nameShortEn: meta?.nameShortEn,
         };
       });
-      const valueChains = Array.from(
-        new Set(fullRows.map((r: any) => r.supply_chain)),
-      ).sort();
-      return (
-        <Box>
-          <Typography sx={{ mb: 2 }}>
-            Value Chains: {valueChains.join(", ")}
-          </Typography>
-          {renderNested(fullRows)}
-        </Box>
-      );
+
+      return <Box>{renderNested(fullRows)}</Box>;
     }
 
     if (
       state.payload.type === "supplyChain" &&
       state.payload.supplyChainId != null
     ) {
-      const chainName = state.payload.title;
-      const filtered = (productClusterRows || []).filter((r: any) =>
-        chainName ? r.supply_chain === chainName : true,
+      const chainId = Number(state.payload.supplyChainId);
+      const chainName =
+        supplyChainIdToName.get(chainId) || state.payload.title || null;
+      // Build rows using full mappings for this chain
+      const mappingsForChain = (productMappings || []).filter(
+        (m: any) => Number(m.supplyChainId) === chainId,
       );
+      const filtered = mappingsForChain.map((m: any) => ({
+        supply_chain: chainName || "",
+        cluster_name:
+          clusterIdToName.get(Number(m.clusterId)) || String(m.clusterId),
+        product_id: m.productId,
+      }));
       return (
         <Box>
           {chainName && (
@@ -467,21 +602,37 @@ const SelectionDataModal: React.FC = () => {
     state.payload,
     countryData,
     clustersData,
-    productClusterRows,
     fullScreen,
     theme,
     productLookup,
     selectedYear,
     selectedCountry,
+    supplyChainsData,
+    productMappings,
   ]);
 
   return (
     <Dialog
       open={state.isOpen}
       onClose={closeSelectionModal}
-      fullWidth
-      maxWidth="md"
       fullScreen={fullScreen}
+      fullWidth={false}
+      maxWidth={false}
+      PaperProps={{
+        sx: fullScreen
+          ? { width: "100%", maxWidth: "100%" }
+          : {
+              // Responsive wide dialog that avoids unnecessary horizontal scroll
+              width: {
+                xs: "100%",
+                sm: "95vw",
+                md: "92vw",
+                lg: "88vw",
+                xl: "min(1600px, 85vw)",
+              },
+              maxWidth: "none",
+            },
+      }}
     >
       <DialogTitle sx={{ pr: 6 }}>
         {title}

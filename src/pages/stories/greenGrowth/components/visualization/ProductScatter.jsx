@@ -13,7 +13,6 @@ import {
   useYearSelection,
 } from "../../hooks/useUrlParams";
 import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
-// import { useStrategicPosition } from "../../hooks/useStrategicPosition";
 import { useImageCaptureContext } from "../../hooks/useImageCaptureContext";
 
 import { Typography, Box, useMediaQuery, useTheme } from "@mui/material";
@@ -688,13 +687,13 @@ const CustomScatterPlot = ({
     enter: (item) => ({
       cx: item.x,
       cy: item.y,
-      opacity: item.isTop ? 0.9 : 0.3,
+      opacity: item.isTop ? 0.9 : 0.4,
       r: item.nodeSize || 6,
     }),
     update: (item) => ({
       cx: item.x,
       cy: item.y,
-      opacity: item.isTop ? 0.9 : 0.3,
+      opacity: item.isTop ? 0.9 : 0.4,
       r: item.nodeSize || 6,
     }),
     leave: () => ({
@@ -763,7 +762,7 @@ const CustomScatterPlot = ({
         {/* Click hint row - positioned at top */}
         <g transform={`translate(0, ${margin.top - 40})`}>
           <ClickHint
-            text="Click on a bubble to see its products"
+            text="Click on a cluster to see its products"
             x={margin.left}
             y={0}
           />
@@ -797,7 +796,7 @@ const CustomScatterPlot = ({
         {/* Data points */}
         <g className="data-points" clipPath="url(#scatter-clip)">
           {circleTransitions((style, item) => {
-            const strokeOpacity = item.isTop ? 0.9 : 0.3;
+            const strokeOpacity = item.isTop ? 0.9 : 0.4;
 
             return (
               <animated.circle
@@ -1050,11 +1049,11 @@ const CustomScatterPlot = ({
 
 // Legend component for ProductScatter
 const ProductScatterLegend = ({ isMobile }) => {
-  // Use D3 RdYlBu to build a precise left-to-right (blue→red) gradient
+  // Use D3 RdYlBu to build a precise left-to-right (red→blue) gradient
   const gradientCss = useMemo(() => {
     const steps = 20; // smoothness of the gradient
     const stops = Array.from({ length: steps + 1 }, (_, i) => {
-      const t = 1 - i / steps; // invert so left is blue, right is red
+      const t = i / steps; // left is red, right is blue
       const pct = Math.round((i / steps) * 100);
       return `${interpolateRdYlBu(t)} ${pct}%`;
     }).join(", ");
@@ -1063,6 +1062,7 @@ const ProductScatterLegend = ({ isMobile }) => {
   return (
     <Box
       sx={{
+        transform: "translateY(-15px)",
         width: "100%",
         maxWidth: "1200px",
         mx: "auto",
@@ -1096,7 +1096,7 @@ const ProductScatterLegend = ({ isMobile }) => {
             whiteSpace: "nowrap",
           }}
         >
-          High Potential
+          Low Potential
         </Typography>
 
         {/* Gradient bar - matching ClusterTree style */}
@@ -1119,7 +1119,7 @@ const ProductScatterLegend = ({ isMobile }) => {
             whiteSpace: "nowrap",
           }}
         >
-          Low Potential
+          High Potential
         </Typography>
       </Box>
     </Box>
@@ -1151,6 +1151,23 @@ const ProductScatterInternal = ({ width, height }) => {
       const captureFunction = async () => {
         if (chartContainerRef.current) {
           try {
+            // Temporarily hide non-export elements (e.g., click hints)
+            const hiddenElements = [];
+            const candidates = chartContainerRef.current.querySelectorAll(
+              '[data-export-hide="true"]',
+            );
+            candidates.forEach((el) => {
+              const element = el;
+              if (element && element.style) {
+                hiddenElements.push(element);
+                element.setAttribute(
+                  "data-export-original-display",
+                  element.style.display || "",
+                );
+                element.style.display = "none";
+              }
+            });
+
             const canvas = await html2canvas(chartContainerRef.current, {
               backgroundColor: "#ffffff",
               scale: 2,
@@ -1173,6 +1190,14 @@ const ProductScatterInternal = ({ width, height }) => {
                 URL.revokeObjectURL(url);
               }
             }, "image/png");
+
+            // Restore hidden elements
+            hiddenElements.forEach((el) => {
+              const original =
+                el.getAttribute("data-export-original-display") || "";
+              el.style.display = original;
+              el.removeAttribute("data-export-original-display");
+            });
           } catch (error) {
             console.error("Error capturing image:", error);
           }
@@ -1193,12 +1218,6 @@ const ProductScatterInternal = ({ width, height }) => {
     selectedCountry,
     selectedYear,
   ]);
-
-  // Get strategic position for the selected country
-  // const strategicPosition = useStrategicPosition(
-  //   Number.parseInt(selectedCountry),
-  //   Number.parseInt(selectedYear),
-  // );
 
   // Use the comprehensive shared data fetching hook
   const { countryData, clustersData } = useGreenGrowthData(
@@ -1340,7 +1359,7 @@ const ProductScatterInternal = ({ width, height }) => {
         const attractiveness =
           0.6 * Number.parseFloat(clusterItem.cog) +
           0.4 * Number.parseFloat(clusterItem.pci);
-        const density = Number.parseFloat(clusterItem.rca);
+        const density = Number.parseFloat(clusterItem.density);
 
         return {
           ...data,
@@ -1472,6 +1491,7 @@ const ProductScatterInternal = ({ width, height }) => {
 
   return (
     <Box
+      ref={chartContainerRef}
       sx={{
         width: "100%",
         height: "100%",
@@ -1495,9 +1515,8 @@ const ProductScatterInternal = ({ width, height }) => {
         <Typography variant="chart-title">Strategic Clusters</Typography>
       </Box>
 
-      {/* Chart, Legend, and Attribution Container for Image Capture */}
+      {/* Chart, Legend, and Attribution Container (exported with title via parent ref) */}
       <Box
-        ref={chartContainerRef}
         sx={{
           flex: 1,
           minHeight: 0,
@@ -1526,6 +1545,7 @@ const ProductScatterInternal = ({ width, height }) => {
               gap: "6px",
               pointerEvents: "auto",
               zIndex: 2,
+              cursor: "help",
             }}
           >
             <BookmarkIcon sx={{ fontSize: isMobile ? "14px" : "18px" }} />
@@ -1617,7 +1637,7 @@ const ProductScatterInternal = ({ width, height }) => {
         )}
 
         {/* Legend - included in export area */}
-        <Box sx={{ mt: 1 }}>
+        <Box sx={{ mt: 0 }}>
           <ProductScatterLegend
             viewMode={viewMode}
             nodeSizing={nodeSizing}

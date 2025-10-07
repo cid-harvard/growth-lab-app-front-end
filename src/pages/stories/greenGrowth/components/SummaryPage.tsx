@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
 import { Box, Button, Container, Typography, Modal, Fab } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
+import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import { useYearSelection, useCountrySelection } from "../hooks/useUrlParams";
@@ -10,6 +13,7 @@ import { useGreenGrowthData } from "../hooks/useGreenGrowthData";
 import { useStrategicPosition } from "../hooks/useStrategicPosition";
 import { Widget } from "@typeform/embed-react";
 import IndustryIcon from "../../../../assets/Industry-icon.svg";
+import { ReactComponent as NavIcon4 } from "../../../../assets/nav-icon-4.svg";
 
 // White background for entire page
 const PageBackground = styled(Box)(() => ({
@@ -35,7 +39,7 @@ const TitleSection = styled(Box)(() => ({
   color: "#333333",
 }));
 
-// Main content section with white background
+// Main content section (kept white); figures area below will have its own light background
 const ContentSection = styled(Box)(() => ({
   background: "#ffffff",
   width: "100%",
@@ -73,6 +77,15 @@ const SummaryPage: React.FC = () => {
     selectedYear,
   );
 
+  // Fetch all countries metrics to compute Green Complexity Ranking (current and 5 years prior)
+  const yearsWindow = 5;
+  const { allCountriesMetrics } = useGreenGrowthData(null, selectedYear, true);
+  const { allCountriesMetrics: prevAllCountriesMetrics } = useGreenGrowthData(
+    null,
+    selectedYear - yearsWindow,
+    true,
+  );
+
   // Strategic approach from existing hook
   const strategic = useStrategicPosition(
     Number.parseInt(String(selectedCountry)),
@@ -104,7 +117,7 @@ const SummaryPage: React.FC = () => {
       const attractiveness =
         0.6 * Number.parseFloat(String(clusterItem.cog)) +
         0.4 * Number.parseFloat(String(clusterItem.pci));
-      const density = Number.parseFloat(String(clusterItem.rca));
+      const density = Number.parseFloat(String(clusterItem.density));
       return {
         clusterId: Number(clusterItem.clusterId),
         attractiveness,
@@ -158,6 +171,51 @@ const SummaryPage: React.FC = () => {
       })
       .filter((v): v is { id: number; name: string } => Boolean(v));
   }, [countryData, clustersData]);
+
+  // Compute Green Complexity rank and change over time
+  const ranking = useMemo(() => {
+    const countryId = Number.parseInt(String(selectedCountry));
+    type SimpleMetric = { countryId: number; xResid: number };
+    const isSimpleMetric = (d: unknown): d is SimpleMetric => {
+      if (typeof d !== "object" || d === null) return false;
+      const obj = d as { countryId?: unknown; xResid?: unknown };
+      return (
+        typeof obj.countryId === "number" && typeof obj.xResid === "number"
+      );
+    };
+
+    const nowArr: SimpleMetric[] = Array.isArray(allCountriesMetrics)
+      ? (allCountriesMetrics as unknown[]).filter(isSimpleMetric)
+      : [];
+    const prevArr: SimpleMetric[] = Array.isArray(prevAllCountriesMetrics)
+      ? (prevAllCountriesMetrics as unknown[]).filter(isSimpleMetric)
+      : [];
+
+    const total = nowArr.length;
+
+    const currentSorted = [...nowArr].sort((a, b) => b.xResid - a.xResid);
+    const prevSorted = [...prevArr].sort((a, b) => b.xResid - a.xResid);
+
+    const currentIndex = currentSorted.findIndex(
+      (d) => d.countryId === countryId,
+    );
+    const prevIndex = prevSorted.findIndex((d) => d.countryId === countryId);
+
+    const rankNow = currentIndex >= 0 ? currentIndex + 1 : null;
+    const rankPrev = prevIndex >= 0 ? prevIndex + 1 : null;
+
+    const delta =
+      rankNow !== null && rankPrev !== null ? rankPrev - rankNow : null; // positive = improved
+
+    const ordinal = (n: number | null) => {
+      if (n === null) return "-";
+      const s = ["th", "st", "nd", "rd"];
+      const v = n % 100;
+      return `${n}${s[(v - 20) % 10] || s[v] || s[0]}`;
+    };
+
+    return { rankNow, rankPrev, delta, total, ordinal };
+  }, [allCountriesMetrics, prevAllCountriesMetrics, selectedCountry]);
 
   return (
     <PageBackground>
@@ -225,9 +283,9 @@ const SummaryPage: React.FC = () => {
               fontWeight: 600,
             }}
           >
-            The energy transition offers {countryName} defining opportunity for
-            growth. {countryName} must act quickly to create a winning strategy
-            for green growth, or risk being left behind.
+            The energy transition offers {countryName} a defining opportunity
+            for growth. {countryName} must act quickly to create a winning
+            strategy for green growth, or risk being left behind.
           </Typography>
         </Container>
       </TitleSection>
@@ -235,12 +293,17 @@ const SummaryPage: React.FC = () => {
       {/* Main Content Section */}
       <ContentSection>
         <Container maxWidth="md">
+          {/* Figures area wrapper with light blue background (spec-like) */}
           <Box
             sx={{
+              background: "rgba(92, 126, 145, 0.1)",
+              borderRadius: 0,
+              px: { xs: 2, md: 4 },
+              py: { xs: 4, md: 6 },
               display: "flex",
               flexDirection: "column",
               gap: 10,
-              mb: 8,
+              mb: 6,
               maxWidth: "1000px",
               mx: "auto",
             }}
@@ -249,7 +312,7 @@ const SummaryPage: React.FC = () => {
             <Box
               sx={{
                 display: "flex",
-                alignItems: "flex-start",
+                alignItems: "center",
                 gap: 6,
                 flexWrap: "wrap",
               }}
@@ -297,7 +360,7 @@ const SummaryPage: React.FC = () => {
                       pb: 0,
                     }}
                   >
-                    {strategic?.label || "Harness Nearby Opportunities"}
+                    {strategic?.label || "Light Touch Approach"}
                   </Typography>
                 </Box>
                 <Typography
@@ -322,7 +385,7 @@ const SummaryPage: React.FC = () => {
             <Box
               sx={{
                 display: "flex",
-                alignItems: "flex-start",
+                alignItems: "center",
                 gap: 6,
                 flexWrap: "wrap",
               }}
@@ -386,6 +449,94 @@ const SummaryPage: React.FC = () => {
                 </Box>
               )}
             </Box>
+
+            {/* Green Complexity Ranking - Left title, Right content */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                flexWrap: "wrap",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 600,
+                  minWidth: "200px",
+                  flexShrink: 0,
+                }}
+              >
+                Green Complexity Ranking
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  flex: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.5,
+                  }}
+                >
+                  <NavIcon4
+                    height={60}
+                    style={{
+                      stroke: "#000",
+                      strokeWidth: 1,
+                      fill: "none",
+                    }}
+                  />
+                  <Typography
+                    sx={{ fontWeight: 700, color: "#333333", fontSize: "18px" }}
+                  >
+                    {ranking.rankNow !== null
+                      ? `${ranking.ordinal(ranking.rankNow)} out of ${ranking.total || "-"} Countries`
+                      : "Data unavailable"}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.5,
+                  }}
+                >
+                  {ranking.delta === null ? (
+                    <DragHandleIcon sx={{ fontSize: 30, color: "#333" }} />
+                  ) : ranking.delta > 0 ? (
+                    <ArrowUpwardOutlinedIcon
+                      sx={{ fontSize: 30, color: "#333" }}
+                    />
+                  ) : ranking.delta < 0 ? (
+                    <ArrowDownwardOutlinedIcon
+                      sx={{ fontSize: 30, color: "#333" }}
+                    />
+                  ) : (
+                    <DragHandleIcon sx={{ fontSize: 30, color: "#333" }} />
+                  )}
+                  <Typography
+                    sx={{ fontWeight: 700, color: "#333333", fontSize: "18px" }}
+                  >
+                    {(() => {
+                      const years = yearsWindow;
+                      if (ranking.delta === null)
+                        return `Change over ${years} years unavailable`;
+                      if (ranking.delta > 0)
+                        return `Improved ${ranking.delta} position${ranking.delta === 1 ? "" : "s"} in ${years} years`;
+                      if (ranking.delta < 0)
+                        return `Declined ${Math.abs(ranking.delta)} position${Math.abs(ranking.delta) === 1 ? "" : "s"} in ${years} years`;
+                      return `No change in ${years} years`;
+                    })()}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
           </Box>
 
           {/* Actions row with bottom margin for footer space */}
@@ -399,7 +550,7 @@ const SummaryPage: React.FC = () => {
               },
               gap: 2,
               justifyItems: "center",
-              mb: 8, // Increased bottom margin to provide space before footer
+              mb: 8,
             }}
           >
             <ActionButton
@@ -422,7 +573,7 @@ const SummaryPage: React.FC = () => {
                 window.open(url, "_blank", "noopener,noreferrer");
               }}
             >
-              Explore further with Atlas
+              Explore Further with Atlas
             </ActionButton>
             <ActionButton
               onClick={() =>

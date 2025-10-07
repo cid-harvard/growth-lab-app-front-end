@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useQuery, useApolloClient, gql } from "@apollo/client";
 import styled from "styled-components";
+import { ParentSize } from "@visx/responsive";
 import {
   FullWidthContent,
   FullWidthContentContainer,
@@ -19,7 +20,8 @@ const GET_COUNTRIES = gql`
 `;
 
 // Chart dimensions constants
-const CHART_HEIGHT = 1500;
+const CHART_HEIGHT = 800;
+const TOP_N = 40;
 
 // Years array - defined outside component to prevent re-creation
 const ALL_YEARS = [
@@ -43,16 +45,18 @@ const Title = styled.h1`
 const ChartContainer = styled.div`
   position: relative;
   width: 100%;
-  min-height: ${CHART_HEIGHT}px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 0px;
+  min-height: ${CHART_HEIGHT}px; /* ensure parent is tall enough so chart isn't cut off */
+  overflow: visible;
 `;
 
 const BumpChartSvg = styled.svg`
   width: 100%;
-  height: ${CHART_HEIGHT}px;
+  height: ${CHART_HEIGHT}px; /* ensure explicit height; browser default is 150 */
+  display: block;
   font-family: "Source Sans Pro", sans-serif;
 `;
 
@@ -68,6 +72,11 @@ const CountryLine = styled.path<{ color: string; isHighlighted: boolean }>`
     stroke-width: 3;
     stroke-opacity: 1;
   }
+`;
+
+const CountryLineDashed = styled(CountryLine)`
+  stroke-opacity: ${(props) => (props.isHighlighted ? 0.9 : 0.4)};
+  stroke-dasharray: 4 4;
 `;
 
 const CountryDot = styled.circle<{ color: string; isHighlighted: boolean }>`
@@ -87,7 +96,7 @@ const CountryLabel = styled.text<{ isHighlighted: boolean }>`
   font-size: ${(props) => (props.isHighlighted ? "14px" : "12px")};
   font-weight: ${(props) => (props.isHighlighted ? "bold" : "normal")};
   fill: #2c3e50;
-  pointer-events: none;
+  pointer-events: auto;
   transition: all 0.3s ease;
 `;
 
@@ -104,40 +113,7 @@ const RankLabel = styled.text`
   text-anchor: end;
 `;
 
-const ControlsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-`;
-
-const CountryFilter = styled.input`
-  padding: 8px 12px;
-  border: 1px solid #bdc3c7;
-  border-radius: 4px;
-  font-size: 14px;
-  width: 200px;
-`;
-
-const CountrySelectionContainer = styled.div`
-  margin-bottom: 20px;
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 10px;
-`;
-
-const CountryCheckbox = styled.label`
-  display: block;
-  margin: 4px 0;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
-`;
+// TooltipBox reserved for future in-chart tooltips (not currently used)
 
 // Types
 interface CountryData {
@@ -187,11 +163,11 @@ const colors = [
 
 const GreenEciBumpChart: React.FC = () => {
   const [selectedCountries, setSelectedCountries] = useState<number[]>([]);
-  const [filter, setFilter] = useState("");
   const [highlightedCountry, setHighlightedCountry] = useState<number | null>(
     null,
   );
   const [bumpChartData, setBumpChartData] = useState<BumpChartData>({});
+  // Tooltip state reserved for future enhancements (currently unused)
 
   const client = useApolloClient();
 
@@ -214,16 +190,7 @@ const GreenEciBumpChart: React.FC = () => {
     }
   }, [allCountryIds, selectedCountries.length]);
 
-  // Filtered countries for selection
-  const filteredCountries = useMemo(() => {
-    if (!countriesData?.ggLocationCountryList) return [];
-
-    return countriesData.ggLocationCountryList.filter(
-      (country: CountryData) =>
-        country.nameEn.toLowerCase().includes(filter.toLowerCase()) ||
-        country.iso3Code.toLowerCase().includes(filter.toLowerCase()),
-    );
-  }, [countriesData, filter]);
+  // (removed) filteredCountries: not used in current chart
 
   // Progressive data loading: load years from most recent backwards
   useEffect(() => {
@@ -275,7 +242,7 @@ const GreenEciBumpChart: React.FC = () => {
 
         countryAliases.forEach((alias) => {
           const countryData = result.data[alias];
-          if (countryData && countryData[0]) {
+          if (countryData?.[0]) {
             const data = countryData[0];
             yearResults.push({
               countryId: data.countryId,
@@ -340,39 +307,38 @@ const GreenEciBumpChart: React.FC = () => {
   }, [selectedCountries, countriesData, client]);
 
   // Chart dimensions
-  const margin = { top: 50, right: 150, bottom: 50, left: 60 };
-  const width = 800;
-  const chartWidth = width - margin.left - margin.right;
+  const margin = { top: 50, right: 300, bottom: 50, left: 60 };
+  // width will be adapted later for responsiveness; keep a default now
+  // Width is measured at render time via ParentSize
   const chartHeight = CHART_HEIGHT - margin.top - margin.bottom;
+  const clipId = useMemo(
+    () => `eci-clip-${Math.random().toString(36).slice(2, 9)}`,
+    [],
+  );
+  const clipPad = 6; // extend by max dot radius to avoid clipping circles on edges
 
-  // Scales
-  const xScale = (year: number) =>
-    ((year - ALL_YEARS[ALL_YEARS.length - 1]) /
-      (ALL_YEARS[0] - ALL_YEARS[ALL_YEARS.length - 1])) *
-    chartWidth;
+  // Determine countries to draw: union of all countries that are within TOP_N in any year
+  const visibleCountryIds = useMemo(() => {
+    const ids = new Set<number>();
+    Object.entries(bumpChartData).forEach(
+      ([id, data]: [string, BumpChartData[number]]) => {
+        if (data.years.some((d: YearlyData) => d.rank <= TOP_N))
+          ids.add(parseInt(id, 10));
+      },
+    );
+    if (ids.size === 0) return selectedCountries.slice(0, TOP_N);
+    return Array.from(ids);
+  }, [bumpChartData, selectedCountries]);
 
-  const yScale = (rank: number) =>
-    ((rank - 1) / Math.max(selectedCountries.length - 1, 1)) * chartHeight;
+  // Build a per-year ranking position among visible countries
+  // (Deprecated) previously computed positions among visible countries; no longer needed
+  // const visibleRanksByYear = useMemo(() => { ... }, [visibleCountryIds, bumpChartData]);
 
-  // Generate SVG path for each country
-  const generatePath = (yearlyData: YearlyData[]) => {
-    const points = yearlyData
-      .sort((a, b) => a.year - b.year)
-      .map((d) => `${xScale(d.year)},${yScale(d.rank)}`)
-      .join(" L ");
+  // (scales computed inside responsive render where width is known)
 
-    return `M ${points}`;
-  };
+  // (moved local yOff and path generators inside responsive render)
 
-  const toggleCountry = (countryId: number) => {
-    setSelectedCountries((prev) => {
-      if (prev.includes(countryId)) {
-        return prev.filter((id) => id !== countryId);
-      } else {
-        return [...prev, countryId];
-      }
-    });
-  };
+  // (removed) toggleCountry: selection UI not present in current chart
 
   if (countriesLoading) {
     return (
@@ -389,103 +355,210 @@ const GreenEciBumpChart: React.FC = () => {
   return (
     <FullWidthContent>
       <PageContainer>
-        <Title>
-          Economic Complexity Index - controlled for GDP per capita and natural
-          resource exports
-        </Title>
-
-        <ControlsContainer>
-          <CountryFilter
-            placeholder="Filter countries..."
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        </ControlsContainer>
-
-        {/* Country selection */}
-        <CountrySelectionContainer>
-          {filteredCountries.slice(0, 20).map((country: CountryData) => (
-            <CountryCheckbox key={country.countryId}>
-              <input
-                type="checkbox"
-                checked={selectedCountries.includes(country.countryId)}
-                onChange={() => toggleCountry(country.countryId)}
-                style={{ marginRight: "8px" }}
-              />
-              {country.nameEn} ({country.iso3Code})
-            </CountryCheckbox>
-          ))}
-        </CountrySelectionContainer>
-
+        <Title>Green Manufacturing Rankings</Title>
         <ChartContainer>
-          <BumpChartSvg>
-            <g transform={`translate(${margin.left},${margin.top})`}>
-              {/* Year labels */}
-              {ALL_YEARS.map((year: number) => (
-                <YearLabel key={year} x={xScale(year)} y={chartHeight + 30}>
-                  {year}
-                </YearLabel>
-              ))}
-
-              {/* Rank labels */}
-              {Array.from({ length: selectedCountries.length }, (_, i) => (
-                <RankLabel key={i} x={-10} y={yScale(i + 1) + 5}>
-                  {i + 1}
-                </RankLabel>
-              ))}
-
-              {/* Country lines and dots */}
-              {Object.entries(bumpChartData).map(([countryId, data], index) => {
-                const color = colors[index % colors.length];
-                const isHighlighted =
-                  highlightedCountry === parseInt(countryId);
-
-                return (
-                  <g key={countryId}>
-                    {/* Line */}
-                    <CountryLine
-                      d={generatePath(data.years)}
-                      color={color}
-                      isHighlighted={isHighlighted}
-                      onMouseEnter={() =>
-                        setHighlightedCountry(parseInt(countryId))
-                      }
-                      onMouseLeave={() => setHighlightedCountry(null)}
-                    />
-
-                    {/* Dots */}
-                    {data.years.map((yearData: YearlyData) => (
-                      <CountryDot
-                        key={`${countryId}-${yearData.year}`}
-                        cx={xScale(yearData.year)}
-                        cy={yScale(yearData.rank)}
-                        color={color}
-                        isHighlighted={isHighlighted}
-                        onMouseEnter={() =>
-                          setHighlightedCountry(parseInt(countryId))
-                        }
-                        onMouseLeave={() => setHighlightedCountry(null)}
-                      />
+          <ParentSize>
+            {({ width }) => {
+              const w = Math.max(width, 300);
+              const chartWidth = w - margin.left - margin.right;
+              const xS = (year: number) =>
+                ((year - ALL_YEARS[ALL_YEARS.length - 1]) /
+                  (ALL_YEARS[0] - ALL_YEARS[ALL_YEARS.length - 1])) *
+                chartWidth;
+              const yS = (rank: number) =>
+                ((Math.min(rank, TOP_N) - 1) / Math.max(TOP_N - 1, 1)) *
+                chartHeight;
+              const yOff = (rank: number) => {
+                if (rank <= TOP_N) return yS(rank);
+                const overflow = Math.max(0, rank - TOP_N);
+                const extra =
+                  Math.min(overflow, TOP_N) * (chartHeight / TOP_N) * 0.25;
+                return yS(TOP_N) + extra;
+              };
+              return (
+                <BumpChartSvg>
+                  <g transform={`translate(${margin.left},${margin.top})`}>
+                    <defs>
+                      <clipPath id={clipId}>
+                        <rect
+                          x={-clipPad}
+                          y={-clipPad}
+                          width={chartWidth + 300}
+                          height={chartHeight + clipPad + 3}
+                        />
+                      </clipPath>
+                    </defs>
+                    {ALL_YEARS.map((year: number) => (
+                      <YearLabel key={year} x={xS(year)} y={chartHeight + 30}>
+                        {year}
+                      </YearLabel>
                     ))}
-
-                    {/* Country label at the end */}
-                    {data.years.length > 0 && (
-                      <CountryLabel
-                        x={xScale(ALL_YEARS[0]) + 10}
-                        y={
-                          yScale(data.years[data.years.length - 1]?.rank || 1) +
-                          5
-                        }
-                        isHighlighted={isHighlighted}
+                    {Array.from({ length: TOP_N }, (_, i) => (
+                      <RankLabel
+                        key={`rank-${i + 1}`}
+                        x={-10}
+                        y={yS(i + 1) + 5}
                       >
-                        {data.country.iso3Code}
-                      </CountryLabel>
-                    )}
+                        {i + 1}
+                      </RankLabel>
+                    ))}
+                    <g clipPath={`url(#${clipId})`}>
+                      {visibleCountryIds.map((cid) => {
+                        const data = bumpChartData[cid];
+                        if (!data) return null;
+                        const color = colors[cid % colors.length];
+                        const isHighlighted = highlightedCountry === cid;
+                        const pathD = (() => {
+                          const sorted = [...data.years].sort(
+                            (a, b) => a.year - b.year,
+                          );
+                          let d = "";
+                          let inSeg = false;
+                          for (let i = 0; i < sorted.length; i++) {
+                            const y = sorted[i];
+                            const within = y.rank <= TOP_N;
+                            const xPos = xS(y.year);
+                            const yPos = yS(y.rank);
+                            if (within) {
+                              if (!inSeg) {
+                                d += `M ${xPos},${yPos}`;
+                                inSeg = true;
+                              } else {
+                                d += ` L ${xPos},${yPos}`;
+                              }
+                            } else {
+                              inSeg = false;
+                            }
+                          }
+                          return d;
+                        })();
+                        return (
+                          <g key={`country-${cid}`}>
+                            <CountryLine
+                              d={pathD}
+                              color={color}
+                              isHighlighted={isHighlighted}
+                              onMouseEnter={() => setHighlightedCountry(cid)}
+                              onMouseLeave={() => setHighlightedCountry(null)}
+                            />
+                            {(() => {
+                              const pts = [...data.years]
+                                .sort((a, b) => a.year - b.year)
+                                .map((d: YearlyData) => ({
+                                  year: d.year,
+                                  rank: d.rank,
+                                  x: xS(d.year),
+                                  y: yS(d.rank),
+                                  yOff: yOff(d.rank),
+                                  visible: d.rank <= TOP_N,
+                                }));
+                              const bridges: Array<{
+                                x1: number;
+                                y1: number;
+                                x2: number;
+                                y2: number;
+                              }> = [];
+                              for (let i = 0; i < pts.length - 1; i++) {
+                                const a = pts[i];
+                                const b = pts[i + 1];
+                                if (!(a.visible && b.visible)) {
+                                  bridges.push({
+                                    x1: a.x,
+                                    y1: a.visible ? a.y : a.yOff,
+                                    x2: b.x,
+                                    y2: b.visible ? b.y : b.yOff,
+                                  });
+                                }
+                              }
+                              if (bridges.length === 0) return null;
+                              return bridges.map((b) => (
+                                <CountryLineDashed
+                                  key={`bridge-${cid}-${b.x1}-${b.x2}`}
+                                  d={`M ${b.x1},${b.y1} L ${b.x2},${b.y2}`}
+                                  color={color}
+                                  isHighlighted={isHighlighted}
+                                  onMouseEnter={() =>
+                                    setHighlightedCountry(cid)
+                                  }
+                                  onMouseLeave={() =>
+                                    setHighlightedCountry(null)
+                                  }
+                                />
+                              ));
+                            })()}
+                            {data.years.map((yearData: YearlyData) =>
+                              yearData.rank <= TOP_N ? (
+                                <CountryDot
+                                  key={`${cid}-${yearData.year}`}
+                                  cx={xS(yearData.year)}
+                                  cy={yS(yearData.rank)}
+                                  color={color}
+                                  isHighlighted={isHighlighted}
+                                  onMouseEnter={(e) => {
+                                    setHighlightedCountry(cid);
+                                    const svg =
+                                      (e.currentTarget
+                                        .ownerSVGElement as SVGSVGElement) ||
+                                      null;
+                                    const tip =
+                                      document.getElementById(
+                                        "eci-bump-tooltip",
+                                      );
+                                    if (svg && tip) {
+                                      const bbox = svg.getBoundingClientRect();
+                                      tip.textContent = `${data.country.nameEn} – ${yearData.year}: Rank ${yearData.rank}`;
+                                      tip.style.transform = `translate(${e.clientX - bbox.left + 10}px, ${e.clientY - bbox.top + 10}px)`;
+                                      tip.style.opacity = "1";
+                                    }
+                                  }}
+                                  onMouseLeave={() => {
+                                    setHighlightedCountry(null);
+                                    const tip =
+                                      document.getElementById(
+                                        "eci-bump-tooltip",
+                                      );
+                                    if (tip) tip.style.opacity = "0";
+                                  }}
+                                />
+                              ) : null,
+                            )}
+                            {(() => {
+                              const last = [...data.years]
+                                .sort((a, b) => a.year - b.year)
+                                .slice(-1)[0];
+                              // Only label countries that are in the final year and within TOP_N
+                              if (
+                                !last ||
+                                last.year !== ALL_YEARS[0] ||
+                                last.rank > TOP_N
+                              )
+                                return null;
+                              return (
+                                <CountryLabel
+                                  x={xS(ALL_YEARS[0]) + 10}
+                                  y={yS(last.rank) + 5}
+                                  isHighlighted={isHighlighted}
+                                  onMouseEnter={() =>
+                                    setHighlightedCountry(cid)
+                                  }
+                                  onMouseLeave={() =>
+                                    setHighlightedCountry(null)
+                                  }
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  {data.country.nameEn}
+                                </CountryLabel>
+                              );
+                            })()}
+                          </g>
+                        );
+                      })}
+                    </g>
                   </g>
-                );
-              })}
-            </g>
-          </BumpChartSvg>
+                </BumpChartSvg>
+              );
+            }}
+          </ParentSize>
         </ChartContainer>
       </PageContainer>
     </FullWidthContent>

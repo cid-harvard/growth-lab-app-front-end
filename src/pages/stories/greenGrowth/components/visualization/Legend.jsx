@@ -1,27 +1,35 @@
 import Box from "@mui/material/Box";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { useState } from "react";
+import Popover from "@mui/material/Popover";
+import Slider from "@mui/material/Slider";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import TuneIcon from "@mui/icons-material/Tune";
 import GGTooltip from "../shared/GGTooltip";
 import { getTerm } from "../../utils/terms";
 import Typography from "@mui/material/Typography";
 import { themeUtils } from "../../theme";
 
-const Legend = ({ mode }) => {
+const Legend = ({ mode, rcaThreshold = 1.0, onChangeRcaThreshold }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [anchorEl, setAnchorEl] = useState(null);
+  const thresholdLabel = Number(rcaThreshold).toFixed(1);
 
   if (!mode) return null;
   const getItems = () => {
     switch (mode) {
       case "rca":
-        // Two-category RCA legend: >1 and ≤1
+        // Two-category RCA legend with dynamic threshold
         return [
           {
-            label: "High (RCA>1)",
+            label: `High (RCA>${thresholdLabel})`,
             color: theme.palette.custom?.legendHigh || "#000000",
             shape: "circle",
           },
           {
-            label: "Low (RCA≤1)",
+            label: `Low (RCA≤${thresholdLabel})`,
             color: theme.palette.custom?.legendLow || "#D3D3D3",
             shape: "circle",
           },
@@ -206,6 +214,42 @@ const Legend = ({ mode }) => {
               <span>{item.label}</span>
             </Box>
           ))}
+          <GGTooltip title="Adjust RCA threshold " placement="top">
+            <IconButton
+              size="small"
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              sx={{ ml: 1 }}
+              aria-label="Adjust RCA threshold"
+            >
+              <TuneIcon fontSize="small" />
+            </IconButton>
+          </GGTooltip>
+          <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            transformOrigin={{ vertical: "bottom", horizontal: "right" }}
+          >
+            <Box sx={{ p: 2, width: isMobile ? 240 : 280 }}>
+              <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                RCA Threshold
+              </Typography>
+              <Slider
+                min={0}
+                max={3}
+                step={0.1}
+                value={rcaThreshold}
+                onChange={(_, v) => onChangeRcaThreshold?.(Number(v))}
+                valueLabelDisplay="auto"
+              />
+              <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
+                <Button size="small" onClick={() => setAnchorEl(null)}>
+                  Close
+                </Button>
+              </Box>
+            </Box>
+          </Popover>
         </Box>
       )}
     </Box>

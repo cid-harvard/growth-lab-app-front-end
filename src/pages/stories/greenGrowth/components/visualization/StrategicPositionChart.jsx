@@ -102,16 +102,16 @@ const StrategicPositionChartInternal = ({ width, height }) => {
 
   // Calculate responsive dimensions using provided width/height
   const { chartWidth, chartHeight, margin } = useMemo(() => {
-    const adjustedWidth = Math.max(width - 50, 300); // Minimal padding
+    const adjustedWidth = Math.max(width - 50, 400); // Minimal padding
 
     // Account for fixed elements: title (60px + 8px margin), attribution (~30px), container padding (16px)
     const fixedElementsHeight = isMobile ? 110 : 120;
     const adjustedHeight = Math.max(height - fixedElementsHeight, 300);
 
     const responsiveMargin = {
-      top: isMobile ? 40 : 50,
+      top: isMobile ? 40 : 20,
       right: isMobile ? 20 : 40,
-      bottom: isMobile ? 80 : 120, // Increased mobile bottom margin from 50 to 80
+      bottom: isMobile ? 80 : 80, // Increased mobile bottom margin from 50 to 80
       left: isMobile ? 60 : 80,
     };
 
@@ -314,7 +314,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
           justifyContent: "center",
           alignItems: "flex-end",
           backgroundColor: "rgba(255, 255, 255, 0.95)",
-          mb: 1,
+          mb: 0,
         }}
       >
         <Typography variant="chart-title">
@@ -325,7 +325,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
         sx={{
           display: "flex",
           justifyContent: "center",
-          mb: 1,
+          mb: 0,
           position: "relative",
         }}
       >
@@ -575,7 +575,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                   flagWidth + labelPaddingX + textWidth + labelPaddingX * 2;
                 const labelHeight = isMobile ? 20 : 24;
                 const rectX = x - labelWidth / 2;
-                const rectY = y - selectedTriangleSize - labelHeight - 8;
+                const rectY = y - selectedTriangleSize - labelHeight - 2;
 
                 return (
                   <>
@@ -643,11 +643,10 @@ const StrategicPositionChartInternal = ({ width, height }) => {
             return (
               <>
                 {/* Quadrant labels with appropriate styling */}
-                {/* Top right - Harness Nearby Opportunities */}
+                {/* Top right - Light Touch Approach */}
                 <Tooltip
                   {...quadrantTooltipProps}
                   title={STRATEGIC_POSITION_DESCRIPTIONS.topRight}
-                  sx={{ cursor: "help" }}
                 >
                   <div
                     style={{
@@ -671,6 +670,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                       alignItems: "center",
                       gap: "6px",
                       pointerEvents: "auto",
+                      cursor: "help",
                     }}
                   >
                     <BookmarkIcon
@@ -690,7 +690,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                   </div>
                 </Tooltip>
 
-                {/* Top left - Climb the Complexity Ladder */}
+                {/* Top left - Parsimonious Industrial Policy Approach */}
                 <Tooltip
                   {...quadrantTooltipProps}
                   title={STRATEGIC_POSITION_DESCRIPTIONS.topLeft}
@@ -717,6 +717,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                       alignItems: "center",
                       gap: "6px",
                       pointerEvents: "auto",
+                      cursor: "help",
                     }}
                   >
                     <BookmarkIcon
@@ -736,7 +737,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                   </div>
                 </Tooltip>
 
-                {/* Bottom left - Reinvent Industrial Base */}
+                {/* Bottom left - Strategic Bets Approach */}
                 <Tooltip
                   {...quadrantTooltipProps}
                   title={STRATEGIC_POSITION_DESCRIPTIONS.bottomLeft}
@@ -763,6 +764,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                       alignItems: "center",
                       gap: "6px",
                       pointerEvents: "auto",
+                      cursor: "help",
                     }}
                   >
                     <BookmarkIcon
@@ -782,7 +784,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                   </div>
                 </Tooltip>
 
-                {/* Bottom right - Maintain Competitive Edge */}
+                {/* Bottom right - Technological Frontier Approach */}
                 <Tooltip
                   {...quadrantTooltipProps}
                   title={STRATEGIC_POSITION_DESCRIPTIONS.bottomRight}
@@ -809,6 +811,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                       alignItems: "center",
                       gap: "6px",
                       pointerEvents: "auto",
+                      cursor: "help",
                     }}
                   >
                     <BookmarkIcon
@@ -845,10 +848,13 @@ const StrategicPositionChartInternal = ({ width, height }) => {
           {/* Shared tooltip: Country name, Policy approach, Year */}
           {/* We keep formatting consistent with other tooltips */}
           {(() => {
+            const mapped = mapPolicyRecommendationToPosition(
+              tooltipData.policyRecommendation,
+            );
             const rows = [
               {
                 label: "Policy Approach:",
-                value: tooltipData.policyRecommendation || "-",
+                value: mapped.label,
               },
               { label: "Year:", value: Number.parseInt(selectedYear) },
             ];

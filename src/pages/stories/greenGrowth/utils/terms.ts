@@ -104,28 +104,28 @@ export const GG_TERMS: Record<GGTermKey, GGTermDefinition> = {
   },
   strategicPositionTopRight: {
     key: "strategicPositionTopRight",
-    title: "Strategic Position – Harness Nearby Opportunities",
+    title: "Strategic Position – Light Touch Approach",
     description:
-      "Limited opportunities requires addressing bottlenecks, to help jump short distances, into related products.",
+      "Ample space to diversify calls for leveraging existing successes to enter more complex production.",
     addToGlossary: false,
   },
   strategicPositionTopLeft: {
     key: "strategicPositionTopLeft",
-    title: "Strategic Position – Climb the Complexity Ladder",
+    title: "Strategic Position – Parsimonious Industrial Policy Approach",
     description:
       "Limited opportunities requires addressing bottlenecks, to help jump short distances, into related products.",
     addToGlossary: false,
   },
   strategicPositionBottomRight: {
     key: "strategicPositionBottomRight",
-    title: "Strategic Position – Maintain Competitive Edge",
+    title: "Strategic Position – Technological Frontier Approach",
     description:
       "Having exploited virtually all, major existing products, gains come from developing new products.",
     addToGlossary: false,
   },
   strategicPositionBottomLeft: {
     key: "strategicPositionBottomLeft",
-    title: "Strategic Position – Reinvent Industrial Base",
+    title: "Strategic Position – Strategic Bets Approach",
     description:
       "Few nearby opportunities call for coordinated long jumps into strategic areas with future diversification potential.",
     addToGlossary: false,

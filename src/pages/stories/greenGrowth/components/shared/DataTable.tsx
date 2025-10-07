@@ -60,7 +60,7 @@ const formatPercent = (value: number | null | undefined): string => {
     Number.isNaN(typeof value === "number" ? value : Number(value))
   )
     return "N/A";
-  return `${(Number(value) * 100).toFixed(1)}%`;
+  return `${Number(value).toFixed(2)}%`;
 };
 
 const formatCurrency = (value: number | null | undefined): string => {
@@ -78,22 +78,13 @@ const formatCurrency = (value: number | null | undefined): string => {
   }).format(Number(value));
 };
 
-// Product market growth is returned from the API in percentage units (e.g., 5.09 for 5.09%).
-// Convert to a ratio for display/CSV functions that multiply by 100.
-const percentToRatio = (value: unknown): number | null => {
-  if (value === null || value === undefined) return null;
-  const num = Number(value);
-  if (Number.isNaN(num)) return null;
-  return num / 100;
-};
-
 interface ColumnDef {
   field: string;
   header: string;
   width: number;
   format?: (value: any) => string;
   render?: (row: any) => React.ReactNode;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   sortable?: boolean;
   sortValue?: (row: any) => any;
   defaultOrder?: "asc" | "desc";
@@ -223,6 +214,25 @@ const ProductsTable = ({
     [isMobile, theme],
   );
 
+  const buildDiamondLegend = useCallback(
+    (content: React.ReactNode): React.ReactNode => (
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Typography sx={{ fontSize: isMobile ? "12px" : "14px" }}>
+          {content}
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <DiamondRow count={5} />
+          <Typography variant="caption">Strong</Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <DiamondRow count={0} />
+          <Typography variant="caption">Weak</Typography>
+        </Box>
+      </Box>
+    ),
+    [isMobile, DiamondRow],
+  );
+
   // Create cluster lookup for enriching data
   const clusterLookup = useMemo(() => {
     if (!clustersData?.ggClusterList) return new Map();
@@ -264,11 +274,8 @@ const ProductsTable = ({
         : null;
 
       const marketSize =
-        item &&
-        typeof item.exportValue === "number" &&
-        typeof item.globalMarketShare === "number" &&
-        item.globalMarketShare > 0
-          ? item.exportValue / item.globalMarketShare
+        item && typeof item.productMarketShare === "number"
+          ? item.productMarketShare
           : null;
 
       return {
@@ -279,9 +286,7 @@ const ProductsTable = ({
         clusterName: cluster?.clusterName || "N/A",
         marketSize,
         // Ensure table uses a consistent key for growth
-        marketGrowth: percentToRatio(
-          item.marketGrowth ?? item.productMarketShareGrowth ?? null,
-        ),
+        marketGrowth: item.productMarketShareGrowth,
       };
     });
   }, [
@@ -326,7 +331,6 @@ const ProductsTable = ({
     [selectedCountry],
   );
 
-  const yearNum = selectedYear ? Number(selectedYear) : undefined;
   const columns: ColumnDef[] = useMemo(
     () => [
       // Basic Product Information
@@ -420,19 +424,18 @@ const ProductsTable = ({
       },
       {
         field: "marketSize",
-        header: `Product Market Size (USD, ${selectedYear ?? "year"})`,
+        header: "Product Market Size (%)",
         width: 170,
-        format: formatCurrency,
+        format: formatPercent,
         sortable: true,
         sortValue: (row: any) => row.marketSize ?? null,
         defaultOrder: "desc",
       },
       {
         field: "marketGrowth",
-        header:
-          yearNum && !Number.isNaN(yearNum)
-            ? `Product Market Growth (%: ${yearNum - 1} → ${yearNum})`
-            : "Product Market Growth (% over year range)",
+        header: "Product Market Growth",
+        tooltip:
+          "Relative percentage change in a product's global market share compared to its average market share over the previous 3 years.",
         width: 210,
         format: formatPercent,
         sortable: true,
@@ -458,7 +461,7 @@ const ProductsTable = ({
         render: (row: any) => (
           <DiamondRow count={getCogRating(row.normalizedCog)} />
         ),
-        tooltip: columnTooltips["Opportunity Gain"],
+        tooltip: buildDiamondLegend(columnTooltips["Opportunity Gain"]),
         sortable: true,
         sortValue: (row: any) => row.normalizedCog ?? null,
         defaultOrder: "desc",
@@ -470,7 +473,7 @@ const ProductsTable = ({
         render: (row: any) => (
           <DiamondRow count={getPciRating(row.normalizedPci)} />
         ),
-        tooltip: columnTooltips["Product Complexity"],
+        tooltip: buildDiamondLegend(columnTooltips["Product Complexity"]),
         sortable: true,
         sortValue: (row: any) => row.normalizedPci ?? null,
         defaultOrder: "desc",
@@ -482,7 +485,7 @@ const ProductsTable = ({
         render: (row: any) => (
           <DiamondRow count={getDensityRating(row.density)} />
         ),
-        tooltip: columnTooltips["Product Feasibility"],
+        tooltip: buildDiamondLegend(columnTooltips["Product Feasibility"]),
         sortable: true,
         sortValue: (row: any) => row.density ?? null,
         defaultOrder: "desc",
@@ -491,12 +494,12 @@ const ProductsTable = ({
     [
       isMobile,
       selectedYear,
-      yearNum,
       getCogRating,
       getPciRating,
       getDensityRating,
       DiamondRow,
       buildAtlasUrl,
+      buildDiamondLegend,
     ],
   );
 
@@ -756,6 +759,25 @@ const NestedProductsTable = ({
     [isMobile, theme],
   );
 
+  const buildDiamondLegend = useCallback(
+    (content: React.ReactNode): React.ReactNode => (
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Typography sx={{ fontSize: isMobile ? "12px" : "14px" }}>
+          {content}
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <DiamondRow count={5} />
+          <Typography variant="caption">Strong</Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <DiamondRow count={0} />
+          <Typography variant="caption">Weak</Typography>
+        </Box>
+      </Box>
+    ),
+    [isMobile, DiamondRow],
+  );
+
   // No cluster lookup needed for nested full-taxonomy view
 
   // Get additional data needed for complete taxonomy
@@ -821,13 +843,8 @@ const NestedProductsTable = ({
           supplyChainId,
         };
 
-        if (
-          typeof processedProduct.exportValue === "number" &&
-          typeof processedProduct.globalMarketShare === "number" &&
-          processedProduct.globalMarketShare > 0
-        ) {
-          processedProduct.marketSize =
-            processedProduct.exportValue / processedProduct.globalMarketShare;
+        if (typeof processedProduct.productMarketShare === "number") {
+          processedProduct.marketSize = processedProduct.productMarketShare;
         } else {
           processedProduct.marketSize = null;
         }
@@ -968,20 +985,17 @@ const NestedProductsTable = ({
       },
       {
         field: "marketSize",
-        header: `Product Market Size (USD, ${selectedYear ?? "year"})`,
+        header: "Product Market Size (%)",
         width: 170,
-        format: formatCurrency,
+        format: formatPercent,
         sortable: true,
         sortValue: (row: any) => row.marketSize ?? null,
       },
       {
         field: "marketGrowth",
-        header:
-          selectedYear && !Number.isNaN(Number(selectedYear))
-            ? `Product Market Growth (%: ${Number(selectedYear) - 1} → ${Number(
-                selectedYear,
-              )})`
-            : "Product Market Growth (% over year range)",
+        header: "Product Market Growth",
+        tooltip:
+          "Relative percentage change in a product's global market share compared to its average market share over the previous 3 years.",
         width: 160,
         format: formatPercent,
         sortable: true,
@@ -994,7 +1008,7 @@ const NestedProductsTable = ({
         render: (row: any) => (
           <DiamondRow count={getNestedPciRating(row.normalizedPci)} />
         ),
-        tooltip: columnTooltips["Product Complexity"],
+        tooltip: buildDiamondLegend(columnTooltips["Product Complexity"]),
         sortable: true,
         sortValue: (row: any) => row.normalizedPci ?? null,
       },
@@ -1005,7 +1019,7 @@ const NestedProductsTable = ({
         render: (row: any) => (
           <DiamondRow count={getNestedCogRating(row.normalizedCog)} />
         ),
-        tooltip: columnTooltips["Opportunity Gain"],
+        tooltip: buildDiamondLegend(columnTooltips["Opportunity Gain"]),
         sortable: true,
         sortValue: (row: any) => row.normalizedCog ?? null,
       },
@@ -1016,7 +1030,7 @@ const NestedProductsTable = ({
         render: (row: any) => (
           <DiamondRow count={getNestedDensityRating(row.density)} />
         ),
-        tooltip: columnTooltips["Product Feasibility"],
+        tooltip: buildDiamondLegend(columnTooltips["Product Feasibility"]),
         sortable: true,
         sortValue: (row: any) => row.density ?? null,
       },
@@ -1029,6 +1043,7 @@ const NestedProductsTable = ({
       getNestedDensityRating,
       DiamondRow,
       buildAtlasUrl,
+      buildDiamondLegend,
     ],
   );
 
@@ -1404,7 +1419,7 @@ const DataTable: React.FC<DataTableProps> = ({
                 aria-pressed={currentDataType === "products"}
                 onClick={() => setCurrentDataType("products")}
               >
-                {isMobile ? "Flat" : "Flat Products"}
+                Product List
               </Button>
               <Button
                 aria-pressed={currentDataType === "nested"}

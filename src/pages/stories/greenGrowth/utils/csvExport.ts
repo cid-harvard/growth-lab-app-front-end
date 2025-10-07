@@ -69,7 +69,7 @@ export const generateProductsCSV = (
   ];
 
   const rows = data.map((row: ProcessedProductData) => [
-    escapeCSV(row.productCode ? `HS #${row.productCode}` : ""),
+    escapeCSV(row.productCode ? row.productCode : ""),
     escapeCSV(row.productName),
     escapeCSV(row.clusterName),
     escapeCSV(row.supplyChainName),

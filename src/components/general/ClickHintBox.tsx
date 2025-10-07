@@ -30,7 +30,10 @@ const ClickHintBox: React.FC<ClickHintBoxProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", ...sx }}>
+    <Box
+      sx={{ display: "flex", alignItems: "center", ...sx }}
+      data-export-hide="true"
+    >
       <img
         src={PointerIcon}
         alt="Click pointer icon"

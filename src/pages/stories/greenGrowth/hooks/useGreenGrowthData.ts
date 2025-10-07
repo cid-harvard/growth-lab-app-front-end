@@ -38,6 +38,8 @@ interface CountryYearMetrics {
   lnypc: number;
   xResid: number;
   policyRecommendation?: string;
+  rank?: number | null;
+  rankingMetric?: string | null; // API returns this as a string
   // Include country info for convenience
   nameEn?: string;
   nameShortEn?: string;

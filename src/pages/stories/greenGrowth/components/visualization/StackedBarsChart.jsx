@@ -10,11 +10,16 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import { VisualizationLoading, SharedTooltip } from "../shared";
+import GGTooltip from "../shared/GGTooltip";
+import { getTerm } from "../../utils/terms";
 import { useImageCaptureContext } from "../../hooks/useImageCaptureContext";
 import html2canvas from "html2canvas";
 import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";
 import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Routes } from "../../../../../metadata";
 
 // Formatter for currency values
 export const formatter = new Intl.NumberFormat("en-US", {
@@ -35,9 +40,17 @@ const margin = {
 };
 
 // Internal component that receives dimensions from ParentSize
-const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
+const StackedBarsChartInternal = ({
+  year,
+  countryId,
+  width,
+  height,
+  mode = "presence",
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Add ref for SVG
   const svgRef = useRef(null);
@@ -77,6 +90,18 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
     );
   }, [clustersData]);
 
+  // Create cluster RCA lookup from country cluster data
+  const clusterRcaLookup = useMemo(() => {
+    const map = new Map();
+    if (!countryData?.clusterData) return map;
+    for (const row of countryData.clusterData) {
+      if (row?.clusterId != null) {
+        map.set(row.clusterId, row.rca);
+      }
+    }
+    return map;
+  }, [countryData]);
+
   // Extract data for compatibility
   const currentData = useMemo(() => {
     if (!countryData?.productData) return null;
@@ -89,11 +114,10 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
   // Calculate dimensions responsively
   const titleHeight = 60;
   // Legend removed – reclaim its space for the chart area
-  const legendHeight = 0;
-  const stickyAxisHeight = 60;
 
-  const availableHeight =
-    height - titleHeight - legendHeight - stickyAxisHeight;
+  const stickyAxisHeight = 90;
+
+  const availableHeight = height - titleHeight - stickyAxisHeight;
 
   // Responsive bar sizing
   const minBarHeight = 24;
@@ -103,121 +127,155 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
   // We'll calculate maxBarsToFit inside useMemo after determining the actual bar height
 
   // Bar calculation logic (moved from useStackedBars hook)
-  const { bars, expectedOverlays, groups, xScale, actualBarHeight } =
-    useMemo(() => {
-      if (!currentData?.ggCpyList || !width || !height)
-        return {
-          bars: new Map(),
-          expectedOverlays: [],
-          groups: [],
-          xScale: null,
-          actualBarHeight: minBarHeight,
-        };
+  const {
+    bars,
+    expectedOverlays,
+    groups,
+    xScale,
+    actualBarHeight,
+    rcaScale,
+    rcaMin,
+    rcaMax,
+  } = useMemo(() => {
+    if (!currentData?.ggCpyList || !width || !height)
+      return {
+        bars: new Map(),
+        expectedOverlays: [],
+        groups: [],
+        xScale: null,
+        actualBarHeight: minBarHeight,
+        rcaScale: null,
+        rcaMin: null,
+        rcaMax: null,
+      };
 
-      const ggCpyList = currentData.ggCpyList;
-      const chartWidth = width - margin.left - margin.right;
+    const ggCpyList = currentData.ggCpyList;
+    const chartWidth = width - margin.left - margin.right;
 
-      // Process data - always use clusters
-      const processedData = [];
-      const clusterToProducts = new Map();
+    // Process data - always use clusters
+    const processedData = [];
+    const clusterToProducts = new Map();
 
-      // Group products by cluster using mappings
-      for (const product of ggCpyList) {
-        const supplyChains =
-          supplyChainProductLookup.get(product.productId) || [];
-        const clusterIds = new Set(
-          supplyChains.map((sc) => sc.clusterId).filter((id) => id != null),
-        );
-
-        for (const clusterId of clusterIds) {
-          if (!clusterToProducts.has(clusterId)) {
-            clusterToProducts.set(clusterId, []);
-          }
-          clusterToProducts.get(clusterId).push(product);
-        }
-      }
-
-      for (const [clusterId, products] of clusterToProducts) {
-        const clusterName = clusterLookup.get(clusterId);
-        if (!clusterName) continue;
-
-        let totalActual = 0;
-        let totalExpected = 0;
-
-        // Calculate totals for the cluster
-        products.forEach((product) => {
-          const exportValue = Number.parseFloat(product.exportValue) || 0;
-          const expectedExports =
-            Number.parseFloat(product.expectedExports) || 0;
-
-          if (exportValue > 0) {
-            totalActual += exportValue;
-            totalExpected += expectedExports;
-          }
-        });
-
-        if (totalActual > 0) {
-          // Calculate total difference and ratio
-          const totalDifference = totalActual - totalExpected;
-          const ratio = totalExpected > 0 ? totalActual / totalExpected : 1;
-
-          processedData.push({
-            groupId: clusterId,
-            groupName: clusterName,
-            actualProduction: totalActual,
-            expectedProduction: totalExpected,
-            difference: totalDifference,
-            ratio: ratio,
-            parentId: clusterId,
-          });
-        }
-      }
-
-      // Always sort by difference for consistent ordering across scale types
-      const sortedData = processedData.sort((a, b) => {
-        return b.difference - a.difference;
-      });
-
-      // Calculate optimal bar height for responsive layout
-      // Always use the total number of clusters (sortedData.length) to calculate bar height
-      // This ensures consistent smaller bar height regardless of how many bars are actually displayed
-      let actualBarHeight = minBarHeight;
-      if (availableHeight > 0 && sortedData.length > 0) {
-        // Calculate how much space each bar should take based on ALL clusters, not just displayed ones
-        const optimalBarHeight = Math.floor(
-          (availableHeight - (sortedData.length - 1) * barPadding) /
-            sortedData.length,
-        );
-
-        // Constrain to our min/max bounds
-        actualBarHeight = Math.max(
-          minBarHeight,
-          Math.min(maxBarHeight, optimalBarHeight),
-        );
-      }
-
-      // Calculate exactly how many bars can fit with the fixed smaller bar height and padding
-      const maxBarsToFit = Math.max(
-        1,
-        Math.floor(availableHeight / (actualBarHeight + barPadding)),
+    // Group products by cluster using mappings
+    for (const product of ggCpyList) {
+      const supplyChains =
+        supplyChainProductLookup.get(product.productId) || [];
+      const clusterIds = new Set(
+        supplyChains.map((sc) => sc.clusterId).filter((id) => id != null),
       );
 
-      // Filter data based on showAllClusters
-      let filteredData = sortedData;
+      for (const clusterId of clusterIds) {
+        if (!clusterToProducts.has(clusterId)) {
+          clusterToProducts.set(clusterId, []);
+        }
+        clusterToProducts.get(clusterId).push(product);
+      }
+    }
 
-      if (!showAllClusters) {
-        // Show equal number from top and bottom of the distribution
-        // This gives a balanced view of best and worst performers regardless of +/- values
+    for (const [clusterId, products] of clusterToProducts) {
+      const clusterName = clusterLookup.get(clusterId);
+      if (!clusterName) continue;
+
+      let totalActual = 0;
+      let totalExpected = 0;
+
+      // Calculate totals for the cluster
+      products.forEach((product) => {
+        const exportValue = Number.parseFloat(product.exportValue) || 0;
+        const expectedExports = Number.parseFloat(product.expectedExports) || 0;
+
+        if (exportValue > 0) {
+          totalActual += exportValue;
+          totalExpected += expectedExports;
+        }
+      });
+
+      if (totalActual > 0) {
+        // Calculate total difference and ratio
+        const totalDifference = totalActual - totalExpected;
+        const ratio = totalExpected > 0 ? totalActual / totalExpected : 1;
+        const groupRca = clusterRcaLookup.get(clusterId);
+        const rcaDifference =
+          groupRca != null && !Number.isNaN(groupRca) ? groupRca - 1 : null;
+
+        processedData.push({
+          groupId: clusterId,
+          groupName: clusterName,
+          actualProduction: totalActual,
+          expectedProduction: totalExpected,
+          difference: totalDifference,
+          ratio: ratio,
+          rca: groupRca,
+          rcaDifference: rcaDifference,
+          parentId: clusterId,
+        });
+      }
+    }
+
+    // Sorting: presence by actualProduction desc; comparison by RCA difference desc
+    const sortedData = processedData.sort((a, b) => {
+      if (mode === "presence") {
+        return b.actualProduction - a.actualProduction;
+      }
+      const aDelta =
+        a.rcaDifference != null && !Number.isNaN(a.rcaDifference)
+          ? a.rcaDifference
+          : -Infinity;
+      const bDelta =
+        b.rcaDifference != null && !Number.isNaN(b.rcaDifference)
+          ? b.rcaDifference
+          : -Infinity;
+      return bDelta - aDelta;
+    });
+
+    // Calculate optimal bar height for responsive layout
+    // Always use the total number of clusters (sortedData.length) to calculate bar height
+    // This ensures consistent smaller bar height regardless of how many bars are actually displayed
+    let actualBarHeight = minBarHeight;
+    if (availableHeight > 0 && sortedData.length > 0) {
+      // Calculate how much space each bar should take based on ALL clusters, not just displayed ones
+      const optimalBarHeight = Math.floor(
+        (availableHeight - (sortedData.length - 1) * barPadding) /
+          sortedData.length,
+      );
+
+      // Constrain to our min/max bounds
+      actualBarHeight = Math.max(
+        minBarHeight,
+        Math.min(maxBarHeight, optimalBarHeight),
+      );
+    }
+
+    // Calculate exactly how many bars can fit with the fixed smaller bar height and padding
+    const maxBarsToFit = Math.max(
+      1,
+      Math.floor(availableHeight / (actualBarHeight + barPadding)),
+    );
+
+    // Filter data based on showAllClusters
+    let filteredData = sortedData;
+
+    if (!showAllClusters) {
+      // Show equal number from top and bottom of the distribution
+      // This gives a balanced view of best and worst performers regardless of +/- values
+      if (mode === "presence") {
+        // For presence, just take the top N by actualProduction
+        filteredData = sortedData.slice(0, maxBarsToFit);
+      } else {
         const halfBars = Math.floor(maxBarsToFit / 2);
         const topPerformers = sortedData.slice(0, halfBars);
         const bottomPerformers = sortedData.slice(-halfBars);
-
-        // Combine and sort by difference (descending) to maintain consistent ordering
-        filteredData = [...topPerformers, ...bottomPerformers].sort(
-          (a, b) => b.difference - a.difference,
-        );
-
-        // If we have an odd number of bars and there are enough clusters, add one more from the top
+        filteredData = [...topPerformers, ...bottomPerformers].sort((a, b) => {
+          const aDelta =
+            a.rcaDifference != null && !Number.isNaN(a.rcaDifference)
+              ? a.rcaDifference
+              : -Infinity;
+          const bDelta =
+            b.rcaDifference != null && !Number.isNaN(b.rcaDifference)
+              ? b.rcaDifference
+              : -Infinity;
+          return bDelta - aDelta;
+        });
         const remaining = maxBarsToFit - filteredData.length;
         if (remaining > 0 && sortedData.length > filteredData.length) {
           const additionalTop = sortedData.slice(
@@ -228,95 +286,157 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
             ...topPerformers,
             ...additionalTop,
             ...bottomPerformers,
-          ].sort((a, b) => b.difference - a.difference);
+          ].sort((a, b) => {
+            const aDelta =
+              a.rcaDifference != null && !Number.isNaN(a.rcaDifference)
+                ? a.rcaDifference
+                : -Infinity;
+            const bDelta =
+              b.rcaDifference != null && !Number.isNaN(b.rcaDifference)
+                ? b.rcaDifference
+                : -Infinity;
+            return bDelta - aDelta;
+          });
         }
       }
+    }
 
-      // Create linear scale based on differences
-      // Calculate scale domain to handle positive and negative differences
-      const maxPositiveDifference = Math.max(
-        ...filteredData.map((d) => Math.max(0, d.difference)),
+    // Create linear scale
+    let xScale;
+    if (mode === "presence") {
+      const maxActual = Math.max(
         0,
+        ...filteredData.map((d) => d.actualProduction || 0),
       );
-      const maxNegativeDifference = Math.min(
-        ...filteredData.map((d) => Math.min(0, d.difference)),
-        0,
-      );
-      const maxAbsoluteDifference = Math.max(
-        maxPositiveDifference,
-        Math.abs(maxNegativeDifference),
-      );
-
-      // Use linear scale
-      const xScale = scaleLinear()
-        .domain([-maxAbsoluteDifference, maxAbsoluteDifference])
-        .range([0, chartWidth]);
-
-      const result = [];
-      const expectedPositions = [];
-
-      filteredData.forEach((group, groupIndex) => {
-        // Use fixed spacing with the smaller bar height
-        const y = margin.top + groupIndex * (actualBarHeight + barPadding);
-
-        // For linear scale, use differences centered around 0
-        const zeroPoint = margin.left + xScale(0);
-        const difference = group.difference;
-        const barWidth = Math.abs(xScale(difference) - xScale(0));
-        const x = difference >= 0 ? zeroPoint : zeroPoint - barWidth;
-        const fill = difference >= 0 ? "#268fbd" : "#f1b47d"; // Blue for overperforming, orange for underperforming
-        const value = difference;
-
-        result.push({
-          id: `bar-${group.parentId}`,
-          parentId: group.parentId,
-          coords: [
-            [x, y],
-            [x + barWidth, y],
-            [x + barWidth, y + actualBarHeight],
-            [x, y + actualBarHeight],
-          ],
-          x: x,
-          y: y,
-          width: barWidth,
-          height: actualBarHeight,
-          fill: fill,
-          stroke: "#fff",
-          strokeWidth: 1,
-          strokeOpacity: 1,
-          exportValue: group.actualProduction,
-          expectedExports: group.expectedProduction,
-          difference: group.difference,
-          ratio: group.ratio,
-          title: group.groupName,
-          value: value,
-          parent: {
-            clusterId: group.groupId,
-            clusterName: group.groupName,
-          },
-          data: {
-            group: {
-              name: group.groupName,
-              difference: group.difference,
-              ratio: group.ratio,
-              actual: group.actualProduction,
-              expected: group.expectedProduction,
-            },
-          },
-        });
+      xScale = scaleLinear().domain([0, maxActual]).range([0, chartWidth]);
+    } else {
+      // comparison: symmetric around RCA baseline = 1
+      const deltas = filteredData.map((d) => {
+        const r = d.rca != null && !Number.isNaN(d.rca) ? d.rca : 1;
+        return r - 1;
       });
+      const maxPositiveDelta = Math.max(
+        ...deltas.map((v) => Math.max(0, v)),
+        0,
+      );
+      const maxNegativeDelta = Math.min(
+        ...deltas.map((v) => Math.min(0, v)),
+        0,
+      );
+      const maxAbsoluteDelta = Math.max(
+        maxPositiveDelta,
+        Math.abs(maxNegativeDelta),
+      );
+      const minDomain = 1 - maxAbsoluteDelta;
+      const maxDomain = 1 + maxAbsoluteDelta;
+      xScale = scaleLinear()
+        .domain([minDomain, maxDomain])
+        .range([0, chartWidth])
+        .clamp(true);
+    }
 
-      // Baseline reference line that spans from the first row all the way to the x-axis
-      const baselineValue = 0; // 0 for linear scale
+    const result = [];
+    const expectedPositions = [];
+
+    // Prepare RCA color scale for presence mode
+    let rcaMin = null;
+    let rcaMax = null;
+    let rcaScale = null;
+    if (mode === "presence") {
+      const rcas = processedData
+        .map((d) => clusterRcaLookup.get(d.groupId))
+        .filter((v) => v != null && !Number.isNaN(v));
+      if (rcas.length > 0) {
+        rcaMin = Math.min(...rcas);
+        rcaMax = Math.max(...rcas);
+        if (rcaMin === rcaMax) {
+          // Avoid zero range
+          rcaMin = Math.max(0, rcaMin - 0.5);
+          rcaMax = rcaMax + 0.5;
+        }
+        rcaScale = scaleLinear()
+          .domain([rcaMin, rcaMax])
+          .range(["#cfe8f3", "#106496"])
+          .clamp(true);
+      }
+    }
+
+    filteredData.forEach((group, groupIndex) => {
+      // Use fixed spacing with the smaller bar height
+      const y = margin.top + groupIndex * (actualBarHeight + barPadding);
+
+      let x, barWidth, fill, value, difference;
+      if (mode === "presence") {
+        const zeroPoint = margin.left;
+        const actual = group.actualProduction;
+        barWidth = xScale(actual) - xScale(0);
+        x = zeroPoint;
+        const groupRca = clusterRcaLookup.get(group.groupId);
+        fill = groupRca != null && rcaScale ? rcaScale(groupRca) : "#268fbd";
+        value = actual;
+        difference = 0;
+      } else {
+        // comparison mode uses RCA relative to baseline 1
+        const baselinePoint = margin.left + xScale(1);
+        const rcaValue =
+          group.rca != null && !Number.isNaN(group.rca) ? group.rca : 1;
+        difference = rcaValue - 1;
+        barWidth = Math.abs(xScale(rcaValue) - xScale(1));
+        x = difference >= 0 ? baselinePoint : baselinePoint - barWidth;
+        fill = difference >= 0 ? "#268fbd" : "#f1b47d";
+        value = rcaValue;
+      }
+
+      result.push({
+        id: `bar-${group.parentId}`,
+        parentId: group.parentId,
+        coords: [
+          [x, y],
+          [x + barWidth, y],
+          [x + barWidth, y + actualBarHeight],
+          [x, y + actualBarHeight],
+        ],
+        x: x,
+        y: y,
+        width: barWidth,
+        height: actualBarHeight,
+        fill: fill,
+        stroke: "#fff",
+        strokeWidth: 1,
+        strokeOpacity: 1,
+        exportValue: group.actualProduction,
+        expectedExports: group.expectedProduction,
+        difference: difference,
+        ratio: group.ratio,
+        title: group.groupName,
+        value: value,
+        parent: {
+          clusterId: group.groupId,
+          clusterName: group.groupName,
+        },
+        data: {
+          group: {
+            name: group.groupName,
+            difference: group.difference,
+            ratio: group.ratio,
+            actual: group.actualProduction,
+            expected: group.expectedProduction,
+            rca: clusterRcaLookup.get(group.groupId) ?? null,
+          },
+        },
+      });
+    });
+
+    // Baseline overlay only for comparison mode (RCA = 1)
+    if (mode === "comparison") {
+      const baselineValue = 1;
       const baselinePoint = margin.left + xScale(baselineValue);
       const firstRowY = margin.top;
-      // When not showing all clusters, extend the line to the bottom of the scrollable area
       const lastRowY = showAllClusters
         ? margin.top +
           (filteredData.length - 1) * (actualBarHeight + barPadding) +
           actualBarHeight
         : margin.top + availableHeight;
-
       expectedPositions.push({
         id: "baseline",
         coords: [
@@ -325,32 +445,38 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         ],
         strokeWidth: 2,
       });
+    }
 
-      const bars = index(
-        result.filter(
-          (d) =>
-            !d?.coords?.flat()?.flat()?.includes(Number.NaN) &&
-            !d.id.includes("undefined"),
-        ),
-        (d) => d.id,
-      );
+    const bars = index(
+      result.filter(
+        (d) =>
+          !d?.coords?.flat()?.flat()?.includes(Number.NaN) &&
+          !d.id.includes("undefined"),
+      ),
+      (d) => d.id,
+    );
 
-      return {
-        bars: bars,
-        expectedOverlays: expectedPositions,
-        groups: filteredData,
-        xScale: xScale,
-        actualBarHeight: actualBarHeight,
-      };
-    }, [
-      currentData,
-      width,
-      height,
-      showAllClusters,
-      availableHeight,
-      supplyChainProductLookup,
-      clusterLookup,
-    ]);
+    return {
+      bars: bars,
+      expectedOverlays: expectedPositions,
+      groups: filteredData,
+      xScale: xScale,
+      actualBarHeight: actualBarHeight,
+      rcaScale,
+      rcaMin,
+      rcaMax,
+    };
+  }, [
+    currentData,
+    width,
+    height,
+    showAllClusters,
+    availableHeight,
+    supplyChainProductLookup,
+    clusterLookup,
+    mode,
+    clusterRcaLookup,
+  ]);
 
   // Calculate chart height based on whether we're showing all clusters or not
   const chartHeight = showAllClusters
@@ -386,7 +512,10 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `stacked_bars_${countryId}_${year}_clusters_difference.png`;
+            a.download =
+              mode === "comparison"
+                ? `stacked_bars_${countryId}_${year}_clusters_rca.png`
+                : `stacked_bars_${countryId}_${year}_clusters_presence.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -403,15 +532,21 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
     return () => {
       unregisterCaptureFunction();
     };
-  }, [registerCaptureFunction, unregisterCaptureFunction, countryId, year]);
+  }, [
+    registerCaptureFunction,
+    unregisterCaptureFunction,
+    countryId,
+    year,
+    mode,
+  ]);
 
   if (loading || !xScale) {
     return <VisualizationLoading />;
   }
 
-  // Tooltip definition for the "Expected" x-axis label
-  const expectedDefinition =
-    "indicates the level of exports a country would have if it exported goods in the same proportion as its overall share of global trade. This is calculated using an RCA (Revealed Comparative Advantage) index value of 1, also known as the Balassa index.";
+  // Tooltip definition for the RCA baseline in comparison mode
+  const baselineDefinition =
+    "RCA = 1 represents the expected share in global trade (Balassa index). Values above 1 indicate relative specialization; below 1 indicate under-specialization.";
 
   return (
     <Box
@@ -450,8 +585,54 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
           }}
         >
           <Typography variant="chart-title">
-            Exports by Green Cluster: Actual vs. Expected Share
+            {mode === "presence"
+              ? "Current presence in Green Industrial Clusters"
+              : "Competitiveness in Green Industrial Clusters"}
           </Typography>
+
+          {/* Top-left toggle */}
+          <Box sx={{ position: "absolute", left: 8, top: 8 }}>
+            <ButtonGroup variant="contained" size="small">
+              <Button
+                onClick={() => {
+                  const search = location.search || "";
+                  navigate(`${Routes.GreenGrowthCompetitiveness}${search}`);
+                }}
+                sx={{
+                  textTransform: "none",
+                  backgroundColor: mode === "presence" ? "#106496" : "white",
+                  color: mode === "presence" ? "white" : "#106496",
+                  borderColor: "#106496",
+                  "&:hover": {
+                    backgroundColor:
+                      mode === "presence" ? "#0e5678" : "#f5f5f5",
+                  },
+                }}
+              >
+                Trade Value
+              </Button>
+              <Button
+                onClick={() => {
+                  const search = location.search || "";
+                  navigate(
+                    `${Routes.GreenGrowthCompetitiveness}/comparison${search}`,
+                  );
+                }}
+                sx={{
+                  textTransform: "none",
+                  backgroundColor: mode === "comparison" ? "#106496" : "white",
+                  color: mode === "comparison" ? "white" : "#106496",
+                  borderColor: "#106496",
+                  "&:hover": {
+                    backgroundColor:
+                      mode === "comparison" ? "#0e5678" : "#f5f5f5",
+                  },
+                }}
+              >
+                Market Share
+              </Button>
+            </ButtonGroup>
+          </Box>
         </Box>
 
         {/* Scrollable Chart Area */}
@@ -494,30 +675,27 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               display: "block",
             }}
             role="img"
-            aria-label="Competitiveness in Green Manufacturing Clusters"
+            aria-label="Competitiveness in Green Industrial Clusters"
             aria-describedby="stacked-bars-desc"
           >
             <desc id="stacked-bars-desc">
-              Bar chart of clusters showing export value versus expected export
-              value; difference indicates performance relative to expectation.
+              {mode === "comparison"
+                ? "Bar chart of clusters showing RCA relative to baseline 1; positive values indicate specialization above baseline."
+                : "Bar chart of clusters showing export value."}
             </desc>
-            {/* Background area for overperforming clusters only */}
-            {xScale &&
+            {/* Background area highlighting outperformers - only in comparison mode */}
+            {mode === "comparison" &&
+              xScale &&
               groups.length > 0 &&
               (() => {
-                // Find the extent of positive (overperforming) bars
                 const positiveBars = Array.from(bars.values()).filter(
                   (bar) => bar.difference >= 0,
                 );
-
                 if (positiveBars.length === 0) return null;
-
-                // Calculate the vertical area that contains overperforming clusters
                 const topY = Math.min(...positiveBars.map((bar) => bar.y));
                 const bottomY = Math.max(
                   ...positiveBars.map((bar) => bar.y + bar.height),
                 );
-
                 return (
                   <rect
                     x={0}
@@ -533,27 +711,30 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
             {/* Vertical grid lines */}
             {xScale && (
               <g>
-                {xScale.ticks(isMobile ? 5 : 8).map((tick) => {
-                  const x = margin.left + xScale(tick);
-                  const firstRowY = margin.top;
-                  const lastRowY = showAllClusters
-                    ? margin.top +
-                      (groups.length - 1) * (actualBarHeight + barPadding) +
-                      actualBarHeight
-                    : margin.top + availableHeight;
+                {xScale
+                  .ticks(isMobile ? 5 : 8)
+                  .filter((tick) => tick >= 0)
+                  .map((tick) => {
+                    const x = margin.left + xScale(tick);
+                    const firstRowY = margin.top;
+                    const lastRowY = showAllClusters
+                      ? margin.top +
+                        (groups.length - 1) * (actualBarHeight + barPadding) +
+                        actualBarHeight
+                      : margin.top + availableHeight;
 
-                  return (
-                    <line
-                      key={`grid-${tick}`}
-                      x1={x}
-                      y1={firstRowY}
-                      x2={x}
-                      y2={lastRowY}
-                      stroke="rgb(223,223,223)"
-                      strokeWidth={1}
-                    />
-                  );
-                })}
+                    return (
+                      <line
+                        key={`grid-${tick}`}
+                        x1={x}
+                        y1={firstRowY}
+                        x2={x}
+                        y2={lastRowY}
+                        stroke="rgb(223,223,223)"
+                        strokeWidth={1}
+                      />
+                    );
+                  })}
               </g>
             )}
 
@@ -658,8 +839,8 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               );
             })}
 
-            {/* Expected overlay (single zero line) */}
-            {expectedOverlays.length > 0 && (
+            {/* Expected overlay (single zero line) - comparison only */}
+            {mode === "comparison" && expectedOverlays.length > 0 && (
               <rect
                 x={expectedOverlays[0].coords[0][0] - 1}
                 y={expectedOverlays[0].coords[0][1]}
@@ -673,8 +854,9 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               />
             )}
 
-            {/* Vertical axis annotations - positioned based on actual data */}
-            {groups.length > 0 &&
+            {/* Vertical axis annotations - comparison only */}
+            {mode === "comparison" &&
+              groups.length > 0 &&
               Array.from(bars.values()).length > 0 &&
               (() => {
                 // Find the boundaries between positive and negative performers
@@ -797,18 +979,26 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
 
             {/* Smart cluster name labels - rendered last to appear on top */}
             {Array.from(bars.values()).map((bar) => {
-              const isPositive = bar.difference >= 0;
+              const isPositive =
+                mode === "comparison" ? bar.difference >= 0 : true;
               const yPosition = bar.y + bar.height / 2;
               const fontSize = 16; // Fixed 16px as per spec
               const charWidth = fontSize * 0.52;
 
-              // Position labels at the start of bars instead of the end
-              const outsideLabelX = isPositive
-                ? bar.x - 12 // For positive bars, position to the left of the start
-                : bar.x + bar.width + 12; // For negative bars, position to the right of the end
-              const outsideAvailableSpace = isPositive
-                ? bar.x - margin.left // Space from left margin to bar start
-                : width - margin.right - (bar.x + bar.width); // Space from bar end to right margin
+              // Position labels outside the bar: comparison uses left for positive, right for negative;
+              // presence uses right side of the bar for outside placement
+              const outsideLabelX =
+                mode === "comparison"
+                  ? isPositive
+                    ? bar.x - 12
+                    : bar.x + bar.width + 12
+                  : bar.x + bar.width + 12;
+              const outsideAvailableSpace =
+                mode === "comparison"
+                  ? isPositive
+                    ? bar.x - margin.left
+                    : width - margin.right - (bar.x + bar.width)
+                  : width - margin.right - (bar.x + bar.width);
 
               // Calculate minimum space needed for readable text
               const minReadableChars = 15; // Minimum characters for readable text
@@ -822,11 +1012,16 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               let labelX, textAnchor, textColor, availableSpace, maxChars;
 
               if (needsInsidePositioning) {
-                // Position text inside the bar, near the start
-                if (isPositive) {
+                // Presence mode: align text to the far right inside the bar
+                if (mode === "presence") {
+                  labelX = bar.x + bar.width - 12; // 12px from the end
+                  textAnchor = "end";
+                } else if (isPositive) {
+                  // Comparison mode: inside near the start for positive bars
                   labelX = bar.x + 12; // 12px from the start
                   textAnchor = "start";
                 } else {
+                  // Comparison mode: inside near the end for negative bars
                   labelX = bar.x + bar.width - 12; // 12px from the end
                   textAnchor = "end";
                 }
@@ -835,7 +1030,12 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               } else {
                 // Position text outside the bar at the start (preferred)
                 labelX = outsideLabelX;
-                textAnchor = isPositive ? "end" : "start"; // Swapped to align properly with new positioning
+                textAnchor =
+                  mode === "comparison"
+                    ? isPositive
+                      ? "end"
+                      : "start"
+                    : "start";
                 textColor = "black"; // Black text for outside labels as per spec
                 availableSpace = outsideAvailableSpace;
               }
@@ -868,21 +1068,22 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               );
             })}
           </svg>
-          {/* Show All Button - positioned at the boundary between over/underperforming clusters (scroll-aware) */}
+          {/* Show All Button - positioned at the boundary (or center for presence) */}
           <Box
             sx={{
               position: "absolute",
               right: 16,
               top: (() => {
+                if (mode === "presence") {
+                  return (chartHeight - margin.bottom) / 2;
+                }
                 const positiveBars = Array.from(bars.values()).filter(
                   (bar) => bar.difference >= 0,
                 );
                 const negativeBars = Array.from(bars.values()).filter(
                   (bar) => bar.difference < 0,
                 );
-
-                let boundaryY = (chartHeight - margin.bottom) / 2; // fallback to center of scroll content
-
+                let boundaryY = (chartHeight - margin.bottom) / 2;
                 if (positiveBars.length > 0 && negativeBars.length > 0) {
                   const lastPositiveY = Math.max(
                     ...positiveBars.map((bar) => bar.y + bar.height),
@@ -902,7 +1103,6 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                   );
                   boundaryY = firstNegativeY;
                 }
-
                 return boundaryY;
               })(),
               transform: "translateY(-50%)",
@@ -911,14 +1111,22 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
             }}
           >
             {(() => {
-              const positiveBars = Array.from(bars.values()).filter(
-                (bar) => bar.difference >= 0,
-              );
-              const negativeBars = Array.from(bars.values()).filter(
-                (bar) => bar.difference < 0,
-              );
-              const showAboveAnnotation = positiveBars.length > 0;
-              const showBelowAnnotation = negativeBars.length > 0;
+              const positiveBars =
+                mode === "comparison"
+                  ? Array.from(bars.values()).filter(
+                      (bar) => bar.difference >= 0,
+                    )
+                  : [];
+              const negativeBars =
+                mode === "comparison"
+                  ? Array.from(bars.values()).filter(
+                      (bar) => bar.difference < 0,
+                    )
+                  : [];
+              const showAboveAnnotation =
+                mode === "comparison" && positiveBars.length > 0;
+              const showBelowAnnotation =
+                mode === "comparison" && negativeBars.length > 0;
 
               return (
                 <Box
@@ -937,6 +1145,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                         color: "#268fbd",
                         textAlign: "center",
                         lineHeight: 1,
+                        backgroundColor: "rgb(255,255,255,0.75)",
                       }}
                     >
                       Outperforming Clusters
@@ -971,7 +1180,11 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                     }}
                   >
                     {showAllClusters ? (
-                      "Show top & bottom only"
+                      mode === "presence" ? (
+                        "Show top only"
+                      ) : (
+                        "Show top & bottom only"
+                      )
                     ) : (
                       <Box
                         sx={{
@@ -999,6 +1212,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                         color: "#f1b47d",
                         textAlign: "center",
                         lineHeight: 1,
+                        backgroundColor: "rgb(255,255,255,0.75)",
                       }}
                     >
                       Underperforming Clusters
@@ -1013,7 +1227,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         {/* Sticky X-axis */}
         <Box
           sx={{
-            height: 60,
+            height: stickyAxisHeight,
             borderRadius: "0 0 4px 4px",
             display: "flex",
             alignItems: "flex-start",
@@ -1023,20 +1237,28 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
         >
           <svg
             width={width - 10}
-            height={60}
+            height={stickyAxisHeight}
             style={{
               display: "block",
             }}
             role="img"
-            aria-label="Difference from expected exports axis"
+            aria-label={
+              mode === "comparison" ? "Cluster RCA axis" : "Export value axis"
+            }
           >
             <g transform={`translate(${margin.left}, 0)`}>
               <AxisBottom
                 scale={xScale}
                 tickFormat={(value) => {
-                  // For linear scale, format as currency differences
-                  if (value === 0) return "Expected";
-                  return (value >= 0 ? "+" : "") + formatter.format(value);
+                  // Presence: 0 -> "0"; others currency. Comparison: 0 -> "Expected"; others +/- currency
+                  if (mode === "presence") {
+                    if (value === 0) return "0";
+                    return formatter.format(value);
+                  }
+                  if (value === 1) return "RCA = 1";
+                  // Show RCA with up to 2 decimals, trim trailing zeros
+                  const s = Number(value).toFixed(2);
+                  return s.replace(/\.00$/, "");
                 }}
                 tickLabelProps={() => ({
                   fill: "rgb(51,51,51)",
@@ -1053,8 +1275,9 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                 strokeWidth={2}
                 numTicks={isMobile ? 5 : 8}
                 tickComponent={({ formattedValue, ...tickProps }) => {
-                  const isExpected = formattedValue === "Expected";
-                  if (isExpected) {
+                  const isBaseline =
+                    mode === "comparison" && formattedValue === "RCA = 1";
+                  if (isBaseline) {
                     // Position precisely using tick's x/y instead of relying on transform
                     const { x = 0, y = 0 } = tickProps;
                     const boxWidth = 120;
@@ -1079,7 +1302,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                             }}
                           >
                             <Tooltip
-                              title={expectedDefinition}
+                              title={baselineDefinition}
                               placement="top"
                               arrow
                               slotProps={{
@@ -1105,7 +1328,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
                                   whiteSpace: "nowrap",
                                 }}
                               >
-                                Expected
+                                RCA = 1
                               </span>
                             </Tooltip>
                           </div>
@@ -1133,6 +1356,76 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
           </svg>
         </Box>
 
+        {/* Presence mode RCA legend */}
+        {mode === "presence" &&
+          rcaScale &&
+          rcaMin != null &&
+          rcaMax != null && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: isMobile ? "10px" : "15px",
+                px: 2,
+                pb: isMobile ? 1 : 1,
+                width: "100%",
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+              }}
+            >
+              <GGTooltip title={getTerm("rca").description} placement="top">
+                <Typography
+                  sx={{
+                    fontSize: isMobile ? "14px" : "16px",
+                    fontWeight: 600,
+                    color: "#000",
+                    fontFamily: "Source Sans Pro, sans-serif",
+                    whiteSpace: "nowrap",
+                    textDecoration: "underline",
+                    cursor: "help",
+                  }}
+                >
+                  Economic Competitiveness
+                </Typography>
+              </GGTooltip>
+
+              <Typography
+                sx={{
+                  fontSize: isMobile ? "14px" : "16px",
+                  fontWeight: 600,
+                  color: "#000",
+                  fontFamily: "Source Sans Pro, sans-serif",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Low Competitiveness
+              </Typography>
+
+              <Box
+                sx={{
+                  width: isMobile ? "120px" : "300px",
+                  height: isMobile ? "12px" : "16px",
+                  background:
+                    "linear-gradient(90deg, #cfe8f3 0%, #106496 100%)",
+                  border: "1px solid #ccc",
+                  borderRadius: "3px",
+                }}
+              />
+
+              <Typography
+                sx={{
+                  fontSize: isMobile ? "14px" : "16px",
+                  fontWeight: 600,
+                  color: "#000",
+                  fontFamily: "Source Sans Pro, sans-serif",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                High Competitiveness
+              </Typography>
+            </Box>
+          )}
+
         {/* Legend Section with improved styling */}
       </Box>
 
@@ -1149,32 +1442,45 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
               type: "custom",
               data: {
                 title: tooltipData?.data?.group?.name || "",
-                rows: [
-                  {
-                    label: "Cluster:",
-                    value: tooltipData?.data?.group?.name || "-",
-                  },
-                  {
-                    label: "Export Value:",
-                    value: formatter.format(tooltipData?.exportValue || 0),
-                  },
-                  {
-                    label: "Expected Export Value:",
-                    value: formatter.format(tooltipData?.expectedExports || 0),
-                  },
-                  {
-                    label: "Difference:",
-                    value: `${tooltipData?.difference >= 0 ? "+" : ""}${formatter.format(tooltipData?.difference || 0)}`,
-                  },
-                  {
-                    label: "Performance:",
-                    value:
-                      tooltipData?.difference >= 0
-                        ? "Above Expectation"
-                        : "Below Expectation",
-                  },
-                  { label: "Year:", value: Number.parseInt(year) },
-                ],
+                rows:
+                  mode === "presence"
+                    ? [
+                        {
+                          label: "Export Value:",
+                          value: formatter.format(
+                            tooltipData?.exportValue || 0,
+                          ),
+                        },
+                        {
+                          label: "Cluster RCA:",
+                          value: (() => {
+                            const r = tooltipData?.data?.group?.rca;
+                            return r != null && !Number.isNaN(r)
+                              ? Number(r).toFixed(2)
+                              : "-";
+                          })(),
+                        },
+                        { label: "Year:", value: Number.parseInt(year) },
+                      ]
+                    : [
+                        {
+                          label: "Cluster RCA:",
+                          value: (() => {
+                            const r = tooltipData?.data?.group?.rca;
+                            return r != null && !Number.isNaN(r)
+                              ? Number(r).toFixed(2)
+                              : "-";
+                          })(),
+                        },
+                        {
+                          label: "Performance:",
+                          value:
+                            (tooltipData?.difference || 0) >= 0
+                              ? "Above baseline"
+                              : "Below baseline",
+                        },
+                        { label: "Year:", value: Number.parseInt(year) },
+                      ],
               },
             }}
           />
@@ -1184,7 +1490,7 @@ const StackedBarsChartInternal = ({ year, countryId, width, height }) => {
   );
 };
 
-const StackedBarsChart = ({ year, countryId }) => {
+const StackedBarsChart = ({ year, countryId, mode = "presence" }) => {
   return (
     <div
       style={{
@@ -1204,6 +1510,7 @@ const StackedBarsChart = ({ year, countryId }) => {
               countryId={countryId}
               width={width}
               height={height}
+              mode={mode}
             />
           );
         }}

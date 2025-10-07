@@ -13,14 +13,14 @@ export const replaceCountryPlaceholder = (
 
 // Policy approach descriptions for strategic position
 const POLICY_APPROACH_DESCRIPTIONS: { [key: string]: string } = {
-  "Reinvent Industrial Base":
-    "Few nearby opportunities call for coordinated long jumps into complex industries that open future diversification pathways.",
-  "Climb the Complexity Ladder":
-    "Diversify into progressively more complex products in green value chains, considering related products as a starting point.",
-  "Harness Nearby Opportunities":
+  "Strategic Bets Approach":
+    "Few nearby opportunities call for coordinated long jumps into strategic areas with future diversification potential.",
+  "Parsimonious Industrial Policy Approach":
+    "Limited opportunities requires addressing bottlenecks, to help jump short distances, into related products.",
+  "Light Touch Approach":
     "Ample space to diversify calls for leveraging existing successes to enter more complex production.",
-  "Maintain Competitive Edge":
-    "With good presence in complex green industries, gains come from developing new products and maintaining competitiveness.",
+  "Technological Frontier Approach":
+    "Having exploited virtually all, major existing products, gains come from developing new products.",
 };
 
 // Type for strategic position - flexible to handle different implementations

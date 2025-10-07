@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -29,6 +29,8 @@ import { useUrlParams } from "../hooks/useUrlParams";
 import { useQuery } from "@apollo/client";
 import { GET_COUNTRIES } from "../queries/shared";
 import { Autocomplete, TextField, Select } from "@mui/material";
+import { createFilterOptions } from "@mui/material/Autocomplete";
+import type { AutocompleteCloseReason } from "@mui/material/Autocomplete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
@@ -145,7 +147,7 @@ const navigationSteps: NavigationStep[] = [
     route: "/greenplexity/dimensions",
     title: "Which green products should [Country] prioritize next?",
     modalContent:
-      "[Country] can help the world decarbonize by diversifying into new green industrial clusters.\n\nStrategic clusters include products that aim to balance:\n\n<b>Complexity</b>: more complex products tend to support higher wages\n<b>Opportunity Gain</b>: higher values hold more connections to other complex products, creating more opportunities for future diversification.\n<b>Feasibility</b>: higher values indicate that a greater share of the required capabilities exists in a given location.\n<b>Product Market Size</b>: total global trade value of trade for the given product.\n<b>Product Market Growth</b>: five-year growth rate for global market volume for the product.",
+      "[Country] can help the world decarbonize by diversifying into new green industrial clusters.\n\nStrategic clusters include products that aim to balance:\n\n<b>Complexity</b>: more complex products tend to support higher wages\n<b>Opportunity Gain</b>: higher values hold more connections to other complex products, creating more opportunities for future diversification.\n<b>Feasibility</b>: higher values indicate that a greater share of the required capabilities exists in a given location.\n<b>Product Market Size</b>: total global trade value of trade for the given product.\n<b>Product Market Growth</b>: relative percentage change in a product's global market share compared to its average market share over the previous 3 years.",
   },
   {
     id: "summary",
@@ -181,6 +183,10 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
     visible: boolean;
   }>({ text: "", x: 0, y: 0, visible: false });
 
+  // Control Autocomplete open state to avoid instant reopen on chevron click
+  const [countryAutocompleteOpen, setCountryAutocompleteOpen] = useState(false);
+  const ignoreNextCountryOpenRef = useRef(false);
+
   const {
     countrySelection,
     setCountrySelection,
@@ -189,6 +195,36 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
   } = useUrlParams();
   const { data } = useQuery(GET_COUNTRIES);
   const countries = data?.ggLocationCountryList || [];
+
+  const sortedCountries = useMemo(
+    () =>
+      [...countries].sort((a: any, b: any) =>
+        (a?.nameEn || "").localeCompare(b?.nameEn || "", undefined, {
+          sensitivity: "base",
+        }),
+      ),
+    [countries],
+  );
+
+  const countryFilterOptions = useMemo(
+    () =>
+      createFilterOptions<any>({
+        stringify: (option: any) =>
+          [
+            option?.nameEn,
+            option?.nameShortEn,
+            option?.nameEs,
+            option?.nameShortEs,
+            option?.iso3Code,
+            option?.iso2Code,
+            option?.nameAbbrEn,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase(),
+      }),
+    [],
+  );
   const availableYears = Array.from({ length: 12 }, (_, i) => 2023 - i);
 
   // Get strategic position for dynamic content
@@ -293,29 +329,30 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
 
   const handlePrevious = () => {
     if (currentStepIndex > 0) {
-      // If we're on the radar (dimensions) step and currently viewing "/table",
-      // do not preserve the sub-route when navigating to a different step.
-      const preserve = !(
-        currentStep?.id === "dimensions" && getCurrentSubRoute() === "/table"
-      );
       const urlWithParams = buildUrlWithParams(
         navigationSteps[currentStepIndex - 1].route,
-        preserve,
+        false,
       );
+      navigate(urlWithParams);
+    } else {
+      // On the first step (or unknown), go to Greenplexity landing page
+      const params = new URLSearchParams();
+      if (countrySelection) {
+        params.set("country", String(countrySelection));
+      }
+      if (yearSelection) {
+        params.set("year", String(yearSelection));
+      }
+      const urlWithParams = `/greenplexity${params.toString() ? `?${params.toString()}` : ""}`;
       navigate(urlWithParams);
     }
   };
 
   const handleNext = () => {
     if (currentStepIndex < navigationSteps.length - 1) {
-      // If we're on the radar (dimensions) step and currently viewing "/table",
-      // do not preserve the sub-route when navigating to a different step.
-      const preserve = !(
-        currentStep?.id === "dimensions" && getCurrentSubRoute() === "/table"
-      );
       const urlWithParams = buildUrlWithParams(
         navigationSteps[currentStepIndex + 1].route,
-        preserve,
+        false,
       );
       navigate(urlWithParams);
     }
@@ -435,10 +472,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             fontWeight: 600,
             color: "#5C5C5C",
             minHeight: "36px",
+            lineHeight: "1.1",
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
         >
-          LEARN
+          VALUE CHAIN CONNECTIONS
         </Button>
       </Box>
     </Box>
@@ -525,6 +563,36 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
               disableClearable
               blurOnSelect
               size="small"
+              open={countryAutocompleteOpen}
+              onOpen={(_: React.SyntheticEvent) => {
+                if (ignoreNextCountryOpenRef.current) {
+                  ignoreNextCountryOpenRef.current = false;
+                  return;
+                }
+                setCountryAutocompleteOpen(true);
+              }}
+              onClose={(
+                _: React.SyntheticEvent,
+                reason: AutocompleteCloseReason,
+              ) => {
+                if (reason === "toggleInput") {
+                  ignoreNextCountryOpenRef.current = true;
+                  setTimeout(() => {
+                    ignoreNextCountryOpenRef.current = false;
+                  }, 0);
+                }
+                setCountryAutocompleteOpen(false);
+              }}
+              openOnFocus={false}
+              slotProps={{
+                popupIndicator: {
+                  onMouseDown: (e: React.MouseEvent) => {
+                    if (countryAutocompleteOpen) {
+                      e.preventDefault();
+                    }
+                  },
+                },
+              }}
               sx={{
                 flex: 1,
                 "& .MuiAutocomplete-popupIndicator": {
@@ -545,7 +613,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
               onChange={(_: any, newValue: any) => {
                 setCountrySelection(newValue ? newValue.countryId : null);
               }}
-              options={countries}
+              options={sortedCountries}
+              filterOptions={countryFilterOptions}
+              isOptionEqualToValue={(option: any, value: any) =>
+                option?.countryId === value?.countryId
+              }
               getOptionLabel={(option: any) => option.nameEn}
               renderOption={(props, option: any) => {
                 const src = getFlagSrc(option.iso3Code);
@@ -862,7 +934,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             <Button
               startIcon={<ArrowUpward />}
               onClick={handlePrevious}
-              disabled={currentStepIndex <= 0}
+              disabled={false}
               sx={{
                 fontWeight: "semibold",
                 textTransform: "none",
@@ -871,13 +943,13 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                 minHeight: "45px",
                 padding: "8px 0",
                 color: "#106496",
-                opacity: 0.5, // Only the up button is de-emphasized
+                opacity: currentStepIndex <= 0 ? 0.5 : 1,
                 mb: 2,
                 "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.08)" },
                 "&:disabled": { color: "#ccc" },
               }}
             >
-              {previousStep ? getStepTitle(previousStep) : "Previous"}
+              {previousStep ? getStepTitle(previousStep) : "Greenplexity Home"}
             </Button>
 
             {currentStep && currentStep.id !== "summary" && (

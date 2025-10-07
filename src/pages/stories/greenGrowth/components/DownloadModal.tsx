@@ -9,7 +9,7 @@ import {
 import { useCountrySelection, useYearSelection } from "../hooks/useUrlParams";
 import { useCountryName } from "../queries/useCountryName";
 import { useProcessedTableData } from "../hooks/useProcessedTableData";
-import { downloadBothCSVs } from "../utils/csvExport";
+import { generateProductsCSV } from "../utils/csvExport";
 import { useImageCaptureContext } from "../hooks/useImageCaptureContext";
 import { useLocation } from "react-router-dom";
 
@@ -47,19 +47,14 @@ const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
   const { captureFunction, isImageAvailable } = useImageCaptureContext();
 
   // Use the shared data processing hook
-  const { processedProductsData, processedCountryData } = useProcessedTableData(
+  const { processedProductsData } = useProcessedTableData(
     selectedCountry,
     parseInt(selectedYear),
-    true,
+    false,
   );
 
   const handleDataDownload = () => {
-    downloadBothCSVs(
-      processedProductsData,
-      processedCountryData,
-      countryName,
-      selectedYear,
-    );
+    generateProductsCSV(processedProductsData, countryName, selectedYear);
   };
 
   const handleImageDownload = async () => {

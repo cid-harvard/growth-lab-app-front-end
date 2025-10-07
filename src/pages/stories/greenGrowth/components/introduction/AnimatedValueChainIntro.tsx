@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useLayoutEffect } from "react";
 import { animated, useTransition, config } from "@react-spring/web";
 import { Box, Typography, IconButton } from "@mui/material";
 import { PlayArrow, Pause } from "@mui/icons-material";
@@ -130,20 +130,15 @@ const STEPS = [
     id: "product-highlight-1",
     title: "",
     description: "Many products appear in more than one value chain.",
-    duration: 1500,
+    duration: 2500,
   },
   {
     id: "product-highlight-2",
     title: "",
     description: "Many products appear in more than one value chain.",
-    duration: 1500,
+    duration: 2500,
   },
-  {
-    id: "product-highlight-3",
-    title: "",
-    description: "Many products appear in more than one value chain.",
-    duration: 1500,
-  },
+
   {
     id: "value-chain-products",
     title: "",
@@ -163,7 +158,7 @@ const STEPS = [
     title: "",
     description:
       "Zooming into the [selected chain name] value chain reveals the full structure: individual products, organized into green industrial clusters, all nested within a single value chain.",
-    duration: 5000,
+    duration: 7000,
   },
   {
     id: "all-value-chains-hierarchy",
@@ -561,9 +556,9 @@ const AnimatedValueChainIntroInternal: React.FC<
     return clusters;
   }, [productClusterRows, allProductToValueChains]);
 
-  // Generate cluster positions for step 6 using a responsive grid layout
+  // Generate cluster positions starting from step 5 using a responsive grid layout
   const clusterPositions = useMemo(() => {
-    if (currentStep !== 6) return new Map();
+    if (currentStep < 5) return new Map();
 
     const allClusters = Array.from(clusterData.values());
     if (allClusters.length === 0) return new Map();
@@ -774,7 +769,7 @@ const AnimatedValueChainIntroInternal: React.FC<
       valueChainLabelGap;
     const startY = valueChainBottom + 15; // Start tight below value chains, same as clusters
 
-    if (currentStep < 6) {
+    if (currentStep < 5) {
       // Grid layout for steps 0-4
       const validProducts = animationData.products.filter((product) =>
         allProductToValueChains.has(product.id as number),
@@ -823,12 +818,12 @@ const AnimatedValueChainIntroInternal: React.FC<
         // emit one bubble per value chain using consistent VC-specific IDs.
         // Position overlaps for all duplicates in early steps so they can fan out later.
         productValueChains.forEach((vcId: number) => {
-          // Step 5: emphasize only the selected value chain's duplicates
+          // Step 4: emphasize only the selected value chain's duplicates
           let productColor = "#9CA3AF";
           let productOpacity = 0.7;
           let productRadius = 9;
 
-          if (currentStep === 5 && selectedValueChain !== null) {
+          if (currentStep === 4 && selectedValueChain !== null) {
             if (vcId === selectedValueChain) {
               const selectedChain = animationData.valueChains.find(
                 (vc) => vc.id === selectedValueChain,
@@ -853,9 +848,9 @@ const AnimatedValueChainIntroInternal: React.FC<
             clusterId: product.clusterId,
             x,
             y,
-            r: currentStep === 5 ? productRadius : isHighlighted ? 13.5 : 9,
+            r: currentStep === 4 ? productRadius : isHighlighted ? 13.5 : 9,
             opacity:
-              currentStep === 5
+              currentStep === 4
                 ? productOpacity
                 : isInProductHighlightStep
                   ? isHighlighted
@@ -863,7 +858,7 @@ const AnimatedValueChainIntroInternal: React.FC<
                     : 0.3
                   : 0.7,
             fill:
-              currentStep === 5
+              currentStep === 4
                 ? productColor
                 : isHighlighted
                   ? "#000"
@@ -873,7 +868,7 @@ const AnimatedValueChainIntroInternal: React.FC<
           });
         });
       });
-    } else if (currentStep === 6 && selectedValueChain !== null) {
+    } else if (currentStep === 5 && selectedValueChain !== null) {
       // Clustered layout for step 5 - use shared cluster positions
       // Now position products within each cluster using circle packing
       clusterPositions.forEach((position, _clusterId) => {
@@ -961,7 +956,7 @@ const AnimatedValueChainIntroInternal: React.FC<
           },
         );
       });
-    } else if (currentStep === 7 && selectedValueChain !== null) {
+    } else if (currentStep === 6 && selectedValueChain !== null) {
       // Step 7: 3-level circle pack zoom-in on selected value chain
       // Create hierarchy: value chain > clusters > products
 
@@ -1090,7 +1085,7 @@ const AnimatedValueChainIntroInternal: React.FC<
           );
         },
       );
-    } else if (currentStep === 8) {
+    } else if (currentStep === 7) {
       // Step 8: Use shared final layout so clusters and products align perfectly
       animationData.valueChains.forEach((chain) => {
         const layout = finalStepLayout.get(chain.id);
@@ -1192,7 +1187,7 @@ const AnimatedValueChainIntroInternal: React.FC<
         position = { ...position, y: chain.y + step0YOffset };
       }
 
-      if (currentStep >= 2 && currentStep < 5 && currentHighlightedProduct) {
+      if (currentStep >= 2 && currentStep < 4 && currentHighlightedProduct) {
         // Product highlighting steps (2-4)
         const connectedChains =
           allProductToValueChains.get(currentHighlightedProduct) || [];
@@ -1205,15 +1200,15 @@ const AnimatedValueChainIntroInternal: React.FC<
           }
         }
         opacity = connectedChains.includes(chain.id) ? 1 : 0.3;
-      } else if (currentStep === 5) {
+      } else if (currentStep === 4) {
         // Value chain products step - highlight selected value chain
         isHighlighted = selectedValueChain === chain.id;
         opacity = isHighlighted ? 1 : 0.4;
-      } else if (currentStep === 6) {
+      } else if (currentStep === 5) {
         // Clustering step - highlight selected value chain
         isHighlighted = selectedValueChain === chain.id;
         opacity = isHighlighted ? 1 : 0.4;
-      } else if (currentStep === 7) {
+      } else if (currentStep === 6) {
         // Zoom step - animate selected value chain to outer circle of hierarchy, hide others
         if (selectedValueChain === chain.id) {
           opacity = 1;
@@ -1297,7 +1292,7 @@ const AnimatedValueChainIntroInternal: React.FC<
         } else {
           opacity = 0; // Hide non-selected chains
         }
-      } else if (currentStep === 8) {
+      } else if (currentStep === 7) {
         // Use final step layout centers/radii for container circles as well
         const layout = finalStepLayout.get(chain.id);
         const centerX = layout?.centerX ?? chain.x;
@@ -1371,11 +1366,11 @@ const AnimatedValueChainIntroInternal: React.FC<
 
   // Create cluster transition data
   const clusterTransitionData = useMemo(() => {
-    if (currentStep !== 6 && currentStep !== 7 && currentStep !== 8) return [];
+    if (currentStep !== 5 && currentStep !== 6 && currentStep !== 7) return [];
 
     const clusters: ClusterTransitionData[] = [];
 
-    if (currentStep === 6) {
+    if (currentStep === 5) {
       // Step 6: Use shared cluster positions
       Array.from(clusterPositions.values()).forEach((position) => {
         const cluster = position.cluster;
@@ -1398,7 +1393,7 @@ const AnimatedValueChainIntroInternal: React.FC<
           fontSize: 11,
         });
       });
-    } else if (currentStep === 7 && selectedValueChain !== null) {
+    } else if (currentStep === 6 && selectedValueChain !== null) {
       // Step 7: Use hierarchical circle packing for clusters
       const valueChainClusters = Array.from(clusterData.values()).filter(
         (cluster) => cluster.valueChainIds.includes(selectedValueChain),
@@ -1486,7 +1481,7 @@ const AnimatedValueChainIntroInternal: React.FC<
           },
         );
       }
-    } else if (currentStep === 8) {
+    } else if (currentStep === 7) {
       // Step 8: use EXACT same packed layout as products
       animationData.valueChains.forEach((chain) => {
         const layout = finalStepLayout.get(chain.id);
@@ -1585,7 +1580,7 @@ const AnimatedValueChainIntroInternal: React.FC<
   // Set default value chain when entering clustering step
   useEffect(() => {
     if (
-      (currentStep === 5 || currentStep === 6 || currentStep === 7) &&
+      (currentStep === 4 || currentStep === 5 || currentStep === 6) &&
       selectedValueChain === null
     ) {
       // Steps 5, 6 and 7 all require a selected value chain
@@ -1647,7 +1642,7 @@ const AnimatedValueChainIntroInternal: React.FC<
   };
 
   const handleValueChainClick = (valueChainId: number) => {
-    if (currentStep === 5 || currentStep === 6 || currentStep === 7) {
+    if (currentStep === 4 || currentStep === 5 || currentStep === 6) {
       // In value chain products, clustering and ecosystem steps
       setSelectedValueChain(valueChainId);
     }
@@ -1656,9 +1651,9 @@ const AnimatedValueChainIntroInternal: React.FC<
   const handleValueChainMouseEnter = (valueChainId: number) => {
     if (
       currentStep === 2 ||
+      currentStep === 4 ||
       currentStep === 5 ||
-      currentStep === 6 ||
-      currentStep === 7
+      currentStep === 6
     ) {
       setHoveredValueChain(valueChainId);
     }
@@ -1667,9 +1662,9 @@ const AnimatedValueChainIntroInternal: React.FC<
   const handleValueChainMouseLeave = () => {
     if (
       currentStep === 2 ||
+      currentStep === 4 ||
       currentStep === 5 ||
-      currentStep === 6 ||
-      currentStep === 7
+      currentStep === 6
     ) {
       setHoveredValueChain(null);
     }
@@ -1699,9 +1694,9 @@ const AnimatedValueChainIntroInternal: React.FC<
   const topTitleY = Math.max(16, Math.round(valueChainTopOffset * 0.6));
   const midTitleY = valueChainBottomY - 20; // in-between title position
 
-  // Dynamically compute the bottom of visible content to place step text just below it for steps 0–5
+  // Dynamically compute the bottom of visible content to place step text just below it for steps 0–4
   const bottomOfContentY = (() => {
-    if (currentStep <= 5) {
+    if (currentStep <= 4) {
       if (!animationData.valueChains.length) {
         return availableSvgHeight - textAreaHeight;
       }
@@ -1718,7 +1713,7 @@ const AnimatedValueChainIntroInternal: React.FC<
       // Step 0: only value chains (account for visual downward offset)
       if (currentStep === 0) return valueChainsBottom + step0YOffset + 8;
 
-      // Steps 1–5: products grid rendered below value chains
+      // Steps 1–4: products grid rendered below value chains
       const validProducts = animationData.products.filter((p) =>
         allProductToValueChains.has(p.id as number),
       );
@@ -1734,7 +1729,7 @@ const AnimatedValueChainIntroInternal: React.FC<
 
       const productsStartY = valueChainsBottom + 15; // matches product start in layout
       const lastRowCenterY = productsStartY + (rows - 1) * rowSpacing;
-      const productRadiusMax = currentStep >= 2 && currentStep < 5 ? 13.5 : 11;
+      const productRadiusMax = currentStep >= 2 && currentStep < 4 ? 13.5 : 11;
       return lastRowCenterY + productRadiusMax + 40;
     }
 
@@ -1744,15 +1739,15 @@ const AnimatedValueChainIntroInternal: React.FC<
 
   // Base Y positions for bottom title/description
   const baseDynamicTextTitleY =
-    currentStep <= 5
+    currentStep <= 4
       ? bottomOfContentY + 45
       : availableSvgHeight - textAreaHeight + 20;
   const baseDynamicTextDescY = baseDynamicTextTitleY + 26;
 
   // Compute wrapped text for bottom title/description using simple width-based estimation
-  // Allow a wider line length on the last two steps (7–8) so text doesn't break too early
+  // Allow a wider line length on the last two steps (6–7) so text doesn't break too early
   const textBlockWidth = (() => {
-    if (currentStep >= 7) {
+    if (currentStep >= 6) {
       return Math.min(width - 16, 1100);
     }
     return Math.min(width - 40, 800);
@@ -1764,13 +1759,13 @@ const AnimatedValueChainIntroInternal: React.FC<
           ?.name
       : undefined) || "Batteries";
   const descText = (() => {
-    if (currentStep === 5 && selectedValueChain !== null) {
+    if (currentStep === 4 && selectedValueChain !== null) {
       return `For example, the ${selectedChainName} value chain contains many distinct products that together enable ${selectedChainName.toLowerCase()} technologies.`;
     }
-    if (currentStep === 7 && selectedValueChain !== null) {
+    if (currentStep === 6 && selectedValueChain !== null) {
       return `Zooming into the ${selectedChainName} value chain reveals the full structure: individual products, organized into green industrial clusters, all nested within a single value chain.`;
     }
-    if (currentStep === 8) {
+    if (currentStep === 7) {
       return STEPS[currentStep]?.description || "";
     }
     return STEPS[currentStep]?.description || "";
@@ -1789,7 +1784,7 @@ const AnimatedValueChainIntroInternal: React.FC<
     estimatedBottomY - (availableSvgHeight - 0),
   );
   // Allow more upward shift on the last two steps to avoid clipping entirely
-  const minTitleYOffset = currentStep <= 5 ? bottomOfContentY + 12 : 8;
+  const minTitleYOffset = currentStep <= 4 ? bottomOfContentY + 12 : 8;
   const dynamicTextTitleY = Math.max(
     minTitleYOffset,
     baseDynamicTextTitleY - overflowAmount,
@@ -1804,8 +1799,8 @@ const AnimatedValueChainIntroInternal: React.FC<
         position: "relative",
       }}
     >
-      {/* Hierarchy Legend - show only in step 7 (clusters-only equivalent layout) */}
-      {currentStep === 7 && (
+      {/* Hierarchy Legend - show only in step 6 (clusters-only equivalent layout) */}
+      {currentStep === 6 && (
         <Box
           sx={{
             position: "absolute",
@@ -1833,13 +1828,13 @@ const AnimatedValueChainIntroInternal: React.FC<
       >
         {/* Value Chain Circles with Icons and Names - using React Spring transitions */}
         {valueChainTransitions((style: AnimatedStyle, chain) => {
-          // In step 7, completely hide non-selected value chains
-          if (currentStep === 7 && selectedValueChain !== chain.id) {
+          // In step 6, completely hide non-selected value chains
+          if (currentStep === 6 && selectedValueChain !== chain.id) {
             return null;
           }
           const isZoomStep =
-            currentStep === 7 && selectedValueChain === chain.id;
-          const isAllChainsStep = currentStep === 8;
+            currentStep === 6 && selectedValueChain === chain.id;
+          const isAllChainsStep = currentStep === 7;
           const iconSize = isZoomStep ? 48 : 35; // Ensure standard icons are 35px
           const fontSize = isZoomStep ? 24 : 16; // Larger text in zoom view
 
@@ -1860,7 +1855,7 @@ const AnimatedValueChainIntroInternal: React.FC<
             : style.x.to((x: number) => x - iconSize / 2);
           const textX = isZoomStep
             ? style.x.to((x: number) => x - 40)
-            : style.x; // centered for normal and step 8
+            : style.x; // centered for normal and step 7
           const textY = isZoomStep
             ? style.y.to((y: number) => {
                 const radiusValue =
@@ -1907,24 +1902,24 @@ const AnimatedValueChainIntroInternal: React.FC<
                 opacity={style.opacity}
                 style={{
                   cursor:
-                    currentStep === 2 || currentStep === 5 || currentStep === 6
+                    currentStep === 2 || currentStep === 4 || currentStep === 5
                       ? "pointer"
                       : "default",
                 }}
                 onClick={() =>
-                  (currentStep === 5 || currentStep === 6) &&
+                  (currentStep === 4 || currentStep === 5) &&
                   handleValueChainClick(chain.id)
                 }
                 onMouseEnter={() =>
                   (currentStep === 2 ||
-                    currentStep === 5 ||
-                    currentStep === 6) &&
+                    currentStep === 4 ||
+                    currentStep === 5) &&
                   handleValueChainMouseEnter(chain.id)
                 }
                 onMouseLeave={() =>
                   (currentStep === 2 ||
-                    currentStep === 5 ||
-                    currentStep === 6) &&
+                    currentStep === 4 ||
+                    currentStep === 5) &&
                   handleValueChainMouseLeave()
                 }
               />
@@ -1941,31 +1936,31 @@ const AnimatedValueChainIntroInternal: React.FC<
                   style={{
                     pointerEvents:
                       currentStep === 2 ||
-                      currentStep === 5 ||
-                      currentStep === 6
+                      currentStep === 4 ||
+                      currentStep === 5
                         ? "all"
                         : "none",
                     cursor:
                       currentStep === 2 ||
-                      currentStep === 5 ||
-                      currentStep === 6
+                      currentStep === 4 ||
+                      currentStep === 5
                         ? "pointer"
                         : "default",
                   }}
                   onClick={() =>
-                    (currentStep === 5 || currentStep === 6) &&
+                    (currentStep === 4 || currentStep === 5) &&
                     handleValueChainClick(chain.id)
                   }
                   onMouseEnter={() =>
                     (currentStep === 2 ||
-                      currentStep === 5 ||
-                      currentStep === 6) &&
+                      currentStep === 4 ||
+                      currentStep === 5) &&
                     handleValueChainMouseEnter(chain.id)
                   }
                   onMouseLeave={() =>
                     (currentStep === 2 ||
-                      currentStep === 5 ||
-                      currentStep === 6) &&
+                      currentStep === 4 ||
+                      currentStep === 5) &&
                     handleValueChainMouseLeave()
                   }
                 ></animated.image>
@@ -1982,28 +1977,28 @@ const AnimatedValueChainIntroInternal: React.FC<
                 opacity={style.opacity}
                 style={{
                   pointerEvents:
-                    currentStep === 2 || currentStep === 5 || currentStep === 6
+                    currentStep === 2 || currentStep === 4 || currentStep === 5
                       ? "all"
                       : "none",
                   cursor:
-                    currentStep === 2 || currentStep === 5 || currentStep === 6
+                    currentStep === 2 || currentStep === 4 || currentStep === 5
                       ? "pointer"
                       : "default",
                 }}
                 onClick={() =>
-                  (currentStep === 5 || currentStep === 6) &&
+                  (currentStep === 4 || currentStep === 5) &&
                   handleValueChainClick(chain.id)
                 }
                 onMouseEnter={() =>
                   (currentStep === 2 ||
-                    currentStep === 5 ||
-                    currentStep === 6) &&
+                    currentStep === 4 ||
+                    currentStep === 5) &&
                   handleValueChainMouseEnter(chain.id)
                 }
                 onMouseLeave={() =>
                   (currentStep === 2 ||
-                    currentStep === 5 ||
-                    currentStep === 6) &&
+                    currentStep === 4 ||
+                    currentStep === 5) &&
                   handleValueChainMouseLeave()
                 }
               >
@@ -2020,9 +2015,9 @@ const AnimatedValueChainIntroInternal: React.FC<
             cx={style.x}
             cy={style.y}
             r={style.r}
-            fill={currentStep === 8 ? "none" : cluster.fill}
+            fill={currentStep === 7 ? "none" : cluster.fill}
             stroke={cluster.stroke}
-            strokeWidth={currentStep === 8 ? 0.5 : cluster.strokeWidth}
+            strokeWidth={currentStep === 7 ? 0.5 : cluster.strokeWidth}
             opacity={style.opacity}
           />
         ))}
@@ -2048,12 +2043,12 @@ const AnimatedValueChainIntroInternal: React.FC<
                   }
                   style={{
                     cursor:
-                      currentStep >= 2 && currentStep < 5
+                      currentStep >= 2 && currentStep < 4
                         ? "pointer"
                         : "default",
                   }}
                   onMouseEnter={
-                    currentStep >= 2 && currentStep < 5
+                    currentStep >= 2 && currentStep < 4
                       ? () => setHoveredProduct(product.globalProductId)
                       : undefined
                   }
@@ -2076,7 +2071,7 @@ const AnimatedValueChainIntroInternal: React.FC<
             fill={cluster.isHighlighted ? "#000" : "#666"}
             opacity={style.opacity}
             stroke="white"
-            strokeWidth={currentStep === 7 ? "4" : "3"} // Thicker stroke for step 7
+            strokeWidth={currentStep === 6 ? "4" : "3"} // Thicker stroke for step 6
             paintOrder="stroke fill"
           >
             {(() => {
@@ -2084,8 +2079,8 @@ const AnimatedValueChainIntroInternal: React.FC<
                 /\band\b/gi,
                 "&",
               );
-              if (currentStep === 8) return "";
-              const limit = currentStep === 7 ? 20 : 15;
+              if (currentStep === 7) return "";
+              const limit = currentStep === 6 ? 20 : 15;
               return displayName.length > limit
                 ? `${displayName.substring(0, limit)}...`
                 : displayName;
@@ -2094,7 +2089,7 @@ const AnimatedValueChainIntroInternal: React.FC<
         ))}
 
         {/* Product connections and annotations - only show in product highlighting steps */}
-        {currentStep >= 2 && currentStep < 5 && currentHighlightedProduct && (
+        {currentStep >= 2 && currentStep < 4 && currentHighlightedProduct && (
           <ProductConnections
             highlightedProductId={currentHighlightedProduct}
             products={animationData.products}
@@ -2118,7 +2113,7 @@ const AnimatedValueChainIntroInternal: React.FC<
 
         {/* Fallback connection for demo when no highlighted product */}
         {currentStep >= 2 &&
-          currentStep < 5 &&
+          currentStep < 4 &&
           !currentHighlightedProduct &&
           animationData.products.length > 0 && (
             <ProductConnections
@@ -2142,8 +2137,8 @@ const AnimatedValueChainIntroInternal: React.FC<
             />
           )}
 
-        {/* Value chain to products connections for step 5 */}
-        {currentStep === 5 && selectedValueChain !== null && (
+        {/* Value chain to products connections for step 4 */}
+        {currentStep === 4 && selectedValueChain !== null && (
           <ValueChainProductConnections
             selectedValueChain={selectedValueChain}
             products={animationData.products}
@@ -2189,7 +2184,7 @@ const AnimatedValueChainIntroInternal: React.FC<
             fontWeight="600"
             style={{ pointerEvents: "none", letterSpacing: "0.5px" }}
           >
-            {currentStep === 6 ? "Clusters" : "Products"}
+            {currentStep === 5 ? "Clusters" : "Products"}
           </Text>
         )}
 
@@ -2714,13 +2709,70 @@ const hexToRgba = (hex: string, alpha: number): string => {
 export const AnimatedValueChainIntro: React.FC<
   Omit<AnimatedValueChainIntroProps, "width" | "height">
 > = ({ selectedCountry, selectedYear }) => {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [measuredHeight, setMeasuredHeight] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    const compute = () => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const viewportH =
+        (window as any).visualViewport?.height || window.innerHeight;
+      const available = Math.max(200, Math.floor(viewportH - rect.top));
+      setMeasuredHeight((prev) => (prev !== available ? available : prev));
+    };
+
+    compute();
+
+    const handleResize = () => compute();
+    const handleTransitionEnd = () => compute();
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    document.addEventListener("transitionend", handleTransitionEnd, true);
+
+    // Safari/iOS visual viewport changes when bars collapse/expand
+    const vv = (window as any).visualViewport as VisualViewport | undefined;
+    const onVVResize = () => compute();
+    if (vv) {
+      vv.addEventListener("resize", onVVResize);
+      vv.addEventListener("scroll", onVVResize);
+    }
+
+    // Observe layout shifts around the element
+    const ro = new ResizeObserver(() => compute());
+    if (wrapperRef.current) ro.observe(wrapperRef.current);
+    // Also observe the document element to catch global layout changes
+    ro.observe(document.documentElement);
+
+    // First paint after mount
+    requestAnimationFrame(() => compute());
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+      document.removeEventListener("transitionend", handleTransitionEnd, true);
+      if (vv) {
+        vv.removeEventListener("resize", onVVResize);
+        vv.removeEventListener("scroll", onVVResize);
+      }
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <div
+      ref={wrapperRef}
       style={{
         width: "100%",
-        height: "100%",
+        // Dynamically computed height so the visualization reflows when sidebar collapses into a topbar
+        height: measuredHeight ? `${measuredHeight}px` : "100%",
         minHeight: 0,
         overflow: "hidden",
+        boxSizing: "border-box",
+        // Guard against iOS home indicator covering controls
+        paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
       <ParentSize>

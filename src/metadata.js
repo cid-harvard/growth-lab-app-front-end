@@ -27,6 +27,8 @@ const Routes = {
   GreenGrowthStrategicPosition: "/greenplexity/strategic-position",
   GreenGrowthDimensions: "/greenplexity/dimensions",
   GreenGrowthExplore: "/greenplexity/explore",
+  // Rankings route
+  GreenGrowthRankings: "/greenplexity/rankings",
   // Experimental routes (no links)
   GreenEciBumpChart: "/experimental/green-eci-bump-chart",
   TangleTreeExperiment: "/experimental",
@@ -185,7 +187,7 @@ const metadata = [
     url: Routes.ClusterTreeExperiment,
     title: "Cluster Tree Explorer | " + defaultTitle,
     description:
-      "Explore manufacturing clusters and their hierarchical relationships with supply chains and products",
+      "Explore industrial clusters and their hierarchical relationships with supply chains and products",
     og_image: defaultOgImage,
     favicon: defaultFavicon,
   },

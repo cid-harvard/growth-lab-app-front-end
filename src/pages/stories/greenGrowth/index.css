@@ -48,6 +48,6 @@ body,
   box-shadow: none !important;
   padding: 0 !important;
   pointer-events: none !important;
-  position: absolute;
-  z-index: 10;
+  position: fixed; /* Escape local stacking/overflow contexts */
+  z-index: 10000; /* Higher than Drawer/AppBar/Modals to prevent overlap */
 }

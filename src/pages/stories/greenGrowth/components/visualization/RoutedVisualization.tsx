@@ -88,10 +88,18 @@ const RoutedVisualization = () => {
     [countryName],
   );
 
-  // Find current step based on route
+  // Find current step based on route (support sub-routes like "/comparison")
   const currentStepIndex = useMemo(() => {
-    const index = steps.findIndex((step) => step.route === location.pathname);
-    return index >= 0 ? index : 0;
+    const exactIndex = steps.findIndex(
+      (step) => step.route === location.pathname,
+    );
+    if (exactIndex !== -1) return exactIndex;
+    const prefixIndex = steps.findIndex(
+      (step) =>
+        location.pathname === step.route ||
+        location.pathname.startsWith(step.route + "/"),
+    );
+    return prefixIndex >= 0 ? prefixIndex : 0;
   }, [location.pathname, steps]);
 
   // Track previous step for smooth animations
@@ -144,6 +152,9 @@ const RoutedVisualization = () => {
 
   // Render Stacked Bars Chart for bars base type
   if (currentView?.base === "bars") {
+    const isComparisonSubroute = location.pathname.startsWith(
+      Routes.GreenGrowthCompetitiveness + "/comparison",
+    );
     return (
       <div
         style={{
@@ -153,7 +164,11 @@ const RoutedVisualization = () => {
           flexDirection: "column",
         }}
       >
-        <StackedBarsChart year={yearSelection} countryId={countrySelection} />
+        <StackedBarsChart
+          year={yearSelection}
+          countryId={countrySelection}
+          mode={isComparisonSubroute ? "comparison" : "presence"}
+        />
       </div>
     );
   }

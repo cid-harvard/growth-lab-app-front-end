@@ -25,33 +25,65 @@ export const RCA_RANGES = [
 /**
  * Get RCA range information for a given RCA value
  */
-export function getRCARange(rca: number) {
-  return (
-    RCA_RANGES.find((range) => rca >= range.min && rca < range.max) ||
-    RCA_RANGES[RCA_RANGES.length - 1]
-  );
+export function getRCARange(rca: number, threshold: number = 1.0) {
+  // Compute a dynamic two-tier range using the provided threshold
+  const high = {
+    min: threshold,
+    max: Infinity,
+    label: `High (RCA>${threshold})`,
+    description: "Strong Capability",
+    opacity: 1.0,
+    colorPosition: 0.9,
+  };
+  const low = {
+    min: -Infinity,
+    max: threshold,
+    label: `Low (RCA≤${threshold})`,
+    description: "Limited Capability",
+    opacity: 0.35,
+    colorPosition: 0.3,
+  };
+  const ranges = [high, low];
+  return ranges.find((range) => rca >= range.min && rca < range.max) || low;
 }
 
 /**
  * Get opacity for RCA value
  */
-export function getRCAOpacity(rca: number): number {
-  const range = getRCARange(rca);
+export function getRCAOpacity(rca: number, threshold: number = 1.0): number {
+  const range = getRCARange(rca, threshold);
   return range.opacity;
 }
 
 /**
  * Get blue color for RCA value using D3 blues scale
  */
-export function getRCABlueColor(rca: number): string {
+export function getRCABlueColor(rca: number, threshold: number = 1.0): string {
   const bluesScale = scaleSequential(interpolateBlues);
-  const range = getRCARange(rca);
+  const range = getRCARange(rca, threshold);
   return bluesScale(range.colorPosition);
 }
 
 /**
  * Get all RCA legend items for display
  */
-export function getRCALegendItems() {
-  return RCA_RANGES;
+export function getRCALegendItems(threshold: number = 1.0) {
+  return [
+    {
+      min: threshold,
+      max: Infinity,
+      label: `High (RCA>${threshold})`,
+      description: "Strong Capability",
+      opacity: 1.0,
+      colorPosition: 0.9,
+    },
+    {
+      min: -Infinity,
+      max: threshold,
+      label: `Low (RCA≤${threshold})`,
+      description: "Limited Capability",
+      opacity: 0.35,
+      colorPosition: 0.3,
+    },
+  ];
 }

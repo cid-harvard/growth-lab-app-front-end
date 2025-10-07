@@ -622,6 +622,8 @@ export const GET_COUNTRY_YEAR_METRICS = gql`
       lnypc
       xResid
       policyRecommendation
+      rank
+      rankingMetric
     }
   }
 `;
@@ -639,6 +641,8 @@ export const GET_ALL_COUNTRIES_YEAR_METRICS = gql`
       lnypc
       xResid
       policyRecommendation
+      rank
+      rankingMetric
       __typename
     }
   }

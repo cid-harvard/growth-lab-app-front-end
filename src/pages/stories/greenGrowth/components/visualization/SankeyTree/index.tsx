@@ -247,7 +247,7 @@ const SankeyTreeInternal = ({
       };
     });
 
-    // Second pass: Hide value chains that have no visible connected manufacturing clusters
+    // Second pass: Hide value chains that have no visible connected indsutrial clusters
     const updatedNodes = firstPassNodes.map((node) => {
       if (
         node.type === "value_chain" &&
@@ -255,7 +255,7 @@ const SankeyTreeInternal = ({
         !focusedCluster &&
         !focusedValueChain
       ) {
-        // Check if this value chain has any visible connected manufacturing clusters
+        // Check if this value chain has any visible connected industrial clusters
         const hasVisibleConnectedClusters = filteredHierarchy.links.some(
           (link) => {
             if (link.source === node.id) {
@@ -783,10 +783,10 @@ const SankeyTreeInternal = ({
         textAnchor: "end",
       });
 
-      // MANUFACTURING CLUSTERS
+      // INDUSTRIAL CLUSTERS
       headers.push({
         id: "header-clusters",
-        text: isMobile ? "CLUSTERS" : "MANUFACTURING CLUSTERS",
+        text: isMobile ? "CLUSTERS" : "INDUSTRIAL CLUSTERS",
         x: clusterX + 25,
         y: headerY,
         color: themeUtils.chart.colors.text.secondary,

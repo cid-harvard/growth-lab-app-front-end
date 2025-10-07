@@ -97,20 +97,6 @@ export const BUBBLE_SIZES = {
   HUGE: 1.4,
 };
 
-// Helper to get discrete ranking for bubble sizing
-export const getDiscreteRanking = (
-  ranking: number,
-  minRank: number,
-  maxRank: number,
-): number => {
-  const percentile = (ranking - minRank) / (maxRank - minRank);
-  if (percentile <= 0.2) return BUBBLE_SIZES.TINY;
-  if (percentile <= 0.4) return BUBBLE_SIZES.SMALL;
-  if (percentile <= 0.6) return BUBBLE_SIZES.MEDIUM;
-  if (percentile <= 0.8) return BUBBLE_SIZES.LARGE;
-  return BUBBLE_SIZES.HUGE;
-};
-
 // Helper to create lighter version of a color for cluster backgrounds
 export const getLighterColor = (
   color: string,
@@ -140,7 +126,7 @@ export const getLighterColorSolid = (
   const newG = Math.round(g + (255 - g) * lightness);
   const newB = Math.round(b + (255 - b) * lightness);
 
-  return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+  return `#${newR.toString(16).padStart(2, "0")}${newG.toString(16).padStart(2, "0")}${newB.toString(16).padStart(2, "0")}`;
 };
 
 // Helper to create a darker version of a color without opacity (for strokes)
@@ -158,5 +144,5 @@ export const getDarkerColorSolid = (
   const newG = Math.round(g * (1 - darkness));
   const newB = Math.round(b * (1 - darkness));
 
-  return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+  return `#${newR.toString(16).padStart(2, "0")}${newG.toString(16).padStart(2, "0")}${newB.toString(16).padStart(2, "0")}`;
 };

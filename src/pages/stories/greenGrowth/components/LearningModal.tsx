@@ -49,11 +49,11 @@ const LearningModal: React.FC<LearningModalProps> = ({ open, onClose }) => {
           <AccountTreeIcon color="primary" />
           <Box>
             <Typography variant="h6" component="div">
-              Value Chain Explorer
+              Green Value Chain Connections
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Interactive exploration of relationships between value chains,
-              clusters, and products
+              Hover to explore the relationships between value chains, clusters
+              and products
             </Typography>
           </Box>
         </Box>

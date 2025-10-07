@@ -12,7 +12,7 @@ export const calculateClusterScores = (clusterData: any[]) => {
     const attractiveness =
       0.6 * Number.parseFloat(clusterItem.cog) +
       0.4 * Number.parseFloat(clusterItem.pci);
-    const density = Number.parseFloat(clusterItem.rca);
+    const density = Number.parseFloat(clusterItem.density);
 
     return {
       ...clusterItem,

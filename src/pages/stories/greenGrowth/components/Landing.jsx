@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Box,
   Typography,
@@ -7,14 +8,15 @@ import {
   TextField,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import { createFilterOptions } from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useUrlParams, useYearSelection } from "../hooks/useUrlParams";
 import { useGreenGrowthData } from "../hooks/useGreenGrowthData";
 import { useQuery } from "@apollo/client";
 import { GET_COUNTRIES } from "../queries/shared";
-import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
 import { triggerGoogleAnalyticsEvent } from "../../../../routing/tracking";
+import GreenplexityHeader from "./GreenplexityHeader";
 
 const GradientBackground = styled(Box)(({ theme }) => ({
   background:
@@ -43,9 +45,7 @@ const GradientBackground = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Logo = styled("img")({
-  height: "60px",
-});
+// Removed standalone centered logo; header now contains logo on the left
 
 const ExploreButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(4),
@@ -77,19 +77,41 @@ const Landing = ({ onExplore }) => {
 
   const countries = data?.ggLocationCountryList || [];
 
+  const sortedCountries = useMemo(
+    () =>
+      [...countries].sort((a, b) =>
+        (a?.nameEn || "").localeCompare(b?.nameEn || "", undefined, {
+          sensitivity: "base",
+        }),
+      ),
+    [countries],
+  );
+
+  const countryFilterOptions = useMemo(
+    () =>
+      createFilterOptions({
+        stringify: (option) =>
+          [
+            option?.nameEn,
+            option?.nameShortEn,
+            option?.nameEs,
+            option?.nameShortEs,
+            option?.iso3Code,
+            option?.iso2Code,
+            option?.nameAbbrEn,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase(),
+      }),
+    [],
+  );
+
   return (
     <div>
       <GradientBackground>
-        <Container maxWidth="md">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            mb={4}
-          >
-            <Logo src={GrowthLabLogoPNG} alt="Growth Lab" />
-          </Box>
-
+        <GreenplexityHeader position="fixed" heightPx={60} maxWidth="md" />
+        <Container maxWidth="md" sx={{ mt: 8 }}>
           <Typography
             variant="h3"
             component="h1"
@@ -155,21 +177,25 @@ const Landing = ({ onExplore }) => {
               fontSize: "20px",
             }}
           >
-            <b>Greenplexity</b> reveals where your country can lead inside the
-            green value chains powering the energy transition, to drive new
-            paths to prosperity. By mapping local capabilities against the needs
-            of green technologies, Greenplexity uncovers actionable strategies
-            for green growth—by supplying what the world needs to decarbonize.
+            <b>Greenplexity</b> reveals where your country can lead in the green
+            value chains powering the energy transition and drive new paths to
+            prosperity. By mapping local capabilities for producing green
+            technologies, Greenplexity uncovers actionable strategies for green
+            growth by supplying what the world needs to decarbonize.
           </Typography>
 
           <Box display="flex" justifyContent="center" width="100%">
             <Autocomplete
               fullWidth
-              options={countries}
+              options={sortedCountries}
+              filterOptions={countryFilterOptions}
               getOptionLabel={(option) => option.nameEn}
               disableClearable
               blurOnSelect
               popupIcon={<KeyboardArrowDownIcon />}
+              isOptionEqualToValue={(option, value) =>
+                option?.countryId === value?.countryId
+              }
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -254,8 +280,8 @@ const Landing = ({ onExplore }) => {
             lineHeight: theme.typography.body1.lineHeight,
           })}
         >
-          Greenplexity is a public good, financed in part by the Government of
-          Azerbaijan.
+          Greenplexity is a public good made possible in part by the generous
+          support of the Government of Azerbaijan.
         </Typography>
       </GradientBackground>
     </div>

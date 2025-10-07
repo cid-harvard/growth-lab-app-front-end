@@ -7,7 +7,7 @@ export const CLUSTER_RANKING_SPACING = 120;
 export const CLUSTER_RANKING_MAX_LABEL_CHARS = 18;
 
 // Padding on each side of the ranking content to avoid label clipping (pixels)
-export const CLUSTER_RANKING_EDGE_PADDING = 10;
+export const CLUSTER_RANKING_EDGE_PADDING = 60;
 
 // Static node radius for ranked cluster circles (pixels)
 export const CLUSTER_RANKING_NODE_RADIUS = 18;

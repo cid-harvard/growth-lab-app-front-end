@@ -1,8 +1,8 @@
 export const STRATEGIC_POSITION_QUADRANTS = {
-  topRight: "Harness Nearby Opportunities",
-  topLeft: "Climb the Complexity Ladder",
-  bottomRight: "Maintain Competitive Edge",
-  bottomLeft: "Reinvent Industrial Base",
+  topRight: "Light Touch Approach",
+  topLeft: "Parsimonious Industrial Policy Approach",
+  bottomRight: "Technological Frontier Approach",
+  bottomLeft: "Strategic Bets Approach",
 } as const;
 
 export const STRATEGIC_POSITION_COLORS = {
@@ -16,17 +16,17 @@ export const STRATEGIC_POSITION_DESCRIPTIONS = {
   topRight:
     "Ample space to diversify calls for leveraging existing successes to enter more complex production.",
   topLeft:
-    "Diversify into progressively more complex products in green value chains, considering related products as a starting point.",
+    "Limited opportunities requires addressing bottlenecks, to help jump short distances, into related products.",
   bottomRight:
-    "With good presence in complex green industries, gains come from developing new products and maintaining competitiveness.",
+    "Having exploited virtually all, major existing products, gains come from developing new products.",
   bottomLeft:
-    "Few nearby opportunities call for coordinated long jumps into complex industries that open future diversification pathways.",
+    "Few nearby opportunities call for coordinated long jumps into strategic areas with future diversification potential.",
 } as const;
 
 export type QuadrantType = keyof typeof STRATEGIC_POSITION_QUADRANTS;
 
 // Mapping function to convert API policy recommendations to strategic position
-// Maps the 4 actual API policy recommendation values to the 4 chart quadrants
+// Maps the actual API policy recommendation values from the GraphQL backend to the 4 chart quadrants
 export const mapPolicyRecommendationToPosition = (
   policyRecommendation?: string | null,
 ): { quadrant: QuadrantType; fillColor: string; label: string } => {
@@ -42,14 +42,13 @@ export const mapPolicyRecommendationToPosition = (
   // Convert to lowercase and trim for consistent matching
   const recommendation = policyRecommendation.toLowerCase().trim();
 
-  // Map based on actual data patterns:
-  // - "Harness nearby opportunities": High coiGreen + High xResid = Top Right
-  // - "Climb the complexity ladder": Positive coiGreen + Low xResid = Top Left
-  // - "Maintain competitive edge": Mixed coiGreen + High xResid = Bottom Right
-  // - "Reinvent industrial base": Low coiGreen + Mixed xResid = Bottom Left
+  // Map based on actual GraphQL API values:
+  // - "Harness nearby opportunities" (high coiGreen, high xResid) -> Top Right (Light Touch)
+  // - "Climb the complexity ladder" (high coiGreen, lower xResid) -> Top Left (Parsimonious)
+  // - "Maintain competitive edge" (varies coiGreen, high xResid) -> Bottom Right (Frontier)
+  // - "Reinvent industrial base" (low coiGreen, varies xResid) -> Bottom Left (Strategic Bets)
   switch (recommendation) {
     case "harness nearby opportunities":
-      // Top Right: High green connectivity, higher complexity
       return {
         quadrant: "topRight",
         fillColor: STRATEGIC_POSITION_COLORS.topRight,
@@ -57,7 +56,6 @@ export const mapPolicyRecommendationToPosition = (
       };
 
     case "climb the complexity ladder":
-      // Top Left: Good green connectivity, lower complexity (need to climb)
       return {
         quadrant: "topLeft",
         fillColor: STRATEGIC_POSITION_COLORS.topLeft,
@@ -65,7 +63,6 @@ export const mapPolicyRecommendationToPosition = (
       };
 
     case "maintain competitive edge":
-      // Bottom Right: Mixed green connectivity, very high complexity
       return {
         quadrant: "bottomRight",
         fillColor: STRATEGIC_POSITION_COLORS.bottomRight,
@@ -73,7 +70,6 @@ export const mapPolicyRecommendationToPosition = (
       };
 
     case "reinvent industrial base":
-      // Bottom Left: Poor green connectivity, mixed complexity
       return {
         quadrant: "bottomLeft",
         fillColor: STRATEGIC_POSITION_COLORS.bottomLeft,
@@ -81,7 +77,7 @@ export const mapPolicyRecommendationToPosition = (
       };
 
     default:
-      // Unknown recommendation - fallback to Emerging Opportunities
+      // Unknown recommendation - fallback and warn
       console.warn(`Unknown policy recommendation: "${policyRecommendation}"`);
       return {
         quadrant: "bottomLeft",

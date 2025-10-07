@@ -144,7 +144,7 @@ export function buildHierarchicalData(
     }),
   ];
 
-  // Create links from value chains to manufacturing clusters
+  // Create links from value chains to Industrial clusters
   const links: HierarchyLinkData[] = [];
 
   // Process value chain to cluster connections

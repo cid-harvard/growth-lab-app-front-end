@@ -36,7 +36,7 @@ const ClickHint: React.FC<ClickHintProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <g transform={`translate(${x}, ${y}) ${transform}`}>
+    <g transform={`translate(${x}, ${y}) ${transform}`} data-export-hide="true">
       <image href={PointerIcon} height={iconHeight} />
       <text
         x={iconSpacing}
