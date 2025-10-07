@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { group } from "d3";
 
 export const GG_SUPPLY_CHAIN_PRODUCT_MEMBER_LIST_QUERY = gql`

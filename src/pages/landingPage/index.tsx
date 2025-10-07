@@ -27,7 +27,7 @@ import ListView from './hubViews/ListView';
 import SearchView from './hubViews/SearchView';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import {HubProject, HubKeyword, ProjectCategories} from './graphql/graphQLTypes';
 import Loading from '../../components/general/Loading';

@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { index } from "d3";
 
 export const GET_ALL_SUPPLY_CHAIN_DETAILS = gql`

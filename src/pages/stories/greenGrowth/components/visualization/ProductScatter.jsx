@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { GG_CPY_LIST_QUERY } from "../../queries/cpy";
 import { useProductLookup } from "../../queries/products";
 import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";

@@ -33,7 +33,7 @@ import {
   CSVDatum as ScatterPlotCSVDatum,
   NaceIdEnhancedScatterPlotDatum,
 } from './transformers/transformScatterplotData';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import {
     Script,

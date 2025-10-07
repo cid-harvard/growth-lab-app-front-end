@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from './Layout';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';

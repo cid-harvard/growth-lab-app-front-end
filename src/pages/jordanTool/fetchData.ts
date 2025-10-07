@@ -3,7 +3,7 @@ import {
   RadarChartDatum,
   BarChartDatum,
 } from 'react-fast-charts';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import {
   Datum as DynamicTableDatum,

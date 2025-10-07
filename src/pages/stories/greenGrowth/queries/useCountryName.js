@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { countrySelectionState } from "../components/ScollamaStory";
 import { GET_COUNTRIES } from "./countries";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 export const useCountryName = () => {
   const selectedCountryId = useRecoilValue(countrySelectionState);

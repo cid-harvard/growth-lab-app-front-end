@@ -3,7 +3,7 @@ import Content from './Content';
 import {
   JordanIndustry,
 } from './graphql/graphQLTypes';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { TreeNode } from 'react-dropdown-tree-select';
 import Loading from '../../components/general/Loading';

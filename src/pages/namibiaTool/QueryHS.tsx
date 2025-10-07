@@ -7,7 +7,7 @@ import {
 import Loading from '../../components/general/Loading';
 import FullPageError from '../../components/general/FullPageError';
 import ContentWrapper from './Content';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import {
   HSProduct,
