@@ -217,6 +217,7 @@ export default function Visualization() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box
+        className="space-visualizer"
         sx={{
           position: "fixed",
           top: 0,
