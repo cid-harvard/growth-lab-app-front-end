@@ -16,8 +16,9 @@ import {
 import { rgba, darken } from "polished";
 import SmartImage from "../../../components/general/SmartImage";
 
-const zigZagPattern = require("../images/pattern.svg");
+import patternSvg from "../images/pattern.svg";
 
+const zigZagPattern = patternSvg;
 const Root = styled.div`
   min-width: 28%;
   min-height: 380px;
@@ -198,7 +199,7 @@ const Cursor = styled.div`
   justify-content: center;
   text-align: center;
   text-transform: uppercase;
-  background-image: url("${require("../images/pattern.svg")}");
+  background-image: url("${patternSvg}");
   background-size: 200%;
   font-weight: 600;
   font-size: 0.7rem;
