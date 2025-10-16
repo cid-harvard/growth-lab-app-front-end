@@ -1,15 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useLocation, useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
-import { scrollToAnchor } from '../../hooks/useScrollBehavior';
-import {FullWidthHeaderContent} from '../../styling/Grid';
+import React from "react";
+import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { scrollToAnchor } from "../../hooks/useScrollBehavior";
+import { FullWidthHeaderContent } from "../../styling/Grid";
 import HarvardLogo from "../../assets/harvard-logo.png";
-import {secondaryFont} from '../../styling/styleUtils';
+import { secondaryFont } from "../../styling/styleUtils";
 
 export const navHeight = 3.375; // in rem
 
-const Root = styled.nav<{$backgroundImage?: string}>`
+const Root = styled.nav<{ $backgroundImage?: string }>`
   position: fixed;
   top: 0;
   right: 0;
@@ -19,26 +19,26 @@ const Root = styled.nav<{$backgroundImage?: string}>`
   transition: background 0.25s ease;
 
   &:after {
-    ${({$backgroundImage}) => $backgroundImage ? "content: '';" : ''}
+    ${({ $backgroundImage }) => ($backgroundImage ? "content: '';" : "")}
     display: block;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
-    ${
-      ({$backgroundImage}) => $backgroundImage
-        ? 'background-image: url(' + $backgroundImage + ');' : ''
-    }
+    ${({ $backgroundImage }) =>
+      $backgroundImage
+        ? "background-image: url(" + $backgroundImage + ");"
+        : ""}
     z-index: -2;
-    background-size:cover;
+    background-size: cover;
   }
   &:before {
-    ${({$backgroundImage}) => $backgroundImage ? "content: '';" : ''}
+    ${({ $backgroundImage }) => ($backgroundImage ? "content: '';" : "")}
     display: block;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     background-color: rgba(255, 255, 255, 0.2);
@@ -130,77 +130,74 @@ interface Props {
 
 const TopLevelStickyNav = (props: Props) => {
   const {
-    links, linkColor, title, activeColor, backgroundColor,
+    links,
+    linkColor,
+    title,
+    activeColor,
+    backgroundColor,
     backgroundImage,
   } = props;
 
-  const {search, pathname} = useLocation();
+  const { search, pathname } = useLocation();
   const navigate = useNavigate();
 
-  const linkList = links.map(({label, target, internalLink, active}) => {
+  const linkList = links.map(({ label, target, internalLink, active }) => {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       if (internalLink) {
         e.preventDefault();
         navigate(pathname + search + target);
-        scrollToAnchor({anchor: target});
+        scrollToAnchor({ anchor: target });
       }
     };
     const navLink = internalLink ? (
       <NavLinkInternal
         href={target}
-        style={{color: linkColor}}
+        style={{ color: linkColor }}
         onClick={onClick}
       >
         {label}
         <Underline
           style={{
-            width: active ? '100%' : undefined,
+            width: active ? "100%" : undefined,
             background: activeColor,
           }}
         />
       </NavLinkInternal>
     ) : (
-      <NavLinkExternal
-        to={target}
-        style={{color: linkColor}}
-      >
+      <NavLinkExternal to={target} style={{ color: linkColor }}>
         {label}
         <Underline
           style={{
-            width: active ? '100%' : undefined,
+            width: active ? "100%" : undefined,
             background: activeColor,
           }}
         />
       </NavLinkExternal>
     );
-    return (
-      <ListItem key={label + target}>
-        {navLink}
-      </ListItem>
-    );
+    return <ListItem key={label + target}>{navLink}</ListItem>;
   });
 
   // Add Harvard Logo link to top-level nav, link externally to Harvard website
   linkList.push(
     <ListItem key="harvard-logo">
-      <a href="http://www.harvard.edu/" target="_blank" rel="noopener noreferrer">
+      <a
+        href="http://www.harvard.edu/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <HarvardLogoImg src={HarvardLogo} alt="Harvard University" />
       </a>
-    </ListItem>
-  )
+    </ListItem>,
+  );
 
   return (
     <Root
-      style={{background: backgroundColor}}
+      style={{ background: backgroundColor }}
       $backgroundImage={backgroundImage}
     >
       <ContentContainer>
-        <Title style={{color: linkColor}}>
-          {title}
-        </Title>
-        <NavList>
-          {linkList}
-        </NavList>
+        <Title style={{ color: linkColor }}>{title}</Title>
+        <NavList>{linkList}</NavList>
       </ContentContainer>
     </Root>
   );
