@@ -182,9 +182,11 @@ const TopLevelStickyNav = (props: Props) => {
 
   // Add Harvard Logo link to top-level nav, link externally to Harvard website
   linkList.push(
-    <a href="http://www.harvard.edu/" target="_blank">
-    <HarvardLogoImg src={HarvardLogo} alt="Harvard University" />
-    </a>
+    <ListItem key="harvard-logo">
+      <a href="http://www.harvard.edu/" target="_blank" rel="noopener noreferrer">
+        <HarvardLogoImg src={HarvardLogo} alt="Harvard University" />
+      </a>
+    </ListItem>
   )
 
   return (
