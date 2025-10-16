@@ -1,24 +1,22 @@
-import React, {useState, useRef, useContext} from 'react';
-import {AppContext} from '../../../App';
-import {
-  secondaryFont,
-} from '../../../styling/styleUtils';
-import styled from 'styled-components';
+import React, { useState, useRef, useContext } from "react";
+import { AppContext } from "../../../App";
+import { secondaryFont } from "../../../styling/styleUtils";
+import styled from "styled-components";
 import {
   HubProject,
   CardSizes,
   ProjectCategories,
-} from '../graphql/graphQLTypes';
+} from "../graphql/graphQLTypes";
 import {
   activeLinkColor,
   backgroundColor,
   backgroundGray,
   getCategoryString,
-} from '../Utils';
-import {rgba, darken} from 'polished';
-import SmartImage from '../../../components/general/SmartImage';
+} from "../Utils";
+import { rgba, darken } from "polished";
+import SmartImage from "../../../components/general/SmartImage";
 
-const zigZagPattern = require('../images/pattern.svg');
+const zigZagPattern = require("../images/pattern.svg");
 
 const Root = styled.div`
   min-width: 28%;
@@ -29,7 +27,7 @@ const Root = styled.div`
   padding: 2rem 1rem 0rem 2rem;
   box-sizing: border-box;
   font-family: ${secondaryFont};
-  flexGrow: 1;
+  flexgrow: 1;
   box-sizing: border-box;
 
   @media (max-width: 900px) {
@@ -147,7 +145,11 @@ const MetaDataContainerBase = styled.div`
   overflow: hidden;
   box-sizing: border-box;
   padding: 2rem;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), ${rgba(backgroundGray, 0.85)});
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.65),
+    ${rgba(backgroundGray, 0.85)}
+  );
   transition: transform 0.2s ease;
 `;
 
@@ -156,7 +158,6 @@ const MetaDataContainerSmall = styled(MetaDataContainerBase)`
     padding: 1rem;
   }
 `;
-
 
 const MetaTitleContainerBase = styled.h1`
   color: #fff;
@@ -197,7 +198,7 @@ const Cursor = styled.div`
   justify-content: center;
   text-align: center;
   text-transform: uppercase;
-  background-image: url("${require('../images/pattern.svg')}");
+  background-image: url("${require("../images/pattern.svg")}");
   background-size: 200%;
   font-weight: 600;
   font-size: 0.7rem;
@@ -212,12 +213,14 @@ interface Props {
   project: HubProject;
 }
 
-const HubCard = ({project}: Props) => {
-  const {windowWidth} = useContext(AppContext);
+const HubCard = ({ project }: Props) => {
+  const { windowWidth } = useContext(AppContext);
 
   const contentRef = useRef<HTMLAnchorElement | null>(null);
 
-  const [mouseCoords, setMouseCoords] = useState<{x: number, y: number} | undefined>(undefined);
+  const [mouseCoords, setMouseCoords] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
 
   if (!project.link || !project.show) {
     return null;
@@ -229,7 +232,7 @@ const HubCard = ({project}: Props) => {
       const offset = node.getBoundingClientRect();
       const x = e.clientX - offset.left;
       const y = e.clientY - offset.top;
-      setMouseCoords({x, y});
+      setMouseCoords({ x, y });
     } else {
       setMouseCoords(undefined);
     }
@@ -245,102 +248,123 @@ const HubCard = ({project}: Props) => {
     MetaDataContainer = MetaDataContainerBase;
     MetaTitleContainer = MetaTitleContainerBase;
     MetaDetail = MetaDetailBase;
-    width = '100%';
-    maxWidth = '100%';
+    width = "100%";
+    maxWidth = "100%";
     flexGrow = 1;
   } else if (project.cardSize === CardSizes.MEDIUM) {
     MetaDataContainer = MetaDataContainerBase;
     MetaTitleContainer = MetaTitleContainerBase;
     MetaDetail = MetaDetailBase;
-    width = '60%';
-    maxWidth = windowWidth > 900 ? '70%' : undefined;
+    width = "60%";
+    maxWidth = windowWidth > 900 ? "70%" : undefined;
     flexGrow = 1;
   } else {
     MetaDataContainer = MetaDataContainerSmall;
     MetaTitleContainer = MetaTitleContainerSmall;
     MetaDetail = MetaDetailSmall;
-    width = '28%';
-    maxWidth = windowWidth > 900 ? '30%' : undefined;
+    width = "28%";
+    maxWidth = windowWidth > 900 ? "30%" : undefined;
     flexGrow = 1;
   }
   const style: React.CSSProperties = {
-    flexGrow, width, maxWidth,
+    flexGrow,
+    width,
+    maxWidth,
   };
 
-  const announcement = project.announcement && (!mouseCoords || windowWidth < 900) ? (
-    <AnnouncementBadge>
-      <div>
-        <AnnouncementText>
-          {project.announcement}
-        </AnnouncementText>
-      </div>
-    </AnnouncementBadge>
-  ) : null;
+  const announcement =
+    project.announcement && (!mouseCoords || windowWidth < 900) ? (
+      <AnnouncementBadge>
+        <div>
+          <AnnouncementText>{project.announcement}</AnnouncementText>
+        </div>
+      </AnnouncementBadge>
+    ) : null;
 
-  const title = project.cardSize === CardSizes.LARGE && !(mouseCoords !== undefined || windowWidth < 900) ? (
-    <Title>{project.projectName}</Title>
-  ) : null;
+  const title =
+    project.cardSize === CardSizes.LARGE &&
+    !(mouseCoords !== undefined || windowWidth < 900) ? (
+      <Title>{project.projectName}</Title>
+    ) : null;
 
   const status = project.status ? (
-    <MetaDetail>Status: <StatusText>{project.status.toLowerCase()}</StatusText></MetaDetail>
+    <MetaDetail>
+      Status: <StatusText>{project.status.toLowerCase()}</StatusText>
+    </MetaDetail>
   ) : null;
 
   let cursorText: string;
-  if (project.projectCategory === ProjectCategories.ATLAS_PROJECTS &&
-      (project.link.toLowerCase().includes('atlas.hks.harvard') ||
-       project.link.toLowerCase().includes('datlascolombia.com'))) {
-    cursorText = 'Explore the Tool';
-  } else if (project.link.toLowerCase().endsWith('.pdf')) {
-    cursorText = 'Open PDF';
+  if (
+    project.projectCategory === ProjectCategories.ATLAS_PROJECTS &&
+    (project.link.toLowerCase().includes("atlas.hks.harvard") ||
+      project.link.toLowerCase().includes("datlascolombia.com"))
+  ) {
+    cursorText = "Explore the Tool";
+  } else if (project.link.toLowerCase().endsWith(".pdf")) {
+    cursorText = "Open PDF";
   } else if (project.projectCategory === ProjectCategories.SOFTWARE_PACKAGES) {
-    cursorText = 'View Source Code';
+    cursorText = "View Source Code";
   } else {
-    cursorText = 'View Project';
+    cursorText = "View Project";
   }
 
-  const cursor = mouseCoords !== undefined ? (
-    <Cursor
-      style={{
-        left: mouseCoords.x,
-        top: mouseCoords.y,
-      }}
-    >
-      {cursorText}
-    </Cursor>
-  ) : null;
+  const cursor =
+    mouseCoords !== undefined ? (
+      <Cursor
+        style={{
+          left: mouseCoords.x,
+          top: mouseCoords.y,
+        }}
+      >
+        {cursorText}
+      </Cursor>
+    ) : null;
 
   const metaDataStyle: React.CSSProperties = {
-    transform: mouseCoords !== undefined || windowWidth < 900 ? 'translate(0)' : 'translate(-100%, 0)',
+    transform:
+      mouseCoords !== undefined || windowWidth < 900
+        ? "translate(0)"
+        : "translate(-100%, 0)",
   };
   let cardImageLo: string;
   let cardImageHi: string;
   try {
     cardImageLo = project.cardImageLo
-      ? require('../images/low-res/' + project.cardImageLo + '.jpg')
-      : require('../images/image.jpg');
+      ? require("../images/low-res/" + project.cardImageLo + ".jpg")
+      : require("../images/image.jpg");
   } catch (e) {
-    console.error(e);
-    cardImageLo = '';
+    try {
+      cardImageLo = project.cardImageLo
+        ? require("../images/low-res/" + project.cardImageLo + "-lo.jpg")
+        : require("../images/image.jpg");
+    } catch (fallbackError) {
+      cardImageLo = require("../images/image.jpg");
+    }
   }
   try {
     cardImageHi = project.cardImageHi
-      ? require('../images/high-res/' + project.cardImageHi + '.jpg')
-      : require('../images/image.jpg');
+      ? require("../images/high-res/" + project.cardImageHi + ".jpg")
+      : require("../images/image.jpg");
   } catch (e) {
-    console.error(e);
-    cardImageHi = '';
-
+    try {
+      cardImageHi = project.cardImageHi
+        ? require("../images/low-res/" + project.cardImageHi + ".jpg")
+        : require("../images/image.jpg");
+    } catch (fallbackError) {
+      cardImageHi = require("../images/image.jpg");
+    }
   }
 
   const category = getCategoryString(project.projectCategory);
 
   const link = project.localFile
-    ? require('../internalContent/' + project.link) : project.link;
+    ? require("../internalContent/" + project.link)
+    : project.link;
 
   return (
     <Root style={style}>
       <Category>
-        <CategoryText dangerouslySetInnerHTML={{__html: category}} />
+        <CategoryText dangerouslySetInnerHTML={{ __html: category }} />
       </Category>
       <Content
         href={link}
@@ -348,15 +372,14 @@ const HubCard = ({project}: Props) => {
         onMouseMove={onMouseMove}
         onMouseLeave={() => setMouseCoords(undefined)}
       >
-        <SmartImage
-          lowResSrc={cardImageLo}
-          highResSrc={cardImageHi}
-        />
+        <SmartImage lowResSrc={cardImageLo} highResSrc={cardImageHi} />
         <ZigZagOverlay />
         {title}
         <MetaDataContainer style={metaDataStyle}>
           <MetaTitleContainer>{project.projectName}</MetaTitleContainer>
-          <MetaDetail>Category: <span dangerouslySetInnerHTML={{__html: category}} /></MetaDetail>
+          <MetaDetail>
+            Category: <span dangerouslySetInnerHTML={{ __html: category }} />
+          </MetaDetail>
           {status}
         </MetaDataContainer>
         {cursor}
