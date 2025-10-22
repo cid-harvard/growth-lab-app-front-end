@@ -1,22 +1,22 @@
-import React, {useState} from 'react';
-import Modal from './StandardModal';
-import styled, {keyframes} from 'styled-components';
+import React, { useState } from "react";
+import Modal from "./StandardModal";
+import styled, { keyframes } from "styled-components";
 import {
   baseColor,
   secondaryFont,
   primaryFont,
-} from '../../styling/styleUtils';
+} from "../../styling/styleUtils";
 // import useFluent from '../../../../hooks/useFluent';
-import raw from 'raw.macro';
-import getShareFunctions from './shareFn';
+import raw from "raw.macro";
+import getShareFunctions from "./shareFn";
 
-const iconGray = '#2D363F';
+const iconGray = "#2D363F";
 
-const linkSvg = raw('../../assets/link.svg');
-const twitterSvg = raw('../../assets/twitter.svg');
-const linkedinSvg = raw('../../assets/linkedin.svg');
-const facebookSvg = raw('../../assets/facebook.svg');
-const emailSvg = raw('../../assets/email.svg');
+const linkSvg = raw("../../assets/link.svg");
+const twitterSvg = raw("../../assets/x.svg");
+const linkedinSvg = raw("../../assets/linkedin.svg");
+const facebookSvg = raw("../../assets/facebook.svg");
+const emailSvg = raw("../../assets/email.svg");
 
 const growIn = keyframes`
   0% {
@@ -123,10 +123,7 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const {
-    onClose,
-    useTitle
-  } = props;
+  const { onClose, useTitle } = props;
   // const getString = useFluent();
   const [copied, setCopied] = useState<boolean>(false);
   const onCopy = () => {
@@ -134,69 +131,42 @@ export default (props: Props) => {
     setCopied(true);
     setTimeout(() => setCopied(false), 5000);
   };
-  const copyText = copied ? 'Copied' : 'Copy';
+  const copyText = copied ? "Copied" : "Copy";
 
-  const {shareFacebook, shareTwitter, shareLinkedIn, shareEmail} = getShareFunctions(window.location.href);
+  const { shareFacebook, shareTwitter, shareLinkedIn, shareEmail } =
+    getShareFunctions(window.location.href);
 
-  let titleForSocial = 'Check out the Growth Lab Viz Hub';
-  if(useTitle) {
+  let titleForSocial = "Check out the Growth Lab Viz Hub";
+  if (useTitle) {
     titleForSocial = `Check out '${useTitle},' in Visual Insights from the Growth Lab's 2022 Research`;
   }
   return (
-    <Modal
-      onClose={onClose}
-      height='auto'
-      width='500px'
-    >
+    <Modal onClose={onClose} height="auto" width="500px">
       <Root>
-        <SectionTitle>
-          Direct Link
-        </SectionTitle>
+        <SectionTitle>Direct Link</SectionTitle>
         <CopyUrlBar onClick={onCopy}>
-          <CopyIcon
-            dangerouslySetInnerHTML={{__html: linkSvg}}
-          />
-          <UrlText>
-            {window.location.href}
-          </UrlText>
-          <CopyButton>
-            {copyText}
-          </CopyButton>
+          <CopyIcon dangerouslySetInnerHTML={{ __html: linkSvg }} />
+          <UrlText>{window.location.href}</UrlText>
+          <CopyButton>{copyText}</CopyButton>
         </CopyUrlBar>
-        <SectionTitle>
-          Social Media Sharing
-        </SectionTitle>
+        <SectionTitle>Social Media Sharing</SectionTitle>
         <SocialMediaContainer>
-          <SocialMediaButton
-            onClick={() => shareTwitter(titleForSocial)}
-          >
-            <SvgBase
-              dangerouslySetInnerHTML={{__html: twitterSvg}}
-            />
+          <SocialMediaButton onClick={() => shareTwitter(titleForSocial)}>
+            <SvgBase dangerouslySetInnerHTML={{ __html: twitterSvg }} />
+          </SocialMediaButton>
+          <SocialMediaButton onClick={() => shareLinkedIn(titleForSocial, "")}>
+            <SvgBase dangerouslySetInnerHTML={{ __html: linkedinSvg }} />
+          </SocialMediaButton>
+          <SocialMediaButton onClick={() => shareFacebook()}>
+            <SvgBase dangerouslySetInnerHTML={{ __html: facebookSvg }} />
           </SocialMediaButton>
           <SocialMediaButton
-            onClick={() => shareLinkedIn(titleForSocial, '')}
+            style={{ width: "3.25rem" }}
+            onClick={() =>
+              shareEmail(titleForSocial, titleForSocial, window.location.href)
+            }
           >
-            <SvgBase
-              dangerouslySetInnerHTML={{__html: linkedinSvg}}
-            />
-          </SocialMediaButton>
-          <SocialMediaButton
-            onClick={() => shareFacebook()}
-          >
-            <SvgBase
-              dangerouslySetInnerHTML={{__html: facebookSvg}}
-            />
-          </SocialMediaButton>
-          <SocialMediaButton
-            style={{width: '3.25rem'}}
-            onClick={() => shareEmail(
-                titleForSocial, titleForSocial, window.location.href,
-            )}
-          >
-            <SvgBase
-              dangerouslySetInnerHTML={{__html: emailSvg}}
-            />
+            <SvgBase dangerouslySetInnerHTML={{ __html: emailSvg }} />
           </SocialMediaButton>
         </SocialMediaContainer>
         <CloseButton onClick={onClose}>✕</CloseButton>

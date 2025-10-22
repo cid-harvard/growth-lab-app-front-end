@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from "react";
 import "./scrollyCanvas.css";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { GG_CPY_LIST_QUERY } from "../../queries/cpy";
 import { pack, hierarchy } from "d3-hierarchy";
 import { toCircle } from "flubber";
