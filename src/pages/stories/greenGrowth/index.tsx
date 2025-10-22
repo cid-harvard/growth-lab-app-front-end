@@ -4,6 +4,7 @@ import ScrollamaStory from "./components/ScollamaStory";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import Banner from "./components/Banner";
 import "./index.css";
 
 const theme = createTheme({
@@ -16,6 +17,7 @@ const GreenGrowth = () => {
   return (
     <RecoilRoot>
       <ThemeProvider theme={theme}>
+        <Banner />
         <CssBaseline />
         <ScrollamaStory />
       </ThemeProvider>
