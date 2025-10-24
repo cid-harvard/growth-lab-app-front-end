@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_COUNTRIES = gql`
   query GetCountries {
-    ggLocationCountryList {
+    gpLocationCountryList {
       countryId
       nameEn
       nameShortEn
@@ -21,4 +21,3 @@ export const GET_COUNTRIES = gql`
     }
   }
 `;
-

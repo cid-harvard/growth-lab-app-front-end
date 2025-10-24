@@ -1,8 +1,12 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { AnimatedValueChainIntro } from "./introduction";
+import { useCountrySelection, useYearSelection } from "../hooks/useUrlParams";
 
 const ValueChainsHierarchy = () => {
+  const selectedCountry = useCountrySelection();
+  const selectedYear = useYearSelection();
+
   return (
     <Box
       sx={{
@@ -25,7 +29,10 @@ const ValueChainsHierarchy = () => {
           justifyContent: "center",
         }}
       >
-        <AnimatedValueChainIntro selectedCountry={1} selectedYear={2021} />
+        <AnimatedValueChainIntro
+          selectedCountry={selectedCountry}
+          selectedYear={parseInt(selectedYear)}
+        />
       </Box>
     </Box>
   );

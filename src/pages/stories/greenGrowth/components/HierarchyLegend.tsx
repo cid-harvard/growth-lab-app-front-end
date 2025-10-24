@@ -15,7 +15,7 @@ const HierarchyLegend: React.FC<HierarchyLegendProps> = memo(
     const diagramWidth = 250;
     const diagramHeight = isMobile ? 100 : 120;
     const strokeWidth = isMobile ? 1.5 : 2;
-    const fontSize = isMobile ? "12px" : "16px"; // Increased from 14px to 16px
+    const fontSize = isMobile ? "12px" : "14px"; // Increased from 14px to 16px
 
     // Use the same layout structure for both modes - only difference is visibility of cluster layer
     const centerX = diagramHeight / 2;
@@ -167,7 +167,7 @@ const HierarchyLegend: React.FC<HierarchyLegendProps> = memo(
               x={labelStartX + 5}
               y={valueChainArrowStartY + 4}
               fontSize={fontSize}
-              fontWeight="600" // Increased from 500 to 600
+              fontWeight="500" // Increased from 500 to 600
               fill="#000"
             >
               Value Chain
@@ -184,7 +184,7 @@ const HierarchyLegend: React.FC<HierarchyLegendProps> = memo(
                   : clusterArrowStartY + 4
               }
               fontSize={fontSize}
-              fontWeight="600" // Increased from 500 to 600
+              fontWeight="500" // Increased from 500 to 600
               fill="#000"
             >
               Industrial Cluster
@@ -196,7 +196,7 @@ const HierarchyLegend: React.FC<HierarchyLegendProps> = memo(
             x={labelStartX + 5}
             y={isClustersOnly ? clusterCenterY + 4 : productArrowStartY + 4}
             fontSize={fontSize}
-            fontWeight="600" // Increased from 500 to 600
+            fontWeight="500" // Increased from 500 to 600
             fill="#000"
           >
             Product

@@ -99,8 +99,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onClose }) => {
             size="small"
             sx={{
               position: "absolute",
-              right: 8,
-              top: 8,
+              right: "0.5rem", // 8px in rem
+              top: "0.5rem", // 8px in rem
               color: "grey.500",
             }}
           >

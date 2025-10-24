@@ -1125,7 +1125,7 @@ const SankeyTreeInternal = ({
               border: "1px solid #ddd",
               borderRadius: "4px",
               cursor: "pointer",
-              fontSize: "14px",
+              fontSize: "0.875rem",
             }}
           >
             ← Back to Overview

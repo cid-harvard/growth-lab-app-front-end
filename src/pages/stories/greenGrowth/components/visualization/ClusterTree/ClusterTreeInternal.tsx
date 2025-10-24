@@ -32,7 +32,6 @@ import {
 } from "../../../hooks/useUrlParams";
 import { useImageCaptureContext } from "../../../hooks/useImageCaptureContext";
 import html2canvas from "html2canvas";
-import ClickHintBox from "../../../../../../components/general/ClickHintBox";
 import { useSelectionDataModal } from "../../../hooks/useSelectionDataModal";
 import { themeUtils } from "../../../theme";
 import { SharedTooltip } from "../../shared";
@@ -97,71 +96,70 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
   // Responsive setup
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
   const { isCondensed } = useSidebar();
 
-  // Calculate responsive dimensions - reserve space for cluster ranking
-  const rankingHeight = isMobile ? 120 : 120;
-  const treeHeight = height - rankingHeight - 40; // 40px for spacing
+  // Calculate responsive dimensions - reserve space for header and cluster ranking
+  const rankingHeight = isMobile ? 100 : isTablet ? 110 : 120;
+  const verticalSpacing = isMobile ? 16 : 24;
 
   const dimensions = useMemo(() => {
-    const calculatedWidth = Math.max(width - (isMobile ? 10 : 20), 400);
-    const calculatedTreeHeight = Math.max(treeHeight, 300);
+    // Use nearly full width with minimal padding
+    const calculatedWidth = Math.max(width - (isMobile ? 16 : 32), 300);
+
+    const headerHeight = 60 + 32; // Title height (60) + margin bottom (32 from mb: 4)
+
+    // Calculate available tree height dynamically
+    const availableTreeHeight = Math.max(
+      height - headerHeight - rankingHeight - verticalSpacing * 2,
+      200, // minimum tree height
+    );
 
     return {
       width: calculatedWidth,
-      height: calculatedTreeHeight,
+      height: availableTreeHeight,
       rankingHeight,
     };
-  }, [width, treeHeight, rankingHeight, isMobile]);
+  }, [width, height, rankingHeight, isMobile, verticalSpacing]);
 
   // Dynamic margins so we use available width but keep room for labels/axis/legend
   const layoutMargins = useMemo(() => {
     const w = Math.max(0, dimensions.width);
-    const leftMin = isMobile ? 160 : 180;
-    const leftMax = isMobile ? 220 : 240;
-    const baseRightMin = isMobile ? 320 : 380;
-    const baseRightMax = isMobile ? 420 : 480;
-    // Reserve extra bottom space for the dropdown and legend so they never clip
-    const bottom = isMobile ? 200 : 280;
+    const h = Math.max(0, dimensions.height);
 
-    const left = Math.max(leftMin, Math.min(leftMax, Math.round(w * 0.12)));
+    // Left margin: value chain labels and icons
+    const leftBase = isMobile ? 140 : 180;
+    const left = Math.max(leftBase, Math.round(w * 0.1));
 
-    // When sidebar is condensed (closed), reserve ~1.5x right space so labels have room
-    if (isCondensed) {
-      const factor = 1.5;
-      const rightMin = Math.min(
-        Math.round(baseRightMin * factor),
-        Math.round(w * 0.6),
-      );
-      const rightMax = Math.min(
-        Math.round(baseRightMax * factor),
-        Math.round(w * 0.7),
-      );
-      const proposed = Math.round(w * 0.26 * factor);
-      const right = Math.max(rightMin, Math.min(rightMax, proposed));
-      return { left, right, bottom };
-    }
-
+    // Right margin: product labels, axis, and legend
+    const rightBase = isMobile ? 280 : 380;
+    const rightFactor = isCondensed ? 1.4 : 1.0;
     const right = Math.max(
-      baseRightMin,
-      Math.min(baseRightMax, Math.round(w * 0.26)),
+      Math.round(rightBase * rightFactor),
+      Math.min(Math.round(w * 0.25 * rightFactor), Math.round(w * 0.65)),
     );
+
+    // Bottom margin: dropdown and legend (responsive to available height)
+    // On short viewports, reduce bottom margin to fit content better
+    const bottomBase = isMobile ? 140 : 200;
+    const minBottom = isMobile ? 100 : 120;
+    const maxBottom = isMobile ? 180 : 260;
+    const bottom = Math.min(
+      maxBottom,
+      Math.max(minBottom, Math.min(bottomBase, Math.round(h * 0.3))),
+    );
+
     return { left, right, bottom };
-  }, [dimensions.width, isMobile, isCondensed]);
+  }, [dimensions.width, dimensions.height, isMobile, isCondensed]);
 
   // Product label width and truncation based on available right panel
   const productLabelMetrics = useMemo(() => {
-    const baseMaxWidth = Math.max(260, Math.min(520, layoutMargins.right - 80));
-    const maxWidth = isCondensed
-      ? Math.round(baseMaxWidth * 1.5)
-      : baseMaxWidth;
-    const approxCharPx = isMobile ? 7 : 9; // rough average width for 18px font
-    const baseCharLimit = Math.max(18, Math.floor(baseMaxWidth / approxCharPx));
-    const charLimit = isCondensed
-      ? Math.round(baseCharLimit * 1.5)
-      : baseCharLimit;
+    const availableSpace = layoutMargins.right - 80; // Reserve space for axis/legend
+    const maxWidth = Math.max(200, Math.min(600, availableSpace));
+    const approxCharPx = isMobile ? 7 : 9;
+    const charLimit = Math.max(15, Math.floor(maxWidth / approxCharPx));
     return { maxWidth, charLimit };
-  }, [layoutMargins.right, isMobile, isCondensed]);
+  }, [layoutMargins.right, isMobile]);
 
   // Image capture functionality
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -224,9 +222,9 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
 
   // Get cluster data lookup
   const clusterLookup = useMemo(() => {
-    if (!clustersData?.ggClusterList) return new Map();
+    if (!clustersData?.gpClusterList) return new Map();
     return new Map(
-      clustersData.ggClusterList.map((cluster: any) => [
+      clustersData.gpClusterList.map((cluster: any) => [
         cluster.clusterId,
         cluster.clusterName,
       ]),
@@ -521,9 +519,9 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
 
   // Create lookup maps for supply chain relationships
   const supplyChainLookup = useMemo(() => {
-    if (!supplyChainsData?.ggSupplyChainList) return new Map();
+    if (!supplyChainsData?.gpSupplyChainList) return new Map();
     return new Map(
-      supplyChainsData.ggSupplyChainList.map((sc: any) => [
+      supplyChainsData.gpSupplyChainList.map((sc: any) => [
         sc.supplyChainId,
         sc.supplyChain,
       ]),
@@ -807,7 +805,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
             justifyContent: "center",
             alignItems: "flex-end",
             backgroundColor: "rgba(255, 255, 255, 0.95)",
-            mb: 1,
+            mb: 4,
           }}
         >
           <Typography
@@ -819,34 +817,18 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
             Cluster Connections
           </Typography>
         </Box>
-
-        {/* Instruction text */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            gap: 1,
-            pl: 2,
-            py: 0,
-          }}
-          data-export-hide="true"
-        >
-          <ClickHintBox
-            text="Click on an industrial cluster to display its products"
-            sx={{ textAlign: "center" }}
-          />
-        </Box>
       </Box>
 
-      {/* Main Content Area - Using flex to distribute space */}
+      {/* Main Content Area - Optimized flex layout */}
       <Box
         sx={{
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          minHeight: 0, // Important for flex children to shrink
-          gap: isMobile ? 2 : 4,
+          minHeight: 0,
+          gap: isMobile ? 1 : 1.5,
+          px: isMobile ? 1 : 2,
+          py: isMobile ? 1 : 1.5,
         }}
       >
         {/* Cluster Ranking Section */}
@@ -854,12 +836,13 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
           <Box
             sx={{
               flexShrink: 0,
-              height: rankingHeight,
+              height: dimensions.rankingHeight,
+              width: "100%",
             }}
           >
             <ClusterRanking
               width={dimensions.width}
-              height={rankingHeight}
+              height={dimensions.rankingHeight}
               clusterData={countryData.clusterData}
               clusterLookup={clusterLookup}
               countryData={countryData}
@@ -873,21 +856,30 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
           </Box>
         )}
 
-        {/* Tree Visualization Section */}
+        {/* Tree Visualization Section - Takes all remaining space */}
         <Box
           sx={{
+            mt: 1,
             flex: 1,
-            minHeight: 400,
+            minHeight: 0,
+            width: "100%",
             position: "relative",
+            overflow: "visible",
           }}
           ref={visualizationRef}
         >
           <svg
-            width="100%"
-            height="100%"
+            width={dimensions.width}
+            height={dimensions.height}
+            viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
             role="img"
             aria-label="Cluster tree visualization"
-            style={{ display: "block" }}
+            style={{
+              display: "block",
+              maxWidth: "100%",
+              maxHeight: "100%",
+              margin: "0 auto",
+            }}
           >
             <defs>
               <filter id="tree-cluster-glow">
@@ -935,7 +927,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={annotationX + 20}
                     y={topProductY}
-                    fontSize={"18px"}
+                    fontSize={"1.125rem"}
                     fill="#000"
                     textAnchor="middle"
                     fontFamily="Source Sans Pro, sans-serif"
@@ -966,7 +958,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={annotationX + 20}
                     y={bottomProductY + 30}
-                    fontSize={"18px"}
+                    fontSize={"1.125rem"}
                     fill="#000"
                     textAnchor="middle"
                     fontFamily="Source Sans Pro, sans-serif"
@@ -1003,9 +995,19 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                 dimensions.width - Math.round(layoutMargins.right * 0.75),
                 rightProductX + 60,
               );
-              const legendY = Math.min(
-                bottomProductY + 100,
-                dimensions.height - 80,
+
+              // Improved legend positioning for short viewports
+              // Ensure minimum spacing from bottom product and maximum from bottom edge
+              const minGapFromProducts = isMobile ? 60 : 80;
+              const minGapFromBottom = isMobile ? 100 : 120;
+              const idealLegendY = bottomProductY + minGapFromProducts;
+              const maxLegendY = dimensions.height - minGapFromBottom;
+
+              // If ideal position would be too low, prioritize fitting in viewport
+              // Also ensure legend doesn't go above the bottom product with a minimum offset
+              const legendY = Math.max(
+                bottomProductY + 40, // Minimum offset from products even on very short viewports
+                Math.min(idealLegendY, maxLegendY),
               );
 
               const thresholdLabel = Number(rcaThreshold).toFixed(1);
@@ -1016,13 +1018,13 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={legendCenterX - 50}
                     y={legendY}
-                    fontSize={"18px"}
+                    fontSize={"1rem"}
                     fill="#000"
                     textAnchor="middle"
                     fontFamily="Source Sans Pro, sans-serif"
                     fontWeight="600"
                   >
-                    Product Export Status
+                    Economic Competitiveness
                   </text>
 
                   {/* High Export legend item - first row */}
@@ -1037,12 +1039,12 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={legendCenterX - 100}
                     y={legendY + 40}
-                    fontSize={"18px"}
+                    fontSize={"1rem"}
                     fill="#000"
                     fontFamily="Source Sans Pro, sans-serif"
                     textAnchor="start"
                   >
-                    {`High Export (RCA>${thresholdLabel})`}
+                    {`High (RCA>${thresholdLabel})`}
                   </text>
 
                   {/* Low Export legend item - second row */}
@@ -1057,18 +1059,18 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={legendCenterX - 100}
                     y={legendY + 75}
-                    fontSize={"18px"}
+                    fontSize={"1rem"}
                     fill="#000"
                     fontFamily="Source Sans Pro, sans-serif"
                     textAnchor="start"
                   >
-                    {`Low or no Export (RCA≤${thresholdLabel})`}
+                    {`Low (RCA≤${thresholdLabel})`}
                   </text>
 
                   {/* Tune button anchored via foreignObject for Popover */}
                   <foreignObject
-                    x={legendCenterX + 80}
-                    y={legendY - 16}
+                    x={legendCenterX + 44}
+                    y={legendY - 20}
                     width={40}
                     height={40}
                   >
@@ -1517,7 +1519,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                     fontFamily="Source Sans Pro, sans-serif"
                     fontWeight={600}
                   >
-                    VALUE CHAINS
+                    Value Chains
                   </text>
                   <text
                     x={clusterX + 45}
@@ -1528,7 +1530,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                     fontFamily="Source Sans Pro, sans-serif"
                     fontWeight={600}
                   >
-                    INDUSTRIAL CLUSTER
+                    Industrial Cluster
                   </text>
                   <text
                     x={productX}
@@ -1539,7 +1541,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                     fontFamily="Source Sans Pro, sans-serif"
                     fontWeight={600}
                   >
-                    PRODUCTS
+                    Products
                   </text>
                 </>
               );
@@ -1556,8 +1558,10 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
               );
               if (!clusterNode) return null;
 
-              const left = clusterNode.x + clusterNode.width / 2;
-              const top = clusterNode.y + clusterNode.height + 45;
+              const left = clusterNode.x + clusterNode.width / 2 + 20;
+              // Adjust dropdown spacing based on viewport height to prevent overlap with legend
+              const dropdownOffset = 30;
+              const top = clusterNode.y + clusterNode.height + dropdownOffset;
 
               return (
                 <Box
@@ -1567,6 +1571,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                     top,
                     transform: "translateX(-50%)",
                     pointerEvents: "auto",
+                    zIndex: 10, // Ensure dropdown is above other elements
                   }}
                 >
                   <Select
@@ -1585,38 +1590,50 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                       display: "inline-flex",
                       width: "auto",
                       minWidth: 0,
-                      maxWidth: "300px",
+                      maxWidth: "240px",
                       bgcolor: "rgba(255, 255, 255, 0.85)",
                       "& .MuiSelect-select": {
-                        fontSize: "18px",
+                        fontSize: "1rem",
                         color: "#000",
                         fontWeight: 600,
                         whiteSpace: "normal",
                         overflowWrap: "anywhere",
-                        lineHeight: 1.2,
-                        paddingTop: "6px",
-                        paddingBottom: "6px",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
+                        paddingTop: "10px",
+                        paddingLeft: "12px",
+                        paddingRight: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        minWidth: 0,
+                        // Line clamp for multi-line text
                         overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        WebkitLineClamp: 3,
+                        "&.MuiSelect-select": {
+                          display: "-webkit-box !important",
+                        },
                       },
                       "& .MuiSelect-icon": {
                         top: "50%",
                         transform: "translateY(-50%) rotate(0deg)",
                         transition: "transform 150ms ease",
                         right: 8,
+                        position: "absolute",
                       },
                       "& .MuiSelect-icon.MuiSelect-iconOpen": {
                         transform: "translateY(-50%) rotate(180deg)",
                       },
                       "& .MuiOutlinedInput-root": {
                         backgroundColor: "rgba(255, 255, 255, 0.6)",
-                        alignItems: "stretch",
+                        alignItems: "center",
                         "& .MuiOutlinedInput-input": {
                           height: "auto",
-                          paddingTop: "6px",
-                          paddingBottom: "6px",
+                          minHeight: "1.4em",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          paddingLeft: "12px",
+                          paddingRight: "32px",
+                          width: "fit-content",
+                          maxWidth: "100%",
                         },
                         "& fieldset": {
                           borderColor: "#e0e0e0",

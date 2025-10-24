@@ -7,5 +7,5 @@ export const GET_ALL_SUPPLY_CHAIN_DETAILS = GET_SUPPLY_CHAINS;
 
 export const useSupplyChainLookup = () => {
   const { data } = useQuery(GET_SUPPLY_CHAINS);
-  return index(data?.ggSupplyChainList || [], (d) => d.supplyChainId);
+  return index(data?.gpSupplyChainList || [], (d) => d.supplyChainId);
 };

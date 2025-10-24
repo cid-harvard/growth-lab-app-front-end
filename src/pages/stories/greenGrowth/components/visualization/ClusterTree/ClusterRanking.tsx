@@ -174,12 +174,99 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
 
   return (
     <>
-      <Typography
-        variant="h6"
-        sx={{ mb: 1, fontWeight: 600, fontSize: 18, pt: 1, pl: 2 }}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 3,
+          mb: 1,
+          pt: 1,
+          pl: 2,
+        }}
       >
-        Industrial Clusters
-      </Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600, fontSize: 20 }}>
+          Industrial Clusters
+        </Typography>
+        {/* Fixed legend after title */}
+        {adjustedRankingData.length > 0 &&
+          (() => {
+            const scaleWidth = Math.min(320, width * 0.4);
+            const scaleHeight = 10;
+            const marginX = 12;
+            const sideLabelPadding = 80;
+            const svgHeight = 30;
+            const gradientY = 10;
+            const labelsY = gradientY + scaleHeight / 2 + 5;
+            return (
+              <svg
+                width={scaleWidth + marginX * 2 + sideLabelPadding * 2}
+                height={svgHeight}
+                viewBox={`0 0 ${scaleWidth + marginX * 2 + sideLabelPadding * 2} ${svgHeight}`}
+                role="img"
+                aria-label="Potential color legend"
+                style={{ display: "block", marginLeft: 10 }}
+              >
+                <defs>
+                  <linearGradient
+                    id="potential-gradient-legend"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                  >
+                    {(() => {
+                      const stops = [0, 0.25, 0.5, 0.75, 1];
+                      const range = maxScore - minScore || 1;
+                      return stops.map((t) => {
+                        const v = maxScore - t * range;
+                        const color = getPotentialColor(v, minScore, maxScore);
+                        return (
+                          <stop
+                            key={t}
+                            offset={`${t * 100}%`}
+                            stopColor={color as any}
+                          />
+                        );
+                      });
+                    })()}
+                  </linearGradient>
+                </defs>
+                <rect
+                  x={marginX + sideLabelPadding}
+                  y={gradientY}
+                  width={scaleWidth}
+                  height={scaleHeight}
+                  fill="url(#potential-gradient-legend)"
+                  stroke="#ccc"
+                  rx={3}
+                  ry={3}
+                />
+                <text
+                  x={marginX + sideLabelPadding - 6}
+                  y={labelsY}
+                  fontSize={14}
+                  fill="#000"
+                  textAnchor="end"
+                  fontFamily="Source Sans Pro, sans-serif"
+                  fontWeight={600}
+                >
+                  High Potential
+                </text>
+                <text
+                  x={marginX + sideLabelPadding + scaleWidth + 8}
+                  y={labelsY}
+                  fontSize={14}
+                  fill="#000"
+                  textAnchor="start"
+                  fontFamily="Source Sans Pro, sans-serif"
+                  fontWeight={600}
+                >
+                  Low Potential
+                </text>
+              </svg>
+            );
+          })()}
+      </Box>
       <Box
         ref={scrollRef}
         sx={{
@@ -248,7 +335,17 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
               title={item.name}
               arrow
               slotProps={{
-                tooltip: { sx: { bgcolor: "#ffffff", color: "#000000" } },
+                tooltip: {
+                  sx: {
+                    bgcolor: "#FFFFFF",
+                    color: "#000000",
+                    fontSize: { xs: "12px", sm: "14px" },
+                    maxWidth: 320,
+                    p: 1.5,
+                    border: "1px solid #DBDBDB",
+                    boxShadow: "0 0 4px 1px rgba(0, 0, 0, 0.10)",
+                  },
+                },
                 arrow: { sx: { color: "#ffffff" } },
               }}
             >
@@ -294,7 +391,17 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
                 title={item.name}
                 arrow
                 slotProps={{
-                  tooltip: { sx: { bgcolor: "#ffffff", color: "#000000" } },
+                  tooltip: {
+                    sx: {
+                      bgcolor: "#FFFFFF",
+                      color: "#000000",
+                      fontSize: { xs: "12px", sm: "14px" },
+                      maxWidth: 320,
+                      p: 1.5,
+                      border: "1px solid #DBDBDB",
+                      boxShadow: "0 0 4px 1px rgba(0, 0, 0, 0.10)",
+                    },
+                  },
                   arrow: { sx: { color: "#ffffff" } },
                 }}
               >
@@ -329,99 +436,6 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
           })}
         </svg>
       </Box>
-      {/* Fixed legend below the scrollable area */}
-      {adjustedRankingData.length > 0 && (
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: 0,
-            height: legendSvgHeight,
-          }}
-        >
-          {(() => {
-            const scaleWidth = Math.min(width * 0.6, 560);
-            const scaleHeight = 12;
-            const marginX = 16;
-            // Extra side padding to ensure text labels are not clipped
-            const sideLabelPadding = 120; // px on each side
-            // Compact height with no title
-            const svgHeight = legendSvgHeight;
-            const gradientY = 12;
-            const labelsY = gradientY + scaleHeight / 2 + 5; // vertically aligned with gradient
-            return (
-              <svg
-                width={scaleWidth + marginX * 2 + sideLabelPadding * 2}
-                height={svgHeight}
-                viewBox={`0 0 ${scaleWidth + marginX * 2 + sideLabelPadding * 2} ${svgHeight}`}
-                role="img"
-                aria-label="Potential color legend"
-                style={{ display: "block" }}
-              >
-                <defs>
-                  <linearGradient
-                    id="potential-gradient-legend"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    {(() => {
-                      const stops = [0, 0.25, 0.5, 0.75, 1];
-                      const range = maxScore - minScore || 1;
-                      return stops.map((t) => {
-                        const v = maxScore - t * range;
-                        const color = getPotentialColor(v, minScore, maxScore);
-                        return (
-                          <stop
-                            key={t}
-                            offset={`${t * 100}%`}
-                            stopColor={color as any}
-                          />
-                        );
-                      });
-                    })()}
-                  </linearGradient>
-                </defs>
-                <rect
-                  x={marginX + sideLabelPadding}
-                  y={gradientY}
-                  width={scaleWidth}
-                  height={scaleHeight}
-                  fill="url(#potential-gradient-legend)"
-                  stroke="#ccc"
-                  rx={3}
-                  ry={3}
-                />
-                <text
-                  x={marginX + sideLabelPadding - 10}
-                  y={labelsY}
-                  fontSize={16}
-                  fill="#000"
-                  textAnchor="end"
-                  fontFamily="Source Sans Pro, sans-serif"
-                  fontWeight={600}
-                >
-                  High Potential
-                </text>
-                <text
-                  x={marginX + sideLabelPadding + scaleWidth + 10}
-                  y={labelsY}
-                  fontSize={16}
-                  fill="#000"
-                  textAnchor="start"
-                  fontFamily="Source Sans Pro, sans-serif"
-                  fontWeight={600}
-                >
-                  Low Potential
-                </text>
-              </svg>
-            );
-          })()}
-        </Box>
-      )}
     </>
   );
 };

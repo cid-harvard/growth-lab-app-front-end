@@ -33,7 +33,7 @@ const RoutedVisualization = () => {
   const steps = useMemo(
     () => [
       {
-        route: Routes.GreenGrowthOverview,
+        route: Routes.GreenGrowthValueChainsProducts,
         title: "Green Value Chains and Products",
         base: "bubbles",
         tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
@@ -44,7 +44,7 @@ const RoutedVisualization = () => {
         legendHeight: 50,
       },
       {
-        route: Routes.GreenGrowthAdvantage,
+        route: Routes.GreenGrowthValueClusters,
         title: "Green Manufacturing Communities",
         base: "bubbles",
         tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
@@ -55,7 +55,7 @@ const RoutedVisualization = () => {
         legendHeight: 50,
       },
       {
-        route: Routes.GreenGrowthClusters,
+        route: Routes.GreenGrowthClusterProducts,
         title: "Industrial Clusters & Products",
         base: "bubbles",
         tooltip: [{ field: "rca", title: "Revealed Comparative Advantage" }],
@@ -66,8 +66,8 @@ const RoutedVisualization = () => {
         legendHeight: 50,
       },
       {
-        route: Routes.GreenGrowthCompetitiveness,
-        title: "Competitiveness in Green Value Chains",
+        route: Routes.GreenGrowthClusterTrade,
+        title: "Cluster Trade Performance",
         base: "bars",
         tooltip: [],
         modalContent: `This shows ${countryName}'s actual presence (colored bar) in each green value chain versus the level if ${countryName} had average competitiveness in all value chain components (black line). This reveals ${countryName}'s areas of strength and concentration.`,
@@ -75,7 +75,16 @@ const RoutedVisualization = () => {
         legendHeight: 0,
       },
       {
-        route: Routes.GreenGrowthStrategicPosition,
+        route: Routes.GreenGrowthClusterMarket,
+        title: "Cluster Market Share",
+        base: "bars",
+        tooltip: [],
+        modalContent: `This shows ${countryName}'s market share in each green industrial cluster, revealing areas where ${countryName} has the strongest competitive position globally.`,
+        legend: "",
+        legendHeight: 0,
+      },
+      {
+        route: Routes.GreenGrowthStrategy,
         title: "Strategic Position in Green Growth",
         base: "strategicPosition",
         tooltip: [],
@@ -88,7 +97,7 @@ const RoutedVisualization = () => {
     [countryName],
   );
 
-  // Find current step based on route (support sub-routes like "/comparison")
+  // Find current step based on route (support sub-routes like "/market-share")
   const currentStepIndex = useMemo(() => {
     const exactIndex = steps.findIndex(
       (step) => step.route === location.pathname,
@@ -152,9 +161,10 @@ const RoutedVisualization = () => {
 
   // Render Stacked Bars Chart for bars base type
   if (currentView?.base === "bars") {
-    const isComparisonSubroute = location.pathname.startsWith(
-      Routes.GreenGrowthCompetitiveness + "/comparison",
-    );
+    // Determine mode based on route
+    const isComparisonMode =
+      location.pathname === Routes.GreenGrowthClusterMarket ||
+      location.pathname.startsWith(Routes.GreenGrowthClusterMarket + "/");
     return (
       <div
         style={{
@@ -167,7 +177,7 @@ const RoutedVisualization = () => {
         <StackedBarsChart
           year={yearSelection}
           countryId={countrySelection}
-          mode={isComparisonSubroute ? "comparison" : "presence"}
+          mode={isComparisonMode ? "comparison" : "presence"}
         />
       </div>
     );

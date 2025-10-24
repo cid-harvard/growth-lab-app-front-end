@@ -1,16 +1,17 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useMemo } from "react";
 import { useQuery, useApolloClient, gql } from "@apollo/client";
 import styled from "styled-components";
+import orderBy from "lodash/orderBy";
 import { ParentSize } from "@visx/responsive";
-import {
-  FullWidthContent,
-  FullWidthContentContainer,
-} from "../../../../styling/Grid";
+import { RANKING_COLORS, createDiscreteColorScale } from "../utils/colors";
+import { Box } from "@mui/material";
 
 // GraphQL queries
 const GET_COUNTRIES = gql`
   query GetCountries {
-    ggLocationCountryList {
+    gpLocationCountryList {
       countryId
       nameEn
       nameShortEn
@@ -19,101 +20,66 @@ const GET_COUNTRIES = gql`
   }
 `;
 
-// Chart dimensions constants
-const CHART_HEIGHT = 800;
-const TOP_N = 40;
+// Constants
+const CHART_HEIGHT = 670;
+const MIN_YEAR = 2012;
+const LATEST_YEAR = 2023;
 
-// Years array - defined outside component to prevent re-creation
-const ALL_YEARS = [
-  2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012,
-];
+const AXIS_MARGIN = {
+  top: 30,
+  right: 90,
+  bottom: 30,
+  left: 120,
+};
+
+// Use shared color scale from utils/colors.ts
+const COLORS = RANKING_COLORS;
+
+const STROKE_COLOR = "rgb(76, 76, 76)";
+const GRID_COLOR = "rgba(76, 76, 76, 0.3)";
+const FONT_FAMILY = '"Source Sans Pro", "Arial", sans-serif';
 
 // Styled components
-const PageContainer = styled(FullWidthContentContainer)`
-  padding: 40px 20px;
-  font-family: "Source Sans Pro", sans-serif;
+const ChartSvg = styled.svg`
+  font-family: ${FONT_FAMILY};
 `;
 
-const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 300;
-  color: #2c3e50;
-  text-align: center;
-  margin-bottom: 40px;
-`;
-
-const ChartContainer = styled.div`
-  position: relative;
-  width: 100%;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 0px;
-  min-height: ${CHART_HEIGHT}px; /* ensure parent is tall enough so chart isn't cut off */
-  overflow: visible;
-`;
-
-const BumpChartSvg = styled.svg`
-  width: 100%;
-  height: ${CHART_HEIGHT}px; /* ensure explicit height; browser default is 150 */
-  display: block;
-  font-family: "Source Sans Pro", sans-serif;
-`;
-
-const CountryLine = styled.path<{ color: string; isHighlighted: boolean }>`
-  fill: none;
-  stroke: ${(props) => props.color};
-  stroke-width: ${(props) => (props.isHighlighted ? 3 : 2)};
-  stroke-opacity: ${(props) => (props.isHighlighted ? 1 : 0.7)};
-  transition: all 0.3s ease;
-  cursor: pointer;
-
+const CountriesGroup = styled.g`
   &:hover {
-    stroke-width: 3;
-    stroke-opacity: 1;
+    g:not(.hovered):not(.spotlighted) {
+      g {
+        opacity: 0.3;
+
+        rect {
+          stroke-width: 0;
+        }
+      }
+    }
+
+    .svg-grid-line,
+    .highlighted:not(.spotlighted),
+    .chart-overlay-text {
+      display: none;
+    }
+  }
+
+  &.spotlight-on:not(:hover) {
+    g:not(.hovered):not(.spotlighted) {
+      g {
+        opacity: 0.45;
+
+        rect {
+          stroke-width: 0;
+        }
+      }
+    }
+
+    .svg-grid-line,
+    .chart-overlay-text {
+      display: none;
+    }
   }
 `;
-
-const CountryLineDashed = styled(CountryLine)`
-  stroke-opacity: ${(props) => (props.isHighlighted ? 0.9 : 0.4)};
-  stroke-dasharray: 4 4;
-`;
-
-const CountryDot = styled.circle<{ color: string; isHighlighted: boolean }>`
-  fill: ${(props) => props.color};
-  stroke: white;
-  stroke-width: 2;
-  r: ${(props) => (props.isHighlighted ? 6 : 4)};
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    r: 6;
-  }
-`;
-
-const CountryLabel = styled.text<{ isHighlighted: boolean }>`
-  font-size: ${(props) => (props.isHighlighted ? "14px" : "12px")};
-  font-weight: ${(props) => (props.isHighlighted ? "bold" : "normal")};
-  fill: #2c3e50;
-  pointer-events: auto;
-  transition: all 0.3s ease;
-`;
-
-const YearLabel = styled.text`
-  font-size: 14px;
-  font-weight: bold;
-  fill: #34495e;
-  text-anchor: middle;
-`;
-
-const RankLabel = styled.text`
-  font-size: 12px;
-  fill: #7f8c8d;
-  text-anchor: end;
-`;
-
-// TooltipBox reserved for future in-chart tooltips (not currently used)
 
 // Types
 interface CountryData {
@@ -124,444 +90,865 @@ interface CountryData {
 }
 
 interface YearlyData {
-  countryId: number;
   year: number;
-  xResid: number;
-  rank: number;
+  rankingMetric: number | null;
+  rank: number | null;
 }
 
-interface BumpChartData {
-  [countryId: number]: {
-    country: CountryData;
-    years: YearlyData[];
-  };
+interface CountryYearData {
+  country: CountryData;
+  years: YearlyData[];
 }
 
-// Colors for countries (similar to Observable example)
-const colors = [
-  "#1f77b4",
-  "#ff7f0e",
-  "#2ca02c",
-  "#d62728",
-  "#9467bd",
-  "#8c564b",
-  "#e377c2",
-  "#7f7f7f",
-  "#bcbd22",
-  "#17becf",
-  "#aec7e8",
-  "#ffbb78",
-  "#98df8a",
-  "#ff9896",
-  "#c5b0d5",
-  "#c49c94",
-  "#f7b6d3",
-  "#c7c7c7",
-  "#dbdb8d",
-  "#9edae5",
-];
+// Using shared color scale function from utils/colors.ts
 
-const GreenEciBumpChart: React.FC = () => {
-  const [selectedCountries, setSelectedCountries] = useState<number[]>([]);
-  const [highlightedCountry, setHighlightedCountry] = useState<number | null>(
-    null,
+// Simple map of background colors to text colors for contrast
+const BACKGROUND_TO_TEXT_COLOR: Record<string, string> = {
+  "#1d8968": "#FFFFFF", // dark green -> white
+  "#7db89a": STROKE_COLOR, // light green -> dark
+  "#F9E9C4": STROKE_COLOR, // cream -> dark
+  "#F0A486": STROKE_COLOR, // light orange -> dark
+};
+
+// Country name formatting
+const getCountryName = (country: CountryData) => {
+  return country.nameShortEn || country.nameEn;
+};
+
+// Datapoint component
+interface DatapointProps {
+  country: CountryData;
+  years: YearlyData[];
+  xMultiplier: number;
+  yMultiplier: number;
+  topBuffer: number;
+  leftBuffer: number;
+  minYear: number;
+  minRankingMetric: number;
+  getColor: (value: number) => string;
+  highlighted: boolean;
+  spotlighted: boolean;
+  spotlightOn: boolean;
+}
+
+const Datapoint = (props: DatapointProps) => {
+  const {
+    country,
+    years,
+    xMultiplier,
+    yMultiplier,
+    minYear,
+    minRankingMetric,
+    getColor,
+    topBuffer,
+    leftBuffer,
+    highlighted,
+    spotlighted,
+    spotlightOn,
+  } = props;
+
+  const [hovered, setHovered] = useState<boolean>(false);
+  const name = getCountryName(country);
+
+  const yearPoints = years.map((yearData, i) => {
+    const { year, rank, rankingMetric } = yearData;
+    if (!rank || !year || year < minYear) {
+      return null;
+    }
+
+    const y = yMultiplier * (rank - 1) + topBuffer;
+    const x = xMultiplier * (year - minYear) + leftBuffer;
+    const textY = yMultiplier * rank + yMultiplier + topBuffer;
+    const metricValue =
+      rankingMetric !== null ? rankingMetric : minRankingMetric;
+    const fill = getColor(metricValue);
+    const stroke = hovered || highlighted || spotlighted ? STROKE_COLOR : fill;
+    let strokeWidth: string;
+    if (spotlightOn && !spotlighted && !hovered) {
+      strokeWidth = "0";
+    } else {
+      strokeWidth = hovered || highlighted || spotlighted ? "1" : "1.25";
+    }
+    const textX = x + xMultiplier / 2;
+    const metricYPos = xMultiplier > 42 ? textY + 6 : textY + 5;
+    const metricText =
+      xMultiplier > 42 ? (
+        <>{metricValue.toFixed(2)}</>
+      ) : (
+        <>
+          <tspan x={textX} dx={0} dy={10}>
+            {metricValue.toFixed(2)}
+          </tspan>
+        </>
+      );
+
+    // Get text color based on this cell's background color
+    const textColor = BACKGROUND_TO_TEXT_COLOR[fill] || STROKE_COLOR;
+
+    const metricElm =
+      highlighted && !spotlighted ? null : (
+        <text
+          x={textX}
+          y={metricYPos}
+          textAnchor="middle"
+          style={{
+            fill: textColor,
+            fontSize: 10,
+            pointerEvents: "none",
+            fontFamily: FONT_FAMILY,
+          }}
+        >
+          {metricText}
+        </text>
+      );
+
+    const text =
+      hovered || highlighted || spotlighted ? (
+        <>
+          <text
+            x={textX}
+            y={y - 4}
+            textAnchor="middle"
+            style={{
+              fill: textColor,
+              fontSize: 12,
+              pointerEvents: "none",
+              fontFamily: FONT_FAMILY,
+            }}
+          >
+            {rank}
+          </text>
+          {metricElm}
+        </>
+      ) : null;
+
+    let connectionLine: React.ReactElement | null = null;
+    if ((hovered || highlighted || spotlighted) && i !== years.length - 1) {
+      const nextYear = years[i + 1];
+      const nextRank = nextYear.rank;
+      if (!nextRank || !nextYear.year || nextYear.year < minYear) {
+        connectionLine = null;
+      } else {
+        const x1 = x;
+        const y1 = y;
+        const y2 = yMultiplier * (nextRank - 1) + topBuffer;
+        const x2 =
+          xMultiplier * (nextYear.year - minYear) + xMultiplier + leftBuffer;
+        connectionLine = (
+          <line
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke={STROKE_COLOR}
+            strokeWidth="1"
+          />
+        );
+      }
+    }
+
+    const highlightSizeAdjust = yMultiplier * 0.1;
+    const yPos = hovered || highlighted ? y - highlightSizeAdjust : y;
+    const height =
+      hovered || highlighted
+        ? yMultiplier + highlightSizeAdjust * 2
+        : yMultiplier;
+
+    const handleMouseEnter = () => setHovered(true);
+    const handleMouseLeave = () => setHovered(false);
+
+    return (
+      <g
+        key={`${country.countryId}-${year}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <rect
+          x={x}
+          y={yPos}
+          width={xMultiplier}
+          height={height}
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={strokeWidth}
+          style={{ cursor: "pointer" }}
+        />
+        {text}
+        {connectionLine}
+      </g>
+    );
+  });
+
+  let label: React.ReactElement | null = null;
+  if (hovered || highlighted || spotlighted) {
+    // years are sorted descending, so years[0] is the most recent year
+    const latestData = years[0];
+    const { rank } = latestData;
+    if (rank) {
+      const y = yMultiplier * (rank - 1) + topBuffer + 8;
+      // Position label at the far right of the chart (after LATEST_YEAR)
+      const x =
+        xMultiplier * (LATEST_YEAR - minYear) + xMultiplier + leftBuffer + 4;
+      let fontSize = hovered ? 16 : 13;
+      const nameParts = name.split(" ");
+      const tspans = nameParts.map((part, i) => {
+        const text = i === 0 ? rank + ". " + part : part;
+        if (!hovered) {
+          if (part.length > 13) {
+            fontSize = 10;
+          } else if (part.length > 11) {
+            fontSize = 11;
+          } else if (part.length > 9 && rank > 100) {
+            fontSize = 12;
+          }
+        } else {
+          // Hovered state - larger font with adjustments for very long names
+          if (part.length > 13) {
+            fontSize = 14;
+          } else if (part.length > 11) {
+            fontSize = 15;
+          }
+        }
+        let dx: number;
+        if (i !== 0) {
+          if (rank < 10) {
+            dx = hovered ? 16 : 12;
+          } else if (rank < 100) {
+            dx = hovered ? 22 : 18;
+          } else {
+            dx = hovered ? 30 : 26;
+          }
+        } else {
+          dx = 0;
+        }
+        return (
+          <tspan
+            x={x}
+            dx={dx}
+            dy={i !== 0 ? (hovered ? 18 : 15) : 0}
+            key={text}
+          >
+            {text}
+          </tspan>
+        );
+      });
+      label = (
+        <text
+          x={x}
+          y={y}
+          style={{
+            fill: STROKE_COLOR,
+            fontSize,
+            fontWeight: hovered ? "bold" : "normal",
+            pointerEvents: "none",
+            fontFamily: FONT_FAMILY,
+          }}
+        >
+          {tspans}
+        </text>
+      );
+    }
+  }
+
+  const hoveredClassName = hovered ? "hovered" : "";
+  const highlightedClassName = highlighted ? " highlighted" : "";
+  const spotlightedClassName = spotlightOn && spotlighted ? " spotlighted" : "";
+
+  return (
+    <g
+      className={hoveredClassName + highlightedClassName + spotlightedClassName}
+      style={{
+        opacity: spotlightOn && !spotlighted && !hovered ? 0.3 : 1,
+      }}
+    >
+      {label}
+      {yearPoints}
+    </g>
   );
-  const [bumpChartData, setBumpChartData] = useState<BumpChartData>({});
-  // Tooltip state reserved for future enhancements (currently unused)
+};
+
+// Axis component
+interface AxisProps {
+  numberOfCountries: number;
+  numberOfYears: number;
+  countrySpacing: number;
+  yearSpacing: number;
+  minYear: number;
+  width: number;
+  height: number;
+  margins: typeof AXIS_MARGIN;
+}
+
+const Axis = (props: AxisProps) => {
+  const {
+    numberOfCountries,
+    countrySpacing,
+    margins,
+    numberOfYears,
+    yearSpacing,
+    minYear,
+    height,
+    width,
+  } = props;
+
+  const yAxisLines: Array<React.ReactElement> = [];
+  const yAxisInterval = 10;
+  const yAxisX1 = margins.left * 0.75;
+  const yAxisX2 = margins.left;
+  let yAxisLineCount = 0;
+  while (yAxisLineCount < numberOfCountries) {
+    const y =
+      yAxisLineCount === 0
+        ? margins.top
+        : margins.top + (yAxisLineCount - 1) * countrySpacing;
+    const value = yAxisLineCount === 0 ? 1 : yAxisLineCount;
+    const endPoint = yAxisLineCount === 0 ? width - margins.right : yAxisX2;
+    yAxisLines.push(
+      <g key={`y-axis-${value}`}>
+        <text
+          x={yAxisX1 - 7}
+          y={y + 3}
+          textAnchor="end"
+          style={{
+            fill: STROKE_COLOR,
+            fontSize: 13,
+            fontFamily: FONT_FAMILY,
+          }}
+        >
+          {value}
+        </text>
+        <line
+          x1={yAxisX1}
+          y1={y}
+          x2={endPoint}
+          y2={y}
+          stroke={GRID_COLOR}
+          strokeWidth="1"
+          strokeDasharray="5 3"
+        />
+      </g>,
+    );
+    yAxisLineCount += yAxisInterval;
+  }
+
+  const xAxisLines: Array<React.ReactElement> = [];
+  const xAxisInterval = 1;
+  const xAxisY1 = 0;
+  const xAxisY2 = margins.top;
+  const xAxisY3 = height - margins.bottom;
+  const xAxisY4 = height;
+  let xAxisLineCount = 0;
+  while (xAxisLineCount < numberOfYears) {
+    let value: number | string = minYear + xAxisLineCount;
+    const buttomBuffer = value < 2006 ? countrySpacing : 0;
+    let fontSize: number = 13;
+    if (yearSpacing < 25) {
+      fontSize = 10;
+      value = value.toString().replace("20", "'");
+    } else if (yearSpacing < 30) {
+      fontSize = 11;
+    } else if (yearSpacing < 35) {
+      fontSize = 12;
+    }
+    const x = margins.left + xAxisLineCount * yearSpacing;
+    const finalLine =
+      xAxisLineCount === numberOfYears - 1 ? (
+        <>
+          <line
+            x1={x + yearSpacing}
+            y1={xAxisY1}
+            x2={x + yearSpacing}
+            y2={xAxisY3}
+            stroke={GRID_COLOR}
+            strokeWidth="1"
+            strokeDasharray="5 3"
+          />
+          <line
+            x1={x + yearSpacing}
+            y1={xAxisY3}
+            x2={x + yearSpacing}
+            y2={xAxisY4}
+            stroke={GRID_COLOR}
+            strokeWidth="1"
+            strokeDasharray="5 3"
+          />
+        </>
+      ) : null;
+    xAxisLines.push(
+      <g key={`x-axis-${value}`}>
+        <text
+          x={x + yearSpacing / 2}
+          y={xAxisY2 * 0.3}
+          textAnchor="middle"
+          style={{
+            fill: STROKE_COLOR,
+            fontSize,
+            fontFamily: FONT_FAMILY,
+          }}
+        >
+          {value}
+        </text>
+        <line
+          x1={x}
+          y1={xAxisY1}
+          x2={x}
+          y2={xAxisY2}
+          stroke={GRID_COLOR}
+          strokeWidth="1"
+          strokeDasharray="5 3"
+        />
+        <line
+          x1={x}
+          y1={xAxisY2}
+          x2={x}
+          y2={xAxisY3 - buttomBuffer}
+          stroke={GRID_COLOR}
+          strokeWidth="1"
+          strokeDasharray="5 3"
+          className="svg-grid-line"
+        />
+        <line
+          x1={x}
+          y1={xAxisY3 - buttomBuffer}
+          x2={x}
+          y2={xAxisY4}
+          stroke={GRID_COLOR}
+          strokeWidth="1"
+          strokeDasharray="5 3"
+        />
+        <text
+          x={x + yearSpacing / 2}
+          y={xAxisY4}
+          textAnchor="middle"
+          style={{
+            fill: STROKE_COLOR,
+            fontSize,
+            fontFamily: FONT_FAMILY,
+          }}
+        >
+          {value}
+        </text>
+        {finalLine}
+      </g>,
+    );
+    xAxisLineCount += xAxisInterval;
+  }
+
+  return (
+    <g style={{ pointerEvents: "none" }}>
+      {yAxisLines}
+      {xAxisLines}
+      <ColorLegend height={height} margins={margins} />
+    </g>
+  );
+};
+
+// Color Legend component
+interface ColorLegendProps {
+  height: number;
+  margins: typeof AXIS_MARGIN;
+}
+
+const ColorLegend = (props: ColorLegendProps) => {
+  const { height, margins } = props;
+
+  const yAxisX1 = margins.left * 0.75;
+  const colorMargin = 40;
+  const colorTotalSize =
+    height - margins.top - margins.bottom - colorMargin * 2;
+  const colorInitialTop = colorMargin + margins.top;
+  const colorElmHeight = colorTotalSize / COLORS.length;
+  const colorWidth = 10;
+  const colorToAxisMargin = 30;
+  const colorLeft = yAxisX1 - colorWidth - colorToAxisMargin;
+
+  const reversedColors = [...COLORS].reverse();
+  const colors = reversedColors.map((color) => (
+    <rect
+      x={colorLeft}
+      y={colorInitialTop + colorElmHeight * reversedColors.indexOf(color)}
+      width={colorWidth}
+      height={colorElmHeight}
+      fill={color}
+      key={`color-legend-${color}`}
+    />
+  ));
+
+  const arrowToColorMargin = 12;
+  const arrowLeft = colorLeft - arrowToColorMargin;
+  const arrowInitialTop = colorInitialTop;
+  const arrowSpacing = colorTotalSize / 8;
+
+  const arrowUpTop = arrowInitialTop + arrowSpacing;
+  const arrowUpBottom = arrowInitialTop + arrowSpacing * 3;
+
+  const arrowDownTop = arrowUpBottom + arrowSpacing * 4;
+  const arrowDownBottom = arrowInitialTop + arrowSpacing * 5;
+
+  const textLeft = arrowLeft;
+  const textUpTranslate = "translate(-306, -254)";
+  const textDownTranslate = "translate(-440, -521)";
+
+  return (
+    <>
+      {colors}
+      <line
+        x1={arrowLeft}
+        y1={arrowUpBottom}
+        x2={arrowLeft}
+        y2={arrowUpTop}
+        stroke={STROKE_COLOR}
+        strokeWidth="2"
+        markerEnd="url(#arrowhead)"
+      />
+      <text
+        x={textLeft}
+        y={arrowUpBottom}
+        textAnchor="start"
+        transform={`rotate(-90 0 0) ${textUpTranslate}`}
+        style={{
+          fill: STROKE_COLOR,
+          fontSize: 16,
+          textTransform: "uppercase",
+          fontFamily: FONT_FAMILY,
+        }}
+      >
+        <tspan x={textLeft} dx={0} dy={0}>
+          High Greenplexity
+        </tspan>
+        <tspan x={textLeft} dx={0} dy={17}>
+          Higher Ranking
+        </tspan>
+      </text>
+      <line
+        x1={arrowLeft}
+        y1={arrowDownBottom}
+        x2={arrowLeft}
+        y2={arrowDownTop}
+        stroke={STROKE_COLOR}
+        strokeWidth="2"
+        markerEnd="url(#arrowhead)"
+      />
+      <text
+        x={textLeft}
+        y={arrowDownTop}
+        textAnchor="end"
+        transform={`rotate(-90 0 0) ${textDownTranslate}`}
+        style={{
+          fill: STROKE_COLOR,
+          fontSize: 16,
+          textTransform: "uppercase",
+          fontFamily: FONT_FAMILY,
+        }}
+      >
+        <tspan x={textLeft} dx={0} dy={0}>
+          Low Greenplexity
+        </tspan>
+        <tspan x={textLeft} dx={0} dy={17}>
+          Lower Ranking
+        </tspan>
+      </text>
+    </>
+  );
+};
+
+// Preselected countries that show when no country is selected
+const PRESELECTED_COUNTRIES = ["CHN", "USA", "IDN", "MAR", "BOL"]; // China, USA, Indonesia, Morocco, Bolivia
+
+// Main component props
+interface GreenEciBumpChartProps {
+  selectedIso3?: string;
+  setSelectedIso3?: (iso3: string) => void;
+  countryOptions?: Array<{ label: string; iso3: string }>;
+}
+
+const GreenEciBumpChart: React.FC<GreenEciBumpChartProps> = ({
+  selectedIso3 = "",
+}) => {
+  // const [selectedCountries] = useState<number[]>([]); // Reserved for future filtering
+  const [countriesData, setCountriesData] = useState<CountryYearData[]>([]);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
 
   const client = useApolloClient();
 
   // Fetch countries
-  const { data: countriesData, loading: countriesLoading } =
+  const { data: countriesListData, loading: countriesLoading } =
     useQuery(GET_COUNTRIES);
 
-  // All countries by default
   const allCountryIds = useMemo(() => {
-    if (!countriesData?.ggLocationCountryList) return [];
-    return countriesData.ggLocationCountryList.map(
-      (country: CountryData) => country.countryId,
+    if (!countriesListData?.gpLocationCountryList) return [];
+    return (countriesListData.gpLocationCountryList as CountryData[]).map(
+      (country) => country.countryId,
     );
-  }, [countriesData]);
+  }, [countriesListData]);
 
-  // Set all countries as selected by default
+  // Load data for all countries
   useEffect(() => {
-    if (allCountryIds.length > 0 && selectedCountries.length === 0) {
-      setSelectedCountries(allCountryIds);
-    }
-  }, [allCountryIds, selectedCountries.length]);
-
-  // (removed) filteredCountries: not used in current chart
-
-  // Progressive data loading: load years from most recent backwards
-  useEffect(() => {
-    const loadDataForYear = async (
-      year: number,
-      currentData: BumpChartData,
-    ): Promise<BumpChartData> => {
-      if (selectedCountries.length === 0) return currentData;
+    const loadData = async () => {
+      if (allCountryIds.length === 0) return;
 
       const countryMap = new Map<number, CountryData>();
-      if (countriesData?.ggLocationCountryList) {
-        countriesData.ggLocationCountryList.forEach((country: CountryData) => {
-          countryMap.set(country.countryId, country);
-        });
+      if (countriesListData?.gpLocationCountryList) {
+        (countriesListData.gpLocationCountryList as CountryData[]).forEach(
+          (country) => {
+            countryMap.set(country.countryId, country);
+          },
+        );
       }
 
-      const updatedData = { ...currentData };
+      // Build data structure: Map<countryId, YearlyData[]>
+      const dataByCountry = new Map<number, YearlyData[]>();
 
       try {
-        // Create a massive GraphQL query with aliases for all countries
-        const queryParts: string[] = [];
-        const countryAliases: string[] = [];
-
-        selectedCountries.forEach((countryId) => {
-          const alias = `country_${countryId}`;
-          countryAliases.push(alias);
-          queryParts.push(`
-            ${alias}: ggCountryYearList(year: $year, countryId: ${countryId}) {
-              countryId
-              year
-              xResid
+        // Query each year separately (year is required parameter)
+        for (let year = MIN_YEAR; year <= LATEST_YEAR; year++) {
+          const yearQuery = gql`
+            query GetYearData($year: Int!) {
+              gpCountryYearList(year: $year) {
+                countryId
+                year
+                rankingMetric
+                rank
+              }
             }
-          `);
-        });
+          `;
 
-        const batchQuery = gql`
-          query GetAllCountriesForYear($year: Int!) {
-            ${queryParts.join("")}
+          const result = await client.query({
+            query: yearQuery,
+            variables: { year },
+          });
+
+          interface CountryYearResult {
+            countryId: number;
+            year: number;
+            rankingMetric: string | null;
+            rank: number | null;
           }
-        `;
 
-        const result = await client.query({
-          query: batchQuery,
-          variables: { year },
-        });
+          const yearData = result.data.gpCountryYearList as CountryYearResult[];
 
-        // Process results from the batched query
-        const yearResults: YearlyData[] = [];
+          yearData.forEach((d) => {
+            if (!dataByCountry.has(d.countryId)) {
+              dataByCountry.set(d.countryId, []);
+            }
+            const countryArray = dataByCountry.get(d.countryId);
+            if (countryArray) {
+              countryArray.push({
+                year: d.year,
+                rankingMetric: d.rankingMetric
+                  ? parseFloat(d.rankingMetric)
+                  : null,
+                rank: d.rank,
+              });
+            }
+          });
+        }
 
-        countryAliases.forEach((alias) => {
-          const countryData = result.data[alias];
-          if (countryData?.[0]) {
-            const data = countryData[0];
-            yearResults.push({
-              countryId: data.countryId,
-              year: data.year,
-              xResid: data.xResid,
-              rank: 0, // Will be calculated later
-            });
-          }
-        });
-
-        // Sort by xResid to calculate rankings
-        yearResults.sort((a, b) => b.xResid - a.xResid);
-        yearResults.forEach((data, index) => {
-          data.rank = index + 1;
-        });
-
-        // Update the data structure
-        yearResults.forEach((yearData) => {
-          const { countryId } = yearData;
+        // Convert to final data structure
+        const allData: CountryYearData[] = [];
+        dataByCountry.forEach((years, countryId) => {
           const country = countryMap.get(countryId);
           if (!country) return;
 
-          if (!updatedData[countryId]) {
-            updatedData[countryId] = {
-              country,
-              years: [],
-            };
-          }
-          updatedData[countryId].years.push(yearData);
-          // Sort years within each country
-          updatedData[countryId].years.sort((a, b) => a.year - b.year);
+          // Sort by year descending (most recent first, like in overtimeViz)
+          const sortedYears = orderBy(years, ["year"], ["desc"]);
+
+          allData.push({
+            country,
+            years: sortedYears,
+          });
         });
+
+        setCountriesData(allData);
       } catch (error) {
-        console.error(`Error fetching batch data for year ${year}:`, error);
+        console.error("Error fetching data:", error);
       }
-
-      return updatedData;
     };
 
-    const loadAllData = async () => {
-      if (selectedCountries.length === 0) return;
+    loadData();
+  }, [allCountryIds, countriesListData, client]);
 
-      let cumulativeData: BumpChartData = {};
+  // Compute min/max rankingMetric from data
+  const { minRankingMetric, maxRankingMetric } = useMemo(() => {
+    let min = Infinity;
+    let max = -Infinity;
 
-      // Load years progressively from most recent to oldest
-      for (let i = 0; i < ALL_YEARS.length; i++) {
-        const year = ALL_YEARS[i];
-
-        try {
-          cumulativeData = await loadDataForYear(year, cumulativeData);
-          setBumpChartData({ ...cumulativeData });
-
-          // Allow UI to update between year loads
-          await new Promise((resolve) => setTimeout(resolve, 50));
-        } catch (error) {
-          console.error(`Error loading data for year ${year}:`, error);
+    countriesData.forEach(({ years }) => {
+      years.forEach(({ rankingMetric }) => {
+        if (rankingMetric !== null) {
+          if (rankingMetric < min) min = rankingMetric;
+          if (rankingMetric > max) max = rankingMetric;
         }
-      }
-    };
+      });
+    });
 
-    loadAllData();
-  }, [selectedCountries, countriesData, client]);
+    // Fallback if no data
+    if (min === Infinity || max === -Infinity) {
+      return { minRankingMetric: 0, maxRankingMetric: 1 };
+    }
 
-  // Chart dimensions
-  const margin = { top: 50, right: 300, bottom: 50, left: 60 };
-  // width will be adapted later for responsiveness; keep a default now
-  // Width is measured at render time via ParentSize
-  const chartHeight = CHART_HEIGHT - margin.top - margin.bottom;
-  const clipId = useMemo(
-    () => `eci-clip-${Math.random().toString(36).slice(2, 9)}`,
-    [],
+    return { minRankingMetric: min, maxRankingMetric: max };
+  }, [countriesData]);
+
+  const getColor = useMemo(
+    () => createDiscreteColorScale(minRankingMetric, maxRankingMetric),
+    [minRankingMetric, maxRankingMetric],
   );
-  const clipPad = 6; // extend by max dot radius to avoid clipping circles on edges
 
-  // Determine countries to draw: union of all countries that are within TOP_N in any year
-  const visibleCountryIds = useMemo(() => {
-    const ids = new Set<number>();
-    Object.entries(bumpChartData).forEach(
-      ([id, data]: [string, BumpChartData[number]]) => {
-        if (data.years.some((d: YearlyData) => d.rank <= TOP_N))
-          ids.add(parseInt(id, 10));
-      },
+  const totalYearsInclusive = LATEST_YEAR - MIN_YEAR + 1;
+
+  // Filter and sort countries by their most recent rank (rank 1 at top)
+  const filteredCountries = useMemo(() => {
+    return countriesData
+      .filter(({ years }) => {
+        // Only include countries that have data and a valid rank in the most recent year
+        if (years.length === 0) return false;
+        const mostRecentYear = years[0]; // years are sorted descending
+        return mostRecentYear && mostRecentYear.rank !== null;
+      })
+      .sort((a, b) => {
+        // Get the most recent year's rank for each country (guaranteed to exist after filter)
+        const aRank = a.years[0]?.rank || Infinity;
+        const bRank = b.years[0]?.rank || Infinity;
+        return aRank - bRank; // Sort ascending (rank 1 first)
+      });
+  }, [countriesData]);
+
+  // Country options for autocomplete - build internal mapping
+  const internalCountryOptions = useMemo(() => {
+    return filteredCountries.map((cd) => ({
+      label: getCountryName(cd.country),
+      countryId: cd.country.countryId,
+      iso3: cd.country.iso3Code,
+    }));
+  }, [filteredCountries]);
+
+  // Derive highlightedCountries from selectedIso3 and preselected countries
+  // Show preselected countries only when NOT hovering and NO country is selected
+  const highlightedCountries = useMemo(() => {
+    let iso3List: string[] = [];
+
+    if (selectedIso3) {
+      // If a country is selected, show only that country
+      iso3List = [selectedIso3];
+    } else if (!isHovering) {
+      // If not hovering and no selection, show preselected countries
+      iso3List = PRESELECTED_COUNTRIES;
+    }
+    // If hovering and no selection, show nothing (empty array)
+
+    if (iso3List.length === 0) return [];
+
+    return internalCountryOptions
+      .filter((c) => iso3List.includes(c.iso3))
+      .map((c) => c.countryId);
+  }, [selectedIso3, isHovering, internalCountryOptions]);
+
+  // Only apply spotlight opacity effect when hovering or when a country is explicitly selected
+  // (not for preselected countries in default state)
+  const spotlightOn =
+    (isHovering && highlightedCountries.length > 0) || !!selectedIso3;
+
+  // Render function that receives dimensions from ParentSize
+  const renderChart = (width: number, height: number) => {
+    if (!width || !height || filteredCountries.length === 0) {
+      return null;
+    }
+
+    const yMultiplier =
+      (height - AXIS_MARGIN.top - AXIS_MARGIN.bottom) /
+      filteredCountries.length;
+    const xMultiplier =
+      (width - AXIS_MARGIN.left - AXIS_MARGIN.right) / totalYearsInclusive;
+
+    // Sort countries so highlighted ones are rendered last (on top)
+    const sortedCountries = [...filteredCountries].sort((a, b) => {
+      const aIsHighlighted = highlightedCountries.includes(a.country.countryId);
+      const bIsHighlighted = highlightedCountries.includes(b.country.countryId);
+
+      if (aIsHighlighted && !bIsHighlighted) return 1; // a comes after b (rendered on top)
+      if (!aIsHighlighted && bIsHighlighted) return -1; // b comes after a (rendered on top)
+      return 0; // maintain original order
+    });
+
+    const countries = sortedCountries.map((countryData) => (
+      <Datapoint
+        key={countryData.country.countryId}
+        country={countryData.country}
+        years={countryData.years}
+        xMultiplier={xMultiplier}
+        yMultiplier={yMultiplier}
+        getColor={getColor}
+        minRankingMetric={minRankingMetric}
+        minYear={MIN_YEAR}
+        topBuffer={AXIS_MARGIN.top}
+        leftBuffer={AXIS_MARGIN.left}
+        highlighted={highlightedCountries.includes(
+          countryData.country.countryId,
+        )}
+        spotlighted={
+          spotlightOn &&
+          highlightedCountries.includes(countryData.country.countryId)
+        }
+        spotlightOn={spotlightOn}
+      />
+    ));
+
+    return (
+      <ChartSvg
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        style={{ backgroundColor: "#fff" }}
+      >
+        <defs>
+          <marker
+            id="arrowhead"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto"
+            refY="2"
+          >
+            <path d="M0,0 L4,2 0,4" fill={STROKE_COLOR} stroke="none" />
+          </marker>
+        </defs>
+        <CountriesGroup
+          className={spotlightOn ? "spotlight-on" : undefined}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          {countries}
+          <Axis
+            numberOfCountries={filteredCountries.length}
+            numberOfYears={totalYearsInclusive}
+            width={width}
+            height={height}
+            margins={AXIS_MARGIN}
+            countrySpacing={yMultiplier}
+            yearSpacing={xMultiplier}
+            minYear={MIN_YEAR}
+          />
+        </CountriesGroup>
+      </ChartSvg>
     );
-    if (ids.size === 0) return selectedCountries.slice(0, TOP_N);
-    return Array.from(ids);
-  }, [bumpChartData, selectedCountries]);
-
-  // Build a per-year ranking position among visible countries
-  // (Deprecated) previously computed positions among visible countries; no longer needed
-  // const visibleRanksByYear = useMemo(() => { ... }, [visibleCountryIds, bumpChartData]);
-
-  // (scales computed inside responsive render where width is known)
-
-  // (moved local yOff and path generators inside responsive render)
-
-  // (removed) toggleCountry: selection UI not present in current chart
+  };
 
   if (countriesLoading) {
     return (
-      <FullWidthContent>
-        <PageContainer>
-          <div style={{ textAlign: "center", padding: "40px" }}>
-            Loading countries...
-          </div>
-        </PageContainer>
-      </FullWidthContent>
+      <div style={{ textAlign: "center", padding: "40px" }}>
+        Loading countries...
+      </div>
     );
   }
 
   return (
-    <FullWidthContent>
-      <PageContainer>
-        <Title>Green Manufacturing Rankings</Title>
-        <ChartContainer>
-          <ParentSize>
-            {({ width }) => {
-              const w = Math.max(width, 300);
-              const chartWidth = w - margin.left - margin.right;
-              const xS = (year: number) =>
-                ((year - ALL_YEARS[ALL_YEARS.length - 1]) /
-                  (ALL_YEARS[0] - ALL_YEARS[ALL_YEARS.length - 1])) *
-                chartWidth;
-              const yS = (rank: number) =>
-                ((Math.min(rank, TOP_N) - 1) / Math.max(TOP_N - 1, 1)) *
-                chartHeight;
-              const yOff = (rank: number) => {
-                if (rank <= TOP_N) return yS(rank);
-                const overflow = Math.max(0, rank - TOP_N);
-                const extra =
-                  Math.min(overflow, TOP_N) * (chartHeight / TOP_N) * 0.25;
-                return yS(TOP_N) + extra;
-              };
-              return (
-                <BumpChartSvg>
-                  <g transform={`translate(${margin.left},${margin.top})`}>
-                    <defs>
-                      <clipPath id={clipId}>
-                        <rect
-                          x={-clipPad}
-                          y={-clipPad}
-                          width={chartWidth + 300}
-                          height={chartHeight + clipPad + 3}
-                        />
-                      </clipPath>
-                    </defs>
-                    {ALL_YEARS.map((year: number) => (
-                      <YearLabel key={year} x={xS(year)} y={chartHeight + 30}>
-                        {year}
-                      </YearLabel>
-                    ))}
-                    {Array.from({ length: TOP_N }, (_, i) => (
-                      <RankLabel
-                        key={`rank-${i + 1}`}
-                        x={-10}
-                        y={yS(i + 1) + 5}
-                      >
-                        {i + 1}
-                      </RankLabel>
-                    ))}
-                    <g clipPath={`url(#${clipId})`}>
-                      {visibleCountryIds.map((cid) => {
-                        const data = bumpChartData[cid];
-                        if (!data) return null;
-                        const color = colors[cid % colors.length];
-                        const isHighlighted = highlightedCountry === cid;
-                        const pathD = (() => {
-                          const sorted = [...data.years].sort(
-                            (a, b) => a.year - b.year,
-                          );
-                          let d = "";
-                          let inSeg = false;
-                          for (let i = 0; i < sorted.length; i++) {
-                            const y = sorted[i];
-                            const within = y.rank <= TOP_N;
-                            const xPos = xS(y.year);
-                            const yPos = yS(y.rank);
-                            if (within) {
-                              if (!inSeg) {
-                                d += `M ${xPos},${yPos}`;
-                                inSeg = true;
-                              } else {
-                                d += ` L ${xPos},${yPos}`;
-                              }
-                            } else {
-                              inSeg = false;
-                            }
-                          }
-                          return d;
-                        })();
-                        return (
-                          <g key={`country-${cid}`}>
-                            <CountryLine
-                              d={pathD}
-                              color={color}
-                              isHighlighted={isHighlighted}
-                              onMouseEnter={() => setHighlightedCountry(cid)}
-                              onMouseLeave={() => setHighlightedCountry(null)}
-                            />
-                            {(() => {
-                              const pts = [...data.years]
-                                .sort((a, b) => a.year - b.year)
-                                .map((d: YearlyData) => ({
-                                  year: d.year,
-                                  rank: d.rank,
-                                  x: xS(d.year),
-                                  y: yS(d.rank),
-                                  yOff: yOff(d.rank),
-                                  visible: d.rank <= TOP_N,
-                                }));
-                              const bridges: Array<{
-                                x1: number;
-                                y1: number;
-                                x2: number;
-                                y2: number;
-                              }> = [];
-                              for (let i = 0; i < pts.length - 1; i++) {
-                                const a = pts[i];
-                                const b = pts[i + 1];
-                                if (!(a.visible && b.visible)) {
-                                  bridges.push({
-                                    x1: a.x,
-                                    y1: a.visible ? a.y : a.yOff,
-                                    x2: b.x,
-                                    y2: b.visible ? b.y : b.yOff,
-                                  });
-                                }
-                              }
-                              if (bridges.length === 0) return null;
-                              return bridges.map((b) => (
-                                <CountryLineDashed
-                                  key={`bridge-${cid}-${b.x1}-${b.x2}`}
-                                  d={`M ${b.x1},${b.y1} L ${b.x2},${b.y2}`}
-                                  color={color}
-                                  isHighlighted={isHighlighted}
-                                  onMouseEnter={() =>
-                                    setHighlightedCountry(cid)
-                                  }
-                                  onMouseLeave={() =>
-                                    setHighlightedCountry(null)
-                                  }
-                                />
-                              ));
-                            })()}
-                            {data.years.map((yearData: YearlyData) =>
-                              yearData.rank <= TOP_N ? (
-                                <CountryDot
-                                  key={`${cid}-${yearData.year}`}
-                                  cx={xS(yearData.year)}
-                                  cy={yS(yearData.rank)}
-                                  color={color}
-                                  isHighlighted={isHighlighted}
-                                  onMouseEnter={(e) => {
-                                    setHighlightedCountry(cid);
-                                    const svg =
-                                      (e.currentTarget
-                                        .ownerSVGElement as SVGSVGElement) ||
-                                      null;
-                                    const tip =
-                                      document.getElementById(
-                                        "eci-bump-tooltip",
-                                      );
-                                    if (svg && tip) {
-                                      const bbox = svg.getBoundingClientRect();
-                                      tip.textContent = `${data.country.nameEn} – ${yearData.year}: Rank ${yearData.rank}`;
-                                      tip.style.transform = `translate(${e.clientX - bbox.left + 10}px, ${e.clientY - bbox.top + 10}px)`;
-                                      tip.style.opacity = "1";
-                                    }
-                                  }}
-                                  onMouseLeave={() => {
-                                    setHighlightedCountry(null);
-                                    const tip =
-                                      document.getElementById(
-                                        "eci-bump-tooltip",
-                                      );
-                                    if (tip) tip.style.opacity = "0";
-                                  }}
-                                />
-                              ) : null,
-                            )}
-                            {(() => {
-                              const last = [...data.years]
-                                .sort((a, b) => a.year - b.year)
-                                .slice(-1)[0];
-                              // Only label countries that are in the final year and within TOP_N
-                              if (
-                                !last ||
-                                last.year !== ALL_YEARS[0] ||
-                                last.rank > TOP_N
-                              )
-                                return null;
-                              return (
-                                <CountryLabel
-                                  x={xS(ALL_YEARS[0]) + 10}
-                                  y={yS(last.rank) + 5}
-                                  isHighlighted={isHighlighted}
-                                  onMouseEnter={() =>
-                                    setHighlightedCountry(cid)
-                                  }
-                                  onMouseLeave={() =>
-                                    setHighlightedCountry(null)
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {data.country.nameEn}
-                                </CountryLabel>
-                              );
-                            })()}
-                          </g>
-                        );
-                      })}
-                    </g>
-                  </g>
-                </BumpChartSvg>
-              );
-            }}
-          </ParentSize>
-        </ChartContainer>
-      </PageContainer>
-    </FullWidthContent>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <div style={{ width: "100%", height: CHART_HEIGHT }}>
+        <ParentSize>
+          {({ width, height }) => renderChart(width, height)}
+        </ParentSize>
+      </div>
+    </Box>
   );
 };
 

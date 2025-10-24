@@ -22,7 +22,6 @@ import { VisualizationLoading } from "../shared";
 import { useImageCaptureContext } from "../../hooks/useImageCaptureContext";
 import html2canvas from "html2canvas";
 import { useSelectionDataModal } from "../../hooks/useSelectionDataModal";
-import { useSidebar } from "../SidebarContext";
 
 // Unified layout calculator that positions all elements in a single coordinate system
 const calculateUnifiedLayout = (
@@ -48,9 +47,9 @@ const calculateUnifiedLayout = (
   const cols = isNarrow ? 2 : 5; // narrow: 2 cols, otherwise: 5 cols
   const rows = isNarrow ? 5 : 2; // narrow: 5 rows, otherwise: 2 rows
 
-  // Reserve space for legend at bottom (more on short-height screens)
-  const legendHeight = isShortHeight ? 100 : 20;
-  const availableHeight = Math.max(360, containerHeight - legendHeight);
+  // With flexbox layout, ParentSize gives us the actual available height
+  // No need to reserve space for legend - flexbox handles that
+  const availableHeight = Math.max(360, containerHeight);
   // Horizontal gaps between value chains
   const colGap = isNarrow ? 12 : 2;
   const totalGapWidth = Math.max(0, cols - 1) * colGap;
@@ -103,15 +102,24 @@ const calculateUnifiedLayout = (
     8,
     Math.min(32, (availableHeight || 0) * 0.02),
   );
+  // Reserve space at top for cluster labels to avoid cutoff in exports
+  // Use a fixed reasonable space (font size ~16-18px + small margin)
+  const clusterLabelReservedSpace = 30;
+  // Add horizontal padding to prevent edge cutoff (more on narrow screens)
+  const clusterHorizontalPadding = isNarrow ? 16 : 24;
   const clusterGridWidth =
-    containerWidth - Math.max(0, clustersOnlyCols - 1) * clustersOnlyColGap;
+    containerWidth -
+    Math.max(0, clustersOnlyCols - 1) * clustersOnlyColGap -
+    clusterHorizontalPadding * 2; // padding on both sides
+  // Subtract reserved space from available height so grid fits properly
   const clusterGridHeight =
-    availableHeight - Math.max(0, clustersOnlyRows - 1) * clustersOnlyRowGap;
+    availableHeight -
+    clusterLabelReservedSpace -
+    Math.max(0, clustersOnlyRows - 1) * clustersOnlyRowGap;
   const clusterCellWidth = clusterGridWidth / clustersOnlyCols;
   const clusterCellHeight = clusterGridHeight / clustersOnlyRows;
   const clusterGridOffsetX = (containerWidth - clusterGridWidth) / 2;
-  // Start grid at the top of the available area to avoid large top gap
-  const clusterGridOffsetY = 0;
+  const clusterGridOffsetY = clusterLabelReservedSpace;
   // Equal cluster radius that fits within each grid cell
   const equalClusterRadius =
     Math.min(clusterCellWidth, clusterCellHeight) * 0.42;
@@ -170,7 +178,7 @@ const calculateUnifiedLayout = (
     if (!Number.isFinite(globalMinChildR)) {
       globalMinChildR = equalClusterRadius * 0.16;
     }
-    globalProductRadius = Math.max(3, globalMinChildR * 0.95);
+    globalProductRadius = Math.max(2.5, globalMinChildR * 0.95);
   }
   // Compute product count range across clusters for dynamic sizing in clusters-only mode
   // Note: clusters-only uses equal radius; no per-cluster precomputation needed
@@ -232,16 +240,25 @@ const calculateUnifiedLayout = (
         }
 
         // Add cluster label positioned above the cluster circle with character limit
-        const maxChars = 24; // Allow a few more characters before truncation
-        const truncatedName =
-          clusterData.clusterName.length > maxChars
-            ? clusterData.clusterName.substring(0, maxChars - 3) + "..."
-            : clusterData.clusterName;
-
+        // Calculate character limit based on available cell width
         const clusterLabelFontSize = Math.max(
           12,
           Math.min(18, clusterRadius * 0.2),
         );
+
+        // Available width for label is the cell width minus some padding
+        const availableLabelWidth = clusterCellWidth * 0.9; // 90% of cell width to avoid overlap
+
+        // Estimate character width: average character is ~0.55 times font size for most fonts
+        const avgCharWidth = clusterLabelFontSize * 0.55;
+        const maxChars = Math.floor(availableLabelWidth / avgCharWidth);
+
+        const truncatedName =
+          clusterData.clusterName.length > maxChars
+            ? clusterData.clusterName.substring(0, Math.max(10, maxChars - 3)) +
+              "..."
+            : clusterData.clusterName;
+
         clusterLabels.push({
           id: `cluster-label-${clusterId}`,
           x: cellCenterX,
@@ -419,7 +436,7 @@ const calculateUnifiedLayout = (
       // Get icon for this value chain
       const valueChainIcon = getValueChainIcon(supplyChainName);
       const baseDim = Math.min(cellWidth, cellHeight);
-      const valueChainLabelFontSize = 14;
+      const valueChainLabelFontSize = 16;
       const iconSize = Math.max(24, Math.min(40, baseDim * 0.22));
 
       // Always use standard positioning - grid layout ensures adequate space
@@ -515,7 +532,7 @@ const calculateUnifiedLayout = (
               y: cellCenterY + (productNode.y - layoutCenterY),
               r: Math.min(
                 normalizedProductSize,
-                Math.max(2, productNode.r * 0.92),
+                Math.max(3, productNode.r * 0.92),
               ),
               title: productDetails?.nameShortEn,
               rca: product.exportRca,
@@ -578,7 +595,7 @@ const calculateUnifiedLayout = (
             y: cellCenterY + (productNode.y - layoutCenterY),
             r: Math.min(
               normalizedProductSize,
-              Math.max(2, productNode.r * 0.92),
+              Math.max(1.5, productNode.r * 0.92),
             ),
             title: productDetails?.nameShortEn,
             rca: product.exportRca,
@@ -743,7 +760,7 @@ const calculateAllLayoutsForSizing = (
     );
   }
 
-  return Math.max(4, minProductRadius * 0.95); // Slightly larger but uniform size
+  return Math.max(3, minProductRadius * 0.95); // Balance between visibility and preventing overlap
 };
 
 export const formatter = new Intl.NumberFormat("en-US", {
@@ -757,17 +774,17 @@ export const formatter = new Intl.NumberFormat("en-US", {
 
 // Data transformation helper for clusters-only layout
 const transformDataForClustersOnly = (
-  ggCpyList,
-  ggCpyscList,
+  gpCpyList,
+  gpCpyscList,
   clusterLookup,
 ) => {
-  if (!ggCpyList || !ggCpyscList || !clusterLookup.size) return {};
+  if (!gpCpyList || !gpCpyscList || !clusterLookup.size) return {};
 
   const clusters = {};
 
   // Create mapping from productId to value chains for transition purposes
   const productToValueChains = new Map();
-  ggCpyscList.forEach((item) => {
+  gpCpyscList.forEach((item) => {
     const { supplyChainId, productId } = item;
     if (!productToValueChains.has(productId)) {
       productToValueChains.set(productId, []);
@@ -776,7 +793,7 @@ const transformDataForClustersOnly = (
   });
 
   // Group products by cluster, deduplicating across value chains
-  ggCpyList.forEach((product) => {
+  gpCpyList.forEach((product) => {
     const clusterInfo = clusterLookup.get(product.productId);
     if (clusterInfo) {
       const { clusterId, clusterName } = clusterInfo;
@@ -822,24 +839,24 @@ const transformDataForClustersOnly = (
 
 // Data transformation helper
 const transformDataForValueChains = (
-  ggCpyList,
-  ggCpyscList,
+  gpCpyList,
+  gpCpyscList,
   clusterLookup,
   layoutMode,
 ) => {
-  if (!ggCpyList || !ggCpyscList) return {};
+  if (!gpCpyList || !gpCpyscList) return {};
 
   // Handle clusters-only layout separately
   if (layoutMode === "clusters-only") {
-    return transformDataForClustersOnly(ggCpyList, ggCpyscList, clusterLookup);
+    return transformDataForClustersOnly(gpCpyList, gpCpyscList, clusterLookup);
   }
 
   const valueChains = {};
 
   // Group products by supply chain
-  ggCpyscList.forEach((item) => {
+  gpCpyscList.forEach((item) => {
     const { supplyChainId, productId } = item;
-    const product = ggCpyList.find((p) => p.productId === productId);
+    const product = gpCpyList.find((p) => p.productId === productId);
     if (!product) return;
 
     if (!valueChains[supplyChainId]) {
@@ -884,8 +901,7 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
   const [rcaThreshold, setRcaThreshold] = useState(1.0);
   const [hoveredProductGlobalId, setHoveredProductGlobalId] = useState(null);
   const containerRef = useRef(null);
-  // Track container size (not used for layout switching)
-  const [, setDimensions] = useState({ width: 800, height: 600 });
+  // Only track plot dimensions from ParentSize (no redundant state)
   const [plotDimensions, setPlotDimensions] = useState({
     width: 800,
     height: 600,
@@ -900,7 +916,6 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
 
   // Consider a short viewport height as a separate constraint for spacing
   const isShortHeight = useMediaQuery("(max-height:740px)");
-  const { isCondensed } = useSidebar();
 
   // Update layout mode when view changes
   useEffect(() => {
@@ -928,8 +943,8 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
   const currentData = useMemo(() => {
     if (!countryData?.productData) return null;
     return {
-      ggCpyList: countryData.productData,
-      ggCpyscList: countryData.productSupplyChainData || [],
+      gpCpyList: countryData.productData,
+      gpCpyscList: countryData.productSupplyChainData || [],
       productClusterRows: productClusterRows || [],
     };
   }, [countryData, productClusterRows]);
@@ -969,40 +984,30 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
   const valueChains = useMemo(() => {
     if (!currentData) return {};
     return transformDataForValueChains(
-      currentData.ggCpyList,
-      currentData.ggCpyscList,
+      currentData.gpCpyList,
+      currentData.gpCpyscList,
       clusterLookup,
       layoutMode,
     );
   }, [currentData, clusterLookup, layoutMode]);
 
-  // Calculate container dimensions
-  // Keep container dimensions for potential future use
-  useEffect(() => {
-    if (!containerRef?.current) return;
-    const updateDimensions = () => {
-      const container = containerRef.current;
-      if (!container) return;
-      const rect = container.getBoundingClientRect();
-      setDimensions({ width: rect.width, height: rect.height });
-    };
-    updateDimensions();
-    const resizeObserver = new ResizeObserver(updateDimensions);
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, []);
-
-  // Helper component to sync ParentSize measurements into state to trigger recalculation
+  // Helper component to sync ParentSize measurements into state
+  // This useEffect is necessary because ParentSize provides dimensions as props,
+  // and we need them in state for useMemo dependencies
   const SizeSync = ({ width, height }) => {
     useEffect(() => {
       if (width > 0 && height > 0) {
-        setPlotDimensions({ width, height });
+        // Only update if dimensions actually changed (avoid infinite loops)
+        setPlotDimensions((prev) => {
+          if (prev.width !== width || prev.height !== height) {
+            return { width, height };
+          }
+          return prev;
+        });
       }
     }, [width, height]);
     return null;
   };
-
-  // ParentSize + SizeSync handle plotDimensions updates
 
   // Calculate unified layout
   const unifiedLayout = useMemo(() => {
@@ -1013,10 +1018,11 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
         valueChainCircles: [],
         valueChainLabels: [],
         clusterLabels: [],
+        bounds: { minY: 0, maxY: plotDimensions.height },
       };
     }
 
-    return calculateUnifiedLayout(
+    const layout = calculateUnifiedLayout(
       valueChains,
       layoutMode,
       productLookup,
@@ -1026,6 +1032,44 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
       isNarrow,
       isShortHeight,
     );
+
+    // Calculate actual bounds of all content
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    // Check value chain labels and icons
+    layout.valueChainLabels.forEach((label) => {
+      if (label.icon && label.iconY !== undefined) {
+        // Icon is centered at iconY, so top edge is iconY - iconSize/2
+        const iconSize = label.iconSize || 35;
+        minY = Math.min(minY, label.iconY - iconSize / 2);
+      }
+      minY = Math.min(minY, label.y - 10); // Account for text height
+      maxY = Math.max(maxY, label.y + 10);
+    });
+
+    // Check cluster labels
+    layout.clusterLabels.forEach((label) => {
+      minY = Math.min(minY, label.y - 10);
+      maxY = Math.max(maxY, label.y + 10);
+    });
+
+    // Check circles
+    layout.valueChainCircles.forEach((circle) => {
+      maxY = Math.max(maxY, circle.y + circle.r);
+    });
+
+    layout.clusterCircles.forEach((circle) => {
+      maxY = Math.max(maxY, circle.y + circle.r);
+    });
+
+    return {
+      ...layout,
+      bounds: {
+        minY: Math.min(0, minY),
+        maxY: Math.max(plotDimensions.height, maxY),
+      },
+    };
   }, [
     valueChains,
     layoutMode,
@@ -1036,12 +1080,7 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
     isShortHeight,
   ]);
 
-  // Dynamic spacing to ensure room for title/click hint and legend on short-height screens
-  const topReservedPx = isShortHeight ? 96 : 80;
-  // When sidebar is closed (condensed), add a little extra bottom padding
-  const condensedBottomBump = isCondensed ? 40 : 0;
-  const bottomReservedPxXs = (isShortHeight ? 200 : 160) + condensedBottomBump;
-  const bottomReservedPxMd = (isShortHeight ? 150 : 120) + condensedBottomBump;
+  // No hardcoded spacing needed - flexbox will handle it
 
   // Apply dynamic properties (opacity for RCA)
   const processedBubbles = useMemo(() => {
@@ -1228,7 +1267,7 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
         );
         candidates.forEach((el) => {
           const element = el;
-          if (element && element.style) {
+          if (element?.style) {
             hiddenElements.push(element);
             element.setAttribute(
               "data-export-original-display",
@@ -1336,311 +1375,321 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
     <Box
       ref={containerRef}
       sx={{
-        position: "relative",
+        display: "flex",
+        flexDirection: "column",
         height: "100%",
         width: "100%",
         overflow: "hidden",
         backgroundColor: "white",
       }}
     >
-      {/* Main Title */}
+      {/* Header Section - Title and Click Hint */}
       <Box
         sx={{
-          height: 60,
+          flexShrink: 0,
           display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-end",
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
-          mb: 1,
-        }}
-      >
-        <Typography variant="chart-title">
-          {isClustersOnlyMode
-            ? "Industrial Clusters & Products"
-            : layoutMode === "clustered"
-              ? "Green Value Chains, Industrial Clusters & Products"
-              : "Green Value Chains and Products"}
-        </Typography>
-      </Box>
-
-      {/* Header Controls */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 50,
-          left: 0,
-          right: 0,
-          zIndex: 20,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          pb: 0,
+          flexDirection: "column",
+          gap: { xs: 0.5, md: 1 },
+          pt: { xs: 1, md: 1.5 },
+          pb: { xs: 0.5, md: 1 },
           px: 2,
+          backgroundColor: "rgba(255, 255, 255, 0.95)",
         }}
       >
-        {/* Instruction text */}
-        <ClickHintBox text="Click on a bubble to see its products" />
+        {/* Title */}
+        <Box
+          sx={{
+            height: 60,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            mb: 1,
+          }}
+        >
+          <Typography variant="chart-title">
+            {isClustersOnlyMode
+              ? "Industrial Clusters & Products"
+              : layoutMode === "clustered"
+                ? "Green Value Chains, Industrial Clusters & Products"
+                : "Green Value Chains and Products"}
+          </Typography>
+        </Box>
+
+        {/* Click Hint */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <ClickHintBox text="Click on a bubble to see its products" />
+        </Box>
       </Box>
 
-      {/* Unified SVG */}
+      {/* Visualization Container - Grows to fill available space */}
       <Box
         sx={{
-          marginTop: {
-            xs: `${topReservedPx}px`,
-            md: `${topReservedPx}px`,
-          },
-          marginBottom: {
-            xs: `${bottomReservedPxXs}px`,
-            md: `${bottomReservedPxMd}px`,
-          },
-          height: {
-            xs: `calc(100vh - ${topReservedPx + bottomReservedPxXs}px)`,
-            md: `calc(100vh - ${topReservedPx + bottomReservedPxMd}px)`,
-          },
+          flex: "1 1 auto",
           width: "100%",
+          minHeight: 0, // Important for flexbox to allow shrinking
+          position: "relative",
         }}
       >
         <ParentSize debounceTime={0}>
-          {({ width, height }) => (
-            <svg
-              width="100%"
-              height="100%"
-              viewBox={`0 0 ${width} ${height}`}
-              preserveAspectRatio="xMidYMid meet"
-              style={{ overflow: "visible" }}
-              role="img"
-              aria-label={svgAriaLabel}
-              aria-describedby="circle-pack-desc"
-            >
-              {/* keep plotDimensions in state so upstream memoized layout recomputes */}
-              <SizeSync width={width} height={height} />
-              <desc id="circle-pack-desc">
-                Interactive bubble chart of green value chains, clusters, and
-                products. Hover or focus a bubble to see details.
-              </desc>
-              {/* Click hint now rendered above in header controls to avoid overlap */}
-              {/* Value chain boundary circles */}
-              {valueChainTransitions((style, circle) => (
-                <animated.circle
-                  key={circle.id}
-                  cx={style.x}
-                  cy={style.y}
-                  r={style.r}
-                  fill={circle.fill}
-                  stroke={circle.stroke}
-                  strokeWidth={circle.strokeWidth}
-                  strokeOpacity={style.strokeOpacity}
-                  pointerEvents="none"
-                />
-              ))}
+          {({ width, height }) => {
+            // Calculate viewBox dimensions to encompass all content
+            const viewBoxY = unifiedLayout.bounds?.minY || 0;
+            const viewBoxHeight =
+              (unifiedLayout.bounds?.maxY || height) - viewBoxY;
 
-              {/* Cluster circles */}
-              {clusterTransitions((style, circle) => (
-                <animated.circle
-                  key={circle.id}
-                  cx={style.x}
-                  cy={style.y}
-                  r={style.r}
-                  fill={circle.fill}
-                  stroke={circle.stroke}
-                  strokeWidth={circle.strokeWidth}
-                  pointerEvents={
-                    layoutMode === "clusters-only" ? "all" : "none"
-                  }
-                  style={
-                    layoutMode === "clusters-only" ? { cursor: "pointer" } : {}
-                  }
-                  onMouseEnter={
-                    layoutMode === "clusters-only"
-                      ? (event) => {
-                          const { clientX, clientY } = event;
-                          showTooltip({
-                            tooltipData: {
+            return (
+              <svg
+                width="100%"
+                height="100%"
+                viewBox={`0 ${viewBoxY} ${width} ${viewBoxHeight}`}
+                preserveAspectRatio="xMidYMid meet"
+                style={{ overflow: "visible" }}
+                role="img"
+                aria-label={svgAriaLabel}
+                aria-describedby="circle-pack-desc"
+              >
+                {/* keep plotDimensions in state so upstream memoized layout recomputes */}
+                <SizeSync width={width} height={height} />
+                <desc id="circle-pack-desc">
+                  Interactive bubble chart of green value chains, clusters, and
+                  products. Hover or focus a bubble to see details.
+                </desc>
+                {/* Click hint now rendered above in header controls to avoid overlap */}
+                {/* Value chain boundary circles */}
+                {valueChainTransitions((style, circle) => (
+                  <animated.circle
+                    key={circle.id}
+                    cx={style.x}
+                    cy={style.y}
+                    r={style.r}
+                    fill={circle.fill}
+                    stroke={circle.stroke}
+                    strokeWidth={circle.strokeWidth}
+                    strokeOpacity={style.strokeOpacity}
+                    pointerEvents="none"
+                  />
+                ))}
+
+                {/* Cluster circles */}
+                {clusterTransitions((style, circle) => (
+                  <animated.circle
+                    key={circle.id}
+                    cx={style.x}
+                    cy={style.y}
+                    r={style.r}
+                    fill={circle.fill}
+                    stroke={circle.stroke}
+                    strokeWidth={circle.strokeWidth}
+                    pointerEvents={
+                      layoutMode === "clusters-only" ? "all" : "none"
+                    }
+                    style={
+                      layoutMode === "clusters-only"
+                        ? { cursor: "pointer" }
+                        : {}
+                    }
+                    onMouseEnter={
+                      layoutMode === "clusters-only"
+                        ? (event) => {
+                            const { clientX, clientY } = event;
+                            showTooltip({
+                              tooltipData: {
+                                type: "cluster",
+                                data: {
+                                  clusterName: circle.clusterName,
+                                  productCount: circle.productCount,
+                                },
+                              },
+                              tooltipLeft: clientX,
+                              tooltipTop: clientY,
+                            });
+                          }
+                        : undefined
+                    }
+                    onMouseLeave={
+                      layoutMode === "clusters-only"
+                        ? () => hideTooltip()
+                        : undefined
+                    }
+                    onClick={
+                      layoutMode === "clusters-only"
+                        ? () =>
+                            openSelectionModal({
                               type: "cluster",
-                              data: {
-                                clusterName: circle.clusterName,
-                                productCount: circle.productCount,
-                              },
-                            },
-                            tooltipLeft: clientX,
-                            tooltipTop: clientY,
-                          });
-                        }
-                      : undefined
-                  }
-                  onMouseLeave={
-                    layoutMode === "clusters-only"
-                      ? () => hideTooltip()
-                      : undefined
-                  }
-                  onClick={
-                    layoutMode === "clusters-only"
-                      ? () =>
-                          openSelectionModal({
-                            type: "cluster",
-                            clusterId: circle.clusterId,
-                            title: circle.clusterName,
-                            source: "circle-pack",
-                            detailLevel: "basic",
-                          })
-                      : undefined
-                  }
-                />
-              ))}
+                              clusterId: circle.clusterId,
+                              title: circle.clusterName,
+                              source: "circle-pack",
+                              detailLevel: "basic",
+                            })
+                        : undefined
+                    }
+                  />
+                ))}
 
-              {/* Product bubbles */}
-              {productTransitions((style, bubble) => (
-                <animated.circle
-                  key={bubble.id}
-                  cx={style.x}
-                  cy={style.y}
-                  r={style.r}
-                  fill={bubble.fill}
-                  fillOpacity={style.fillOpacity}
-                  stroke={bubble.highlighted ? "#000" : "none"}
-                  strokeWidth={bubble.highlighted ? 2 : 0}
-                  style={
-                    layoutMode === "clusters-only" ? {} : { cursor: "pointer" }
-                  }
-                  pointerEvents={
-                    layoutMode === "clusters-only" ? "none" : "all"
-                  }
-                  onMouseEnter={
-                    layoutMode === "clusters-only"
-                      ? undefined
-                      : (event) => {
-                          const { clientX, clientY } = event;
-                          const gpId =
-                            bubble.globalProductId ||
-                            (bubble?.data?.productId
-                              ? `product-${bubble.data.productId}`
-                              : undefined);
-                          if (gpId) setHoveredProductGlobalId(gpId);
-                          showTooltip({
-                            tooltipData: {
+                {/* Product bubbles */}
+                {productTransitions((style, bubble) => (
+                  <animated.circle
+                    key={bubble.id}
+                    cx={style.x}
+                    cy={style.y}
+                    r={style.r}
+                    fill={bubble.fill}
+                    fillOpacity={style.fillOpacity}
+                    stroke={bubble.highlighted ? "#000" : "none"}
+                    strokeWidth={bubble.highlighted ? 2 : 0}
+                    style={
+                      layoutMode === "clusters-only"
+                        ? {}
+                        : { cursor: "pointer" }
+                    }
+                    pointerEvents={
+                      layoutMode === "clusters-only" ? "none" : "all"
+                    }
+                    onMouseEnter={
+                      layoutMode === "clusters-only"
+                        ? undefined
+                        : (event) => {
+                            const { clientX, clientY } = event;
+                            const gpId =
+                              bubble.globalProductId ||
+                              (bubble?.data?.productId
+                                ? `product-${bubble.data.productId}`
+                                : undefined);
+                            if (gpId) setHoveredProductGlobalId(gpId);
+                            showTooltip({
+                              tooltipData: {
+                                type: "product",
+                                data: {
+                                  product: bubble.product,
+                                  nameShortEn: bubble.product?.nameShortEn,
+                                  code: bubble.product?.code,
+                                  exportValue: bubble.data?.exportValue,
+                                  exportRca: bubble.data?.exportRca,
+                                  // Include cluster information when available (clustered layout)
+                                  clusterName:
+                                    bubble?.layoutContext?.clusterName,
+                                  clusterId: bubble?.clusterId,
+                                  year: parseInt(yearSelection),
+                                },
+                              },
+                              tooltipLeft: clientX,
+                              tooltipTop: clientY,
+                            });
+                          }
+                    }
+                    onMouseLeave={
+                      layoutMode === "clusters-only"
+                        ? undefined
+                        : () => {
+                            setHoveredProductGlobalId(null);
+                            hideTooltip();
+                          }
+                    }
+                    onClick={
+                      layoutMode === "clusters-only"
+                        ? undefined
+                        : () =>
+                            openSelectionModal({
                               type: "product",
-                              data: {
-                                product: bubble.product,
-                                nameShortEn: bubble.product?.nameShortEn,
-                                code: bubble.product?.code,
-                                exportValue: bubble.data?.exportValue,
-                                exportRca: bubble.data?.exportRca,
-                                // Include cluster information when available (clustered layout)
-                                clusterName: bubble?.layoutContext?.clusterName,
-                                clusterId: bubble?.clusterId,
-                                year: parseInt(yearSelection),
-                              },
-                            },
-                            tooltipLeft: clientX,
-                            tooltipTop: clientY,
-                          });
-                        }
-                  }
-                  onMouseLeave={
-                    layoutMode === "clusters-only"
-                      ? undefined
-                      : () => {
-                          setHoveredProductGlobalId(null);
-                          hideTooltip();
-                        }
-                  }
-                  onClick={
-                    layoutMode === "clusters-only"
-                      ? undefined
-                      : () =>
-                          openSelectionModal({
-                            type: "product",
-                            productId: bubble?.data?.productId,
-                            title: bubble.product?.nameShortEn,
-                            supplyChainId: bubble?.valueChainId,
-                            source: "circle-pack",
-                            detailLevel: "basic",
-                          })
-                  }
-                />
-              ))}
+                              productId: bubble?.data?.productId,
+                              title: bubble.product?.nameShortEn,
+                              supplyChainId: bubble?.valueChainId,
+                              source: "circle-pack",
+                              detailLevel: "basic",
+                            })
+                    }
+                  />
+                ))}
 
-              {/* Value chain icons and labels */}
-              {labelTransitions((style, label) => (
-                <React.Fragment key={label.id}>
-                  {/* Value chain icon */}
-                  {label.icon && (
-                    <animated.image
-                      href={label.icon}
-                      x={label.iconX - (label.iconSize || 35) / 2}
-                      y={label.iconY - (label.iconSize || 35) / 2}
-                      width={label.iconSize || 35}
-                      height={label.iconSize || 35}
+                {/* Value chain icons and labels */}
+                {labelTransitions((style, label) => (
+                  <React.Fragment key={label.id}>
+                    {/* Value chain icon */}
+                    {label.icon && (
+                      <animated.image
+                        href={label.icon}
+                        x={label.iconX - (label.iconSize || 35) / 2}
+                        y={label.iconY - (label.iconSize || 35) / 2}
+                        width={label.iconSize || 35}
+                        height={label.iconSize || 35}
+                        opacity={style.opacity}
+                        pointerEvents="none"
+                      />
+                    )}
+                    {/* Value chain text */}
+                    <animated.text
+                      x={style.x}
+                      y={style.y}
+                      textAnchor="middle"
+                      fontSize={label.fontSize || 16}
+                      fontWeight="600"
+                      fill="#000"
                       opacity={style.opacity}
                       pointerEvents="none"
-                    />
-                  )}
-                  {/* Value chain text */}
+                    >
+                      {label.text}
+                    </animated.text>
+                  </React.Fragment>
+                ))}
+
+                {/* Cluster labels */}
+                {clusterLabelTransitions((style, label) => (
                   <animated.text
+                    key={label.id}
                     x={style.x}
                     y={style.y}
                     textAnchor="middle"
-                    fontSize={label.fontSize || 16}
+                    fontSize="16"
                     fontWeight="600"
                     fill="#000"
                     opacity={style.opacity}
                     pointerEvents="none"
+                    style={{
+                      maxWidth: "130px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     {label.text}
                   </animated.text>
-                </React.Fragment>
-              ))}
-
-              {/* Cluster labels */}
-              {clusterLabelTransitions((style, label) => (
-                <animated.text
-                  key={label.id}
-                  x={style.x}
-                  y={style.y}
-                  textAnchor="middle"
-                  fontSize="16"
-                  fontWeight="600"
-                  fill="#000"
-                  opacity={style.opacity}
-                  pointerEvents="none"
-                  style={{
-                    maxWidth: "130px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {label.text}
-                </animated.text>
-              ))}
-            </svg>
-          )}
+                ))}
+              </svg>
+            );
+          }}
         </ParentSize>
       </Box>
 
-      {/* RCA Legend Section */}
+      {/* Footer Section - Legend and Attribution */}
       {view.legend && (
         <Box
           sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 19,
-            padding: {
-              xs: "24px 12px 20px 12px",
-              md: "20px 16px 16px 16px",
-            },
+            flexShrink: 0,
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: {
-              xs: "80px",
-              md: "60px",
-            },
+            flexDirection: "column",
+            gap: 0.5,
+            pt: 1,
+            pb: { xs: 1, md: 1.5 },
+            px: 2,
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            position: "relative",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          {/* Legend */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Legend
               key={view.legend}
               mode={view.legend}
@@ -1648,22 +1697,41 @@ const UnifiedCirclePack = ({ view, showTooltip, hideTooltip }) => {
               onChangeRcaThreshold={setRcaThreshold}
             />
           </Box>
+
+          {/* Attribution */}
+          <Typography
+            variant="chart-attribution"
+            sx={{
+              textAlign: "right",
+              fontSize: "0.625rem",
+            }}
+          >
+            {view.source}
+          </Typography>
         </Box>
       )}
 
-      {/* Attribution */}
-      <Typography
-        variant="chart-attribution"
-        sx={{
-          position: "absolute",
-          right: 16,
-          bottom: 8,
-          zIndex: 25,
-          fontSize: "10px",
-        }}
-      >
-        {view.source}
-      </Typography>
+      {/* Attribution (when no legend) */}
+      {!view.legend && (
+        <Box
+          sx={{
+            flexShrink: 0,
+            display: "flex",
+            justifyContent: "flex-end",
+            px: 2,
+            py: 1,
+          }}
+        >
+          <Typography
+            variant="chart-attribution"
+            sx={{
+              fontSize: "0.625rem",
+            }}
+          >
+            {view.source}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -1,15 +1,17 @@
 import React from "react";
 import { useState, useMemo, useEffect, useRef, useLayoutEffect } from "react";
 import { animated, useTransition, config } from "@react-spring/web";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Button } from "@mui/material";
 import { PlayArrow, Pause } from "@mui/icons-material";
 import { ParentSize } from "@visx/responsive";
 import { Text } from "@visx/text";
 import { pack, hierarchy, HierarchyCircularNode } from "d3-hierarchy";
+import { useNavigate } from "react-router-dom";
 import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
 import { getValueChainIcon } from "../visualization/ClusterTree/valueChainIconMapping";
 import HierarchyLegend from "../HierarchyLegend";
 import { getSupplyChainColor } from "../../utils";
+import { Routes } from "../../../../../metadata";
 
 // Type definitions for the simplified animation
 interface ValueChain {
@@ -164,7 +166,7 @@ const STEPS = [
     id: "all-value-chains-hierarchy",
     title: "",
     description:
-      "Greenplexity maps ten value chains - Electric Vehicles, Heat Pumps, Fuel Cells & Green Hydrogen, Wind Power, Solar Power, Hydroelectric Power, Nuclear Power, Batteries, Electric Grid, and Critical Metals & Minerals - showing their respective clusters and products inside.",
+      "Greenplexity maps ten green value chains, showing their respective clusters and products inside.",
     duration: 6000,
   },
 ];
@@ -250,6 +252,7 @@ const AnimatedValueChainIntroInternal: React.FC<
   );
   const [randomSeed, setRandomSeed] = useState(0); // For randomizing selections on restart
   const previousHighlightedProduct = useRef<number | null>(null);
+  const navigate = useNavigate();
 
   // Get data from shared hook
   const { supplyChainsData, productClusterRows, isLoading, productMappings } =
@@ -259,7 +262,7 @@ const AnimatedValueChainIntroInternal: React.FC<
   const layoutParams = useMemo(() => {
     const validProducts =
       productClusterRows?.filter((row) =>
-        supplyChainsData?.ggSupplyChainList?.some(
+        supplyChainsData?.gpSupplyChainList?.some(
           (chain: { supplyChain: string }) =>
             chain.supplyChain === row.supply_chain,
         ),
@@ -294,7 +297,7 @@ const AnimatedValueChainIntroInternal: React.FC<
 
   // Process data for animation - simplified for new design
   const animationData = useMemo(() => {
-    if (!supplyChainsData?.ggSupplyChainList || !productClusterRows) {
+    if (!supplyChainsData?.gpSupplyChainList || !productClusterRows) {
       return { valueChains: [], products: [] };
     }
 
@@ -302,7 +305,7 @@ const AnimatedValueChainIntroInternal: React.FC<
     const valueChains: ValueChain[] = VALUE_CHAIN_ORDER.map(
       (chainName, index) => {
         // Find matching supply chain data
-        const supplyChainData = supplyChainsData.ggSupplyChainList.find(
+        const supplyChainData = supplyChainsData.gpSupplyChainList.find(
           (chain: { supplyChain: string; supplyChainId: number }) =>
             chain.supplyChain === chainName,
         );
@@ -359,7 +362,7 @@ const AnimatedValueChainIntroInternal: React.FC<
   const allProductToValueChains = useMemo(() => {
     if (
       !productMappings?.length ||
-      !supplyChainsData?.ggSupplyChainList?.length
+      !supplyChainsData?.gpSupplyChainList?.length
     ) {
       return new Map();
     }
@@ -2160,7 +2163,7 @@ const AnimatedValueChainIntroInternal: React.FC<
         )}
 
         {/* Section titles: Top (Value Chains) and Middle (Products/Clusters) */}
-        {currentStep <= 6 && (
+        {currentStep <= 5 && (
           <Text
             x={width / 2}
             y={topTitleY}
@@ -2174,7 +2177,7 @@ const AnimatedValueChainIntroInternal: React.FC<
           </Text>
         )}
 
-        {currentStep >= 1 && currentStep <= 6 && (
+        {currentStep >= 1 && currentStep <= 5 && (
           <Text
             x={width / 2}
             y={midTitleY}
@@ -2379,10 +2382,10 @@ const AnimatedValueChainIntroInternal: React.FC<
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          position: "relative",
+          gap: 2,
         }}
       >
-        {/* Progress indicator - centered */}
+        {/* Progress indicator */}
         <Box
           sx={{
             display: "flex",
@@ -2473,6 +2476,39 @@ const AnimatedValueChainIntroInternal: React.FC<
             ))}
           </Box>
         </Box>
+
+        {/* Skip Tutorial Button - directly to the right of controls */}
+        <Button
+          onClick={() => {
+            // Navigate to value chains products page (next step after tutorial)
+            const params = new URLSearchParams();
+            if (selectedCountry) {
+              params.set("country", String(selectedCountry));
+            }
+            if (selectedYear) {
+              params.set("year", String(selectedYear));
+            }
+            const urlWithParams = `${Routes.GreenGrowthValueChainsProducts}${params.toString() ? `?${params.toString()}` : ""}`;
+            navigate(urlWithParams);
+          }}
+          aria-label="Skip to value chains products page"
+          sx={{
+            backgroundColor: "rgba(255,255,255,0.9)",
+            color: "#000",
+            border: "1px solid #000",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "rgba(255,255,255,1)",
+              border: "1px solid #333",
+            },
+          }}
+        >
+          SKIP THE TUTORIAL
+        </Button>
       </Box>
     </Box>
   );

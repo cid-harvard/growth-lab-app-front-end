@@ -35,52 +35,52 @@ import {
 // Define the supply chain mappings query locally since it's not exported
 const GET_ALL_SUPPLY_CHAIN_MAPPINGS = gql`
   query GetAllSupplyChainMappings {
-    supplyChain0: ggSupplyChainClusterProductMemberList(supplyChainId: 0) {
+    supplyChain0: gpSupplyChainClusterProductMemberList(supplyChainId: 0) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain1: ggSupplyChainClusterProductMemberList(supplyChainId: 1) {
+    supplyChain1: gpSupplyChainClusterProductMemberList(supplyChainId: 1) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain2: ggSupplyChainClusterProductMemberList(supplyChainId: 2) {
+    supplyChain2: gpSupplyChainClusterProductMemberList(supplyChainId: 2) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain3: ggSupplyChainClusterProductMemberList(supplyChainId: 3) {
+    supplyChain3: gpSupplyChainClusterProductMemberList(supplyChainId: 3) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain4: ggSupplyChainClusterProductMemberList(supplyChainId: 4) {
+    supplyChain4: gpSupplyChainClusterProductMemberList(supplyChainId: 4) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain5: ggSupplyChainClusterProductMemberList(supplyChainId: 5) {
+    supplyChain5: gpSupplyChainClusterProductMemberList(supplyChainId: 5) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain6: ggSupplyChainClusterProductMemberList(supplyChainId: 6) {
+    supplyChain6: gpSupplyChainClusterProductMemberList(supplyChainId: 6) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain7: ggSupplyChainClusterProductMemberList(supplyChainId: 7) {
+    supplyChain7: gpSupplyChainClusterProductMemberList(supplyChainId: 7) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain8: ggSupplyChainClusterProductMemberList(supplyChainId: 8) {
+    supplyChain8: gpSupplyChainClusterProductMemberList(supplyChainId: 8) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain9: ggSupplyChainClusterProductMemberList(supplyChainId: 9) {
+    supplyChain9: gpSupplyChainClusterProductMemberList(supplyChainId: 9) {
       supplyChainId
       productId
       clusterId
@@ -200,22 +200,22 @@ const TreeGrowthExperiment: React.FC = () => {
     const productMappingsLookup = new Map();
 
     // Build product lookup
-    if (productsData?.ggProductList) {
-      productsData.ggProductList.forEach((product: any) => {
+    if (productsData?.gpProductList) {
+      productsData.gpProductList.forEach((product: any) => {
         productLookup.set(product.productId, product);
       });
     }
 
     // Build country lookup
-    if (countriesData?.ggLocationCountryList) {
-      countriesData.ggLocationCountryList.forEach((country: any) => {
+    if (countriesData?.gpLocationCountryList) {
+      countriesData.gpLocationCountryList.forEach((country: any) => {
         countryLookup[country.countryId.toString()] = country.nameShortEn;
       });
     }
 
     // Build supply chain lookup
-    if (supplyChainsData?.ggSupplyChainList) {
-      supplyChainsData.ggSupplyChainList.forEach((chain: any) => {
+    if (supplyChainsData?.gpSupplyChainList) {
+      supplyChainsData.gpSupplyChainList.forEach((chain: any) => {
         supplyChainLookup.set(chain.supplyChainId, chain);
       });
     }
@@ -250,7 +250,7 @@ const TreeGrowthExperiment: React.FC = () => {
     const countryProductData = yearlyDataMap.get(selectedYear);
 
     if (
-      !countryProductData?.ggCpyList ||
+      !countryProductData?.gpCpyList ||
       !productLookup.size ||
       !supplyChainLookup.size ||
       !productMappingsLookup.size
@@ -264,7 +264,7 @@ const TreeGrowthExperiment: React.FC = () => {
     let productsFilteredByRCA = 0;
 
     // Process country product data to create tree structure
-    countryProductData.ggCpyList.forEach((cpyItem: any) => {
+    countryProductData.gpCpyList.forEach((cpyItem: any) => {
       totalProductsProcessed++;
       const product = productLookup.get(cpyItem.productId);
       const mappings = productMappingsLookup.get(cpyItem.productId) || [];

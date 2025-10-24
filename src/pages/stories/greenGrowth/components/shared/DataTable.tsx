@@ -217,7 +217,7 @@ const ProductsTable = ({
   const buildDiamondLegend = useCallback(
     (content: React.ReactNode): React.ReactNode => (
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography sx={{ fontSize: isMobile ? "12px" : "14px" }}>
+        <Typography sx={{ fontSize: isMobile ? "0.75rem" : "0.875rem" }}>
           {content}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -235,14 +235,14 @@ const ProductsTable = ({
 
   // Create cluster lookup for enriching data
   const clusterLookup = useMemo(() => {
-    if (!clustersData?.ggClusterList) return new Map();
+    if (!clustersData?.gpClusterList) return new Map();
     return new Map(
-      clustersData.ggClusterList.map((cluster: any) => [
+      clustersData.gpClusterList.map((cluster: any) => [
         cluster.clusterId,
         cluster,
       ]),
     );
-  }, [clustersData?.ggClusterList]);
+  }, [clustersData?.gpClusterList]);
 
   // Stable getters to satisfy lint rules about dependencies
   const getSupplyChainMappings = useCallback(
@@ -762,7 +762,7 @@ const NestedProductsTable = ({
   const buildDiamondLegend = useCallback(
     (content: React.ReactNode): React.ReactNode => (
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography sx={{ fontSize: isMobile ? "12px" : "14px" }}>
+        <Typography sx={{ fontSize: isMobile ? "0.75rem" : "0.875rem" }}>
           {content}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -1346,7 +1346,7 @@ const DataTable: React.FC<DataTableProps> = ({
   // Extract product data for compatibility
   const productData = useMemo(() => {
     if (!countryData?.productData) return null;
-    return { ggCpyList: countryData.productData };
+    return { gpCpyList: countryData.productData };
   }, [countryData]);
 
   // Synthetic all-products data removed; use only API-provided rows
@@ -1355,12 +1355,12 @@ const DataTable: React.FC<DataTableProps> = ({
 
   // Get the appropriate data based on currentDataType (always use all-products where applicable)
   const tableData = useMemo(() => {
-    return productData?.ggCpyList || [];
+    return productData?.gpCpyList || [];
   }, [productData]);
 
   // Use unified loading and error states
   // Only show loading if we have no data to display at all
-  const hasAnyData = (productData?.ggCpyList?.length || 0) > 0;
+  const hasAnyData = (productData?.gpCpyList?.length || 0) > 0;
   const loading = isLoading && !hasAnyData;
   const error = hasErrors;
 
@@ -1410,7 +1410,10 @@ const DataTable: React.FC<DataTableProps> = ({
           {/* Table Type control */}
           <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
             <Typography
-              sx={{ fontSize: isMobile ? "12px" : "14px", color: "#000" }}
+              sx={{
+                fontSize: isMobile ? "0.75rem" : "0.875rem",
+                color: "#000",
+              }}
             >
               Table Type
             </Typography>

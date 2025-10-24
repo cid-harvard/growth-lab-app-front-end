@@ -127,7 +127,7 @@ interface ClusterIndicator {
 // GraphQL queries for Green Growth data
 const GET_CLUSTERS = gql`
   query GetClusters {
-    ggClusterList {
+    gpClusterList {
       clusterId
       clusterName
     }
@@ -136,7 +136,7 @@ const GET_CLUSTERS = gql`
 
 const GET_PRODUCTS = gql`
   query GetProducts {
-    ggProductList {
+    gpProductList {
       productId
       code
       nameEn
@@ -147,7 +147,7 @@ const GET_PRODUCTS = gql`
 
 const GET_PRODUCT_CLUSTER_MAPPINGS = gql`
   query GetProductClusterMappings($supplyChainId: Int!) {
-    ggSupplyChainClusterProductMemberList(supplyChainId: $supplyChainId) {
+    gpSupplyChainClusterProductMemberList(supplyChainId: $supplyChainId) {
       productId
       clusterId
     }
@@ -728,7 +728,7 @@ const ColorLegend: FC<{
               opacity: isOtherHovered ? 0.4 : 1,
               cursor: "pointer",
               transition: "all 0.2s ease",
-              fontSize: "12px",
+              fontSize: "0.75rem",
               fontWeight: isHovered ? "bold" : "normal",
               transform: isHovered ? "scale(1.05)" : "scale(1)",
               boxShadow: isHovered ? `0 2px 8px ${indicator.color}40` : "none",
@@ -750,7 +750,7 @@ const ColorLegend: FC<{
               {indicator.clusterNameShort}
               <span
                 style={{
-                  fontSize: "10px",
+                  fontSize: "0.625rem",
                   color: "#666",
                   marginLeft: "4px",
                 }}
@@ -851,10 +851,10 @@ const ProductSpaceClusterBoundaries: FC = () => {
     }
 
     // Extract and process Apollo Client data
-    const greenGrowthProducts = productsData.ggProductList || [];
-    const greenGrowthClusters = clustersData.ggClusterList || [];
+    const greenGrowthProducts = productsData.gpProductList || [];
+    const greenGrowthClusters = clustersData.gpClusterList || [];
     const productClusterMappings = processProductClusterMappings(
-      mappingsData.ggSupplyChainClusterProductMemberList || [],
+      mappingsData.gpSupplyChainClusterProductMemberList || [],
     );
 
     // Generate color scale for clusters

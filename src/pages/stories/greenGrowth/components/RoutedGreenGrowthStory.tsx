@@ -18,7 +18,7 @@ import ClusterTree from "./visualization/ClusterTree/index";
 import ValueChainsHierarchy from "./ValueChainsHierarchy";
 
 import SummaryPage from "./SummaryPage";
-import RankingsPage from "./RankingsPage";
+import RankingsPage from "./rankings";
 import Attribution from "./Attribution";
 import StandardFooter from "../../../../components/text/StandardFooter";
 import Landing from "./Landing";
@@ -72,6 +72,7 @@ const StoryStepLayout = () => {
             height: "100%",
             width: "100%",
             overflow: "hidden",
+            padding: "8px", // Add consistent padding at layout level
           }}
         >
           <Outlet />
@@ -120,7 +121,7 @@ const RadarLayout = () => {
           sx={{
             height: "100%",
             width: "100%",
-            padding: 0, // Add some padding for radar charts
+            padding: "8px", // Add consistent padding for radar charts
           }}
         >
           <Outlet />
@@ -195,7 +196,7 @@ const LandingPage = () => {
 
   const handleExplore = () => {
     // Navigate to the first step - use React Router to preserve any existing URL params
-    navigate({ pathname: "/greenplexity/introduction", search });
+    navigate({ pathname: "/greenplexity/tutorial", search });
   };
 
   return <Landing onExplore={handleExplore} />;
@@ -215,26 +216,30 @@ const RoutedGreenGrowthStory = () => {
 
                 {/* Story steps with scrolly visualizations */}
                 <Route path="" element={<StoryStepLayout />}>
+                  <Route path="tutorial" element={<ValueChainsHierarchy />} />
                   <Route
-                    path="introduction"
-                    element={<ValueChainsHierarchy />}
-                  />
-                  <Route path="overview" element={<RoutedVisualization />} />
-                  <Route
-                    path="competitive-advantage"
-                    element={<RoutedVisualization />}
-                  />
-                  <Route path="clusters" element={<RoutedVisualization />} />
-                  <Route
-                    path="competitiveness/*"
+                    path="value-chains-products"
                     element={<RoutedVisualization />}
                   />
                   <Route
-                    path="strategic-position"
+                    path="value-clusters"
                     element={<RoutedVisualization />}
                   />
-                  <Route path="value-chains" element={<ClusterTree />} />
-                  <Route path="value-chains/table" element={<ClusterTree />} />
+                  <Route
+                    path="cluster-products"
+                    element={<RoutedVisualization />}
+                  />
+                  <Route
+                    path="cluster-trade"
+                    element={<RoutedVisualization />}
+                  />
+                  <Route
+                    path="cluster-market"
+                    element={<RoutedVisualization />}
+                  />
+                  <Route path="strategy" element={<RoutedVisualization />} />
+                  <Route path="connections" element={<ClusterTree />} />
+                  <Route path="connections/table" element={<ClusterTree />} />
                   <Route path="opportunities" element={<ProductScatter />} />
                   <Route
                     path="opportunities/table"
@@ -242,16 +247,17 @@ const RoutedGreenGrowthStory = () => {
                   />
                 </Route>
 
-                {/* Dimensions with ProductRadar (needs padding) */}
+                {/* Products with ProductRadar (needs padding) */}
                 <Route path="" element={<RadarLayout />}>
-                  <Route path="dimensions" element={<ProductRadar />} />
-                  <Route path="dimensions/table" element={<ProductRadar />} />
+                  <Route path="products" element={<ProductRadar />} />
+                  <Route path="products/table" element={<ProductRadar />} />
                 </Route>
 
                 {/* Summary (no sidebar) with footer */}
                 <Route path="" element={<SummaryLayout />}>
                   <Route path="summary" element={<SummaryPage />} />
                   <Route path="rankings" element={<RankingsPage />} />
+                  <Route path="rankings/map" element={<RankingsPage />} />
                 </Route>
 
                 {/* Explore page */}

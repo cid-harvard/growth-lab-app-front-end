@@ -119,13 +119,13 @@ const Legend = ({ mode, rcaThreshold = 1.0, onChangeRcaThreshold }) => {
       sx={{
         width: "100%",
         px: 2,
-        py: 1,
+        pb: 1,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
         gap: isMobile ? 2 : 3,
-        flexWrap: "nowrap",
+        flexWrap: "wrap", // Allow wrapping on narrow screens
       }}
     >
       {mode === "production" && (
@@ -153,7 +153,7 @@ const Legend = ({ mode, rcaThreshold = 1.0, onChangeRcaThreshold }) => {
               flexDirection: "row",
               gap: isMobile ? 1 : 2,
               alignItems: "center",
-              flexWrap: "nowrap",
+              flexWrap: "wrap", // Allow wrapping on narrow screens
             }}
           >
             {items.map((item, index) => (
@@ -178,11 +178,12 @@ const Legend = ({ mode, rcaThreshold = 1.0, onChangeRcaThreshold }) => {
       {mode === "rca" && (
         <Box
           sx={{
-            display: "grid",
-            gridAutoFlow: "column",
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap", // Allow wrapping on narrow screens
             alignItems: "center",
             justifyContent: "center",
-            columnGap: isMobile ? 2 : 3,
+            gap: isMobile ? 1.5 : 2,
           }}
         >
           <GGTooltip title={getTerm("rca").description} placement="top">
@@ -214,16 +215,18 @@ const Legend = ({ mode, rcaThreshold = 1.0, onChangeRcaThreshold }) => {
               <span>{item.label}</span>
             </Box>
           ))}
-          <GGTooltip title="Adjust RCA threshold " placement="top">
-            <IconButton
-              size="small"
-              onClick={(e) => setAnchorEl(e.currentTarget)}
-              sx={{ ml: 1 }}
-              aria-label="Adjust RCA threshold"
-            >
-              <TuneIcon fontSize="small" />
-            </IconButton>
-          </GGTooltip>
+          <Box data-export-hide="true">
+            <GGTooltip title="Adjust RCA threshold " placement="top">
+              <IconButton
+                size="small"
+                onClick={(e) => setAnchorEl(e.currentTarget)}
+                sx={{ ml: isMobile ? 0 : 1 }} // Less margin on mobile
+                aria-label="Adjust RCA threshold"
+              >
+                <TuneIcon fontSize="small" />
+              </IconButton>
+            </GGTooltip>
+          </Box>
           <Popover
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}

@@ -4,6 +4,7 @@ export type GGTermKey =
   | "feasibility"
   | "attractiveness"
   | "worldAverageExport"
+  | "economicCompetitiveness"
   | "rca"
   | "productComplexity"
   | "opportunityGain"
@@ -46,11 +47,18 @@ export const GG_TERMS: Record<GGTermKey, GGTermDefinition> = {
       "The world average of exports here indicates the level of exports a country would have if it exported goods in the same proportion as its overall share of global trade. This is calculated using an RCA (Revealed Comparative Advantage) index value of 1, also known as the Balassa index.",
     addToGlossary: false,
   },
+  economicCompetitiveness: {
+    key: "economicCompetitiveness",
+    title: "Economic Competitiveness",
+    description:
+      'A measure of how effectively a country exports a product. If a country exports more than its "fair share", meaning its share of world exports for that product is greater than the product\'s overall share in global trade (RCA > 1), it is considered economically competitive in that product.',
+    addToGlossary: true,
+  },
   rca: {
     key: "rca",
-    title: "RCA",
+    title: "RCA (Revealed Comparative Advantage)",
     description:
-      "Revealed Comparative Advantage (RCA) is a measure of whether a country is an exporter of a product, based on the relative advantage or disadvantage it has in the export of a certain good. A country is an effective exporter of a product if it exports more than its “fair share” or a share that is at least equal to the share of total world trade that the product represents (RCA > 1).",
+      'A measure of whether a country is an exporter of a product, based on the relative advantage or disadvantage it has in the export of a certain good. A country is an effective exporter of a product if it exports more than its "fair share" or a share that is at least equal to the share of total world trade that the product represents (RCA > 1).',
     addToGlossary: true,
   },
   productComplexity: {
@@ -136,6 +144,7 @@ export const GG_TERMS: Record<GGTermKey, GGTermDefinition> = {
 export const GG_GLOSSARY_ORDER: GGTermKey[] = [
   "feasibility",
   "attractiveness",
+  "economicCompetitiveness",
   "rca",
   "productComplexity",
   "opportunityGain",

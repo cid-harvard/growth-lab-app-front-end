@@ -1,19 +1,20 @@
-import { useMemo, useState } from "react";
-import { Box, Button, Container, Typography, Modal, Fab } from "@mui/material";
+import { useMemo } from "react";
+import { Box, Button, Container, Typography, Fab } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
-import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import { useYearSelection, useCountrySelection } from "../hooks/useUrlParams";
 import { useCountryName } from "../queries/useCountryName";
 import { useGreenGrowthData } from "../hooks/useGreenGrowthData";
 import { useStrategicPosition } from "../hooks/useStrategicPosition";
-import { Widget } from "@typeform/embed-react";
 import IndustryIcon from "../../../../assets/Industry-icon.svg";
-import { ReactComponent as NavIcon4 } from "../../../../assets/nav-icon-4.svg";
+import RankingsPlotIcon from "../../../../assets/greenGrowth/Greenplexity-rankings-plot.svg";
+import ArrowIcon from "../../../../assets/greenGrowth/Greenplexity-arrow.svg";
+import {
+  calculateClusterScores,
+  calculateAttractiveness,
+} from "../utils/rankings";
 
 // White background for entire page
 const PageBackground = styled(Box)(() => ({
@@ -32,7 +33,7 @@ const PageBackground = styled(Box)(() => ({
 const TitleSection = styled(Box)(() => ({
   background: "#ffffff",
   width: "100%",
-  padding: "40px 16px 60px",
+  padding: "40px 16px 0px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -43,7 +44,7 @@ const TitleSection = styled(Box)(() => ({
 const ContentSection = styled(Box)(() => ({
   background: "#ffffff",
   width: "100%",
-  padding: "40px 16px 60px",
+  padding: "0px 0px 0px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -69,7 +70,6 @@ const SummaryPage: React.FC = () => {
   const selectedCountry = useCountrySelection();
   const selectedYear = Number.parseInt(useYearSelection());
   const countryName = useCountryName();
-  const [contactOpen, setContactOpen] = useState(false);
 
   // Get data used by charts
   const { countryData, clustersData } = useGreenGrowthData(
@@ -94,10 +94,10 @@ const SummaryPage: React.FC = () => {
 
   // Compute top clusters exactly like ProductRadar.jsx default selection
   const topClusters = useMemo((): { id: number; name: string }[] => {
-    if (!countryData?.clusterData || !clustersData?.ggClusterList) return [];
+    if (!countryData?.clusterData || !clustersData?.gpClusterList) return [];
 
     const clusterNameById = new Map(
-      clustersData.ggClusterList.map(
+      clustersData.gpClusterList.map(
         (c: { clusterId: number; clusterName: string }) => [
           c.clusterId,
           c.clusterName,
@@ -114,9 +114,10 @@ const SummaryPage: React.FC = () => {
 
     // Calculate attractiveness and density
     const withPositions = filtered.map((clusterItem) => {
-      const attractiveness =
-        0.6 * Number.parseFloat(String(clusterItem.cog)) +
-        0.4 * Number.parseFloat(String(clusterItem.pci));
+      const attractiveness = calculateAttractiveness(
+        Number.parseFloat(String(clusterItem.cog)),
+        Number.parseFloat(String(clusterItem.pci)),
+      );
       const density = Number.parseFloat(String(clusterItem.density));
       return {
         clusterId: Number(clusterItem.clusterId),
@@ -125,43 +126,8 @@ const SummaryPage: React.FC = () => {
       };
     });
 
-    // Normalize values to 0-1 range
-    const aVals = withPositions.map((c) => c.attractiveness);
-    const dVals = withPositions.map((c) => c.density);
-    const minA = Math.min(...aVals);
-    const maxA = Math.max(...aVals);
-    const minD = Math.min(...dVals);
-    const maxD = Math.max(...dVals);
-
-    const scored = withPositions.map((c) => {
-      const normalizedAttractiveness =
-        aVals.length > 1 ? (c.attractiveness - minA) / (maxA - minA) : 0.5;
-      const normalizedDensity =
-        dVals.length > 1 ? (c.density - minD) / (maxD - minD) : 0.5;
-      const distanceFromTopRight = Math.sqrt(
-        Math.pow(1 - normalizedDensity, 2) +
-          Math.pow(1 - normalizedAttractiveness, 2),
-      );
-      const geometricMean = Math.sqrt(
-        normalizedAttractiveness * normalizedDensity,
-      );
-      const topRightScore = 1 - distanceFromTopRight + geometricMean * 0.1;
-      return {
-        ...c,
-        normalizedAttractiveness,
-        normalizedDensity,
-        geometricMean,
-        topRightScore,
-      };
-    });
-
-    // Sort by score, tie-breaker by geometric mean (same as ProductRadar.jsx)
-    const sorted = scored.sort((a, b) => {
-      if (Math.abs(a.topRightScore - b.topRightScore) > 0.01) {
-        return b.topRightScore - a.topRightScore;
-      }
-      return b.geometricMean - a.geometricMean;
-    });
+    // Use shared ranking function to calculate scores and sort
+    const sorted = calculateClusterScores(withPositions);
 
     return sorted
       .slice(0, 2)
@@ -221,7 +187,7 @@ const SummaryPage: React.FC = () => {
     <PageBackground>
       {/* Title Section with White Background */}
       <TitleSection>
-        <Container maxWidth="md">
+        <Container maxWidth="lg" sx={{ mb: 0 }}>
           <Box
             sx={{
               display: "flex",
@@ -242,7 +208,7 @@ const SummaryPage: React.FC = () => {
                 if (!Number.isNaN(selectedYear))
                   params.set("year", String(selectedYear));
                 navigate(
-                  `/greenplexity/dimensions${params.toString() ? `?${params.toString()}` : ""}`,
+                  `/greenplexity/products${params.toString() ? `?${params.toString()}` : ""}`,
                 );
               }}
               sx={{
@@ -253,7 +219,7 @@ const SummaryPage: React.FC = () => {
                 color: "black",
               }}
             >
-              <ArrowUpwardIcon />
+              <ArrowUpwardIcon sx={{ fontSize: 36 }} />
             </Fab>
             <Typography
               variant="h4"
@@ -275,7 +241,7 @@ const SummaryPage: React.FC = () => {
             paragraph
             sx={{
               mb: 0,
-              fontSize: "22px",
+              fontSize: "1.375rem",
               lineHeight: 1.6,
               color: "black",
               maxWidth: "800px",
@@ -292,7 +258,7 @@ const SummaryPage: React.FC = () => {
 
       {/* Main Content Section */}
       <ContentSection>
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           {/* Figures area wrapper with light blue background (spec-like) */}
           <Box
             sx={{
@@ -304,26 +270,24 @@ const SummaryPage: React.FC = () => {
               flexDirection: "column",
               gap: 10,
               mb: 6,
-              maxWidth: "1000px",
+              maxWidth: "1400px",
               mx: "auto",
             }}
           >
             {/* Green Growth Approach - Left title, Right content */}
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "280px 1fr" },
+                gap: 4,
+                alignItems: "start",
               }}
             >
               <Typography
                 sx={{
-                  fontSize: 18,
-                  fontWeight: 600,
-
-                  minWidth: "200px",
-                  flexShrink: 0,
+                  fontSize: 22,
+                  fontWeight: 400,
+                  textTransform: "uppercase",
                 }}
               >
                 Green Growth Approach
@@ -332,32 +296,29 @@ const SummaryPage: React.FC = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: 3,
-                  flex: 1,
+                  gap: 0,
                 }}
               >
                 <Box
                   sx={{
-                    display: "inline-flex",
+                    display: "flex",
                     alignItems: "center",
                     gap: 1,
-                    alignSelf: "flex-start",
                   }}
                 >
                   <BookmarkIcon
                     sx={{
                       color: strategic?.color || "#127DB9",
-                      fontSize: 30,
+                      fontSize: 28,
                     }}
                   />
                   <Typography
                     sx={{
                       fontWeight: 700,
                       color: strategic?.color || "#127DB9",
-                      fontSize: "28px",
+                      fontSize: "1.75rem",
                       lineHeight: 1.2,
-                      mb: 0,
-                      pb: 0,
+                      textTransform: "uppercase",
                     }}
                   >
                     {strategic?.label || "Light Touch Approach"}
@@ -367,16 +328,13 @@ const SummaryPage: React.FC = () => {
                   sx={{
                     color: "#333333",
                     lineHeight: 1.6,
-                    maxWidth: "600px",
-                    fontSize: "18px",
+                    fontSize: "1.125rem",
                     fontWeight: 600,
-                    ml: 5,
-                    mt: 0,
-                    pt: 0,
+                    marginLeft: 4,
                   }}
                 >
                   {strategic?.description ||
-                    "Ample space to diversify calls for leveraging existing successes to enter more complex production."}
+                    "Ample space to diversify calls for leveraging existing successes to enter more complex production"}
                 </Typography>
               </Box>
             </Box>
@@ -384,19 +342,17 @@ const SummaryPage: React.FC = () => {
             {/* High Potential Clusters - Left title, Right content */}
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "280px 1fr" },
+                gap: 4,
+                alignItems: "start",
               }}
             >
               <Typography
                 sx={{
-                  fontSize: 18,
-                  fontWeight: 600,
-
-                  minWidth: "200px",
-                  flexShrink: 0,
+                  fontSize: 22,
+                  fontWeight: 400,
+                  textTransform: "uppercase",
                   lineHeight: 1.3,
                 }}
               >
@@ -407,45 +363,48 @@ const SummaryPage: React.FC = () => {
               {topClusters.length > 0 && (
                 <Box
                   sx={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    gap: 2,
-                    flex: 1,
+                    display: "grid",
+                    gridTemplateColumns: { xs: "1fr", sm: "auto auto" },
+                    gap: { xs: 3, sm: 6 },
+                    alignItems: "start",
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-
-                      height: 45,
-                      flexShrink: 0,
-                    }}
-                  >
+                  {topClusters.map((c) => (
                     <Box
-                      component="img"
-                      src={IndustryIcon}
-                      alt="Industry icon"
-                      sx={{ height: "60px" }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}
-                  >
-                    {topClusters.map((c) => (
-                      <Typography
-                        key={c.id}
+                      key={c.id}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
+                      }}
+                    >
+                      <Box
                         sx={{
-                          fontWeight: 700,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <Box
+                          component="img"
+                          src={IndustryIcon}
+                          alt="Industry icon"
+                          sx={{ height: "50px" }}
+                        />
+                      </Box>
+                      <Typography
+                        sx={{
+                          fontWeight: 600,
                           color: "#333333",
-                          fontSize: "18px",
+                          fontSize: "1.375rem",
+                          textTransform: "uppercase",
                         }}
                       >
                         {c.name}
                       </Typography>
-                    ))}
-                  </Box>
+                    </Box>
+                  ))}
                 </Box>
               )}
             </Box>
@@ -453,28 +412,27 @@ const SummaryPage: React.FC = () => {
             {/* Green Complexity Ranking - Left title, Right content */}
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "280px 1fr" },
+                gap: 4,
+                alignItems: "start",
               }}
             >
               <Typography
                 sx={{
-                  fontSize: 18,
-                  fontWeight: 600,
-                  minWidth: "200px",
-                  flexShrink: 0,
+                  fontSize: 22,
+                  fontWeight: 400,
+                  textTransform: "uppercase",
                 }}
               >
                 Green Complexity Ranking
               </Typography>
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2,
-                  flex: 1,
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "auto auto" },
+                  gap: { xs: 3, sm: 6 },
+                  alignItems: "start",
                 }}
               >
                 <Box
@@ -484,21 +442,39 @@ const SummaryPage: React.FC = () => {
                     gap: 1.5,
                   }}
                 >
-                  <NavIcon4
-                    height={60}
-                    style={{
-                      stroke: "#000",
-                      strokeWidth: 1,
-                      fill: "none",
-                    }}
+                  <Box
+                    component="img"
+                    src={RankingsPlotIcon}
+                    alt="Rankings chart"
+                    sx={{ height: "44px", width: "51px", flexShrink: 0 }}
                   />
-                  <Typography
-                    sx={{ fontWeight: 700, color: "#333333", fontSize: "18px" }}
-                  >
-                    {ranking.rankNow !== null
-                      ? `${ranking.ordinal(ranking.rankNow)} out of ${ranking.total || "-"} Countries`
-                      : "Data unavailable"}
-                  </Typography>
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        color: "#333333",
+                        fontSize: "1.75rem",
+                        lineHeight: 1.2,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {ranking.rankNow !== null
+                        ? ranking.ordinal(ranking.rankNow)
+                        : "-"}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        color: "#333333",
+                        fontSize: "1.125rem",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {ranking.total
+                        ? `Out of ${ranking.total} Countries`
+                        : "Data unavailable"}
+                    </Typography>
+                  </Box>
                 </Box>
                 <Box
                   sx={{
@@ -508,32 +484,80 @@ const SummaryPage: React.FC = () => {
                   }}
                 >
                   {ranking.delta === null ? (
-                    <DragHandleIcon sx={{ fontSize: 30, color: "#333" }} />
-                  ) : ranking.delta > 0 ? (
-                    <ArrowUpwardOutlinedIcon
-                      sx={{ fontSize: 30, color: "#333" }}
+                    <Box
+                      sx={{ width: "31px", height: "43px", flexShrink: 0 }}
                     />
-                  ) : ranking.delta < 0 ? (
-                    <ArrowDownwardOutlinedIcon
-                      sx={{ fontSize: 30, color: "#333" }}
-                    />
+                  ) : ranking.delta === 0 ? (
+                    <Box
+                      sx={{
+                        width: "31px",
+                        height: "43px",
+                        flexShrink: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "2.5rem",
+                          fontWeight: 700,
+                          color: "#333333",
+                          lineHeight: 1,
+                        }}
+                      >
+                        =
+                      </Typography>
+                    </Box>
                   ) : (
-                    <DragHandleIcon sx={{ fontSize: 30, color: "#333" }} />
+                    <Box
+                      component="img"
+                      src={ArrowIcon}
+                      alt="Ranking change"
+                      sx={{
+                        height: "43px",
+                        width: "31px",
+                        flexShrink: 0,
+                        transform:
+                          ranking.delta > 0 ? "rotate(0deg)" : "rotate(180deg)",
+                      }}
+                    />
                   )}
-                  <Typography
-                    sx={{ fontWeight: 700, color: "#333333", fontSize: "18px" }}
-                  >
-                    {(() => {
-                      const years = yearsWindow;
-                      if (ranking.delta === null)
-                        return `Change over ${years} years unavailable`;
-                      if (ranking.delta > 0)
-                        return `Improved ${ranking.delta} position${ranking.delta === 1 ? "" : "s"} in ${years} years`;
-                      if (ranking.delta < 0)
-                        return `Declined ${Math.abs(ranking.delta)} position${Math.abs(ranking.delta) === 1 ? "" : "s"} in ${years} years`;
-                      return `No change in ${years} years`;
-                    })()}
-                  </Typography>
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        color: "#333333",
+                        fontSize: "1.75rem",
+                        lineHeight: 1.2,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {ranking.delta !== null && ranking.delta !== 0
+                        ? `${Math.abs(ranking.delta)} position${Math.abs(ranking.delta) === 1 ? "" : "s"}`
+                        : ranking.delta === 0
+                          ? "No change"
+                          : "-"}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        color: "#333333",
+                        fontSize: "1.125rem",
+                      }}
+                    >
+                      {(() => {
+                        const years = yearsWindow;
+                        if (ranking.delta === null)
+                          return `Change over ${years} years unavailable`;
+                        if (ranking.delta > 0)
+                          return `${countryName}'s ranking has improved ${Math.abs(ranking.delta)} position${Math.abs(ranking.delta) === 1 ? "" : "s"} in ${years} years.`;
+                        if (ranking.delta < 0)
+                          return `${countryName}'s ranking has worsened ${Math.abs(ranking.delta)} position${Math.abs(ranking.delta) === 1 ? "" : "s"} in ${years} years.`;
+                        return `No change in ${years} years`;
+                      })()}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
             </Box>
@@ -585,32 +609,19 @@ const SummaryPage: React.FC = () => {
             >
               Green Growth Research
             </ActionButton>
-            <ActionButton onClick={() => setContactOpen(true)}>
-              Get in Touch
+            <ActionButton
+              onClick={() =>
+                window.open(
+                  "https://growthlab.hks.harvard.edu/subscribe",
+                  "_blank",
+                )
+              }
+            >
+              Subscribe for Updates
             </ActionButton>
           </Box>
         </Container>
       </ContentSection>
-
-      {/* Contact modal placeholder (Typeform used elsewhere) */}
-      <Modal
-        open={contactOpen}
-        onClose={() => setContactOpen(false)}
-        aria-labelledby="contact-modal"
-      >
-        <Box
-          sx={{
-            width: "80%",
-            height: "80%",
-            bgcolor: "background.paper",
-            m: "auto",
-            mt: "5%",
-            outline: "none",
-          }}
-        >
-          <Widget id="pl5LJPFr" style={{ height: "100%" }} />
-        </Box>
-      </Modal>
     </PageBackground>
   );
 };

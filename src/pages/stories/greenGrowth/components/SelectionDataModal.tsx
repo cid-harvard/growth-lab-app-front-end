@@ -91,11 +91,11 @@ const SelectionDataModal: React.FC = () => {
 
     // Build lookup maps
     const supplyChainIdToName = new Map<number, string>();
-    supplyChainsData?.ggSupplyChainList?.forEach((sc: any) => {
+    supplyChainsData?.gpSupplyChainList?.forEach((sc: any) => {
       supplyChainIdToName.set(sc.supplyChainId, sc.supplyChain);
     });
     const clusterIdToName = new Map<number, string>();
-    clustersData?.ggClusterList?.forEach((c: any) => {
+    clustersData?.gpClusterList?.forEach((c: any) => {
       clusterIdToName.set(c.clusterId, c.clusterName);
     });
 
@@ -147,10 +147,10 @@ const SelectionDataModal: React.FC = () => {
     ];
     const headers = [...baseHeaders, ...ratingHeaders];
 
-    // Sticky header heights similar to DataTable
-    const mainHeaderHeight = fullScreen ? 48 : 56;
-    const supplyChainHeaderHeight = fullScreen ? 40 : 48;
-    const clusterHeaderHeight = fullScreen ? 36 : 40;
+    // Sticky header heights - using rem for better scaling
+    const mainHeaderHeight = fullScreen ? "3rem" : "3.5rem"; // 48px : 56px
+    const supplyChainHeaderHeight = fullScreen ? "2.5rem" : "3rem"; // 40px : 48px
+    const clusterHeaderHeight = fullScreen ? "2.25rem" : "2.5rem"; // 36px : 40px
 
     const buildAtlasUrl = (productId: number | string | null | undefined) => {
       const pid = String(productId ?? "").replace(/\D/g, "");
@@ -242,8 +242,8 @@ const SelectionDataModal: React.FC = () => {
                       aria-label="Open in Atlas treemap (markets view)"
                       size="small"
                       sx={{
-                        width: 28,
-                        height: 28,
+                        width: "1.75rem", // 28px in rem
+                        height: "1.75rem", // 28px in rem
                         p: 0,
                         borderRadius: 1,
                         backgroundColor: (t) => t.palette.grey[200],
@@ -259,7 +259,7 @@ const SelectionDataModal: React.FC = () => {
                         component="img"
                         src={AtlasIcon as any}
                         alt="Atlas"
-                        sx={{ width: 16, height: 16, display: "block" }}
+                        sx={{ width: "1rem", height: "1rem", display: "block" }} // 16px in rem
                       />
                     </IconButton>
                   </Tooltip>
@@ -328,7 +328,9 @@ const SelectionDataModal: React.FC = () => {
                           }}
                         >
                           <Typography
-                            sx={{ fontSize: fullScreen ? "12px" : "14px" }}
+                            sx={{
+                              fontSize: fullScreen ? "0.75rem" : "0.875rem",
+                            }}
                           >
                             {content}
                           </Typography>
@@ -514,8 +516,8 @@ const SelectionDataModal: React.FC = () => {
     if (state.payload.type === "cluster" && state.payload.clusterId != null) {
       const clusterId = state.payload.clusterId;
       const name = (() => {
-        if (!clustersData?.ggClusterList) return String(clusterId);
-        const match = clustersData.ggClusterList.find(
+        if (!clustersData?.gpClusterList) return String(clusterId);
+        const match = clustersData.gpClusterList.find(
           (c: any) =>
             String(c.clusterId) === String(clusterId) ||
             c.clusterName === clusterId,
@@ -524,7 +526,7 @@ const SelectionDataModal: React.FC = () => {
       })();
       // Build rows using full mappings so we include all value chains this cluster spans
       const clusterIdNum = (() => {
-        const m = clustersData?.ggClusterList?.find(
+        const m = clustersData?.gpClusterList?.find(
           (c: any) =>
             c.clusterName === name || String(c.clusterId) === String(clusterId),
         );
@@ -639,7 +641,11 @@ const SelectionDataModal: React.FC = () => {
         <IconButton
           aria-label="close"
           onClick={closeSelectionModal}
-          sx={{ position: "absolute", right: 8, top: 8 }}
+          sx={{
+            position: "absolute",
+            right: "0.5rem", // 8px in rem
+            top: "0.5rem", // 8px in rem
+          }}
         >
           <CloseIcon />
         </IconButton>

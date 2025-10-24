@@ -105,7 +105,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
     const adjustedWidth = Math.max(width - 50, 400); // Minimal padding
 
     // Account for fixed elements: title (60px + 8px margin), attribution (~30px), container padding (16px)
-    const fixedElementsHeight = isMobile ? 110 : 120;
+    const fixedElementsHeight = isMobile ? 90 : 95;
     const adjustedHeight = Math.max(height - fixedElementsHeight, 300);
 
     const responsiveMargin = {
@@ -304,7 +304,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
   return (
     <Box
       ref={chartContainerRef}
-      sx={{ padding: "8px", width: "100%", height: "100%" }}
+      sx={{ padding: "0px", width: "100%", height: "100%" }}
     >
       {/* Title */}
       <Box
@@ -314,7 +314,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
           justifyContent: "center",
           alignItems: "flex-end",
           backgroundColor: "rgba(255, 255, 255, 0.95)",
-          mb: 0,
+          mb: 1,
         }}
       >
         <Typography variant="chart-title">
@@ -428,7 +428,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
             fontWeight="600"
             fill="black"
           >
-            Country's Economy Complexity
+            Country's Economic Complexity
           </text>
           <text
             x={isMobile ? 30 : 50}
@@ -566,14 +566,15 @@ const StrategicPositionChartInternal = ({ width, height }) => {
 
                 // Position the label centered horizontally above the triangle
                 const selectedTriangleSize = isMobile ? 12 : 16; // matches halo size
-                const labelPaddingX = 8;
+                const labelPaddingX = isMobile ? 10 : 14;
+                const labelPaddingY = isMobile ? 6 : 8;
                 const flagWidth = isMobile ? 16 : 18;
                 const flagHeight = isMobile ? 12 : 12;
                 const approxCharWidth = isMobile ? 8 : 9.5;
                 const textWidth = countryName.length * approxCharWidth;
                 const labelWidth =
                   flagWidth + labelPaddingX + textWidth + labelPaddingX * 2;
-                const labelHeight = isMobile ? 20 : 24;
+                const labelHeight = isMobile ? 24 : 30;
                 const rectX = x - labelWidth / 2;
                 const rectY = y - selectedTriangleSize - labelHeight - 2;
 
@@ -594,15 +595,20 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                       <image
                         href={flagSrc}
                         x={rectX + labelPaddingX}
-                        y={rectY + (labelHeight - flagHeight) / 2}
+                        y={rectY + labelPaddingY}
                         width={flagWidth}
                         height={flagHeight}
                         preserveAspectRatio="xMidYMid meet"
                       />
                     )}
                     <text
-                      x={rectX + labelPaddingX + flagWidth + labelPaddingX}
-                      y={rectY + labelHeight / 2 + (isMobile ? 4 : 4)}
+                      x={rectX + labelPaddingX + flagWidth + labelPaddingX / 2}
+                      y={
+                        rectY +
+                        labelPaddingY +
+                        flagHeight / 2 +
+                        (isMobile ? 4 : 5)
+                      }
                       fontSize="16"
                       fontWeight="600"
                       fill="black"
@@ -652,7 +658,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     style={{
                       position: "absolute",
                       top: `${margin.top + 1}px`,
-                      right: `${margin.right + 20}px`,
+                      right: `${margin.right + 27}px`,
                       backgroundColor:
                         selectedQuadrant === "topRight"
                           ? STRATEGIC_POSITION_COLORS.topRight
@@ -663,7 +669,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                           : STRATEGIC_POSITION_COLORS.topRight,
                       padding: isMobile ? "4px 8px" : "6px 12px",
                       borderRadius: "4px",
-                      fontSize: isMobile ? "12px" : "16px",
+                      fontSize: isMobile ? "0.75rem" : "1rem",
                       fontWeight: "600",
                       whiteSpace: "nowrap",
                       display: "flex",
@@ -674,7 +680,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     }}
                   >
                     <BookmarkIcon
-                      sx={{ fontSize: isMobile ? "14px" : "18px" }}
+                      sx={{ fontSize: isMobile ? "0.875rem" : "1.125rem" }}
                     />
                     <span
                       style={{
@@ -699,7 +705,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     style={{
                       position: "absolute",
                       top: `${margin.top + 1}px`,
-                      left: `${margin.left + 20}px`,
+                      left: `${margin.left + 27}px`,
                       backgroundColor:
                         selectedQuadrant === "topLeft"
                           ? STRATEGIC_POSITION_COLORS.topLeft
@@ -710,7 +716,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                           : STRATEGIC_POSITION_COLORS.topLeft,
                       padding: isMobile ? "4px 8px" : "6px 12px",
                       borderRadius: "4px",
-                      fontSize: isMobile ? "12px" : "16px",
+                      fontSize: isMobile ? "0.75rem" : "1rem",
                       fontWeight: "600",
                       whiteSpace: "nowrap",
                       display: "flex",
@@ -721,7 +727,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     }}
                   >
                     <BookmarkIcon
-                      sx={{ fontSize: isMobile ? "14px" : "18px" }}
+                      sx={{ fontSize: isMobile ? "0.875rem" : "1.125rem" }}
                     />
                     <span
                       style={{
@@ -746,7 +752,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     style={{
                       position: "absolute",
                       bottom: `${margin.bottom + 1}px`,
-                      left: `${margin.left + 20}px`,
+                      left: `${margin.left + 27}px`,
                       backgroundColor:
                         selectedQuadrant === "bottomLeft"
                           ? STRATEGIC_POSITION_COLORS.bottomLeft
@@ -757,7 +763,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                           : STRATEGIC_POSITION_COLORS.bottomLeft,
                       padding: isMobile ? "4px 8px" : "6px 12px",
                       borderRadius: "4px",
-                      fontSize: isMobile ? "12px" : "16px",
+                      fontSize: isMobile ? "0.75rem" : "1rem",
                       fontWeight: "600",
                       whiteSpace: "nowrap",
                       display: "flex",
@@ -768,7 +774,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     }}
                   >
                     <BookmarkIcon
-                      sx={{ fontSize: isMobile ? "14px" : "18px" }}
+                      sx={{ fontSize: isMobile ? "0.875rem" : "1.125rem" }}
                     />
                     <span
                       style={{
@@ -793,7 +799,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     style={{
                       position: "absolute",
                       bottom: `${margin.bottom + 1}px`,
-                      right: `${margin.right + 20}px`,
+                      right: `${margin.right + 27}px`,
                       backgroundColor:
                         selectedQuadrant === "bottomRight"
                           ? STRATEGIC_POSITION_COLORS.bottomRight
@@ -804,7 +810,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                           : STRATEGIC_POSITION_COLORS.bottomRight,
                       padding: isMobile ? "4px 8px" : "6px 12px",
                       borderRadius: "4px",
-                      fontSize: isMobile ? "12px" : "16px",
+                      fontSize: isMobile ? "0.75rem" : "1rem",
                       fontWeight: "600",
                       whiteSpace: "nowrap",
                       display: "flex",
@@ -815,7 +821,7 @@ const StrategicPositionChartInternal = ({ width, height }) => {
                     }}
                   >
                     <BookmarkIcon
-                      sx={{ fontSize: isMobile ? "14px" : "18px" }}
+                      sx={{ fontSize: isMobile ? "0.875rem" : "1.125rem" }}
                     />
                     <span
                       style={{

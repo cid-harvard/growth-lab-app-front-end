@@ -219,7 +219,7 @@ interface Mapping {
 // GraphQL queries (same as TangleTree)
 const GET_SUPPLY_CHAINS = gql`
   query GetSupplyChains {
-    ggSupplyChainList {
+    gpSupplyChainList {
       supplyChainId
       supplyChain
     }
@@ -228,7 +228,7 @@ const GET_SUPPLY_CHAINS = gql`
 
 const GET_CLUSTERS = gql`
   query GetClusters {
-    ggClusterList {
+    gpClusterList {
       clusterId
       clusterName
     }
@@ -237,7 +237,7 @@ const GET_CLUSTERS = gql`
 
 const GET_PRODUCTS = gql`
   query GetProducts {
-    ggProductList {
+    gpProductList {
       productId
       code
       nameEn
@@ -250,147 +250,147 @@ const GET_PRODUCTS = gql`
 
 const GET_ALL_SUPPLY_CHAIN_MAPPINGS = gql`
   query GetAllSupplyChainMappings {
-    supplyChain0: ggSupplyChainClusterProductMemberList(supplyChainId: 0) {
+    supplyChain0: gpSupplyChainClusterProductMemberList(supplyChainId: 0) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain1: ggSupplyChainClusterProductMemberList(supplyChainId: 1) {
+    supplyChain1: gpSupplyChainClusterProductMemberList(supplyChainId: 1) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain2: ggSupplyChainClusterProductMemberList(supplyChainId: 2) {
+    supplyChain2: gpSupplyChainClusterProductMemberList(supplyChainId: 2) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain3: ggSupplyChainClusterProductMemberList(supplyChainId: 3) {
+    supplyChain3: gpSupplyChainClusterProductMemberList(supplyChainId: 3) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain4: ggSupplyChainClusterProductMemberList(supplyChainId: 4) {
+    supplyChain4: gpSupplyChainClusterProductMemberList(supplyChainId: 4) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain5: ggSupplyChainClusterProductMemberList(supplyChainId: 5) {
+    supplyChain5: gpSupplyChainClusterProductMemberList(supplyChainId: 5) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain6: ggSupplyChainClusterProductMemberList(supplyChainId: 6) {
+    supplyChain6: gpSupplyChainClusterProductMemberList(supplyChainId: 6) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain7: ggSupplyChainClusterProductMemberList(supplyChainId: 7) {
+    supplyChain7: gpSupplyChainClusterProductMemberList(supplyChainId: 7) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain8: ggSupplyChainClusterProductMemberList(supplyChainId: 8) {
+    supplyChain8: gpSupplyChainClusterProductMemberList(supplyChainId: 8) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain9: ggSupplyChainClusterProductMemberList(supplyChainId: 9) {
+    supplyChain9: gpSupplyChainClusterProductMemberList(supplyChainId: 9) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain10: ggSupplyChainClusterProductMemberList(supplyChainId: 10) {
+    supplyChain10: gpSupplyChainClusterProductMemberList(supplyChainId: 10) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain11: ggSupplyChainClusterProductMemberList(supplyChainId: 11) {
+    supplyChain11: gpSupplyChainClusterProductMemberList(supplyChainId: 11) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain12: ggSupplyChainClusterProductMemberList(supplyChainId: 12) {
+    supplyChain12: gpSupplyChainClusterProductMemberList(supplyChainId: 12) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain13: ggSupplyChainClusterProductMemberList(supplyChainId: 13) {
+    supplyChain13: gpSupplyChainClusterProductMemberList(supplyChainId: 13) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain14: ggSupplyChainClusterProductMemberList(supplyChainId: 14) {
+    supplyChain14: gpSupplyChainClusterProductMemberList(supplyChainId: 14) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain15: ggSupplyChainClusterProductMemberList(supplyChainId: 15) {
+    supplyChain15: gpSupplyChainClusterProductMemberList(supplyChainId: 15) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain16: ggSupplyChainClusterProductMemberList(supplyChainId: 16) {
+    supplyChain16: gpSupplyChainClusterProductMemberList(supplyChainId: 16) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain17: ggSupplyChainClusterProductMemberList(supplyChainId: 17) {
+    supplyChain17: gpSupplyChainClusterProductMemberList(supplyChainId: 17) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain18: ggSupplyChainClusterProductMemberList(supplyChainId: 18) {
+    supplyChain18: gpSupplyChainClusterProductMemberList(supplyChainId: 18) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain19: ggSupplyChainClusterProductMemberList(supplyChainId: 19) {
+    supplyChain19: gpSupplyChainClusterProductMemberList(supplyChainId: 19) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain20: ggSupplyChainClusterProductMemberList(supplyChainId: 20) {
+    supplyChain20: gpSupplyChainClusterProductMemberList(supplyChainId: 20) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain21: ggSupplyChainClusterProductMemberList(supplyChainId: 21) {
+    supplyChain21: gpSupplyChainClusterProductMemberList(supplyChainId: 21) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain22: ggSupplyChainClusterProductMemberList(supplyChainId: 22) {
+    supplyChain22: gpSupplyChainClusterProductMemberList(supplyChainId: 22) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain23: ggSupplyChainClusterProductMemberList(supplyChainId: 23) {
+    supplyChain23: gpSupplyChainClusterProductMemberList(supplyChainId: 23) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain24: ggSupplyChainClusterProductMemberList(supplyChainId: 24) {
+    supplyChain24: gpSupplyChainClusterProductMemberList(supplyChainId: 24) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain25: ggSupplyChainClusterProductMemberList(supplyChainId: 25) {
+    supplyChain25: gpSupplyChainClusterProductMemberList(supplyChainId: 25) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain26: ggSupplyChainClusterProductMemberList(supplyChainId: 26) {
+    supplyChain26: gpSupplyChainClusterProductMemberList(supplyChainId: 26) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain27: ggSupplyChainClusterProductMemberList(supplyChainId: 27) {
+    supplyChain27: gpSupplyChainClusterProductMemberList(supplyChainId: 27) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain28: ggSupplyChainClusterProductMemberList(supplyChainId: 28) {
+    supplyChain28: gpSupplyChainClusterProductMemberList(supplyChainId: 28) {
       supplyChainId
       productId
       clusterId
@@ -875,9 +875,9 @@ const SugiyamaDAGExperiment: React.FC = () => {
     });
 
     return {
-      supplyChains: supplyChainsData.ggSupplyChainList,
-      clusters: clustersData.ggClusterList,
-      products: productsData.ggProductList,
+      supplyChains: supplyChainsData.gpSupplyChainList,
+      clusters: clustersData.gpClusterList,
+      products: productsData.gpProductList,
       mappings: allMappings,
     };
   }, [

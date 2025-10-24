@@ -19,6 +19,8 @@ export interface CountryClusterData {
   cog: number;
   density: number;
   rca: number;
+  clusterMarketShare?: number;
+  globalMarketShare?: number;
 }
 
 export interface CountryProductData {

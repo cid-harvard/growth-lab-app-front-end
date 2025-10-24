@@ -88,6 +88,109 @@ export const getValueChainColor = (valueChainName: string): string => {
 // Default color scale for general use (non-supply chain specific)
 export const colorScale = scaleOrdinal(schemeCategory10);
 
+// Shared ranking/complexity color scale (low → high complexity)
+// Updated to 4 colors for better grouping
+export const RANKING_COLORS = [
+  "#F0A486", // Lower complexity (light red/orange)
+  "#F9E9C4", // Lower-mid complexity (cream)
+  "#7db89a", // Upper-mid complexity (light green)
+  "#1d8968", // High complexity (dark green)
+];
+
+// Creates a discrete color scale that diverges at 0
+// With 4 bands: 2 negative (below 0), 2 positive (above 0)
+// The boundary is exactly at 0
+export const createDiscreteColorScale = (
+  minValue: number,
+  maxValue: number,
+) => {
+  // Divide data range into 4 bands with 0 as the exact boundary
+  // Band 1: min to negativeMid (most negative)
+  // Band 2: negativeMid to 0 (less negative)
+  // Band 3: 0 to positiveMid (less positive)
+  // Band 4: positiveMid to max (most positive)
+
+  // Divide negative side into 2 equal bands
+  const negativeMid = minValue / 2;
+
+  // Divide positive side into 2 equal bands
+  const positiveMid = maxValue / 2;
+
+  const bands = [
+    { min: -Infinity, max: negativeMid, color: RANKING_COLORS[0] }, // Most negative
+    { min: negativeMid, max: 0, color: RANKING_COLORS[1] }, // Less negative (ends at 0)
+    { min: 0, max: positiveMid, color: RANKING_COLORS[2] }, // Less positive (starts at 0)
+    { min: positiveMid, max: Infinity, color: RANKING_COLORS[3] }, // Most positive
+  ];
+
+  return (value: number) => {
+    const band = bands.find((b) => value >= b.min && value < b.max);
+    return band ? band.color : RANKING_COLORS[2]; // default to positive color
+  };
+};
+
+// Creates a continuous color scale (for map and table)
+// Diverges at 0: interpolates within negative colors for values < 0,
+// and within positive colors for values >= 0
+export const createContinuousColorScale = (
+  minValue: number,
+  maxValue: number,
+) => {
+  // Helper to interpolate between two colors
+  const interpolateColor = (
+    color1: string,
+    color2: string,
+    factor: number,
+  ): string => {
+    const hex1 = color1.replace("#", "");
+    const hex2 = color2.replace("#", "");
+
+    const r1 = parseInt(hex1.substring(0, 2), 16);
+    const g1 = parseInt(hex1.substring(2, 4), 16);
+    const b1 = parseInt(hex1.substring(4, 6), 16);
+
+    const r2 = parseInt(hex2.substring(0, 2), 16);
+    const g2 = parseInt(hex2.substring(2, 4), 16);
+    const b2 = parseInt(hex2.substring(4, 6), 16);
+
+    const r = Math.round(r1 + (r2 - r1) * factor);
+    const g = Math.round(g1 + (g2 - g1) * factor);
+    const b = Math.round(b1 + (b2 - b1) * factor);
+
+    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+  };
+
+  return (value: number) => {
+    // Continuous scale with breakpoints matching discrete bands
+    // This creates smooth interpolation while aligning with the discrete categories
+    // Key positions: minValue → negativeMid → 0 → positiveMid → maxValue
+    // Color mapping: COLORS[0] → COLORS[1] → COLORS[2] → COLORS[3]
+
+    const negativeMid = minValue / 2;
+    const positiveMid = maxValue / 2;
+
+    if (value <= negativeMid) {
+      // Segment 1: minValue to negativeMid (COLORS[0] → COLORS[1])
+      const normalized = (value - minValue) / (negativeMid - minValue);
+      const clamped = Math.max(0, Math.min(1, normalized));
+      return interpolateColor(RANKING_COLORS[0], RANKING_COLORS[1], clamped);
+    } else if (value <= 0) {
+      // Segment 2: negativeMid to 0 (COLORS[1] → COLORS[2])
+      const normalized = (value - negativeMid) / (0 - negativeMid);
+      const clamped = Math.max(0, Math.min(1, normalized));
+      return interpolateColor(RANKING_COLORS[1], RANKING_COLORS[2], clamped);
+    } else if (value <= positiveMid) {
+      // Segment 3: 0 to positiveMid (COLORS[2] → COLORS[3])
+      const normalized = value / positiveMid;
+      const clamped = Math.max(0, Math.min(1, normalized));
+      return interpolateColor(RANKING_COLORS[2], RANKING_COLORS[3], clamped);
+    } else {
+      // Beyond positiveMid: already at full COLORS[3]
+      return RANKING_COLORS[3];
+    }
+  };
+};
+
 // Discrete bubble size mappings
 export const BUBBLE_SIZES = {
   TINY: 0.3,

@@ -17,27 +17,20 @@ const Routes = {
   NamibiaWalvisBay: "/namibia-walvis-bay",
   GreenGrowth: "/greenplexity",
   // Green Growth sub-routes
-  GreenGrowthIntroduction: "/greenplexity/introduction",
-  GreenGrowthOverview: "/greenplexity/overview",
-  GreenGrowthAdvantage: "/greenplexity/competitive-advantage",
-  GreenGrowthValueChains: "/greenplexity/value-chains",
-  GreenGrowthClusters: "/greenplexity/clusters",
+  GreenGrowthTutorial: "/greenplexity/tutorial",
+  GreenGrowthValueChainsProducts: "/greenplexity/value-chains-products",
+  GreenGrowthValueClusters: "/greenplexity/value-clusters",
+  GreenGrowthClusterProducts: "/greenplexity/cluster-products",
   GreenGrowthCompetitiveness: "/greenplexity/competitiveness",
+  GreenGrowthClusterTrade: "/greenplexity/cluster-trade",
+  GreenGrowthClusterMarket: "/greenplexity/cluster-market",
+  GreenGrowthStrategy: "/greenplexity/strategy",
   GreenGrowthOpportunities: "/greenplexity/opportunities",
-  GreenGrowthStrategicPosition: "/greenplexity/strategic-position",
-  GreenGrowthDimensions: "/greenplexity/dimensions",
+  GreenGrowthConnections: "/greenplexity/connections",
+  GreenGrowthProducts: "/greenplexity/products",
   GreenGrowthExplore: "/greenplexity/explore",
   // Rankings route
   GreenGrowthRankings: "/greenplexity/rankings",
-  // Experimental routes (no links)
-  GreenEciBumpChart: "/experimental/green-eci-bump-chart",
-  TangleTreeExperiment: "/experimental",
-  SugiyamaDAGExperiment: "/experimental/sugiyama-dag",
-  TreeGrowthExperiment: "/experimental/tree-growth",
-  CirclePackMapExperiment: "/experimental/circle-pack-map",
-  ClusterTreeExperiment: "/experimental/cluster-tree",
-  ProductSpaceClusterBoundaries:
-    "/experimental/product-space-cluster-boundaries",
 };
 
 const defaultTitle = "The Growth Lab at Harvard Kennedy School";
@@ -176,27 +169,107 @@ const metadata = [
     favicon: defaultFavicon,
   },
   {
-    url: Routes.GreenGrowthIntroduction,
-    title: "Introduction to Green Value Chains | " + defaultTitle,
+    url: Routes.GreenGrowthTutorial,
+    title: "Tutorial: Green Value Chains | " + defaultTitle,
     description:
-      "An animated introduction to green value chains hierarchy, showing how different components build upon each other from raw materials to final products in the green economy.",
+      "An interactive tutorial introducing green value chains hierarchy, showing how different components build upon each other from raw materials to final products in the green economy.",
     og_image: "greenplexity-card-background-lo.jpg",
     favicon: defaultFavicon,
   },
   {
-    url: Routes.ClusterTreeExperiment,
-    title: "Cluster Tree Explorer | " + defaultTitle,
+    url: Routes.GreenGrowthValueChainsProducts,
+    title: "Green Value Chains Products | " + defaultTitle,
     description:
-      "Explore industrial clusters and their hierarchical relationships with supply chains and products",
-    og_image: defaultOgImage,
+      "Explore the green value chains and products that drive the transition to a sustainable economy.",
+    og_image: "greenplexity-card-background-lo.jpg",
     favicon: defaultFavicon,
   },
   {
-    url: Routes.ProductSpaceClusterBoundaries,
-    title: "Product Space with Cluster Boundaries | " + defaultTitle,
+    url: Routes.GreenGrowthValueClusters,
+    title: "Green Value Clusters | " + defaultTitle,
     description:
-      "Visualize the product space for a given country and year with boundaries drawn around products based on their clusters from the Green Growth taxonomy",
-    og_image: defaultOgImage,
+      "Discover clusters of green industries and their interconnections in the global economy.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthClusterProducts,
+    title: "Green Cluster Products | " + defaultTitle,
+    description:
+      "Analyze products within green industry clusters and their relationships.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthCompetitiveness,
+    title: "Green Competitiveness | " + defaultTitle,
+    description:
+      "Assess competitiveness in green industries and identify opportunities for growth.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthClusterTrade,
+    title: "Green Cluster Trade | " + defaultTitle,
+    description:
+      "Explore trade flows and patterns within green industry clusters.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthClusterMarket,
+    title: "Green Cluster Market | " + defaultTitle,
+    description:
+      "Analyze market opportunities and dynamics in green industry clusters.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthStrategy,
+    title: "Green Growth Strategy | " + defaultTitle,
+    description:
+      "Develop strategies for green growth opportunities and economic transformation.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthOpportunities,
+    title: "Green Growth Opportunities | " + defaultTitle,
+    description:
+      "Identify opportunities for green growth based on economic complexity analysis.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthConnections,
+    title: "Green Growth Connections | " + defaultTitle,
+    description:
+      "Explore connections between green industries and pathways to diversification.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthProducts,
+    title: "Green Products | " + defaultTitle,
+    description:
+      "Browse the landscape of green products and their role in the energy transition.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthExplore,
+    title: "Explore Green Growth | " + defaultTitle,
+    description:
+      "Explore the complete dataset of green industries, products, and value chains.",
+    og_image: "greenplexity-card-background-lo.jpg",
+    favicon: defaultFavicon,
+  },
+  {
+    url: Routes.GreenGrowthRankings,
+    title: "Green Growth Rankings | " + defaultTitle,
+    description:
+      "View country rankings and performance in green industries and technologies.",
+    og_image: "greenplexity-card-background-lo.jpg",
     favicon: defaultFavicon,
   },
 ];

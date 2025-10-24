@@ -75,7 +75,10 @@ const Landing = ({ onExplore }) => {
     true, // fetchAllCountriesMetrics = true to preload all country data
   );
 
-  const countries = data?.ggLocationCountryList || [];
+  const countries = useMemo(
+    () => data?.gpLocationCountryList || [],
+    [data?.gpLocationCountryList],
+  );
 
   const sortedCountries = useMemo(
     () =>
@@ -126,7 +129,7 @@ const Landing = ({ onExplore }) => {
               fontWeight: 700,
             }}
           >
-            Greenplexity
+            GREENPLEXITY
           </Typography>
 
           <Typography
@@ -157,7 +160,7 @@ const Landing = ({ onExplore }) => {
               lineHeight: 1.5,
               textAlign: "left",
               color: "white",
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
           >
             The global transition to a low-carbon economy is transforming what
@@ -174,7 +177,7 @@ const Landing = ({ onExplore }) => {
               lineHeight: 1.5,
               textAlign: "left",
               color: "white",
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
           >
             <b>Greenplexity</b> reveals where your country can lead in the green

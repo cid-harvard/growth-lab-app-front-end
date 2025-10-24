@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef } from "react";
-import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
@@ -16,7 +15,6 @@ import {
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
-  Home as HomeIcon,
   ArrowUpward,
   ArrowDownward,
   Download,
@@ -32,7 +30,6 @@ import { Autocomplete, TextField, Select } from "@mui/material";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import type { AutocompleteCloseReason } from "@mui/material/Autocomplete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
 import { useSidebar } from "./SidebarContext";
 import ShareModal from "./ShareModal";
@@ -40,6 +37,7 @@ import GlossaryModal from "./GlossaryModal";
 import DownloadModal from "./DownloadModal";
 import LearningModal from "./LearningModal";
 import HierarchyLegend from "./HierarchyLegend";
+import NavigationIndicators from "./NavigationIndicators";
 import { useStrategicPosition } from "../hooks/useStrategicPosition";
 import {
   replaceCountryPlaceholder,
@@ -48,7 +46,9 @@ import {
   StrategicPositionContent,
 } from "./TextUtils";
 
-const drawerWidth = 420;
+// Use percentage for mobile, fixed px for desktop
+const drawerWidth = 420; // Desktop width in px
+const mobileDrawerWidth = "min(90vw, 420px)"; // Mobile: 90% of viewport or 420px max
 
 // Dynamic country flag loader (CRA/Webpack)
 // Using `require.context` to resolve files from `src/assets/country_flags`
@@ -81,78 +81,88 @@ interface NavigationStep {
   id: string;
   route: string;
   title: string;
+  hoverText: string;
   modalContent: string;
 }
 
 const navigationSteps: NavigationStep[] = [
   {
-    id: "introduction",
-    route: Routes.GreenGrowthIntroduction,
+    id: "tutorial",
+    route: Routes.GreenGrowthTutorial,
     title: "Tutorial: Which green value chains drive decarbonization?",
+    hoverText: "Tutorial",
     modalContent:
       "The path to decarbonization runs through these green value chains.\n\nEach green value chain is composed of products used in clean energy technologies, from raw materials to finished green technologies.\n\nMany products appear in more than one value chain. Products requiring similar capabilities naturally group into green industrial clusters.",
   },
   {
-    id: "overview",
-    route: Routes.GreenGrowthOverview,
+    id: "value-chains-products",
+    route: Routes.GreenGrowthValueChainsProducts,
     title: "Which green products does [country] already produce?",
+    hoverText: "Value Chains & Products",
     modalContent:
       "[Country] is active today in the highlighted products in green value chains.",
   },
   {
-    id: "advantage",
-    route: Routes.GreenGrowthAdvantage,
-    title: "Which industrial clusters is [country] already present in?",
+    id: "value-clusters",
+    route: Routes.GreenGrowthValueClusters,
+    title: "Which industrial clusters does [country] participate in?",
+    hoverText: "Value Chains, Clusters & Products",
     modalContent:
       "Products requiring similar capabilities are grouped into green industrial clusters within each value chain. By focusing on clusters, current strengths point the way to new green growth opportunities to enter related products.",
   },
   {
-    id: "clusters",
-    route: Routes.GreenGrowthClusters,
-    title: "Which industrial clusters is [country] already present in?",
+    id: "cluster-products",
+    route: Routes.GreenGrowthClusterProducts,
+    title: "Where is [country] active across all industrial clusters?",
+    hoverText: "Active Clusters",
     modalContent:
-      "For comparison, this grid shows where [Country] is active across every green industrial cluster and its component products.  Clusters span value chains, revealing how existing capabilities create opportunities to enter new green value chains.",
+      "This grid shows where [country] is active in every green industrial cluster and their component products. Exploring related products within clusters reveals how existing capabilities allow [Country] to enter new green value chains.",
   },
   {
-    id: "competitiveness",
-    route: Routes.GreenGrowthCompetitiveness,
-    title:
-      "Where are [country]’s industrial clusters stronger or weaker than expected?",
+    id: "cluster-trade",
+    route: Routes.GreenGrowthClusterTrade,
+    title: "What are [country]'s largest industrial clusters?",
+    hoverText: "Cluster Performance",
     modalContent:
-      "This view reveals where [Country] leads in green industrial clusters and which clusters offer potential for growth. The top clusters outperform expectations, contributing a larger share of exports than expected for the country's capabilities. The bottom clusters lag behind, underperforming relative to existing capabilities.",
+      "This chart highlights the most competitive industrial clusters in [Country], as measured by their export volume and shaded by [country]'s relative strength in the cluster.",
   },
   {
-    id: "strategic-position",
-    route: Routes.GreenGrowthStrategicPosition,
+    id: "strategy",
+    route: Routes.GreenGrowthStrategy,
     title: "What strategic approach fits [country]'s current capabilities?",
+    hoverText: "Strategy",
     modalContent:
       "[Country]'s existing capabilities in green industrial clusters afford unique opportunities to diversify into related clusters. \n\n To create a winning green growth strategy, [Country] may consider a:\n\nRecommended Strategic Approach",
   },
   {
     id: "opportunities",
-    route: "/greenplexity/opportunities",
-    title: "Which clusters offer green growth opportunities for [Country]?",
+    route: Routes.GreenGrowthOpportunities,
+    title: "Which clusters offer green growth opportunities for [country]?",
+    hoverText: "Cluster Opportunities",
     modalContent:
-      "Some green clusters offer a stronger fit for [Country]’s green growth strategy, striking the right balance between feasibility and attractiveness. Here are some high-potential clusters to study further.",
+      "Some green clusters offer a stronger fit for [Country]'s green growth strategy, striking the right balance between feasibility and attractiveness. Here are some high-potential clusters to study further.",
   },
   {
-    id: "value-chains",
-    route: "/greenplexity/value-chains",
+    id: "connections",
+    route: Routes.GreenGrowthConnections,
     title: "Which opportunities does this cluster connect [Country] to?",
+    hoverText: "Cluster Connections",
     modalContent:
-      "Explore some of [Country]’s strategic green clusters, across its connections to value chains and related products. This view maps those connections, showing how strengthening one cluster can unlock opportunities across multiple value chains and spotlighting the closely related products most likely to boost [Country]’s green-growth footprint.",
+      "Explore some of [Country]'s strategic green clusters, across its connections to value chains and related products. This view maps those connections, showing how strengthening one cluster can unlock opportunities across multiple value chains and spotlighting the closely related products most likely to boost [Country]'s green-growth footprint.",
   },
   {
-    id: "dimensions",
-    route: "/greenplexity/dimensions",
+    id: "products",
+    route: Routes.GreenGrowthProducts,
     title: "Which green products should [Country] prioritize next?",
+    hoverText: "Product Opportunities",
     modalContent:
-      "[Country] can help the world decarbonize by diversifying into new green industrial clusters.\n\nStrategic clusters include products that aim to balance:\n\n<b>Complexity</b>: more complex products tend to support higher wages\n<b>Opportunity Gain</b>: higher values hold more connections to other complex products, creating more opportunities for future diversification.\n<b>Feasibility</b>: higher values indicate that a greater share of the required capabilities exists in a given location.\n<b>Product Market Size</b>: total global trade value of trade for the given product.\n<b>Product Market Growth</b>: relative percentage change in a product's global market share compared to its average market share over the previous 3 years.",
+      "[Country] can help the world decarbonize by diversifying into new green industrial clusters.\n\nStrategic clusters include products that aim to balance:\n<b>Complexity</b>: more complex products tend to support higher wages\n<b>Opportunity Gain</b>: higher values hold more connections to other complex products, creating more opportunities for future diversification.\n<b>Feasibility</b>: higher values indicate that a greater share of the required capabilities exists in a given location.\n<b>Product Market Size</b>: total global trade value of trade for the given product.\n<b>Product Market Growth</b>: relative percentage change in a product's global market share compared to its average market share over the previous 3 years.",
   },
   {
     id: "summary",
     route: "/greenplexity/summary",
     title: "[country] in Summary",
+    hoverText: "Summary",
     modalContent:
       "[Country] can help the world decarbonize by diversifying into new green industrial clusters. Strategic clusters include products that aim to balance:",
   },
@@ -175,13 +185,6 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
   const [glossaryModalOpen, setGlossaryModalOpen] = useState(false);
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   const [learningModalOpen, setLearningModalOpen] = useState(false);
-  const [hoveredStep, setHoveredStep] = useState<string | null>(null);
-  const [hoverOverlay, setHoverOverlay] = useState<{
-    text: string;
-    x: number;
-    y: number;
-    visible: boolean;
-  }>({ text: "", x: 0, y: 0, visible: false });
 
   // Control Autocomplete open state to avoid instant reopen on chevron click
   const [countryAutocompleteOpen, setCountryAutocompleteOpen] = useState(false);
@@ -194,7 +197,10 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
     setYearSelection,
   } = useUrlParams();
   const { data } = useQuery(GET_COUNTRIES);
-  const countries = data?.ggLocationCountryList || [];
+  const countries = useMemo(
+    () => data?.gpLocationCountryList || [],
+    [data?.gpLocationCountryList],
+  );
 
   const sortedCountries = useMemo(
     () =>
@@ -242,6 +248,16 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
   };
 
   const getCurrentStepIndex = () => {
+    // Special handling: treat cluster-market as part of cluster-trade step
+    if (
+      location.pathname === Routes.GreenGrowthClusterMarket ||
+      location.pathname.startsWith(Routes.GreenGrowthClusterMarket + "/")
+    ) {
+      return navigationSteps.findIndex(
+        (step) => step.route === Routes.GreenGrowthClusterTrade,
+      );
+    }
+
     // Check for exact match first
     const exactMatch = navigationSteps.findIndex(
       (step) => location.pathname === step.route,
@@ -395,6 +411,28 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
     return replaceCountryPlaceholder(step.title, getCurrentCountryName());
   };
 
+  // Helper function to get dynamic content for cluster performance steps
+  const getClusterPerformanceContent = () => {
+    const isMarketSharePage =
+      location.pathname === Routes.GreenGrowthClusterMarket ||
+      location.pathname.startsWith(Routes.GreenGrowthClusterMarket + "/");
+
+    if (isMarketSharePage) {
+      return {
+        title: "Where does [Country] lead in global market share?",
+        content:
+          "This chart highlights the industrial clusters with the largest global market share, shaded by [Country]'s relative strength in the cluster.",
+      };
+    }
+
+    // Default to cluster trade page
+    return {
+      title: "What are [Country]'s largest industrial clusters?",
+      content:
+        "This chart highlights the most competitive industrial clusters in [Country], as measured by their export volume and shaded by [country]'s relative strength in the cluster.",
+    };
+  };
+
   // Action bar component
   const actionBarContent = (
     <Box
@@ -420,7 +458,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "12px",
+            fontSize: "0.75rem",
             fontWeight: 600,
             color: "#5C5C5C",
             minHeight: "36px",
@@ -436,10 +474,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "12px",
+            fontSize: "0.75rem",
             fontWeight: 600,
             color: "#5C5C5C",
-            minHeight: "36px",
+            minHeight: "2.25rem", // 36px in rem for better mobile scaling
+            padding: { xs: "0.25rem 0.5rem", md: "0.5rem 1rem" }, // Responsive padding
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
         >
@@ -452,10 +491,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "12px",
+            fontSize: "0.75rem",
             fontWeight: 600,
             color: "#5C5C5C",
-            minHeight: "36px",
+            minHeight: "2.25rem", // 36px in rem for better mobile scaling
+            padding: { xs: "0.25rem 0.5rem", md: "0.5rem 1rem" }, // Responsive padding
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
         >
@@ -468,10 +508,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "12px",
+            fontSize: "0.75rem",
             fontWeight: 600,
             color: "#5C5C5C",
-            minHeight: "36px",
+            minHeight: "2.25rem", // 36px in rem for better mobile scaling
+            padding: { xs: "0.25rem 0.5rem", md: "0.5rem 1rem" }, // Responsive padding
             lineHeight: "1.1",
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
@@ -506,6 +547,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         {!isMobile && (
           <Box
             sx={{
+              ml: 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
@@ -516,7 +558,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
               <Typography
                 variant="h1"
                 sx={{
-                  fontSize: "24px",
+                  fontSize: "1.5rem",
                   fontFamily: "Source Sans Pro, sans-serif",
                   fontWeight: 600,
                   lineHeight: "20px",
@@ -557,7 +599,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         )}
 
         {/* Controls */}
-        <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
+        <Box sx={{ display: "flex", gap: 1.5, alignItems: "center", ml: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
             <Autocomplete
               disableClearable
@@ -642,10 +684,10 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                 <TextField
                   {...params}
                   variant="outlined"
-                  placeholder="Country xyz"
+                  placeholder="Country Search..."
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "18px",
+                      fontSize: "1.125rem",
                       color: "white",
                       "& fieldset": { borderColor: "white" },
                       "&:hover fieldset": { borderColor: "white" },
@@ -697,7 +739,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             value={yearSelection}
             onChange={(e: any) => setYearSelection(e.target.value)}
             sx={{
-              fontSize: "14px",
+              fontSize: "0.875rem",
               minWidth: "100px",
               maxHeight: "40px",
               color: "white",
@@ -740,7 +782,8 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           flex: 1,
           overflowY: "auto", // Enable vertical scrolling for entire navigation
           overflowX: "hidden",
-          p: 2.5,
+          px: 1.5,
+          py: 0.5,
           display: "flex",
           flexDirection: "column",
           minHeight: 0, // Allow flex item to shrink below content size
@@ -761,217 +804,133 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           },
         }}
       >
+        {/* Previous Button - subtle at top */}
+        <Button
+          startIcon={
+            <ArrowUpward
+              sx={{
+                fontSize: "1.75rem !important",
+                color: "#106496 !important",
+                opacity: "1 !important",
+              }}
+            />
+          }
+          onClick={handlePrevious}
+          disabled={false}
+          sx={{
+            fontWeight: 500,
+            textTransform: "none",
+            fontSize: "1rem",
+            justifyContent: "flex-start",
+            minHeight: { xs: "3.5rem", md: "4.25rem" }, // 56px mobile, 68px desktop
+            height: { xs: "auto", md: "4.25rem" }, // Flexible on mobile, fixed on desktop
+            padding: { xs: "0.75rem 0.625rem", md: "1rem 0.625rem" }, // Responsive padding
+            color: "#106496",
+            opacity: 0.7,
+            backgroundColor: "rgba(74, 144, 164, 0.02)",
+            borderRadius: "0.5rem", // 8px in rem
+            mt: 1,
+            "&:hover": {
+              backgroundColor: "rgba(74, 144, 164, 0.08)",
+              color: "#106496",
+              opacity: 1,
+            },
+            "&:disabled": { color: "#ccc" },
+            "& .MuiButton-startIcon": {
+              marginRight: "10px",
+              alignSelf: "flex-start",
+              mt: "2px",
+            },
+            "& .MuiButton-label": {
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              lineHeight: "1.4",
+              alignItems: "flex-start",
+            },
+          }}
+        >
+          {previousStep ? getStepTitle(previousStep) : "Greenplexity Home"}
+        </Button>
+
         {/* Main content area with indicators and text */}
         <Box
           sx={{
             display: "flex",
-            gap: "8px",
-            flex: 1, // Take up all available space
-            minHeight: 0, // Allow flex shrinking
-            overflow: "visible",
-            alignItems: "flex-start",
+            gap: { xs: "0.5rem", md: "0.75rem" }, // Responsive gap
+            flex: 1,
+            minHeight: 0,
+            overflow: "hidden",
+            alignItems: "stretch",
           }}
         >
-          {/* Progress Indicators */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              gap: "10px",
-              minWidth: "24px",
-              width: "24px",
-              height: "100%", // Take full height of the container
-              flexShrink: 0,
-              overflow: "visible",
-              position: "relative",
-              zIndex: (theme) => theme.zIndex.drawer + 2,
-              pt: 12,
-            }}
-          >
-            {/* Home Icon */}
-            <Box
-              onClick={handleHome}
-              sx={{
-                width: "20px",
-                height: "20px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                flexShrink: 0,
-                "&:hover": { transform: "scale(1.1)" },
-                "& .MuiSvgIcon-root": {
-                  fontSize: "20px",
-                  color: "#2685BD",
-                },
-              }}
-              title="Go to Greenplexity Home"
-            >
-              <HomeIcon />
-            </Box>
+          {/* Progress Indicators - Left Column */}
+          <NavigationIndicators
+            navigationSteps={navigationSteps}
+            currentStepIndex={currentStepIndex}
+            onStepClick={handleStepClick}
+          />
 
-            {/* Step indicators */}
-            {navigationSteps.map((step) => {
-              const isActive =
-                location.pathname === step.route ||
-                location.pathname.startsWith(step.route + "/");
-              const isHovered = hoveredStep === step.id;
-
-              return (
-                <Box
-                  key={step.id}
-                  sx={{
-                    position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    height: "24px",
-                    width: "18px", // Only take space for the circle
-                    zIndex: isHovered ? 1000 : 1,
-                    overflow: "visible",
-                  }}
-                  onMouseEnter={(e) => {
-                    setHoveredStep(step.id);
-                    const rect = (
-                      e.currentTarget as HTMLElement
-                    ).getBoundingClientRect();
-                    setHoverOverlay({
-                      text: getStepTitle(step),
-                      x: rect.left,
-                      y: rect.top + rect.height / 2 - 12,
-                      visible: true,
-                    });
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredStep(null);
-                    setHoverOverlay((prev) => ({ ...prev, visible: false }));
-                  }}
-                  onClick={() => handleStepClick(step.route)}
-                >
-                  {/* Indicator: use takeoff icon for summary step, circle otherwise */}
-                  {step.id === "summary" ? (
-                    <Box
-                      sx={{
-                        width: "18px",
-                        height: "18px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        position: "relative",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                        zIndex: 2,
-                        "&:hover": { transform: "scale(1.1)" },
-                      }}
-                    >
-                      <FlightTakeoffIcon
-                        sx={{ fontSize: 26, color: "#2685BD" }}
-                      />
-                      {isActive && (
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            top: "-5px",
-                            left: "-5px",
-                            right: "-5px",
-                            bottom: "-5px",
-                            border: "2px solid #2685BD",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      )}
-                    </Box>
-                  ) : (
-                    <Box
-                      sx={{
-                        width: "18px",
-                        height: "18px",
-                        borderRadius: "50%",
-                        backgroundColor: "#2685BD",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                        position: "relative",
-                        zIndex: 2,
-                        "&:hover": { transform: "scale(1.1)" },
-                        "&::after": isActive
-                          ? {
-                              content: '""',
-                              position: "absolute",
-                              top: "-5px",
-                              left: "-5px",
-                              right: "-5px",
-                              bottom: "-5px",
-                              border: "2px solid #2685BD",
-                              borderRadius: "50%",
-                            }
-                          : {},
-                      }}
-                    />
-                  )}
-
-                  {/* Remove white center dot as per image suggestion */}
-
-                  {/* Expanded overlay */}
-                  {/* Hover overlay handled via portal */}
-                </Box>
-              );
-            })}
-          </Box>
-
-          {/* Content area with navigation buttons */}
+          {/* Content area - Right Column (independently scrollable) */}
           <Box
             sx={{
               flex: 1,
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-start",
-              padding: "20px 16px 20px 4px",
+              overflowY: "auto",
+              overflowX: "hidden",
+              pr: { xs: 1, md: 2 }, // Less padding on mobile
+              minHeight: 0,
+              "&::-webkit-scrollbar": {
+                width: "6px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "#f1f1f1",
+                borderRadius: "3px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "#c1c1c1",
+                borderRadius: "3px",
+                "&:hover": {
+                  background: "#a8a8a8",
+                },
+              },
             }}
           >
-            {/* Previous Button - aligned with content */}
-            <Button
-              startIcon={<ArrowUpward />}
-              onClick={handlePrevious}
-              disabled={false}
-              sx={{
-                fontWeight: "semibold",
-                textTransform: "none",
-                fontSize: "18px",
-                justifyContent: "flex-start",
-                minHeight: "45px",
-                padding: "8px 0",
-                color: "#106496",
-                opacity: currentStepIndex <= 0 ? 0.5 : 1,
-                mb: 2,
-                "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.08)" },
-                "&:disabled": { color: "#ccc" },
-              }}
-            >
-              {previousStep ? getStepTitle(previousStep) : "Greenplexity Home"}
-            </Button>
-
             {currentStep && currentStep.id !== "summary" && (
               <>
                 <Typography
                   variant="h6"
                   sx={(theme) => ({
                     fontWeight: theme.typography.fontWeightBold,
-                    fontSize: "22px",
+                    fontSize: "1.375rem",
                     marginBottom: 3,
                     color: theme.palette.text.primary,
                     lineHeight: 1.2,
-                    textTransform: "uppercase",
                   })}
                 >
-                  {getStepTitle(currentStep)}
+                  {currentStep.id === "cluster-trade"
+                    ? replaceCountryPlaceholder(
+                        getClusterPerformanceContent().title,
+                        getCurrentCountryName(),
+                      )
+                    : getStepTitle(currentStep)}
                 </Typography>
-                {currentStep.id === "strategic-position" ? (
+                {currentStep.id === "strategy" ? (
                   <StrategicPositionContent
                     countryName={getCurrentCountryName()}
                     strategicPosition={strategicPosition}
                   />
+                ) : currentStep.id === "cluster-trade" ? (
+                  <FormattedText>
+                    {replaceCountryPlaceholder(
+                      getClusterPerformanceContent().content,
+                      getCurrentCountryName(),
+                    )}
+                  </FormattedText>
                 ) : (
                   <FormattedText>
                     {getProcessedModalContent(
@@ -981,16 +940,16 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                   </FormattedText>
                 )}
                 {/* Show hierarchy legend for bubble visualization steps */}
-                {(currentStep.id === "overview" ||
-                  currentStep.id === "advantage" ||
-                  currentStep.id === "clusters") && (
+                {(currentStep.id === "value-chains-products" ||
+                  currentStep.id === "value-clusters" ||
+                  currentStep.id === "cluster-products") && (
                   <Box sx={{ mt: 3 }}>
                     <Typography
                       variant="body2"
                       sx={{
                         fontWeight: 600,
                         mb: 2,
-                        fontSize: "16px",
+                        fontSize: "1rem",
                         textAlign: "left",
                       }}
                     >
@@ -999,11 +958,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                       <HierarchyLegend
                         layoutMode={
-                          currentStep.id === "overview"
+                          currentStep.id === "value-chains-products"
                             ? "flat"
-                            : currentStep.id === "advantage"
+                            : currentStep.id === "value-clusters"
                               ? "clustered"
-                              : currentStep.id === "clusters"
+                              : currentStep.id === "cluster-products"
                                 ? "clusters-only"
                                 : "flat"
                         }
@@ -1013,29 +972,48 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                 )}
               </>
             )}
-
-            {/* Next Button - aligned with content, normal opacity */}
-            <Button
-              startIcon={<ArrowDownward />}
-              onClick={handleNext}
-              disabled={currentStepIndex >= navigationSteps.length - 1}
-              sx={{
-                textTransform: "none",
-                fontSize: "18px",
-                fontWeight: "semibold",
-                justifyContent: "flex-start",
-                minHeight: "45px",
-                padding: "8px 0",
-                color: "#106496",
-                mt: 2,
-                "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.08)" },
-                "&:disabled": { color: "#ccc" },
-              }}
-            >
-              {nextStep ? getStepTitle(nextStep) : "Next"}
-            </Button>
           </Box>
         </Box>
+
+        {/* Next Button - prominent at bottom */}
+        <Button
+          startIcon={<ArrowDownward sx={{ fontSize: "1.75rem !important" }} />}
+          onClick={handleNext}
+          disabled={currentStepIndex >= navigationSteps.length - 1}
+          sx={{
+            textTransform: "none",
+            fontSize: "1.25rem",
+            fontWeight: 600,
+            justifyContent: "flex-start",
+            minHeight: { xs: "3.5rem", md: "4.25rem" }, // 56px mobile, 68px desktop
+            height: { xs: "auto", md: "4.25rem" }, // Flexible on mobile, fixed on desktop
+            padding: { xs: "0.75rem 0.625rem", md: "1rem 0.625rem" }, // Responsive padding
+            color: "#106496",
+            backgroundColor: "rgba(74, 144, 164, 0.1)",
+            borderRadius: "0.5rem", // 8px in rem
+            "&:hover": { backgroundColor: "rgba(74, 144, 164, 0.16)" },
+            "&:disabled": {
+              color: "#ccc",
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+            },
+            "& .MuiButton-startIcon": {
+              marginRight: "12px",
+              alignSelf: "flex-start",
+              mt: "2px",
+            },
+            "& .MuiButton-label": {
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              lineHeight: "1.4",
+              alignItems: "flex-start",
+            },
+          }}
+        >
+          {nextStep ? getStepTitle(nextStep) : "Next"}
+        </Button>
       </Box>
 
       {/* Action Bar - Fixed at bottom */}
@@ -1050,7 +1028,8 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         position="fixed"
         sx={{
           zIndex: theme.zIndex.drawer + 1,
-          height: "60px",
+          height: "3.75rem", // 60px in rem for better scaling
+          minHeight: "3.75rem",
           background:
             "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
         }}
@@ -1078,9 +1057,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             sx={{
               backgroundColor: "rgba(255,255,255,0.2)",
               border: "1px solid white",
-              borderRadius: "4px",
-              padding: "8px",
+              borderRadius: "0.25rem", // 4px in rem
+              padding: "0.5rem", // 8px in rem
               marginLeft: 1,
+              minWidth: "2.5rem", // Ensure consistent size on mobile
+              minHeight: "2.5rem",
               "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
             }}
           >
@@ -1100,16 +1081,17 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           left: 0,
           top: 0,
           width: "auto",
-          height: "60px",
+          height: "3.75rem", // 60px in rem
+          minHeight: "3.75rem",
           background:
             "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
-          borderRadius: "0 0 8px 0",
+          borderRadius: "0 0 0.5rem 0", // 8px in rem
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           zIndex: theme.zIndex.drawer + 1,
           padding: 1.5,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          boxShadow: "0 0.125rem 0.5rem rgba(0,0,0,0.1)", // 2px 8px in rem
           transition: theme.transitions.create(
             ["width", "height", "border-radius"],
             {
@@ -1133,13 +1115,13 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           sx={{
             backgroundColor: "rgba(255,255,255,0.2)",
             border: "1px solid white",
-            borderRadius: "4px",
-            padding: "8px",
-            minWidth: "40px",
-            height: "40px",
+            borderRadius: "0.25rem", // 4px in rem
+            padding: "0.5rem", // 8px in rem
+            minWidth: "2.5rem", // 40px in rem
+            height: "2.5rem", // 40px in rem
             "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
             "& .MuiSvgIcon-root": {
-              fontSize: "20px",
+              fontSize: "1.25rem",
               color: "white",
             },
           }}
@@ -1152,38 +1134,6 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      {hoverOverlay.visible &&
-        createPortal(
-          <Box
-            sx={{
-              position: "fixed",
-              left: hoverOverlay.x,
-              top: hoverOverlay.y,
-              transform: "translateX(0)",
-              height: "24px",
-              backgroundColor: "#2685BD",
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              paddingLeft: "26px",
-              paddingRight: 1,
-              zIndex: (theme) => theme.zIndex.modal + 1,
-              pointerEvents: "none",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: "16px",
-                fontWeight: 500,
-              }}
-            >
-              {hoverOverlay.text}
-            </Typography>
-          </Box>,
-          document.body,
-        )}
       {/* Mobile AppBar */}
       {isMobile && (
         <AppBar
@@ -1247,9 +1197,9 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             display: { xs: "block", md: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
-              width: drawerWidth,
-              mt: "64px", // Account for AppBar height
-              height: "calc(100vh - 64px)", // Explicit height for mobile
+              width: mobileDrawerWidth, // Responsive width for mobile
+              mt: "4rem", // Account for AppBar height (64px = 4rem)
+              height: "calc(100vh - 4rem)", // Explicit height for mobile
               overflow: "hidden", // Let inner content handle scrolling
             },
           }}

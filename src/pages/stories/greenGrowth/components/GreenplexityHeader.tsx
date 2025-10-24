@@ -38,23 +38,15 @@ const GreenplexityHeader = (props: GreenplexityHeaderProps) => {
           height: "100%",
         }}
       >
-        {/* Left: GL icon + GREENPLEXITY */}
+        {/* Left: GL icon */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <img src={GrowthLabLogoPNG} alt="Growth Lab" style={{ height: 28 }} />
-          <Typography
-            component={RouterLink}
-            to="/greenplexity"
-            variant="h6"
-            sx={{
-              fontWeight: 600,
-              letterSpacing: 0.5,
-              color: "white",
-              fontSize: "22px",
-              textDecoration: "none",
-            }}
-          >
-            GREENPLEXITY
-          </Typography>
+          <RouterLink to="/" style={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={GrowthLabLogoPNG}
+              alt="Growth Lab"
+              style={{ height: 36, cursor: "pointer" }}
+            />
+          </RouterLink>
         </Box>
 
         {/* Right: Nav items */}
@@ -72,7 +64,7 @@ const GreenplexityHeader = (props: GreenplexityHeaderProps) => {
                 display: "inline-block",
               }}
             >
-              Country Profiles
+              Green Profiles
             </Typography>
             {!isRanking && (
               <Box
@@ -101,7 +93,7 @@ const GreenplexityHeader = (props: GreenplexityHeaderProps) => {
                 display: "inline-block",
               }}
             >
-              Ranking
+              Green Index
             </Typography>
             {isRanking && (
               <Box

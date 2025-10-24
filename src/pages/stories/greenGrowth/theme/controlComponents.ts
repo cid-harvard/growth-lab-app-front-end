@@ -41,9 +41,9 @@ export const controlSizes = {
     large: "4px", // All controls use 4px
   },
   fontSize: {
-    small: "14px", // Small control text (exact from Figma)
-    medium: "16px", // Standard control text (exact from Figma)
-    large: "16px", // Large control text (exact from Figma)
+    small: "0.875rem", // 14px - Small control text
+    medium: "1rem", // 16px - Standard control text
+    large: "1rem", // 16px - Large control text
   },
 } as const;
 
@@ -56,7 +56,7 @@ export const controlComponentOverrides = {
         textTransform: "none",
         fontWeight: 400,
         fontSize: controlSizes.fontSize.medium,
-        lineHeight: "24px",
+        lineHeight: "1.5rem", // 24px
         minHeight: controlSizes.height.medium,
         "&:hover": {
           backgroundColor: controlColors.backgroundHover,
@@ -86,7 +86,7 @@ export const controlComponentOverrides = {
         textTransform: "none",
         fontWeight: 400,
         fontSize: controlSizes.fontSize.medium,
-        lineHeight: "24px",
+        lineHeight: "1.5rem", // 24px
         minHeight: controlSizes.height.medium,
         padding: controlSizes.padding.medium,
         border: `1px solid ${controlColors.border}`,
@@ -174,7 +174,7 @@ export const controlComponentOverrides = {
         padding: "8px 14px",
         fontSize: controlSizes.fontSize.medium,
         fontWeight: 400,
-        lineHeight: "24px",
+        lineHeight: "1.5rem", // 24px
       },
     },
   },
@@ -198,7 +198,7 @@ export const controlComponentOverrides = {
         padding: "8px 14px",
         fontSize: controlSizes.fontSize.medium,
         fontWeight: 400,
-        lineHeight: "24px",
+        lineHeight: "1.5rem", // 24px
       },
     },
   },
@@ -222,7 +222,7 @@ export const controlComponentOverrides = {
         textTransform: "none",
         fontSize: controlSizes.fontSize.small,
         fontWeight: 700,
-        lineHeight: "20px",
+        lineHeight: "1.25rem", // 20px
         minHeight: controlSizes.height.large,
         color: controlColors.text,
         "&.Mui-selected": {

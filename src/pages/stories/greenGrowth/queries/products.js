@@ -9,8 +9,8 @@ export const GG_PRODUCT_LIST_QUERY = GET_PRODUCTS;
 export const useProductLookup = () => {
   const { data } = useQuery(GET_PRODUCTS);
   const lookup = useMemo(
-    () => index(data?.ggProductList || [], (d) => d.productId),
-    [data?.ggProductList],
+    () => index(data?.gpProductList || [], (d) => d.productId),
+    [data?.gpProductList],
   );
   return lookup;
 };

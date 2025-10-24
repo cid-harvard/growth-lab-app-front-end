@@ -8,6 +8,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { extent } from "d3-array";
 import { useProductLookup } from "../../queries/products";
 import { useSupplyChainProductLookup } from "../../queries/supplyChainProducts";
+import { useCountryName } from "../../queries/useCountryName";
 import {
   useCountrySelection,
   useYearSelection,
@@ -27,6 +28,7 @@ import html2canvas from "html2canvas";
 import ClickHint from "../../../../../components/general/ClickHint";
 import { useSelectionDataModal } from "../../hooks/useSelectionDataModal";
 import { useStrategicPosition } from "../../hooks/useStrategicPosition";
+import { calculateTopRightScore } from "../../utils/rankings";
 
 const createUniqueProductKey = (product) => {
   return `${product}`;
@@ -45,38 +47,6 @@ const getPotentialColor = (score, minScore, maxScore) => {
   ]);
 
   return colorScale(score);
-};
-
-// Function to calculate top-right score (distance from top-right corner)
-const calculateTopRightScore = (attractiveness, density, allItems) => {
-  // Get min/max values for normalization
-  const attractivenessValues = allItems.map((item) => item.attractiveness);
-  const densityValues = allItems.map((item) => item.density);
-
-  const minAttractiveness = Math.min(...attractivenessValues);
-  const maxAttractiveness = Math.max(...attractivenessValues);
-  const minDensity = Math.min(...densityValues);
-  const maxDensity = Math.max(...densityValues);
-
-  // Normalize values to 0-1 range
-  const normalizedAttractiveness =
-    attractivenessValues.length > 1
-      ? (attractiveness - minAttractiveness) /
-        (maxAttractiveness - minAttractiveness)
-      : 0.5;
-  const normalizedDensity =
-    densityValues.length > 1
-      ? (density - minDensity) / (maxDensity - minDensity)
-      : 0.5;
-
-  // Calculate distance from top-right corner (1, 1) - smaller distance means higher score
-  const distanceFromTopRight = Math.sqrt(
-    Math.pow(1 - normalizedDensity, 2) +
-      Math.pow(1 - normalizedAttractiveness, 2),
-  );
-
-  // Convert distance to score (closer to top-right = higher score)
-  return Math.max(0, 2 - distanceFromTopRight); // This gives a score roughly between 0-2
 };
 
 // Custom scatter plot component with force-directed labels
@@ -922,7 +892,7 @@ const CustomScatterPlot = ({
               // Match StrategicPositionChart placement: centered below plot frame
               top: `${height - margin.bottom + 10}px`,
               transform: "translateX(-50%)",
-              fontSize: isMobile ? "12px" : "16px",
+              fontSize: isMobile ? "0.75rem" : "1rem",
               fontWeight: "600",
               color: "black",
               textAlign: "center",
@@ -945,7 +915,7 @@ const CustomScatterPlot = ({
                 // Match StrategicPositionChart arrow offset relative to plot bottom
                 top: `${height - margin.bottom + 34}px`,
                 transform: "translateX(-50%) translateX(-100px)",
-                fontSize: "18px",
+                fontSize: "1.125rem",
                 fontWeight: "600",
                 color: "#2685bd",
                 textAlign: "center",
@@ -959,7 +929,7 @@ const CustomScatterPlot = ({
                 left: "50%",
                 top: `${height - margin.bottom + 34}px`,
                 transform: "translateX(-50%) translateX(100px)",
-                fontSize: "18px",
+                fontSize: "1.125rem",
                 fontWeight: "600",
                 color: "#2685bd",
                 textAlign: "center",
@@ -980,7 +950,7 @@ const CustomScatterPlot = ({
               // Center vertically to the plot frame
               top: `${margin.top + (height - margin.top - margin.bottom) / 2}px`,
               transform: "rotate(-90deg)",
-              fontSize: isMobile ? "12px" : "16px",
+              fontSize: isMobile ? "0.75rem" : "1rem",
               fontWeight: "600",
               color: "black",
               textAlign: "center",
@@ -1013,7 +983,7 @@ const CustomScatterPlot = ({
                 // Center relative to plot frame and offset upward
                 top: `${margin.top + (height - margin.top - margin.bottom) / 2}px`,
                 transform: `translateY(-100px) rotate(-90deg)`,
-                fontSize: "18px",
+                fontSize: "1.125rem",
                 fontWeight: "600",
                 color: "#2685bd",
                 textAlign: "center",
@@ -1029,7 +999,7 @@ const CustomScatterPlot = ({
                 // Center relative to plot frame and offset downward
                 top: `${margin.top + (height - margin.top - margin.bottom) / 2}px`,
                 transform: `translateY(100px) rotate(-90deg)`,
-                fontSize: "18px",
+                fontSize: "1.125rem",
                 fontWeight: "600",
                 color: "#2685bd",
                 textAlign: "center",
@@ -1089,7 +1059,7 @@ const ProductScatterLegend = ({ isMobile }) => {
       >
         <Typography
           sx={{
-            fontSize: isMobile ? "14px" : "16px",
+            fontSize: isMobile ? "0.875rem" : "1rem",
             fontWeight: 600,
             color: "#000",
             fontFamily: "Source Sans Pro, sans-serif",
@@ -1112,7 +1082,7 @@ const ProductScatterLegend = ({ isMobile }) => {
 
         <Typography
           sx={{
-            fontSize: isMobile ? "14px" : "16px",
+            fontSize: isMobile ? "0.875rem" : "1rem",
             fontWeight: 600,
             color: "#000",
             fontFamily: "Source Sans Pro, sans-serif",
@@ -1131,6 +1101,7 @@ const ProductScatterInternal = ({ width, height }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const selectedCountry = useCountrySelection();
   const selectedYear = useYearSelection();
+  const countryName = useCountryName(Number.parseInt(selectedCountry));
   const strategicPosition = useStrategicPosition(
     Number.parseInt(selectedCountry),
     Number.parseInt(selectedYear),
@@ -1142,6 +1113,7 @@ const ProductScatterInternal = ({ width, height }) => {
 
   // Image capture functionality
   const chartContainerRef = useRef(null);
+  const chartAreaRef = useRef(null);
   const { registerCaptureFunction, unregisterCaptureFunction } =
     useImageCaptureContext();
 
@@ -1228,14 +1200,14 @@ const ProductScatterInternal = ({ width, height }) => {
   // Extract country product data from shared hook
   const currentData = useMemo(() => {
     if (!countryData?.productData) return null;
-    return { ggCpyList: countryData.productData };
+    return { gpCpyList: countryData.productData };
   }, [countryData]);
 
   // Clusters lookup for names
   const clusterLookup = useMemo(() => {
-    if (!clustersData?.ggClusterList) return new Map();
+    if (!clustersData?.gpClusterList) return new Map();
     return new Map(
-      clustersData.ggClusterList.map((cluster) => [
+      clustersData.gpClusterList.map((cluster) => [
         cluster.clusterId,
         cluster.clusterName,
       ]),
@@ -1251,10 +1223,10 @@ const ProductScatterInternal = ({ width, height }) => {
 
   const scatterData = useMemo(() => {
     if (viewMode === "product") {
-      if (!currentData || !currentData.ggCpyList) return [];
+      if (!currentData || !currentData.gpCpyList) return [];
 
       // Filter products (RCA < 1) first
-      const filteredProducts = currentData.ggCpyList;
+      const filteredProducts = currentData.gpCpyList;
       // .filter(
       //   (item) => Number.parseFloat(item.exportRca) < 1,
       // );
@@ -1335,10 +1307,10 @@ const ProductScatterInternal = ({ width, height }) => {
       // Calculate export values for filtered clusters only
       const clusterExportData = filteredClusters.map((clusterItem) => {
         // Find products that belong to this cluster and sum their export values
-        if (!currentData?.ggCpyList)
+        if (!currentData?.gpCpyList)
           return { clusterItem, exportValue: 0, products: [] };
 
-        const clusterProducts = currentData.ggCpyList.filter((productItem) => {
+        const clusterProducts = currentData.gpCpyList.filter((productItem) => {
           const mappings =
             supplyChainProductLookup.get(productItem.productId) || [];
           return mappings.some(
@@ -1477,13 +1449,18 @@ const ProductScatterInternal = ({ width, height }) => {
 
   const handleTooltip = (event, data) => {
     if (event && data) {
+      // Use chartAreaRef which is closer to where the tooltip is rendered
       const coords = localPoint(
-        chartContainerRef.current || event.target,
+        chartAreaRef.current || chartContainerRef.current,
         event,
       );
-      const x = coords ? coords.x : event.clientX;
-      const y = coords ? coords.y : event.clientY;
-      showTooltip({ tooltipLeft: x, tooltipTop: y, tooltipData: data });
+      if (coords) {
+        showTooltip({
+          tooltipLeft: coords.x,
+          tooltipTop: coords.y,
+          tooltipData: data,
+        });
+      }
     } else {
       hideTooltip();
     }
@@ -1495,10 +1472,11 @@ const ProductScatterInternal = ({ width, height }) => {
       sx={{
         width: "100%",
         height: "100%",
-        padding: `${padding}px`,
+        padding: "0px",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
+        position: "relative", // Ensure this is a positioned container for TooltipWithBounds
       }}
     >
       {/* Main Title */}
@@ -1512,11 +1490,14 @@ const ProductScatterInternal = ({ width, height }) => {
           mb: 1,
         }}
       >
-        <Typography variant="chart-title">Strategic Clusters</Typography>
+        <Typography variant="chart-title">
+          Which clusters offer green growth opportunities for {countryName}?
+        </Typography>
       </Box>
 
       {/* Chart, Legend, and Attribution Container (exported with title via parent ref) */}
       <Box
+        ref={chartAreaRef}
         sx={{
           flex: 1,
           minHeight: 0,
@@ -1537,7 +1518,7 @@ const ProductScatterInternal = ({ width, height }) => {
               color: strategicPosition?.color ? "#fff" : "#000",
               padding: isMobile ? "4px 8px" : "6px 12px",
               borderRadius: "4px",
-              fontSize: isMobile ? "12px" : "16px",
+              fontSize: isMobile ? "0.75rem" : "1rem",
               fontWeight: 600,
               whiteSpace: "nowrap",
               display: "flex",
@@ -1548,7 +1529,9 @@ const ProductScatterInternal = ({ width, height }) => {
               cursor: "help",
             }}
           >
-            <BookmarkIcon sx={{ fontSize: isMobile ? "14px" : "18px" }} />
+            <BookmarkIcon
+              sx={{ fontSize: isMobile ? "0.875rem" : "1.125rem" }}
+            />
             <span
               style={{
                 borderBottom: strategicPosition?.color
@@ -1588,8 +1571,11 @@ const ProductScatterInternal = ({ width, height }) => {
         {/* Tooltip */}
         {tooltipOpen && tooltipData && (
           <TooltipWithBounds
-            left={(tooltipLeft || 0) + 14}
-            top={(tooltipTop || 0) + 14}
+            left={tooltipLeft}
+            top={tooltipTop}
+            offsetLeft={12}
+            offsetTop={12}
+            detectBounds={true}
             className="gg-unskinned-tooltip"
           >
             <SharedTooltip

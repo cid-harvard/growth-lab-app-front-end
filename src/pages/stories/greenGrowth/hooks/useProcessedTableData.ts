@@ -65,9 +65,9 @@ export const useProcessedTableData = (
 
   // Create cluster lookup for enriching data
   const clusterLookup = useMemo(() => {
-    if (!clustersData?.ggClusterList) return new Map();
+    if (!clustersData?.gpClusterList) return new Map();
     return new Map(
-      clustersData.ggClusterList.map((cluster: any) => [
+      clustersData.gpClusterList.map((cluster: any) => [
         cluster.clusterId,
         cluster,
       ]),

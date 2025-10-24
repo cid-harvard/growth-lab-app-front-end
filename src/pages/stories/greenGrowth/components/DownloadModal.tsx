@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Modal, Box, Button, IconButton, Typography } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -32,9 +32,20 @@ const modalStyle = {
 interface DownloadModalProps {
   open: boolean;
   onClose: () => void;
+  customImageHandler?: () => Promise<void>;
+  customDataHandler?: () => void;
+  imageAvailable?: boolean;
+  descriptionText?: string;
 }
 
-const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
+const DownloadModal: React.FC<DownloadModalProps> = ({
+  open,
+  onClose,
+  customImageHandler,
+  customDataHandler,
+  imageAvailable,
+  descriptionText,
+}) => {
   const selectedYear = useYearSelection();
   const selectedCountry = useCountrySelection();
   const countryName = useCountryName();
@@ -53,11 +64,31 @@ const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
     false,
   );
 
+  // Use custom handlers if provided, otherwise use default behavior
+  const finalImageAvailable =
+    imageAvailable !== undefined ? imageAvailable : isImageAvailable;
+
+  // Generate default description text with country name
+  const defaultDescriptionText = `Download a high-resolution image of the current visualization or data for ${countryName}.`;
+
   const handleDataDownload = () => {
-    generateProductsCSV(processedProductsData, countryName, selectedYear);
+    if (customDataHandler) {
+      customDataHandler();
+    } else {
+      generateProductsCSV(processedProductsData, countryName, selectedYear);
+    }
   };
 
   const handleImageDownload = async () => {
+    if (customImageHandler) {
+      try {
+        await customImageHandler();
+      } catch (error) {
+        console.error("Error downloading image:", error);
+      }
+      return;
+    }
+
     if (isTableView) {
       console.log("Image download not available in table view");
       return;
@@ -78,19 +109,25 @@ const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
   return (
     <Modal open={open} onClose={onClose} disablePortal={true}>
       <Box sx={modalStyle}>
-        {/* Close button */}
-        <IconButton
-          onClick={onClose}
+        {/* Header with close button */}
+        <Box
           sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: "grey.500",
-            zIndex: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            pr: 1,
+            pt: 1,
           }}
         >
-          <CloseIcon />
-        </IconButton>
+          <IconButton
+            onClick={onClose}
+            sx={{
+              color: "grey.500",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
 
         {/* Main content - Two large buttons */}
         <Box
@@ -109,21 +146,15 @@ const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor:
-                isTableView || !isImageAvailable ? "#F5F5F5" : "#E8F4FD",
+              backgroundColor: !finalImageAvailable ? "#F5F5F5" : "#E8F4FD",
               borderRadius: 2,
               padding: 4,
-              cursor:
-                isTableView || !isImageAvailable ? "not-allowed" : "pointer",
+              cursor: !finalImageAvailable ? "not-allowed" : "pointer",
               transition: "all 0.2s ease",
-              opacity: isTableView || !isImageAvailable ? 0.5 : 1,
+              opacity: !finalImageAvailable ? 0.5 : 1,
               "&:hover": {
-                backgroundColor:
-                  isTableView || !isImageAvailable ? "#F5F5F5" : "#D1E9F6",
-                transform:
-                  isTableView || !isImageAvailable
-                    ? "none"
-                    : "translateY(-2px)",
+                backgroundColor: !finalImageAvailable ? "#F5F5F5" : "#D1E9F6",
+                transform: !finalImageAvailable ? "none" : "translateY(-2px)",
               },
             }}
             onClick={handleImageDownload}
@@ -131,16 +162,16 @@ const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
             <ImageIcon
               sx={{
                 fontSize: 64,
-                color: isTableView || !isImageAvailable ? "#999" : "#106496",
+                color: !finalImageAvailable ? "#999" : "#106496",
                 mb: 2,
               }}
             />
             <Button
               variant="text"
               sx={{
-                fontSize: "18px",
+                fontSize: "1.125rem",
                 fontWeight: 600,
-                color: isTableView || !isImageAvailable ? "#999" : "#106496",
+                color: !finalImageAvailable ? "#999" : "#106496",
                 textTransform: "uppercase",
                 letterSpacing: "1px",
                 pointerEvents: "none",
@@ -181,7 +212,7 @@ const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
             <Button
               variant="text"
               sx={{
-                fontSize: "18px",
+                fontSize: "1.125rem",
                 fontWeight: 600,
                 color: "#106496",
                 textTransform: "uppercase",
@@ -198,8 +229,7 @@ const DownloadModal: React.FC<DownloadModalProps> = ({ open, onClose }) => {
           variant="h3"
           sx={{ textAlign: "center", m: 2, color: "black" }}
         >
-          Download a high-resolution image of the current visualization or all
-          available Greenplexity data.{" "}
+          {descriptionText || defaultDescriptionText}
         </Typography>
       </Box>
     </Modal>

@@ -1,6 +1,10 @@
 // Calculation utilities for ClusterTree component
+import {
+  calculateClusterScores as sharedCalculateClusterScores,
+  calculateAttractiveness,
+} from "../../../../utils/rankings";
 
-// Function to calculate cluster top-right scores (same logic as ProductRadar.jsx)
+// Re-export the shared function with wrapper for backward compatibility
 export const calculateClusterScores = (clusterData: any[]) => {
   if (!clusterData || clusterData.length === 0) return [];
 
@@ -9,9 +13,10 @@ export const calculateClusterScores = (clusterData: any[]) => {
 
   // Calculate cluster positions (same as ProductScatter cluster mode)
   const clustersWithPositions = allClusters.map((clusterItem) => {
-    const attractiveness =
-      0.6 * Number.parseFloat(clusterItem.cog) +
-      0.4 * Number.parseFloat(clusterItem.pci);
+    const attractiveness = calculateAttractiveness(
+      Number.parseFloat(clusterItem.cog),
+      Number.parseFloat(clusterItem.pci),
+    );
     const density = Number.parseFloat(clusterItem.density);
 
     return {
@@ -21,71 +26,8 @@ export const calculateClusterScores = (clusterData: any[]) => {
     };
   });
 
-  // Find the range of values to normalize for better "top right" detection
-  const attractivenessValues = clustersWithPositions.map(
-    (c) => c.attractiveness,
-  );
-  const densityValues = clustersWithPositions.map((c) => c.density);
-
-  const minAttractiveness = Math.min(...attractivenessValues);
-  const maxAttractiveness = Math.max(...attractivenessValues);
-  const minDensity = Math.min(...densityValues);
-  const maxDensity = Math.max(...densityValues);
-
-  // Normalize values to 0-1 range for fair comparison
-  const clustersWithNormalizedScores = clustersWithPositions.map((cluster) => {
-    const normalizedAttractiveness =
-      attractivenessValues.length > 1
-        ? (cluster.attractiveness - minAttractiveness) /
-          (maxAttractiveness - minAttractiveness)
-        : 0.5;
-    const normalizedDensity =
-      densityValues.length > 1
-        ? (cluster.density - minDensity) / (maxDensity - minDensity)
-        : 0.5;
-
-    // Calculate distance from top-right corner (1, 1) - smaller distance means closer to top-right
-    const distanceFromTopRight = Math.sqrt(
-      Math.pow(1 - normalizedDensity, 2) +
-        Math.pow(1 - normalizedAttractiveness, 2),
-    );
-
-    // Alternative scoring methods for robust top-right detection:
-    // 1. Geometric mean of normalized values (emphasizes balance)
-    const geometricMean = Math.sqrt(
-      normalizedAttractiveness * normalizedDensity,
-    );
-
-    // 2. Minimum of the two dimensions (ensures both are reasonably high)
-    const minScore = Math.min(normalizedAttractiveness, normalizedDensity);
-
-    // 3. Weighted product (emphasizes having both dimensions high)
-    const productScore = normalizedAttractiveness * normalizedDensity;
-
-    // Use distance-based approach as primary, with geometric mean as tiebreaker
-    const topRightScore = 1 - distanceFromTopRight + geometricMean * 0.1;
-
-    return {
-      ...cluster,
-      normalizedAttractiveness,
-      normalizedDensity,
-      distanceFromTopRight,
-      geometricMean,
-      minScore,
-      productScore,
-      topRightScore,
-    };
-  });
-
-  // Sort by top-right score (higher is better)
-  return clustersWithNormalizedScores.sort((a, b) => {
-    // Primary sort by topRightScore
-    if (Math.abs(a.topRightScore - b.topRightScore) > 0.01) {
-      return b.topRightScore - a.topRightScore;
-    }
-    // Tiebreaker: prefer higher geometric mean
-    return b.geometricMean - a.geometricMean;
-  });
+  // Use shared ranking function to calculate scores and sort
+  return sharedCalculateClusterScores(clustersWithPositions);
 };
 
 // Helper function to calculate cluster export values

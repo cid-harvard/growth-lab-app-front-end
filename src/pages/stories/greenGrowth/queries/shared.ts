@@ -5,7 +5,7 @@ import { gql } from "@apollo/client";
 
 export const GET_COUNTRIES = gql`
   query GetCountries {
-    ggLocationCountryList {
+    gpLocationCountryList {
       countryId
       nameEn
       nameShortEn
@@ -27,7 +27,7 @@ export const GET_COUNTRIES = gql`
 
 export const GET_PRODUCTS = gql`
   query GetProducts {
-    ggProductList {
+    gpProductList {
       productId
       code
       nameEn
@@ -43,7 +43,7 @@ export const GET_PRODUCTS = gql`
 
 export const GET_CLUSTERS = gql`
   query GetClusters {
-    ggClusterList {
+    gpClusterList {
       clusterId
       clusterName
     }
@@ -54,7 +54,7 @@ export const GET_CLUSTERS = gql`
 // Fetches ALL clusters (1-34) in one request instead of N individual requests
 export const GET_CLUSTER_COUNTRY_DATA = gql`
   query GetClusterCountryData($year: Int!, $countryId: Int!) {
-    cluster1: ggClusterCountryYearList(
+    cluster1: gpClusterCountryYearList(
       clusterId: 1
       countryId: $countryId
       year: $year
@@ -66,8 +66,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster2: ggClusterCountryYearList(
+    cluster2: gpClusterCountryYearList(
       clusterId: 2
       countryId: $countryId
       year: $year
@@ -79,8 +81,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster3: ggClusterCountryYearList(
+    cluster3: gpClusterCountryYearList(
       clusterId: 3
       countryId: $countryId
       year: $year
@@ -92,8 +96,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster4: ggClusterCountryYearList(
+    cluster4: gpClusterCountryYearList(
       clusterId: 4
       countryId: $countryId
       year: $year
@@ -105,8 +111,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster5: ggClusterCountryYearList(
+    cluster5: gpClusterCountryYearList(
       clusterId: 5
       countryId: $countryId
       year: $year
@@ -118,8 +126,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster6: ggClusterCountryYearList(
+    cluster6: gpClusterCountryYearList(
       clusterId: 6
       countryId: $countryId
       year: $year
@@ -131,8 +141,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster7: ggClusterCountryYearList(
+    cluster7: gpClusterCountryYearList(
       clusterId: 7
       countryId: $countryId
       year: $year
@@ -144,8 +156,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster8: ggClusterCountryYearList(
+    cluster8: gpClusterCountryYearList(
       clusterId: 8
       countryId: $countryId
       year: $year
@@ -157,8 +171,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster9: ggClusterCountryYearList(
+    cluster9: gpClusterCountryYearList(
       clusterId: 9
       countryId: $countryId
       year: $year
@@ -170,8 +186,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster10: ggClusterCountryYearList(
+    cluster10: gpClusterCountryYearList(
       clusterId: 10
       countryId: $countryId
       year: $year
@@ -183,8 +201,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster11: ggClusterCountryYearList(
+    cluster11: gpClusterCountryYearList(
       clusterId: 11
       countryId: $countryId
       year: $year
@@ -196,8 +216,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster12: ggClusterCountryYearList(
+    cluster12: gpClusterCountryYearList(
       clusterId: 12
       countryId: $countryId
       year: $year
@@ -209,8 +231,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster13: ggClusterCountryYearList(
+    cluster13: gpClusterCountryYearList(
       clusterId: 13
       countryId: $countryId
       year: $year
@@ -222,8 +246,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster14: ggClusterCountryYearList(
+    cluster14: gpClusterCountryYearList(
       clusterId: 14
       countryId: $countryId
       year: $year
@@ -235,8 +261,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster15: ggClusterCountryYearList(
+    cluster15: gpClusterCountryYearList(
       clusterId: 15
       countryId: $countryId
       year: $year
@@ -248,8 +276,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster16: ggClusterCountryYearList(
+    cluster16: gpClusterCountryYearList(
       clusterId: 16
       countryId: $countryId
       year: $year
@@ -261,8 +291,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster17: ggClusterCountryYearList(
+    cluster17: gpClusterCountryYearList(
       clusterId: 17
       countryId: $countryId
       year: $year
@@ -274,8 +306,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster18: ggClusterCountryYearList(
+    cluster18: gpClusterCountryYearList(
       clusterId: 18
       countryId: $countryId
       year: $year
@@ -287,8 +321,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster19: ggClusterCountryYearList(
+    cluster19: gpClusterCountryYearList(
       clusterId: 19
       countryId: $countryId
       year: $year
@@ -300,8 +336,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster20: ggClusterCountryYearList(
+    cluster20: gpClusterCountryYearList(
       clusterId: 20
       countryId: $countryId
       year: $year
@@ -313,8 +351,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster21: ggClusterCountryYearList(
+    cluster21: gpClusterCountryYearList(
       clusterId: 21
       countryId: $countryId
       year: $year
@@ -326,8 +366,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster22: ggClusterCountryYearList(
+    cluster22: gpClusterCountryYearList(
       clusterId: 22
       countryId: $countryId
       year: $year
@@ -339,8 +381,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster23: ggClusterCountryYearList(
+    cluster23: gpClusterCountryYearList(
       clusterId: 23
       countryId: $countryId
       year: $year
@@ -352,8 +396,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster24: ggClusterCountryYearList(
+    cluster24: gpClusterCountryYearList(
       clusterId: 24
       countryId: $countryId
       year: $year
@@ -365,8 +411,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster25: ggClusterCountryYearList(
+    cluster25: gpClusterCountryYearList(
       clusterId: 25
       countryId: $countryId
       year: $year
@@ -378,8 +426,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster26: ggClusterCountryYearList(
+    cluster26: gpClusterCountryYearList(
       clusterId: 26
       countryId: $countryId
       year: $year
@@ -391,8 +441,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster27: ggClusterCountryYearList(
+    cluster27: gpClusterCountryYearList(
       clusterId: 27
       countryId: $countryId
       year: $year
@@ -404,8 +456,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster28: ggClusterCountryYearList(
+    cluster28: gpClusterCountryYearList(
       clusterId: 28
       countryId: $countryId
       year: $year
@@ -417,8 +471,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster29: ggClusterCountryYearList(
+    cluster29: gpClusterCountryYearList(
       clusterId: 29
       countryId: $countryId
       year: $year
@@ -430,8 +486,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster30: ggClusterCountryYearList(
+    cluster30: gpClusterCountryYearList(
       clusterId: 30
       countryId: $countryId
       year: $year
@@ -443,8 +501,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster31: ggClusterCountryYearList(
+    cluster31: gpClusterCountryYearList(
       clusterId: 31
       countryId: $countryId
       year: $year
@@ -456,8 +516,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster32: ggClusterCountryYearList(
+    cluster32: gpClusterCountryYearList(
       clusterId: 32
       countryId: $countryId
       year: $year
@@ -469,8 +531,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster33: ggClusterCountryYearList(
+    cluster33: gpClusterCountryYearList(
       clusterId: 33
       countryId: $countryId
       year: $year
@@ -482,8 +546,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
-    cluster34: ggClusterCountryYearList(
+    cluster34: gpClusterCountryYearList(
       clusterId: 34
       countryId: $countryId
       year: $year
@@ -495,13 +561,15 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       cog
       density
       rca
+      clusterMarketShare
+      globalMarketShare
     }
   }
 `;
 
 export const GET_SUPPLY_CHAINS = gql`
   query GetSupplyChains {
-    ggSupplyChainList {
+    gpSupplyChainList {
       supplyChainId
       supplyChain
     }
@@ -510,7 +578,7 @@ export const GET_SUPPLY_CHAINS = gql`
 
 export const GET_COUNTRY_PRODUCT_DATA = gql`
   query GetCountryProductData($year: Int!, $countryId: Int!) {
-    ggCpyList(year: $year, countryId: $countryId) {
+    gpCpyList(year: $year, countryId: $countryId) {
       year
       countryId
       productId
@@ -532,7 +600,7 @@ export const GET_COUNTRY_PRODUCT_DATA = gql`
       strategyLowHangingFruit
       strategyFrontier
     }
-    ggCpyscList(year: $year, countryId: $countryId) {
+    gpCpyscList(year: $year, countryId: $countryId) {
       year
       countryId
       productId
@@ -548,7 +616,7 @@ export const GET_COUNTRY_PRODUCT_DATA = gql`
 
 export const GET_PRODUCT_MAPPINGS_FOR_SUPPLY_CHAIN = gql`
   query GetProductMappingsForSupplyChain($supplyChainId: Int!) {
-    ggSupplyChainClusterProductMemberList(supplyChainId: $supplyChainId) {
+    gpSupplyChainClusterProductMemberList(supplyChainId: $supplyChainId) {
       supplyChainId
       productId
       clusterId
@@ -559,52 +627,52 @@ export const GET_PRODUCT_MAPPINGS_FOR_SUPPLY_CHAIN = gql`
 // Additional query for supply chain product mappings (comprehensive version)
 export const GET_SUPPLY_CHAIN_PRODUCT_MAPPINGS = gql`
   query GetSupplyChainProductMappings {
-    supplyChain0: ggSupplyChainClusterProductMemberList(supplyChainId: 0) {
+    supplyChain0: gpSupplyChainClusterProductMemberList(supplyChainId: 0) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain1: ggSupplyChainClusterProductMemberList(supplyChainId: 1) {
+    supplyChain1: gpSupplyChainClusterProductMemberList(supplyChainId: 1) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain2: ggSupplyChainClusterProductMemberList(supplyChainId: 2) {
+    supplyChain2: gpSupplyChainClusterProductMemberList(supplyChainId: 2) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain3: ggSupplyChainClusterProductMemberList(supplyChainId: 3) {
+    supplyChain3: gpSupplyChainClusterProductMemberList(supplyChainId: 3) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain4: ggSupplyChainClusterProductMemberList(supplyChainId: 4) {
+    supplyChain4: gpSupplyChainClusterProductMemberList(supplyChainId: 4) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain5: ggSupplyChainClusterProductMemberList(supplyChainId: 5) {
+    supplyChain5: gpSupplyChainClusterProductMemberList(supplyChainId: 5) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain6: ggSupplyChainClusterProductMemberList(supplyChainId: 6) {
+    supplyChain6: gpSupplyChainClusterProductMemberList(supplyChainId: 6) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain7: ggSupplyChainClusterProductMemberList(supplyChainId: 7) {
+    supplyChain7: gpSupplyChainClusterProductMemberList(supplyChainId: 7) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain8: ggSupplyChainClusterProductMemberList(supplyChainId: 8) {
+    supplyChain8: gpSupplyChainClusterProductMemberList(supplyChainId: 8) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain9: ggSupplyChainClusterProductMemberList(supplyChainId: 9) {
+    supplyChain9: gpSupplyChainClusterProductMemberList(supplyChainId: 9) {
       supplyChainId
       productId
       clusterId
@@ -614,7 +682,7 @@ export const GET_SUPPLY_CHAIN_PRODUCT_MAPPINGS = gql`
 
 export const GET_COUNTRY_YEAR_METRICS = gql`
   query GetCountryYearMetrics($year: Int!, $countryId: Int!) {
-    ggCountryYearList(year: $year, countryId: $countryId) {
+    gpCountryYearList(year: $year, countryId: $countryId) {
       countryId
       year
       coiGreen
@@ -633,7 +701,7 @@ export const GET_COUNTRY_YEAR_METRICS = gql`
 // Once updated, this will reduce N individual requests to 1 batch request
 export const GET_ALL_COUNTRIES_YEAR_METRICS = gql`
   query GetAllCountriesYearMetrics($year: Int!) {
-    ggCountryYearList(year: $year) {
+    gpCountryYearList(year: $year) {
       countryId
       year
       coiGreen

@@ -23,7 +23,7 @@ import {
 // GET_ALL_CLUSTERS query specific to this hook
 const GET_ALL_CLUSTERS = gql`
   query GetAllClusters {
-    ggClusterList {
+    gpClusterList {
       clusterId
     }
   }
@@ -186,8 +186,9 @@ export const useGreenGrowthData = (
 
   // Fetch product mappings when supply chains data is available
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchProductMappings = async () => {
-      if (!supplyChainsData?.ggSupplyChainList) return;
+      if (!supplyChainsData?.gpSupplyChainList) return;
 
       // Store previous mappings before starting new fetch
       if (productMappings.length > 0 && isCountryChanging) {
@@ -196,7 +197,7 @@ export const useGreenGrowthData = (
 
       setProductMappingsLoading(true);
       try {
-        const supplyChains = supplyChainsData.ggSupplyChainList;
+        const supplyChains = supplyChainsData.gpSupplyChainList;
 
         const mappingPromises = supplyChains.map((sc: SupplyChain) =>
           client.query({
@@ -207,7 +208,7 @@ export const useGreenGrowthData = (
 
         const mappingResponses = await Promise.all(mappingPromises);
         const allMappings = mappingResponses.flatMap(
-          (res) => res.data.ggSupplyChainClusterProductMemberList || [],
+          (res) => res.data.gpSupplyChainClusterProductMemberList || [],
         );
 
         setProductMappings(allMappings);
@@ -224,6 +225,7 @@ export const useGreenGrowthData = (
   // Fetch country cluster data for all clusters (OPTIMIZED: single batched request)
   // PERFORMANCE: Reduced from ~6 individual requests to 1 batched GraphQL query using aliases
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (countrySelection === null) {
       // Don't clear data immediately to maintain previous data during transitions
       if (!countryClusterLoading) {
@@ -275,7 +277,8 @@ export const useGreenGrowthData = (
   // Fetch all countries metrics when needed (for StrategicPositionChart)
   // OPTIMIZATION: Uses a single GraphQL request instead of N individual requests
   useEffect(() => {
-    if (!fetchAllCountriesMetrics || !countriesData?.ggLocationCountryList) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!fetchAllCountriesMetrics || !countriesData?.gpLocationCountryList) {
       return;
     }
 
@@ -290,7 +293,7 @@ export const useGreenGrowthData = (
 
       setAllCountriesMetricsLoading(true);
       try {
-        const countries = countriesData.ggLocationCountryList;
+        const countries = countriesData.gpLocationCountryList;
 
         // Create a lookup map for country metadata
         const countryLookupMap = new Map(
@@ -308,7 +311,7 @@ export const useGreenGrowthData = (
               year: selectedYear,
             },
           });
-          allMetrics = data.ggCountryYearList || [];
+          allMetrics = data.gpCountryYearList || [];
         } catch (singleQueryError: any) {
           // Fallback: If single query fails, use individual requests
           if (
@@ -329,7 +332,7 @@ export const useGreenGrowthData = (
                     countryId: country.countryId,
                   },
                 });
-                return data.ggCountryYearList?.[0] || null;
+                return data.gpCountryYearList?.[0] || null;
               } catch (err) {
                 // Silently skip countries without data
                 console.warn(
@@ -457,9 +460,9 @@ export const useGreenGrowthData = (
       return [];
     }
 
-    const products = productsData.ggProductList;
-    const clusters = clustersData.ggClusterList;
-    const supplyChains = supplyChainsData.ggSupplyChainList;
+    const products = productsData.gpProductList;
+    const clusters = clustersData.gpClusterList;
+    const supplyChains = supplyChainsData.gpSupplyChainList;
 
     // Create lookup maps
     const clusterMap = new Map(
@@ -504,17 +507,17 @@ export const useGreenGrowthData = (
   const countryData = useMemo(
     () => ({
       clusterData: currentCountryClusterData,
-      productData: currentCountryProductData?.ggCpyList || [],
-      productSupplyChainData: currentCountryProductData?.ggCpyscList || [],
+      productData: currentCountryProductData?.gpCpyList || [],
+      productSupplyChainData: currentCountryProductData?.gpCpyscList || [],
     }),
     [currentCountryClusterData, currentCountryProductData],
   );
 
   // Countries lookup for convenience
   const countryLookup = useMemo(() => {
-    if (!countriesData?.ggLocationCountryList) return new Map();
+    if (!countriesData?.gpLocationCountryList) return new Map();
     return new Map(
-      countriesData.ggLocationCountryList.map((country: any) => [
+      countriesData.gpLocationCountryList.map((country: any) => [
         country.countryId,
         country,
       ]),
@@ -526,27 +529,27 @@ export const useGreenGrowthData = (
   const isCoreDataLoading =
     productsLoading || clustersLoading || supplyChainsLoading;
   const hasCoreData = !!(
-    productsData?.ggProductList &&
-    clustersData?.ggClusterList &&
-    supplyChainsData?.ggSupplyChainList
+    productsData?.gpProductList &&
+    clustersData?.gpClusterList &&
+    supplyChainsData?.gpSupplyChainList
   );
 
   // For country-specific data, only show loading if we have no current data AND no previous data
   const hasCountryData = !!(
-    countryProductData?.ggCpyList || previousCountryProductData?.ggCpyList
+    countryProductData?.gpCpyList || previousCountryProductData?.gpCpyList
   );
 
   const isInitialLoading =
     (isCoreDataLoading && !hasCoreData) ||
     (fetchAllCountriesMetrics &&
       countriesLoading &&
-      !countriesData?.ggLocationCountryList) ||
+      !countriesData?.gpLocationCountryList) ||
     (countrySelection !== null &&
       (!hasCountryData || (!allClustersData && !previousAllClustersData))) ||
     (fetchAllCountriesMetrics &&
       allCountriesMetrics.length === 0 &&
       previousAllCountriesMetrics.length === 0 &&
-      countriesData?.ggLocationCountryList?.length > 0);
+      countriesData?.gpLocationCountryList?.length > 0);
 
   // Loading state specifically for country data changes (shows previous data)
   const isCountryDataLoading =

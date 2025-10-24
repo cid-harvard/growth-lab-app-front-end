@@ -1,4 +1,10 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import {
   TextField,
   Box,
@@ -39,6 +45,10 @@ import { getValueChainIcon } from "./ClusterTree/valueChainIconMapping";
 import { getValueChainColor } from "../../utils/colors";
 import { useSelectionDataModal } from "../../hooks/useSelectionDataModal";
 import SharedTooltip from "../shared/SharedTooltip";
+import {
+  calculateClusterScores,
+  calculateAttractiveness,
+} from "../../utils/rankings";
 
 const dimensionObject = {
   "Product Complexity": "normalizedPci",
@@ -95,7 +105,28 @@ const ValueChainIcons = ({
         const valueChainColor = getValueChainColor(chainName);
 
         return (
-          <MuiTooltip key={chainName} title={chainName} placement="top">
+          <MuiTooltip
+            key={chainName}
+            title={chainName}
+            placement="top"
+            arrow
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  bgcolor: "#FFFFFF",
+                  color: "#000000",
+                  fontSize: { xs: "12px", sm: "14px" },
+                  maxWidth: 320,
+                  p: 1.5,
+                  border: "1px solid #DBDBDB",
+                  boxShadow: "0 0 4px 1px rgba(0, 0, 0, 0.10)",
+                },
+              },
+              arrow: {
+                sx: { color: "#FFFFFF" },
+              },
+            }}
+          >
             <Box
               component="img"
               src={iconPath}
@@ -260,7 +291,6 @@ const NestedProductSelector = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputRef, setInputRef] = useState(null);
   const [focusedIndex, setFocusedIndex] = useState(-1);
-  const modalSetupRef = useRef(false);
   const scrollContainerRef = useRef(null);
   const clusterRefs = useRef(new Map());
   const previousFocusedIndex = useRef(-1);
@@ -321,75 +351,72 @@ const NestedProductSelector = ({
     return items;
   }, [filteredGroups, expandedClusters]);
 
-  // Set up initial state when modal opens
-  useEffect(() => {
-    if (isModalOpen && !modalSetupRef.current) {
-      modalSetupRef.current = true;
+  // Handle modal opening - setup initial state
+  // Using event handler instead of useEffect follows Dan Abramov's "You Might Not Need an Effect"
+  const handleOpenModal = useCallback(() => {
+    setIsModalOpen(true);
 
-      // Capture the first selected cluster at modal open time (don't update on selection changes)
-      const initialFirstSelectedCluster = firstSelectedCluster;
+    // Reset search state
+    setSearchQuery("");
 
-      // Reset search and focus state
-      setSearchQuery("");
-      // Find the index of the first selected cluster in selectableItems
-      let initialFocusIndex = -1;
-      if (initialFirstSelectedCluster && selectableItems.length > 0) {
-        initialFocusIndex = selectableItems.findIndex(
-          (item) =>
-            item.type === "cluster" &&
-            item.data.groupName === initialFirstSelectedCluster,
-        );
-      }
-      setFocusedIndex(initialFocusIndex >= 0 ? initialFocusIndex : 0);
-
-      // Set expanded clusters based on current selections at modal open time
-      if (selectedProducts.length && groupedProducts.length) {
-        const selectedProductIds = new Set(
-          selectedProducts.map((p) => p.productId),
-        );
-        const clustersWithSelectedProducts = new Set();
-
-        groupedProducts.forEach((group) => {
-          const hasSelectedProducts = group.products.some((product) =>
-            selectedProductIds.has(product.productId),
-          );
-          if (hasSelectedProducts) {
-            clustersWithSelectedProducts.add(group.groupName);
-          }
-        });
-
-        setExpandedClusters(clustersWithSelectedProducts);
-
-        // Scroll to first selected cluster (only on initial modal open)
-        if (initialFirstSelectedCluster) {
-          setTimeout(() => {
-            const clusterElement = clusterRefs.current.get(
-              initialFirstSelectedCluster,
-            );
-            if (clusterElement && scrollContainerRef.current) {
-              const containerRect =
-                scrollContainerRef.current.getBoundingClientRect();
-              const elementRect = clusterElement.getBoundingClientRect();
-              const scrollTop = scrollContainerRef.current.scrollTop;
-              const targetScrollTop =
-                scrollTop + elementRect.top - containerRect.top;
-
-              scrollContainerRef.current.scrollTo({
-                top: targetScrollTop,
-                behavior: "smooth",
-              });
-            }
-          }, 100);
-        }
-      } else {
-        // No selected products, start with no clusters expanded
-        setExpandedClusters(new Set());
-      }
-    } else if (!isModalOpen) {
-      // Reset setup flag when modal closes
-      modalSetupRef.current = false;
+    // Find the index of the first selected cluster in selectableItems
+    let initialFocusIndex = -1;
+    if (firstSelectedCluster && selectableItems.length > 0) {
+      initialFocusIndex = selectableItems.findIndex(
+        (item) =>
+          item.type === "cluster" &&
+          item.data.groupName === firstSelectedCluster,
+      );
     }
-  }, [isModalOpen]);
+    setFocusedIndex(initialFocusIndex >= 0 ? initialFocusIndex : 0);
+
+    // Set expanded clusters based on current selections
+    if (selectedProducts.length && groupedProducts.length) {
+      const selectedProductIds = new Set(
+        selectedProducts.map((p) => p.productId),
+      );
+      const clustersWithSelectedProducts = new Set();
+
+      groupedProducts.forEach((group) => {
+        const hasSelectedProducts = group.products.some((product) =>
+          selectedProductIds.has(product.productId),
+        );
+        if (hasSelectedProducts) {
+          clustersWithSelectedProducts.add(group.groupName);
+        }
+      });
+
+      setExpandedClusters(clustersWithSelectedProducts);
+
+      // Scroll to first selected cluster after render
+      if (firstSelectedCluster) {
+        setTimeout(() => {
+          const clusterElement = clusterRefs.current.get(firstSelectedCluster);
+          if (clusterElement && scrollContainerRef.current) {
+            const containerRect =
+              scrollContainerRef.current.getBoundingClientRect();
+            const elementRect = clusterElement.getBoundingClientRect();
+            const scrollTop = scrollContainerRef.current.scrollTop;
+            const targetScrollTop =
+              scrollTop + elementRect.top - containerRect.top;
+
+            scrollContainerRef.current.scrollTo({
+              top: targetScrollTop,
+              behavior: "smooth",
+            });
+          }
+        }, 100);
+      }
+    } else {
+      // No selected products, start with no clusters expanded
+      setExpandedClusters(new Set());
+    }
+  }, [
+    firstSelectedCluster,
+    selectableItems,
+    selectedProducts,
+    groupedProducts,
+  ]);
 
   // Preserve focus when selectableItems change (like when making selections)
   useEffect(() => {
@@ -439,6 +466,7 @@ const NestedProductSelector = ({
 
   // Scroll focused item into view - only when focus actually changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     // Only scroll if focus index actually changed (not just selectableItems)
     if (
       focusedIndex >= 0 &&
@@ -476,17 +504,7 @@ const NestedProductSelector = ({
       // Open modal on arrow keys or Enter
       if (["ArrowDown", "ArrowUp", "Enter"].includes(event.key)) {
         event.preventDefault();
-        setIsModalOpen(true);
-        // Focus on the first selected cluster if available
-        let initialFocusIndex = -1;
-        if (firstSelectedCluster && selectableItems.length > 0) {
-          initialFocusIndex = selectableItems.findIndex(
-            (item) =>
-              item.type === "cluster" &&
-              item.data.groupName === firstSelectedCluster,
-          );
-        }
-        setFocusedIndex(initialFocusIndex >= 0 ? initialFocusIndex : 0);
+        handleOpenModal();
       }
       return;
     }
@@ -548,6 +566,10 @@ const NestedProductSelector = ({
       case "Tab":
         // Allow default tab behavior to close modal
         setIsModalOpen(false);
+        break;
+
+      default:
+        // Ignore other keys
         break;
     }
   };
@@ -694,7 +716,7 @@ const NestedProductSelector = ({
           }}
         >
           <Typography
-            sx={{ fontSize: isMobile ? "12px" : "14px", color: "#000" }}
+            sx={{ fontSize: isMobile ? "0.75rem" : "0.875rem", color: "#000" }}
           >
             Add a product or cluster
           </Typography>
@@ -704,7 +726,7 @@ const NestedProductSelector = ({
             placeholder="Search a product or cluster"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleOpenModal}
             onKeyDown={handleKeyDown}
             variant="outlined"
             size="small"
@@ -832,7 +854,7 @@ const NestedProductSelector = ({
                       >
                         <Typography
                           sx={{
-                            fontSize: "14px",
+                            fontSize: "0.875rem",
                             color: "#000",
                             fontWeight: clusterSelected
                               ? 600
@@ -850,7 +872,7 @@ const NestedProductSelector = ({
                           }}
                           sx={{
                             ml: 1,
-                            fontSize: "18px",
+                            fontSize: "1.125rem",
                             fontWeight: "bold",
                             cursor: "pointer",
                             minWidth: "20px",
@@ -959,6 +981,9 @@ const ProductRadarInternal = ({
   // Value chain filtering state
   const [selectedValueChains, setSelectedValueChains] = useState([]);
 
+  // Track if initial render has completed to disable animations on reflow
+  const [hasRendered, setHasRendered] = useState(false);
+
   // Handle value chain icon clicks
   const handleValueChainClick = (valueChainName) => {
     setSelectedValueChains((prev) => {
@@ -985,9 +1010,9 @@ const ProductRadarInternal = ({
 
   // Get cluster data lookup
   const clusterLookup = useMemo(() => {
-    if (!clustersData?.ggClusterList) return new Map();
+    if (!clustersData?.gpClusterList) return new Map();
     return new Map(
-      clustersData.ggClusterList.map((cluster) => [
+      clustersData.gpClusterList.map((cluster) => [
         cluster.clusterId,
         cluster.clusterName,
       ]),
@@ -1022,8 +1047,8 @@ const ProductRadarInternal = ({
     groups.set("No Cluster", []);
 
     // Initialize known clusters
-    if (clustersData?.ggClusterList) {
-      clustersData.ggClusterList.forEach((cluster) => {
+    if (clustersData?.gpClusterList) {
+      clustersData.gpClusterList.forEach((cluster) => {
         groups.set(cluster.clusterName, []);
       });
     }
@@ -1182,14 +1207,14 @@ const ProductRadarInternal = ({
   // Extract country product data from shared hook
   const currentData = useMemo(() => {
     if (!countryData?.productData) return null;
-    return { ggCpyList: countryData.productData };
+    return { gpCpyList: countryData.productData };
   }, [countryData]);
 
   const productData = useMemo(() => {
-    if (!currentData?.ggCpyList || selectedProducts.length === 0) return [];
+    if (!currentData?.gpCpyList || selectedProducts.length === 0) return [];
 
     return selectedProducts.map((product) => {
-      const cpyData = currentData.ggCpyList.find(
+      const cpyData = currentData.gpCpyList.find(
         (cpy) => cpy?.productId === product?.productId,
       );
       if (!cpyData) return {};
@@ -1202,23 +1227,17 @@ const ProductRadarInternal = ({
         ...cpyData,
       };
     });
-  }, [currentData?.ggCpyList, selectedProducts]);
+  }, [currentData?.gpCpyList, selectedProducts]);
 
-  // Track the country/year combination that was last used for initialization
-  const lastInitialized = useRef({ country: null, year: null });
+  // Track if we've initialized products for current country/year to avoid re-initializing
+  const initKey = `${selectedCountry}-${selectedYear}`;
+  const lastInitKey = useRef(null);
 
-  // Clear selections when country/year changes to ensure defaults for the new
-  // selection are applied cleanly (prevents old-country products lingering)
-  useEffect(() => {
-    setSelectedProducts([]);
-    setSelectedValueChains([]);
-  }, [selectedCountry, selectedYear, setSelectedProducts]);
-
-  // Calculate default products declaratively
+  // Calculate default products declaratively (always fresh for current country/year)
   const defaultProducts = useMemo(() => {
     if (
       !countryData?.clusterData ||
-      !currentData?.ggCpyList ||
+      !currentData?.gpCpyList ||
       !supplyChainProductLookup ||
       !productLookup
     ) {
@@ -1234,9 +1253,10 @@ const ProductRadarInternal = ({
 
     // Calculate cluster positions (same as ProductScatter cluster mode)
     const clustersWithPositions = filteredClusters.map((clusterItem) => {
-      const attractiveness =
-        0.6 * Number.parseFloat(clusterItem.cog) +
-        0.4 * Number.parseFloat(clusterItem.pci);
+      const attractiveness = calculateAttractiveness(
+        Number.parseFloat(clusterItem.cog),
+        Number.parseFloat(clusterItem.pci),
+      );
       const density = Number.parseFloat(clusterItem.density);
 
       return {
@@ -1246,75 +1266,11 @@ const ProductRadarInternal = ({
       };
     });
 
-    // Find the range of values to normalize for better "top right" detection
-    const attractivenessValues = clustersWithPositions.map(
-      (c) => c.attractiveness,
-    );
-    const densityValues = clustersWithPositions.map((c) => c.density);
+    // Use shared ranking function to calculate scores and sort
+    const clustersWithScores = calculateClusterScores(clustersWithPositions);
 
-    const minAttractiveness = Math.min(...attractivenessValues);
-    const maxAttractiveness = Math.max(...attractivenessValues);
-    const minDensity = Math.min(...densityValues);
-    const maxDensity = Math.max(...densityValues);
-
-    // Normalize values to 0-1 range for fair comparison
-    const clustersWithNormalizedScores = clustersWithPositions.map(
-      (cluster) => {
-        const normalizedAttractiveness =
-          attractivenessValues.length > 1
-            ? (cluster.attractiveness - minAttractiveness) /
-              (maxAttractiveness - minAttractiveness)
-            : 0.5;
-        const normalizedDensity =
-          densityValues.length > 1
-            ? (cluster.density - minDensity) / (maxDensity - minDensity)
-            : 0.5;
-
-        // Calculate distance from top-right corner (1, 1) - smaller distance means closer to top-right
-        const distanceFromTopRight = Math.sqrt(
-          Math.pow(1 - normalizedDensity, 2) +
-            Math.pow(1 - normalizedAttractiveness, 2),
-        );
-
-        // Alternative scoring methods for robust top-right detection:
-        // 1. Geometric mean of normalized values (emphasizes balance)
-        const geometricMean = Math.sqrt(
-          normalizedAttractiveness * normalizedDensity,
-        );
-
-        // 2. Minimum of the two dimensions (ensures both are reasonably high)
-        const minScore = Math.min(normalizedAttractiveness, normalizedDensity);
-
-        // 3. Weighted product (emphasizes having both dimensions high)
-        const productScore = normalizedAttractiveness * normalizedDensity;
-
-        // Use distance-based approach as primary, with geometric mean as tiebreaker
-        const topRightScore = 1 - distanceFromTopRight + geometricMean * 0.1;
-
-        return {
-          ...cluster,
-          normalizedAttractiveness,
-          normalizedDensity,
-          distanceFromTopRight,
-          geometricMean,
-          minScore,
-          productScore,
-          topRightScore,
-        };
-      },
-    );
-
-    // Sort by top-right score (higher is better) and take top 2
-    const topClusters = clustersWithNormalizedScores
-      .sort((a, b) => {
-        // Primary sort by topRightScore
-        if (Math.abs(a.topRightScore - b.topRightScore) > 0.01) {
-          return b.topRightScore - a.topRightScore;
-        }
-        // Tiebreaker: prefer higher geometric mean
-        return b.geometricMean - a.geometricMean;
-      })
-      .slice(0, 2);
+    // Take top 2 clusters
+    const topClusters = clustersWithScores.slice(0, 2);
 
     // Get all products belonging to the top 2 clusters
     const selectedProductsFromClusters = [];
@@ -1323,7 +1279,7 @@ const ProductRadarInternal = ({
     // (since UI displays newest clusters first)
     topClusters.reverse().forEach((cluster) => {
       // Find products that belong to this cluster
-      const clusterProducts = currentData.ggCpyList.filter((productItem) => {
+      const clusterProducts = currentData.gpCpyList.filter((productItem) => {
         const mappings =
           supplyChainProductLookup.get(productItem.productId) || [];
         return mappings.some(
@@ -1343,37 +1299,26 @@ const ProductRadarInternal = ({
     return selectedProductsFromClusters;
   }, [
     countryData?.clusterData,
-    currentData?.ggCpyList,
+    currentData?.gpCpyList,
     productLookup,
     supplyChainProductLookup,
   ]);
 
-  // Initialize with default products when country/year changes or on first load
+  // Initialize with default products when country/year changes
+  // This effect is necessary because:
+  // 1. selectedProducts is controlled by parent component
+  // 2. defaultProducts depends on async data that may not be ready on mount
+  // 3. We need to reset selection when country/year changes
   useEffect(() => {
-    const currentCountry = selectedCountry;
-    const currentYear = selectedYear;
-    const hasCountryOrYearChanged =
-      lastInitialized.current.country !== currentCountry ||
-      lastInitialized.current.year !== currentYear;
-    const isFirstLoad =
-      lastInitialized.current.country === null &&
-      lastInitialized.current.year === null;
+    const hasKeyChanged = lastInitKey.current !== initKey;
 
-    if (
-      defaultProducts.length > 0 &&
-      (hasCountryOrYearChanged ||
-        (isFirstLoad && selectedProducts.length === 0))
-    ) {
-      lastInitialized.current = { country: currentCountry, year: currentYear };
+    if (hasKeyChanged && defaultProducts.length > 0) {
+      // Reset selections for new country/year and set defaults
+      lastInitKey.current = initKey;
       setSelectedProducts(defaultProducts);
+      setSelectedValueChains([]);
     }
-  }, [
-    defaultProducts,
-    selectedProducts.length,
-    setSelectedProducts,
-    selectedCountry,
-    selectedYear,
-  ]);
+  }, [initKey, defaultProducts, setSelectedProducts]);
 
   const radarData = useMemo(() => {
     const dimensions = [
@@ -1384,11 +1329,11 @@ const ProductRadarInternal = ({
       "Product Market Size",
     ];
 
-    if (productData.length === 0 || !currentData?.ggCpyList) return [];
+    if (productData.length === 0 || !currentData?.gpCpyList) return [];
 
     const dimensionBreakpoints = dimensions.reduce((acc, dimension) => {
       const valueKey = dimensionObject[dimension];
-      const values = currentData.ggCpyList
+      const values = currentData.gpCpyList
         .map((product) => {
           if (dimension === "Product Market Growth") {
             let v = product.productMarketShareGrowth;
@@ -1457,75 +1402,34 @@ const ProductRadarInternal = ({
         }, {}),
       };
     });
-  }, [productData, currentData?.ggCpyList]);
+  }, [productData, currentData?.gpCpyList]);
 
-  // Calculate responsive layout
+  // Reset animation state when country or year changes
+  useEffect(() => {
+    setHasRendered(false);
+  }, [selectedCountry, selectedYear]);
 
-  const availableHeight = height;
-  const padding = 0;
+  // Disable animations after data has loaded and initial animation completes
+  useEffect(() => {
+    if (productData.length > 0 && radarData.length > 0 && !hasRendered) {
+      const timer = setTimeout(() => {
+        setHasRendered(true);
+      }, 1000); // Wait for initial animation to complete
+      return () => clearTimeout(timer);
+    }
+  }, [productData.length, radarData.length, hasRendered]);
 
-  // Minimum card width tuned to allow 2 columns at narrower widths
-  const MIN_CARD_WIDTH = 300;
-  const H_GUTTER = 6; // horizontal gap between cards
+  // Simplified responsive layout
+  const isSingleColumn = isMobile || width < 700;
+  const angleAxisFontSize = isMobile ? 11 : 13;
 
-  // Prefer 2 columns; only switch to 1 column on very small widths
-  const SINGLE_COLUMN_WIDTH_THRESHOLD = 640; // keep 2 cols until narrower than this
-  const isSingleColumn = isMobile || width < SINGLE_COLUMN_WIDTH_THRESHOLD;
-
-  // Calculate grid layout for charts
-  const chartsPerRow = isSingleColumn ? 1 : Math.min(2, productData.length);
-  const chartRows = Math.ceil(productData.length / chartsPerRow);
-  const chartWidth = Math.max(
-    (width - padding * 2) / chartsPerRow - H_GUTTER,
-    MIN_CARD_WIDTH,
-  );
-  // Allow taller charts but cap overall card height for wide viewports
-  const byWidthHeight = Math.round(chartWidth * 0.9);
-  const minHeight = isSingleColumn ? 440 : 320;
-  const MAX_CARD_HEIGHT = isSingleColumn ? 420 : 420;
-  const chartHeight = Math.min(
-    Math.max(byWidthHeight, minHeight),
-    MAX_CARD_HEIGHT,
-  );
-
-  // Axis/label tweaks for very narrow charts
-  const isNarrowChart = isSingleColumn || chartWidth < 340;
-  const angleAxisFontSize = isNarrowChart ? 10 : 12;
-  // Tighter margins in two-column layout to use space efficiently
-  const isVeryNarrowTwoCol = !isSingleColumn && chartWidth < 340;
-  const dynamicLeftMargin = isSingleColumn ? 110 : isVeryNarrowTwoCol ? 0 : 10;
-  const dynamicRightMargin = isSingleColumn ? 48 : isVeryNarrowTwoCol ? 52 : 64; // extra room for right-side labels
+  // Simple margins - let ResponsiveContainer handle most sizing
   const chartMargins = {
-    left: dynamicLeftMargin,
-    right: dynamicRightMargin,
-    top: isNarrowChart ? 6 : 0,
-    bottom: isNarrowChart ? 6 : 0,
+    left: isSingleColumn ? 20 : 20,
+    right: isSingleColumn ? 50 : 50,
+    top: 20,
+    bottom: 20,
   };
-
-  // Reserve space inside the product card for the title and the
-  // "Belongs to Value Chains" footer so the chart does not push
-  // content outside the card boundary.
-  const TITLE_SECTION_HEIGHT_PX = 28; // approximate height of the title row
-  const FOOTER_SECTION_HEIGHT_PX = 48; // label + icons area below the chart
-  const RESERVED_NON_CHART_HEIGHT_PX =
-    TITLE_SECTION_HEIGHT_PX + FOOTER_SECTION_HEIGHT_PX;
-  const chartInnerHeight = Math.max(
-    120,
-    chartHeight - RESERVED_NON_CHART_HEIGHT_PX,
-  );
-
-  // Compute an outer radius in pixels that keeps axis labels within the card
-  const availableRadiusX = Math.floor(
-    (chartWidth - dynamicLeftMargin - dynamicRightMargin) / 2,
-  );
-  const availableRadiusY = Math.floor(
-    (chartInnerHeight - chartMargins.top - chartMargins.bottom) / 2,
-  );
-  const labelSafetyPadding = isSingleColumn ? 16 : isVeryNarrowTwoCol ? 22 : 26; // extra room for angle labels
-  const outerRadiusPx = Math.max(
-    80,
-    Math.min(availableRadiusX, availableRadiusY) - labelSafetyPadding,
-  );
 
   // Register/unregister image capture function
   useEffect(() => {
@@ -1584,6 +1488,7 @@ const ProductRadarInternal = ({
         height: "100%",
         padding: "0px",
         overflow: "auto",
+        overflowX: "hidden", // Prevent horizontal scroll
       }}
     >
       {/* Controls + Nested Selector */}
@@ -1600,7 +1505,7 @@ const ProductRadarInternal = ({
       <Box
         ref={chartContainerRef}
         sx={{
-          minHeight: availableHeight - 60,
+          minHeight: height - 160,
         }}
       >
         {visibleProductsByCluster.map((cluster, clusterIndex) => (
@@ -1644,7 +1549,7 @@ const ProductRadarInternal = ({
                 sx={{
                   color: "black",
                   fontWeight: 600,
-                  fontSize: "20px",
+                  fontSize: "1.25rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                   whiteSpace: "nowrap",
@@ -1661,17 +1566,17 @@ const ProductRadarInternal = ({
               />
             </Box>
 
-            {/* Products Grid for this Cluster */}
+            {/* Products Grid for this Cluster - CSS Grid based layout */}
             <Box
               sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: isMobile ? "center" : "flex-start",
-                gap: 1,
+                display: "grid",
+                gridTemplateColumns: isSingleColumn ? "1fr" : "repeat(2, 1fr)",
+                gap: 2,
                 mb: clusterIndex < visibleProductsByCluster.length - 1 ? 4 : 0,
+                minWidth: 0, // Allow grid to shrink below content size
               }}
             >
-              {cluster.products.map((product, productIndex) => {
+              {cluster.products.map((product) => {
                 const productWithData = productData.find(
                   (p) => p?.productId === product?.productId,
                 );
@@ -1679,33 +1584,18 @@ const ProductRadarInternal = ({
 
                 const clusterColor = "#FABEB4"; // Default color
 
-                // Heuristic tooltip positioning: bias toward page center and away from chart center
-                // - For two-column layout, place tooltip on the inward side (toward page center)
-                // - For single-column/mobile, keep it near the top-left of the chart card
-                const useInwardBias = !isMobile && chartsPerRow === 2;
-                const isLeftColumn = productIndex % 2 === 0;
-                const tooltipPosition = useInwardBias
-                  ? {
-                      x: isLeftColumn ? Math.max(chartWidth - 220, 12) : 12,
-                      y: 12,
-                    }
-                  : { x: 12, y: 12 };
-
                 return (
                   <Box
                     key={product?.productId}
                     sx={{
-                      width: isSingleColumn ? "100%" : `${chartWidth}px`,
-                      minWidth: `${MIN_CARD_WIDTH}px`,
-                      height: `${chartHeight}px`,
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "center",
                       position: "relative",
                       border: "1px solid transparent",
                       borderRadius: "8px",
                       padding: "8px",
                       transition: "border-color 0.2s ease",
+                      minWidth: 0, // Allow grid item to shrink
                       "&:hover": {
                         border: "1px dashed black",
                       },
@@ -1740,16 +1630,19 @@ const ProductRadarInternal = ({
                     >
                       <CloseIcon />
                     </IconButton>
+
+                    {/* Product Title */}
                     <Typography
                       variant="h6"
                       align="center"
                       sx={{
                         color: "black",
                         fontWeight: 600,
-                        fontSize: "18px",
+                        fontSize: "1.125rem",
                         mb: 1,
                         cursor: "pointer",
                         textDecoration: "underline",
+                        flexShrink: 0,
                       }}
                       onClick={() =>
                         openSelectionModal({
@@ -1763,66 +1656,81 @@ const ProductRadarInternal = ({
                     >
                       {product?.nameShortEn}
                     </Typography>
-                    <ResponsiveContainer width="100%" height={chartInnerHeight}>
-                      <RadarChart
-                        data={radarData}
-                        margin={chartMargins}
-                        padding={0}
-                        outerRadius={outerRadiusPx}
-                      >
-                        <PolarGrid />
-                        <PolarAngleAxis
-                          dataKey="dimension"
-                          tick={
-                            <CustomPolarAngleAxis
-                              fontSize={angleAxisFontSize}
-                            />
-                          }
-                        />
-                        <PolarRadiusAxis
-                          angle={90}
-                          domain={[0, 10]}
-                          tick={{
-                            fill: themeUtils.chart.colors.text.primary,
-                            fontSize: isNarrowChart ? 8 : 12,
-                            fontFamily:
-                              themeUtils.chart.typography["chart-axis-tick"]
-                                .fontFamily,
-                          }}
-                          ticks={[0, 2, 4, 6, 8, 10]}
-                        />
-                        <Radar
-                          name={product?.nameEn}
-                          dataKey={product?.productId}
-                          stroke={clusterColor}
-                          fill={clusterColor}
-                          fillOpacity={0.6}
-                          dot={{
-                            stroke: "rgb(77, 112, 130)",
-                            fill: "none",
-                            r: 3,
-                          }}
-                        />
-                        <Tooltip
-                          position={tooltipPosition}
-                          allowEscapeViewBox={{ x: true, y: true }}
-                          wrapperStyle={{ pointerEvents: "none" }}
-                          content={
-                            <CustomTooltip
-                              productData={productData}
-                              radarData={radarData}
-                            />
-                          }
-                        />
-                      </RadarChart>
-                    </ResponsiveContainer>
+
+                    {/* Radar Chart - flexible height with aspect ratio */}
                     <Box
                       sx={{
-                        m: 0,
+                        width: "100%",
+                        aspectRatio: isSingleColumn ? "1 / 1.1" : "1 / 1",
+                        minHeight: "280px",
+                        maxHeight: "380px",
+                      }}
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RadarChart
+                          data={radarData}
+                          margin={chartMargins}
+                          outerRadius="72%"
+                        >
+                          <PolarGrid />
+                          <PolarAngleAxis
+                            dataKey="dimension"
+                            tick={
+                              <CustomPolarAngleAxis
+                                fontSize={angleAxisFontSize}
+                              />
+                            }
+                          />
+                          <PolarRadiusAxis
+                            angle={90}
+                            domain={[0, 10]}
+                            tick={{
+                              fill: themeUtils.chart.colors.text.primary,
+                              fontSize: isMobile ? 9 : 11,
+                              fontFamily:
+                                themeUtils.chart.typography["chart-axis-tick"]
+                                  .fontFamily,
+                            }}
+                            ticks={[0, 2, 4, 6, 8, 10]}
+                          />
+                          <Radar
+                            name={product?.nameEn}
+                            dataKey={product?.productId}
+                            stroke={clusterColor}
+                            fill={clusterColor}
+                            fillOpacity={0.6}
+                            dot={{
+                              stroke: "rgb(77, 112, 130)",
+                              fill: "none",
+                              r: 3,
+                            }}
+                            isAnimationActive={!hasRendered}
+                          />
+                          <Tooltip
+                            position={{ x: 12, y: 12 }}
+                            allowEscapeViewBox={{ x: true, y: true }}
+                            wrapperStyle={{ pointerEvents: "none" }}
+                            content={
+                              <CustomTooltip
+                                productData={productData}
+                                radarData={radarData}
+                              />
+                            }
+                          />
+                        </RadarChart>
+                      </ResponsiveContainer>
+                    </Box>
 
+                    {/* Value Chain Footer */}
+                    <Box
+                      sx={{
+                        mt: 1,
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: 1,
+                        flexShrink: 0,
                       }}
                     >
                       <Typography
@@ -1830,22 +1738,18 @@ const ProductRadarInternal = ({
                           fontSize: "14px",
                           fontWeight: 600,
                           textTransform: "uppercase",
-                          mb: 0,
                           color: "black",
-                          mr: 1,
                         }}
                       >
                         Belongs to Value Chains:
                       </Typography>
-                      <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        <ValueChainIcons
-                          product={product}
-                          supplyChainProductLookup={supplyChainProductLookup}
-                          supplyChainLookup={supplyChainLookup}
-                          selectedValueChains={selectedValueChains}
-                          onValueChainClick={handleValueChainClick}
-                        />
-                      </Box>
+                      <ValueChainIcons
+                        product={product}
+                        supplyChainProductLookup={supplyChainProductLookup}
+                        supplyChainLookup={supplyChainLookup}
+                        selectedValueChains={selectedValueChains}
+                        onValueChainClick={handleValueChainClick}
+                      />
                     </Box>
                   </Box>
                 );

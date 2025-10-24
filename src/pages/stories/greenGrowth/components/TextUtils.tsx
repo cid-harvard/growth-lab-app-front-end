@@ -62,6 +62,9 @@ export const FormattedText: React.FC<FormattedTextProps> = ({
       variant={variant}
       sx={{
         textAlign: "left",
+        fontSize: "1.125rem",
+        lineHeight: 1.4,
+        color: "#000000",
         ...sx,
       }}
       dangerouslySetInnerHTML={{ __html: html }}
@@ -93,7 +96,7 @@ const StrategicPositionBadge: React.FC<StrategicPositionBadgeProps> = ({
       <div
         style={{
           color: strategicPosition.color,
-          fontSize: "20px",
+          fontSize: "1.25rem",
           fontWeight: 700,
           display: "flex",
           alignItems: "center",

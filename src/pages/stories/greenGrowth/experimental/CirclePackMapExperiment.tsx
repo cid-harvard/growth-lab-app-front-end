@@ -35,52 +35,52 @@ import {
 // Define the supply chain mappings query locally since it's not exported
 const GET_ALL_SUPPLY_CHAIN_MAPPINGS = gql`
   query GetAllSupplyChainMappings {
-    supplyChain0: ggSupplyChainClusterProductMemberList(supplyChainId: 0) {
+    supplyChain0: gpSupplyChainClusterProductMemberList(supplyChainId: 0) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain1: ggSupplyChainClusterProductMemberList(supplyChainId: 1) {
+    supplyChain1: gpSupplyChainClusterProductMemberList(supplyChainId: 1) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain2: ggSupplyChainClusterProductMemberList(supplyChainId: 2) {
+    supplyChain2: gpSupplyChainClusterProductMemberList(supplyChainId: 2) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain3: ggSupplyChainClusterProductMemberList(supplyChainId: 3) {
+    supplyChain3: gpSupplyChainClusterProductMemberList(supplyChainId: 3) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain4: ggSupplyChainClusterProductMemberList(supplyChainId: 4) {
+    supplyChain4: gpSupplyChainClusterProductMemberList(supplyChainId: 4) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain5: ggSupplyChainClusterProductMemberList(supplyChainId: 5) {
+    supplyChain5: gpSupplyChainClusterProductMemberList(supplyChainId: 5) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain6: ggSupplyChainClusterProductMemberList(supplyChainId: 6) {
+    supplyChain6: gpSupplyChainClusterProductMemberList(supplyChainId: 6) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain7: ggSupplyChainClusterProductMemberList(supplyChainId: 7) {
+    supplyChain7: gpSupplyChainClusterProductMemberList(supplyChainId: 7) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain8: ggSupplyChainClusterProductMemberList(supplyChainId: 8) {
+    supplyChain8: gpSupplyChainClusterProductMemberList(supplyChainId: 8) {
       supplyChainId
       productId
       clusterId
     }
-    supplyChain9: ggSupplyChainClusterProductMemberList(supplyChainId: 9) {
+    supplyChain9: gpSupplyChainClusterProductMemberList(supplyChainId: 9) {
       supplyChainId
       productId
       clusterId
@@ -313,7 +313,7 @@ const CirclePackMapExperiment: React.FC = () => {
   const [selectedSupplyChain, setSelectedSupplyChain] = useState<string>("all");
   const [rcaThreshold, setRcaThreshold] = useState<number>(1.0);
   const [mapInstance, setMapInstance] = useState<any>(null);
-  const [mapUpdateTrigger, setMapUpdateTrigger] = useState<number>(0);
+  const [, setMapUpdateTrigger] = useState<number>(0);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const cleanupRef = useRef<(() => void) | null>(null);
 
@@ -372,7 +372,7 @@ const CirclePackMapExperiment: React.FC = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return useQuery(GET_COUNTRY_PRODUCT_DATA, {
       variables: { year: selectedYear, countryId },
-      skip: !countriesData?.ggLocationCountryList?.some(
+      skip: !countriesData?.gpLocationCountryList?.some(
         (c: any) => c.countryId === countryId,
       ),
     });
@@ -395,26 +395,26 @@ const CirclePackMapExperiment: React.FC = () => {
       const supplyChainLookup = new Map();
       const mappingLookup = new Map();
 
-      if (countriesData?.ggLocationCountryList) {
-        countriesData.ggLocationCountryList.forEach((country: any) => {
+      if (countriesData?.gpLocationCountryList) {
+        countriesData.gpLocationCountryList.forEach((country: any) => {
           countryLookup.set(country.countryId, country);
         });
       }
 
-      if (productsData?.ggProductList) {
-        productsData.ggProductList.forEach((product: any) => {
+      if (productsData?.gpProductList) {
+        productsData.gpProductList.forEach((product: any) => {
           productLookup.set(product.productId, product);
         });
       }
 
-      if (clustersData?.ggClusterList) {
-        clustersData.ggClusterList.forEach((cluster: any) => {
+      if (clustersData?.gpClusterList) {
+        clustersData.gpClusterList.forEach((cluster: any) => {
           clusterLookup.set(cluster.clusterId, cluster);
         });
       }
 
-      if (supplyChainsData?.ggSupplyChainList) {
-        supplyChainsData.ggSupplyChainList.forEach((supplyChain: any) => {
+      if (supplyChainsData?.gpSupplyChainList) {
+        supplyChainsData.gpSupplyChainList.forEach((supplyChain: any) => {
           supplyChainLookup.set(supplyChain.supplyChainId, supplyChain);
         });
       }
@@ -458,10 +458,10 @@ const CirclePackMapExperiment: React.FC = () => {
       const coordinates = COUNTRY_COORDINATES[countryId.toString()];
 
       // Skip if query was skipped, no data, or country not in database
-      if (!query.data?.ggCpyList || !country || !coordinates || query.loading)
+      if (!query.data?.gpCpyList || !country || !coordinates || query.loading)
         return;
 
-      const products = query.data.ggCpyList
+      const products = query.data.gpCpyList
         .filter((item: any) => {
           // Filter by RCA threshold
           if (item.exportRca < rcaThreshold) return false;
@@ -529,6 +529,7 @@ const CirclePackMapExperiment: React.FC = () => {
     selectedSupplyChain,
     rcaThreshold,
     loading,
+    ALL_COUNTRY_IDS,
   ]);
 
   // Create circle pack layout for each country
@@ -591,7 +592,7 @@ const CirclePackMapExperiment: React.FC = () => {
         colorScale,
       };
     });
-  }, [countryExportData, clusterLookup, mapUpdateTrigger]);
+  }, [countryExportData, clusterLookup]);
 
   // Convert geographic coordinates to screen coordinates
   const getScreenCoordinates = (lat: number, lng: number) => {
@@ -709,7 +710,7 @@ const CirclePackMapExperiment: React.FC = () => {
                 <InputLabel>Cluster</InputLabel>
                 <Select value={selectedCluster} onChange={handleClusterChange}>
                   <MenuItem value="all">All Clusters</MenuItem>
-                  {clustersData?.ggClusterList?.map((cluster: any) => (
+                  {clustersData?.gpClusterList?.map((cluster: any) => (
                     <MenuItem key={cluster.clusterId} value={cluster.clusterId}>
                       {cluster.clusterName}
                     </MenuItem>
@@ -724,7 +725,7 @@ const CirclePackMapExperiment: React.FC = () => {
                   onChange={handleSupplyChainChange}
                 >
                   <MenuItem value="all">All Supply Chains</MenuItem>
-                  {supplyChainsData?.ggSupplyChainList?.map(
+                  {supplyChainsData?.gpSupplyChainList?.map(
                     (supplyChain: any) => (
                       <MenuItem
                         key={supplyChain.supplyChainId}
