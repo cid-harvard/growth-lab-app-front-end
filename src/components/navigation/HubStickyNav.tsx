@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import {secondaryFont} from '../../styling/styleUtils';
+import React from "react";
+import styled from "styled-components";
+import { secondaryFont } from "../../styling/styleUtils";
 
 const Root = styled.ul`
   position: sticky;
@@ -13,7 +13,11 @@ const ListItem = styled.li`
   margin-bottom: 0.25rem;
 `;
 
-const ListButton = styled.button<{primaryColor: string, isActive: boolean, $wrap?: boolean}>`
+const ListButton = styled.button<{
+  $primaryColor: string;
+  $isActive: boolean;
+  $wrap?: boolean;
+}>`
   pointer-events: auto;
   display: flex;
   flex-direction: column;
@@ -26,7 +30,7 @@ const ListButton = styled.button<{primaryColor: string, isActive: boolean, $wrap
   border: none;
   text-transform: uppercase;
   margin-bottom: 1rem;
-  ${({$wrap}) => $wrap ? 'max-width: min-content;' : ''}
+  ${({ $wrap }) => ($wrap ? "max-width: min-content;" : "")}
 
   &:hover {
     span {
@@ -62,30 +66,26 @@ interface Props {
 }
 
 const HubStickyNav = (props: Props) => {
-  const {links, offsetTop, primaryColor} = props;
-  const linkItems = links.map(({label, onClick, isActive, wrap}) => (
+  const { links, offsetTop, primaryColor } = props;
+  const linkItems = links.map(({ label, onClick, isActive, wrap }) => (
     <ListItem key={label}>
       <ListButton
         onClick={onClick}
-        primaryColor={primaryColor}
-        isActive={isActive}
+        $primaryColor={primaryColor}
+        $isActive={isActive}
         $wrap={wrap}
       >
         {label}
         <Underline
           style={{
-            width: isActive ? '100%' : undefined,
+            width: isActive ? "100%" : undefined,
             background: primaryColor,
           }}
         />
       </ListButton>
     </ListItem>
   ));
-  return (
-    <Root style={{top: offsetTop}}>
-      {linkItems}
-    </Root>
-  );
+  return <Root style={{ top: offsetTop }}>{linkItems}</Root>;
 };
 
 export default HubStickyNav;

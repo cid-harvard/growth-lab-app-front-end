@@ -31,6 +31,7 @@ const Routes = {
   GreenGrowthExplore: "/greenplexity/explore",
   // Rankings route
   GreenGrowthRankings: "/greenplexity/rankings",
+  SpaceVisualizer: "/space-viewer",
 };
 
 const defaultTitle = "The Growth Lab at Harvard Kennedy School";
@@ -270,6 +271,13 @@ const metadata = [
     description:
       "View country rankings and performance in green industries and technologies.",
     og_image: "greenplexity-card-background-lo.jpg",
+  },
+  {
+    url: Routes.SpaceVisualizer,
+    title: "Growth LabSpace Viewer",
+    description:
+      "Interactive visualization of product space and industry relationships",
+    og_image: defaultOgImage,
     favicon: defaultFavicon,
   },
 ];

@@ -1,6 +1,6 @@
 import { useCountrySelection } from "../hooks/useUrlParams";
 import { GET_COUNTRIES } from "./shared";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 
 export const useCountryName = () => {
   const selectedCountryId = useCountrySelection();

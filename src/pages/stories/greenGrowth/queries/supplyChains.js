@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { index } from "d3";
 import { GET_SUPPLY_CHAINS } from "./shared";
 

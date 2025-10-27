@@ -1,18 +1,14 @@
-import React from 'react';
-import styled, {keyframes} from 'styled-components';
-import raw from 'raw.macro';
-import LogoIMG from './GL_logo_white.png';
-import {secondaryFont} from '../../styling/styleUtils';
-import { useLocation, useNavigate } from 'react-router';
-import { scrollToAnchor } from '../../hooks/useScrollBehavior';
-import {
-  activeLinkColor,
-  backgroundGray,
-  backgroundPattern,
-} from './Utils';
-import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import raw from "raw.macro";
+import LogoIMG from "./GL_logo_white.png";
+import { secondaryFont } from "../../styling/styleUtils";
+import { useLocation, useNavigate } from "react-router";
+import { scrollToAnchor } from "../../hooks/useScrollBehavior";
+import { activeLinkColor, backgroundGray, backgroundPattern } from "./Utils";
+import { triggerGoogleAnalyticsEvent } from "../../routing/tracking";
 
-const arrowSVG = raw('./images/arrow.svg');
+const arrowSVG = raw("./images/arrow.svg");
 
 const slidein = keyframes`
   from {background-position: top;}
@@ -25,11 +21,11 @@ const Root = styled.div`
   position: relative;
 
   &:before {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     z-index: -3;
     background-color: ${backgroundGray};
     width: 100%;
@@ -37,16 +33,16 @@ const Root = styled.div`
     opacity: 0.9;
   }
   &:after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     background-image: url(${backgroundPattern});
     z-index: -2;
-    background-size:cover;
+    background-size: cover;
     animation: ${slidein} 20s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
@@ -67,7 +63,7 @@ const Grid = styled.div`
   margin: auto;
   box-sizing: border-box;
 
-  @media(max-width: ${mobileWidth}px) {
+  @media (max-width: ${mobileWidth}px) {
     grid-template-rows: auto 0 auto auto 2fr auto auto auto;
   }
 `;
@@ -78,7 +74,7 @@ const LogoCell = styled.a`
   display: block;
   padding-left: 10%;
 
-  @media(max-width: ${mediumWidth}px) {
+  @media (max-width: ${mediumWidth}px) {
     padding-left: 0;
   }
 `;
@@ -88,7 +84,7 @@ const TitleCell = styled.div`
   grid-row: 3;
   position: relative;
 
-  @media(max-width: ${mobileWidth}px) {
+  @media (max-width: ${mobileWidth}px) {
     grid-column: 1 / -1;
   }
 `;
@@ -99,7 +95,7 @@ const SubtitleCell = styled.div`
   padding-left: 5%;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20%;
     bottom: 0;
@@ -110,7 +106,7 @@ const SubtitleCell = styled.div`
     border-left: solid 2px #fff;
   }
 
-  @media(max-width: ${mobileWidth}px) {
+  @media (max-width: ${mobileWidth}px) {
     grid-column: 1 / -1;
     grid-row: 4;
     padding-left: 0;
@@ -126,11 +122,11 @@ const GrowthLabButtonCell = styled.div`
   grid-row: 4;
   padding-left: 5%;
 
-  @media(max-width: ${mediumWidth}px) {
+  @media (max-width: ${mediumWidth}px) {
     padding-left: 0;
   }
 
-  @media(max-width: ${mobileWidth}px) {
+  @media (max-width: ${mobileWidth}px) {
     grid-row: 5;
   }
 `;
@@ -141,7 +137,7 @@ const SocialCell = styled.div`
   align-items: flex-end;
   padding-left: 5%;
 
-  @media(max-width: ${mediumWidth}px) {
+  @media (max-width: ${mediumWidth}px) {
     padding-left: 0;
   }
 `;
@@ -160,14 +156,14 @@ const TitleRoot = styled.div`
   max-width: 90%;
   margin-bottom: 3rem;
 
-  @media(max-width: ${mediumWidth}px) {
+  @media (max-width: ${mediumWidth}px) {
     margin-left: 0;
     max-width: 100%;
   }
 
-  @media(max-width: ${mobileWidth}px) {
+  @media (max-width: ${mobileWidth}px) {
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       width: 100%;
       bottom: -40%;
@@ -241,7 +237,7 @@ const ColorBlock = styled.div`
   overflow: hidden;
 
   &:after {
-    content: '';
+    content: "";
     display: block;
     background-color: ${activeLinkColor};
     height: 100%;
@@ -268,11 +264,11 @@ const Subtitle = styled.h2`
     }
   }
 
-  @media(max-width: ${mediumWidth}px) {
+  @media (max-width: ${mediumWidth}px) {
     max-width: 96%;
   }
 
-  @media(max-width: ${mobileWidth}px) {
+  @media (max-width: ${mobileWidth}px) {
     grid-column: 1 / -1;
     grid-row: 3;
     max-width: 100%;
@@ -285,7 +281,7 @@ const Logo = styled.img`
   max-width: 500px;
   margin: 4rem 0 2rem 0;
 
-  @media(max-width: ${mediumWidth}px) {
+  @media (max-width: ${mediumWidth}px) {
     width: 100%;
     max-width: 230px;
   }
@@ -307,7 +303,7 @@ const GrowthLabButton = styled.a`
     color: ${activeLinkColor};
   }
 
-  @media(max-width: ${mobileWidth}px) {
+  @media (max-width: ${mobileWidth}px) {
     margin-top: 3rem;
   }
 `;
@@ -337,7 +333,7 @@ const SocialLink = styled.a`
   width: 2vw;
   height: 2vw;
 
-  @media(max-width: ${mediumWidth}px) {
+  @media (max-width: ${mediumWidth}px) {
     margin-right: 1.25rem;
     width: 1.75rem;
     height: 1.75rem;
@@ -348,6 +344,8 @@ const Icon = styled.div`
   width: 100%;
 
   svg {
+    width: 100%;
+    height: 100%;
     path {
       fill: #fff;
     }
@@ -403,7 +401,7 @@ const ScrollArrow = styled.button`
 
 const ScrollBase = styled.span`
   display: block;
-  opacity:0;
+  opacity: 0;
   margin: 0 auto;
   width: 0px;
   height: 0px;
@@ -427,113 +425,154 @@ const ScrollText = styled.div`
 `;
 
 export default () => {
-  const {search, pathname} = useLocation();
+  const { search, pathname } = useLocation();
   const navigate = useNavigate();
 
-  const onDigitalHubClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onDigitalHubClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     e.preventDefault();
-    navigate(pathname + search + '#hub');
-    scrollToAnchor({anchor: '#hub'});
+    navigate(pathname + search + "#hub");
+    scrollToAnchor({ anchor: "#hub" });
   };
 
   return (
     <Root>
       <Grid>
         <LogoCell
-          href={'https://growthlab.hks.harvard.edu/'}
-          onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'logo' )}
-          target={'_blank'}
-          rel={'noopener noreferrer'}
+          href={"https://growthlab.hks.harvard.edu/"}
+          onClick={() =>
+            triggerGoogleAnalyticsEvent(
+              "HUB SPLASH SCREEN",
+              "go-to-gl-homepage",
+              "logo",
+            )
+          }
+          target={"_blank"}
+          rel={"noopener noreferrer"}
         >
           <Logo
             src={LogoIMG}
-            title={'The Growth Lab at the Center for International Development at Harvard University'}
-            alt={'The Growth Lab at the Center for International Development at Harvard University'}
+            title={
+              "The Growth Lab at the Center for International Development at Harvard University"
+            }
+            alt={
+              "The Growth Lab at the Center for International Development at Harvard University"
+            }
           />
         </LogoCell>
         <TitleCell>
           <TitleRoot>
             <ColorBlock />
             <Title>
-              <div
-                dangerouslySetInnerHTML={{__html: raw('./title.svg')}}
-              />
+              <div dangerouslySetInnerHTML={{ __html: raw("./title.svg") }} />
               Harvard Growth Lab Viz Hub
             </Title>
             <TitleIcon
-              dangerouslySetInnerHTML={{__html: raw('./titleIcon.svg')}}
+              dangerouslySetInnerHTML={{ __html: raw("./titleIcon.svg") }}
             />
           </TitleRoot>
         </TitleCell>
         <SubtitleCell>
           <Subtitle>
-            <div
-              dangerouslySetInnerHTML={{__html: raw('./subtitle.svg')}}
-            />
-            Translating Growth Lab research into powerful visualization tools and interactive storytelling
+            <div dangerouslySetInnerHTML={{ __html: raw("./subtitle.svg") }} />
+            Translating Growth Lab research into powerful visualization tools
+            and interactive storytelling
           </Subtitle>
         </SubtitleCell>
         <GrowthLabButtonCell>
           <GrowthLabButton
-            href={'https://growthlab.hks.harvard.edu/'}
-            onClick={() => triggerGoogleAnalyticsEvent('HUB SPLASH SCREEN', 'go-to-gl-homepage', 'button' )}
-            target={'_blank'}
-            rel={'noopener noreferrer'}
+            href={"https://growthlab.hks.harvard.edu/"}
+            onClick={() =>
+              triggerGoogleAnalyticsEvent(
+                "HUB SPLASH SCREEN",
+                "go-to-gl-homepage",
+                "button",
+              )
+            }
+            target={"_blank"}
+            rel={"noopener noreferrer"}
           >
             Growth Lab Home Page
-            <Arrow
-              dangerouslySetInnerHTML={{__html: arrowSVG}}
-            />
+            <Arrow dangerouslySetInnerHTML={{ __html: arrowSVG }} />
           </GrowthLabButton>
         </GrowthLabButtonCell>
         <SocialCell>
           <SocialLink
-            href={'https://twitter.com/HarvardGrwthLab'}
-            target='_blank'
-            rel='noopener noreferrer'
+            href={"https://x.com/HarvardGrwthLab"}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Twitter
-            <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/twitter.svg')}} />
+            <Icon
+              dangerouslySetInnerHTML={{
+                __html: raw("../../components/text/assets/x.svg"),
+              }}
+            />
           </SocialLink>
           <SocialLink
-            href={'https://www.facebook.com/harvardgrowthlab/'}
-            target='_blank'
-            rel='noopener noreferrer'
+            href={"https://www.facebook.com/harvardgrowthlab/"}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Facebook
-            <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/facebook.svg')}} />
+            <Icon
+              dangerouslySetInnerHTML={{
+                __html: raw("../../components/text/assets/facebook.svg"),
+              }}
+            />
           </SocialLink>
           <SocialLink
-            href={'https://www.instagram.com/harvardgrowthlab/'}
-            target='_blank'
-            rel='noopener noreferrer'
+            href={"https://www.instagram.com/harvardgrowthlab/"}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Instagram
-            <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/instagram.svg')}} />
+            <Icon
+              dangerouslySetInnerHTML={{
+                __html: raw("../../components/text/assets/instagram.svg"),
+              }}
+            />
           </SocialLink>
           <SocialLink
-            href={'https://www.linkedin.com/company/harvard-growth-lab/'}
-            target='_blank'
-            rel='noopener noreferrer'
+            href={"https://www.linkedin.com/company/harvard-growth-lab/"}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             LinkedIn
-            <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/linkedin.svg')}} />
+            <Icon
+              dangerouslySetInnerHTML={{
+                __html: raw("../../components/text/assets/linkedin.svg"),
+              }}
+            />
           </SocialLink>
           <SocialLink
-            href={'https://youtube.com/playlist?list=PLVJQsjaKb-4SNl2obPcBFtIbjKoyi4e5z'}
-            target='_blank'
-            rel='noopener noreferrer'
+            href={
+              "https://youtube.com/playlist?list=PLVJQsjaKb-4SNl2obPcBFtIbjKoyi4e5z"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
           >
             YouTube
-            <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/youtube.svg')}} />
+            <Icon
+              dangerouslySetInnerHTML={{
+                __html: raw("../../components/text/assets/youtube.svg"),
+              }}
+            />
           </SocialLink>
           <SocialLink
-            href={'https://podcasts.apple.com/us/podcast/growth-lab-podcast-series/id1486218164'}
-            target='_blank'
-            rel='noopener noreferrer'
+            href={
+              "https://podcasts.apple.com/us/podcast/growth-lab-podcast-series/id1486218164"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Apple Podcast
-            <Icon dangerouslySetInnerHTML={{__html: raw('../../components/text/assets/applepodcast.svg')}} />
+            <Icon
+              dangerouslySetInnerHTML={{
+                __html: raw("../../components/text/assets/applepodcast.svg"),
+              }}
+            />
           </SocialLink>
         </SocialCell>
         <ScrollCell>

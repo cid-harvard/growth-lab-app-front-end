@@ -1,23 +1,16 @@
-import React from 'react';
-import {
-  ProductClass,
-  generateStringId,
-  colorScheme,
-} from './Utils';
-import Loading from '../../components/general/Loading';
-import FullPageError from '../../components/general/FullPageError';
-import ContentWrapper from './Content';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import {
-  HSProduct,
-  Factor,
-} from './graphql/graphQLTypes';
-import {rgba} from 'polished';
-import {Datum} from 'react-panel-search';
-import sortBy from 'lodash/sortBy';
-import partition from 'lodash/partition';
-import {TableDatum} from './components/SharedAndMissingOccupations';
+import React from "react";
+import { ProductClass, generateStringId, colorScheme } from "./Utils";
+import Loading from "../../components/general/Loading";
+import FullPageError from "../../components/general/FullPageError";
+import ContentWrapper from "./Content";
+import { useQuery } from "@apollo/client";
+import gql from "graphql-tag";
+import { HSProduct, Factor } from "./graphql/graphQLTypes";
+import { rgba } from "polished";
+import { Datum } from "react-panel-search";
+import sortBy from "lodash/sortBy";
+import partition from "lodash/partition";
+import { TableDatum } from "./components/SharedAndMissingOccupations";
 
 const GET_HS_PRODUCT = gql`
   query GetHSProduct($hsId: Int!) {
@@ -109,28 +102,28 @@ const GET_HS_PRODUCT = gql`
 
 interface SuccessResponse {
   datum: {
-    hsId: HSProduct['hsId'],
-    name: HSProduct['name'],
-    code: HSProduct['code'],
-    complexityReport: HSProduct['complexityReport'],
-    factors: HSProduct['factors'],
-    proximity: HSProduct['proximity'],
-    relativeDemand: HSProduct['relativeDemand'],
-    occupation: HSProduct['occupation'],
+    hsId: HSProduct["hsId"];
+    name: HSProduct["name"];
+    code: HSProduct["code"];
+    complexityReport: HSProduct["complexityReport"];
+    factors: HSProduct["factors"];
+    proximity: HSProduct["proximity"];
+    relativeDemand: HSProduct["relativeDemand"];
+    occupation: HSProduct["occupation"];
   };
   scatterPlotData: {
-    hsId: HSProduct['hsId'];
-    name: HSProduct['name'];
-    code: HSProduct['code'];
-    id: HSProduct['id'];
+    hsId: HSProduct["hsId"];
+    name: HSProduct["name"];
+    code: HSProduct["code"];
+    id: HSProduct["id"];
     factors: {
       edges: {
         node: {
-          attractiveness: Factor['attractiveness'];
-          feasibility: Factor['feasibility'];
-        },
-      }[],
-    }
+          attractiveness: Factor["attractiveness"];
+          feasibility: Factor["feasibility"];
+        };
+      }[];
+    };
   }[];
 }
 
@@ -150,36 +143,42 @@ interface Props {
 
 const QueryHS = (props: Props) => {
   const {
-    id, setStickyHeaderHeight, onNodeClick, allData,
-    averageFeasibility, averageAttractiveness,
-    medianFeasibility, medianAttractiveness,
-    employmentFemaleAvg, employmentLskillAvg, employmentYouthAvg,
+    id,
+    setStickyHeaderHeight,
+    onNodeClick,
+    allData,
+    averageFeasibility,
+    averageAttractiveness,
+    medianFeasibility,
+    medianAttractiveness,
+    employmentFemaleAvg,
+    employmentLskillAvg,
+    employmentYouthAvg,
   } = props;
 
-  const {loading, error, data} = useQuery<SuccessResponse, {hsId: number}>(GET_HS_PRODUCT, {
-    variables: {hsId: parseInt(id, 10)},
-  });
+  const { loading, error, data } = useQuery<SuccessResponse, { hsId: number }>(
+    GET_HS_PRODUCT,
+    {
+      variables: { hsId: parseInt(id, 10) },
+    },
+  );
 
   if (loading === true) {
     return <Loading />;
   } else if (error !== undefined) {
-    return (
-      <FullPageError
-        message={error.message}
-      />
-    );
+    return <FullPageError message={error.message} />;
   } else if (data) {
     const scatterPlotJsonData: {
-      Name: string,
-      Code: string,
-      Feasibility: number,
-      Attractiveness: number,
+      Name: string;
+      Code: string;
+      Feasibility: number;
+      Attractiveness: number;
     }[] = [];
-    const scatterPlotData = data.scatterPlotData.map(d => {
-      const {attractiveness, feasibility} = d.factors.edges[0].node;
+    const scatterPlotData = data.scatterPlotData.map((d) => {
+      const { attractiveness, feasibility } = d.factors.edges[0].node;
       scatterPlotJsonData.push({
         Name: d.name,
-        Code: 'HS ' + d.code,
+        Code: "HS " + d.code,
         Feasibility: feasibility,
         Attractiveness: attractiveness,
       });
@@ -194,7 +193,10 @@ const QueryHS = (props: Props) => {
           <br />
           <strong>Identified High Potential:</strong> Yes
         `,
-        fill: d.code === data.datum.code ? rgba(colorScheme.dataSecondary, 0) : rgba(colorScheme.data, 0.5),
+        fill:
+          d.code === data.datum.code
+            ? rgba(colorScheme.dataSecondary, 0)
+            : rgba(colorScheme.data, 0.5),
         highlighted: false,
         onClick: () => onNodeClick(generateStringId(ProductClass.HS, d.hsId)),
       };
@@ -208,36 +210,59 @@ const QueryHS = (props: Props) => {
         <br />
         <strong>Attractiveness:</strong> ${data.datum.factors.edges[0].node.attractiveness.toFixed(2)}
         <br />
-        <strong>Identified High Potential:</strong>  ${data.datum.complexityReport ? 'Yes' : 'No'}
+        <strong>Identified High Potential:</strong>  ${data.datum.complexityReport ? "Yes" : "No"}
       `,
       fill: rgba(colorScheme.dataSecondary, 0.5),
       highlighted: true,
-      onClick: () => onNodeClick(generateStringId(ProductClass.HS, data.datum.hsId)),
+      onClick: () =>
+        onNodeClick(generateStringId(ProductClass.HS, data.datum.hsId)),
     });
-    const proximityData = sortBy(data.datum.proximity.edges.map(({node: {partnerId, rank, factors}}) => {
-      const target = allData.find(d => d.id === generateStringId(ProductClass.HS, partnerId));
-      const name = target && target.title ? target.title : '---';
-      const rca = factors && factors.edges && factors.edges[0] && factors.edges[0].node && factors.edges[0].node.rca && factors.edges[0].node.rca >= 1
-        ? 'Yes'
-        : 'No';
-      return { name, rank, rca};
-    }), ['rank']);
-    const heatMapData = data.datum.relativeDemand.edges.map(({node}) => node);
-    const [shared, missing] = partition(data.datum.occupation.edges, ({node}) => node.isAvailable);
-    const sharedData: TableDatum[] = sortBy(shared.map(d => {
-      return {
-        occupation: d.node.occupation,
-        percent: d.node.pctShare.toFixed(2) + '%',
-        rank: d.node.rank,
-      };
-    }), ['rank']);
-    const missingData: TableDatum[] = sortBy(missing.map(d => {
-      return {
-        occupation: d.node.occupation,
-        percent: d.node.pctShare.toFixed(2) + '%',
-        rank: d.node.rank,
-      };
-    }), ['rank']);
+    const proximityData = sortBy(
+      data.datum.proximity.edges.map(
+        ({ node: { partnerId, rank, factors } }) => {
+          const target = allData.find(
+            (d) => d.id === generateStringId(ProductClass.HS, partnerId),
+          );
+          const name = target && target.title ? target.title : "---";
+          const rca =
+            factors &&
+            factors.edges &&
+            factors.edges[0] &&
+            factors.edges[0].node &&
+            factors.edges[0].node.rca &&
+            factors.edges[0].node.rca >= 1
+              ? "Yes"
+              : "No";
+          return { name, rank, rca };
+        },
+      ),
+      ["rank"],
+    );
+    const heatMapData = data.datum.relativeDemand.edges.map(({ node }) => node);
+    const [shared, missing] = partition(
+      data.datum.occupation.edges,
+      ({ node }) => node.isAvailable,
+    );
+    const sharedData: TableDatum[] = sortBy(
+      shared.map((d) => {
+        return {
+          occupation: d.node.occupation,
+          percent: d.node.pctShare.toFixed(2) + "%",
+          rank: d.node.rank,
+        };
+      }),
+      ["rank"],
+    );
+    const missingData: TableDatum[] = sortBy(
+      missing.map((d) => {
+        return {
+          occupation: d.node.occupation,
+          percent: d.node.pctShare.toFixed(2) + "%",
+          rank: d.node.rank,
+        };
+      }),
+      ["rank"],
+    );
     return (
       <ContentWrapper
         id={generateStringId(ProductClass.HS, data.datum.hsId)}
@@ -264,7 +289,6 @@ const QueryHS = (props: Props) => {
   } else {
     return null;
   }
-
 };
 
 export default QueryHS;

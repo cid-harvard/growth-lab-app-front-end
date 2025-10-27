@@ -1,20 +1,19 @@
 import {
   FullWidthContent,
   FullWidthContentContainer,
-} from '../../styling/Grid';
-import styled from 'styled-components';
-import {navHeight} from '../../components/navigation/TopLevelStickyNav';
-import {
-  ProjectCategories,
-} from './graphql/graphQLTypes';
-import {lighten} from 'polished';
-import {secondaryFont} from '../../styling/styleUtils';
+} from "../../styling/Grid";
+import styled from "styled-components";
+import { navHeight } from "../../components/navigation/TopLevelStickyNav";
+import { ProjectCategories } from "./graphql/graphQLTypes";
+import { lighten } from "polished";
+import { secondaryFont } from "../../styling/styleUtils";
+import zigZagPattern from "./images/pattern.svg";
 
-export const activeLinkColor = '#ed3f4b';
-export const backgroundColor = '#fff';
-export const backgroundGray = '#8791a3';
+export const activeLinkColor = "#ed3f4b";
+export const backgroundColor = "#fff";
+export const backgroundGray = "#8791a3";
 export const navBackgroundColor = lighten(0.1, backgroundGray);
-export const backgroundPattern = require('./images/background-pattern.png');
+export const backgroundPattern = require("./images/background-pattern.png");
 
 export const listViewMediumWidth = 1000; // in px
 export const listViewSmallWidth = 750; // in px
@@ -31,29 +30,27 @@ export const HubContentContainer = styled(FullWidthContent)`
 
 export const getCategoryString = (value: ProjectCategories | null) => {
   if (value === ProjectCategories.ATLAS_PROJECTS) {
-    return 'Atlas Projects';
+    return "Atlas Projects";
   } else if (value === ProjectCategories.COUNTRY_DASHBOARDS) {
-    return 'Country Dashboards';
+    return "Country Dashboards";
   } else if (value === ProjectCategories.VISUAL_STORIES) {
-    return 'Visual Stories';
+    return "Visual Stories";
   } else if (value === ProjectCategories.PROTOTYPES_EXPERIMENTS) {
-    return 'Prototypes&#8203;/&#8203;Experiments';
+    return "Prototypes&#8203;/&#8203;Experiments";
   } else if (value === ProjectCategories.PRESENTATIONS) {
-    return 'Presentations';
+    return "Presentations";
   } else if (value === ProjectCategories.SOFTWARE_PACKAGES) {
-    return 'Software Packages';
+    return "Software Packages";
   } else if (value === ProjectCategories.ANNUAL_BEST_OF) {
-    return 'Annual Best-Of';
+    return "Annual Best-Of";
   } else {
-    return '';
+    return "";
   }
 };
 
 export const queryStringToCategory = (value: string) => {
   return value.toUpperCase() as ProjectCategories;
 };
-
-const zigZagPattern = require('./images/pattern.svg');
 
 export const Root = styled(FullWidthContentContainer)`
   padding: 3rem 1rem;
@@ -66,7 +63,7 @@ export const ZigZagContentCard = styled.div`
   margin-bottom: 8rem;
 
   &:before {
-    content: '';
+    content: "";
     width: 250px;
     height: 250px;
     position: absolute;
@@ -91,7 +88,7 @@ export const ZigZagContent = styled.div`
   z-index: 10;
 
   &:before {
-    content: '';
+    content: "";
     width: 100%;
     height: 100%;
     position: absolute;
@@ -117,7 +114,7 @@ export const Title = styled.h1`
   line-height: 0.8;
 
   &:after {
-    content: '';
+    content: "";
     margin-left: 0.75rem;
     flex-grow: 1;
     height: 4px;

@@ -69,6 +69,21 @@ interface HierarchyNodeData {
   children?: HierarchyNodeData[];
 }
 
+// Item type for value chain transition rendering
+interface ValueChainRenderItem {
+  id: number;
+  name: string;
+  color: string;
+  icon: string;
+  x: number;
+  y: number;
+  r: number;
+  opacity: number;
+  isHighlighted: boolean;
+  fillColor: string;
+  fillOpacity: number;
+}
+
 // Type for react-spring animated style
 interface AnimatedStyle {
   x: any;
@@ -699,11 +714,11 @@ const AnimatedValueChainIntroInternal: React.FC<
           .filter((c) => c.children.length > 0),
       };
 
-      const root = hierarchy(hierarchyData)
+      const root = hierarchy<HierarchyNodeData>(hierarchyData)
         .sum((d) => d.value || 0)
         .sort((a, b) => (b.value || 0) - (a.value || 0));
 
-      const packer = pack()
+      const packer = pack<HierarchyNodeData>()
         .size([chainRadius * 2, chainRadius * 2])
         .padding((d) => {
           if (d.depth === 0) return 12;
@@ -891,11 +906,11 @@ const AnimatedValueChainIntroInternal: React.FC<
           })),
         };
 
-        const root = hierarchy(hierarchyData)
+        const root = hierarchy<HierarchyNodeData>(hierarchyData)
           .sum((d) => d.value || 1)
           .sort((a, b) => (b.value || 0) - (a.value || 0));
 
-        const packer = pack()
+        const packer = pack<HierarchyNodeData>()
           .size([clusterRadius * 1.8, clusterRadius * 1.8])
           .padding(2); // Padding between products
 
@@ -1003,7 +1018,7 @@ const AnimatedValueChainIntroInternal: React.FC<
           .filter((cluster) => cluster.children.length > 0), // Only include clusters with products
       };
 
-      const root = hierarchy(hierarchyData)
+      const root = hierarchy<HierarchyNodeData>(hierarchyData)
         .sum((d) => d.value || 0)
         .sort((a, b) => (b.value || 0) - (a.value || 0));
 
@@ -1012,7 +1027,7 @@ const AnimatedValueChainIntroInternal: React.FC<
       const availableHeight = availableSvgHeight - textAreaHeight - 20;
       const packingSize = Math.min(availableWidth, availableHeight) * 0.65;
 
-      const packer = pack()
+      const packer = pack<HierarchyNodeData>()
         .size([packingSize, packingSize])
         .padding((d) => {
           // Different padding based on hierarchy level
@@ -1254,7 +1269,7 @@ const AnimatedValueChainIntroInternal: React.FC<
                 .filter((cluster) => cluster.children.length > 0),
             };
 
-            const root = hierarchy(hierarchyData)
+            const root = hierarchy<HierarchyNodeData>(hierarchyData)
               .sum((d) => d.value || 0)
               .sort((a, b) => (b.value || 0) - (a.value || 0));
 
@@ -1264,7 +1279,7 @@ const AnimatedValueChainIntroInternal: React.FC<
             const packingSize =
               Math.min(availableWidth, availableHeight) * 0.65; // 30% smaller than before (0.95 * 0.7 ≈ 0.65)
 
-            const packer = pack()
+            const packer = pack<HierarchyNodeData>()
               .size([packingSize, packingSize])
               .padding((d) => {
                 if (d.depth === 0) return 30; // Value chain container
@@ -1335,7 +1350,17 @@ const AnimatedValueChainIntroInternal: React.FC<
   ]);
 
   // Create spring transitions for value chains
-  const valueChainTransitions = useTransition(valueChainTransitionData, {
+  const valueChainTransitions = useTransition<
+    ValueChainRenderItem,
+    {
+      x: number;
+      y: number;
+      r: number;
+      opacity: number;
+      fillColor: string;
+      fillOpacity: number;
+    }
+  >(valueChainTransitionData, {
     from: (item) => ({
       x: item.x,
       y: item.y,
@@ -1436,7 +1461,7 @@ const AnimatedValueChainIntroInternal: React.FC<
             .filter((cluster) => cluster.children.length > 0),
         };
 
-        const root = hierarchy(hierarchyData)
+        const root = hierarchy<HierarchyNodeData>(hierarchyData)
           .sum((d) => d.value || 0)
           .sort((a, b) => (b.value || 0) - (a.value || 0));
 
@@ -1445,7 +1470,7 @@ const AnimatedValueChainIntroInternal: React.FC<
         const availableHeight = availableSvgHeight - textAreaHeight - 20;
         const packingSize = Math.min(availableWidth, availableHeight) * 0.65; // 30% smaller than before
 
-        const packer = pack()
+        const packer = pack<HierarchyNodeData>()
           .size([packingSize, packingSize])
           .padding((d) => {
             if (d.depth === 0) return 30; // Value chain container
@@ -1460,29 +1485,27 @@ const AnimatedValueChainIntroInternal: React.FC<
         const layoutCenterY = packingSize / 2;
 
         // Add cluster circles from the hierarchical layout
-        packedRoot.children?.forEach(
-          (clusterNode: HierarchyCircularNode<HierarchyNodeData>) => {
-            const clusterX = centerX + (clusterNode.x - layoutCenterX);
-            const clusterY = centerY + (clusterNode.y - layoutCenterY);
-            const clusterData = clusterNode.data as HierarchyNodeData;
+        packedRoot.children?.forEach((clusterNode) => {
+          const clusterX = centerX + (clusterNode.x - layoutCenterX);
+          const clusterY = centerY + (clusterNode.y - layoutCenterY);
+          const clusterData = clusterNode.data as HierarchyNodeData;
 
-            clusters.push({
-              id: `cluster-${clusterData.clusterId || 0}`,
-              clusterId: clusterData.clusterId || 0,
-              x: clusterX,
-              y: clusterY,
-              r: clusterNode.r,
-              opacity: 0.6,
-              fill: "none", // Match step 8 outline-only style
-              stroke: selectedChainColor,
-              strokeWidth: 0.5,
-              name: clusterData.name || "Unnamed Cluster",
-              isHighlighted: true,
-              textY: clusterY, // Center text on cluster circle
-              fontSize: 12,
-            });
-          },
-        );
+          clusters.push({
+            id: `cluster-${clusterData.clusterId || 0}`,
+            clusterId: clusterData.clusterId || 0,
+            x: clusterX,
+            y: clusterY,
+            r: clusterNode.r,
+            opacity: 0.6,
+            fill: "none", // Match step 8 outline-only style
+            stroke: selectedChainColor,
+            strokeWidth: 0.5,
+            name: clusterData.name || "Unnamed Cluster",
+            isHighlighted: true,
+            textY: clusterY, // Center text on cluster circle
+            fontSize: 12,
+          });
+        });
       }
     } else if (currentStep === 7) {
       // Step 8: use EXACT same packed layout as products
@@ -1533,7 +1556,10 @@ const AnimatedValueChainIntroInternal: React.FC<
   ]);
 
   // Cluster transitions
-  const clusterTransitions = useTransition(clusterTransitionData, {
+  const clusterTransitions = useTransition<
+    ClusterTransitionData,
+    { x: number; y: number; r: number; opacity: number }
+  >(clusterTransitionData, {
     keys: (item) => item.id,
     from: (item) => ({ x: item.x, y: item.y, r: 0, opacity: 0 }), // Start from final position with zero radius
     enter: (item) => ({
@@ -1553,7 +1579,10 @@ const AnimatedValueChainIntroInternal: React.FC<
   });
 
   // Create spring transitions for animated products
-  const productTransitions = useTransition(animatedProducts, {
+  const productTransitions = useTransition<
+    AnimatedProduct,
+    { x: number; y: number; r: number; opacity: number }
+  >(animatedProducts, {
     from: (item: AnimatedProduct) => ({
       x: item.x,
       y: item.y,
@@ -1830,7 +1859,7 @@ const AnimatedValueChainIntroInternal: React.FC<
         role="img"
       >
         {/* Value Chain Circles with Icons and Names - using React Spring transitions */}
-        {valueChainTransitions((style: AnimatedStyle, chain) => {
+        {valueChainTransitions((style, chain) => {
           // In step 6, completely hide non-selected value chains
           if (currentStep === 6 && selectedValueChain !== chain.id) {
             return null;
@@ -2012,7 +2041,7 @@ const AnimatedValueChainIntroInternal: React.FC<
         })}
 
         {/* Animated cluster circles (rendered first, under products) */}
-        {clusterTransitions((style: AnimatedStyle, cluster) => (
+        {clusterTransitions((style, cluster) => (
           <animated.circle
             key={`cluster-circle-${cluster.id}`}
             cx={style.x}
@@ -2027,43 +2056,36 @@ const AnimatedValueChainIntroInternal: React.FC<
         {/* Animated Products - unified for all steps */}
         {currentStep >= 1 && (
           <g>
-            {productTransitions(
-              (
-                style: { x: number; y: number; r: number; opacity: number },
-                product: AnimatedProduct,
-              ) => (
-                <animated.circle
-                  key={product.id}
-                  cx={style.x}
-                  cy={style.y}
-                  r={style.r}
-                  fill={product.fill}
-                  opacity={style.opacity}
-                  filter={
-                    product.hasGlow && product.glowColor
-                      ? `drop-shadow(0px 0px 2px ${hexToRgba(product.glowColor, 1.0)}) drop-shadow(0px 0px 4px ${hexToRgba(product.glowColor, 0.9)}) drop-shadow(0px 0px 8px ${hexToRgba(product.glowColor, 0.8)}) drop-shadow(0px 0px 16px ${hexToRgba(product.glowColor, 0.6)})`
-                      : "none"
-                  }
-                  style={{
-                    cursor:
-                      currentStep >= 2 && currentStep < 4
-                        ? "pointer"
-                        : "default",
-                  }}
-                  onMouseEnter={
-                    currentStep >= 2 && currentStep < 4
-                      ? () => setHoveredProduct(product.globalProductId)
-                      : undefined
-                  }
-                  onMouseLeave={undefined}
-                />
-              ),
-            )}
+            {productTransitions((style, product) => (
+              <animated.circle
+                key={product.id}
+                cx={style.x}
+                cy={style.y}
+                r={style.r}
+                fill={product.fill}
+                opacity={style.opacity}
+                filter={
+                  product.hasGlow && product.glowColor
+                    ? `drop-shadow(0px 0px 2px ${hexToRgba(product.glowColor, 1.0)}) drop-shadow(0px 0px 4px ${hexToRgba(product.glowColor, 0.9)}) drop-shadow(0px 0px 8px ${hexToRgba(product.glowColor, 0.8)}) drop-shadow(0px 0px 16px ${hexToRgba(product.glowColor, 0.6)})`
+                    : "none"
+                }
+                style={{
+                  cursor:
+                    currentStep >= 2 && currentStep < 4 ? "pointer" : "default",
+                }}
+                onMouseEnter={
+                  currentStep >= 2 && currentStep < 4
+                    ? () => setHoveredProduct(product.globalProductId)
+                    : undefined
+                }
+                onMouseLeave={undefined}
+              />
+            ))}
           </g>
         )}
 
         {/* Animated cluster text (rendered last, on top of products) */}
-        {clusterTransitions((style: AnimatedStyle, cluster) => (
+        {clusterTransitions((style, cluster) => (
           <animated.text
             key={`cluster-text-${cluster.id}`}
             x={style.x}

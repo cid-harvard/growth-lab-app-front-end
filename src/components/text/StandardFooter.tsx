@@ -1,22 +1,17 @@
-import React from 'react';
-import {
-  FullWidthFooter,
-  FullWidthFooterContent,
-} from '../../styling/Grid';
-import {
-  primaryFont,
-} from '../../styling/styleUtils';
-import styled from 'styled-components';
-import GrowthLabLogoPNG from '../../assets/growth-lab-new-logo-2022.png';
-import FacebookIconSVG from './assets/facebook.svg';
-import InstagramIconSVG from './assets/instagram.svg';
-import TwitterIconSVG from './assets/twitter.svg';
-import LinkedinIconSVG from './assets/linkedin.svg';
-import YouTubeIconSVG from './assets/youtube.svg';
-import ApplePodcastSVG from './assets/applepodcast.svg';
-import {Routes, hubId} from '../../routing/routes';
-import {triggerGoogleAnalyticsEvent} from '../../routing/tracking';
-import GitHubIconSVG from './assets/githubicon.svg';
+import React from "react";
+import { FullWidthFooter, FullWidthFooterContent } from "../../styling/Grid";
+import { primaryFont } from "../../styling/styleUtils";
+import styled from "styled-components";
+import GrowthLabLogoPNG from "../../assets/growth-lab-new-logo-2022.png";
+import FacebookIconSVG from "./assets/facebook.svg";
+import InstagramIconSVG from "./assets/instagram.svg";
+import TwitterIconSVG from "./assets/x.svg";
+import LinkedinIconSVG from "./assets/linkedin.svg";
+import YouTubeIconSVG from "./assets/youtube.svg";
+import ApplePodcastSVG from "./assets/applepodcast.svg";
+import { Routes, hubId } from "../../routing/routes";
+import { triggerGoogleAnalyticsEvent } from "../../routing/tracking";
+import GitHubIconSVG from "./assets/githubicon.svg";
 
 export const Root = styled(FullWidthFooter)`
   color: #333;
@@ -78,7 +73,7 @@ export const RepoColumn = styled(ColumnOrRow)`
     grid-row: 2;
     padding: 2rem 0 0;
     display: flex;
-    align-items: center;;
+    align-items: center;
   }
 `;
 
@@ -105,7 +100,6 @@ export const GrowthLabInfo = styled.small`
   }
 `;
 
-
 export const SocialLink = styled.a`
   width: 25px;
   margin: 0 auto 0.9rem;
@@ -119,17 +113,17 @@ export const Icon = styled.img`
   max-width: 100%;
 `;
 
-export const ExploreNextButton = styled.a<{color: string}>`
+export const ExploreNextButton = styled.a<{ color: string }>`
   display: block;
   padding: 0.55rem 0.8rem;
   text-transform: uppercase;
   margin: 0.4rem 0.9rem;
   text-decoration: none;
-  color: ${({color}) => color};
-  border: solid 1px ${({color}) => color};
+  color: ${({ color }) => color};
+  border: solid 1px ${({ color }) => color};
 
   &:hover {
-    background-color: ${({color}) => color};
+    background-color: ${({ color }) => color};
     color: #fff;
   }
 `;
@@ -178,46 +172,47 @@ export const LicenseAndReadme = styled.div`
 `;
 
 export enum SocialType {
-  facebook = 'facebook',
-  instagram = 'instagram',
-  twitter = 'twitter',
-  linkedin = 'linkedin',
-  youtube = 'youtube',
-  applepodcast = 'applepodcast',
+  facebook = "facebook",
+  instagram = "instagram",
+  twitter = "twitter",
+  linkedin = "linkedin",
+  youtube = "youtube",
+  applepodcast = "applepodcast",
 }
-
 
 export const defaultSocialIcons = [
   {
-    target: 'https://www.linkedin.com/company/harvard-growth-lab/',
+    target: "https://www.linkedin.com/company/harvard-growth-lab/",
     type: SocialType.linkedin,
-    alt: 'linkedin',
+    alt: "linkedin",
   },
   {
-    target: 'https://www.instagram.com/harvardgrowthlab/',
+    target: "https://www.instagram.com/harvardgrowthlab/",
     type: SocialType.instagram,
-    alt: 'instagram',
+    alt: "instagram",
   },
   {
-    target: 'https://www.facebook.com/harvardgrowthlab/',
+    target: "https://www.facebook.com/harvardgrowthlab/",
     type: SocialType.facebook,
-    alt: 'facebook',
+    alt: "facebook",
   },
 
   {
-    target: 'https://twitter.com/HarvardGrwthLab',
+    target: "https://x.com/HarvardGrwthLab",
     type: SocialType.twitter,
-    alt: 'twitter',
+    alt: "twitter",
   },
   {
-    target: 'https://youtube.com/playlist?list=PLVJQsjaKb-4SNl2obPcBFtIbjKoyi4e5z',
+    target:
+      "https://youtube.com/playlist?list=PLVJQsjaKb-4SNl2obPcBFtIbjKoyi4e5z",
     type: SocialType.youtube,
-    alt: 'youtube',
+    alt: "youtube",
   },
   {
-    target: 'https://podcasts.apple.com/us/podcast/growth-lab-podcast-series/id1486218164',
+    target:
+      "https://podcasts.apple.com/us/podcast/growth-lab-podcast-series/id1486218164",
     type: SocialType.applepodcast,
-    alt: 'apple podcast',
+    alt: "apple podcast",
   },
 ];
 
@@ -231,26 +226,30 @@ export const socialIcon = {
 };
 
 interface Props {
-  socialItems?: {target: string, type: SocialType, alt?: string}[];
+  socialItems?: { target: string; type: SocialType; alt?: string }[];
   showGithubLink?: boolean;
 }
 
 const StandardFooter = (props: Props) => {
-  const socialItems = props.socialItems === undefined ? defaultSocialIcons : props.socialItems;
-  const showGithubLink = props.showGithubLink === undefined ? true : props.showGithubLink;
-  const socialItemsList = socialItems.map(({target, type, alt}) =>{
+  const socialItems =
+    props.socialItems === undefined ? defaultSocialIcons : props.socialItems;
+  const showGithubLink =
+    props.showGithubLink === undefined ? true : props.showGithubLink;
+  const socialItemsList = socialItems.map(({ target, type, alt }) => {
     return (
       <SocialLink
         href={target}
-        onClick={() => triggerGoogleAnalyticsEvent('FOOTER SOCIAL ICONS', 'click -' + type)}
-        target='_blank'
-        rel='noopener noreferrer'
+        onClick={() =>
+          triggerGoogleAnalyticsEvent("FOOTER SOCIAL ICONS", "click -" + type)
+        }
+        target="_blank"
+        rel="noopener noreferrer"
         key={target + type}
       >
         <Icon
           src={socialIcon[type]}
-          title={alt ? alt : ''}
-          alt={alt ? alt : ''}
+          title={alt ? alt : ""}
+          alt={alt ? alt : ""}
         />
       </SocialLink>
     );
@@ -262,77 +261,106 @@ const StandardFooter = (props: Props) => {
         <Content>
           <LogoColumn>
             <a
-              href='https://growthlab.hks.harvard.edu/'
-              target='_blank'
-              rel='noopener noreferrer'
+              href="https://growthlab.hks.harvard.edu/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <GrowthLabLogo
                 src={GrowthLabLogoPNG}
-                alt={'The Growth Lab at Harvard\'s Center for International Development'}
+                alt={
+                  "The Growth Lab at Harvard's Center for International Development"
+                }
               />
             </a>
             <GrowthLabInfo>
-              Harvard Kennedy School<br />
-              79 JFK St. | Cambridge, MA 02138<br />
-              <a href='mailto:growthlab@hks.harvard.edu'>growthlab@hks.harvard.edu</a>
+              Harvard Kennedy School
+              <br />
+              79 JFK St. | Cambridge, MA 02138
+              <br />
+              <a href="mailto:growthlab@hks.harvard.edu">
+                growthlab@hks.harvard.edu
+              </a>
             </GrowthLabInfo>
           </LogoColumn>
           <RepoColumn>
-            <StyledLink href={Routes.Landing + '#' + hubId}>
-              Hub
-            </StyledLink>
-            <StyledLink href={Routes.Community}>
-              Community
-            </StyledLink>
-            <StyledLink href={Routes.About}>
-              About
-            </StyledLink>
-            <StyledLink href={'https://hksexeced.tfaforms.net/f/subscribe?s=a1n6g000000nJnxAAE'}>
+            <StyledLink href={Routes.Landing + "#" + hubId}>Hub</StyledLink>
+            <StyledLink href={Routes.Community}>Community</StyledLink>
+            <StyledLink href={Routes.About}>About</StyledLink>
+            <StyledLink
+              href={
+                "https://hksexeced.tfaforms.net/f/subscribe?s=a1n6g000000nJnxAAE"
+              }
+            >
               Newsletter
             </StyledLink>
             <StyledLink
-              href='https://growthlab.hks.harvard.edu/'
-              target='_blank' rel='noopener noreferrer'
+              href="https://growthlab.hks.harvard.edu/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Growth Lab
             </StyledLink>
             {showGithubLink && (
               <GitHubLink
-                href='https://github.com/cid-harvard/growth-lab-app-front-end'
-                target='_blank'
-                rel='noopener noreferrer'
-                color={'#333'}
-            >
-              <GitHubIcon src={GitHubIconSVG} alt='' title='' />
+                href="https://github.com/cid-harvard/growth-lab-app-front-end"
+                target="_blank"
+                rel="noopener noreferrer"
+                color={"#333"}
+              >
+                <GitHubIcon src={GitHubIconSVG} alt="" title="" />
                 GitHub Repo
               </GitHubLink>
             )}
           </RepoColumn>
-          <SocialColumn>
-            {socialItemsList}
-          </SocialColumn>
+          <SocialColumn>{socialItemsList}</SocialColumn>
         </Content>
       </Container>
       <LicenseAndReadme>
         <div>
-          Harvard Growth Lab’s digital tools are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener noreferrer'>Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.
+          Harvard Growth Lab’s digital tools are licensed under{" "}
+          <a
+            href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
+            4.0)
+          </a>
+          .
         </div>
-        <div style={{marginTop: '0.4rem'}}>
-          Copyright © {new Date().getFullYear()} The President and Fellows of Harvard College
-          {' | '}
-          <a href='https://gdpr.harvard.edu/eeaprivacydisclosures' target='_blank' rel='noopener noreferrer'>
+        <div style={{ marginTop: "0.4rem" }}>
+          Copyright © {new Date().getFullYear()} The President and Fellows of
+          Harvard College
+          {" | "}
+          <a
+            href="https://gdpr.harvard.edu/eeaprivacydisclosures"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Privacy
           </a>
-          {' | '}
-          <a href='http://accessibility.harvard.edu/' target='_blank' rel='noopener noreferrer'>
+          {" | "}
+          <a
+            href="http://accessibility.harvard.edu/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Accessibility
           </a>
-          {' | '}
-          <a href='https://accessibility.huit.harvard.edu/digital-accessibility-policy' target='_blank' rel='noopener noreferrer'>
+          {" | "}
+          <a
+            href="https://accessibility.huit.harvard.edu/digital-accessibility-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Digital Accessibility
           </a>
-          {' | '}
-          <a href='http://www.harvard.edu/reporting-copyright-infringements' target='_blank' rel='noopener noreferrer'>
+          {" | "}
+          <a
+            href="http://www.harvard.edu/reporting-copyright-infringements"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Report Copyright
           </a>
         </div>

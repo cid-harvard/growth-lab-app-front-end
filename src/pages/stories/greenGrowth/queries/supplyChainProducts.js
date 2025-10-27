@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { group } from "d3";
 import { GET_SUPPLY_CHAIN_PRODUCT_MAPPINGS } from "./shared";
 

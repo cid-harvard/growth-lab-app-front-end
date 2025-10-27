@@ -23,6 +23,10 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import ReactGA from "react-ga4";
 import { overlayPortalContainerId } from "./Utils";
 import styled from "styled-components";
+import { loader as spaceVisualizerLoader } from "./pages/spaceVisualizer/loader";
+import DataSelection from "./pages/spaceVisualizer/DataSelection";
+import SpaceVisualizer from "./pages/spaceVisualizer";
+import PasswordGate from "./components/general/PasswordGate";
 
 if (process.env.REACT_APP_GOOGLE_ANALYTICS_GA4_ID) {
   ReactGA.initialize([
@@ -39,6 +43,7 @@ const useTrackPageView = () => {
     ReactGA.send({ hitType: "pageview", page });
   }, [routerLocation]);
 };
+
 const GATracker = () => {
   useTrackPageView();
   return null;
@@ -205,6 +210,23 @@ const router = createBrowserRouter([
       {
         path: "greenplexity/*",
         element: <RoutedGreenGrowthStory />,
+      },
+      {
+        path: routingRoutes.SpaceVisualizer,
+        element: (
+          <PasswordGate>
+            <DataSelection />
+          </PasswordGate>
+        ),
+      },
+      {
+        path: `${routingRoutes.SpaceVisualizer}/visualization`,
+        element: (
+          <PasswordGate>
+            <SpaceVisualizer />
+          </PasswordGate>
+        ),
+        loader: spaceVisualizerLoader,
       },
       {
         path: "green-growth",
