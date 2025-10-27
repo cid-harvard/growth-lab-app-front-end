@@ -93,6 +93,19 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
     setClusterSelection: setSelectedCluster,
   } = useClusterSelection();
 
+  // Track whether the selection came from dropdown
+  const [isDropdownSelection, setIsDropdownSelection] = useState(false);
+
+  // Reset dropdown selection flag after it's been used
+  useEffect(() => {
+    if (isDropdownSelection) {
+      const timeoutId = setTimeout(() => {
+        setIsDropdownSelection(false);
+      }, 100);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isDropdownSelection]);
+
   // Responsive setup
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -300,7 +313,8 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
 
   // Handle cluster selection from beeswarm
   const handleClusterSelect = useCallback(
-    (clusterName: string) => {
+    (clusterName: string, fromDropdown = false) => {
+      setIsDropdownSelection(fromDropdown);
       setSelectedCluster(clusterName);
     },
     [setSelectedCluster],
@@ -852,6 +866,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
               isMobile={isMobile}
               minScore={minScore}
               maxScore={maxScore}
+              scrollToSelection={isDropdownSelection}
             />
           </Box>
         )}
@@ -1577,7 +1592,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <Select
                     IconComponent={KeyboardArrowDownIcon}
                     value={selectedCluster}
-                    onChange={(e) => handleClusterSelect(e.target.value)}
+                    onChange={(e) => handleClusterSelect(e.target.value, true)}
                     size="small"
                     MenuProps={{
                       PaperProps: {
@@ -1589,7 +1604,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                     sx={{
                       display: "inline-flex",
                       width: "auto",
-                      minWidth: 0,
+                      minWidth: "120px",
                       maxWidth: "240px",
                       bgcolor: "rgba(255, 255, 255, 0.85)",
                       "& .MuiSelect-select": {
@@ -1597,20 +1612,14 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                         color: "#000",
                         fontWeight: 600,
                         whiteSpace: "normal",
-                        overflowWrap: "anywhere",
-                        paddingTop: "10px",
-                        paddingLeft: "12px",
-                        paddingRight: "10px",
-                        display: "flex",
-                        alignItems: "center",
+                        wordBreak: "break-word",
+                        paddingTop: "4px",
+                        paddingLeft: "6px",
+                        paddingRight: "4px",
+                        paddingBottom: "4px",
+
                         minWidth: 0,
-                        // Line clamp for multi-line text
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        WebkitLineClamp: 3,
-                        "&.MuiSelect-select": {
-                          display: "-webkit-box !important",
-                        },
+                        lineHeight: 1.3,
                       },
                       "& .MuiSelect-icon": {
                         top: "50%",
@@ -1624,16 +1633,16 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                       },
                       "& .MuiOutlinedInput-root": {
                         backgroundColor: "rgba(255, 255, 255, 0.6)",
-                        alignItems: "center",
+                        alignItems: "flex-start",
                         "& .MuiOutlinedInput-input": {
                           height: "auto",
                           minHeight: "1.4em",
-                          paddingTop: "10px",
-                          paddingBottom: "10px",
-                          paddingLeft: "12px",
-                          paddingRight: "32px",
-                          width: "fit-content",
-                          maxWidth: "100%",
+                          paddingTop: "4px",
+                          paddingBottom: "4px",
+                          paddingLeft: "6px",
+                          paddingRight: "4px",
+                          width: "100%",
+                          boxSizing: "border-box",
                         },
                         "& fieldset": {
                           borderColor: "#e0e0e0",

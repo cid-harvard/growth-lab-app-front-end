@@ -844,38 +844,6 @@ const StackedBarsChartInternal = ({
             );
           })}
 
-          {/* World average market share overlay for comparison mode */}
-          {mode === "comparison" &&
-            Array.from(bars.values()).map((bar) => {
-              const globalMarketShare = bar.globalMarketShare;
-              if (
-                globalMarketShare == null ||
-                Number.isNaN(globalMarketShare) ||
-                globalMarketShare <= 0
-              ) {
-                return null;
-              }
-
-              // Calculate the x position for the world average
-              const worldAvgX = margin.left + xScale(globalMarketShare);
-
-              // Black rectangle overlay showing world average
-              return (
-                <g key={`world-avg-${bar.id}`}>
-                  {/* Black vertical line at world average position */}
-                  <line
-                    x1={worldAvgX}
-                    y1={bar.y}
-                    x2={worldAvgX}
-                    y2={bar.y + bar.height}
-                    stroke="black"
-                    strokeWidth={3}
-                    style={{ pointerEvents: "none" }}
-                  />
-                </g>
-              );
-            })}
-
           {/* No expected overlay or vertical annotations for comparison mode anymore */}
 
           {/* Smart cluster name labels - rendered last to appear on top */}
@@ -884,27 +852,8 @@ const StackedBarsChartInternal = ({
             const fontSize = 16; // Fixed 16px as per spec
             const charWidth = fontSize * 0.52;
 
-            // In comparison mode, position labels after the bar OR global average (only if it's close)
-            let referenceX = bar.x + bar.width;
-            if (
-              mode === "comparison" &&
-              bar.globalMarketShare != null &&
-              !Number.isNaN(bar.globalMarketShare) &&
-              bar.globalMarketShare > 0
-            ) {
-              const worldAvgX = margin.left + xScale(bar.globalMarketShare);
-              const barEndX = bar.x + bar.width;
-              const distanceToWorldAvg = Math.abs(worldAvgX - barEndX);
-
-              // Only position after world average if it's within 50px of the bar end
-              // Otherwise, position after the bar (there's too much gap)
-              const proximityThreshold = 250; // pixels
-              if (distanceToWorldAvg <= proximityThreshold) {
-                // World average is close to bar, position after whichever is further right
-                referenceX = Math.max(barEndX, worldAvgX);
-              }
-              // else: world average is far, keep referenceX at bar end
-            }
+            // Position labels after the bar
+            const referenceX = bar.x + bar.width;
 
             // Position labels outside the reference point on the right for both modes
             const outsideLabelX = referenceX + 12;
@@ -1289,42 +1238,6 @@ const StackedBarsChartInternal = ({
           </Box>
         )}
 
-      {/* Global Average Market Share Legend for comparison mode */}
-      {mode === "comparison" && (
-        <Box
-          sx={{
-            flexShrink: 0,
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: { xs: "6px", sm: "8px", md: "12px" },
-            px: { xs: 1, sm: 2 },
-            py: { xs: 0.5, sm: 1 },
-            backgroundColor: "rgba(255, 255, 255, 0.95)",
-          }}
-        >
-          <Box
-            sx={{
-              width: "3px",
-              height: isMobile ? "14px" : "16px", // Match text height
-              backgroundColor: "black",
-            }}
-          />
-          <Typography
-            sx={{
-              fontSize: isMobile ? "0.875rem" : "1rem",
-              fontWeight: 600,
-              color: "#000",
-              fontFamily: "Source Sans Pro, sans-serif",
-              whiteSpace: "nowrap",
-            }}
-          >
-            World Average Market Share
-          </Typography>
-        </Box>
-      )}
-
       {/* Tooltip */}
       {tooltipOpen && tooltipData && (
         <TooltipWithBounds
@@ -1351,7 +1264,10 @@ const StackedBarsChartInternal = ({
                           ),
                         },
                         {
-                          label: "Cluster RCA:",
+                          label:
+                            selectedClusterId !== null
+                              ? "Product RCA:"
+                              : "Cluster RCA:",
                           value: (() => {
                             const r = tooltipData?.data?.group?.rca;
                             return r != null && !Number.isNaN(r)
@@ -1363,7 +1279,10 @@ const StackedBarsChartInternal = ({
                       ]
                     : [
                         {
-                          label: "Cluster Market Share:",
+                          label:
+                            selectedClusterId !== null
+                              ? "Product Market Share:"
+                              : "Cluster Market Share:",
                           value: (() => {
                             const ms = tooltipData?.value || 0;
                             // Show as percentage (values should always be < 1.0)
@@ -1381,7 +1300,10 @@ const StackedBarsChartInternal = ({
                           })(),
                         },
                         {
-                          label: "Cluster RCA:",
+                          label:
+                            selectedClusterId !== null
+                              ? "Product RCA:"
+                              : "Cluster RCA:",
                           value: (() => {
                             const r = tooltipData?.data?.group?.rca;
                             return r != null && !Number.isNaN(r)

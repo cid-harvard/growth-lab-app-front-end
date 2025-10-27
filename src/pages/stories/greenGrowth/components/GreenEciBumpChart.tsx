@@ -27,7 +27,7 @@ const LATEST_YEAR = 2023;
 
 const AXIS_MARGIN = {
   top: 30,
-  right: 90,
+  right: 130,
   bottom: 30,
   left: 120,
 };
@@ -182,8 +182,13 @@ const Datapoint = (props: DatapointProps) => {
         </>
       );
 
-    // Get text color based on this cell's background color
-    const textColor = BACKGROUND_TO_TEXT_COLOR[fill] || STROKE_COLOR;
+    // Get text color - use background-specific color for proper contrast
+    // Only use black when hovered or spotlighted (explicitly selected),
+    // because then the background becomes semi-transparent
+    const textColor =
+      hovered || spotlighted
+        ? STROKE_COLOR
+        : BACKGROUND_TO_TEXT_COLOR[fill] || STROKE_COLOR;
 
     const metricElm =
       highlighted && !spotlighted ? null : (
@@ -263,6 +268,7 @@ const Datapoint = (props: DatapointProps) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
+        {connectionLine}
         <rect
           x={x}
           y={yPos}
@@ -274,7 +280,6 @@ const Datapoint = (props: DatapointProps) => {
           style={{ cursor: "pointer" }}
         />
         {text}
-        {connectionLine}
       </g>
     );
   });
@@ -361,8 +366,8 @@ const Datapoint = (props: DatapointProps) => {
         opacity: spotlightOn && !spotlighted && !hovered ? 0.3 : 1,
       }}
     >
-      {label}
       {yearPoints}
+      {label}
     </g>
   );
 };
@@ -653,7 +658,7 @@ const ColorLegend = (props: ColorLegendProps) => {
 };
 
 // Preselected countries that show when no country is selected
-const PRESELECTED_COUNTRIES = ["CHN", "USA", "IDN", "MAR", "BOL"]; // China, USA, Indonesia, Morocco, Bolivia
+const PRESELECTED_COUNTRIES = ["CHN", "IND", "IDN", "MAR", "BOL"]; // China, India, Indonesia, Morocco, Bolivia
 
 // Main component props
 interface GreenEciBumpChartProps {

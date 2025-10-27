@@ -682,7 +682,7 @@ const RankingsPage = () => {
           downloadTableAsCSV(sortedRanked, year, prevRankByIso3)
         }
         imageAvailable={true}
-        descriptionText={`Download a high-resolution image of the current visualization or ${tab === "map" ? "Greenplexity map" : "Greenplexity overtime"} ranking data as a CSV file.`}
+        descriptionText={`Download a high-resolution image of the current visualization or Greenplexity Index data as a CSV file.`}
       />
     </>
   );
