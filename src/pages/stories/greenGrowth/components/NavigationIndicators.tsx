@@ -108,10 +108,11 @@ const NavigationIndicators: React.FC<NavigationIndicatorsProps> = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  minHeight: "24px",
+                  height: "32px", // Fixed height for consistent spacing
                   width: "100%",
                   zIndex: isHovered ? 1000 : 1,
                   overflow: "visible",
+                  boxSizing: "border-box",
                 }}
                 onMouseEnter={(e) => {
                   setHoveredStep(step.id);
@@ -147,9 +148,7 @@ const NavigationIndicators: React.FC<NavigationIndicatorsProps> = ({
                 <Box
                   sx={{
                     width: "12px",
-                    height: "100%",
-                    minHeight: "24px",
-                    maxHeight: "32px",
+                    height: "24px", // Fixed height instead of relative
                     borderRadius: "12px",
                     backgroundColor: isFuturePage
                       ? "rgba(38, 133, 189, 0.3)"
@@ -158,6 +157,8 @@ const NavigationIndicators: React.FC<NavigationIndicatorsProps> = ({
                     transition: "all 0.2s ease",
                     position: "relative",
                     zIndex: 2,
+                    boxSizing: "border-box",
+                    flexShrink: 0, // Prevent shrinking
                     "&:hover": { transform: "scale(1.05)" },
                     "&::after": isActive
                       ? {
@@ -165,24 +166,26 @@ const NavigationIndicators: React.FC<NavigationIndicatorsProps> = ({
                           position: "absolute",
                           top: "-4px",
                           left: "-4px",
-                          right: "-4px",
-                          bottom: "-4px",
+                          width: "20px", // Explicit width: 12px + 4px on each side
+                          height: "32px", // Explicit height: 24px + 4px on each side
                           border: "2px solid #2685BD",
                           borderRadius: "16px",
                           transition: "all 0.3s ease",
                           opacity: 1,
+                          boxSizing: "border-box",
                         }
                       : {
                           content: '""',
                           position: "absolute",
                           top: "-4px",
                           left: "-4px",
-                          right: "-4px",
-                          bottom: "-4px",
+                          width: "20px", // Explicit width: 12px + 4px on each side
+                          height: "32px", // Explicit height: 24px + 4px on each side
                           border: "2px solid #2685BD",
                           borderRadius: "16px",
                           transition: "all 0.3s ease",
                           opacity: 0,
+                          boxSizing: "border-box",
                         },
                   }}
                 />

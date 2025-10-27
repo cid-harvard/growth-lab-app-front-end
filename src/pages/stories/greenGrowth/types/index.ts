@@ -18,6 +18,7 @@ export interface CountryClusterData {
   pci: number;
   cog: number;
   density: number;
+  exportValue: number;
   exportRcaCluster: number;
   countryShareCluster?: number;
   worldShareCluster?: number;
@@ -37,6 +38,7 @@ export interface CountryProductData {
   worldShareProductRelativepct: number;
   worldShareProduct: number;
   worldShareProductPctpointChange: number;
+  countryWorldShareProduct?: number;
 
   pciStd: number;
   cogStd: number;

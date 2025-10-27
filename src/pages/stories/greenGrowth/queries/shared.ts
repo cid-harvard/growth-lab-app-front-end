@@ -65,6 +65,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -81,6 +82,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -97,6 +99,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -113,6 +116,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -129,6 +133,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -145,6 +150,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -161,6 +167,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -177,6 +184,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -193,6 +201,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -209,6 +218,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -225,6 +235,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -241,6 +252,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -257,6 +269,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -273,6 +286,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -289,6 +303,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -305,6 +320,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -321,6 +337,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -337,6 +354,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -353,6 +371,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -369,6 +388,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -385,6 +405,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -401,6 +422,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -417,6 +439,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -433,6 +456,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -449,6 +473,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -465,6 +490,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -481,6 +507,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -497,6 +524,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -513,6 +541,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -529,6 +558,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -545,6 +575,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -561,6 +592,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -577,6 +609,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -593,6 +626,7 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
+      exportValue
       exportRcaCluster
       countryShareCluster
       worldShareCluster
@@ -625,6 +659,7 @@ export const GET_COUNTRY_PRODUCT_DATA = gql`
       worldShareProductRelativepct
       worldShareProduct
       worldShareProductPctpointChange
+      countryWorldShareProduct
 
       pciStd
       cogStd

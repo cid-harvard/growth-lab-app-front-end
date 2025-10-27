@@ -570,6 +570,7 @@ const RankingsPage = () => {
               setTooltip={setTooltip}
               scrollToIso={scrollToIso}
               isCapturingImage={isCapturingImage}
+              mapVisualizationRef={mapVisualizationRef}
             />
           ) : (
             <MapCard>

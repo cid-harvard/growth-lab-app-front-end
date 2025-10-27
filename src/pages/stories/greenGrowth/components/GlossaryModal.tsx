@@ -16,7 +16,7 @@ const modalStyle = {
   boxShadow: 24,
   p: 4,
   outline: "none",
-  overflow: "auto",
+  overflow: "hidden",
 };
 
 interface GlossaryModalProps {

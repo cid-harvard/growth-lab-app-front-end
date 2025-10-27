@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import {
   Facebook as FacebookIcon,
-  Twitter as TwitterIcon,
   LinkedIn as LinkedInIcon,
   Email as EmailIcon,
   Link as LinkIcon,
   Close as CloseIcon,
 } from "@mui/icons-material";
+import { ReactComponent as XIcon } from "../../../../assets/x.svg";
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -44,7 +44,7 @@ const getShareFunctions = (url: string) => {
     },
 
     shareTwitter: (text: string) => {
-      const baseURL = "https://twitter.com/intent/tweet";
+      const baseURL = "https://x.com/intent/tweet";
       const shareURL = `${baseURL}?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}&via=HarvardGrwthLab`;
       window.open(shareURL, "", getShareWindowParams(420, 550));
     },
@@ -193,9 +193,13 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onClose }) => {
             sx={{
               color: "grey.600",
               "&:hover": { backgroundColor: "rgba(29, 161, 242, 0.1)" },
+              "& svg": {
+                width: "2rem",
+                height: "2rem",
+              },
             }}
           >
-            <TwitterIcon fontSize="large" />
+            <XIcon />
           </IconButton>
           <IconButton
             onClick={() =>

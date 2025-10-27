@@ -6,7 +6,7 @@ import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
 import { localPoint } from "@visx/event";
 import { AxisBottom } from "@visx/axis";
 import { scaleLinear } from "@visx/scale";
-import { index, rollup } from "d3-array";
+import { index } from "d3-array";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -238,11 +238,13 @@ const StackedBarsChartInternal = ({
               productInfo?.nameEn ||
               `Product ${product.productId}`;
 
+            const productMarketShare = product.countryWorldShareProduct;
+
             processedData.push({
               groupId: product.productId,
               groupName: productName,
               actualProduction: Number.parseFloat(product.exportValue) || 0,
-              marketShare: product.worldShareProduct, // Use worldShareProduct from API
+              marketShare: productMarketShare,
               globalMarketShare: product.worldShareProduct,
               rca: product.exportRca, // Use exportRca from API
               parentId: product.productId,
@@ -250,51 +252,34 @@ const StackedBarsChartInternal = ({
           }
         });
       } else {
-        // CLUSTER VIEW: Aggregate products by cluster (original behavior)
-        // Flatten products with their cluster IDs for aggregation
-        const productClusterPairs = gpCpyList.flatMap((product) => {
-          const supplyChains =
-            supplyChainProductLookup.get(product.productId) || [];
-          const clusterIds = new Set(
-            supplyChains.map((sc) => sc.clusterId).filter((id) => id != null),
-          );
-          return Array.from(clusterIds).map((clusterId) => ({
-            clusterId,
-            exportValue: Number.parseFloat(product.exportValue) || 0,
-          }));
-        });
+        if (!countryData?.clusterData) {
+          // No cluster data, return empty
+        } else {
+          for (const clusterRow of countryData.clusterData) {
+            const clusterId = clusterRow.clusterId;
+            const clusterName = clusterLookup.get(clusterId);
+            if (!clusterName) continue;
 
-        // Use d3.rollup to group by cluster and sum export values
-        const clusterExportTotals = rollup(
-          productClusterPairs.filter((p) => p.exportValue > 0),
-          (products) => products.reduce((sum, p) => sum + p.exportValue, 0),
-          (d) => d.clusterId,
-        );
+            const totalActual = clusterRow.exportValue || 0;
 
-        // Build processed data from aggregated totals
-        for (const [clusterId, totalActual] of clusterExportTotals) {
-          const clusterName = clusterLookup.get(clusterId);
-          if (!clusterName) continue;
+            const clusterMarketShare = clusterMarketShareLookup.get(clusterId);
 
-          // Get cluster market share from API data
-          const clusterMarketShare = clusterMarketShareLookup.get(clusterId);
+            const globalMarketShare =
+              clusterGlobalMarketShareLookup.get(clusterId);
 
-          // Get world average market share from cluster data
-          const globalMarketShare =
-            clusterGlobalMarketShareLookup.get(clusterId);
+            if (totalActual > 0 && clusterMarketShare != null) {
+              const groupRca = clusterRcaLookup.get(clusterId);
 
-          if (totalActual > 0 && clusterMarketShare != null) {
-            const groupRca = clusterRcaLookup.get(clusterId);
-
-            processedData.push({
-              groupId: clusterId,
-              groupName: clusterName,
-              actualProduction: totalActual,
-              marketShare: clusterMarketShare,
-              globalMarketShare: globalMarketShare,
-              rca: groupRca,
-              parentId: clusterId,
-            });
+              processedData.push({
+                groupId: clusterId,
+                groupName: clusterName,
+                actualProduction: totalActual,
+                marketShare: clusterMarketShare,
+                globalMarketShare: globalMarketShare,
+                rca: groupRca,
+                parentId: clusterId,
+              });
+            }
           }
         }
       }
@@ -1017,14 +1002,19 @@ const StackedBarsChartInternal = ({
                   if (value === 0) return "0";
                   return formatter.format(value);
                 }
-                // Show market share as percentage with adaptive precision
+                // Show market share as percentage with adaptive precision to show actual values
                 const percentage = value * 100;
                 if (percentage === 0) return "0%";
+
+                // For very small values, use as many decimals as needed to show a meaningful value
                 if (percentage < 0.01) {
-                  // For very small values, use more decimal places
-                  return `${percentage.toFixed(3)}%`;
+                  // Find the first non-zero digit and show 2 significant figures
+                  return `${percentage.toFixed(5)}%`;
                 }
                 if (percentage < 0.1) {
+                  return `${percentage.toFixed(3)}%`;
+                }
+                if (percentage < 1) {
                   return `${percentage.toFixed(2)}%`;
                 }
                 return `${percentage.toFixed(1)}%`;
@@ -1226,14 +1216,11 @@ const StackedBarsChartInternal = ({
                               : "Cluster Market Share:",
                           value: (() => {
                             const ms = tooltipData?.value || 0;
-                            // Show as percentage with adaptive precision for small values
+                            // Show as percentage with 2 decimal places, or "<0.01%" for very small values
                             const percentage = ms * 100;
                             if (percentage === 0) return "0%";
                             if (percentage < 0.01) {
-                              // For very small values, use more decimal places or scientific notation
-                              return percentage < 0.001
-                                ? `${percentage.toExponential(2)}%`
-                                : `${percentage.toFixed(3)}%`;
+                              return "<0.01%";
                             }
                             return `${percentage.toFixed(2)}%`;
                           })(),

@@ -141,12 +141,13 @@ const SummaryPage: React.FC = () => {
   // Compute Green Complexity rank and change over time
   const ranking = useMemo(() => {
     const countryId = Number.parseInt(String(selectedCountry));
-    type SimpleMetric = { countryId: number; xResid: number };
+    type SimpleMetric = { countryId: number; rank: number | null };
     const isSimpleMetric = (d: unknown): d is SimpleMetric => {
       if (typeof d !== "object" || d === null) return false;
-      const obj = d as { countryId?: unknown; xResid?: unknown };
+      const obj = d as { countryId?: unknown; rank?: unknown };
       return (
-        typeof obj.countryId === "number" && typeof obj.xResid === "number"
+        typeof obj.countryId === "number" &&
+        (typeof obj.rank === "number" || obj.rank === null)
       );
     };
 
@@ -157,18 +158,15 @@ const SummaryPage: React.FC = () => {
       ? (prevAllCountriesMetrics as unknown[]).filter(isSimpleMetric)
       : [];
 
-    const total = nowArr.length;
+    // Count only countries with valid ranks for total
+    const total = nowArr.filter((d) => d.rank !== null).length;
 
-    const currentSorted = [...nowArr].sort((a, b) => b.xResid - a.xResid);
-    const prevSorted = [...prevArr].sort((a, b) => b.xResid - a.xResid);
+    // Find the current country's rank directly from the data (no need to sort)
+    const currentData = nowArr.find((d) => d.countryId === countryId);
+    const prevData = prevArr.find((d) => d.countryId === countryId);
 
-    const currentIndex = currentSorted.findIndex(
-      (d) => d.countryId === countryId,
-    );
-    const prevIndex = prevSorted.findIndex((d) => d.countryId === countryId);
-
-    const rankNow = currentIndex >= 0 ? currentIndex + 1 : null;
-    const rankPrev = prevIndex >= 0 ? prevIndex + 1 : null;
+    const rankNow = currentData?.rank ?? null;
+    const rankPrev = prevData?.rank ?? null;
 
     const delta =
       rankNow !== null && rankPrev !== null ? rankPrev - rankNow : null; // positive = improved

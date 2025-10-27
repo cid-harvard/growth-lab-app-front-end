@@ -37,6 +37,7 @@ type RankingsMapProps = {
   setTooltip: React.Dispatch<React.SetStateAction<TooltipState>>;
   scrollToIso: (iso3: string) => void;
   isCapturingImage: boolean;
+  mapVisualizationRef?: React.RefObject<HTMLDivElement>;
 };
 
 export const RankingsMap = ({
@@ -49,9 +50,12 @@ export const RankingsMap = ({
   setTooltip,
   scrollToIso,
   isCapturingImage,
+  mapVisualizationRef: externalMapVisualizationRef,
 }: RankingsMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const mapVisualizationRef = useRef<HTMLDivElement | null>(null);
+  const internalMapVisualizationRef = useRef<HTMLDivElement | null>(null);
+  const mapVisualizationRef =
+    externalMapVisualizationRef || internalMapVisualizationRef;
 
   // Prepare metrics and world map data
   const { featureCollection, ranked } = useMemo(() => {

@@ -40,6 +40,7 @@ export interface CountryProductData {
   worldShareProduct: number;
   worldShareProductRelativepct: number;
   worldShareProductPctpointChange: number;
+  countryWorldShareProduct?: number;
   feasibilityStd: number | null;
   strategyBalancedPortfolio: number | null;
   strategyLongJump: number | null;
