@@ -1,10 +1,4 @@
-import React, {
-  Suspense,
-  createContext,
-  lazy,
-  useState,
-  useEffect,
-} from "react";
+import { Suspense, createContext, lazy, useState, useEffect } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -19,7 +13,12 @@ import { Routes as routingRoutes } from "./routing/routes";
 import debounce from "lodash/debounce";
 import "./styling/fonts/fonts.css";
 import Loading from "./components/general/Loading";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+} from "@apollo/client";
 import ReactGA from "react-ga4";
 import { overlayPortalContainerId } from "./Utils";
 import styled from "styled-components";
@@ -93,8 +92,12 @@ export const AppContext = createContext<IAppContext>({
   windowWidth: window.innerWidth,
 });
 
+const apiUri = process.env.REACT_APP_API_URL || "/graphql";
+
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_API_URL,
+  link: new HttpLink({
+    uri: apiUri,
+  }),
   cache: new InMemoryCache(),
 });
 
@@ -105,6 +108,11 @@ const defaultMetaDescription =
 const AppWrapper = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const appContext = { windowWidth };
+  const location = useLocation();
+
+  const isSpaceVisualizerRoute = location.pathname.startsWith(
+    routingRoutes.SpaceVisualizer,
+  );
 
   useEffect(() => {
     const updateWindowWidth = debounce(() => {
@@ -131,7 +139,10 @@ const AppWrapper = () => {
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
-          <OverlayPortal id={overlayPortalContainerId} />
+          <OverlayPortal
+            id={overlayPortalContainerId}
+            style={isSpaceVisualizerRoute ? { display: "none" } : undefined}
+          />
         </Root>
       </ApolloProvider>
     </AppContext.Provider>

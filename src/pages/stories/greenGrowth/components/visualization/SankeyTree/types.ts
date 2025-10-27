@@ -37,9 +37,9 @@ export interface CountryProductData {
   normalizedPci: number;
   normalizedCog: number;
   density: number;
-  globalMarketShare: number;
-  productMarketShare: number;
-  productMarketShareGrowth: number;
+  worldShareProduct: number;
+  worldShareProductRelativepct: number;
+  worldShareProductPctpointChange: number;
   feasibilityStd: number | null;
   strategyBalancedPortfolio: number | null;
   strategyLongJump: number | null;
@@ -53,9 +53,10 @@ export interface CountryClusterData {
   pci: number;
   cog: number;
   density: number;
-  rca: number;
-  clusterMarketShare?: number;
-  globalMarketShare?: number;
+  exportRcaCluster: number;
+  countryShareCluster?: number;
+  worldShareCluster?: number;
+  countryWorldShareCluster?: number;
 }
 
 export interface ProductClusterRow {

@@ -17,11 +17,11 @@ export interface ProcessedProductData {
   normalizedPci: number | null;
   normalizedCog: number | null;
   density: number | null;
-  globalMarketShare: number | null;
-  productMarketShare: number | null;
+  worldShareProduct: number | null;
+  worldShareProductRelativepct: number | null;
+  worldShareProductPctpointChange: number | null;
+  marketGrowth?: number | null;
 
-  marketGrowth: number | null;
-  productMarketShareGrowth: number | null;
   pciStd: number | null;
   cogStd: number | null;
   feasibilityStd: number | null;
@@ -94,9 +94,9 @@ export const useProcessedTableData = (
         const marketSize =
           item &&
           typeof item.exportValue === "number" &&
-          typeof item.globalMarketShare === "number" &&
-          item.globalMarketShare > 0
-            ? item.exportValue / item.globalMarketShare
+          typeof item.worldShareProduct === "number" &&
+          item.worldShareProduct > 0
+            ? item.exportValue / item.worldShareProduct
             : null;
 
         return {
@@ -112,11 +112,10 @@ export const useProcessedTableData = (
           normalizedPci: item.normalizedPci,
           normalizedCog: item.normalizedCog,
           density: item.density,
-          globalMarketShare: item.globalMarketShare,
-          productMarketShare: item.productMarketShare,
-          marketGrowth:
-            item.marketGrowth ?? item.productMarketShareGrowth ?? null,
-          productMarketShareGrowth: item.productMarketShareGrowth,
+          worldShareProduct: item.worldShareProduct,
+          worldShareProductRelativepct: item.worldShareProductRelativepct,
+          worldShareProductPctpointChange: item.worldShareProductPctpointChange,
+          marketGrowth: item.worldShareProductRelativepct ?? null,
           pciStd: item.pciStd,
           cogStd: item.cogStd,
           feasibilityStd: item.feasibilityStd,

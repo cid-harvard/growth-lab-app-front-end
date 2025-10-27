@@ -13,10 +13,19 @@ const formatNumber = (
   return num.toFixed(decimals);
 };
 
-const formatPercent = (value: number | null | undefined): string => {
+const formatMarketGrowth = (value: number | null | undefined): string => {
   const num = typeof value === "number" ? value : Number(value);
   if (value === null || value === undefined || Number.isNaN(num)) return "";
-  return (num * 100).toFixed(1);
+
+  const absValue = Math.abs(num);
+
+  // For small values (under 1.0), use 2 significant figures
+  if (absValue < 1.0 && absValue > 0) {
+    return num.toPrecision(2);
+  }
+
+  // For larger values, use 2 decimal places
+  return num.toFixed(2);
 };
 
 const formatCurrency = (value: number | null | undefined): string => {
@@ -75,7 +84,7 @@ export const generateProductsCSV = (
     escapeCSV(row.supplyChainName),
     escapeCSV(formatCurrency(row.exportValue)),
     escapeCSV(formatCurrency(row.marketSize ?? null)),
-    escapeCSV(formatPercent(row.marketGrowth)),
+    escapeCSV(formatMarketGrowth(row.marketGrowth)),
     escapeCSV(formatNumber(row.exportRca)),
     escapeCSV(formatNumber(row.normalizedCog)),
     escapeCSV(formatNumber(row.normalizedPci)),

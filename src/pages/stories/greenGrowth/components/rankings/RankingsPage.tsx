@@ -321,7 +321,7 @@ const RankingsPage = () => {
               variant="body1"
               sx={{ mb: 2, lineHeight: 1.6, fontSize: "1.25rem" }}
             >
-              Harvard Growth Lab's Greenplexity ranking captures countries'
+              Harvard Growth Lab's Greenplexity Index captures countries'
               presence in green value chains, based on the breadth and
               complexity of its industries in green value chains. This metric
               shows how many capabilities a country has in the industries
@@ -331,11 +331,11 @@ const RankingsPage = () => {
               variant="body1"
               sx={{ mb: 2, lineHeight: 1.6, fontSize: "1.25rem" }}
             >
-              Countries improve their Greenplexity ranking by making more—and
-              more complex—products within green value chains. Use the
-              visualizations below to 1) see a country's Greenplexity ranking,
-              2) track how the ranking changed over five years, and 3) compare
-              the ranking to other peer countries.
+              Countries improve their Greenplexity Index score by making
+              more—and more complex—products within green value chains. Use the
+              visualizations below to 1) see a country's Greenplexity Index
+              score, 2) track its change over five years, and 3) compare the
+              score to other peer countries.
             </Typography>
           </Header>
 

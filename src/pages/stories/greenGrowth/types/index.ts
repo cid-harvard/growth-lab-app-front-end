@@ -18,9 +18,10 @@ export interface CountryClusterData {
   pci: number;
   cog: number;
   density: number;
-  rca: number;
-  clusterMarketShare?: number;
-  globalMarketShare?: number;
+  exportRcaCluster: number;
+  countryShareCluster?: number;
+  worldShareCluster?: number;
+  countryWorldShareCluster?: number;
 }
 
 export interface CountryProductData {
@@ -33,9 +34,9 @@ export interface CountryProductData {
   normalizedPci: number;
   normalizedCog: number;
   density: number;
-  productMarketShareGrowth: number;
-  globalMarketShare: number;
-  productMarketShare: number;
+  worldShareProductRelativepct: number;
+  worldShareProduct: number;
+  worldShareProductPctpointChange: number;
 
   pciStd: number;
   cogStd: number;
@@ -46,8 +47,8 @@ export interface CountryProductData {
   strategyFrontier: number;
 
   // Computed fields
-  marketGrowth: number;
-  pciCogFeasibilityComposite: number;
+  marketGrowth?: number;
+  pciCogFeasibilityComposite?: number;
 }
 
 export interface ProductClusterRow {

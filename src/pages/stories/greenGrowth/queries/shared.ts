@@ -65,9 +65,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster2: gpClusterCountryYearList(
       clusterId: 2
@@ -80,9 +81,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster3: gpClusterCountryYearList(
       clusterId: 3
@@ -95,9 +97,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster4: gpClusterCountryYearList(
       clusterId: 4
@@ -110,9 +113,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster5: gpClusterCountryYearList(
       clusterId: 5
@@ -125,9 +129,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster6: gpClusterCountryYearList(
       clusterId: 6
@@ -140,9 +145,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster7: gpClusterCountryYearList(
       clusterId: 7
@@ -155,9 +161,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster8: gpClusterCountryYearList(
       clusterId: 8
@@ -170,9 +177,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster9: gpClusterCountryYearList(
       clusterId: 9
@@ -185,9 +193,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster10: gpClusterCountryYearList(
       clusterId: 10
@@ -200,9 +209,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster11: gpClusterCountryYearList(
       clusterId: 11
@@ -215,9 +225,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster12: gpClusterCountryYearList(
       clusterId: 12
@@ -230,9 +241,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster13: gpClusterCountryYearList(
       clusterId: 13
@@ -245,9 +257,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster14: gpClusterCountryYearList(
       clusterId: 14
@@ -260,9 +273,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster15: gpClusterCountryYearList(
       clusterId: 15
@@ -275,9 +289,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster16: gpClusterCountryYearList(
       clusterId: 16
@@ -290,9 +305,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster17: gpClusterCountryYearList(
       clusterId: 17
@@ -305,9 +321,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster18: gpClusterCountryYearList(
       clusterId: 18
@@ -320,9 +337,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster19: gpClusterCountryYearList(
       clusterId: 19
@@ -335,9 +353,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster20: gpClusterCountryYearList(
       clusterId: 20
@@ -350,9 +369,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster21: gpClusterCountryYearList(
       clusterId: 21
@@ -365,9 +385,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster22: gpClusterCountryYearList(
       clusterId: 22
@@ -380,9 +401,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster23: gpClusterCountryYearList(
       clusterId: 23
@@ -395,9 +417,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster24: gpClusterCountryYearList(
       clusterId: 24
@@ -410,9 +433,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster25: gpClusterCountryYearList(
       clusterId: 25
@@ -425,9 +449,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster26: gpClusterCountryYearList(
       clusterId: 26
@@ -440,9 +465,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster27: gpClusterCountryYearList(
       clusterId: 27
@@ -455,9 +481,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster28: gpClusterCountryYearList(
       clusterId: 28
@@ -470,9 +497,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster29: gpClusterCountryYearList(
       clusterId: 29
@@ -485,9 +513,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster30: gpClusterCountryYearList(
       clusterId: 30
@@ -500,9 +529,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster31: gpClusterCountryYearList(
       clusterId: 31
@@ -515,9 +545,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster32: gpClusterCountryYearList(
       clusterId: 32
@@ -530,9 +561,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster33: gpClusterCountryYearList(
       clusterId: 33
@@ -545,9 +577,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
     cluster34: gpClusterCountryYearList(
       clusterId: 34
@@ -560,9 +593,10 @@ export const GET_CLUSTER_COUNTRY_DATA = gql`
       pci
       cog
       density
-      rca
-      clusterMarketShare
-      globalMarketShare
+      exportRcaCluster
+      countryShareCluster
+      worldShareCluster
+      countryWorldShareCluster
     }
   }
 `;
@@ -588,9 +622,9 @@ export const GET_COUNTRY_PRODUCT_DATA = gql`
       normalizedPci
       normalizedCog
       density
-      productMarketShareGrowth
-      globalMarketShare
-      productMarketShare
+      worldShareProductRelativepct
+      worldShareProduct
+      worldShareProductPctpointChange
 
       pciStd
       cogStd

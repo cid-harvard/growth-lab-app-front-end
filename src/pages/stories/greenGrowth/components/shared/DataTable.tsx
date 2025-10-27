@@ -60,7 +60,39 @@ const formatPercent = (value: number | null | undefined): string => {
     Number.isNaN(typeof value === "number" ? value : Number(value))
   )
     return "N/A";
-  return `${Number(value).toFixed(2)}%`;
+
+  const percentage = Number(value) * 100;
+  if (percentage === 0) return "0%";
+  if (percentage < 0.01) {
+    // For very small values, use more decimal places or scientific notation
+    return percentage < 0.001
+      ? `${percentage.toExponential(2)}%`
+      : `${percentage.toFixed(3)}%`;
+  }
+  if (percentage < 0.1) {
+    return `${percentage.toFixed(3)}%`;
+  }
+  return `${percentage.toFixed(2)}%`;
+};
+
+const formatMarketGrowth = (value: number | null | undefined): string => {
+  if (
+    value === null ||
+    value === undefined ||
+    Number.isNaN(typeof value === "number" ? value : Number(value))
+  )
+    return "N/A";
+
+  const numValue = Number(value);
+  const absValue = Math.abs(numValue);
+
+  // For small values (under 1.0), use 2 significant figures
+  if (absValue < 1.0 && absValue > 0) {
+    return `${numValue.toPrecision(2)}%`;
+  }
+
+  // For larger values, use 2 decimal places
+  return `${numValue.toFixed(2)}%`;
 };
 
 const formatCurrency = (value: number | null | undefined): string => {
@@ -274,8 +306,8 @@ const ProductsTable = ({
         : null;
 
       const marketSize =
-        item && typeof item.productMarketShare === "number"
-          ? item.productMarketShare
+        item && typeof item.worldShareProduct === "number"
+          ? item.worldShareProduct
           : null;
 
       return {
@@ -286,7 +318,7 @@ const ProductsTable = ({
         clusterName: cluster?.clusterName || "N/A",
         marketSize,
         // Ensure table uses a consistent key for growth
-        marketGrowth: item.productMarketShareGrowth,
+        marketGrowth: item.worldShareProductRelativepct,
       };
     });
   }, [
@@ -437,7 +469,7 @@ const ProductsTable = ({
         tooltip:
           "Relative percentage change in a product's global market share compared to its average market share over the previous 3 years.",
         width: 210,
-        format: formatPercent,
+        format: formatMarketGrowth,
         sortable: true,
         sortValue: (row: any) => row.marketGrowth ?? null,
         defaultOrder: "desc",
@@ -843,8 +875,8 @@ const NestedProductsTable = ({
           supplyChainId,
         };
 
-        if (typeof processedProduct.productMarketShare === "number") {
-          processedProduct.marketSize = processedProduct.productMarketShare;
+        if (typeof processedProduct.worldShareProduct === "number") {
+          processedProduct.marketSize = processedProduct.worldShareProduct;
         } else {
           processedProduct.marketSize = null;
         }
@@ -997,7 +1029,7 @@ const NestedProductsTable = ({
         tooltip:
           "Relative percentage change in a product's global market share compared to its average market share over the previous 3 years.",
         width: 160,
-        format: formatPercent,
+        format: formatMarketGrowth,
         sortable: true,
         sortValue: (row: any) => row.marketGrowth ?? null,
       },

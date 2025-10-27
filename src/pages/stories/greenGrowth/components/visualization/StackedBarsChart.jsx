@@ -154,7 +154,7 @@ const StackedBarsChartInternal = ({
     if (!countryData?.clusterData) return map;
     for (const row of countryData.clusterData) {
       if (row?.clusterId != null) {
-        map.set(row.clusterId, row.rca);
+        map.set(row.clusterId, row.exportRcaCluster);
       }
     }
     return map;
@@ -165,20 +165,22 @@ const StackedBarsChartInternal = ({
     const map = new Map();
     if (!countryData?.clusterData) return map;
     for (const row of countryData.clusterData) {
-      if (row?.clusterId != null && row?.globalMarketShare != null) {
-        map.set(row.clusterId, row.globalMarketShare);
+      if (row?.clusterId != null && row?.worldShareCluster != null) {
+        map.set(row.clusterId, row.worldShareCluster);
       }
     }
     return map;
   }, [countryData]);
 
   // Create cluster marketShare lookup from country cluster data
+  // Uses countryWorldShareCluster per Karan's 2025-01-27 clarification:
+  // "country_world_share_cluster (net new) yes - this is what we want the bar length to show"
   const clusterMarketShareLookup = useMemo(() => {
     const map = new Map();
     if (!countryData?.clusterData) return map;
     for (const row of countryData.clusterData) {
-      if (row?.clusterId != null && row?.clusterMarketShare != null) {
-        map.set(row.clusterId, row.clusterMarketShare);
+      if (row?.clusterId != null && row?.countryWorldShareCluster != null) {
+        map.set(row.clusterId, row.countryWorldShareCluster);
       }
     }
     return map;
@@ -240,8 +242,8 @@ const StackedBarsChartInternal = ({
               groupId: product.productId,
               groupName: productName,
               actualProduction: Number.parseFloat(product.exportValue) || 0,
-              marketShare: product.productMarketShare, // Use productMarketShare from API
-              globalMarketShare: product.globalMarketShare,
+              marketShare: product.worldShareProduct, // Use worldShareProduct from API
+              globalMarketShare: product.worldShareProduct,
               rca: product.exportRca, // Use exportRca from API
               parentId: product.productId,
             });
@@ -1015,8 +1017,17 @@ const StackedBarsChartInternal = ({
                   if (value === 0) return "0";
                   return formatter.format(value);
                 }
-                // Show market share as percentage (values should always be < 1.0)
-                return `${(value * 100).toFixed(1)}%`;
+                // Show market share as percentage with adaptive precision
+                const percentage = value * 100;
+                if (percentage === 0) return "0%";
+                if (percentage < 0.01) {
+                  // For very small values, use more decimal places
+                  return `${percentage.toFixed(3)}%`;
+                }
+                if (percentage < 0.1) {
+                  return `${percentage.toFixed(2)}%`;
+                }
+                return `${percentage.toFixed(1)}%`;
               }}
               tickLabelProps={() => ({
                 fill: "rgb(51,51,51)",
@@ -1100,8 +1111,8 @@ const StackedBarsChartInternal = ({
         </ButtonGroup>
       </Box>
 
-      {/* Presence mode RCA legend */}
-      {mode === "presence" && rcaScale && rcaMin != null && rcaMax != null && (
+      {/* RCA legend - shown for both modes */}
+      {rcaScale && rcaMin != null && rcaMax != null && (
         <Box
           sx={{
             flexShrink: 0,
@@ -1168,76 +1179,6 @@ const StackedBarsChartInternal = ({
         </Box>
       )}
 
-      {/* Comparison mode RCA legend */}
-      {mode === "comparison" &&
-        rcaScale &&
-        rcaMin != null &&
-        rcaMax != null && (
-          <Box
-            sx={{
-              flexShrink: 0,
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: { xs: "8px", sm: "10px", md: "15px" },
-              px: { xs: 1, sm: 2 },
-              py: { xs: 0.5, sm: 1 },
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
-            }}
-          >
-            <GGTooltip title={getTerm("rca").description} placement="top">
-              <Typography
-                sx={{
-                  fontSize: isMobile ? "0.875rem" : "1rem",
-                  fontWeight: 600,
-                  color: "#000",
-                  fontFamily: "Source Sans Pro, sans-serif",
-                  whiteSpace: "nowrap",
-                  textDecoration: "underline",
-                  cursor: "help",
-                }}
-              >
-                Economic Competitiveness
-              </Typography>
-            </GGTooltip>
-
-            <Typography
-              sx={{
-                fontSize: isMobile ? "0.875rem" : "1rem",
-                fontWeight: 600,
-                color: "#000",
-                fontFamily: "Source Sans Pro, sans-serif",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Low
-            </Typography>
-
-            <Box
-              sx={{
-                width: isMobile ? "120px" : "300px",
-                height: isMobile ? "12px" : "16px",
-                background: "linear-gradient(90deg, #cfe8f3 0%, #106496 100%)",
-                border: "1px solid #ccc",
-                borderRadius: "3px",
-              }}
-            />
-
-            <Typography
-              sx={{
-                fontSize: isMobile ? "0.875rem" : "1rem",
-                fontWeight: 600,
-                color: "#000",
-                fontFamily: "Source Sans Pro, sans-serif",
-                whiteSpace: "nowrap",
-              }}
-            >
-              High
-            </Typography>
-          </Box>
-        )}
-
       {/* Tooltip */}
       {tooltipOpen && tooltipData && (
         <TooltipWithBounds
@@ -1285,18 +1226,16 @@ const StackedBarsChartInternal = ({
                               : "Cluster Market Share:",
                           value: (() => {
                             const ms = tooltipData?.value || 0;
-                            // Show as percentage (values should always be < 1.0)
-                            return `${(ms * 100).toFixed(2)}%`;
-                          })(),
-                        },
-                        {
-                          label: "World Avg Market Share:",
-                          value: (() => {
-                            const gms = tooltipData?.globalMarketShare;
-                            if (gms != null && !Number.isNaN(gms)) {
-                              return `${(gms * 100).toFixed(2)}%`;
+                            // Show as percentage with adaptive precision for small values
+                            const percentage = ms * 100;
+                            if (percentage === 0) return "0%";
+                            if (percentage < 0.01) {
+                              // For very small values, use more decimal places or scientific notation
+                              return percentage < 0.001
+                                ? `${percentage.toExponential(2)}%`
+                                : `${percentage.toFixed(3)}%`;
                             }
-                            return "-";
+                            return `${percentage.toFixed(2)}%`;
                           })(),
                         },
                         {

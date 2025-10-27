@@ -190,20 +190,41 @@ const CustomTooltip = ({ active, payload, productData, radarData }) => {
     // Decide value to display
     let displayValue;
     if (dimension === "Product Market Growth") {
-      const rawValue = product.productMarketShareGrowth;
-      displayValue =
-        rawValue != null && !Number.isNaN(rawValue)
-          ? `${Number(rawValue).toFixed(2)}%`
-          : "N/A";
+      const rawValue = product.worldShareProductRelativepct;
+      if (rawValue != null && !Number.isNaN(rawValue)) {
+        const absValue = Math.abs(rawValue);
+        // For small values (under 1.0), use 2 significant figures
+        if (absValue < 1.0 && absValue > 0) {
+          displayValue = `${Number(rawValue).toPrecision(2)}%`;
+        } else {
+          displayValue = `${Number(rawValue).toFixed(2)}%`;
+        }
+      } else {
+        displayValue = "N/A";
+      }
     } else if (dimension === "Product Market Size") {
       const rawValue =
-        typeof product.productMarketShare === "number"
-          ? product.productMarketShare
+        typeof product.worldShareProduct === "number"
+          ? product.worldShareProduct
           : null;
-      displayValue =
-        rawValue != null && !Number.isNaN(rawValue)
-          ? `${Number(rawValue * 100).toFixed(2)}%`
-          : "N/A";
+      if (rawValue != null && !Number.isNaN(rawValue)) {
+        const percentage = Number(rawValue) * 100;
+        if (percentage === 0) {
+          displayValue = "0%";
+        } else if (percentage < 0.01) {
+          // For very small values, use more decimal places or scientific notation
+          displayValue =
+            percentage < 0.001
+              ? `${percentage.toExponential(2)}%`
+              : `${percentage.toFixed(3)}%`;
+        } else if (percentage < 0.1) {
+          displayValue = `${percentage.toFixed(3)}%`;
+        } else {
+          displayValue = `${percentage.toFixed(2)}%`;
+        }
+      } else {
+        displayValue = "N/A";
+      }
     } else {
       const score = entry[productId];
       displayValue = score != null ? Number(score).toFixed(0) : "N/A";
@@ -1248,7 +1269,7 @@ const ProductRadarInternal = ({
 
     // Filter clusters with RCA < 1 (not currently specialized) - same logic as ProductScatter
     const filteredClusters = allClusterData.filter(
-      (item) => Number.parseFloat(item.rca) < 1,
+      (item) => Number.parseFloat(item.exportRcaCluster) < 1,
     );
 
     // Calculate cluster positions (same as ProductScatter cluster mode)
@@ -1336,13 +1357,13 @@ const ProductRadarInternal = ({
       const values = currentData.gpCpyList
         .map((product) => {
           if (dimension === "Product Market Growth") {
-            let v = product.productMarketShareGrowth;
+            let v = product.worldShareProductRelativepct;
             return v;
           }
           if (dimension === "Product Market Size") {
             const v =
-              typeof product.productMarketShare === "number"
-                ? product.productMarketShare
+              typeof product.worldShareProduct === "number"
+                ? product.worldShareProduct
                 : null;
             return v;
           }
@@ -1387,11 +1408,11 @@ const ProductRadarInternal = ({
         ...productData.reduce((acc, product) => {
           let originalValue = 0;
           if (dimension === "Product Market Growth") {
-            originalValue = product.productMarketShareGrowth ?? 0;
+            originalValue = product.worldShareProductRelativepct ?? 0;
           } else if (dimension === "Product Market Size") {
             originalValue =
-              typeof product.productMarketShare === "number"
-                ? product.productMarketShare
+              typeof product.worldShareProduct === "number"
+                ? product.worldShareProduct
                 : 0;
           } else {
             originalValue = product[valueKey] ?? 0;

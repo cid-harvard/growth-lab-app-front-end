@@ -19,7 +19,8 @@ const Attribution = () => (
       <Typography component="span" sx={{ fontWeight: 600 }}>
         Growth Lab's Digital Development & Design Team:
       </Typography>{" "}
-      Annie White, Robert Christie, Nil Tuzcu, Brendan Leonard, Ellie Jackson
+      Annie White, Robert Christie, Nil Tuzcu, Brendan Leonard, Ellie Jackson,
+      Tammy Zhang
     </Typography>
   </Box>
 );

@@ -569,7 +569,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
               >
                 GREENPLEXITY
               </Typography>
-              <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+              <a href="/" aria-label="Growth Lab Home">
                 <img
                   src={GrowthLabLogoPNG}
                   alt="Growth Lab"
@@ -1042,7 +1042,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             justifyContent: "center",
           }}
         >
-          <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+          <a href="/" aria-label="Growth Lab Home">
             <img
               src={GrowthLabLogoPNG}
               alt="Growth Lab"
@@ -1101,7 +1101,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           ),
         }}
       >
-        <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+        <a href="/" aria-label="Growth Lab Home">
           <img
             src={GrowthLabLogoPNG}
             alt="Growth Lab"
@@ -1154,7 +1154,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             >
               <MenuIcon />
             </IconButton>
-            <a href="https://growthlab.app/" aria-label="Growth Lab Home">
+            <a href="/" aria-label="Growth Lab Home">
               <img
                 src={GrowthLabLogoPNG}
                 alt="Growth Lab"

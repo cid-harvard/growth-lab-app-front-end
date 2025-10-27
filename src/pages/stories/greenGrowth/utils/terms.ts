@@ -6,6 +6,8 @@ export type GGTermKey =
   | "worldAverageExport"
   | "economicCompetitiveness"
   | "rca"
+  | "clusterMarketShare"
+  | "clusterRca"
   | "productComplexity"
   | "opportunityGain"
   | "expectedExportValue"
@@ -58,7 +60,21 @@ export const GG_TERMS: Record<GGTermKey, GGTermDefinition> = {
     key: "rca",
     title: "RCA (Revealed Comparative Advantage)",
     description:
-      'A measure of whether a country is an exporter of a product, based on the relative advantage or disadvantage it has in the export of a certain good. A country is an effective exporter of a product if it exports more than its "fair share" or a share that is at least equal to the share of total world trade that the product represents (RCA > 1).',
+      'A measure of whether a country is an effective exporter of a product, based on the relative advantage or disadvantage it has in the export of a certain good. A country is an effective exporter of a product if it exports more than its "fair share" or a share that is at least equal to the share of total world trade that the product represents (RCA > 1).',
+    addToGlossary: true,
+  },
+  clusterMarketShare: {
+    key: "clusterMarketShare",
+    title: "Cluster Market Share",
+    description:
+      "For a country, the country's share of the global export market for the products that make up that cluster.",
+    addToGlossary: true,
+  },
+  clusterRca: {
+    key: "clusterRca",
+    title: "Cluster RCA (Revealed Comparative Advantage)",
+    description:
+      'A measure of whether a country is an effective exporter of a cluster of products, based on the relative advantage or disadvantage it has in the export of that set of products. A country is an effective exporter of a cluster of product if it exports more than its "fair share" or a share that is at least equal to the share of total world trade that the cluster of products represents (RCA > 1).',
     addToGlossary: true,
   },
   productComplexity: {
@@ -146,6 +162,8 @@ export const GG_GLOSSARY_ORDER: GGTermKey[] = [
   "attractiveness",
   "economicCompetitiveness",
   "rca",
+  "clusterMarketShare",
+  "clusterRca",
   "productComplexity",
   "opportunityGain",
   "expectedExportValue",

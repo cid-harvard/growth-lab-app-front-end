@@ -107,7 +107,7 @@ const SummaryPage: React.FC = () => {
 
     // Filter clusters with RCA < 1 (not currently specialized)
     const filtered = countryData.clusterData.filter(
-      (item) => Number.parseFloat(String(item.rca)) < 1,
+      (item) => Number.parseFloat(String(item.exportRcaCluster)) < 1,
     );
 
     if (filtered.length === 0) return [];
