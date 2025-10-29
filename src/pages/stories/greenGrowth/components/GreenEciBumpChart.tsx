@@ -705,52 +705,52 @@ const GreenEciBumpChart: React.FC<GreenEciBumpChartProps> = ({
       const dataByCountry = new Map<number, YearlyData[]>();
 
       try {
-        // Query each year separately (year is required parameter)
-        for (let year = MIN_YEAR; year <= LATEST_YEAR; year++) {
-          const yearQuery = gql`
-            query GetYearData($year: Int!) {
-              gpCountryYearList(year: $year) {
-                countryId
-                year
-                rankingMetric
-                rank
-              }
+        // OPTIMIZED: Fetch all years at once (year is now optional)
+        const allYearsQuery = gql`
+          query GetAllYearsData {
+            gpCountryYearList {
+              countryId
+              year
+              rankingMetric
+              rank
             }
-          `;
-
-          const result = await client.query({
-            query: yearQuery,
-            variables: { year },
-          });
-
-          interface CountryYearResult {
-            countryId: number;
-            year: number;
-            rankingMetric: string | null;
-            rank: number | null;
           }
+        `;
 
-          const yearData = result.data.gpCountryYearList as CountryYearResult[];
+        const result = await client.query({
+          query: allYearsQuery,
+        });
 
-          yearData.forEach((d) => {
-            if (!dataByCountry.has(d.countryId)) {
-              dataByCountry.set(d.countryId, []);
-            }
-            const countryArray = dataByCountry.get(d.countryId);
-            if (countryArray) {
-              countryArray.push({
-                year: d.year,
-                rankingMetric: d.rankingMetric
-                  ? parseFloat(d.rankingMetric)
-                  : null,
-                rank: d.rank,
-              });
-            }
-          });
+        interface CountryYearResult {
+          countryId: number;
+          year: number;
+          rankingMetric: string | null;
+          rank: number | null;
         }
 
+        const yearDataResults = result.data.gpCountryYearList as CountryYearResult[];
+
+        // Filter to only include years in our range and group by country
+        yearDataResults.forEach((d) => {
+          if (d.year < MIN_YEAR || d.year > LATEST_YEAR) return;
+
+          if (!dataByCountry.has(d.countryId)) {
+            dataByCountry.set(d.countryId, []);
+          }
+          const countryArray = dataByCountry.get(d.countryId);
+          if (countryArray) {
+            countryArray.push({
+              year: d.year,
+              rankingMetric: d.rankingMetric
+                ? parseFloat(d.rankingMetric)
+                : null,
+              rank: d.rank,
+            });
+          }
+        });
+
         // Convert to final data structure
-        const allData: CountryYearData[] = [];
+        const allCountriesData: CountryYearData[] = [];
         dataByCountry.forEach((years, countryId) => {
           const country = countryMap.get(countryId);
           if (!country) return;
@@ -758,13 +758,13 @@ const GreenEciBumpChart: React.FC<GreenEciBumpChartProps> = ({
           // Sort by year descending (most recent first, like in overtimeViz)
           const sortedYears = orderBy(years, ["year"], ["desc"]);
 
-          allData.push({
+          allCountriesData.push({
             country,
             years: sortedYears,
           });
         });
 
-        setCountriesData(allData);
+        setCountriesData(allCountriesData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

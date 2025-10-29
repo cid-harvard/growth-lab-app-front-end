@@ -18,7 +18,7 @@ import html2canvas from "html2canvas";
 import GreenplexityHeader from "../GreenplexityHeader";
 import DownloadModal from "../DownloadModal";
 import GreenEciBumpChart from "../GreenEciBumpChart";
-import { useGreenGrowthData } from "../../hooks/useGreenGrowthData";
+import { useAllYearsMetrics } from "../../hooks/useAllYearsMetrics";
 import { RankingsMap } from "./components/RankingsMap";
 import { RankingsTable } from "./components/RankingsTable";
 import { getFlagSrc } from "./utils/flagLoader";
@@ -41,15 +41,16 @@ const RankingsPage = () => {
   // Derive tab state directly from URL
   const tab: TabType = location.pathname.endsWith("/map") ? "map" : "bump";
 
-  // Use existing hook which can fetch all countries' year metrics and also gives us country metadata
-  const [year, setYear] = useState<number>(defaultYear);
-  const { allCountriesMetrics } = useGreenGrowthData(null, year, true);
-  const { allCountriesMetrics: prevAllCountriesMetrics } = useGreenGrowthData(
-    null,
-    year - 5,
-    true,
-  );
+  // OPTIMIZED: Fetch ALL years at once instead of 12+ separate queries
+  // Now that year is optional in the API, we can get all years in one request
+  const {
+    getMetricsForYear,
+    globalMinValue,
+    globalMaxValue,
+    loading: allYearsLoading,
+  } = useAllYearsMetrics();
 
+  const [year, setYear] = useState<number>(defaultYear);
   const [inputValue, setInputValue] = useState("");
   const [selectedIso3, setSelectedIso3] = useState<string>("");
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
@@ -67,122 +68,15 @@ const RankingsPage = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [isCapturingImage, setIsCapturingImage] = useState(false);
 
-  // Fetch data for all years to compute global min/max (2012-2023, like overtime viz)
-  const { allCountriesMetrics: allYears2023 } = useGreenGrowthData(
-    null,
-    2023,
-    true,
+  // Get metrics for current year and previous period (5 years ago)
+  const allCountriesMetrics = useMemo(
+    () => getMetricsForYear(year),
+    [getMetricsForYear, year]
   );
-  const { allCountriesMetrics: allYears2022 } = useGreenGrowthData(
-    null,
-    2022,
-    true,
+  const prevAllCountriesMetrics = useMemo(
+    () => getMetricsForYear(year - 5),
+    [getMetricsForYear, year]
   );
-  const { allCountriesMetrics: allYears2021 } = useGreenGrowthData(
-    null,
-    2021,
-    true,
-  );
-  const { allCountriesMetrics: allYears2020 } = useGreenGrowthData(
-    null,
-    2020,
-    true,
-  );
-  const { allCountriesMetrics: allYears2019 } = useGreenGrowthData(
-    null,
-    2019,
-    true,
-  );
-  const { allCountriesMetrics: allYears2018 } = useGreenGrowthData(
-    null,
-    2018,
-    true,
-  );
-  const { allCountriesMetrics: allYears2017 } = useGreenGrowthData(
-    null,
-    2017,
-    true,
-  );
-  const { allCountriesMetrics: allYears2016 } = useGreenGrowthData(
-    null,
-    2016,
-    true,
-  );
-  const { allCountriesMetrics: allYears2015 } = useGreenGrowthData(
-    null,
-    2015,
-    true,
-  );
-  const { allCountriesMetrics: allYears2014 } = useGreenGrowthData(
-    null,
-    2014,
-    true,
-  );
-  const { allCountriesMetrics: allYears2013 } = useGreenGrowthData(
-    null,
-    2013,
-    true,
-  );
-  const { allCountriesMetrics: allYears2012 } = useGreenGrowthData(
-    null,
-    2012,
-    true,
-  );
-
-  // Compute global min/max across all years for consistent color scale with overtime viz
-  const { globalMinValue, globalMaxValue } = useMemo(() => {
-    let min = Infinity;
-    let max = -Infinity;
-
-    const allYearsData = [
-      allYears2023,
-      allYears2022,
-      allYears2021,
-      allYears2020,
-      allYears2019,
-      allYears2018,
-      allYears2017,
-      allYears2016,
-      allYears2015,
-      allYears2014,
-      allYears2013,
-      allYears2012,
-    ];
-
-    allYearsData.forEach((yearData) => {
-      if (!yearData) return;
-
-      yearData.forEach((d: CountryYearMetric) => {
-        if (d?.rankingMetric) {
-          const val = parseFloat(d.rankingMetric);
-          if (!Number.isNaN(val)) {
-            if (val < min) min = val;
-            if (val > max) max = val;
-          }
-        }
-      });
-    });
-
-    // Fallback if no data
-    if (min === Infinity || max === -Infinity) {
-      return { globalMinValue: 0, globalMaxValue: 1 };
-    }
-
-    return { globalMinValue: min, globalMaxValue: max };
-  }, [
-    allYears2023,
-    allYears2022,
-    allYears2021,
-    allYears2020,
-    allYears2019,
-    allYears2018,
-    allYears2017,
-    allYears2016,
-    allYears2015,
-    allYears2014,
-    allYears2013,
-    allYears2012,
-  ]);
 
   const scrollToIso = useCallback((iso3: string) => {
     setSelectedIso3(iso3);

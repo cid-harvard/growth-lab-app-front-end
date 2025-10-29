@@ -113,14 +113,14 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
   const { isCondensed } = useSidebar();
 
   // Calculate responsive dimensions - reserve space for header and cluster ranking
-  const rankingHeight = isMobile ? 100 : isTablet ? 110 : 120;
+  const rankingHeight = isMobile ? 120 : isTablet ? 130 : 140;
   const verticalSpacing = isMobile ? 16 : 24;
 
   const dimensions = useMemo(() => {
     // Use nearly full width with minimal padding
     const calculatedWidth = Math.max(width - (isMobile ? 16 : 32), 300);
 
-    const headerHeight = 60 + 32; // Title height (60) + margin bottom (32 from mb: 4)
+    const headerHeight = (isMobile ? 40 : 60) + (isMobile ? 16 : 32); // Title height + margin bottom
 
     // Calculate available tree height dynamically
     const availableTreeHeight = Math.max(
@@ -141,11 +141,12 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
     const h = Math.max(0, dimensions.height);
 
     // Left margin: value chain labels and icons
-    const leftBase = isMobile ? 140 : 180;
+    const leftBase = isMobile ? 100 : 180;
     const left = Math.max(leftBase, Math.round(w * 0.1));
 
     // Right margin: product labels, axis, and legend
-    const rightBase = isMobile ? 280 : 380;
+    // Significantly reduced on mobile since we're hiding the Y-axis legend
+    const rightBase = isMobile ? 120 : 380;
     const rightFactor = isCondensed ? 1.4 : 1.0;
     const right = Math.max(
       Math.round(rightBase * rightFactor),
@@ -167,10 +168,18 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
 
   // Product label width and truncation based on available right panel
   const productLabelMetrics = useMemo(() => {
-    const availableSpace = layoutMargins.right - 80; // Reserve space for axis/legend
-    const maxWidth = Math.max(200, Math.min(600, availableSpace));
-    const approxCharPx = isMobile ? 7 : 9;
-    const charLimit = Math.max(15, Math.floor(maxWidth / approxCharPx));
+    // On mobile, we have less space reserved for axis/legend since we hide the Y-axis
+    const reservedSpace = isMobile ? 10 : 80;
+    const availableSpace = layoutMargins.right - reservedSpace;
+    const maxWidth = Math.max(
+      isMobile ? 80 : 200,
+      Math.min(600, availableSpace),
+    );
+    const approxCharPx = isMobile ? 6 : 9;
+    const charLimit = Math.max(
+      isMobile ? 10 : 15,
+      Math.floor(maxWidth / approxCharPx),
+    );
     return { maxWidth, charLimit };
   }, [layoutMargins.right, isMobile]);
 
@@ -814,18 +823,19 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
         {/* Main Title */}
         <Box
           sx={{
-            height: 60,
+            height: isMobile ? 40 : 60,
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-end",
             backgroundColor: "rgba(255, 255, 255, 0.95)",
-            mb: 4,
+            mb: isMobile ? 2 : 4,
           }}
         >
           <Typography
             variant="h5"
             sx={{
               ...themeUtils.chart.typography["chart-title"],
+              fontSize: isMobile ? "1.25rem" : undefined,
             }}
           >
             Cluster Connections
@@ -906,91 +916,92 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
               </filter>
             </defs>
 
-            {/* Export axis annotation on the right */}
-            {(() => {
-              // Calculate the actual bounds of the product nodes
-              const productNodes = nodePositions.filter(
-                (item) => item.type === "product",
-              );
+            {/* Export axis annotation on the right - hide on mobile to save space */}
+            {!isMobile &&
+              (() => {
+                // Calculate the actual bounds of the product nodes
+                const productNodes = nodePositions.filter(
+                  (item) => item.type === "product",
+                );
 
-              if (productNodes.length === 0) return null;
+                if (productNodes.length === 0) return null;
 
-              // Find the topmost and bottommost product positions
-              const topProductY = Math.min(
-                ...productNodes.map((node) => node.y),
-              );
-              const bottomProductY = Math.max(
-                ...productNodes.map((node) => node.y),
-              );
-              const rightProductX = Math.max(
-                ...productNodes.map((node) => node.x),
-              );
+                // Find the topmost and bottommost product positions
+                const topProductY = Math.min(
+                  ...productNodes.map((node) => node.y),
+                );
+                const bottomProductY = Math.max(
+                  ...productNodes.map((node) => node.y),
+                );
+                const rightProductX = Math.max(
+                  ...productNodes.map((node) => node.x),
+                );
 
-              // Compute a hard stop at the start of the right panel and allow product text to extend up to a max width
-              const productLabelMaxRight =
-                dimensions.width -
-                layoutMargins.right +
-                productLabelMetrics.maxWidth;
-              const annotationX = Math.min(
-                dimensions.width - Math.round(layoutMargins.right * 0.2),
-                Math.max(productLabelMaxRight + 20, rightProductX + 60),
-              );
+                // Compute a hard stop at the start of the right panel and allow product text to extend up to a max width
+                const productLabelMaxRight =
+                  dimensions.width -
+                  layoutMargins.right +
+                  productLabelMetrics.maxWidth;
+                const annotationX = Math.min(
+                  dimensions.width - Math.round(layoutMargins.right * 0.2),
+                  Math.max(productLabelMaxRight + 20, rightProductX + 60),
+                );
 
-              return (
-                <g>
-                  {/* High Export arrow and rotated text */}
-                  <text
-                    x={annotationX + 20}
-                    y={topProductY}
-                    fontSize={"1.125rem"}
-                    fill="#000"
-                    textAnchor="middle"
-                    fontFamily="Source Sans Pro, sans-serif"
-                    fontWeight="600"
-                    transform={`rotate(-90, ${annotationX + 20}, ${topProductY})`}
-                  >
-                    High Export
-                  </text>
-                  {/* Up arrow */}
-                  <path
-                    d={`M ${annotationX} ${topProductY - 5} L ${annotationX - 3} ${topProductY + 2} L ${annotationX + 3} ${topProductY + 2} Z`}
-                    fill="#666"
-                    stroke="none"
-                  />
+                return (
+                  <g>
+                    {/* High Export arrow and rotated text */}
+                    <text
+                      x={annotationX + 20}
+                      y={topProductY}
+                      fontSize={"1.125rem"}
+                      fill="#000"
+                      textAnchor="middle"
+                      fontFamily="Source Sans Pro, sans-serif"
+                      fontWeight="600"
+                      transform={`rotate(-90, ${annotationX + 20}, ${topProductY})`}
+                    >
+                      High Export
+                    </text>
+                    {/* Up arrow */}
+                    <path
+                      d={`M ${annotationX} ${topProductY - 5} L ${annotationX - 3} ${topProductY + 2} L ${annotationX + 3} ${topProductY + 2} Z`}
+                      fill="#666"
+                      stroke="none"
+                    />
 
-                  {/* Vertical dashed line spanning products section */}
-                  <line
-                    x1={annotationX}
-                    y1={topProductY}
-                    x2={annotationX}
-                    y2={bottomProductY}
-                    stroke="#666"
-                    strokeWidth="1"
-                    strokeDasharray="3,3"
-                  />
+                    {/* Vertical dashed line spanning products section */}
+                    <line
+                      x1={annotationX}
+                      y1={topProductY}
+                      x2={annotationX}
+                      y2={bottomProductY}
+                      stroke="#666"
+                      strokeWidth="1"
+                      strokeDasharray="3,3"
+                    />
 
-                  {/* Low Export arrow and rotated text */}
-                  <text
-                    x={annotationX + 20}
-                    y={bottomProductY + 30}
-                    fontSize={"1.125rem"}
-                    fill="#000"
-                    textAnchor="middle"
-                    fontFamily="Source Sans Pro, sans-serif"
-                    fontWeight="600"
-                    transform={`rotate(-90, ${annotationX + 20}, ${bottomProductY + 30})`}
-                  >
-                    Low Export
-                  </text>
-                  {/* Down arrow */}
-                  <path
-                    d={`M ${annotationX} ${bottomProductY + 5} L ${annotationX - 3} ${bottomProductY - 2} L ${annotationX + 3} ${bottomProductY - 2} Z`}
-                    fill="#666"
-                    stroke="none"
-                  />
-                </g>
-              );
-            })()}
+                    {/* Low Export arrow and rotated text */}
+                    <text
+                      x={annotationX + 20}
+                      y={bottomProductY + 30}
+                      fontSize={"1.125rem"}
+                      fill="#000"
+                      textAnchor="middle"
+                      fontFamily="Source Sans Pro, sans-serif"
+                      fontWeight="600"
+                      transform={`rotate(-90, ${annotationX + 20}, ${bottomProductY + 30})`}
+                    >
+                      Low Export
+                    </text>
+                    {/* Down arrow */}
+                    <path
+                      d={`M ${annotationX} ${bottomProductY + 5} L ${annotationX - 3} ${bottomProductY - 2} L ${annotationX + 3} ${bottomProductY - 2} Z`}
+                      fill="#666"
+                      stroke="none"
+                    />
+                  </g>
+                );
+              })()}
 
             {/* Legend positioned below products on the right with RCA controls */}
             {(() => {
@@ -1033,7 +1044,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={legendCenterX - 50}
                     y={legendY}
-                    fontSize={"1rem"}
+                    fontSize={isMobile ? "0.875rem" : "1rem"}
                     fill="#000"
                     textAnchor="middle"
                     fontFamily="Source Sans Pro, sans-serif"
@@ -1054,7 +1065,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={legendCenterX - 100}
                     y={legendY + 40}
-                    fontSize={"1rem"}
+                    fontSize={isMobile ? "0.875rem" : "1rem"}
                     fill="#000"
                     fontFamily="Source Sans Pro, sans-serif"
                     textAnchor="start"
@@ -1074,7 +1085,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={legendCenterX - 100}
                     y={legendY + 75}
-                    fontSize={"1rem"}
+                    fontSize={isMobile ? "0.875rem" : "1rem"}
                     fill="#000"
                     fontFamily="Source Sans Pro, sans-serif"
                     textAnchor="start"
@@ -1173,7 +1184,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                           `Cluster ${c.clusterId}`) === selectedCluster,
                     );
                     if (clusterItem) {
-                      nodeRadius = 16; // Uniform size for tree view
+                      nodeRadius = isMobile ? 12 : 16; // Smaller on mobile
                     }
                   }
                 }
@@ -1249,8 +1260,8 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                       const iconPath = getValueChainIcon(item.label);
                       if (!IconComponent && !iconPath) return null;
 
-                      const iconSize = 35; // Fixed icon size
-                      const iconX = (isMobile ? -80 : -100) - iconSize; // Position icon to the left of text, away from links
+                      const iconSize = isMobile ? 24 : 35; // Smaller icon size on mobile
+                      const iconX = (isMobile ? -55 : -100) - iconSize; // Position icon to the left of text, away from links
                       const iconY = item.height / 2 - iconSize / 2;
 
                       // Prefer inline SVG component for reliable capture; fallback to image href
@@ -1287,9 +1298,9 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   {isValueChain && (
                     <rect
                       {...(() => {
-                        const iconSize = 35;
-                        const iconX = (isMobile ? -80 : -100) - iconSize;
-                        const height = isMobile ? 44 : 48;
+                        const iconSize = isMobile ? 24 : 35;
+                        const iconX = (isMobile ? -55 : -100) - iconSize;
+                        const height = isMobile ? 36 : 48;
                         const y = item.height / 2 - height / 2;
                         const x = iconX;
                         const width = item.width / 2 + nodeRadius - iconX;
@@ -1315,10 +1326,10 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   {item.type !== "manufacturing_cluster" && (
                     <text
                       x={(() => {
-                        if (isValueChain) return isMobile ? -75 : -95; // Value chain text to right of icon, away from links
+                        if (isValueChain) return isMobile ? -50 : -95; // Value chain text to right of icon, away from links
                         if (isCluster && item.id === selectedCluster)
                           return item.width / 2; // Center node underneath
-                        if (isProduct) return item.width + (isMobile ? 8 : 15); // Leaf nodes to right
+                        if (isProduct) return item.width + (isMobile ? 6 : 15); // Leaf nodes to right
                         return item.width / 2;
                       })()}
                       y={(() => {
@@ -1334,7 +1345,9 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                         if (isProduct) return "start"; // Leaf nodes to right
                         return "middle";
                       })()}
-                      fontSize={isProduct ? 18 : isMobile ? 12 : 16}
+                      fontSize={
+                        isProduct ? (isMobile ? 11 : 18) : isMobile ? 10 : 16
+                      }
                       fontWeight={isProduct ? 600 : 500}
                       fontFamily={'"Source Sans Pro", sans-serif'}
                       fill={isProduct ? "#000" : "#333"}
@@ -1351,11 +1364,11 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                       {(() => {
                         const maxLength = (() => {
                           // Expand product text width allowance significantly
-                          if (isValueChain) return isMobile ? 12 : 18;
+                          if (isValueChain) return isMobile ? 9 : 18;
                           if (isCluster && item.id === selectedCluster)
-                            return isMobile ? 19 : 25;
+                            return isMobile ? 15 : 25;
                           if (isProduct) return productLabelMetrics.charLimit;
-                          return isMobile ? 14 : 20;
+                          return isMobile ? 10 : 20;
                         })();
 
                         return item.label.length > maxLength
@@ -1369,7 +1382,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   {isProduct && (
                     <rect
                       {...(() => {
-                        const margin = isMobile ? 8 : 15;
+                        const margin = isMobile ? 6 : 15;
                         const textX = item.width + margin;
                         const textH = isMobile ? 28 : 32;
                         const circleLeft = item.width / 2 - nodeRadius;
@@ -1528,7 +1541,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={valueChainX + 20}
                     y={highestTopY - labelGap}
-                    fontSize={20}
+                    fontSize={isMobile ? 14 : 20}
                     fill="#000"
                     textAnchor="end"
                     fontFamily="Source Sans Pro, sans-serif"
@@ -1539,7 +1552,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={clusterX + 45}
                     y={highestTopY - labelGap}
-                    fontSize={20}
+                    fontSize={isMobile ? 14 : 20}
                     fill="#000"
                     textAnchor="middle"
                     fontFamily="Source Sans Pro, sans-serif"
@@ -1550,7 +1563,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                   <text
                     x={productX}
                     y={highestTopY - labelGap}
-                    fontSize={20}
+                    fontSize={isMobile ? 14 : 20}
                     fill="#000"
                     textAnchor="start"
                     fontFamily="Source Sans Pro, sans-serif"
@@ -1604,19 +1617,19 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                     sx={{
                       display: "inline-flex",
                       width: "auto",
-                      minWidth: "120px",
-                      maxWidth: "240px",
+                      minWidth: isMobile ? "100px" : "120px",
+                      maxWidth: isMobile ? "180px" : "240px",
                       bgcolor: "rgba(255, 255, 255, 0.85)",
                       "& .MuiSelect-select": {
-                        fontSize: "1rem",
+                        fontSize: isMobile ? "0.875rem" : "1rem",
                         color: "#000",
                         fontWeight: 600,
                         whiteSpace: "normal",
                         wordBreak: "break-word",
-                        paddingTop: "4px",
-                        paddingLeft: "6px",
-                        paddingRight: "4px",
-                        paddingBottom: "4px",
+                        paddingTop: isMobile ? "3px" : "4px",
+                        paddingLeft: isMobile ? "4px" : "6px",
+                        paddingRight: isMobile ? "3px" : "4px",
+                        paddingBottom: isMobile ? "3px" : "4px",
 
                         minWidth: 0,
                         lineHeight: 1.3,
@@ -1625,7 +1638,7 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                         top: "50%",
                         transform: "translateY(-50%) rotate(0deg)",
                         transition: "transform 150ms ease",
-                        right: 8,
+                        right: isMobile ? 4 : 8,
                         position: "absolute",
                       },
                       "& .MuiSelect-icon.MuiSelect-iconOpen": {
@@ -1636,11 +1649,11 @@ const ClusterTreeInternal: React.FC<ClusterTreeInternalProps> = ({
                         alignItems: "flex-start",
                         "& .MuiOutlinedInput-input": {
                           height: "auto",
-                          minHeight: "1.4em",
-                          paddingTop: "4px",
-                          paddingBottom: "4px",
-                          paddingLeft: "6px",
-                          paddingRight: "4px",
+                          minHeight: isMobile ? "1.2em" : "1.4em",
+                          paddingTop: isMobile ? "3px" : "4px",
+                          paddingBottom: isMobile ? "3px" : "4px",
+                          paddingLeft: isMobile ? "4px" : "6px",
+                          paddingRight: isMobile ? "3px" : "4px",
                           width: "100%",
                           boxSizing: "border-box",
                         },

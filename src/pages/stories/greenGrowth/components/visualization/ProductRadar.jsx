@@ -875,7 +875,7 @@ const NestedProductSelector = ({
                       >
                         <Typography
                           sx={{
-                            fontSize: "0.875rem",
+                            fontSize: isMobile ? "0.75rem" : "0.875rem",
                             color: "#000",
                             fontWeight: clusterSelected
                               ? 600
@@ -955,7 +955,7 @@ const NestedProductSelector = ({
                               >
                                 <Typography
                                   sx={{
-                                    fontSize: "14px",
+                                    fontSize: isMobile ? "0.75rem" : "0.875rem",
                                     color: "black",
                                     fontWeight: selectedProductIds.has(
                                       product.productId,
@@ -1570,13 +1570,16 @@ const ProductRadarInternal = ({
                 sx={{
                   color: "black",
                   fontWeight: 600,
-                  fontSize: "1.25rem",
+                  fontSize: isMobile ? "1rem" : "1.25rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
-                  whiteSpace: "nowrap",
+                  whiteSpace: isMobile ? "normal" : "nowrap",
+                  wordBreak: isMobile ? "break-word" : "normal",
                 }}
               >
-                CLUSTER NAME: {cluster.clusterName}
+                {isMobile
+                  ? cluster.clusterName
+                  : `CLUSTER NAME: ${cluster.clusterName}`}
               </Typography>
               <Box
                 sx={{
@@ -1659,7 +1662,7 @@ const ProductRadarInternal = ({
                       sx={{
                         color: "black",
                         fontWeight: 600,
-                        fontSize: "1.125rem",
+                        fontSize: isMobile ? "1rem" : "1.125rem",
                         mb: 1,
                         cursor: "pointer",
                         textDecoration: "underline",
@@ -1756,7 +1759,7 @@ const ProductRadarInternal = ({
                     >
                       <Typography
                         sx={{
-                          fontSize: "14px",
+                          fontSize: isMobile ? "0.75rem" : "0.875rem",
                           fontWeight: 600,
                           textTransform: "uppercase",
                           color: "black",

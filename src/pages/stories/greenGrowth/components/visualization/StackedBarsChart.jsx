@@ -715,7 +715,7 @@ const StackedBarsChartInternal = ({
               <text
                 x={margin.left + 60}
                 y={15}
-                fontSize={14}
+                fontSize={isMobile ? 12 : 14}
                 fontWeight={600}
                 fill="black"
                 textAnchor="middle"
@@ -836,7 +836,7 @@ const StackedBarsChartInternal = ({
           {/* Smart cluster name labels - rendered last to appear on top */}
           {Array.from(bars.values()).map((bar) => {
             const yPosition = bar.y + bar.height / 2;
-            const fontSize = 16; // Fixed 16px as per spec
+            const fontSize = isMobile ? 14 : 16; // Responsive font size
             const charWidth = fontSize * 0.52;
 
             // Position labels after the bar
@@ -1021,7 +1021,7 @@ const StackedBarsChartInternal = ({
               }}
               tickLabelProps={() => ({
                 fill: "rgb(51,51,51)",
-                fontSize: 16,
+                fontSize: isMobile ? 14 : 16,
                 fontWeight: 600,
                 fontFamily: "Source Sans Pro, sans-serif",
                 textAnchor: "middle",

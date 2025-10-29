@@ -439,7 +439,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
       sx={(theme) => ({
         backgroundColor:
           theme.palette.custom?.footerBg || "rgba(0, 0, 0, 0.10)",
-        p: 2,
+        p: { xs: 1, md: 2 }, // Less padding on mobile
         flexShrink: 0, // Fixed at bottom
       })}
     >
@@ -448,20 +448,21 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
-          gap: 1,
+          gap: { xs: 0.5, md: 1 }, // Smaller gap on mobile
         }}
       >
         <Button
           startIcon={<Download />}
-          size="large"
+          size="small"
           onClick={handleDownloadModalOpen}
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "0.75rem",
+            fontSize: { xs: "0.65rem", sm: "0.75rem" }, // Smaller on mobile
             fontWeight: 600,
             color: "#5C5C5C",
-            minHeight: "36px",
+            minHeight: { xs: "2rem", md: "2.25rem" }, // Smaller on mobile
+            padding: { xs: "0.25rem 0.25rem", md: "0.5rem 1rem" },
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
         >
@@ -469,16 +470,16 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         </Button>
         <Button
           startIcon={<Share />}
-          size="large"
+          size="small"
           onClick={handleShareModalOpen}
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "0.75rem",
+            fontSize: { xs: "0.65rem", sm: "0.75rem" },
             fontWeight: 600,
             color: "#5C5C5C",
-            minHeight: "2.25rem", // 36px in rem for better mobile scaling
-            padding: { xs: "0.25rem 0.5rem", md: "0.5rem 1rem" }, // Responsive padding
+            minHeight: { xs: "2rem", md: "2.25rem" },
+            padding: { xs: "0.25rem 0.25rem", md: "0.5rem 1rem" },
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
         >
@@ -486,16 +487,16 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         </Button>
         <Button
           startIcon={<MenuBook />}
-          size="large"
+          size="small"
           onClick={handleGlossaryModalOpen}
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "0.75rem",
+            fontSize: { xs: "0.65rem", sm: "0.75rem" },
             fontWeight: 600,
             color: "#5C5C5C",
-            minHeight: "2.25rem", // 36px in rem for better mobile scaling
-            padding: { xs: "0.25rem 0.5rem", md: "0.5rem 1rem" }, // Responsive padding
+            minHeight: { xs: "2rem", md: "2.25rem" },
+            padding: { xs: "0.25rem 0.25rem", md: "0.5rem 1rem" },
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
         >
@@ -508,11 +509,11 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           sx={{
             flex: 1,
             textTransform: "none",
-            fontSize: "0.75rem",
+            fontSize: { xs: "0.65rem", sm: "0.75rem" },
             fontWeight: 600,
             color: "#5C5C5C",
-            minHeight: "2.25rem", // 36px in rem for better mobile scaling
-            padding: { xs: "0.25rem 0.5rem", md: "0.5rem 1rem" }, // Responsive padding
+            minHeight: { xs: "2rem", md: "2.25rem" },
+            padding: { xs: "0.25rem 0.25rem", md: "0.5rem 1rem" },
             lineHeight: "1.1",
             "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
           }}
@@ -539,7 +540,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           background:
             "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
           color: "white",
-          p: 1,
+          p: { xs: 0.75, md: 1 }, // Less padding on mobile
           flexShrink: 0, // Prevent header from shrinking
         }}
       >
@@ -599,7 +600,14 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
         )}
 
         {/* Controls */}
-        <Box sx={{ display: "flex", gap: 1.5, alignItems: "center", ml: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: { xs: 0.75, md: 1.5 },
+            alignItems: "center",
+            ml: 1,
+          }}
+        >
           <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
             <Autocomplete
               disableClearable
@@ -688,6 +696,7 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       fontSize: "1.125rem",
+                      height: "40px", // Match Select height
                       color: "white",
                       "& fieldset": { borderColor: "white" },
                       "&:hover fieldset": { borderColor: "white" },
@@ -698,6 +707,8 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                       },
                       display: "flex",
                       alignItems: "center",
+                      paddingTop: 0,
+                      paddingBottom: 0,
                     },
                     "& .MuiAutocomplete-popupIndicator": { color: "white" },
                     "& .MuiAutocomplete-clearIndicator": { color: "white" },
@@ -739,9 +750,9 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             value={yearSelection}
             onChange={(e: any) => setYearSelection(e.target.value)}
             sx={{
-              fontSize: "0.875rem",
-              minWidth: "100px",
-              maxHeight: "40px",
+              fontSize: { xs: "0.875rem", md: "0.875rem" },
+              minWidth: { xs: "85px", md: "100px" },
+              height: "40px", // Match Autocomplete height
               color: "white",
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "white" },
               "&:hover .MuiOutlinedInput-notchedOutline": {
@@ -764,6 +775,9 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                height: "40px", // Match Autocomplete height
+                paddingTop: 0,
+                paddingBottom: 0,
               },
             }}
           >
@@ -1140,35 +1154,61 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
           position="fixed"
           sx={{
             zIndex: theme.zIndex.drawer + 1,
+            height: { xs: "3.5rem", sm: "4rem" }, // Smaller on extra small screens
+            minHeight: { xs: "3.5rem", sm: "4rem" },
             background:
               "linear-gradient(135deg, #0a78b8 0%, rgba(39, 204, 193, .8) 100%)",
           }}
         >
-          <Toolbar>
+          <Toolbar
+            sx={{
+              minHeight: { xs: "3.5rem", sm: "4rem" },
+              height: "100%",
+              padding: { xs: "0 1rem", sm: "0 1.5rem" }, // More padding for breathing room
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <IconButton
               color="inherit"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
+              sx={{
+                padding: { xs: "0.5rem", sm: "0.75rem" },
+              }}
             >
               <MenuIcon />
             </IconButton>
-            <a href="/" aria-label="Growth Lab Home">
-              <img
-                src={GrowthLabLogoPNG}
-                alt="Growth Lab"
-                style={{ height: "20px", marginRight: "8px" }}
-              />
-            </a>
-            <Typography
-              variant="h6"
-              noWrap
-              sx={{ cursor: "pointer" }}
-              onClick={handleHome}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: { xs: "0.75rem", sm: "1rem" }, // Increased gap between logo and text
+                mr: { xs: "0.5rem", sm: "1rem" }, // Add right margin for spacing from edge
+              }}
             >
-              GREENPLEXITY
-            </Typography>
+              <a href="/" aria-label="Growth Lab Home">
+                <img
+                  src={GrowthLabLogoPNG}
+                  alt="Growth Lab"
+                  style={{ height: "20px", display: "block" }}
+                />
+              </a>
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{
+                  cursor: "pointer",
+                  fontSize: { xs: "1rem", sm: "1.25rem" }, // Smaller font on mobile
+                  whiteSpace: "nowrap",
+                }}
+                onClick={handleHome}
+              >
+                GREENPLEXITY
+              </Typography>
+            </Box>
           </Toolbar>
         </AppBar>
       )}
@@ -1198,9 +1238,15 @@ const StoryNavigation: React.FC<StoryNavigationProps> = () => {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: mobileDrawerWidth, // Responsive width for mobile
-              mt: "4rem", // Account for AppBar height (64px = 4rem)
-              height: "calc(100vh - 4rem)", // Explicit height for mobile
+              mt: { xs: "3.5rem", sm: "4rem" }, // Account for AppBar height - smaller on mobile
+              height: { xs: "calc(100vh - 3.5rem)", sm: "calc(100vh - 4rem)" }, // Adjust for smaller screens
+              maxHeight: {
+                xs: "calc(100vh - 3.5rem)",
+                sm: "calc(100vh - 4rem)",
+              }, // Ensure it doesn't exceed viewport
               overflow: "hidden", // Let inner content handle scrolling
+              display: "flex",
+              flexDirection: "column",
             },
           }}
         >

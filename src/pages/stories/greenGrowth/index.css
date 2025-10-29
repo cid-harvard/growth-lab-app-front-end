@@ -51,3 +51,12 @@ body,
   position: fixed; /* Escape local stacking/overflow contexts */
   z-index: 10000; /* Higher than Drawer/AppBar/Modals to prevent overlap */
 }
+
+/* Mobile notification text styles */
+.bold {
+  font-weight: 700;
+}
+
+.italicize {
+  font-style: italic;
+}

@@ -50,17 +50,25 @@ const GreenplexityHeader = (props: GreenplexityHeaderProps) => {
         </Box>
 
         {/* Right: Nav items */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-          <Box sx={{ position: "relative" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            gap: { xs: 1.5, md: 3 },
+            marginLeft: "auto",
+          }}
+        >
+          <Box sx={{ position: "relative", display: "inline-flex" }}>
             <Typography
               component={RouterLink}
               to="/greenplexity"
               sx={{
                 color: "white",
                 textDecoration: "none",
-                fontSize: 20,
+                fontSize: { xs: 14, md: 20 },
                 fontWeight: 500,
-                paddingBottom: "6px",
+                paddingBottom: { xs: "4px", md: "6px" },
                 display: "inline-block",
               }}
             >
@@ -80,16 +88,16 @@ const GreenplexityHeader = (props: GreenplexityHeaderProps) => {
               />
             )}
           </Box>
-          <Box sx={{ position: "relative" }}>
+          <Box sx={{ position: "relative", display: "inline-flex" }}>
             <Typography
               component={RouterLink}
               to="/greenplexity/rankings"
               sx={{
                 color: "white",
                 textDecoration: "none",
-                fontSize: 20,
+                fontSize: { xs: 14, md: 20 },
                 fontWeight: 500,
-                paddingBottom: "6px",
+                paddingBottom: { xs: "4px", md: "6px" },
                 display: "inline-block",
               }}
             >

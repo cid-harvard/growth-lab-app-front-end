@@ -2,8 +2,11 @@ import { calculateClusterExportValue } from "./calculations";
 import { getPotentialColor } from "./colors";
 import {
   CLUSTER_RANKING_NODE_RADIUS,
+  CLUSTER_RANKING_NODE_RADIUS_MOBILE,
   CLUSTER_RANKING_EDGE_PADDING,
+  CLUSTER_RANKING_EDGE_PADDING_MOBILE,
   CLUSTER_RANKING_SPACING,
+  CLUSTER_RANKING_SPACING_MOBILE,
 } from "../config";
 
 // Create ordered row layout for clusters based on rank
@@ -15,6 +18,7 @@ export const createOrderedRowLayout = (
   minScore: number,
   maxScore: number,
   edgePadding?: number,
+  isMobile?: boolean,
 ) => {
   if (!clusters.length) return [];
 
@@ -30,11 +34,18 @@ export const createOrderedRowLayout = (
 
   // Use consistent score range for color calculation (calculated at component level)
 
-  // Use fixed values from config
-  const staticRadius = CLUSTER_RANKING_NODE_RADIUS;
-  const padding = edgePadding ?? CLUSTER_RANKING_EDGE_PADDING;
-
-  const spaceBetween = CLUSTER_RANKING_SPACING;
+  // Use fixed values from config with mobile overrides
+  const staticRadius = isMobile
+    ? CLUSTER_RANKING_NODE_RADIUS_MOBILE
+    : CLUSTER_RANKING_NODE_RADIUS;
+  const padding =
+    edgePadding ??
+    (isMobile
+      ? CLUSTER_RANKING_EDGE_PADDING_MOBILE
+      : CLUSTER_RANKING_EDGE_PADDING);
+  const spaceBetween = isMobile
+    ? CLUSTER_RANKING_SPACING_MOBILE
+    : CLUSTER_RANKING_SPACING;
 
   // Center Y position
   const centerY = height / 2;

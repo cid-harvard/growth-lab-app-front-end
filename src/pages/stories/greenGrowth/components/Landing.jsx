@@ -17,6 +17,7 @@ import { useQuery } from "@apollo/client";
 import { GET_COUNTRIES } from "../queries/shared";
 import { triggerGoogleAnalyticsEvent } from "../../../../routing/tracking";
 import GreenplexityHeader from "./GreenplexityHeader";
+import HKSLogo from "../../../../assets/hks-logo.svg";
 
 const GradientBackground = styled(Box)(({ theme }) => ({
   background:
@@ -286,6 +287,29 @@ const Landing = ({ onExplore }) => {
           Greenplexity is a public good made possible in part by the generous
           support of the Government of Azerbaijan.
         </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 4,
+            mb: 4,
+          }}
+        >
+          <a
+            href="https://www.hks.harvard.edu/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={HKSLogo}
+              alt="Harvard Kennedy School"
+              style={{
+                height: "30px",
+                width: "auto",
+              }}
+            />
+          </a>
+        </Box>
       </GradientBackground>
     </div>
   );

@@ -1,4 +1,5 @@
 // React import not required for JSX runtime
+import { useState, useEffect } from "react";
 import {
   Routes,
   Route,
@@ -26,6 +27,7 @@ import { SidebarProvider, useSidebar } from "./SidebarContext";
 import { ImageCaptureProvider } from "../hooks/useImageCaptureContext";
 import { SelectionDataModalProvider } from "../hooks/useSelectionDataModal";
 import SelectionDataModal from "./SelectionDataModal";
+import MobileNotification from "./MobileNotification";
 import greenGrowthTheme from "../theme";
 import GreenplexityHeader from "./GreenplexityHeader";
 
@@ -203,6 +205,30 @@ const LandingPage = () => {
 };
 
 const RoutedGreenGrowthStory = () => {
+  const [showMobileNotification, setShowMobileNotification] = useState(false);
+  const [hasUserDismissed, setHasUserDismissed] = useState(false);
+
+  useEffect(() => {
+    // Check viewport width on mount and window resize
+    const checkViewportWidth = () => {
+      // Show notification if viewport is narrower than 900px AND user hasn't dismissed it
+      const isNarrowViewport = window.innerWidth < 900;
+      setShowMobileNotification(isNarrowViewport && !hasUserDismissed);
+    };
+
+    checkViewportWidth();
+    window.addEventListener("resize", checkViewportWidth);
+
+    return () => {
+      window.removeEventListener("resize", checkViewportWidth);
+    };
+  }, [hasUserDismissed]);
+
+  const handleCloseMobileNotification = () => {
+    setShowMobileNotification(false);
+    setHasUserDismissed(true);
+  };
+
   return (
     <SidebarProvider>
       <ImageCaptureProvider>
@@ -272,6 +298,10 @@ const RoutedGreenGrowthStory = () => {
             </div>
             {/* Global contextual selection modal */}
             <SelectionDataModal />
+            {/* Mobile notification */}
+            {showMobileNotification && (
+              <MobileNotification onClose={handleCloseMobileNotification} />
+            )}
           </ThemeProvider>
         </SelectionDataModalProvider>
       </ImageCaptureProvider>

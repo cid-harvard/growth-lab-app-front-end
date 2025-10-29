@@ -8,9 +8,12 @@ import {
 } from "./utils";
 import {
   CLUSTER_RANKING_MAX_LABEL_CHARS,
+  CLUSTER_RANKING_MAX_LABEL_CHARS_MOBILE,
   CLUSTER_RANKING_EDGE_PADDING,
+  CLUSTER_RANKING_EDGE_PADDING_MOBILE,
   CLUSTER_RANKING_AXIS_SPACE,
   CLUSTER_RANKING_NODE_RADIUS,
+  CLUSTER_RANKING_NODE_RADIUS_MOBILE,
 } from "./config";
 
 interface ClusterRankingProps {
@@ -70,21 +73,28 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
     }));
 
     // Use fixed spacing and label character limits from config
-    const maxChars = CLUSTER_RANKING_MAX_LABEL_CHARS;
-    const radius = CLUSTER_RANKING_NODE_RADIUS;
+    const maxChars = _isMobile
+      ? CLUSTER_RANKING_MAX_LABEL_CHARS_MOBILE
+      : CLUSTER_RANKING_MAX_LABEL_CHARS;
+    const radius = _isMobile
+      ? CLUSTER_RANKING_NODE_RADIUS_MOBILE
+      : CLUSTER_RANKING_NODE_RADIUS;
 
     // Prefer minimal padding so first circle starts near left; avoid extra right whitespace
-    const baseEdgePadding = CLUSTER_RANKING_EDGE_PADDING;
+    const baseEdgePadding = _isMobile
+      ? CLUSTER_RANKING_EDGE_PADDING_MOBILE
+      : CLUSTER_RANKING_EDGE_PADDING;
     const edgePadding = baseEdgePadding;
 
     const layoutData = createOrderedRowLayout(
       clustersWithNames,
-      height - 40,
+      height - 50,
       countryData,
       supplyChainProductLookup,
       minScore,
       maxScore,
       edgePadding,
+      _isMobile,
     );
 
     // Calculate content width based on actual layout positions
@@ -111,6 +121,7 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
     height,
     minScore,
     maxScore,
+    _isMobile,
   ]);
 
   const handleClusterClick = useCallback(
@@ -190,8 +201,8 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
     );
     const centerY = adjustedRankingData[0].y;
     // Place baseline just below the largest bubble with a small margin
-    return centerY + maxRadius + 6;
-  }, [adjustedRankingData, beeswarmHeight]);
+    return centerY + maxRadius + (_isMobile ? 8 : 6);
+  }, [adjustedRankingData, beeswarmHeight, _isMobile]);
 
   // Removed left-aligned axis title; legend will be rendered below the scrollable area
 
@@ -207,18 +218,21 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
           pl: 2,
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: 600, fontSize: 20 }}>
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: 600, fontSize: _isMobile ? 16 : 20 }}
+        >
           Industrial Clusters
         </Typography>
         {/* Fixed legend after title */}
         {adjustedRankingData.length > 0 &&
           (() => {
             const scaleWidth = Math.min(320, width * 0.4);
-            const scaleHeight = 10;
+            const scaleHeight = _isMobile ? 8 : 10;
             const marginX = 12;
             const sideLabelPadding = 80;
-            const svgHeight = 30;
-            const gradientY = 10;
+            const svgHeight = _isMobile ? 26 : 30;
+            const gradientY = _isMobile ? 8 : 10;
             const labelsY = gradientY + scaleHeight / 2 + 5;
             return (
               <svg
@@ -267,7 +281,7 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
                 <text
                   x={marginX + sideLabelPadding - 6}
                   y={labelsY}
-                  fontSize={14}
+                  fontSize={_isMobile ? 12 : 14}
                   fill="#000"
                   textAnchor="end"
                   fontFamily="Source Sans Pro, sans-serif"
@@ -278,7 +292,7 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
                 <text
                   x={marginX + sideLabelPadding + scaleWidth + 8}
                   y={labelsY}
-                  fontSize={14}
+                  fontSize={_isMobile ? 12 : 14}
                   fill="#000"
                   textAnchor="start"
                   fontFamily="Source Sans Pro, sans-serif"
@@ -386,7 +400,7 @@ const ClusterRanking: React.FC<ClusterRankingProps> = ({
                 <text
                   x={item.x}
                   y={axisBaselineY + 20}
-                  fontSize={14}
+                  fontSize={_isMobile ? 11 : 14}
                   fill="#000"
                   textAnchor="middle"
                   fontFamily="Source Sans Pro, sans-serif"
