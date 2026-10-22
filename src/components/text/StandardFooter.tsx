@@ -2,7 +2,7 @@ import React from "react";
 import { FullWidthFooter, FullWidthFooterContent } from "../../styling/Grid";
 import { primaryFont } from "../../styling/styleUtils";
 import styled from "styled-components";
-import GrowthLabLogoPNG from "../../assets/growth-lab-new-logo-2022.png";
+import GrowthLabLogoPNG from "../../assets/GL_logo_20yr_black.png";
 import FacebookIconSVG from "./assets/facebook.svg";
 import InstagramIconSVG from "./assets/instagram.svg";
 import TwitterIconSVG from "./assets/x.svg";

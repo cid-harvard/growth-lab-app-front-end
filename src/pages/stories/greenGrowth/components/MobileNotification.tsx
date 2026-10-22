@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Modal } from "@mui/material";
-import Logo from "../../../../assets/GL_logo_white.png";
+import Logo from "../../../../assets/GL_logo_20yr_white.png";
 
 const NotificationContainer = styled.div`
   background-color: rgb(27, 31, 47);

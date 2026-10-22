@@ -4,7 +4,7 @@ import raw from "raw.macro";
 import MotionPauseButton, {
   useMotionPaused,
 } from "../../components/general/MotionPauseButton";
-import LogoIMG from "./GL_logo_white.png";
+import LogoIMG from "../../assets/GL_logo_20yr_white.png";
 import { secondaryFont } from "../../styling/styleUtils";
 import { useLocation, useNavigate } from "react-router";
 import { scrollToAnchor } from "../../hooks/useScrollBehavior";

@@ -30,7 +30,7 @@ import { Autocomplete, TextField, Select } from "@mui/material";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import type { AutocompleteCloseReason } from "@mui/material/Autocomplete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
+import GrowthLabLogoPNG from "../../../../assets/GL_logo_20yr_white.png";
 import { useSidebar } from "./SidebarContext";
 import ShareModal from "./ShareModal";
 import GlossaryModal from "./GlossaryModal";

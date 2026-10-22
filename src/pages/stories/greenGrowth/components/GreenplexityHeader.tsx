@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import GrowthLabLogoPNG from "../../../../assets/GL_logo_white.png";
+import GrowthLabLogoPNG from "../../../../assets/GL_logo_20yr_white.png";
 
 type GreenplexityHeaderProps = {
   position?: "fixed" | "absolute" | "static";
